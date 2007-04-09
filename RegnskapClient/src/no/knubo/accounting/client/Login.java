@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
 
-	private TextBox userBox;
 
 	private PasswordTextBox passBox;
 
@@ -26,27 +25,29 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
 
 	private Label infoLabel;
 
-	private I18NAccount msgs;
+	private I18NAccount messages;
+
+	private TextBox userBox;
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-	    msgs = (I18NAccount) GWT.create(I18NAccount.class);
+	    messages = (I18NAccount) GWT.create(I18NAccount.class);
 		constants = (Constants) GWT.create(Constants.class);
 
 		Grid grid = new Grid(4, 2);
 
-		Button loginButton = new Button(msgs.login());
+		Button loginButton = new Button(messages.login());
 		loginButton.addClickListener(this);
 
 		userBox = new TextBox();
 		passBox = new PasswordTextBox();
 		infoLabel = new Label();
 		
-		grid.setText(0, 0, msgs.user());
+		grid.setText(0, 0, messages.user());
 		grid.setWidget(0, 1, userBox);
-		grid.setText(1, 0, msgs.password());
+		grid.setText(1, 0, messages.password());
 		grid.setWidget(1, 1, passBox);
 		grid.setWidget(2, 1, loginButton);
 		grid.setWidget(3, 1, infoLabel);
@@ -59,7 +60,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
 		if(!HTTPRequest.asyncGet(this.constants.baseurl()
 				+ "authenticate.php?user=" + user + "&password=" + password,
 				this)) {
-			infoLabel.setText(msgs.failedLogin());
+			infoLabel.setText(messages.failedLogin());
 		} else {
 			infoLabel.setText("");
 		}
