@@ -38,4 +38,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key failedLogin
    */
   String failedLogin();
+
+  /**
+   * Translated "Vis m&aring;ned".
+   * 
+   * @return translated "Vis m&aring;ned"
+   * @gwt.key menuitem_showmonth
+   */
+  String menuitem_showmonth();
+
+  /**
+   * Translated "Regnskap".
+   * 
+   * @return translated "Regnskap"
+   * @gwt.key menu_accounting
+   */
+  String menu_accounting();
 }
