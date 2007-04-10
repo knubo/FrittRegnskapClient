@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -23,7 +23,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
 
 	private Constants constants;
 
-	private Label infoLabel;
+	private HTML infoLabel;
 
 	private I18NAccount messages;
 
@@ -43,7 +43,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
 
 		userBox = new TextBox();
 		passBox = new PasswordTextBox();
-		infoLabel = new Label();
+		infoLabel = new HTML();
 		
 		grid.setText(0, 0, messages.user());
 		grid.setWidget(0, 1, userBox);
@@ -61,13 +61,10 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
 				+ "authenticate.php?user=" + user + "&password=" + password,
 				this)) {
 			infoLabel.setText(messages.failedLogin());
-		} else {
-			infoLabel.setText("");
 		}
-
 	}
 
 	public void onCompletion(String responseText) {
-		infoLabel.setText(responseText);
+		infoLabel.setHTML(responseText);
 	}
 }
