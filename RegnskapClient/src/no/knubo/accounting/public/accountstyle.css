@@ -1,0 +1,274 @@
+
+.tableborder {
+ border-collapse: collapse;
+ border-style: solid; 
+ border-color: #000000; 
+}
+
+.datefor {
+  white-space:nowrap;
+}
+.center {
+  text-align: Center;
+}
+
+.showline, .showline TD {
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+  font-weight: bold;
+  font-size:100%;
+  vertical-align:bottom;
+  PADDING:2px 2px 2px 2px;
+  white-space:nowrap;
+
+}
+
+.showlineposts, .showlineposts TD {
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+  font-size:100%;
+  vertical-align:bottom;
+  PADDING:2px 2px 2px 2px;
+  white-space:nowrap;
+}
+
+.showlineposts2, .showlineposts2 TD {
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+  font-size:100%;
+  background-color:#FF9;
+  vertical-align:bottom;
+  PADDING:2px 2px 2px 2px;
+  white-space:nowrap;
+
+}
+
+
+
+.sumline {
+  background-color:#ecf1f3;
+}
+
+.sumline TD {
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+  font-size:80%;
+  border-style: solid; 
+  border-top-width: 1px; 
+  border-bottom-width: 1px; 
+  border-right-width: 1px; 
+  border-left-width: 0px	
+
+}
+
+.showlinebreak, .showlinebreak TD {
+  border-style: solid; 
+  border-top-width: 0px; 
+  border-bottom-width: 1px; 
+  border-right-width: 0px; 
+  border-left-width: 0px	
+}
+
+
+.header TD {
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-weight: bold;
+  color: #05143f;
+  background-color: #b7c2c6;
+  font-size:80%;
+  vertical-align:bottom;
+  PADDING:2px 2px 2px 2px;
+
+  border-style: solid; 
+  border-top-width: 0px; 
+  border-bottom-width: 1px; 
+  border-right-width: 0px; 
+  border-left-width: 0px
+
+
+}
+
+.debkred TD {
+  color: #004759;  
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-weight: bold;
+  background-color: #b7c2c6;
+  font-size:60%;
+}
+
+TD.right {
+  text-align: Right;
+  white-space:nowrap;
+}
+
+TD.desc a:link, TD.desc a:visited {
+  text-decoration:none;
+  color: black;
+}
+
+TD.desc {
+  white-space:nowrap;
+}
+
+.line1 TD {
+  background-color:#ecf1f3;
+  font-size:80%;
+  border-style: solid; 
+  border-top-width: 0px; 
+  border-bottom-width: 0px; 
+  border-right-width: 1px; 
+  border-left-width: 1px
+}
+
+.line2 TD {
+  background-color:#d7e2e6;
+  font-size:80%;
+  border-style: solid; 
+  border-top-width: 0px; 
+  border-bottom-width: 0px; 
+  border-right-width: 1px; 
+  border-left-width: 1px
+}
+
+.leftborder {
+  border-style: solid; 
+  border-top-width: 0px; 
+  border-bottom-width: 1px; 
+  border-right-width: 0px; 
+  border-left-width: 1px
+
+}
+
+.rightborder {
+  border-style: solid; 
+  border-top-width: 0px; 
+  border-bottom-width: 1px; 
+  border-right-width: 1px; 
+  border-left-width: 0px
+}
+
+.showpostheader TD {
+  background-color:#ecf1f3;
+  font-size:80%;
+  border-style: solid; 
+  border-top-width: 1px; 
+  border-bottom-width: 0px; 
+  border-right-width: 1px; 
+  border-left-width: 0px
+}
+
+.kontomain {
+  font-size:140%;
+}
+
+.kontomainsum {
+  font-size:140%;
+  border-color:black;
+  border-style: double; 
+  border-top-width: 0px; 
+  border-bottom-width: 3px; 
+  border-right-width: 0px; 
+  border-left-width: 0px
+}
+
+.kontomainsumright {
+  border-color:black;
+  border-style: double; 
+  border-top-width: 0px; 
+  border-bottom-width: 3px; 
+  border-right-width: 0px; 
+  border-left-width: 0px
+}
+
+
+.kontocat {
+  font-size:120%;
+  font-style:italic;
+}
+
+.kontosub {
+  font-weight: bold;
+}
+
+.pagebreak {
+  page-break-after:always;
+}
+
+.telling { 
+  white-space:nowrap;
+  border: solid 1px;
+  font-size:140%;
+  width: 80px;
+ }
+
+td.sum { 
+  border-bottom: double;
+ }
+
+td.inforight { 
+  border-bottom: solid 1px;
+  width: 100px;
+  text-align: right;
+}
+
+th.big {
+  white-space:nowrap;
+  font-size:140%;
+}
+
+td.info { 
+  border-bottom: solid 1px;
+
+  font-size:140%;
+}
+
+td.tegn { 
+  text-align: right;
+}
+
+
+
+table.rutenett {
+ border: solid 2px;
+ border-collapse: collapse;
+}
+
+th.janei {
+  border: solid 2px;
+  text-align: center;
+  width:30px;
+}
+
+
+th.rutenett {
+  border: solid 2px;
+  width:30px;
+}
+
+td.ruteskipp {
+  border-right-width: 0px; 
+  border-left-width: 0px;
+  
+  width:350px;
+}
+
+
+td.rutenett {
+ border: solid 2px;
+}
+
+td.rutedesc {
+ border: solid 2px;
+ border-collapse: collapse;
+ width:350px;
+}
+
+
+td.rute {  
+ border: solid 2px;
+ width: 30px; 
+ text-align: center;
+ font-size:160%;
+}
+
+.collapse {
+ border-collapse: collapse;
+}
+
+	
