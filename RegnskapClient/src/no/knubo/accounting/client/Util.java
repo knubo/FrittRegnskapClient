@@ -3,7 +3,8 @@ package no.knubo.accounting.client;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
-/** Various nifty utilities for the project.
+/**
+ * Various nifty utilities for the project.
  * 
  * @author knuterikborgen
  */
@@ -11,7 +12,9 @@ public class Util {
 
 	/**
 	 * Forwards the clientside browser to the given location.
-	 * @param msg The url to forward to.
+	 * 
+	 * @param msg
+	 *            The url to forward to.
 	 */
 	public static native void forward(String url) /*-{
 	 $wnd.location.href = url;
@@ -19,8 +22,11 @@ public class Util {
 
 	/**
 	 * Converts a number into a i18n month from the property file.
-	 * @param i18n I18N interface
-	 * @param m The month to find, as a wrapped int.
+	 * 
+	 * @param i18n
+	 *            I18N interface
+	 * @param m
+	 *            The month to find, as a wrapped int.
 	 * @return The month string or "" if not of month 1 - 12.
 	 */
 	public static String monthString(I18NAccount i18n, String m) {
@@ -82,15 +88,14 @@ public class Util {
 	 * @return The string or toString() if not a string for clarity.
 	 */
 	public static String str(JSONValue value) {
-		if(value == null) {
+		if (value == null) {
 			return "ERROR";
 		}
-		
+
 		JSONString string = value.isString();
 		if (string == null) {
 			return value.toString();
 		}
 		return string.stringValue();
 	}
-
 }

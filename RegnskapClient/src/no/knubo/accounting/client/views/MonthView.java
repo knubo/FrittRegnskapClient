@@ -88,10 +88,10 @@ public class MonthView extends Composite implements ResponseTextHandler {
 		table.addCell(row);
 		table.addCell(row);
 		table.addCell(row);
-		
+
 		table.addCell(row + 1);
-		table.getFlexCellFormatter().setColSpan(row+1, 0, 4);
-		table.getCellFormatter().setStyleName(row+1, 0, "leftborder");
+		table.getFlexCellFormatter().setColSpan(row + 1, 0, 4);
+		table.getCellFormatter().setStyleName(row + 1, 0, "leftborder");
 
 		table.setText(row, col++, messages.attachment());
 		table.setText(row, col++, messages.date());
@@ -114,9 +114,9 @@ public class MonthView extends Composite implements ResponseTextHandler {
 			table.addCell(row + 1);
 			table.addCell(row + 1);
 
-			table.getCellFormatter().setStyleName(row+1, col2, "leftborder");
+			table.getCellFormatter().setStyleName(row + 1, col2, "leftborder");
 			table.setText(row + 1, col2++, messages.debet());
-			table.getCellFormatter().setStyleName(row+1, col2, "rightborder");
+			table.getCellFormatter().setStyleName(row + 1, col2, "rightborder");
 			table.setText(row + 1, col2++, messages.kredit());
 		}
 	}
@@ -139,41 +139,79 @@ public class MonthView extends Composite implements ResponseTextHandler {
 				+ " " + year.isString().stringValue());
 
 		JSONArray array = lines.isArray();
-		
+
 		String rowStyle = "line1";
-		
+
 		for (int i = 0; i < array.size(); i++) {
-			
+
 			JSONObject rowdata = array.get(i).isObject();
-			
-			if(rowdata == null) {
-				Window.alert("Didn't get rowdata:"+array.get(i));
+
+			if (rowdata == null) {
+				Window.alert("Didn't get rowdata:" + array.get(i));
 				return;
 			}
 			/* +2 to skip headers. */
 			int rowIndex = table.insertRow(i + 2);
 			table.getRowFormatter().setStyleName(rowIndex, rowStyle);
-			
-			if(i % 3 == 2) {
+
+			if (i % 3 == 2) {
 				rowStyle = (rowStyle.equals("line1")) ? "line2" : "line1";
 			}
-			
+
 			table.addCell(rowIndex);
 			table.setText(rowIndex, 0, Util.str(rowdata.get("Postnmb")) + "/"
 					+ Util.str(rowdata.get("Id")));
-			table.getCellFormatter().setStyleName(rowIndex,0,"right");
-			
+			table.getCellFormatter().setStyleName(rowIndex, 0, "right");
+
 			table.addCell(rowIndex);
 			table.setText(rowIndex, 1, Util.str(rowdata.get("Attachment")));
-			table.getCellFormatter().setStyleName(rowIndex,1,"right");
+			table.getCellFormatter().setStyleName(rowIndex, 1, "right");
 
 			table.addCell(rowIndex);
 			table.setText(rowIndex, 2, Util.str(rowdata.get("date")));
-			table.getCellFormatter().setStyleName(rowIndex,2,"datefor");
-			
+			table.getCellFormatter().setStyleName(rowIndex, 2, "datefor");
+
 			table.addCell(rowIndex);
 			table.setText(rowIndex, 3, Util.str(rowdata.get("Description")));
-			table.getCellFormatter().setStyleName(rowIndex,3,"desc");
+			table.getCellFormatter().setStyleName(rowIndex, 3, "desc");
+
+			render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata
+					.get("groupKredMonth"));
+		}
+	}
+
+	private void render_posts(int rowIndex, JSONValue debet, JSONValue kred) {
+		JSONObject debetObj = debet.isObject();
+		JSONObject kredObj = kred.isObject();
+
+		int col = 4;
+		for (Iterator i = MonthHeaderCache.getInstance(constants).keys()
+				.iterator(); i.hasNext();) {
+			
+			String k = (String) i.next();
+			
+			/* DEBET */
+			printDebKredVal(rowIndex, debetObj, col, k);
+			col++;
+			
+			/* KREDIT */
+			printDebKredVal(rowIndex, kredObj, col, k);
+			col++;
+		}
+	}
+
+	private void printDebKredVal(int rowIndex, JSONObject obj, int col, String k) {
+		table.addCell(rowIndex);
+		table.getCellFormatter().setStyleName(rowIndex, col, "right");
+
+		if (obj == null) {
+			table.setText(rowIndex, col, "ERROR");
+			return;
+		}
+		JSONValue value = obj.get(k);
+		
+		if(value != null) {
+			table.setText(rowIndex, col, Util.str(value));
 		}
 	}
 }

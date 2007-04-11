@@ -24,6 +24,7 @@ public class MonthHeaderCache implements ResponseTextHandler {
 	private static MonthHeaderCache instance;
 
 	List headersByName;
+	List keys;
 
 	public static MonthHeaderCache getInstance(Constants constants) {
 		if (instance == null) {
@@ -44,16 +45,31 @@ public class MonthHeaderCache implements ResponseTextHandler {
 
 		JSONArray array = jsonValue.isArray();
 		headersByName = new ArrayList();
+		keys = new ArrayList();
 
 		for (int i = 0; i < array.size(); i++) {
 			JSONObject obj = array.get(i).isObject();
 
+			keys.add(Util.str(obj.get("Id")));
 			headersByName.add(Util.str(obj.get("Name")));
 		}
 	}
 	
+	/**
+	 * All headers in display order.
+	 * @return List of Strings.
+	 */
 	public List headers() {
 		return headersByName;
 	}
+	
+	/**
+	 * Returns the keys of the headers.
+	 * @return The list of keys.
+	 */
+	public List keys() {
+		return keys;
+	}
+	
 
 }
