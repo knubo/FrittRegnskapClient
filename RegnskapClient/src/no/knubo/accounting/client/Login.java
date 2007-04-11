@@ -63,7 +63,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
 		if (!HTTPRequest.asyncGet(this.constants.baseurl()
 				+ "authenticate.php?user=" + user + "&password=" + password,
 				this)) {
-			infoLabel.setText(messages.failedLogin());
+			infoLabel.setText(messages.failedConnect());
 		}
 	}
 

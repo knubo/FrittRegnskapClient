@@ -16,12 +16,28 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String password();
 
   /**
+   * Translated "M�nedsoversikt".
+   * 
+   * @return translated "M�nedsoversikt"
+   * @gwt.key title_monthview
+   */
+  String title_monthview();
+
+  /**
    * Translated "Brukernavn".
    * 
    * @return translated "Brukernavn"
    * @gwt.key user
    */
   String user();
+
+  /**
+   * Translated "Klarte ikke koble til server".
+   * 
+   * @return translated "Klarte ikke koble til server"
+   * @gwt.key failedConnect
+   */
+  String failedConnect();
 
   /**
    * Translated "Logg inn".
@@ -32,12 +48,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String login();
 
   /**
-   * Translated "Klarte ikke koble til server".
+   * Translated "Laster inn siden...".
    * 
-   * @return translated "Klarte ikke koble til server"
-   * @gwt.key failedLogin
+   * @return translated "Laster inn siden..."
+   * @gwt.key loding_page
    */
-  String failedLogin();
+  String loding_page();
 
   /**
    * Translated "Vis m&aring;ned".
