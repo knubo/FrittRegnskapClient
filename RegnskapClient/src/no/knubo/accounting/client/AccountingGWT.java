@@ -1,5 +1,6 @@
 package no.knubo.accounting.client;
 
+import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.MonthView;
 
@@ -33,6 +34,7 @@ public class AccountingGWT implements EntryPoint {
 		messages = (I18NAccount) GWT.create(I18NAccount.class);
 		constants = (Constants) GWT.create(Constants.class);
 
+		loadCaches(constants);
 		DockPanel docPanel = new DockPanel();
 
 		MenuBar menuBar = new MenuBar();
@@ -50,6 +52,10 @@ public class AccountingGWT implements EntryPoint {
 		RootPanel.get().add(docPanel);
 	}
 
+	private void loadCaches(Constants cons) {
+		MonthHeaderCache.getInstance(cons);
+	}
+
 	private Command commandShowMonth() {
 		return new Command() {
 
@@ -57,11 +63,12 @@ public class AccountingGWT implements EntryPoint {
 				activeView.clear();
 				Window.setTitle(messages.title_monthview());
 				Widget widget = monthLoader.getInstance(constants, messages);
-				
+
 				activeView.add(widget, DockPanel.CENTER);
 				activeView.setCellWidth(widget, "100%");
 				activeView.setCellHeight(widget, "100%");
-				activeView.setCellVerticalAlignment(widget, DockPanel.ALIGN_TOP);
+				activeView
+						.setCellVerticalAlignment(widget, DockPanel.ALIGN_TOP);
 			}
 
 		};

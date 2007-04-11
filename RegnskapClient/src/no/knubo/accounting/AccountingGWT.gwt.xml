@@ -8,5 +8,5 @@
 
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class='no.knubo.accounting.client.AccountingGWT'/>
-  
+  	<stylesheet src='accountstyle.css'/>
 </module>

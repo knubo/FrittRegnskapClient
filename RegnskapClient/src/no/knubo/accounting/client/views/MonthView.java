@@ -1,16 +1,20 @@
 package no.knubo.accounting.client.views;
 
+import java.util.Iterator;
+import java.util.List;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.MonthHeaderCache;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -47,6 +51,7 @@ public class MonthView extends Composite implements ResponseTextHandler {
 
 		DockPanel dockPanel = new DockPanel();
 		table = new FlexTable();
+		setupHeaders();
 		dockPanel.add(table, DockPanel.CENTER);
 
 		HorizontalPanel navPanel = new HorizontalPanel();
@@ -69,6 +74,53 @@ public class MonthView extends Composite implements ResponseTextHandler {
 		initWidget(dockPanel);
 	}
 
+	private void setupHeaders() {
+		table.setStyleName("tableborder");
+		table.insertRow(0);
+		table.insertRow(0);
+
+		table.getRowFormatter().setStyleName(0, "header");
+		table.getRowFormatter().setStyleName(1, "debkred");
+
+		int row = 0;
+		int col = 1;
+		table.addCell(row);
+		table.addCell(row);
+		table.addCell(row);
+		table.addCell(row);
+		
+		table.addCell(row + 1);
+		table.getFlexCellFormatter().setColSpan(row+1, 0, 4);
+		table.getCellFormatter().setStyleName(row+1, 0, "leftborder");
+
+		table.setText(row, col++, messages.attachment());
+		table.setText(row, col++, messages.date());
+		table.setText(row, col++, messages.description());
+
+		/* Colposition for row 2 */
+		int col2 = 1;
+		List names = MonthHeaderCache.getInstance(constants).headers();
+
+		for (Iterator i = names.iterator(); i.hasNext();) {
+			String header = (String) i.next();
+
+			/* The posts headers, using 2 colspan */
+			table.getFlexCellFormatter().setColSpan(row, col, 2);
+			table.addCell(row);
+			table.getCellFormatter().setStyleName(row, col, "center");
+			table.setText(row, col++, header);
+
+			/* Add DEBET/KREDIT headers */
+			table.addCell(row + 1);
+			table.addCell(row + 1);
+
+			table.getCellFormatter().setStyleName(row+1, col2, "leftborder");
+			table.setText(row + 1, col2++, messages.debet());
+			table.getCellFormatter().setStyleName(row+1, col2, "rightborder");
+			table.setText(row + 1, col2++, messages.kredit());
+		}
+	}
+
 	public static LazyLoad loader() {
 		return new MonthLoader();
 	}
@@ -87,29 +139,41 @@ public class MonthView extends Composite implements ResponseTextHandler {
 				+ " " + year.isString().stringValue());
 
 		JSONArray array = lines.isArray();
-
+		
+		String rowStyle = "line1";
+		
 		for (int i = 0; i < array.size(); i++) {
+			
 			JSONObject rowdata = array.get(i).isObject();
-			int rowIndex = table.insertRow(i);
+			
+			if(rowdata == null) {
+				Window.alert("Didn't get rowdata:"+array.get(i));
+				return;
+			}
+			/* +2 to skip headers. */
+			int rowIndex = table.insertRow(i + 2);
+			table.getRowFormatter().setStyleName(rowIndex, rowStyle);
+			
+			if(i % 3 == 2) {
+				rowStyle = (rowStyle.equals("line1")) ? "line2" : "line1";
+			}
+			
 			table.addCell(rowIndex);
-			table.setText(rowIndex, 0, str(rowdata.get("postnmb")) + "/"
-					+ str(rowdata.get("id")));
+			table.setText(rowIndex, 0, Util.str(rowdata.get("Postnmb")) + "/"
+					+ Util.str(rowdata.get("Id")));
+			table.getCellFormatter().setStyleName(rowIndex,0,"right");
+			
 			table.addCell(rowIndex);
-			table.setText(rowIndex, 1, str(rowdata.get("attachnmb")));
+			table.setText(rowIndex, 1, Util.str(rowdata.get("Attachment")));
+			table.getCellFormatter().setStyleName(rowIndex,1,"right");
+
 			table.addCell(rowIndex);
-			table.setText(rowIndex, 2, Util.formatDate(rowdata.get("occured")));
+			table.setText(rowIndex, 2, Util.str(rowdata.get("date")));
+			table.getCellFormatter().setStyleName(rowIndex,2,"datefor");
+			
 			table.addCell(rowIndex);
-			table.setText(rowIndex,3, str(rowdata.get("description")));
+			table.setText(rowIndex, 3, Util.str(rowdata.get("Description")));
+			table.getCellFormatter().setStyleName(rowIndex,3,"desc");
 		}
-
-	}
-
-	private String str(JSONValue value) {
-		JSONString string = value.isString();
-
-		if (string == null) {
-			return value.toString();
-		}
-		return string.stringValue();
 	}
 }

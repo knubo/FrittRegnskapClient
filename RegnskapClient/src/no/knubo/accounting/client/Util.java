@@ -3,15 +3,29 @@ package no.knubo.accounting.client;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
+/** Various nifty utilities for the project.
+ * 
+ * @author knuterikborgen
+ */
 public class Util {
 
-	public static native void forward(String msg) /*-{
-	 $wnd.location.href = msg;
+	/**
+	 * Forwards the clientside browser to the given location.
+	 * @param msg The url to forward to.
+	 */
+	public static native void forward(String url) /*-{
+	 $wnd.location.href = url;
 	 }-*/;
 
+	/**
+	 * Converts a number into a i18n month from the property file.
+	 * @param i18n I18N interface
+	 * @param m The month to find, as a wrapped int.
+	 * @return The month string or "" if not of month 1 - 12.
+	 */
 	public static String monthString(I18NAccount i18n, String m) {
 		int month = Integer.parseInt(m);
-		switch (month) {	
+		switch (month) {
 		case 1:
 			return i18n.month_01();
 		case 2:
@@ -41,15 +55,42 @@ public class Util {
 		}
 	}
 
+	/**
+	 * Formats a jsonvalue as date 'dd.mm.yyyy' assumed from a date of format
+	 * 'yyyy-mm-dd'.
+	 * 
+	 * @param value
+	 *            The jason value
+	 * @return The value, or toString if it isn't a jsonString.
+	 */
 	public static String formatDate(JSONValue value) {
 		JSONString string = value.isString();
-		
-		if(string == null) {
+
+		if (string == null) {
 			return value.toString();
 		}
 		String[] dateparts = string.stringValue().split("-");
+
+		return dateparts[2] + "." + dateparts[1] + "." + dateparts[0];
+	}
+
+	/**
+	 * Extracts a java string from a jsonvalue.
+	 * 
+	 * @param value
+	 *            The value to extract.
+	 * @return The string or toString() if not a string for clarity.
+	 */
+	public static String str(JSONValue value) {
+		if(value == null) {
+			return "ERROR";
+		}
 		
-		return dateparts[2]+"."+dateparts[1]+"."+dateparts[0];
+		JSONString string = value.isString();
+		if (string == null) {
+			return value.toString();
+		}
+		return string.stringValue();
 	}
 
 }
