@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.PosttypeCache;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -10,12 +11,10 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -27,6 +26,8 @@ public class PostView extends DialogBox implements ClickListener,
 	private FlexTable table;
 
 	private final I18NAccount messages;
+
+	private final Constants constants;
 
 	private Image editImage;
 
@@ -48,6 +49,7 @@ public class PostView extends DialogBox implements ClickListener,
 	 */
 	private PostView(I18NAccount messages, Constants constants, String line) {
 		this.messages = messages;
+		this.constants = constants;
 		setText(messages.detailsline());
 		table = new FlexTable();
 		table.setStyleName("tableborder");
@@ -63,7 +65,6 @@ public class PostView extends DialogBox implements ClickListener,
 
 		/* Widgets placements */
 		DockPanel dp = new DockPanel();
-
 
 		editImage = new Image("images/edit-find-replace.png");
 		closeImage = new Image("images/close.png");
@@ -110,13 +111,15 @@ public class PostView extends DialogBox implements ClickListener,
 			return;
 		}
 		JSONArray array = value.isArray();
+		PosttypeCache postCache = PosttypeCache.getInstance(constants);
 
 		for (int i = 0; i < array.size(); i++) {
 			JSONValue postVal = array.get(i);
 			JSONObject post = postVal.isObject();
 
 			table.setText(6 + i, 1, Util.debkred(messages, post.get("Debet")));
-			table.setText(6 + i, 2, Util.str(post.get("Post_type")));
+			table.setText(6 + i, 2, postCache.getDescription(Util.str(post
+					.get("Post_type"))));
 			table.setText(6 + i, 3, Util.str(post.get("Project")));
 			table.setText(6 + i, 4, Util.str(post.get("Person")));
 			table.setText(6 + i, 5, Util.money(post.get("Amount")));

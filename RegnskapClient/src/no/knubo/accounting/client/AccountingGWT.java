@@ -1,6 +1,7 @@
 package no.knubo.accounting.client;
 
 import no.knubo.accounting.client.cache.MonthHeaderCache;
+import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.MonthView;
 
@@ -54,6 +55,7 @@ public class AccountingGWT implements EntryPoint {
 
 	private void loadCaches(Constants cons) {
 		MonthHeaderCache.getInstance(cons);
+		PosttypeCache.getInstance(cons);
 	}
 
 	private Command commandShowMonth() {

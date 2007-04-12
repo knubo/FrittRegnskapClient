@@ -41,8 +41,6 @@ public class MonthHeaderCache implements ResponseTextHandler {
 
 	public void onCompletion(String responseText) {
 		JSONValue jsonValue = JSONParser.parse(responseText);
-
-
 		JSONArray array = jsonValue.isArray();
 		headersByName = new ArrayList();
 		keys = new ArrayList();
