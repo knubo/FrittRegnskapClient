@@ -272,10 +272,12 @@ td.rute {
 }
 
 .gwt-DialogBox {
+  color: black;
+  background-color: white;
+  PADDING:2px 2px 2px 2px;
+}
+
+.gwt-DialogBox .Caption {
   color: #05143f;
   background-color: #b7c2c6;
-}
-# .gwt-DialogBox.Caption {
-#   color: #05143f;
-#  background-color: #b7c2c6;
-# }
+ }

@@ -142,4 +142,19 @@ public class Util {
 		}
 		return res + "."+str.substring(str.length() - 2);
 	}
+
+	public static String debkred(I18NAccount messages, JSONValue value) {
+		JSONString string = value.isString();
+		
+		if(string == null) {
+			return "ERROR";
+		}
+		
+		if(string.stringValue().equals("1")) {
+			return messages.debet();
+		}
+		
+		return messages.kredit();
+	}
+	
 }

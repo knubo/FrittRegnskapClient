@@ -65,10 +65,10 @@ public class MonthView extends Composite implements ResponseTextHandler,
 		dockPanel = new DockPanel();
 		newTable();
 
-		backImage = new Image("images/previcon.gif");
+		backImage = new Image("images/go-previous.png");
 		backImage.addClickListener(this);
 
-		nextImage = new Image("images/nexticon.gif");
+		nextImage = new Image("images/go-next.png");
 		nextImage.addClickListener(this);
 		monthYearLabel = new Label();
 
@@ -255,7 +255,7 @@ public class MonthView extends Composite implements ResponseTextHandler,
 			Hyperlink link = (Hyperlink) sender;
 
 			String token = link.getTargetHistoryToken();
-			String line = token.substring(7);
+			String line = token.substring(6);
 			openDetails(link, line);
 		}
 	}
@@ -268,7 +268,7 @@ public class MonthView extends Composite implements ResponseTextHandler,
 	 * @param line
 	 */
 	private void openDetails(Hyperlink link, String line) {
-		PostView pv = PostView.show(messages, line);
+		PostView pv = PostView.show(messages, constants, line);
 		int left = link.getAbsoluteLeft() + 100;
 		int top = link.getAbsoluteTop() + 10;
 		pv.setPopupPosition(left, top);
