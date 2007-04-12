@@ -27,7 +27,7 @@ public class Util {
 	 *            I18N interface
 	 * @param m
 	 *            The month to find, as a wrapped int.
-	 * @return The month string or "" if not of month 1 - 12.
+	 * @return The month string or "ERROR" if not of month 1 - 12.
 	 */
 	public static String monthString(I18NAccount i18n, String m) {
 		int month = Integer.parseInt(m);
@@ -57,7 +57,7 @@ public class Util {
 		case 12:
 			return i18n.month_12();
 		default:
-			return "";
+			return "ERROR";
 		}
 	}
 
@@ -97,5 +97,49 @@ public class Util {
 			return value.toString();
 		}
 		return string.stringValue();
+	}
+	
+	public static String money(JSONValue value) {
+		if (value == null) {
+			return "ERROR";
+		}
+
+		JSONString string = value.isString();
+		if (string == null) {
+			return value.toString();
+		}
+		return money(string.stringValue());
+	}
+	
+	public static String money(String str) {
+		//String str = str(value);
+		
+		String x = str.substring(0, str.length() - 3);
+		// 100000000.00
+		int count = x.length() / 3;
+	
+		if(count < 0) {
+			return str;
+		}
+		int left = x.length() % 3;
+		
+		String res = null;
+		if(left > 0) {
+			res = x.substring(0, left);
+			if(count > 0) {
+				res += ",";
+			}
+		} else {
+			res = "";
+		}
+		
+		for(int i = left; i < x.length(); i+=3) {
+			res += x.substring(i, i+3);
+			
+			if(i+3 < x.length()) {
+				res+=",";
+			}
+		}
+		return res + "."+str.substring(str.length() - 2);
 	}
 }

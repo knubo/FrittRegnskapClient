@@ -8,12 +8,20 @@ package no.knubo.accounting.client;
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
   /**
-   * Translated "september".
+   * Translated "September".
    * 
-   * @return translated "september"
+   * @return translated "September"
    * @gwt.key month_09
    */
   String month_09();
+
+  /**
+   * Translated "Linjer".
+   * 
+   * @return translated "Linjer"
+   * @gwt.key lines
+   */
+  String lines();
 
   /**
    * Translated "Logg inn".
@@ -24,9 +32,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String login();
 
   /**
-   * Translated "august".
+   * Translated "Post nr".
    * 
-   * @return translated "august"
+   * @return translated "Post nr"
+   * @gwt.key postnmb
+   */
+  String postnmb();
+
+  /**
+   * Translated "August".
+   * 
+   * @return translated "August"
    * @gwt.key month_08
    */
   String month_08();
@@ -40,6 +56,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment();
 
   /**
+   * Translated "Person".
+   * 
+   * @return translated "Person"
+   * @gwt.key person
+   */
+  String person();
+
+  /**
    * Translated "Dato".
    * 
    * @return translated "Dato"
@@ -48,9 +72,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String date();
 
   /**
-   * Translated "juli".
+   * Translated "Juli".
    * 
-   * @return translated "juli"
+   * @return translated "Juli"
    * @gwt.key month_07
    */
   String month_07();
@@ -64,25 +88,25 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String failedConnect();
 
   /**
-   * Translated "november".
+   * Translated "November".
    * 
-   * @return translated "november"
+   * @return translated "November"
    * @gwt.key month_11
    */
   String month_11();
 
   /**
-   * Translated "februar".
+   * Translated "Februar".
    * 
-   * @return translated "februar"
+   * @return translated "Februar"
    * @gwt.key month_02
    */
   String month_02();
 
   /**
-   * Translated "desember".
+   * Translated "Desember".
    * 
-   * @return translated "desember"
+   * @return translated "Desember"
    * @gwt.key month_12
    */
   String month_12();
@@ -128,17 +152,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String user();
 
   /**
-   * Translated "mai".
+   * Translated "Mai".
    * 
-   * @return translated "mai"
+   * @return translated "Mai"
    * @gwt.key month_05
    */
   String month_05();
 
   /**
-   * Translated "april".
+   * Translated "April".
    * 
-   * @return translated "april"
+   * @return translated "April"
    * @gwt.key month_04
    */
   String month_04();
@@ -152,17 +176,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmonth();
 
   /**
-   * Translated "oktober".
+   * Translated "Oktober".
    * 
-   * @return translated "oktober"
+   * @return translated "Oktober"
    * @gwt.key month_10
    */
   String month_10();
 
   /**
-   * Translated "mars".
+   * Translated "Mars".
    * 
-   * @return translated "mars"
+   * @return translated "Mars"
    * @gwt.key month_03
    */
   String month_03();
@@ -184,6 +208,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String description();
 
   /**
+   * Translated "Prosjekt".
+   * 
+   * @return translated "Prosjekt"
+   * @gwt.key project
+   */
+  String project();
+
+  /**
+   * Translated "Detaljer".
+   * 
+   * @return translated "Detaljer"
+   * @gwt.key detailsline
+   */
+  String detailsline();
+
+  /**
    * Translated "Laster inn siden...".
    * 
    * @return translated "Laster inn siden..."
@@ -192,17 +232,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String loding_page();
 
   /**
-   * Translated "juni".
+   * Translated "Juni".
    * 
-   * @return translated "juni"
+   * @return translated "Juni"
    * @gwt.key month_06
    */
   String month_06();
 
   /**
-   * Translated "januar".
+   * Translated "Januar".
    * 
-   * @return translated "januar"
+   * @return translated "Januar"
    * @gwt.key month_01
    */
   String month_01();

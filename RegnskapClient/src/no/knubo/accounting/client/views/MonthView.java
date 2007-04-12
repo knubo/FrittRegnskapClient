@@ -15,15 +15,18 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MonthView extends Composite implements ResponseTextHandler {
+public class MonthView extends Composite implements ResponseTextHandler,
+		ClickListener {
 
 	static class MonthLoader extends LazyLoad {
 		private MonthView instance;
@@ -45,33 +48,54 @@ public class MonthView extends Composite implements ResponseTextHandler {
 
 	private final I18NAccount messages;
 
+	private Image backImage;
+
+	private Image nextImage;
+
+	private String currentYear;
+
+	private String currentMonth;
+
+	private DockPanel dockPanel;
+
 	public MonthView(Constants constants, I18NAccount messages) {
 		this.constants = constants;
 		this.messages = messages;
 
-		DockPanel dockPanel = new DockPanel();
-		table = new FlexTable();
-		setupHeaders();
-		dockPanel.add(table, DockPanel.CENTER);
+		dockPanel = new DockPanel();
+		newTable();
+
+		backImage = new Image("images/previcon.gif");
+		backImage.addClickListener(this);
+
+		nextImage = new Image("images/nexticon.gif");
+		nextImage.addClickListener(this);
+		monthYearLabel = new Label();
 
 		HorizontalPanel navPanel = new HorizontalPanel();
-		Button backButton = new Button("<");
-		Button nextButton = new Button(">");
-
-		monthYearLabel = new Label();
-		navPanel.add(backButton);
+		navPanel.add(backImage);
 		navPanel.add(monthYearLabel);
-		navPanel.add(nextButton);
+		navPanel.add(nextImage);
 
 		dockPanel.add(navPanel, DockPanel.NORTH);
 
-		// TODO Report stuff as being loaded.
-		if (!HTTPRequest.asyncGet(this.constants.baseurl()
-				+ "accounting/showmonth.php", this)) {
-			// TODO Report errors.
-		}
+		getData("");
 
 		initWidget(dockPanel);
+	}
+
+	private void newTable() {
+		table = new FlexTable();
+		setupHeaders();
+		dockPanel.add(table, DockPanel.CENTER);
+	}
+
+	private void getData(String params) {
+		// TODO Report stuff as being loaded.
+		if (!HTTPRequest.asyncGet(this.constants.baseurl()
+				+ "accounting/showmonth.php" + params, this)) {
+			// TODO Report errors.
+		}
 	}
 
 	private void setupHeaders() {
@@ -95,6 +119,7 @@ public class MonthView extends Composite implements ResponseTextHandler {
 
 		table.setText(row, col++, messages.attachment());
 		table.setText(row, col++, messages.date());
+
 		table.setText(row, col++, messages.description());
 
 		/* Colposition for row 2 */
@@ -126,22 +151,25 @@ public class MonthView extends Composite implements ResponseTextHandler {
 	}
 
 	public void onCompletion(String responseText) {
+
 		JSONValue jsonValue = JSONParser.parse(responseText);
 
 		JSONObject root = jsonValue.isObject();
 
-		JSONValue year = root.get("year");
-		JSONValue month = root.get("month");
 		JSONValue lines = root.get("lines");
 
-		monthYearLabel.setText(Util.monthString(messages, month.isString()
-				.stringValue())
-				+ " " + year.isString().stringValue());
+		currentYear = Util.str(root.get("year"));
+		currentMonth = Util.str(root.get("month"));
+
+		monthYearLabel.setText(Util.monthString(messages, currentMonth) + " "
+				+ currentYear);
 
 		JSONArray array = lines.isArray();
 
+		/* Every 3. line flip style for row */
 		String rowStyle = "line1";
 
+		/* Renders table with money data */
 		for (int i = 0; i < array.size(); i++) {
 
 			JSONObject rowdata = array.get(i).isObject();
@@ -171,8 +199,12 @@ public class MonthView extends Composite implements ResponseTextHandler {
 			table.setText(rowIndex, 2, Util.str(rowdata.get("date")));
 			table.getCellFormatter().setStyleName(rowIndex, 2, "datefor");
 
-			table.addCell(rowIndex);
-			table.setText(rowIndex, 3, Util.str(rowdata.get("Description")));
+			Hyperlink link = new Hyperlink(
+					Util.str(rowdata.get("Description")), "detail"
+							+ Util.str(rowdata.get("Id")));
+			link.addClickListener(this);
+			table.setWidget(rowIndex, 3, link);
+
 			table.getCellFormatter().setStyleName(rowIndex, 3, "desc");
 
 			render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata
@@ -187,13 +219,13 @@ public class MonthView extends Composite implements ResponseTextHandler {
 		int col = 4;
 		for (Iterator i = MonthHeaderCache.getInstance(constants).keys()
 				.iterator(); i.hasNext();) {
-			
+
 			String k = (String) i.next();
-			
+
 			/* DEBET */
 			printDebKredVal(rowIndex, debetObj, col, k);
 			col++;
-			
+
 			/* KREDIT */
 			printDebKredVal(rowIndex, kredObj, col, k);
 			col++;
@@ -205,13 +237,66 @@ public class MonthView extends Composite implements ResponseTextHandler {
 		table.getCellFormatter().setStyleName(rowIndex, col, "right");
 
 		if (obj == null) {
-			table.setText(rowIndex, col, "ERROR");
 			return;
 		}
 		JSONValue value = obj.get(k);
-		
-		if(value != null) {
-			table.setText(rowIndex, col, Util.str(value));
+
+		if (value != null) {
+			table.setText(rowIndex, col, Util.money(value));
+		}
+	}
+
+	public void onClick(Widget sender) {
+		if (sender == backImage) {
+			newView(false);
+		} else if (sender == nextImage) {
+			newView(true);
+		} else {
+			Hyperlink link = (Hyperlink) sender;
+
+			String token = link.getTargetHistoryToken();
+			String line = token.substring(7);
+			openDetails(link, line);
+		}
+	}
+
+	/**
+	 * Opens up the detail window for a given line.
+	 * 
+	 * @param link
+	 * 
+	 * @param line
+	 */
+	private void openDetails(Hyperlink link, String line) {
+		PostView pv = PostView.show(messages, line);
+		int left = link.getAbsoluteLeft() + 100;
+		int top = link.getAbsoluteTop() + 10;
+		pv.setPopupPosition(left, top);
+		pv.show();
+	}
+
+	private void newView(boolean nextMonth) {
+		dockPanel.remove(table);
+		newTable();
+		monthYearLabel.setText("...");
+		if (nextMonth) {
+			int m = Integer.parseInt(currentMonth) + 1;
+
+			if (m > 12) {
+				int y = Integer.parseInt(currentYear) + 1;
+				getData("?month=1&year=" + y);
+			} else {
+				getData("?month=" + m + "&year=" + currentYear);
+			}
+		} else {
+			int m = Integer.parseInt(currentMonth) - 1;
+
+			if (m < 1) {
+				int y = Integer.parseInt(currentYear) - 1;
+				getData("?month=12&year=" + y);
+			} else {
+				getData("?month=" + m + "&year=" + currentYear);
+			}
 		}
 	}
 }

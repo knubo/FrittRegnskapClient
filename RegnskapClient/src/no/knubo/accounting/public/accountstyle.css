@@ -271,4 +271,11 @@ td.rute {
  border-collapse: collapse;
 }
 
-	
+.gwt-DialogBox {
+  color: #05143f;
+  background-color: #b7c2c6;
+}
+# .gwt-DialogBox.Caption {
+#   color: #05143f;
+#  background-color: #b7c2c6;
+# }
