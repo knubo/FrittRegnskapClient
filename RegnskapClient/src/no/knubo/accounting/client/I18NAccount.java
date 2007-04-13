@@ -256,9 +256,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_03();
 
   /**
-   * Translated "Bel&oslash;p".
+   * Translated "Bel�".
    * 
-   * @return translated "Bel&oslash;p"
+   * @return translated "Bel�"
    * @gwt.key amount
    */
   String amount();

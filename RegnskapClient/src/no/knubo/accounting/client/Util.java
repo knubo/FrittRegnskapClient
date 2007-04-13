@@ -2,6 +2,10 @@ package no.knubo.accounting.client;
 
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Various nifty utilities for the project.
@@ -155,5 +159,40 @@ public class Util {
 		}
 
 		return messages.kredit();
+	}
+
+	/**
+	 * Adds listeners to the listbox and textbox so that the selected elements
+	 * id is displayed in the textbox when selected and visa versa for the
+	 * textbox.
+	 * 
+	 * @param listbox
+	 * @param textbox
+	 */
+	public static void syncListbox(final ListBox listbox, final TextBox textbox) {
+		ChangeListener listchange = new ChangeListener() {
+
+			public void onChange(Widget sender) {
+				textbox.setText(listbox.getValue(listbox.getSelectedIndex()));
+			}
+
+		};
+		listbox.addChangeListener(listchange);
+		
+		ChangeListener textchange = new ChangeListener() {
+
+			public void onChange(Widget sender) {
+				String id = textbox.getText();
+
+				for (int i = 0; i < listbox.getItemCount(); i++) {
+					if (listbox.getValue(i).equals(id)) {
+						listbox.setSelectedIndex(i);
+						return;
+					}
+				}
+			}
+
+		};
+		textbox.addChangeListener(textchange);
 	}
 }

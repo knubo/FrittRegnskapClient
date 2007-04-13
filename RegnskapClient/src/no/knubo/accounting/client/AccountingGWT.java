@@ -58,6 +58,9 @@ public class AccountingGWT implements EntryPoint {
 		MenuBar reportsMenu = new MenuBar(true);
 		topMenu.addItem(new MenuItem(messages.menu_reports(), reportsMenu));
 
+		MenuBar aboutMenu = new MenuBar(true);
+		topMenu.addItem(new MenuItem(messages.menu_info(), aboutMenu));
+		
 		registerMenu.addItem(messages.menuitem_regline(), true,
 				commandRegisterNewline());
 		showMenu.addItem(messages.menuitem_showmonth(), true,

@@ -157,9 +157,10 @@ public class LineEditView extends Composite implements ClickListener {
 
 		accountNameBox = new ListBox();
 		accountNameBox.setVisibleItemCount(1);
-		table.setWidget(3, 1, accountNameBox);
+		table.setWidget(3, 1, accountNameBox);		
 
 		PosttypeCache.getInstance(constants).fill(accountNameBox);
+		Util.syncListbox(accountNameBox, accountIdBox);
 
 		// table.setText(2, 2, messages.fordring());
 		// fordringBox = new ListBox();
@@ -176,6 +177,7 @@ public class LineEditView extends Composite implements ClickListener {
 		projectNameBox.setVisibleItemCount(1);
 		table.setWidget(5, 1, projectNameBox);
 		ProjectCache.getInstance(constants).fill(projectNameBox);
+		Util.syncListbox(projectNameBox, projectIdBox);
 
 		table.setText(6, 0, messages.person());
 		personBox = new ListBox();
