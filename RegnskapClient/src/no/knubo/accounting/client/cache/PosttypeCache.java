@@ -64,7 +64,8 @@ public class PosttypeCache implements ResponseTextHandler {
 	}
 	
 	public void fill(ListBox box) {
-		int pos = 0;
+		box.insertItem("", 0);
+		int pos = 1;
 		for (Iterator i = originalSort.iterator(); i.hasNext();) {
 			String k = (String) i.next();
 			

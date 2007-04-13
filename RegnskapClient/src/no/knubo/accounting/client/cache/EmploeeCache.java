@@ -15,57 +15,56 @@ import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class ProjectCache implements ResponseTextHandler {
+public class EmploeeCache implements ResponseTextHandler {
 
-	private static ProjectCache instance;
+	private HashMap personById;
 
-	public static ProjectCache getInstance(Constants constants) {
+	private ArrayList keys;
+
+	private static EmploeeCache instance;
+
+	public static EmploeeCache getInstance(Constants constants) {
 		if (instance == null) {
-			instance = new ProjectCache(constants);
+			instance = new EmploeeCache(constants);
 		}
 		return instance;
 	}
 
-
-	private HashMap projectGivesDesc;
-	private ArrayList originalSort;
-
-	private ProjectCache(Constants constants) {
+	private EmploeeCache(Constants constants) {
 		if (!HTTPRequest.asyncGet(constants.baseurl()
-				+ "registers/projects.php", this)) {
+				+ "registers/persons.php?onlyemp=1", this)) {
 		}
 	}
 
 	public void onCompletion(String responseText) {
 		JSONValue jsonValue = JSONParser.parse(responseText);
 		JSONArray array = jsonValue.isArray();
+		personById = new HashMap();
+		keys = new ArrayList();
 
-		projectGivesDesc = new HashMap();
-		originalSort = new ArrayList();
 		for (int i = 0; i < array.size(); i++) {
 			JSONObject obj = array.get(i).isObject();
 
-			String key = Util.str(obj.get("project"));
-			projectGivesDesc.put(key, Util
-					.str(obj.get("description")));
-			originalSort.add(key);
+			String key = Util.str(obj.get("id"));
+			keys.add(key);
+			personById.put(key, Util.str(obj.get("lastname"))+ ", "+Util.str(obj.get("firstname")));
 		}
 	}
 
-
 	/**
-	 * Fills the box with projects, adds blank as first choice.
+	 * Fills the box, with a blank line at the top. 
 	 * @param box
 	 */
 	public void fill(ListBox box) {
 		box.insertItem("", 0);
 		int pos = 1;
-		for (Iterator i = originalSort.iterator(); i.hasNext();) {
+		for (Iterator i = keys.iterator(); i.hasNext();) {
 			String k = (String) i.next();
-			
-			String desc = (String) projectGivesDesc.get(k);
-			
+
+			String desc = (String) personById.get(k);
+
 			box.insertItem(desc, k, pos++);
 		}
 	}
+
 }

@@ -1,7 +1,9 @@
 package no.knubo.accounting.client;
 
+import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.LineEditView;
@@ -70,6 +72,8 @@ public class AccountingGWT implements EntryPoint {
 	private void loadCaches(Constants cons) {
 		MonthHeaderCache.getInstance(cons);
 		PosttypeCache.getInstance(cons);
+		EmploeeCache.getInstance(cons);
+		ProjectCache.getInstance(cons);
 	}
 
 	private Command commandRegisterNewline() {

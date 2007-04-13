@@ -2,8 +2,15 @@ package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.cache.ProjectCache;
 
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -16,8 +23,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class LineEditView extends Composite implements ClickListener,
-		ResponseTextHandler {
+public class LineEditView extends Composite implements ClickListener {
 
 	private static LineEditView me;
 
@@ -55,7 +61,7 @@ public class LineEditView extends Composite implements ClickListener,
 
 	private ListBox accountNameBox;
 
-	private ListBox fordringBox;
+	// private ListBox fordringBox;
 
 	private TextBox projectIdBox;
 
@@ -76,12 +82,51 @@ public class LineEditView extends Composite implements ClickListener,
 
 		initWidget(dp);
 		if (line != null) {
-			// TODO go fetch new data.
+			showLine(line);
+		} else {
+			fetchInitalData();
+			dayBox.setFocus(true);
+			addLineButton.setEnabled(false);
 		}
 
 	}
 
-	private Widget regnLinesView() {
+	protected String currentYear;
+
+	protected String currentMonth;
+	
+	protected String currentLine;
+
+	private void fetchInitalData() {
+
+		ResponseTextHandler rh = new ResponseTextHandler() {
+			public void onCompletion(String responseText) {
+				JSONValue jsonValue = JSONParser.parse(responseText);
+
+				JSONObject root = jsonValue.isObject();
+
+				currentYear = Util.str(root.get("year"));
+				currentMonth = Util.str(root.get("month"));
+
+				dateHeader.setText(Util.monthString(messages, currentMonth)
+						+ " " + currentYear);
+				attachmentBox.setText(Util.str(root.get("attachment")));
+				postNmbBox.setText(Util.str(root.get("postnmb")));
+			}
+
+		};
+		// TODO Report stuff as being loaded.
+		if (!HTTPRequest.asyncGet(constants.baseurl() + "defaults/newline.php",
+				rh)) {
+			// TODO Report errors.
+		}
+	}
+
+	private void showLine(String line) {
+
+	}
+
+	private Widget newFields() {
 		VerticalPanel panel = new VerticalPanel();
 
 		Label header = new Label();
@@ -92,7 +137,7 @@ public class LineEditView extends Composite implements ClickListener,
 		FlexTable table = new FlexTable();
 		panel.add(table);
 
-		table.setText(0, 1, messages.amount());
+		table.setHTML(0, 1, messages.amount());
 
 		debKredbox = new ListBox();
 		debKredbox.setVisibleItemCount(1);
@@ -105,7 +150,6 @@ public class LineEditView extends Composite implements ClickListener,
 		table.setWidget(1, 1, amountBox);
 
 		table.setText(2, 0, messages.account());
-		table.setText(2, 2, messages.fordring());
 
 		accountIdBox = new TextBox();
 		accountIdBox.setVisibleLength(6);
@@ -117,9 +161,10 @@ public class LineEditView extends Composite implements ClickListener,
 
 		PosttypeCache.getInstance(constants).fill(accountNameBox);
 
-//		fordringBox = new ListBox();
-//		fordringBox.setVisibleItemCount(1);
-//		table.setWidget(3, 2, fordringBox);
+		// table.setText(2, 2, messages.fordring());
+		// fordringBox = new ListBox();
+		// fordringBox.setVisibleItemCount(1);
+		// table.setWidget(3, 2, fordringBox);
 
 		table.setText(4, 0, messages.project());
 
@@ -130,11 +175,14 @@ public class LineEditView extends Composite implements ClickListener,
 		projectNameBox = new ListBox();
 		projectNameBox.setVisibleItemCount(1);
 		table.setWidget(5, 1, projectNameBox);
+		ProjectCache.getInstance(constants).fill(projectNameBox);
 
 		table.setText(6, 0, messages.person());
 		personBox = new ListBox();
 		personBox.setVisibleItemCount(1);
 		table.setWidget(7, 0, personBox);
+		table.getFlexCellFormatter().setColSpan(7, 0, 2);
+		EmploeeCache.getInstance(constants).fill(personBox);
 
 		addLineButton = new Button();
 		addLineButton.setText(messages.add());
@@ -144,7 +192,7 @@ public class LineEditView extends Composite implements ClickListener,
 		return panel;
 	}
 
-	private Widget newFields() {
+	private Widget regnLinesView() {
 		VerticalPanel vp = new VerticalPanel();
 
 		Label header = new Label(messages.lines());
