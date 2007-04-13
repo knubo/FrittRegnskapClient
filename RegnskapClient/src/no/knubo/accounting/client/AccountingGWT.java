@@ -8,6 +8,7 @@ import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthView;
+import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -21,7 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class AccountingGWT implements EntryPoint {
+public class AccountingGWT implements EntryPoint, ViewCallback {
 
 	private I18NAccount messages;
 
@@ -60,13 +61,13 @@ public class AccountingGWT implements EntryPoint {
 
 		MenuBar aboutMenu = new MenuBar(true);
 		topMenu.addItem(new MenuItem(messages.menu_info(), aboutMenu));
-		
+
 		registerMenu.addItem(messages.menuitem_regline(), true,
 				commandRegisterNewline());
 		showMenu.addItem(messages.menuitem_showmonth(), true,
 				commandShowMonth());
 
-		activeView.add(aboutLoader.getInstance(constants, messages),
+		activeView.add(aboutLoader.getInstance(constants, messages, this),
 				DockPanel.CENTER);
 
 		RootPanel.get().add(docPanel);
@@ -92,10 +93,12 @@ public class AccountingGWT implements EntryPoint {
 	}
 
 	private Command commandShowMonth() {
+		final AccountingGWT me = this;
 		return new Command() {
 
 			public void execute() {
-				Widget widget = monthLoader.getInstance(constants, messages);
+				Widget widget = monthLoader
+						.getInstance(constants, messages, me);
 
 				setActiveWidget(widget);
 			}
@@ -112,5 +115,11 @@ public class AccountingGWT implements EntryPoint {
 
 	public void execute() {
 
+	}
+
+	public void openDetails(String id) {
+		Widget widget = LineEditView.show(messages, constants, id);
+
+		setActiveWidget(widget);
 	}
 }

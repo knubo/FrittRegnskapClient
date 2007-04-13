@@ -32,11 +32,11 @@ public class MonthView extends Composite implements ResponseTextHandler,
 		private MonthView instance;
 
 		public final Widget getInstance(Constants constants,
-				I18NAccount messages) {
+				I18NAccount messages, ViewCallback caller) {
 			if (instance != null) {
 				return instance;
 			}
-			return (instance = new MonthView(constants, messages));
+			return (instance = new MonthView(constants, messages, caller));
 		}
 	}
 
@@ -58,9 +58,12 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
 	private DockPanel dockPanel;
 
-	public MonthView(Constants constants, I18NAccount messages) {
+	private final ViewCallback caller;
+
+	public MonthView(Constants constants, I18NAccount messages, ViewCallback caller) {
 		this.constants = constants;
 		this.messages = messages;
+		this.caller = caller;
 
 		dockPanel = new DockPanel();
 		newTable();
@@ -270,7 +273,7 @@ public class MonthView extends Composite implements ResponseTextHandler,
 	 * @param line
 	 */
 	private void openDetails(Hyperlink link, String line) {
-		PostView pv = PostView.show(messages, constants, line);
+		PostView pv = PostView.show(messages, constants, caller, line);
 		int left = link.getAbsoluteLeft() + 100;
 		int top = link.getAbsoluteTop() + 10;
 		pv.setPopupPosition(left, top);

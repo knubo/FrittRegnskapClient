@@ -16,6 +16,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String fordring();
 
   /**
+   * Translated "Bilaget er benyttet tidligere.".
+   * 
+   * @return translated "Bilaget er benyttet tidligere."
+   * @gwt.key attachment_used
+   */
+  String attachment_used();
+
+  /**
    * Translated "September".
    * 
    * @return translated "September"
@@ -112,6 +120,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_07();
 
   /**
+   * Translated "Feltet m� fylles ut".
+   * 
+   * @return translated "Feltet m� fylles ut"
+   * @gwt.key required_field
+   */
+  String required_field();
+
+  /**
    * Translated "Klarte ikke koble til server".
    * 
    * @return translated "Klarte ikke koble til server"
@@ -126,6 +142,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_11
    */
   String month_11();
+
+  /**
+   * Translated "Ulovlig dato".
+   * 
+   * @return translated "Ulovlig dato"
+   * @gwt.key illegal_day
+   */
+  String illegal_day();
 
   /**
    * Translated "Registrer bilag".
@@ -232,6 +256,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_04();
 
   /**
+   * Translated "Post nr. er benyttet tidligere".
+   * 
+   * @return translated "Post nr. er benyttet tidligere"
+   * @gwt.key post_used
+   */
+  String post_used();
+
+  /**
    * Translated "Vis m&aring;ned".
    * 
    * @return translated "Vis m&aring;ned"
@@ -256,9 +288,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_03();
 
   /**
-   * Translated "Bel�".
+   * Translated "Bel&oring;p".
    * 
-   * @return translated "Bel�"
+   * @return translated "Bel&oring;p"
    * @gwt.key amount
    */
   String amount();

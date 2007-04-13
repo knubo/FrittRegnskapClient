@@ -66,5 +66,9 @@ public class EmploeeCache implements ResponseTextHandler {
 			box.insertItem(desc, k, pos++);
 		}
 	}
+	
+	public String getName(String id) {
+		return (String) personById.get(id);
+	}
 
 }

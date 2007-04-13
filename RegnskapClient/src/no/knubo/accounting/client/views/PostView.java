@@ -33,10 +33,14 @@ public class PostView extends DialogBox implements ClickListener,
 
 	private Image closeImage;
 
+	private final ViewCallback caller;
+
+	private String currentId;
+
 	public static PostView show(I18NAccount messages, Constants constants,
-			String line) {
+			ViewCallback caller, String line) {
 		if (me == null) {
-			me = new PostView(messages, constants, line);
+			me = new PostView(messages, constants, caller, line);
 		}
 		return me;
 	}
@@ -47,12 +51,15 @@ public class PostView extends DialogBox implements ClickListener,
 	 * @param messages
 	 * @param constants
 	 * @param line
+	 * @param caller
 	 * 
 	 * @param line
 	 */
-	private PostView(I18NAccount messages, Constants constants, String line) {
+	private PostView(I18NAccount messages, Constants constants,
+			ViewCallback caller, String line) {
 		this.messages = messages;
 		this.constants = constants;
+		this.caller = caller;
 		setText(messages.detailsline());
 		table = new FlexTable();
 		table.setStyleName("tableborder");
@@ -62,14 +69,15 @@ public class PostView extends DialogBox implements ClickListener,
 		header(2, 0, messages.date(), table);
 		header(3, 0, messages.description(), table);
 		table.insertRow(4);
-		table.getCellFormatter().setStyleName(4, 0, "showlinebreak");
 		table.getFlexCellFormatter().setColSpan(4, 0, 4);
+		table.getRowFormatter().setStyleName(4, "showlinebreak");
 		header(5, 0, messages.lines(), table);
 
 		/* Widgets placements */
 		DockPanel dp = new DockPanel();
 
 		editImage = new Image("images/edit-find-replace.png");
+		editImage.addClickListener(this);
 		closeImage = new Image("images/close.png");
 		closeImage.addClickListener(this);
 		table.setWidget(0, 5, editImage);
@@ -93,6 +101,9 @@ public class PostView extends DialogBox implements ClickListener,
 	public void onClick(Widget sender) {
 		if (sender == closeImage) {
 			hide();
+		} else if (sender == editImage) {
+			hide();
+			caller.openDetails(currentId);
 		}
 	}
 
@@ -100,6 +111,7 @@ public class PostView extends DialogBox implements ClickListener,
 		JSONValue jsonValue = JSONParser.parse(responseText);
 		JSONObject object = jsonValue.isObject();
 
+		currentId = Util.str(object.get("Id"));
 		table.setText(0, 1, Util.str(object.get("Postnmb")));
 		table.setText(1, 1, Util.str(object.get("Attachment")));
 		table.getFlexCellFormatter().setColSpan(1, 1, 4);

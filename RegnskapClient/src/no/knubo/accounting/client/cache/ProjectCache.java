@@ -68,4 +68,8 @@ public class ProjectCache implements ResponseTextHandler {
 			box.insertItem(desc, k, pos++);
 		}
 	}
+
+	public String getName(String id) {
+		return (String) projectGivesDesc.get(id);
+	}
 }

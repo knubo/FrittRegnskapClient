@@ -12,7 +12,7 @@
   text-align: Center;
 }
 
-.showline, .showline TD {
+.showline {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
   font-weight: bold;
   font-size:100%;
@@ -22,7 +22,7 @@
 
 }
 
-.showlineposts, .showlineposts TD {
+.showlineposts {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
   font-size:100%;
   vertical-align:bottom;
@@ -30,7 +30,7 @@
   white-space:nowrap;
 }
 
-.showlineposts2, .showlineposts2 TD {
+.showlineposts2 {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
   font-size:100%;
   background-color:#FF9;
@@ -57,7 +57,7 @@
 
 }
 
-.showlinebreak, .showlinebreak TD {
+.showlinebreak {
   border-style: solid; 
   border-top-width: 0px; 
   border-bottom-width: 1px; 
@@ -66,7 +66,7 @@
 }
 
 
-.header TD {
+.header {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
   font-weight: bold;
   color: #05143f;
@@ -84,7 +84,7 @@
 
 }
 
-.debkred TD {
+.debkred {
   color: #004759;  
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
   font-weight: bold;

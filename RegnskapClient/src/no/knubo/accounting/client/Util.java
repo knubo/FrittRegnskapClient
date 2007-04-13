@@ -178,7 +178,7 @@ public class Util {
 
 		};
 		listbox.addChangeListener(listchange);
-		
+
 		ChangeListener textchange = new ChangeListener() {
 
 			public void onChange(Widget sender) {
@@ -194,5 +194,55 @@ public class Util {
 
 		};
 		textbox.addChangeListener(textchange);
+	}
+
+	/**
+	 * Get month part of string on format dd.mm.yyyy
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static String getMonth(JSONValue value) {
+		JSONString string = value.isString();
+
+		if (string == null) {
+			return "ERROR";
+		}
+
+		return string.stringValue().substring(3, 5);
+	}
+
+
+	/**
+	 * Get year part of string on format dd.mm.yyyy
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static String getYear(JSONValue value) {
+		JSONString string = value.isString();
+
+		if (string == null) {
+			return "ERROR";
+		}
+
+		return string.stringValue().substring(6);
+	}
+
+
+	/**
+	 * Get day part of string on format dd.mm.yyyy
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static String getDay(JSONValue value) {
+		JSONString string = value.isString();
+
+		if (string == null) {
+			return "ERROR";
+		}
+
+		return string.stringValue().substring(0, 2);
 	}
 }

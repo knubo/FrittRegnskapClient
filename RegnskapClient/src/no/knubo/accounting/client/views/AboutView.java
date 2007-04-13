@@ -13,7 +13,7 @@ public class AboutView extends Composite {
 		private AboutView instance;
 
 		public final Widget getInstance(Constants constants,
-				I18NAccount messages) {
+				I18NAccount messages, ViewCallback caller) {
 			if (instance != null) {
 				return instance;
 			}
