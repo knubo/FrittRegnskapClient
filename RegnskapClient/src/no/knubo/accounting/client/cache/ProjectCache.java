@@ -5,25 +5,24 @@ import no.knubo.accounting.client.Constants;
 import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
 
-public class PersonCache implements ResponseTextHandler {
+public class ProjectCache implements ResponseTextHandler {
 
-	private static PersonCache instance;
+	private static ProjectCache instance;
 
-	public static PersonCache getInstance(Constants constants) {
+	public static ProjectCache getInstance(Constants constants) {
 		if (instance == null) {
-			instance = new PersonCache(constants);
+			instance = new ProjectCache(constants);
 		}
 		return instance;
 	}
 
-	private PersonCache(Constants constants) {
+	private ProjectCache(Constants constants) {
 		if (!HTTPRequest.asyncGet(constants.baseurl()
 				+ "registers/posttypes.php", this)) {
 		}
 	}
 
 	public void onCompletion(String responseText) {
-		// TODO Auto-generated method stub
 
 	}
 

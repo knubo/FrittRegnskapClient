@@ -40,20 +40,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String lines();
 
   /**
-   * Translated "Logg inn".
-   * 
-   * @return translated "Logg inn"
-   * @gwt.key login
-   */
-  String login();
-
-  /**
    * Translated "Oppdater".
    * 
    * @return translated "Oppdater"
    * @gwt.key update
    */
   String update();
+
+  /**
+   * Translated "Logg inn".
+   * 
+   * @return translated "Logg inn"
+   * @gwt.key login
+   */
+  String login();
 
   /**
    * Translated "Post nr".
@@ -64,14 +64,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String postnmb();
 
   /**
-   * Translated "August".
-   * 
-   * @return translated "August"
-   * @gwt.key month_08
-   */
-  String month_08();
-
-  /**
    * Translated "Bilag".
    * 
    * @return translated "Bilag"
@@ -80,12 +72,28 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment();
 
   /**
+   * Translated "August".
+   * 
+   * @return translated "August"
+   * @gwt.key month_08
+   */
+  String month_08();
+
+  /**
    * Translated "Person".
    * 
    * @return translated "Person"
    * @gwt.key person
    */
   String person();
+
+  /**
+   * Translated "Info".
+   * 
+   * @return translated "Info"
+   * @gwt.key menu_info
+   */
+  String menu_info();
 
   /**
    * Translated "Dato".
@@ -120,6 +128,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_11();
 
   /**
+   * Translated "Registrer bilag".
+   * 
+   * @return translated "Registrer bilag"
+   * @gwt.key menuitem_regline
+   */
+  String menuitem_regline();
+
+  /**
+   * Translated "Vis".
+   * 
+   * @return translated "Vis"
+   * @gwt.key menu_show
+   */
+  String menu_show();
+
+  /**
    * Translated "Februar".
    * 
    * @return translated "Februar"
@@ -144,14 +168,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String debet();
 
   /**
-   * Translated "Regnskap".
-   * 
-   * @return translated "Regnskap"
-   * @gwt.key menu_accounting
-   */
-  String menu_accounting();
-
-  /**
    * Translated "Passord".
    * 
    * @return translated "Passord"
@@ -168,20 +184,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kredit();
 
   /**
-   * Translated "Brukernavn".
-   * 
-   * @return translated "Brukernavn"
-   * @gwt.key user
-   */
-  String user();
-
-  /**
    * Translated "Dag".
    * 
    * @return translated "Dag"
    * @gwt.key day
    */
   String day();
+
+  /**
+   * Translated "Brukernavn".
+   * 
+   * @return translated "Brukernavn"
+   * @gwt.key user
+   */
+  String user();
 
   /**
    * Translated "Legg til".
@@ -240,12 +256,28 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_03();
 
   /**
+   * Translated "Bel&oslash;p".
+   * 
+   * @return translated "Bel&oslash;p"
+   * @gwt.key amount
+   */
+  String amount();
+
+  /**
    * Translated "M&aring;nedsoversikt".
    * 
    * @return translated "M&aring;nedsoversikt"
    * @gwt.key title_monthview
    */
   String title_monthview();
+
+  /**
+   * Translated "Rapporter".
+   * 
+   * @return translated "Rapporter"
+   * @gwt.key menu_reports
+   */
+  String menu_reports();
 
   /**
    * Translated "Beskrivelse".
@@ -294,4 +326,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_01
    */
   String month_01();
+
+  /**
+   * Translated "Registrer".
+   * 
+   * @return translated "Registrer"
+   * @gwt.key menu_register
+   */
+  String menu_register();
 }

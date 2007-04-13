@@ -1,6 +1,9 @@
 package no.knubo.accounting.client.cache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import no.knubo.accounting.client.Constants;
@@ -12,6 +15,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
+import com.google.gwt.user.client.ui.ListBox;
 
 /**
  * This class does lazy loading of the various post types that the system has.
@@ -24,6 +28,7 @@ public class PosttypeCache implements ResponseTextHandler {
 	private static PosttypeCache instance;
 
 	Map typeGivesDescription;
+	List originalSort;
 
 	public static PosttypeCache getInstance(Constants constants) {
 		if (instance == null) {
@@ -43,15 +48,29 @@ public class PosttypeCache implements ResponseTextHandler {
 		JSONArray array = jsonValue.isArray();
 
 		typeGivesDescription = new HashMap();
+		originalSort = new ArrayList();
 		for (int i = 0; i < array.size(); i++) {
 			JSONObject obj = array.get(i).isObject();
 
-			typeGivesDescription.put(Util.str(obj.get("PostType")), Util
+			String key = Util.str(obj.get("PostType"));
+			typeGivesDescription.put(key, Util
 					.str(obj.get("Description")));
+			originalSort.add(key);
 		}
 	}
 	
 	public String getDescription(String type) {
 		return (String) typeGivesDescription.get(type);
+	}
+	
+	public void fill(ListBox box) {
+		int pos = 0;
+		for (Iterator i = originalSort.iterator(); i.hasNext();) {
+			String k = (String) i.next();
+			
+			String desc = (String) typeGivesDescription.get(k);
+			
+			box.insertItem(desc, k, pos++);
+		}
 	}
 }

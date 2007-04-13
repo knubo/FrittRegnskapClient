@@ -81,6 +81,8 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
 		getData("");
 
+		Window.setTitle(messages.title_monthview());
+
 		initWidget(dockPanel);
 	}
 
