@@ -274,10 +274,28 @@ td.rute {
 .gwt-DialogBox {
   color: black;
   background-color: white;
-  PADDING:2px 2px 2px 2px;
+  PADDING:3px 3px 3px 3px;
 }
 
 .gwt-DialogBox .Caption {
   color: #05143f;
   background-color: #b7c2c6;
  }
+ 
+.gwt-MenuBar {
+  background-color: #b7c2c6;
+  border: 1px solid #87B3FF;
+  cursor: default;
+}
+
+.gwt-MenuBar .gwt-MenuItem {
+  padding: 1px 4px 1px 4px;
+  background-color:#d7e2e6;
+  font-size: smaller;
+  cursor: default;
+}
+
+.gwt-MenuBar .gwt-MenuItem-selected {
+  background-color: #E8EEF7;
+}
+ 

@@ -8,12 +8,28 @@ package no.knubo.accounting.client;
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
   /**
+   * Translated "Fordring".
+   * 
+   * @return translated "Fordring"
+   * @gwt.key fordring
+   */
+  String fordring();
+
+  /**
    * Translated "September".
    * 
    * @return translated "September"
    * @gwt.key month_09
    */
   String month_09();
+
+  /**
+   * Translated "Ny linje".
+   * 
+   * @return translated "Ny linje"
+   * @gwt.key newline
+   */
+  String newline();
 
   /**
    * Translated "Linjer".
@@ -30,6 +46,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key login
    */
   String login();
+
+  /**
+   * Translated "Oppdater".
+   * 
+   * @return translated "Oppdater"
+   * @gwt.key update
+   */
+  String update();
 
   /**
    * Translated "Post nr".
@@ -152,12 +176,36 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String user();
 
   /**
+   * Translated "Dag".
+   * 
+   * @return translated "Dag"
+   * @gwt.key day
+   */
+  String day();
+
+  /**
+   * Translated "Legg til".
+   * 
+   * @return translated "Legg til"
+   * @gwt.key add
+   */
+  String add();
+
+  /**
    * Translated "Mai".
    * 
    * @return translated "Mai"
    * @gwt.key month_05
    */
   String month_05();
+
+  /**
+   * Translated "Konto".
+   * 
+   * @return translated "Konto"
+   * @gwt.key account
+   */
+  String account();
 
   /**
    * Translated "April".

@@ -35,7 +35,10 @@ public class PostView extends DialogBox implements ClickListener,
 
 	public static PostView show(I18NAccount messages, Constants constants,
 			String line) {
-		return new PostView(messages, constants, line);
+		if (me == null) {
+			me = new PostView(messages, constants, line);
+		}
+		return me;
 	}
 
 	/**

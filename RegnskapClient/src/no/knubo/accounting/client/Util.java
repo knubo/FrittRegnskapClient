@@ -98,7 +98,7 @@ public class Util {
 		}
 		return string.stringValue();
 	}
-	
+
 	public static String money(JSONValue value) {
 		if (value == null) {
 			return "ERROR";
@@ -110,51 +110,50 @@ public class Util {
 		}
 		return money(string.stringValue());
 	}
-	
+
 	public static String money(String str) {
-		//String str = str(value);
-		
+		// String str = str(value);
+
 		String x = str.substring(0, str.length() - 3);
 		// 100000000.00
 		int count = x.length() / 3;
-	
-		if(count < 0) {
+
+		if (count < 0) {
 			return str;
 		}
 		int left = x.length() % 3;
-		
+
 		String res = null;
-		if(left > 0) {
+		if (left > 0) {
 			res = x.substring(0, left);
-			if(count > 0) {
+			if (count > 0) {
 				res += ",";
 			}
 		} else {
 			res = "";
 		}
-		
-		for(int i = left; i < x.length(); i+=3) {
-			res += x.substring(i, i+3);
-			
-			if(i+3 < x.length()) {
-				res+=",";
+
+		for (int i = left; i < x.length(); i += 3) {
+			res += x.substring(i, i + 3);
+
+			if (i + 3 < x.length()) {
+				res += ",";
 			}
 		}
-		return res + "."+str.substring(str.length() - 2);
+		return res + "." + str.substring(str.length() - 2);
 	}
 
 	public static String debkred(I18NAccount messages, JSONValue value) {
 		JSONString string = value.isString();
-		
-		if(string == null) {
+
+		if (string == null) {
 			return "ERROR";
 		}
-		
-		if(string.stringValue().equals("1")) {
+
+		if (string.stringValue().equals("1")) {
 			return messages.debet();
 		}
-		
+
 		return messages.kredit();
 	}
-	
 }

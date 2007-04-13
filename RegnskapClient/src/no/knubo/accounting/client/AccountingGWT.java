@@ -2,6 +2,7 @@ package no.knubo.accounting.client;
 
 import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.MonthView;
 
@@ -23,7 +24,7 @@ public class AccountingGWT implements EntryPoint {
 	private I18NAccount messages;
 
 	private LazyLoad monthLoader = MonthView.loader();
-
+	private LazyLoad aboutLoader = AboutView.loader();
 	private DockPanel activeView;
 
 	private Constants constants;
@@ -50,6 +51,8 @@ public class AccountingGWT implements EntryPoint {
 		acountMenu.addItem(messages.menuitem_showmonth(), true,
 				commandShowMonth());
 
+		activeView.add(aboutLoader.getInstance(constants, messages), DockPanel.CENTER);
+		
 		RootPanel.get().add(docPanel);
 	}
 
