@@ -42,6 +42,7 @@ public class PostView extends DialogBox implements ClickListener,
 		if (me == null) {
 			me = new PostView(messages, constants, caller, line);
 		}
+		me.init(line);
 		return me;
 	}
 
@@ -86,6 +87,14 @@ public class PostView extends DialogBox implements ClickListener,
 		dp.add(table, DockPanel.NORTH);
 		setWidget(dp);
 
+		init(line);
+	}
+
+	private void init(String line) {
+		while(table.getRowCount() > 5) {
+			table.removeRow(5);
+		}
+		
 		// TODO Report stuff as being loaded.
 		if (!HTTPRequest.asyncGet(constants.baseurl()
 				+ "accounting/showline.php?line=" + line, this)) {

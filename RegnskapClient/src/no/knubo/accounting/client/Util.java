@@ -1,5 +1,7 @@
 package no.knubo.accounting.client;
 
+import java.util.HashMap;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -248,32 +250,47 @@ public class Util {
 		return string.stringValue().substring(0, 2);
 	}
 
+	public static HashMap timers = new HashMap();
+
 	/**
 	 * Sets given message after some seconds.
-	 * @param label Label to set text in.
-	 * @param message Text to set.
-	 * @param seconds The amount of seconds before the text is set.
+	 * 
+	 * @param label
+	 *            Label to set text in.
+	 * @param message
+	 *            Text to set.
+	 * @param seconds
+	 *            The amount of seconds before the text is set.
 	 */
-	public static void timedMessage(final Label label, final String message, int seconds) {
+	public static void timedMessage(final Label label, final String message,
+			int seconds) {
+
+		Timer runningTimer = (Timer) timers.get(label);
+
+		if (runningTimer != null) {
+			runningTimer.cancel();
+		}
 		Timer timer = new Timer() {
 
 			public void run() {
 				label.setText(message);
+				timers.remove(label);
 			}
 		};
-		
+		timers.put(label, timer);
 		timer.schedule(seconds * 1000);
 	}
 
 	/**
 	 * Adds &param=value encoded to the stringbuffer. Note the &.
+	 * 
 	 * @param sb
 	 * @param param
 	 * @param value
 	 */
 	public static void addPostParam(StringBuffer sb, String param, String value) {
-		if(value == null) {
-			Window.alert("Value = null for "+param);
+		if (value == null) {
+			Window.alert("Value = null for " + param);
 			return;
 		}
 		sb.append("&");

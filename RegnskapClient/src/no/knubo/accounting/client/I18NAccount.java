@@ -248,6 +248,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_05();
 
   /**
+   * Translated "Opprett".
+   * 
+   * @return translated "Opprett"
+   * @gwt.key save
+   */
+  String save();
+
+  /**
    * Translated "...ingen data oppdatert.".
    * 
    * @return translated "...ingen data oppdatert."

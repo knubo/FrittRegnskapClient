@@ -40,6 +40,7 @@ public class LineEditView extends Composite implements ClickListener {
 		if (me == null) {
 			me = new LineEditView(messages, constants, line);
 		}
+		me.init(line);
 		return me;
 	}
 
@@ -89,6 +90,26 @@ public class LineEditView extends Composite implements ClickListener {
 		dp.add(regnLinesView(), DockPanel.NORTH);
 
 		initWidget(dp);
+	}
+
+	private void init(String line) {
+		currentLine = line;
+
+		postNmbBox.setText("");
+		dayBox.setText("");
+		attachmentBox.setText("");
+		descriptionBox.setText("");
+		amountBox.setText("");
+		accountIdBox.setText("");
+		accountNameBox.setSelectedIndex(0);
+		projectIdBox.setText("");
+		projectNameBox.setSelectedIndex(0);
+		personBox.setSelectedIndex(0);
+
+		while (postsTable.getRowCount() > 1) {
+			postsTable.removeRow(1);
+		}
+
 		if (line != null) {
 			showLine(line);
 		} else {
@@ -96,7 +117,6 @@ public class LineEditView extends Composite implements ClickListener {
 			dayBox.setFocus(true);
 			addLineButton.setEnabled(false);
 		}
-
 	}
 
 	protected String currentYear;
@@ -132,7 +152,6 @@ public class LineEditView extends Composite implements ClickListener {
 	}
 
 	private void showLine(String line) {
-		currentLine = line;
 
 		ResponseTextHandler rh = new ResponseTextHandler() {
 			public void onCompletion(String responseText) {
@@ -340,15 +359,22 @@ public class LineEditView extends Composite implements ClickListener {
 	}
 
 	private void doUpdate() {
-
+		updateButton.setEnabled(false);
 		updateLabel.setText("...");
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("action=update");
+
+		if (currentLine != null) {
+			sb.append("action=update");
+		} else {
+			sb.append("action=insert");
+		}
 		Util.addPostParam(sb, "day", dayBox.getText());
-		Util.addPostParam(sb, "line", currentLine);
+		if (currentLine != null) {
+			Util.addPostParam(sb, "line", currentLine);
+		}
 		Util.addPostParam(sb, "desc", descriptionBox.getText());
-		Util.addPostParam(sb, "attachment", postNmbBox.getText());
+		Util.addPostParam(sb, "attachment", attachmentBox.getText());
 		Util.addPostParam(sb, "postnmb", postNmbBox.getText());
 		Util.addPostParam(sb, "month", currentMonth);
 		Util.addPostParam(sb, "year", currentYear);
@@ -362,12 +388,17 @@ public class LineEditView extends Composite implements ClickListener {
 			}
 
 			public void onResponseReceived(Request request, Response response) {
-				if ("1".equals(response.getText().trim())) {
-					updateLabel.setText(messages.save_ok());
-				} else {
+				if ("0".equals(response.getText().trim())) {
 					updateLabel.setText(messages.save_failed());
+				} else {
+					updateLabel.setText(messages.save_ok());
+					
+					if(currentLine == null) {
+						currentLine = response.getText().trim();
+					}
 				}
 				Util.timedMessage(updateLabel, "", 5);
+				updateButton.setEnabled(true);
 			}
 		};
 
