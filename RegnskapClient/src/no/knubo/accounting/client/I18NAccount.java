@@ -112,6 +112,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String date();
 
   /**
+   * Translated "...lagret".
+   * 
+   * @return translated "...lagret"
+   * @gwt.key save_ok
+   */
+  String save_ok();
+
+  /**
    * Translated "Juli".
    * 
    * @return translated "Juli"
@@ -240,6 +248,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_05();
 
   /**
+   * Translated "...ingen data oppdatert.".
+   * 
+   * @return translated "...ingen data oppdatert."
+   * @gwt.key save_failed
+   */
+  String save_failed();
+
+  /**
    * Translated "Konto".
    * 
    * @return translated "Konto"
@@ -288,9 +304,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_03();
 
   /**
-   * Translated "Bel&oring;p".
+   * Translated "Bel&oslash;p".
    * 
-   * @return translated "Bel&oring;p"
+   * @return translated "Bel&oslash;p"
    * @gwt.key amount
    */
   String amount();

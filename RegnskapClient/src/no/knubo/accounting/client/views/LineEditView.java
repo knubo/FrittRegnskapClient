@@ -7,6 +7,11 @@ import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -100,6 +105,8 @@ public class LineEditView extends Composite implements ClickListener {
 
 	protected String currentLine;
 
+	private Label updateLabel;
+
 	private void fetchInitalData() {
 
 		ResponseTextHandler rh = new ResponseTextHandler() {
@@ -125,6 +132,8 @@ public class LineEditView extends Composite implements ClickListener {
 	}
 
 	private void showLine(String line) {
+		currentLine = line;
+
 		ResponseTextHandler rh = new ResponseTextHandler() {
 			public void onCompletion(String responseText) {
 				JSONValue jsonValue = JSONParser.parse(responseText);
@@ -168,10 +177,9 @@ public class LineEditView extends Composite implements ClickListener {
 		String posttype = Util.str(object.get("Post_type"));
 		postsTable.setText(rowcount, 0, posttype + "-"
 				+ postCache.getDescription(posttype));
-		
+
 		postsTable.getRowFormatter().setStyleName(rowcount,
 				(rowcount % 2 == 0) ? "showlineposts2" : "showlineposts1");
-
 
 		postsTable.setText(rowcount, 1, empCache.getName(Util.str(object
 				.get("Person"))));
@@ -270,7 +278,7 @@ public class LineEditView extends Composite implements ClickListener {
 		postsTable.setText(0, 1, messages.project());
 		postsTable.setText(0, 2, messages.person());
 		postsTable.setText(0, 3, messages.debet() + "/" + messages.kredit());
-		postsTable.setText(0, 4, messages.amount());
+		postsTable.setHTML(0, 4, messages.amount());
 
 		return vp;
 	}
@@ -315,7 +323,8 @@ public class LineEditView extends Composite implements ClickListener {
 		updateButton.addClickListener(this);
 
 		table.setWidget(4, 0, updateButton);
-
+		updateLabel = new Label();
+		table.setWidget(4, 1, updateLabel);
 		return vp;
 	}
 
@@ -325,8 +334,49 @@ public class LineEditView extends Composite implements ClickListener {
 	}
 
 	public void onClick(Widget sender) {
+		if (sender == updateButton) {
+			doUpdate();
+		}
 	}
 
-	public void onCompletion(String responseText) {
+	private void doUpdate() {
+
+		updateLabel.setText("...");
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("action=update");
+		Util.addPostParam(sb, "day", dayBox.getText());
+		Util.addPostParam(sb, "line", currentLine);
+		Util.addPostParam(sb, "desc", descriptionBox.getText());
+		Util.addPostParam(sb, "attachment", postNmbBox.getText());
+		Util.addPostParam(sb, "postnmb", postNmbBox.getText());
+		Util.addPostParam(sb, "month", currentMonth);
+		Util.addPostParam(sb, "year", currentYear);
+
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+				constants.baseurl() + "accounting/editaccountline.php");
+
+		RequestCallback callback = new RequestCallback() {
+			public void onError(Request request, Throwable exception) {
+				Window.alert(exception.getMessage());
+			}
+
+			public void onResponseReceived(Request request, Response response) {
+				if ("1".equals(response.getText().trim())) {
+					updateLabel.setText(messages.save_ok());
+				} else {
+					updateLabel.setText(messages.save_failed());
+				}
+				Util.timedMessage(updateLabel, "", 5);
+			}
+		};
+
+		try {
+			builder.setHeader("Content-Type",
+					"application/x-www-form-urlencoded");
+			builder.sendRequest(sb.toString(), callback);
+		} catch (RequestException e) {
+			Window.alert("Failed to send the request: " + e.getMessage());
+		}
 	}
 }

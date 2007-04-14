@@ -1,8 +1,12 @@
 package no.knubo.accounting.client;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -212,7 +216,6 @@ public class Util {
 		return string.stringValue().substring(3, 5);
 	}
 
-
 	/**
 	 * Get year part of string on format dd.mm.yyyy
 	 * 
@@ -229,7 +232,6 @@ public class Util {
 		return string.stringValue().substring(6);
 	}
 
-
 	/**
 	 * Get day part of string on format dd.mm.yyyy
 	 * 
@@ -244,5 +246,39 @@ public class Util {
 		}
 
 		return string.stringValue().substring(0, 2);
+	}
+
+	/**
+	 * Sets given message after some seconds.
+	 * @param label Label to set text in.
+	 * @param message Text to set.
+	 * @param seconds The amount of seconds before the text is set.
+	 */
+	public static void timedMessage(final Label label, final String message, int seconds) {
+		Timer timer = new Timer() {
+
+			public void run() {
+				label.setText(message);
+			}
+		};
+		
+		timer.schedule(seconds * 1000);
+	}
+
+	/**
+	 * Adds &param=value encoded to the stringbuffer. Note the &.
+	 * @param sb
+	 * @param param
+	 * @param value
+	 */
+	public static void addPostParam(StringBuffer sb, String param, String value) {
+		if(value == null) {
+			Window.alert("Value = null for "+param);
+			return;
+		}
+		sb.append("&");
+		sb.append(URL.encodeComponent(param));
+		sb.append("=");
+		sb.append(URL.encodeComponent(value));
 	}
 }
