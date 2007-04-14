@@ -110,12 +110,13 @@ public class LineEditView extends Composite implements ClickListener {
 			postsTable.removeRow(1);
 		}
 
+		addLineButton.setEnabled(line != null);
+
 		if (line != null) {
 			showLine(line);
 		} else {
 			fetchInitalData();
 			dayBox.setFocus(true);
-			addLineButton.setEnabled(false);
 		}
 	}
 
@@ -355,6 +356,8 @@ public class LineEditView extends Composite implements ClickListener {
 	public void onClick(Widget sender) {
 		if (sender == updateButton) {
 			doUpdate();
+		} else if(sender == addLineButton) {
+			
 		}
 	}
 
@@ -395,6 +398,7 @@ public class LineEditView extends Composite implements ClickListener {
 					
 					if(currentLine == null) {
 						currentLine = response.getText().trim();
+						addLineButton.setEnabled(true);
 					}
 				}
 				Util.timedMessage(updateLabel, "", 5);
