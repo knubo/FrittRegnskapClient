@@ -1,5 +1,9 @@
 package no.knubo.accounting.client.views;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
@@ -34,6 +38,11 @@ import com.google.gwt.user.client.ui.Widget;
 public class LineEditView extends Composite implements ClickListener {
 
 	private static LineEditView me;
+
+	/* These holds images for remove buttons and their corresponding ids. */
+	private List removeImages = new ArrayList();
+
+	private List removeIds = new ArrayList();
 
 	public static LineEditView show(I18NAccount messages, Constants constants,
 			String line) {
@@ -71,6 +80,7 @@ public class LineEditView extends Composite implements ClickListener {
 	private ListBox accountNameBox;
 
 	// private ListBox fordringBox;
+	private Label rowErrorLabel;
 
 	private TextBox projectIdBox;
 
@@ -106,6 +116,8 @@ public class LineEditView extends Composite implements ClickListener {
 		projectNameBox.setSelectedIndex(0);
 		personBox.setSelectedIndex(0);
 
+		removeImages.clear();
+		removeIds.clear();
 		while (postsTable.getRowCount() > 1) {
 			postsTable.removeRow(1);
 		}
@@ -213,6 +225,9 @@ public class LineEditView extends Composite implements ClickListener {
 
 		Image removeImage = new Image("images/list-remove.png");
 		postsTable.setWidget(rowcount, 5, removeImage);
+		removeImage.addClickListener(this);
+		removeIds.add(Util.str(object.get("Id")));
+		removeImages.add(removeImage);
 	}
 
 	private Widget newFields() {
@@ -230,8 +245,8 @@ public class LineEditView extends Composite implements ClickListener {
 
 		debKredbox = new ListBox();
 		debKredbox.setVisibleItemCount(1);
-		debKredbox.addItem(messages.debet());
-		debKredbox.addItem(messages.kredit());
+		debKredbox.addItem(messages.debet(), "1");
+		debKredbox.addItem(messages.kredit(), "-1");
 		table.setWidget(1, 0, debKredbox);
 
 		amountBox = new TextBox();
@@ -247,6 +262,9 @@ public class LineEditView extends Composite implements ClickListener {
 		accountNameBox = new ListBox();
 		accountNameBox.setVisibleItemCount(1);
 		table.setWidget(3, 1, accountNameBox);
+
+		/* Above remove button. */
+		table.addCell(3);
 
 		PosttypeCache.getInstance(constants).fill(accountNameBox);
 		Util.syncListbox(accountNameBox, accountIdBox);
@@ -356,9 +374,83 @@ public class LineEditView extends Composite implements ClickListener {
 	public void onClick(Widget sender) {
 		if (sender == updateButton) {
 			doUpdate();
-		} else if(sender == addLineButton) {
-			
+		} else if (sender == addLineButton) {
+			doRowInsert();
+		} else {
+			doRowRemove(sender);
 		}
+	}
+
+	private void doRowRemove(Widget sender) {
+		final String id = findRemoveId(sender);
+
+		if (id == null) {
+			Window.alert("Failed to find id for delete.");
+			return;
+		}
+
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("action=delete");
+		Util.addPostParam(sb, "id", id);
+		Util.addPostParam(sb, "line", currentLine);
+
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+				constants.baseurl() + "accounting/editaccountpost.php");
+
+		RequestCallback callback = new RequestCallback() {
+			public void onError(Request request, Throwable exception) {
+				Window.alert(exception.getMessage());
+			}
+
+			public void onResponseReceived(Request request, Response response) {
+				if ("0".equals(response.getText().trim())) {
+					rowErrorLabel.setText(messages.save_failed());
+				} else {
+					removeVisibleRow(id);
+				}
+				Util.timedMessage(rowErrorLabel, "", 5);
+			}
+		};
+
+		try {
+			builder.setHeader("Content-Type",
+					"application/x-www-form-urlencoded");
+			builder.sendRequest(sb.toString(), callback);
+		} catch (RequestException e) {
+			Window.alert("Failed to send the request: " + e.getMessage());
+		}
+
+	}
+
+	protected void removeVisibleRow(String id) {
+		for (int i = 1; i < postsTable.getRowCount(); i++) {
+			String removeId = findRemoveId(postsTable.getWidget(i, 5));
+
+			if (id.equals(removeId)) {
+				postsTable.removeRow(i);
+				return;
+			}
+		}
+		Window.alert("Failed to remove line for id " + id);
+	}
+
+	private String findRemoveId(Widget sender) {
+		Iterator idIt = removeIds.iterator();
+		for (Iterator imageIt = removeImages.iterator(); imageIt.hasNext();) {
+			Image image = (Image) imageIt.next();
+			String id = (String) idIt.next();
+
+			if (image == sender) {
+				return id;
+			}
+		}
+		Window.alert("Failed to find id.");
+		return null;
+	}
+
+	private void doRowInsert() {
+
 	}
 
 	private void doUpdate() {
@@ -395,8 +487,8 @@ public class LineEditView extends Composite implements ClickListener {
 					updateLabel.setText(messages.save_failed());
 				} else {
 					updateLabel.setText(messages.save_ok());
-					
-					if(currentLine == null) {
+
+					if (currentLine == null) {
 						currentLine = response.getText().trim();
 						addLineButton.setEnabled(true);
 					}
