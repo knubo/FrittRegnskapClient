@@ -287,9 +287,12 @@ public class Util {
 	/**
 	 * Adds &param=value encoded to the stringbuffer. Note the &.
 	 * 
-	 * @param sb The string buffer to add
-	 * @param param the paramameter name
-	 * @param value The value. if it is null or of length 0 it is not added.
+	 * @param sb
+	 *            The string buffer to add
+	 * @param param
+	 *            the paramameter name
+	 * @param value
+	 *            The value. if it is null or of length 0 it is not added.
 	 */
 	public static void addPostParam(StringBuffer sb, String param, String value) {
 		if (value == null || value.length() == 0) {
@@ -303,5 +306,26 @@ public class Util {
 
 	public static String getSelected(ListBox box) {
 		return box.getValue(box.getSelectedIndex());
+	}
+
+	public static String fixMoney(String text) {
+		int posp = text.indexOf('.');
+		int posk = text.indexOf(',');
+		
+		if (posp == -1 && posk == -1) {
+			return text + ".00";
+		}
+
+		/* posk now got decimal pos. */
+		if(posp > posk) {
+			posk = posp;
+		}
+
+		/* Add the last 0 if just one number after . */
+		if(text.substring(posk + 1).length() == 1) {
+			return text +"0";
+		}
+		
+		return text;
 	}
 }

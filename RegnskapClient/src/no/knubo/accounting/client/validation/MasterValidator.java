@@ -15,13 +15,16 @@ public class MasterValidator {
 				string);
 
 		status &= mandatoryValidation.validate(this, widgets);
-
 	}
 
 	public void day(String error, int year, int month, Widget[] widgets) {
 		DayValidator dayvalidator = new DayValidator(error, month, year);
 		status &= dayvalidator.validate(this, widgets);
-		
+	}
+	
+	public void money(String error, Widget[] widgets) {
+		MoneyValidator moneyValidator = new MoneyValidator(error);
+		status &= moneyValidator.validate(this, widgets);
 	}
 	
 	public void range(String error, Integer minVal, Integer maxVal,
@@ -30,7 +33,6 @@ public class MasterValidator {
 				maxVal);
 
 		status &= rangeValidator.validate(this, widgets);
-
 	}
 
 	public boolean validateStatus() {
@@ -58,5 +60,7 @@ public class MasterValidator {
 		
 		return valStatus;
 	}
+
+	
 
 }

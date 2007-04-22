@@ -48,6 +48,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 		docPanel.add(topMenu, DockPanel.NORTH);
 
 		activeView = new DockPanel();
+		activeView.setStyleName("activeview");
 		docPanel.add(activeView, DockPanel.CENTER);
 
 		MenuBar registerMenu = new MenuBar(true);

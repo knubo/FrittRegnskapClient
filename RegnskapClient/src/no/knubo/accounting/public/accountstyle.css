@@ -302,4 +302,8 @@ td.rute {
 .gwt-MenuBar .gwt-MenuItem-selected {
   background-color: #E8EEF7;
 }
+
+.activeview {
+  padding: 10px 10px 10px 10px;
+}
  

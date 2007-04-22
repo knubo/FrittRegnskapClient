@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -69,9 +70,9 @@ public class LineEditView extends Composite implements ClickListener {
 
 	private ListBox debKredbox;
 
-	private TextBox amountBox;
+	private TextBoxWithErrorText amountBox;
 
-	private TextBox accountIdBox;
+	private TextBoxWithErrorText accountIdBox;
 
 	private ListBox accountNameBox;
 
@@ -225,7 +226,8 @@ public class LineEditView extends Composite implements ClickListener {
 
 		postsTable.setText(rowcount, 3, Util.debkred(messages, debkred));
 		postsTable.setText(rowcount, 4, amount);
-
+		postsTable.getCellFormatter().setStyleName(rowcount, 4, "right");
+		
 		Image removeImage = new Image("images/list-remove.png");
 		postsTable.setWidget(rowcount, 5, removeImage);
 		removeImage.addClickListener(this);
@@ -252,15 +254,18 @@ public class LineEditView extends Composite implements ClickListener {
 		debKredbox.addItem(messages.kredit(), "-1");
 		table.setWidget(1, 0, debKredbox);
 
-		amountBox = new TextBox();
+		amountBox = new TextBoxWithErrorText();
 		amountBox.setVisibleLength(10);
 		table.setWidget(1, 1, amountBox);
-
+		table.getFlexCellFormatter().setColSpan(1, 1, 2);
+		
 		table.setText(2, 0, messages.account());
 
-		accountIdBox = new TextBox();
+		HTML errorAccountHtml = new HTML();
+		accountIdBox = new TextBoxWithErrorText(errorAccountHtml);
 		accountIdBox.setVisibleLength(6);
 		table.setWidget(3, 0, accountIdBox);
+		table.setWidget(3, 2, errorAccountHtml);
 
 		accountNameBox = new ListBox();
 		accountNameBox.setVisibleItemCount(1);
@@ -270,7 +275,7 @@ public class LineEditView extends Composite implements ClickListener {
 		table.addCell(3);
 
 		PosttypeCache.getInstance(constants).fill(accountNameBox);
-		Util.syncListbox(accountNameBox, accountIdBox);
+		Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
 		// table.setText(2, 2, messages.fordring());
 		// fordringBox = new ListBox();
@@ -321,6 +326,7 @@ public class LineEditView extends Composite implements ClickListener {
 		postsTable.setText(0, 2, messages.person());
 		postsTable.setText(0, 3, messages.debet() + "/" + messages.kredit());
 		postsTable.setHTML(0, 4, messages.amount());
+		postsTable.getFlexCellFormatter().setColSpan(0, 4, 2);
 
 		return vp;
 	}
@@ -441,11 +447,14 @@ public class LineEditView extends Composite implements ClickListener {
 	}
 
 	private void doRowInsert() {
-		// TODO Add validation of input data.
+
+		if (!validateRowInsert()) {
+			return;
+		}
 		final String personId = Util.getSelected(personBox);
 		final String debk = Util.getSelected(debKredbox);
 		final String post_type = accountIdBox.getText();
-		final String money = amountBox.getText();
+		final String money = Util.fixMoney(amountBox.getText());
 		final String projectId = projectIdBox.getText();
 
 		StringBuffer sb = new StringBuffer();
@@ -557,7 +566,19 @@ public class LineEditView extends Composite implements ClickListener {
 
 		masterValidator.day(messages.illegal_day(), Integer
 				.parseInt(currentYear), Integer.parseInt(currentMonth),
-				new Widget[] {dayBox});
+				new Widget[] { dayBox });
+
+		return masterValidator.validateStatus();
+	}
+
+	private boolean validateRowInsert() {
+		MasterValidator masterValidator = new MasterValidator();
+
+		masterValidator.mandatory(messages.required_field(), new Widget[] {
+				amountBox, accountIdBox });
+
+		masterValidator.money(messages.field_money(),
+				new Widget[] { amountBox });
 
 		return masterValidator.validateStatus();
 	}

@@ -224,6 +224,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String update();
 
   /**
+   * Translated "Penger inngis p� format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0".
+   * 
+   * @return translated "Penger inngis p� format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0"
+   * @gwt.key field_money
+   */
+  String field_money();
+
+  /**
    * Translated "Person".
    * 
    * @return translated "Person"
@@ -304,20 +312,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String add();
 
   /**
-   * Translated "Konto".
-   * 
-   * @return translated "Konto"
-   * @gwt.key account
-   */
-  String account();
-
-  /**
    * Translated "...ingen data oppdatert.".
    * 
    * @return translated "...ingen data oppdatert."
    * @gwt.key save_failed
    */
   String save_failed();
+
+  /**
+   * Translated "Konto".
+   * 
+   * @return translated "Konto"
+   * @gwt.key account
+   */
+  String account();
 
   /**
    * Translated "Post nr. er benyttet tidligere".

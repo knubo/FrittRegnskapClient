@@ -9,10 +9,17 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class TextBoxWithErrorText extends Composite implements Validateable {
 
-	private TextBox textBox;
+	private final TextBox textBox;
 
-	private HTML label;
+	private final HTML label;
 
+	public TextBoxWithErrorText(HTML label) {
+		this.textBox = new TextBox();;
+		this.label = label;
+		label.setStyleName("error");
+		initWidget(textBox);
+	}
+	
 	public TextBoxWithErrorText() {
 		textBox = new TextBox();
 		label = new HTML();
@@ -24,6 +31,10 @@ public class TextBoxWithErrorText extends Composite implements Validateable {
 		hp.add(label);
 
 		initWidget(hp);
+	}
+	
+	public TextBox getTextBox() {
+		return textBox;
 	}
 
 	public void setText(String string) {
