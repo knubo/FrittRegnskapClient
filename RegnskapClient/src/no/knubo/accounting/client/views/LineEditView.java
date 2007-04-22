@@ -384,7 +384,7 @@ public class LineEditView extends Composite implements ClickListener {
 	}
 
 	private void doRowRemove(Widget sender) {
-		final String id = removeIdHolder.findRemoveId(sender);
+		final String id = removeIdHolder.findId(sender);
 
 		if (id == null) {
 			Window.alert("Failed to find id for delete.");
@@ -427,7 +427,7 @@ public class LineEditView extends Composite implements ClickListener {
 
 	protected void removeVisibleRow(String id) {
 		for (int i = 1; i < postsTable.getRowCount(); i++) {
-			String removeId = removeIdHolder.findRemoveId(postsTable.getWidget(i, 5));
+			String removeId = removeIdHolder.findId(postsTable.getWidget(i, 5));
 
 			if (id.equals(removeId)) {
 				postsTable.removeRow(i);
