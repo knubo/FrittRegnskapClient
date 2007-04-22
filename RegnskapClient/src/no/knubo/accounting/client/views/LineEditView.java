@@ -188,7 +188,7 @@ public class LineEditView extends Composite implements ClickListener {
 				for (int i = 0; i < array.size(); i++) {
 					addRegnLine(array.get(i));
 				}
-				addSumLine();
+				addSumLine(Util.str(root.get("sum")));
 			}
 		};
 		// TODO Report stuff as being loaded.
@@ -241,8 +241,11 @@ public class LineEditView extends Composite implements ClickListener {
 		removeIdHolder.add(id, removeImage);
 	}
 	
-	private void addSumLine() {
-		postsTable.setText(postsTable.getRowCount(), 0, messages.sum());
+	private void addSumLine(String sumAmount) {
+		int row = postsTable.getRowCount();
+		postsTable.setText(row, 0, messages.sum());
+		postsTable.setText(row, 4, Util.money(Util.fixMoney(sumAmount)));
+		postsTable.getCellFormatter().setStyleName(row, 4, "right");
 	}
 
 	private void removeSumLine() {
@@ -442,7 +445,11 @@ public class LineEditView extends Composite implements ClickListener {
 				if ("0".equals(response.getText().trim())) {
 					rowErrorLabel.setText(messages.save_failed());
 				} else {
+					String[] parts = response.getText().trim().split(":");
+					// Parts[0] should be same as id, but I use id. 
 					removeVisibleRow(id);
+					removeSumLine();
+					addSumLine(parts[1]);
 				}
 				Util.timedMessage(rowErrorLabel, "", 5);
 			}
@@ -500,14 +507,16 @@ public class LineEditView extends Composite implements ClickListener {
 			}
 
 			public void onResponseReceived(Request request, Response response) {
-				String id = response.getText().trim();
-				if ("0".equals(id)) {
+				String data = response.getText().trim();
+				if ("0".equals(data)) {
 					rowErrorLabel.setText(messages.save_failed());
 				} else {
 					removeSumLine();
+					String[] parts = data.split(":");
+					
 					addRegnLine(post_type, personId, projectId, Util
-							.money(money), debk, id);
-					addSumLine();
+							.money(money), debk, parts[0]);
+					addSumLine(parts[1]);
 				}
 				Util.timedMessage(updateLabel, "", 5);
 			}

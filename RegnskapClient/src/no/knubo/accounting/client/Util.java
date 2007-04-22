@@ -121,8 +121,15 @@ public class Util {
 	}
 
 	public static String money(String str) {
-		// String str = str(value);
 
+		if(str.charAt(0) == '-') {
+			return "-"+money(str.substring(1));
+		}
+		
+		if(str.indexOf('.') == -1) {
+			str = str+".00";
+		}
+		
 		String x = str.substring(0, str.length() - 3);
 		// 100000000.00
 		int count = x.length() / 3;
@@ -309,20 +316,15 @@ public class Util {
 	}
 
 	public static String fixMoney(String text) {
+		text = text.replace(',', '.');
 		int posp = text.indexOf('.');
-		int posk = text.indexOf(',');
 		
-		if (posp == -1 && posk == -1) {
+		if (posp == -1) {
 			return text + ".00";
 		}
 
-		/* posk now got decimal pos. */
-		if(posp > posk) {
-			posk = posp;
-		}
-
 		/* Add the last 0 if just one number after . */
-		if(text.substring(posk + 1).length() == 1) {
+		if(text.substring(posp + 1).length() == 1) {
 			return text +"0";
 		}
 		

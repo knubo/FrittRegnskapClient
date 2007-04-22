@@ -247,7 +247,7 @@ public class MonthView extends Composite implements ResponseTextHandler,
 		JSONValue value = obj.get(k);
 
 		if (value != null) {
-			table.setText(rowIndex, col, Util.money(value));
+			table.setText(rowIndex, col, Util.money(Util.fixMoney(Util.str(value))));
 		}
 	}
 
