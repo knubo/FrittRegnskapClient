@@ -6,7 +6,6 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -160,7 +159,11 @@ public class Util {
 			return "ERROR";
 		}
 
-		if (string.stringValue().equals("1")) {
+		return debkred(messages, string.stringValue());
+	}
+
+	public static String debkred(I18NAccount messages, String string) {
+		if ("1".equals(string)) {
 			return messages.debet();
 		}
 
@@ -284,18 +287,21 @@ public class Util {
 	/**
 	 * Adds &param=value encoded to the stringbuffer. Note the &.
 	 * 
-	 * @param sb
-	 * @param param
-	 * @param value
+	 * @param sb The string buffer to add
+	 * @param param the paramameter name
+	 * @param value The value. if it is null or of length 0 it is not added.
 	 */
 	public static void addPostParam(StringBuffer sb, String param, String value) {
-		if (value == null) {
-			Window.alert("Value = null for " + param);
+		if (value == null || value.length() == 0) {
 			return;
 		}
 		sb.append("&");
 		sb.append(URL.encodeComponent(param));
 		sb.append("=");
 		sb.append(URL.encodeComponent(value));
+	}
+
+	public static String getSelected(ListBox box) {
+		return box.getValue(box.getSelectedIndex());
 	}
 }

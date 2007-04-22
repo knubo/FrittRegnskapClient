@@ -198,7 +198,7 @@ public class LineEditView extends Composite implements ClickListener {
 		String person = Util.str(object.get("Person"));
 		String project = Util.str(object.get("Project"));
 		String amount = Util.money(object.get("Amount"));
-		String debkred = Util.debkred(messages, object.get("Debet"));
+		String debkred = Util.str(object.get("Debet"));
 		String id = Util.str(object.get("Id"));
 
 		addRegnLine(posttype, person, project, amount, debkred, id);
@@ -222,7 +222,7 @@ public class LineEditView extends Composite implements ClickListener {
 
 		postsTable.setText(rowcount, 2, projectCache.getName(project));
 
-		postsTable.setText(rowcount, 3, debkred);
+		postsTable.setText(rowcount, 3, Util.debkred(messages, debkred));
 		postsTable.setText(rowcount, 4, amount);
 
 		Image removeImage = new Image("images/list-remove.png");
@@ -297,6 +297,7 @@ public class LineEditView extends Composite implements ClickListener {
 
 		addLineButton = new Button();
 		addLineButton.setText(messages.add());
+		addLineButton.addClickListener(this);
 		table.setWidget(8, 1, addLineButton);
 		table.getFlexCellFormatter().setColSpan(8, 1, 2);
 
@@ -441,9 +442,8 @@ public class LineEditView extends Composite implements ClickListener {
 
 	private void doRowInsert() {
 		// TODO Add validation of input data.
-		
-		final String personId = personBox.getValue(personBox.getSelectedIndex());
-		final String debk = debKredbox.getValue(debKredbox.getSelectedIndex());
+		final String personId = Util.getSelected(personBox);
+		final String debk = Util.getSelected(debKredbox);
 		final String post_type = accountIdBox.getText();
 		final String money = amountBox.getText();
 		final String projectId = projectIdBox.getText();
@@ -455,11 +455,9 @@ public class LineEditView extends Composite implements ClickListener {
 		Util.addPostParam(sb, "post_type", post_type);
 		Util.addPostParam(sb, "amount", money);
 		Util.addPostParam(sb, "project", projectId);
-
 		Util.addPostParam(sb, "person", personId);
 
 
-		Window.alert("Gogo"+sb.toString());
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
 				constants.baseurl() + "accounting/editaccountpost.php");
 
@@ -473,7 +471,6 @@ public class LineEditView extends Composite implements ClickListener {
 				if ("0".equals(id)) {
 					rowErrorLabel.setText(messages.save_failed());
 				} else {
-					Window.alert("Adding...");
 					addRegnLine(post_type, personId, projectId,
 							Util.money(money), debk, id);
 				}
