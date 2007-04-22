@@ -69,6 +69,36 @@
   border-left-width: 0px	
 }
 
+.edittable {
+  border-style: solid; 
+  border-color: #000000; 
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-weight: bold;
+  color: #05143f;
+  background-color: #b7c2c6;
+  font-size:80%;
+  vertical-align:bottom;
+  PADDING:2px 2px 2px 2px;
+  margin-bottom:10px;
+}
+
+.gwt-Button { 
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-weight: bold;
+  background-color:#d7e2e6;
+  font-size:80%;
+}
+
+.gwt-TextBox { 
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-weight: normal;
+  font-size:80%;
+}
+.gwt-ListBox { 
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-weight: normal;
+  font-size:80%;
+}
 
 .header {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular;

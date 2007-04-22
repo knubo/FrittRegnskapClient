@@ -227,7 +227,7 @@ public class LineEditView extends Composite implements ClickListener {
 		postsTable.setText(rowcount, 3, Util.debkred(messages, debkred));
 		postsTable.setText(rowcount, 4, amount);
 		postsTable.getCellFormatter().setStyleName(rowcount, 4, "right");
-		
+
 		Image removeImage = new Image("images/list-remove.png");
 		postsTable.setWidget(rowcount, 5, removeImage);
 		removeImage.addClickListener(this);
@@ -238,12 +238,8 @@ public class LineEditView extends Composite implements ClickListener {
 	private Widget newFields() {
 		VerticalPanel panel = new VerticalPanel();
 
-		Label header = new Label();
-		header.setText(messages.newline());
-
-		panel.add(header);
-
 		FlexTable table = new FlexTable();
+		table.setStyleName("edittable");
 		panel.add(table);
 
 		table.setHTML(0, 1, messages.amount());
@@ -258,7 +254,7 @@ public class LineEditView extends Composite implements ClickListener {
 		amountBox.setVisibleLength(10);
 		table.setWidget(1, 1, amountBox);
 		table.getFlexCellFormatter().setColSpan(1, 1, 2);
-		
+
 		table.setText(2, 0, messages.account());
 
 		HTML errorAccountHtml = new HTML();
@@ -295,6 +291,7 @@ public class LineEditView extends Composite implements ClickListener {
 		Util.syncListbox(projectNameBox, projectIdBox);
 
 		table.setText(6, 0, messages.person());
+
 		personBox = new ListBox();
 		personBox.setVisibleItemCount(1);
 		table.setWidget(7, 0, personBox);
@@ -304,17 +301,13 @@ public class LineEditView extends Composite implements ClickListener {
 		addLineButton = new Button();
 		addLineButton.setText(messages.add());
 		addLineButton.addClickListener(this);
-		table.setWidget(8, 1, addLineButton);
-		table.getFlexCellFormatter().setColSpan(8, 1, 2);
+		table.setWidget(8, 0, addLineButton);
 
 		return panel;
 	}
 
 	private Widget regnLinesView() {
 		VerticalPanel vp = new VerticalPanel();
-
-		Label header = new Label(messages.lines());
-		vp.add(header);
 
 		postsTable = new FlexTable();
 		postsTable.setStyleName("tableborder");
@@ -340,6 +333,7 @@ public class LineEditView extends Composite implements ClickListener {
 		vp.add(dateHeader);
 
 		FlexTable table = new FlexTable();
+		table.setStyleName("edittable");
 		vp.add(table);
 
 		postNmbBox = new TextBoxWithErrorText();
