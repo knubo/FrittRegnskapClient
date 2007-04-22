@@ -1,15 +1,12 @@
 package no.knubo.accounting.client.views;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
+import no.knubo.accounting.client.misc.IdHolder;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -39,10 +36,8 @@ public class LineEditView extends Composite implements ClickListener {
 
 	private static LineEditView me;
 
-	/* These holds images for remove buttons and their corresponding ids. */
-	private List removeImages = new ArrayList();
-
-	private List removeIds = new ArrayList();
+	private IdHolder removeIdHolder = new IdHolder();
+	
 
 	public static LineEditView show(I18NAccount messages, Constants constants,
 			String line) {
@@ -116,8 +111,7 @@ public class LineEditView extends Composite implements ClickListener {
 		projectNameBox.setSelectedIndex(0);
 		personBox.setSelectedIndex(0);
 
-		removeImages.clear();
-		removeIds.clear();
+		removeIdHolder.init();
 		while (postsTable.getRowCount() > 1) {
 			postsTable.removeRow(1);
 		}
@@ -200,34 +194,42 @@ public class LineEditView extends Composite implements ClickListener {
 	protected void addRegnLine(JSONValue value) {
 		JSONObject object = value.isObject();
 
+		String posttype = Util.str(object.get("Post_type"));
+		String person = Util.str(object.get("Person"));
+		String project = Util.str(object.get("Project"));
+		String amount = Util.money(object.get("Amount"));
+		String debkred = Util.debkred(messages, object.get("Debet"));
+		String id = Util.str(object.get("Id"));
+
+		addRegnLine(posttype, person, project, amount, debkred, id);
+	}
+
+	private void addRegnLine(String posttype, String person, String project,
+			String amount, String debkred, String id) {
 		int rowcount = postsTable.getRowCount();
 
 		PosttypeCache postCache = PosttypeCache.getInstance(constants);
 		EmploeeCache empCache = EmploeeCache.getInstance(constants);
 		ProjectCache projectCache = ProjectCache.getInstance(constants);
 
-		String posttype = Util.str(object.get("Post_type"));
 		postsTable.setText(rowcount, 0, posttype + "-"
 				+ postCache.getDescription(posttype));
 
 		postsTable.getRowFormatter().setStyleName(rowcount,
 				(rowcount % 2 == 0) ? "showlineposts2" : "showlineposts1");
 
-		postsTable.setText(rowcount, 1, empCache.getName(Util.str(object
-				.get("Person"))));
+		postsTable.setText(rowcount, 1, empCache.getName(person));
 
-		postsTable.setText(rowcount, 2, projectCache.getName(Util.str(object
-				.get("Project"))));
+		postsTable.setText(rowcount, 2, projectCache.getName(project));
 
-		postsTable.setText(rowcount, 3, Util.debkred(messages, object
-				.get("Debet")));
-		postsTable.setText(rowcount, 4, Util.money(object.get("Amount")));
+		postsTable.setText(rowcount, 3, debkred);
+		postsTable.setText(rowcount, 4, amount);
 
 		Image removeImage = new Image("images/list-remove.png");
 		postsTable.setWidget(rowcount, 5, removeImage);
 		removeImage.addClickListener(this);
-		removeIds.add(Util.str(object.get("Id")));
-		removeImages.add(removeImage);
+		
+		removeIdHolder.add(id, removeImage);
 	}
 
 	private Widget newFields() {
@@ -382,7 +384,7 @@ public class LineEditView extends Composite implements ClickListener {
 	}
 
 	private void doRowRemove(Widget sender) {
-		final String id = findRemoveId(sender);
+		final String id = removeIdHolder.findRemoveId(sender);
 
 		if (id == null) {
 			Window.alert("Failed to find id for delete.");
@@ -425,31 +427,67 @@ public class LineEditView extends Composite implements ClickListener {
 
 	protected void removeVisibleRow(String id) {
 		for (int i = 1; i < postsTable.getRowCount(); i++) {
-			String removeId = findRemoveId(postsTable.getWidget(i, 5));
+			String removeId = removeIdHolder.findRemoveId(postsTable.getWidget(i, 5));
 
 			if (id.equals(removeId)) {
 				postsTable.removeRow(i);
+				// TODO Re set the styles for the rows?
 				return;
 			}
 		}
 		Window.alert("Failed to remove line for id " + id);
 	}
 
-	private String findRemoveId(Widget sender) {
-		Iterator idIt = removeIds.iterator();
-		for (Iterator imageIt = removeImages.iterator(); imageIt.hasNext();) {
-			Image image = (Image) imageIt.next();
-			String id = (String) idIt.next();
-
-			if (image == sender) {
-				return id;
-			}
-		}
-		Window.alert("Failed to find id.");
-		return null;
-	}
 
 	private void doRowInsert() {
+		// TODO Add validation of input data.
+		
+		final String personId = personBox.getValue(personBox.getSelectedIndex());
+		final String debk = debKredbox.getValue(debKredbox.getSelectedIndex());
+		final String post_type = accountIdBox.getText();
+		final String money = amountBox.getText();
+		final String projectId = projectIdBox.getText();
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("action=insert");
+		Util.addPostParam(sb, "line", currentLine);
+		Util.addPostParam(sb, "debet", debk);
+		Util.addPostParam(sb, "post_type", post_type);
+		Util.addPostParam(sb, "amount", money);
+		Util.addPostParam(sb, "project", projectId);
+
+		Util.addPostParam(sb, "person", personId);
+
+
+		Window.alert("Gogo"+sb.toString());
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+				constants.baseurl() + "accounting/editaccountpost.php");
+
+		RequestCallback callback = new RequestCallback() {
+			public void onError(Request request, Throwable exception) {
+				Window.alert(exception.getMessage());
+			}
+
+			public void onResponseReceived(Request request, Response response) {
+				String id = response.getText().trim();
+				if ("0".equals(id)) {
+					rowErrorLabel.setText(messages.save_failed());
+				} else {
+					Window.alert("Adding...");
+					addRegnLine(post_type, personId, projectId,
+							Util.money(money), debk, id);
+				}
+				Util.timedMessage(updateLabel, "", 5);
+			}
+		};
+
+		try {
+			builder.setHeader("Content-Type",
+					"application/x-www-form-urlencoded");
+			builder.sendRequest(sb.toString(), callback);
+		} catch (RequestException e) {
+			Window.alert("Failed to send the request: " + e.getMessage());
+		}
 
 	}
 
