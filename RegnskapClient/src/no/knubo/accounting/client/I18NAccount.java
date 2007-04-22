@@ -224,9 +224,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String update();
 
   /**
-   * Translated "Penger inngis p� format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0".
+   * Translated "Penger inngis p&aring; format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0".
    * 
-   * @return translated "Penger inngis p� format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0"
+   * @return translated "Penger inngis p&aring; format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0"
    * @gwt.key field_money
    */
   String field_money();
@@ -286,6 +286,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key password
    */
   String password();
+
+  /**
+   * Translated "Sum".
+   * 
+   * @return translated "Sum"
+   * @gwt.key sum
+   */
+  String sum();
 
   /**
    * Translated "KREDIT".

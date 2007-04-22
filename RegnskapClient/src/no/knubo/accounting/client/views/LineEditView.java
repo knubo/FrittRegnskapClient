@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -136,6 +137,10 @@ public class LineEditView extends Composite implements ClickListener {
 
 	private Label updateLabel;
 
+	private Image previousImage;
+
+	private Image nextImage;
+
 	private void fetchInitalData() {
 
 		ResponseTextHandler rh = new ResponseTextHandler() {
@@ -183,6 +188,7 @@ public class LineEditView extends Composite implements ClickListener {
 				for (int i = 0; i < array.size(); i++) {
 					addRegnLine(array.get(i));
 				}
+				addSumLine();
 			}
 		};
 		// TODO Report stuff as being loaded.
@@ -234,6 +240,15 @@ public class LineEditView extends Composite implements ClickListener {
 
 		removeIdHolder.add(id, removeImage);
 	}
+	
+	private void addSumLine() {
+		postsTable.setText(postsTable.getRowCount(), 0, messages.sum());
+	}
+
+	private void removeSumLine() {
+		postsTable.removeRow(postsTable.getRowCount() - 1);
+	}
+
 
 	private Widget newFields() {
 		VerticalPanel panel = new VerticalPanel();
@@ -367,6 +382,18 @@ public class LineEditView extends Composite implements ClickListener {
 		table.setWidget(4, 0, updateButton);
 		updateLabel = new Label();
 		table.setWidget(4, 1, updateLabel);
+
+		HorizontalPanel hp = new HorizontalPanel();
+
+		previousImage = new Image("images/go-previous.png");
+		previousImage.addClickListener(this);
+
+		nextImage = new Image("images/go-next.png");
+		nextImage.addClickListener(this);
+		hp.add(previousImage);
+		hp.add(nextImage);
+		table.setWidget(4, 2, hp);
+
 		return vp;
 	}
 
@@ -380,6 +407,10 @@ public class LineEditView extends Composite implements ClickListener {
 			doUpdate();
 		} else if (sender == addLineButton) {
 			doRowInsert();
+		} else if (sender == nextImage) {
+			
+		} else if (sender == previousImage) {
+
 		} else {
 			doRowRemove(sender);
 		}
@@ -473,11 +504,14 @@ public class LineEditView extends Composite implements ClickListener {
 				if ("0".equals(id)) {
 					rowErrorLabel.setText(messages.save_failed());
 				} else {
+					removeSumLine();
 					addRegnLine(post_type, personId, projectId, Util
 							.money(money), debk, id);
+					addSumLine();
 				}
 				Util.timedMessage(updateLabel, "", 5);
 			}
+
 		};
 
 		try {
