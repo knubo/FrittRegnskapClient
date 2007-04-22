@@ -7,6 +7,8 @@ import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -37,7 +39,6 @@ public class LineEditView extends Composite implements ClickListener {
 	private static LineEditView me;
 
 	private IdHolder removeIdHolder = new IdHolder();
-	
 
 	public static LineEditView show(I18NAccount messages, Constants constants,
 			String line) {
@@ -50,17 +51,17 @@ public class LineEditView extends Composite implements ClickListener {
 
 	private FlexTable postsTable;
 
-	private TextBox postNmbBox;
+	private TextBoxWithErrorText postNmbBox;
 
 	private final I18NAccount messages;
 
 	private final Constants constants;
 
-	private TextBox dayBox;
+	private TextBoxWithErrorText dayBox;
 
-	private TextBox attachmentBox;
+	private TextBoxWithErrorText attachmentBox;
 
-	private TextBox descriptionBox;
+	private TextBoxWithErrorText descriptionBox;
 
 	private Label dateHeader;
 
@@ -228,7 +229,7 @@ public class LineEditView extends Composite implements ClickListener {
 		Image removeImage = new Image("images/list-remove.png");
 		postsTable.setWidget(rowcount, 5, removeImage);
 		removeImage.addClickListener(this);
-		
+
 		removeIdHolder.add(id, removeImage);
 	}
 
@@ -335,25 +336,25 @@ public class LineEditView extends Composite implements ClickListener {
 		FlexTable table = new FlexTable();
 		vp.add(table);
 
-		postNmbBox = new TextBox();
+		postNmbBox = new TextBoxWithErrorText();
 		postNmbBox.setMaxLength(7);
 		postNmbBox.setVisibleLength(5);
 		table.setWidget(0, 1, postNmbBox);
 		table.setText(0, 0, messages.postnmb());
 
-		dayBox = new TextBox();
+		dayBox = new TextBoxWithErrorText();
 		dayBox.setMaxLength(2);
 		dayBox.setVisibleLength(2);
 		table.setWidget(1, 1, dayBox);
 		table.setText(1, 0, messages.day());
 
-		attachmentBox = new TextBox();
+		attachmentBox = new TextBoxWithErrorText();
 		attachmentBox.setMaxLength(7);
 		attachmentBox.setVisibleLength(7);
 		table.setWidget(2, 1, attachmentBox);
 		table.setText(2, 0, messages.attachment());
 
-		descriptionBox = new TextBox();
+		descriptionBox = new TextBoxWithErrorText();
 		descriptionBox.setMaxLength(40);
 		descriptionBox.setVisibleLength(40);
 		table.setWidget(3, 1, descriptionBox);
@@ -439,7 +440,6 @@ public class LineEditView extends Composite implements ClickListener {
 		Window.alert("Failed to remove line for id " + id);
 	}
 
-
 	private void doRowInsert() {
 		// TODO Add validation of input data.
 		final String personId = Util.getSelected(personBox);
@@ -457,7 +457,6 @@ public class LineEditView extends Composite implements ClickListener {
 		Util.addPostParam(sb, "project", projectId);
 		Util.addPostParam(sb, "person", personId);
 
-
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
 				constants.baseurl() + "accounting/editaccountpost.php");
 
@@ -471,8 +470,8 @@ public class LineEditView extends Composite implements ClickListener {
 				if ("0".equals(id)) {
 					rowErrorLabel.setText(messages.save_failed());
 				} else {
-					addRegnLine(post_type, personId, projectId,
-							Util.money(money), debk, id);
+					addRegnLine(post_type, personId, projectId, Util
+							.money(money), debk, id);
 				}
 				Util.timedMessage(updateLabel, "", 5);
 			}
@@ -489,6 +488,10 @@ public class LineEditView extends Composite implements ClickListener {
 	}
 
 	private void doUpdate() {
+		if (!validateTop()) {
+			return;
+		}
+
 		updateButton.setEnabled(false);
 		updateLabel.setText("...");
 
@@ -540,5 +543,22 @@ public class LineEditView extends Composite implements ClickListener {
 		} catch (RequestException e) {
 			Window.alert("Failed to send the request: " + e.getMessage());
 		}
+	}
+
+	private boolean validateTop() {
+
+		MasterValidator masterValidator = new MasterValidator();
+
+		masterValidator.mandatory(messages.required_field(), new Widget[] {
+				descriptionBox, attachmentBox, dayBox, postNmbBox });
+
+		masterValidator.range(messages.field_to_low_zero(), new Integer(1),
+				null, new Widget[] { attachmentBox, postNmbBox });
+
+		masterValidator.day(messages.illegal_day(), Integer
+				.parseInt(currentYear), Integer.parseInt(currentMonth),
+				new Widget[] {dayBox});
+
+		return masterValidator.validateStatus();
 	}
 }
