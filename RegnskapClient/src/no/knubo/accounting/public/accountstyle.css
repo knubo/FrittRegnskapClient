@@ -1,6 +1,8 @@
 .error {
   PADDING:2px 2px 2px 2px;
   color: red;
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+  font-weight: normal;
 }
 
 .tableborder {
@@ -23,8 +25,8 @@
   vertical-align:bottom;
   PADDING:2px 2px 2px 2px;
   white-space:nowrap;
-
 }
+
 
 .showlineposts {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;

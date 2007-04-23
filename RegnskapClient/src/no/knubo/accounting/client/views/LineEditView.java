@@ -187,7 +187,7 @@ public class LineEditView extends Composite implements ClickListener {
 				for (int i = 0; i < array.size(); i++) {
 					addRegnLine(array.get(i));
 				}
-				addSumLine(Util.str(root.get("sum")));
+				addSumLineSetDefaults(Util.str(root.get("sum")));
 			}
 		};
 		// TODO Report stuff as being loaded.
@@ -225,9 +225,8 @@ public class LineEditView extends Composite implements ClickListener {
 		postsTable.getRowFormatter().setStyleName(rowcount,
 				(rowcount % 2 == 0) ? "showlineposts2" : "showlineposts1");
 
-		postsTable.setText(rowcount, 1, empCache.getName(person));
-
-		postsTable.setText(rowcount, 2, projectCache.getName(project));
+		postsTable.setText(rowcount, 1, projectCache.getName(project));
+		postsTable.setText(rowcount, 2, empCache.getName(person));
 
 		postsTable.setText(rowcount, 3, Util.debkred(messages, debkred));
 		postsTable.setText(rowcount, 4, amount);
@@ -240,11 +239,39 @@ public class LineEditView extends Composite implements ClickListener {
 		removeIdHolder.add(id, removeImage);
 	}
 
-	private void addSumLine(String sumAmount) {
+	/**
+	 * Adds sum line and sets default value for amount and debet/kredit. Also
+	 * sets default values for comboboxes and projects.
+	 * 
+	 * @param sumAmount
+	 *            The amount to display.
+	 */
+	private void addSumLineSetDefaults(String sumAmount) {
 		int row = postsTable.getRowCount();
 		postsTable.setText(row, 0, messages.sum());
 		postsTable.setText(row, 4, Util.money(Util.fixMoney(sumAmount)));
-		postsTable.getCellFormatter().setStyleName(row, 4, "right");
+
+		projectNameBox.setSelectedIndex(0);
+		projectIdBox.setText("");
+		accountNameBox.setSelectedIndex(0);
+		accountIdBox.setText("");
+		personBox.setSelectedIndex(0);
+		
+		if (sumAmount.equals("0")) {
+			amountBox.setText("");			
+			postsTable.getCellFormatter().setStyleName(row, 4, "right");
+			return;
+		}
+		
+		postsTable.getCellFormatter().setStyleName(row, 4, "right error");
+
+		if (sumAmount.startsWith("-")) {
+			amountBox.setText(sumAmount.substring(1));
+			debKredbox.setSelectedIndex(0); // Debet
+		} else {
+			debKredbox.setSelectedIndex(1); // Kredit
+			amountBox.setText(sumAmount);
+		}
 	}
 
 	private void removeSumLine() {
@@ -304,7 +331,7 @@ public class LineEditView extends Composite implements ClickListener {
 
 		projectNameBox = new ListBox();
 		projectNameBox.setVisibleItemCount(1);
-		
+
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.add(projectNameBox);
 		hp.add(projectErrorLabel);
@@ -455,7 +482,7 @@ public class LineEditView extends Composite implements ClickListener {
 					// Parts[0] should be same as id, but I use id.
 					removeVisibleRow(id);
 					removeSumLine();
-					addSumLine(parts[1]);
+					addSumLineSetDefaults(parts[1]);
 				}
 				Util.timedMessage(rowErrorLabel, "", 5);
 			}
@@ -529,7 +556,7 @@ public class LineEditView extends Composite implements ClickListener {
 
 					addRegnLine(post_type, personId, projectId, Util
 							.money(money), debk, parts[0]);
-					addSumLine(parts[1]);
+					addSumLineSetDefaults(parts[1]);
 				}
 				Util.timedMessage(updateLabel, "", 5);
 			}
@@ -634,9 +661,8 @@ public class LineEditView extends Composite implements ClickListener {
 				.getInstance(constants), new Widget[] { projectIdBox });
 
 		masterValidator.registry(messages.registry_invalid_key(), PosttypeCache
-				.getInstance(constants), new Widget[] { accountIdBox  });
-		
-		
+				.getInstance(constants), new Widget[] { accountIdBox });
+
 		return masterValidator.validateStatus();
 	}
 }

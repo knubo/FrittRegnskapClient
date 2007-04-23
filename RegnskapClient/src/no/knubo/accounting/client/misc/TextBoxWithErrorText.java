@@ -14,17 +14,17 @@ public class TextBoxWithErrorText extends Composite implements Validateable {
 	private final HTML label;
 
 	public TextBoxWithErrorText(HTML label) {
-		this.textBox = new TextBox();;
+		this.textBox = new TextBox();
 		this.label = label;
 		label.setStyleName("error");
 		initWidget(textBox);
 	}
-	
+
 	public TextBoxWithErrorText() {
 		textBox = new TextBox();
 		label = new HTML();
 		label.setStyleName("error");
-		
+
 		HorizontalPanel hp = new HorizontalPanel();
 
 		hp.add(textBox);
@@ -32,12 +32,18 @@ public class TextBoxWithErrorText extends Composite implements Validateable {
 
 		initWidget(hp);
 	}
-	
+
 	public TextBox getTextBox() {
 		return textBox;
 	}
 
+	/**
+	 * Sets the text and resets error view.
+	 * 
+	 * @param string
+	 */
 	public void setText(String string) {
+		label.setText("");
 		textBox.setText(string);
 	}
 
@@ -55,7 +61,9 @@ public class TextBoxWithErrorText extends Composite implements Validateable {
 
 	/**
 	 * Sets error to be displayed if error occures.
-	 * @param text The text.
+	 * 
+	 * @param text
+	 *            The text.
 	 */
 	public void setErrorText(String text) {
 		label.setHTML(text);
@@ -64,5 +72,5 @@ public class TextBoxWithErrorText extends Composite implements Validateable {
 	public void setFocus(boolean b) {
 		textBox.setFocus(b);
 	}
-	
+
 }
