@@ -3,6 +3,8 @@ package no.knubo.accounting.client.validation;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.knubo.accounting.client.cache.Registry;
+
 import com.google.gwt.user.client.ui.Widget;
 
 public class MasterValidator {
@@ -35,6 +37,12 @@ public class MasterValidator {
 		status &= rangeValidator.validate(this, widgets);
 	}
 
+	public void registry(String error, Registry registry, Widget[] widgets) {
+		RegistryValidator registryValidator = new RegistryValidator(error, registry);
+		
+		status &= registryValidator.validate(this, widgets);
+	}
+	
 	public boolean validateStatus() {
 		return status;
 	}

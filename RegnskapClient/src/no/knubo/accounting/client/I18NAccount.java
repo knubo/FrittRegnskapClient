@@ -160,6 +160,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_04();
 
   /**
+   * Translated "Forekomst finnes ikke".
+   * 
+   * @return translated "Forekomst finnes ikke"
+   * @gwt.key registry_invalid_key
+   */
+  String registry_invalid_key();
+
+  /**
    * Translated "Mars".
    * 
    * @return translated "Mars"

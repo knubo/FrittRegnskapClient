@@ -3,7 +3,9 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.cache.ProjectCache;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -91,10 +93,10 @@ public class PostView extends DialogBox implements ClickListener,
 	}
 
 	private void init(String line) {
-		while(table.getRowCount() > 5) {
+		while (table.getRowCount() > 5) {
 			table.removeRow(5);
 		}
-		
+
 		// TODO Report stuff as being loaded.
 		if (!HTTPRequest.asyncGet(constants.baseurl()
 				+ "accounting/showline.php?line=" + line, this)) {
@@ -136,6 +138,8 @@ public class PostView extends DialogBox implements ClickListener,
 		}
 		JSONArray array = value.isArray();
 		PosttypeCache postCache = PosttypeCache.getInstance(constants);
+		ProjectCache projectCache = ProjectCache.getInstance(constants);
+		EmploeeCache emploeeCache = EmploeeCache.getInstance(constants);
 
 		for (int i = 0; i < array.size(); i++) {
 			JSONValue postVal = array.get(i);
@@ -144,8 +148,10 @@ public class PostView extends DialogBox implements ClickListener,
 			table.setText(6 + i, 1, Util.debkred(messages, post.get("Debet")));
 			table.setText(6 + i, 2, postCache.getDescription(Util.str(post
 					.get("Post_type"))));
-			table.setText(6 + i, 3, Util.str(post.get("Project")));
-			table.setText(6 + i, 4, Util.str(post.get("Person")));
+			table.setText(6 + i, 3, projectCache.getName(Util.str(post
+					.get("Project"))));
+			table.setText(6 + i, 4, emploeeCache.getName(Util.str(post
+					.get("Person"))));
 			table.setText(6 + i, 5, Util.money(post.get("Amount")));
 			table.getCellFormatter().setStyleName(6 + i, 5, "right");
 

@@ -15,7 +15,7 @@ import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class ProjectCache implements ResponseTextHandler {
+public class ProjectCache implements ResponseTextHandler, Registry {
 
 	private static ProjectCache instance;
 
@@ -71,5 +71,9 @@ public class ProjectCache implements ResponseTextHandler {
 
 	public String getName(String id) {
 		return (String) projectGivesDesc.get(id);
+	}
+
+	public boolean keyExists(String key) {
+		return projectGivesDesc.containsKey(key);
 	}
 }

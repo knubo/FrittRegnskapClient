@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.ListBox;
  * @author knuterikborgen
  * 
  */
-public class PosttypeCache implements ResponseTextHandler {
+public class PosttypeCache implements ResponseTextHandler, Registry {
 
 	private static PosttypeCache instance;
 
@@ -73,5 +73,9 @@ public class PosttypeCache implements ResponseTextHandler {
 			
 			box.insertItem(desc, k, pos++);
 		}
+	}
+
+	public boolean keyExists(String key) {
+		return typeGivesDescription.containsKey(key);
 	}
 }

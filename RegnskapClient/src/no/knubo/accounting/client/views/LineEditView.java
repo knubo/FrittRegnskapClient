@@ -32,7 +32,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -80,7 +79,7 @@ public class LineEditView extends Composite implements ClickListener {
 	// private ListBox fordringBox;
 	private Label rowErrorLabel;
 
-	private TextBox projectIdBox;
+	private TextBoxWithErrorText projectIdBox;
 
 	private ListBox projectNameBox;
 
@@ -240,7 +239,7 @@ public class LineEditView extends Composite implements ClickListener {
 
 		removeIdHolder.add(id, removeImage);
 	}
-	
+
 	private void addSumLine(String sumAmount) {
 		int row = postsTable.getRowCount();
 		postsTable.setText(row, 0, messages.sum());
@@ -251,7 +250,6 @@ public class LineEditView extends Composite implements ClickListener {
 	private void removeSumLine() {
 		postsTable.removeRow(postsTable.getRowCount() - 1);
 	}
-
 
 	private Widget newFields() {
 		VerticalPanel panel = new VerticalPanel();
@@ -298,15 +296,23 @@ public class LineEditView extends Composite implements ClickListener {
 
 		table.setText(4, 0, messages.project());
 
-		projectIdBox = new TextBox();
+		HTML projectErrorLabel = new HTML();
+
+		projectIdBox = new TextBoxWithErrorText(projectErrorLabel);
 		projectIdBox.setVisibleLength(6);
 		table.setWidget(5, 0, projectIdBox);
 
 		projectNameBox = new ListBox();
 		projectNameBox.setVisibleItemCount(1);
-		table.setWidget(5, 1, projectNameBox);
+		
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.add(projectNameBox);
+		hp.add(projectErrorLabel);
+		table.setWidget(5, 1, hp);
+		table.getFlexCellFormatter().setColSpan(5, 1, 2);
+
 		ProjectCache.getInstance(constants).fill(projectNameBox);
-		Util.syncListbox(projectNameBox, projectIdBox);
+		Util.syncListbox(projectNameBox, projectIdBox.getTextBox());
 
 		table.setText(6, 0, messages.person());
 
@@ -411,7 +417,7 @@ public class LineEditView extends Composite implements ClickListener {
 		} else if (sender == addLineButton) {
 			doRowInsert();
 		} else if (sender == nextImage) {
-			
+
 		} else if (sender == previousImage) {
 
 		} else {
@@ -446,7 +452,7 @@ public class LineEditView extends Composite implements ClickListener {
 					rowErrorLabel.setText(messages.save_failed());
 				} else {
 					String[] parts = response.getText().trim().split(":");
-					// Parts[0] should be same as id, but I use id. 
+					// Parts[0] should be same as id, but I use id.
 					removeVisibleRow(id);
 					removeSumLine();
 					addSumLine(parts[1]);
@@ -471,11 +477,18 @@ public class LineEditView extends Composite implements ClickListener {
 
 			if (id.equals(removeId)) {
 				postsTable.removeRow(i);
-				// TODO Re set the styles for the rows?
+				resetPostsTableStyle();
 				return;
 			}
 		}
 		Window.alert("Failed to remove line for id " + id);
+	}
+
+	private void resetPostsTableStyle() {
+		for (int row = 1; row < postsTable.getRowCount(); row++) {
+			postsTable.getRowFormatter().setStyleName(row,
+					(row % 2 == 0) ? "showlineposts2" : "showlineposts1");
+		}
 	}
 
 	private void doRowInsert() {
@@ -513,7 +526,7 @@ public class LineEditView extends Composite implements ClickListener {
 				} else {
 					removeSumLine();
 					String[] parts = data.split(":");
-					
+
 					addRegnLine(post_type, personId, projectId, Util
 							.money(money), debk, parts[0]);
 					addSumLine(parts[1]);
@@ -617,6 +630,13 @@ public class LineEditView extends Composite implements ClickListener {
 		masterValidator.money(messages.field_money(),
 				new Widget[] { amountBox });
 
+		masterValidator.registry(messages.registry_invalid_key(), ProjectCache
+				.getInstance(constants), new Widget[] { projectIdBox });
+
+		masterValidator.registry(messages.registry_invalid_key(), PosttypeCache
+				.getInstance(constants), new Widget[] { accountIdBox  });
+		
+		
 		return masterValidator.validateStatus();
 	}
 }
