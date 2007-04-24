@@ -89,10 +89,15 @@ public class MonthView extends Composite implements ResponseTextHandler,
 	}
 
 	public void init() {
+		dockPanel.remove(table);
+		newTable();
+
 		getData("");
 	}
 
 	public void init(String year, String month) {
+		dockPanel.remove(table);
+		newTable();
 		getData("?month=" + month + "&year=" + year);
 	}
 
