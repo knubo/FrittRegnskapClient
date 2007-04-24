@@ -41,10 +41,10 @@ public class LineEditView extends Composite implements ClickListener {
 
 	private IdHolder removeIdHolder = new IdHolder();
 
-	public static LineEditView show(I18NAccount messages, Constants constants,
+	public static LineEditView show(ViewCallback caller, I18NAccount messages, Constants constants,
 			String line) {
 		if (me == null) {
-			me = new LineEditView(messages, constants, line);
+			me = new LineEditView(caller, messages, constants, line);
 		}
 		me.init(line);
 		return me;
@@ -64,7 +64,7 @@ public class LineEditView extends Composite implements ClickListener {
 
 	private TextBoxWithErrorText descriptionBox;
 
-	private Label dateHeader;
+	private HTML dateHeader;
 
 	private Button updateButton;
 
@@ -87,8 +87,11 @@ public class LineEditView extends Composite implements ClickListener {
 
 	private Button addLineButton;
 
-	private LineEditView(I18NAccount messages, Constants constants, String line) {
+	private final ViewCallback caller;
 
+	private LineEditView(ViewCallback caller, I18NAccount messages, Constants constants, String line) {
+
+		this.caller = caller;
 		this.messages = messages;
 		this.constants = constants;
 		DockPanel dp = new DockPanel();
@@ -379,8 +382,9 @@ public class LineEditView extends Composite implements ClickListener {
 
 		VerticalPanel vp = new VerticalPanel();
 
-		dateHeader = new Label();
+		dateHeader = new HTML();
 		dateHeader.setText("...");
+		dateHeader.addClickListener(this);
 		vp.add(dateHeader);
 
 		FlexTable table = new FlexTable();
@@ -428,13 +432,13 @@ public class LineEditView extends Composite implements ClickListener {
 		nextImage.addClickListener(this);
 		hp.add(previousImage);
 		hp.add(nextImage);
-		table.setWidget(4, 2, hp);
+		table.setWidget(0, 2, hp);
 
 		return vp;
 	}
 
 	private void setDateHeader() {
-		dateHeader.setText(Util.monthString(messages, currentMonth) + " "
+		dateHeader.setHTML(Util.monthString(messages, currentMonth) + " "
 				+ currentYear);
 	}
 
@@ -447,6 +451,8 @@ public class LineEditView extends Composite implements ClickListener {
 
 		} else if (sender == previousImage) {
 
+		} else if (sender == dateHeader) {
+			caller.viewMonth(currentYear, currentMonth);
 		} else {
 			doRowRemove(sender);
 		}
