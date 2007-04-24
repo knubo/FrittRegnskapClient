@@ -82,10 +82,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 	}
 
 	private Command commandRegisterNewline() {
+		final AccountingGWT around = this;
 		return new Command() {
 
 			public void execute() {
-				Widget widget = LineEditView.show(messages, constants, null);
+				Widget widget = LineEditView.show(around, messages, constants,
+						null);
 
 				setActiveWidget(widget);
 			}
@@ -98,9 +100,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 		return new Command() {
 
 			public void execute() {
-				Widget widget = monthLoader
-						.getInstance(constants, messages, me);
-
+				MonthView widget = (MonthView) monthLoader.getInstance(
+						constants, messages, me);
+				widget.init();
+				
 				setActiveWidget(widget);
 			}
 		};
@@ -119,8 +122,17 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 	}
 
 	public void openDetails(String id) {
-		Widget widget = LineEditView.show(messages, constants, id);
+		Widget widget = LineEditView.show(this, messages, constants, id);
 
 		setActiveWidget(widget);
+	}
+
+	public void viewMonth(String year, String month) {
+		MonthView instance = (MonthView) monthLoader.getInstance(constants,
+				messages, this);
+
+		instance.init(year, month);
+		
+		setActiveWidget(instance);
 	}
 }
