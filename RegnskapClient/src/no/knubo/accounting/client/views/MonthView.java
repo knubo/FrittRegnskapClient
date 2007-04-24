@@ -60,7 +60,8 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
 	private final ViewCallback caller;
 
-	public MonthView(Constants constants, I18NAccount messages, ViewCallback caller) {
+	public MonthView(Constants constants, I18NAccount messages,
+			ViewCallback caller) {
 		this.constants = constants;
 		this.messages = messages;
 		this.caller = caller;
@@ -82,11 +83,17 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
 		dockPanel.add(navPanel, DockPanel.NORTH);
 
-		getData("");
-
 		Window.setTitle(messages.title_monthview());
 
 		initWidget(dockPanel);
+	}
+
+	public void init() {
+		getData("");
+	}
+
+	public void init(String year, String month) {
+		getData("?month=" + month + "&year=" + year);
 	}
 
 	private void newTable() {
@@ -247,7 +254,8 @@ public class MonthView extends Composite implements ResponseTextHandler,
 		JSONValue value = obj.get(k);
 
 		if (value != null) {
-			table.setText(rowIndex, col, Util.money(Util.fixMoney(Util.str(value))));
+			table.setText(rowIndex, col, Util.money(Util.fixMoney(Util
+					.str(value))));
 		}
 	}
 
