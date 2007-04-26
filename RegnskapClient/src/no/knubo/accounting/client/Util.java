@@ -330,4 +330,16 @@ public class Util {
 		
 		return text;
 	}
+
+    public static void setIndexByValue(ListBox listbox, String string) {
+        if(listbox.getItemCount() == 0) {
+            return;
+        }
+        for(int i=listbox.getItemCount(); i-- >= 0 ; ) {
+            if(listbox.getValue(i).equals(string)) {
+                listbox.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
 }

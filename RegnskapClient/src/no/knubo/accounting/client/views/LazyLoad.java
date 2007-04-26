@@ -7,6 +7,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public abstract class LazyLoad {
 
-	public abstract Widget getInstance(Constants constants,
-			I18NAccount messages, ViewCallback caller);
+    public abstract Widget getInstance(Constants constants,
+            I18NAccount messages, ViewCallback caller);
 }
