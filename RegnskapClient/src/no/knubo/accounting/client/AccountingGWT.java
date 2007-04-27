@@ -58,7 +58,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         topMenu.addItem(new MenuItem(messages.menu_show(), showMenu));
 
         MenuBar membersMenu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(messages.menu_members(), membersMenu));
+        topMenu.addItem(new MenuItem(messages.menu_people(), membersMenu));
 
         MenuBar reportsMenu = new MenuBar(true);
         topMenu.addItem(new MenuItem(messages.menu_reports(), reportsMenu));
@@ -68,18 +68,20 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         registerMenu.addItem(messages.menuitem_regline(), true,
                 commandRegisterNewline());
+        registerMenu.addItem(messages.menuitem_registerMembership(), true,
+                commandRegisterMembership());
         showMenu.addItem(messages.menuitem_showmonth(), true,
                 commandShowMonth());
-        membersMenu.addItem(messages.menuitem_addmember(), true,
+        membersMenu.addItem(messages.menuitem_addperson(), true,
                 commandAddMember());
-        membersMenu.addItem(messages.menuitem_findmember(), true, commandFindMember());
-        
+        membersMenu.addItem(messages.menuitem_findperson(), true,
+                commandFindMember());
+
         activeView.add(aboutLoader.getInstance(constants, messages, this),
                 DockPanel.CENTER);
 
         RootPanel.get().add(docPanel);
     }
-
 
     private void loadCaches(Constants cons) {
         MonthHeaderCache.getInstance(cons);
@@ -102,7 +104,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         };
     }
 
-    private Command commandFindMember() {
+    private Command commandRegisterMembership() {
         final AccountingGWT around = this;
         return new Command() {
 
@@ -112,6 +114,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         };
     }
 
+    private Command commandFindMember() {
+        final AccountingGWT around = this;
+        return new Command() {
+
+            public void execute() {
+            }
+
+        };
+    }
 
     private Command commandAddMember() {
         final AccountingGWT around = this;

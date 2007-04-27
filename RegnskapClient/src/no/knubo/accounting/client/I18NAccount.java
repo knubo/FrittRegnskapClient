@@ -72,6 +72,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String date();
 
   /**
+   * Translated "Personer".
+   * 
+   * @return translated "Personer"
+   * @gwt.key menu_people
+   */
+  String menu_people();
+
+  /**
    * Translated "...lagret".
    * 
    * @return translated "...lagret"
@@ -152,6 +160,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String save();
 
   /**
+   * Translated "Registrer medlemsskap".
+   * 
+   * @return translated "Registrer medlemsskap"
+   * @gwt.key menuitem_registerMembership
+   */
+  String menuitem_registerMembership();
+
+  /**
    * Translated "April".
    * 
    * @return translated "April"
@@ -192,14 +208,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_reports();
 
   /**
-   * Translated "Medlemskap".
-   * 
-   * @return translated "Medlemskap"
-   * @gwt.key menu_members
-   */
-  String menu_members();
-
-  /**
    * Translated "Laster inn siden...".
    * 
    * @return translated "Laster inn siden..."
@@ -214,14 +222,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_06
    */
   String month_06();
-
-  /**
-   * Translated "S&oslash;k etter medlem".
-   * 
-   * @return translated "S&oslash;k etter medlem"
-   * @gwt.key menuitem_findmember
-   */
-  String menuitem_findmember();
 
   /**
    * Translated "Bilaget er benyttet tidligere.".
@@ -304,6 +304,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_show();
 
   /**
+   * Translated "S&oslash;k etter person".
+   * 
+   * @return translated "S&oslash;k etter person"
+   * @gwt.key menuitem_findperson
+   */
+  String menuitem_findperson();
+
+  /**
    * Translated "Passord".
    * 
    * @return translated "Passord"
@@ -376,6 +384,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_to_low_zero();
 
   /**
+   * Translated "Vis m&aring;ned".
+   * 
+   * @return translated "Vis m&aring;ned"
+   * @gwt.key menuitem_showmonth
+   */
+  String menuitem_showmonth();
+
+  /**
    * Translated "Oktober".
    * 
    * @return translated "Oktober"
@@ -384,12 +400,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_10();
 
   /**
-   * Translated "Vis m&aring;ned".
+   * Translated "Opprett person".
    * 
-   * @return translated "Vis m&aring;ned"
-   * @gwt.key menuitem_showmonth
+   * @return translated "Opprett person"
+   * @gwt.key menuitem_addperson
    */
-  String menuitem_showmonth();
+  String menuitem_addperson();
 
   /**
    * Translated "Bel&oslash;p".
@@ -414,14 +430,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key project
    */
   String project();
-
-  /**
-   * Translated "Opprett medlem".
-   * 
-   * @return translated "Opprett medlem"
-   * @gwt.key menuitem_addmember
-   */
-  String menuitem_addmember();
 
   /**
    * Translated "Detaljer".
