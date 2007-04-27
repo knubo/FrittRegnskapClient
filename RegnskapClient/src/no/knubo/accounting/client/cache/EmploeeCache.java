@@ -17,58 +17,67 @@ import com.google.gwt.user.client.ui.ListBox;
 
 public class EmploeeCache implements ResponseTextHandler {
 
-	private HashMap personById;
+    private HashMap personById;
 
-	private ArrayList keys;
+    private ArrayList keys;
 
-	private static EmploeeCache instance;
+    private static EmploeeCache instance;
 
-	public static EmploeeCache getInstance(Constants constants) {
-		if (instance == null) {
-			instance = new EmploeeCache(constants);
-		}
-		return instance;
-	}
+    private final Constants constants;
 
-	private EmploeeCache(Constants constants) {
-		if (!HTTPRequest.asyncGet(constants.baseurl()
-				+ "registers/persons.php?onlyemp=1", this)) {
-		}
-	}
+    public static EmploeeCache getInstance(Constants constants) {
+        if (instance == null) {
+            instance = new EmploeeCache(constants);
+        }
+        return instance;
+    }
 
-	public void onCompletion(String responseText) {
-		JSONValue jsonValue = JSONParser.parse(responseText);
-		JSONArray array = jsonValue.isArray();
-		personById = new HashMap();
-		keys = new ArrayList();
+    private EmploeeCache(Constants constants) {
+        this.constants = constants;
+        flush();
+    }
 
-		for (int i = 0; i < array.size(); i++) {
-			JSONObject obj = array.get(i).isObject();
+    public void onCompletion(String responseText) {
+        JSONValue jsonValue = JSONParser.parse(responseText);
+        JSONArray array = jsonValue.isArray();
+        personById = new HashMap();
+        keys = new ArrayList();
 
-			String key = Util.str(obj.get("id"));
-			keys.add(key);
-			personById.put(key, Util.str(obj.get("lastname"))+ ", "+Util.str(obj.get("firstname")));
-		}
-	}
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject obj = array.get(i).isObject();
 
-	/**
-	 * Fills the box, with a blank line at the top. 
-	 * @param box
-	 */
-	public void fill(ListBox box) {
-		box.insertItem("", 0);
-		int pos = 1;
-		for (Iterator i = keys.iterator(); i.hasNext();) {
-			String k = (String) i.next();
+            String key = Util.str(obj.get("id"));
+            keys.add(key);
+            personById.put(key, Util.str(obj.get("lastname")) + ", "
+                    + Util.str(obj.get("firstname")));
+        }
+    }
 
-			String desc = (String) personById.get(k);
+    /**
+     * Fills the box, with a blank line at the top.
+     * 
+     * @param box
+     */
+    public void fill(ListBox box) {
+        box.insertItem("", 0);
+        int pos = 1;
+        for (Iterator i = keys.iterator(); i.hasNext();) {
+            String k = (String) i.next();
 
-			box.insertItem(desc, k, pos++);
-		}
-	}
-	
-	public String getName(String id) {
-		return (String) personById.get(id);
-	}
+            String desc = (String) personById.get(k);
 
+            box.insertItem(desc, k, pos++);
+        }
+    }
+
+    public String getName(String id) {
+        return (String) personById.get(id);
+    }
+
+    public void flush() {
+        if (!HTTPRequest.asyncGet(constants.baseurl()
+                + "registers/persons.php?onlyemp=1", this)) {
+            // TODO report errors
+        }
+    }
 }

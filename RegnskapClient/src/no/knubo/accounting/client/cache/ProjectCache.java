@@ -33,6 +33,7 @@ public class ProjectCache implements ResponseTextHandler, Registry {
 	private ProjectCache(Constants constants) {
 		if (!HTTPRequest.asyncGet(constants.baseurl()
 				+ "registers/projects.php", this)) {
+            //TODO report errors
 		}
 	}
 

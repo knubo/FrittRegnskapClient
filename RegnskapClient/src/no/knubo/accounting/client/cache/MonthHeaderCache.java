@@ -36,6 +36,7 @@ public class MonthHeaderCache implements ResponseTextHandler {
 	private MonthHeaderCache(Constants constants) {
 		if (!HTTPRequest.asyncGet(constants.baseurl()
 				+ "registers/monthcolumns.php", this)) {
+            //TODO Report errors,
 		}
 	}
 

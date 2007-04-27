@@ -40,6 +40,7 @@ public class PosttypeCache implements ResponseTextHandler, Registry {
 	private PosttypeCache(Constants constants) {
 		if (!HTTPRequest.asyncGet(constants.baseurl()
 				+ "registers/posttypes.php", this)) {
+            //TODO report errors.
 		}
 	}
 

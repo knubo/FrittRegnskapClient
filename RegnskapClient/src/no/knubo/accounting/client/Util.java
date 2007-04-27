@@ -120,7 +120,8 @@ public class Util {
 		return money(string.stringValue());
 	}
 
-	public static String money(String str) {
+	public static String money(String original) {
+        String str = original;
 
 		if(str.charAt(0) == '-') {
 			return "-"+money(str.substring(1));
@@ -315,9 +316,11 @@ public class Util {
 		return box.getValue(box.getSelectedIndex());
 	}
 
-	public static String fixMoney(String text) {
-		text = text.replace(',', '.');
-		int posp = text.indexOf('.');
+	public static String fixMoney(String original) {
+        
+        String text = original.replace(',', '.');
+		
+        int posp = text.indexOf('.');
 		
 		if (posp == -1) {
 			return text + ".00";

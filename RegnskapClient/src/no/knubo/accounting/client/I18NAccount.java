@@ -8,6 +8,14 @@ package no.knubo.accounting.client;
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
   /**
+   * Translated "Telefon".
+   * 
+   * @return translated "Telefon"
+   * @gwt.key phone
+   */
+  String phone();
+
+  /**
    * Translated "Fordring".
    * 
    * @return translated "Fordring"
@@ -56,9 +64,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment();
 
   /**
-   * Translated "Post nr".
+   * Translated "Postnr".
    * 
-   * @return translated "Post nr"
+   * @return translated "Postnr"
    * @gwt.key postnmb
    */
   String postnmb();
@@ -96,6 +104,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String required_field();
 
   /**
+   * Translated "Mobil".
+   * 
+   * @return translated "Mobil"
+   * @gwt.key cellphone
+   */
+  String cellphone();
+
+  /**
    * Translated "Ulovlig dato".
    * 
    * @return translated "Ulovlig dato"
@@ -118,6 +134,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_regline
    */
   String menuitem_regline();
+
+  /**
+   * Translated "Standardverdier".
+   * 
+   * @return translated "Standardverdier"
+   * @gwt.key menuitem_values
+   */
+  String menuitem_values();
 
   /**
    * Translated "Desember".
@@ -158,6 +182,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key save
    */
   String save();
+
+  /**
+   * Translated "Noge".
+   * 
+   * @return translated "Noge"
+   * @gwt.key country_norway
+   */
+  String country_norway();
 
   /**
    * Translated "Registrer medlemsskap".
@@ -208,6 +240,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_reports();
 
   /**
+   * Translated "Fornavn".
+   * 
+   * @return translated "Fornavn"
+   * @gwt.key firstname
+   */
+  String firstname();
+
+  /**
    * Translated "Laster inn siden...".
    * 
    * @return translated "Laster inn siden..."
@@ -256,6 +296,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_money();
 
   /**
+   * Translated "Adresse".
+   * 
+   * @return translated "Adresse"
+   * @gwt.key address
+   */
+  String address();
+
+  /**
    * Translated "Person".
    * 
    * @return translated "Person"
@@ -302,6 +350,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menu_show
    */
   String menu_show();
+
+  /**
+   * Translated "Innstillinger".
+   * 
+   * @return translated "Innstillinger"
+   * @gwt.key menu_settings
+   */
+  String menu_settings();
+
+  /**
+   * Translated "By".
+   * 
+   * @return translated "By"
+   * @gwt.key city
+   */
+  String city();
 
   /**
    * Translated "S&oslash;k etter person".
@@ -368,6 +432,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String account();
 
   /**
+   * Translated "Sverige".
+   * 
+   * @return translated "Sverige"
+   * @gwt.key country_sweeden
+   */
+  String country_sweeden();
+
+  /**
    * Translated "Post nr. er benyttet tidligere".
    * 
    * @return translated "Post nr. er benyttet tidligere"
@@ -400,9 +472,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_10();
 
   /**
-   * Translated "Opprett person".
+   * Translated "Etternavn".
    * 
-   * @return translated "Opprett person"
+   * @return translated "Etternavn"
+   * @gwt.key lastname
+   */
+  String lastname();
+
+  /**
+   * Translated "Opprett/endre person".
+   * 
+   * @return translated "Opprett/endre person"
    * @gwt.key menuitem_addperson
    */
   String menuitem_addperson();
@@ -414,6 +494,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key amount
    */
   String amount();
+
+  /**
+   * Translated "Land".
+   * 
+   * @return translated "Land"
+   * @gwt.key country
+   */
+  String country();
+
+  /**
+   * Translated "Ansatt".
+   * 
+   * @return translated "Ansatt"
+   * @gwt.key employee
+   */
+  String employee();
 
   /**
    * Translated "Beskrivelse".
@@ -430,6 +526,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key project
    */
   String project();
+
+  /**
+   * Translated "Epost".
+   * 
+   * @return translated "Epost"
+   * @gwt.key email
+   */
+  String email();
 
   /**
    * Translated "Detaljer".

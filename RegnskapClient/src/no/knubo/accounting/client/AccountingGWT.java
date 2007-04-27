@@ -8,6 +8,7 @@ import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthView;
+import no.knubo.accounting.client.views.PersonEditView;
 import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -63,6 +64,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar reportsMenu = new MenuBar(true);
         topMenu.addItem(new MenuItem(messages.menu_reports(), reportsMenu));
 
+        MenuBar settingsMenu = new MenuBar(true);
+        topMenu.addItem(new MenuItem(messages.menu_settings(),
+                settingsMenu));
+
         MenuBar aboutMenu = new MenuBar(true);
         topMenu.addItem(new MenuItem(messages.menu_info(), aboutMenu));
 
@@ -76,6 +81,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 commandAddMember());
         membersMenu.addItem(messages.menuitem_findperson(), true,
                 commandFindMember());
+        settingsMenu.addItem(messages.menuitem_values(), true,
+                commandSettings());
 
         activeView.add(aboutLoader.getInstance(constants, messages, this),
                 DockPanel.CENTER);
@@ -105,7 +112,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     private Command commandRegisterMembership() {
-        final AccountingGWT around = this;
+        final AccountingGWT me = this;
         return new Command() {
 
             public void execute() {
@@ -124,11 +131,25 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         };
     }
 
-    private Command commandAddMember() {
+    private Command commandSettings() {
         final AccountingGWT around = this;
         return new Command() {
 
             public void execute() {
+            }
+
+        };
+    }
+
+    private Command commandAddMember() {
+        final AccountingGWT me = this;
+        return new Command() {
+
+            public void execute() {
+                PersonEditView widget = PersonEditView.show(constants,
+                        messages, me);
+                widget.init(null);
+                setActiveWidget(widget);
             }
 
         };
@@ -154,10 +175,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView.setCellWidth(widget, "100%");
         activeView.setCellHeight(widget, "100%");
         activeView.setCellVerticalAlignment(widget, DockPanel.ALIGN_TOP);
-    }
-
-    public void execute() {
-
     }
 
     public void openDetails(String id) {
