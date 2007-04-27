@@ -24,115 +24,143 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class AccountingGWT implements EntryPoint, ViewCallback {
 
-	private I18NAccount messages;
+    private I18NAccount messages;
 
-	private LazyLoad monthLoader = MonthView.loader();
+    private LazyLoad monthLoader = MonthView.loader();
 
-	private LazyLoad aboutLoader = AboutView.loader();
+    private LazyLoad aboutLoader = AboutView.loader();
 
-	private DockPanel activeView;
+    private DockPanel activeView;
 
-	private Constants constants;
+    private Constants constants;
 
-	/**
-	 * This is the entry point method.
-	 */
-	public void onModuleLoad() {
-		messages = (I18NAccount) GWT.create(I18NAccount.class);
-		constants = (Constants) GWT.create(Constants.class);
+    /**
+     * This is the entry point method.
+     */
+    public void onModuleLoad() {
+        messages = (I18NAccount) GWT.create(I18NAccount.class);
+        constants = (Constants) GWT.create(Constants.class);
 
-		loadCaches(constants);
-		DockPanel docPanel = new DockPanel();
+        loadCaches(constants);
+        DockPanel docPanel = new DockPanel();
 
-		MenuBar topMenu = new MenuBar();
-		docPanel.add(topMenu, DockPanel.NORTH);
+        MenuBar topMenu = new MenuBar();
+        docPanel.add(topMenu, DockPanel.NORTH);
 
-		activeView = new DockPanel();
-		activeView.setStyleName("activeview");
-		docPanel.add(activeView, DockPanel.CENTER);
+        activeView = new DockPanel();
+        activeView.setStyleName("activeview");
+        docPanel.add(activeView, DockPanel.CENTER);
 
-		MenuBar registerMenu = new MenuBar(true);
-		topMenu.addItem(new MenuItem(messages.menu_register(), registerMenu));
+        MenuBar registerMenu = new MenuBar(true);
+        topMenu.addItem(new MenuItem(messages.menu_register(), registerMenu));
 
-		MenuBar showMenu = new MenuBar(true);
-		topMenu.addItem(new MenuItem(messages.menu_show(), showMenu));
+        MenuBar showMenu = new MenuBar(true);
+        topMenu.addItem(new MenuItem(messages.menu_show(), showMenu));
 
-		MenuBar reportsMenu = new MenuBar(true);
-		topMenu.addItem(new MenuItem(messages.menu_reports(), reportsMenu));
+        MenuBar membersMenu = new MenuBar(true);
+        topMenu.addItem(new MenuItem(messages.menu_members(), membersMenu));
 
-		MenuBar aboutMenu = new MenuBar(true);
-		topMenu.addItem(new MenuItem(messages.menu_info(), aboutMenu));
+        MenuBar reportsMenu = new MenuBar(true);
+        topMenu.addItem(new MenuItem(messages.menu_reports(), reportsMenu));
 
-		registerMenu.addItem(messages.menuitem_regline(), true,
-				commandRegisterNewline());
-		showMenu.addItem(messages.menuitem_showmonth(), true,
-				commandShowMonth());
+        MenuBar aboutMenu = new MenuBar(true);
+        topMenu.addItem(new MenuItem(messages.menu_info(), aboutMenu));
 
-		activeView.add(aboutLoader.getInstance(constants, messages, this),
-				DockPanel.CENTER);
+        registerMenu.addItem(messages.menuitem_regline(), true,
+                commandRegisterNewline());
+        showMenu.addItem(messages.menuitem_showmonth(), true,
+                commandShowMonth());
+        membersMenu.addItem(messages.menuitem_addmember(), true,
+                commandAddMember());
+        membersMenu.addItem(messages.menuitem_findmember(), true, commandFindMember());
+        
+        activeView.add(aboutLoader.getInstance(constants, messages, this),
+                DockPanel.CENTER);
 
-		RootPanel.get().add(docPanel);
-	}
+        RootPanel.get().add(docPanel);
+    }
 
-	private void loadCaches(Constants cons) {
-		MonthHeaderCache.getInstance(cons);
-		PosttypeCache.getInstance(cons);
-		EmploeeCache.getInstance(cons);
-		ProjectCache.getInstance(cons);
-	}
 
-	private Command commandRegisterNewline() {
-		final AccountingGWT around = this;
-		return new Command() {
+    private void loadCaches(Constants cons) {
+        MonthHeaderCache.getInstance(cons);
+        PosttypeCache.getInstance(cons);
+        EmploeeCache.getInstance(cons);
+        ProjectCache.getInstance(cons);
+    }
 
-			public void execute() {
-				Widget widget = LineEditView.show(around, messages, constants,
-						null);
+    private Command commandRegisterNewline() {
+        final AccountingGWT around = this;
+        return new Command() {
 
-				setActiveWidget(widget);
-			}
+            public void execute() {
+                Widget widget = LineEditView.show(around, messages, constants,
+                        null);
 
-		};
-	}
+                setActiveWidget(widget);
+            }
 
-	private Command commandShowMonth() {
-		final AccountingGWT me = this;
-		return new Command() {
+        };
+    }
 
-			public void execute() {
-				MonthView widget = (MonthView) monthLoader.getInstance(
-						constants, messages, me);
-				widget.init();
-				
-				setActiveWidget(widget);
-			}
-		};
-	}
+    private Command commandFindMember() {
+        final AccountingGWT around = this;
+        return new Command() {
 
-	private void setActiveWidget(Widget widget) {
-		activeView.clear();
-		activeView.add(widget, DockPanel.CENTER);
-		activeView.setCellWidth(widget, "100%");
-		activeView.setCellHeight(widget, "100%");
-		activeView.setCellVerticalAlignment(widget, DockPanel.ALIGN_TOP);
-	}
+            public void execute() {
+            }
 
-	public void execute() {
+        };
+    }
 
-	}
 
-	public void openDetails(String id) {
-		Widget widget = LineEditView.show(this, messages, constants, id);
+    private Command commandAddMember() {
+        final AccountingGWT around = this;
+        return new Command() {
 
-		setActiveWidget(widget);
-	}
+            public void execute() {
+            }
 
-	public void viewMonth(String year, String month) {
-		MonthView instance = (MonthView) monthLoader.getInstance(constants,
-				messages, this);
+        };
+    }
 
-		instance.init(year, month);
-		
-		setActiveWidget(instance);
-	}
+    private Command commandShowMonth() {
+        final AccountingGWT me = this;
+        return new Command() {
+
+            public void execute() {
+                MonthView widget = (MonthView) monthLoader.getInstance(
+                        constants, messages, me);
+                widget.init();
+
+                setActiveWidget(widget);
+            }
+        };
+    }
+
+    private void setActiveWidget(Widget widget) {
+        activeView.clear();
+        activeView.add(widget, DockPanel.CENTER);
+        activeView.setCellWidth(widget, "100%");
+        activeView.setCellHeight(widget, "100%");
+        activeView.setCellVerticalAlignment(widget, DockPanel.ALIGN_TOP);
+    }
+
+    public void execute() {
+
+    }
+
+    public void openDetails(String id) {
+        Widget widget = LineEditView.show(this, messages, constants, id);
+
+        setActiveWidget(widget);
+    }
+
+    public void viewMonth(String year, String month) {
+        MonthView instance = (MonthView) monthLoader.getInstance(constants,
+                messages, this);
+
+        instance.init(year, month);
+
+        setActiveWidget(instance);
+    }
 }

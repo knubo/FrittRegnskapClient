@@ -176,6 +176,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_03();
 
   /**
+   * Translated "M&aring;nedsoversikt".
+   * 
+   * @return translated "M&aring;nedsoversikt"
+   * @gwt.key title_monthview
+   */
+  String title_monthview();
+
+  /**
    * Translated "Rapporter".
    * 
    * @return translated "Rapporter"
@@ -184,12 +192,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_reports();
 
   /**
-   * Translated "M&aring;nedsoversikt".
+   * Translated "Medlemskap".
    * 
-   * @return translated "M&aring;nedsoversikt"
-   * @gwt.key title_monthview
+   * @return translated "Medlemskap"
+   * @gwt.key menu_members
    */
-  String title_monthview();
+  String menu_members();
 
   /**
    * Translated "Laster inn siden...".
@@ -206,6 +214,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_06
    */
   String month_06();
+
+  /**
+   * Translated "S&oslash;k etter medlem".
+   * 
+   * @return translated "S&oslash;k etter medlem"
+   * @gwt.key menuitem_findmember
+   */
+  String menuitem_findmember();
 
   /**
    * Translated "Bilaget er benyttet tidligere.".
@@ -280,9 +296,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_11();
 
   /**
-   * Translated "Vis".
+   * Translated "Oversikt".
    * 
-   * @return translated "Vis"
+   * @return translated "Oversikt"
    * @gwt.key menu_show
    */
   String menu_show();
@@ -398,6 +414,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key project
    */
   String project();
+
+  /**
+   * Translated "Opprett medlem".
+   * 
+   * @return translated "Opprett medlem"
+   * @gwt.key menuitem_addmember
+   */
+  String menuitem_addmember();
 
   /**
    * Translated "Detaljer".
