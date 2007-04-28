@@ -184,9 +184,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String save();
 
   /**
-   * Translated "Noge".
+   * Translated "Norge".
    * 
-   * @return translated "Noge"
+   * @return translated "Norge"
    * @gwt.key country_norway
    */
   String country_norway();
@@ -240,12 +240,28 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_reports();
 
   /**
+   * Translated "Danmark".
+   * 
+   * @return translated "Danmark"
+   * @gwt.key country_denmark
+   */
+  String country_denmark();
+
+  /**
    * Translated "Fornavn".
    * 
    * @return translated "Fornavn"
    * @gwt.key firstname
    */
   String firstname();
+
+  /**
+   * Translated "Ulovlig epostadresse".
+   * 
+   * @return translated "Ulovlig epostadresse"
+   * @gwt.key invalid_email
+   */
+  String invalid_email();
 
   /**
    * Translated "Laster inn siden...".
@@ -430,6 +446,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key account
    */
   String account();
+
+  /**
+   * Translated "Other".
+   * 
+   * @return translated "Other"
+   * @gwt.key country_other
+   */
+  String country_other();
+
+  /**
+   * Translated "Finland".
+   * 
+   * @return translated "Finland"
+   * @gwt.key country_finland
+   */
+  String country_finland();
 
   /**
    * Translated "Sverige".

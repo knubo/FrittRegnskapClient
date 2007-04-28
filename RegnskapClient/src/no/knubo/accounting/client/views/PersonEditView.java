@@ -2,14 +2,25 @@ package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -44,6 +55,8 @@ public class PersonEditView extends Composite implements ClickListener {
     private CheckBox employeeCheck;
 
     private TextBoxWithErrorText addressBox;
+
+    private HTML saveStatus;
 
     private Button updateButton;
 
@@ -86,6 +99,9 @@ public class PersonEditView extends Composite implements ClickListener {
         countryListBox.setVisibleItemCount(1);
         countryListBox.addItem(messages.country_norway(), "NO");
         countryListBox.addItem(messages.country_sweeden(), "SE");
+        countryListBox.addItem(messages.country_denmark(), "DK");
+        countryListBox.addItem(messages.country_finland(), "FI");
+        countryListBox.addItem(messages.country_other(), "??");
         phoneBox = new TextBoxWithErrorText();
         phoneBox.setMaxLength(13);
         cellphoneBox = new TextBoxWithErrorText();
@@ -93,6 +109,9 @@ public class PersonEditView extends Composite implements ClickListener {
         employeeCheck = new CheckBox();
 
         updateButton = new Button(messages.update());
+        updateButton.addClickListener(this);
+
+        saveStatus = new HTML();
 
         table.setWidget(0, 1, firstnameBox);
         table.setWidget(1, 1, lastnameBox);
@@ -105,6 +124,7 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setWidget(8, 1, cellphoneBox);
         table.setWidget(9, 1, employeeCheck);
         table.setWidget(10, 0, updateButton);
+        table.setWidget(10, 1, saveStatus);
 
         initWidget(dp);
     }
@@ -118,11 +138,68 @@ public class PersonEditView extends Composite implements ClickListener {
     }
 
     public void onClick(Widget sender) {
+        if (sender == updateButton) {
+            doSave();
+        }
+    }
+
+    private void doSave() {
+        if (!validateSave()) {
+            return;
+        }
+
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("action=save");
+        Util.addPostParam(sb, "id", currentId);
+        Util.addPostParam(sb, "firstname", firstnameBox.getText());
+        Util.addPostParam(sb, "lastname", lastnameBox.getText());
+        Util.addPostParam(sb, "email", emailBox.getText());
+        Util.addPostParam(sb, "address", addressBox.getText());
+        Util.addPostParam(sb, "postnmb", postnmbBox.getText());
+        Util.addPostParam(sb, "city", cityBox.getText());
+        Util.addPostParam(sb, "country", Util.getSelected(countryListBox));
+        Util.addPostParam(sb, "phone", phoneBox.getText());
+        Util.addPostParam(sb, "cellphone", cellphoneBox.getText());
+        Util
+                .addPostParam(sb, "employee", employeeCheck.isChecked() ? "1"
+                        : "0");
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                constants.baseurl() + "registers/persons.php");
+
+        RequestCallback callback = new RequestCallback() {
+            public void onError(Request request, Throwable exception) {
+                Window.alert(exception.getMessage());
+            }
+
+            public void onResponseReceived(Request request, Response response) {
+                Window.alert(response.getText());
+                if ("0".equals(response.getText().trim())) {
+                    saveStatus.setText(messages.save_failed());
+                } else {
+                    saveStatus.setText(messages.save_ok());
+                    if (currentId == null) {
+                        currentId = response.getText();
+                        updateButton.setHTML(messages.update());
+                    }
+                }
+                Util.timedMessage(saveStatus, "", 5);
+            }
+        };
+
+        try {
+            builder.setHeader("Content-Type",
+                    "application/x-www-form-urlencoded");
+            builder.sendRequest(sb.toString(), callback);
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
     }
 
     public void init(String currentId) {
         this.currentId = currentId;
-        
+
         if (currentId == null) {
             updateButton.setHTML(messages.save());
         } else {
@@ -130,4 +207,15 @@ public class PersonEditView extends Composite implements ClickListener {
         }
     }
 
+    private boolean validateSave() {
+        MasterValidator masterValidator = new MasterValidator();
+
+        masterValidator.mandatory(messages.required_field(), new Widget[] {
+                lastnameBox, firstnameBox });
+
+        masterValidator.email(messages.invalid_email(),
+                new Widget[] { emailBox });
+
+        return masterValidator.validateStatus();
+    }
 }
