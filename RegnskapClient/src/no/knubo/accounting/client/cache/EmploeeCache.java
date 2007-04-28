@@ -76,7 +76,7 @@ public class EmploeeCache implements ResponseTextHandler {
 
     public void flush() {
         if (!HTTPRequest.asyncGet(constants.baseurl()
-                + "registers/persons.php?onlyemp=1", this)) {
+                + "registers/persons.php?action=all&onlyemp=1", this)) {
             // TODO report errors
         }
     }
