@@ -161,9 +161,8 @@ public class PersonEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "country", Util.getSelected(countryListBox));
         Util.addPostParam(sb, "phone", phoneBox.getText());
         Util.addPostParam(sb, "cellphone", cellphoneBox.getText());
-        Util
-                .addPostParam(sb, "employee", employeeCheck.isChecked() ? "1"
-                        : "0");
+        String isChecked = employeeCheck.isChecked() ? "1" : "0";
+        Util.addPostParam(sb, "employee", isChecked);
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
@@ -201,6 +200,17 @@ public class PersonEditView extends Composite implements ClickListener {
         this.currentId = currentId;
 
         if (currentId == null) {
+            firstnameBox.setText("");
+            lastnameBox.setText("");
+            emailBox.setText("");
+            addressBox.setText("");
+            postnmbBox.setText("");
+            cityBox.setText("");
+            countryListBox.setSelectedIndex(0);
+            phoneBox.setText("");
+            cellphoneBox.setText("");
+            employeeCheck.setChecked(false);
+            
             updateButton.setHTML(messages.save());
         } else {
             updateButton.setHTML(messages.update());
