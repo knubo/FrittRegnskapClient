@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.IdHolder;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -32,12 +34,15 @@ public class PersonSearchView extends Composite implements ClickListener {
         if (me == null) {
             me = new PersonSearchView(caller, messages, constants);
         }
+        me.setVisible(true);
         return me;
     }
 
     private I18NAccount messages;
 
     private Constants constants;
+
+    private final ViewCallback caller;
 
     private TextBox firstnameBox;
 
@@ -53,10 +58,15 @@ public class PersonSearchView extends Composite implements ClickListener {
 
     private FlexTable resultTable;
 
+    private IdHolder idHolder;
+
     private PersonSearchView(ViewCallback caller, I18NAccount messages,
             Constants constants) {
+        this.caller = caller;
         this.messages = messages;
         this.constants = constants;
+
+        this.idHolder = new IdHolder();
 
         DockPanel dp = new DockPanel();
         FlexTable searchTable = new FlexTable();
@@ -105,7 +115,7 @@ public class PersonSearchView extends Composite implements ClickListener {
         resultTable.setHTML(0, 4, messages.phone());
         resultTable.setHTML(0, 5, messages.cellphone());
         resultTable.setHTML(0, 6, messages.employee());
-
+        resultTable.setHTML(0, 7, "");
         initWidget(dp);
 
     }
@@ -115,7 +125,16 @@ public class PersonSearchView extends Composite implements ClickListener {
             doSearch();
         } else if (sender == clearButton) {
             doClear();
+        } else {
+            doEditPerson(sender);
         }
+    }
+
+    private void doEditPerson(Widget sender) {
+        String id = idHolder.findId(sender);
+
+        setVisible(false);
+        caller.editPerson(id);
     }
 
     private void doClear() {
@@ -186,12 +205,17 @@ public class PersonSearchView extends Composite implements ClickListener {
                     } else {
                         resultTable.setHTML(row, 6, "");
                     }
-                    resultTable.getCellFormatter().setStyleName(row, 6, "center");
+                    resultTable.getCellFormatter().setStyleName(row, 6,
+                            "center");
 
                     String style = (row % 2 == 0) ? "showlineposts2"
                             : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
 
+                    Image image = new Image("images/edit-find-replace.png");
+                    image.addClickListener(me);
+                    idHolder.add(Util.str(obj.get("id")), image);
+                    resultTable.setWidget(row, 7, image);
                 }
             }
         };

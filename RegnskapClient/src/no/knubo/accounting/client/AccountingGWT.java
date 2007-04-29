@@ -66,8 +66,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         topMenu.addItem(new MenuItem(messages.menu_reports(), reportsMenu));
 
         MenuBar settingsMenu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(messages.menu_settings(),
-                settingsMenu));
+        topMenu.addItem(new MenuItem(messages.menu_settings(), settingsMenu));
 
         MenuBar aboutMenu = new MenuBar(true);
         topMenu.addItem(new MenuItem(messages.menu_info(), aboutMenu));
@@ -127,7 +126,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         return new Command() {
 
             public void execute() {
-                Widget widget = PersonSearchView.show(around, messages, constants);
+                Widget widget = PersonSearchView.show(around, messages,
+                        constants);
 
                 setActiveWidget(widget);
             }
@@ -194,5 +194,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         instance.init(year, month);
 
         setActiveWidget(instance);
+    }
+
+    public void editPerson(String id) {
+        PersonEditView widget = PersonEditView.show(constants, messages, this);
+        widget.init(id);
+        setActiveWidget(widget);
+
     }
 }

@@ -11,6 +11,9 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -138,6 +141,59 @@ public class PersonEditView extends Composite implements ClickListener {
         }
     }
 
+    private void doOpen() {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("action=get");
+        Util.addPostParam(sb, "id", currentId);
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                constants.baseurl() + "registers/persons.php");
+
+        RequestCallback callback = new RequestCallback() {
+            public void onError(Request request, Throwable exception) {
+                Window.alert(exception.getMessage());
+            }
+
+            public void onResponseReceived(Request request, Response response) {
+                JSONValue value = JSONParser.parse(response.getText());
+
+                if (value == null) {
+                    Window.alert("Failed to load person");
+                    return;
+                }
+                JSONObject object = value.isObject();
+
+                if (object == null) {
+                    Window.alert("Failed to load person");
+                    return;
+                }
+
+                firstnameBox.setText(Util.str(object.get("firstname")));
+                lastnameBox.setText(Util.str(object.get("lastname")));
+                addressBox.setText(Util.str(object.get("address")));
+                postnmbBox.setText(Util.str(object.get("postnmb")));
+                cityBox.setText(Util.str(object.get("city")));
+                phoneBox.setText(Util.str(object.get("phone")));
+                cellphoneBox.setText(Util.str(object.get("cellphone")));
+                Util.setIndexByValue(countryListBox, Util.str(object
+                        .get("country")));
+                emailBox.setText(Util.str(object.get("email")));
+                employeeCheck.setChecked("1".equals(Util.str(object
+                        .get("employee"))));
+            }
+        };
+
+        try {
+            builder.setHeader("Content-Type",
+                    "application/x-www-form-urlencoded");
+            builder.sendRequest(sb.toString(), callback);
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
+
+    }
+
     private void doSave() {
         if (!validateSave()) {
             return;
@@ -204,9 +260,10 @@ public class PersonEditView extends Composite implements ClickListener {
             phoneBox.setText("");
             cellphoneBox.setText("");
             employeeCheck.setChecked(false);
-            
+
             updateButton.setHTML(messages.save());
         } else {
+            doOpen();
             updateButton.setHTML(messages.update());
         }
     }
