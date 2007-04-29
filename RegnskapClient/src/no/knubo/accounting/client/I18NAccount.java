@@ -104,12 +104,28 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String required_field();
 
   /**
+   * Translated "Ikke ansatt".
+   * 
+   * @return translated "Ikke ansatt"
+   * @gwt.key not_employee
+   */
+  String not_employee();
+
+  /**
    * Translated "Mobil".
    * 
    * @return translated "Mobil"
    * @gwt.key cellphone
    */
   String cellphone();
+
+  /**
+   * Translated "Nullstill".
+   * 
+   * @return translated "Nullstill"
+   * @gwt.key clear
+   */
+  String clear();
 
   /**
    * Translated "Ulovlig dato".
@@ -160,6 +176,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String debet();
 
   /**
+   * Translated "S&oslash;k".
+   * 
+   * @return translated "S&oslash;k"
+   * @gwt.key search
+   */
+  String search();
+
+  /**
    * Translated "Dag".
    * 
    * @return translated "Dag"
@@ -182,6 +206,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key save
    */
   String save();
+
+  /**
+   * Translated "S&oslash;ket ga Ingen treff".
+   * 
+   * @return translated "S&oslash;ket ga Ingen treff"
+   * @gwt.key no_result
+   */
+  String no_result();
 
   /**
    * Translated "Norge".
@@ -278,6 +310,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_06
    */
   String month_06();
+
+  /**
+   * Translated "X".
+   * 
+   * @return translated "X"
+   * @gwt.key x
+   */
+  String x();
 
   /**
    * Translated "Bilaget er benyttet tidligere.".
@@ -486,6 +526,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key field_to_low_zero
    */
   String field_to_low_zero();
+
+  /**
+   * Translated "S&oslash;ket mislyktes - programfeil eller databasefeil".
+   * 
+   * @return translated "S&oslash;ket mislyktes - programfeil eller databasefeil"
+   * @gwt.key search_failed
+   */
+  String search_failed();
 
   /**
    * Translated "Vis m&aring;ned".

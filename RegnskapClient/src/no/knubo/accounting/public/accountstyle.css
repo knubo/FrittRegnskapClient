@@ -27,24 +27,23 @@
   white-space:nowrap;
 }
 
-
-.showlineposts {
+.showlineposts1 TD {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
   font-size:100%;
   vertical-align:bottom;
-  PADDING:2px 2px 2px 2px;
+  PADDING:2px 8px 2px 0px;
   white-space:nowrap;
 }
 
-.showlineposts2 {
+.showlineposts2 TD {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
   font-size:100%;
   background-color:#FF9;
   vertical-align:bottom;
-  PADDING:2px 2px 2px 2px;
+  PADDING:2px 8px 2px 0px;
   white-space:nowrap;
-
 }
+
 
 
 

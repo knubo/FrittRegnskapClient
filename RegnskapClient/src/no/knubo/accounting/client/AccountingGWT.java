@@ -9,6 +9,7 @@ import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonEditView;
+import no.knubo.accounting.client.views.PersonSearchView;
 import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -126,6 +127,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         return new Command() {
 
             public void execute() {
+                Widget widget = PersonSearchView.show(around, messages, constants);
+
+                setActiveWidget(widget);
             }
 
         };

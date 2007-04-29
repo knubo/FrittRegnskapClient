@@ -3,8 +3,6 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
-import no.knubo.accounting.client.cache.PosttypeCache;
-import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -29,8 +27,6 @@ public class PersonEditView extends Composite implements ClickListener {
     String currentId;
 
     private static PersonEditView me;
-
-    private final ViewCallback caller;
 
     private final I18NAccount messages;
 
@@ -62,7 +58,6 @@ public class PersonEditView extends Composite implements ClickListener {
 
     public PersonEditView(ViewCallback caller, I18NAccount messages,
             Constants constants) {
-        this.caller = caller;
         this.messages = messages;
         this.constants = constants;
 
@@ -173,7 +168,6 @@ public class PersonEditView extends Composite implements ClickListener {
             }
 
             public void onResponseReceived(Request request, Response response) {
-                Window.alert(response.getText());
                 if ("0".equals(response.getText().trim())) {
                     saveStatus.setText(messages.save_failed());
                 } else {
