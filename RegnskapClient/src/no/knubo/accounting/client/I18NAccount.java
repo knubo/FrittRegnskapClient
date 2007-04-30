@@ -40,6 +40,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String newline();
 
   /**
+   * Translated "Vis kursmedlemsskap".
+   * 
+   * @return translated "Vis kursmedlemsskap"
+   * @gwt.key menuitem_showclassmembers
+   */
+  String menuitem_showclassmembers();
+
+  /**
    * Translated "Logg inn".
    * 
    * @return translated "Logg inn"
@@ -504,6 +512,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String user();
 
   /**
+   * Translated "Vis medlemsskap".
+   * 
+   * @return translated "Vis medlemsskap"
+   * @gwt.key menuitem_showmembers
+   */
+  String menuitem_showmembers();
+
+  /**
    * Translated "Legg til".
    * 
    * @return translated "Legg til"
@@ -600,12 +616,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String lastname();
 
   /**
-   * Translated "Opprett/endre person".
+   * Translated "Vis treningsmedlemsskap ".
    * 
-   * @return translated "Opprett/endre person"
-   * @gwt.key menuitem_addperson
+   * @return translated "Vis treningsmedlemsskap "
+   * @gwt.key menuitem_showtraining
    */
-  String menuitem_addperson();
+  String menuitem_showtraining();
 
   /**
    * Translated "Bel&oslash;p".
@@ -614,6 +630,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key amount
    */
   String amount();
+
+  /**
+   * Translated "Opprett/endre person".
+   * 
+   * @return translated "Opprett/endre person"
+   * @gwt.key menuitem_addperson
+   */
+  String menuitem_addperson();
 
   /**
    * Translated "Land".

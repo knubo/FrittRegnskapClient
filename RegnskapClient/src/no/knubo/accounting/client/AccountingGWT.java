@@ -16,6 +16,7 @@ import no.knubo.accounting.client.views.ViewCallback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -54,41 +55,38 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView.setStyleName("activeview");
         docPanel.add(activeView, DockPanel.CENTER);
 
-        MenuBar registerMenu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(messages.menu_register(), registerMenu));
+        MenuBar registerMenu = addTopMenu(topMenu, messages.menu_register());
+        MenuBar showMenu = addTopMenu(topMenu, messages.menu_show());
+        MenuBar peopleMenu = addTopMenu(topMenu, messages.menu_people());
+        MenuBar reportsMenu = addTopMenu(topMenu, messages.menu_reports());
+        MenuBar settingsMenu = addTopMenu(topMenu, messages.menu_settings());
+        MenuBar aboutMenu = addTopMenu(topMenu, messages.menu_info());
 
-        MenuBar showMenu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(messages.menu_show(), showMenu));
-
-        MenuBar membersMenu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(messages.menu_people(), membersMenu));
-
-        MenuBar reportsMenu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(messages.menu_reports(), reportsMenu));
-
-        MenuBar settingsMenu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(messages.menu_settings(), settingsMenu));
-
-        MenuBar aboutMenu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(messages.menu_info(), aboutMenu));
-
-        registerMenu.addItem(messages.menuitem_regline(), true,
-                commandRegisterNewline());
+        registerMenu.addItem(messages.menuitem_regline(), true, new Commando(
+                this, Commando.LINE_EDIT_VIEW));
         registerMenu.addItem(messages.menuitem_registerMembership(), true,
-                commandRegisterMembership());
-        showMenu.addItem(messages.menuitem_showmonth(), true,
-                commandShowMonth());
-        membersMenu.addItem(messages.menuitem_addperson(), true,
-                commandAddMember());
-        membersMenu.addItem(messages.menuitem_findperson(), true,
-                commandFindMember());
-        settingsMenu.addItem(messages.menuitem_values(), true,
-                commandSettings());
+                new Commando(this, Commando.REGISTER_MEMBERSHIP));
+        showMenu.addItem(messages.menuitem_showmonth(), true, new Commando(
+                this, Commando.SHOW_MONTH));
+        showMenu.addItem(messages.menuitem_showmembers(), true, new Commando(
+                this, Commando.SHOW_MEMBERS));
+        peopleMenu.addItem(messages.menuitem_addperson(), true, new Commando(
+                this, Commando.ADD_PERSON));
+        peopleMenu.addItem(messages.menuitem_findperson(), true, new Commando(
+                this, Commando.FIND_PERSON));
+        settingsMenu.addItem(messages.menuitem_values(), true, new Commando(
+                this, Commando.SETTINGS));
 
         activeView.add(aboutLoader.getInstance(constants, messages, this),
                 DockPanel.CENTER);
 
         RootPanel.get().add(docPanel);
+    }
+
+    private MenuBar addTopMenu(MenuBar topMenu, String header) {
+        MenuBar menu = new MenuBar(true);
+        topMenu.addItem(new MenuItem(header, menu));
+        return menu;
     }
 
     private void loadCaches(Constants cons) {
@@ -98,82 +96,69 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         ProjectCache.getInstance(cons);
     }
 
-    private Command commandRegisterNewline() {
-        final AccountingGWT around = this;
-        return new Command() {
+    class Commando implements Command {
 
-            public void execute() {
-                Widget widget = LineEditView.show(around, messages, constants,
-                        null);
+        int action;
 
-                setActiveWidget(widget);
+        private final ViewCallback callback;
+
+        Commando(ViewCallback callback, int action) {
+            this.callback = callback;
+            this.action = action;
+
+        }
+
+        static final int LINE_EDIT_VIEW = 1;
+
+        static final int REGISTER_MEMBERSHIP = 2;
+
+        static final int SETTINGS = 3;
+
+        static final int ADD_PERSON = 4;
+
+        static final int SHOW_MONTH = 5;
+
+        static final int SHOW_MEMBERS = 6;
+
+        static final int FIND_PERSON = 7;
+
+        public void execute() {
+            Widget widget = null;
+
+            switch (action) {
+            case LINE_EDIT_VIEW:
+                widget = LineEditView.show(callback, messages, constants, null);
+                break;
+            case REGISTER_MEMBERSHIP:
+                // TODO
+                break;
+            case SETTINGS:
+                widget = StandardvaluesView.show(messages, constants);
+                ((StandardvaluesView) widget).init();
+                break;
+            case ADD_PERSON:
+                widget = PersonEditView.show(constants, messages, callback);
+                ((PersonEditView) widget).init(null);
+                break;
+            case FIND_PERSON:
+                widget = PersonSearchView.show(callback, messages, constants);
+                break;
+            case SHOW_MONTH:
+                widget = (MonthView) monthLoader.getInstance(constants,
+                        messages, callback);
+                ((MonthView) widget).init();
+                break;
+            case SHOW_MEMBERS:
+                // TODO
+                break;
             }
-
-        };
-    }
-
-    private Command commandRegisterMembership() {
-        final AccountingGWT me = this;
-        return new Command() {
-
-            public void execute() {
+            if (widget == null) {
+                Window.alert("No action");
+                return;
             }
+            setActiveWidget(widget);
+        }
 
-        };
-    }
-
-    private Command commandFindMember() {
-        final AccountingGWT around = this;
-        return new Command() {
-
-            public void execute() {
-                Widget widget = PersonSearchView.show(around, messages,
-                        constants);
-
-                setActiveWidget(widget);
-            }
-
-        };
-    }
-
-    private Command commandSettings() {
-        return new Command() {
-
-            public void execute() {
-                StandardvaluesView widget = StandardvaluesView.show(messages, constants);
-                widget.init();
-                setActiveWidget(widget);
-            }
-
-        };
-    }
-
-    private Command commandAddMember() {
-        final AccountingGWT me = this;
-        return new Command() {
-
-            public void execute() {
-                PersonEditView widget = PersonEditView.show(constants,
-                        messages, me);
-                widget.init(null);
-                setActiveWidget(widget);
-            }
-
-        };
-    }
-
-    private Command commandShowMonth() {
-        final AccountingGWT me = this;
-        return new Command() {
-
-            public void execute() {
-                MonthView widget = (MonthView) monthLoader.getInstance(
-                        constants, messages, me);
-                widget.init();
-
-                setActiveWidget(widget);
-            }
-        };
     }
 
     private void setActiveWidget(Widget widget) {
