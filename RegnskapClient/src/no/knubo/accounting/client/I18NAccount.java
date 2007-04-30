@@ -176,12 +176,28 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String debet();
 
   /**
+   * Translated "M&aring;ned".
+   * 
+   * @return translated "M&aring;ned"
+   * @gwt.key month
+   */
+  String month();
+
+  /**
    * Translated "S&oslash;k".
    * 
    * @return translated "S&oslash;k"
    * @gwt.key search
    */
   String search();
+
+  /**
+   * Translated "Pris for trening".
+   * 
+   * @return translated "Pris for trening"
+   * @gwt.key cost_practice
+   */
+  String cost_practice();
 
   /**
    * Translated "Dag".
@@ -320,6 +336,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String x();
 
   /**
+   * Translated "Standardinnstillinger for regnskap".
+   * 
+   * @return translated "Standardinnstillinger for regnskap"
+   * @gwt.key standardsettings
+   */
+  String standardsettings();
+
+  /**
+   * Translated "Pris for kurs".
+   * 
+   * @return translated "Pris for kurs"
+   * @gwt.key cost_course
+   */
+  String cost_course();
+
+  /**
    * Translated "Bilaget er benyttet tidligere.".
    * 
    * @return translated "Bilaget er benyttet tidligere."
@@ -422,6 +454,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key city
    */
   String city();
+
+  /**
+   * Translated "Semester".
+   * 
+   * @return translated "Semester"
+   * @gwt.key semester
+   */
+  String semester();
 
   /**
    * Translated "S&oslash;k etter person".
@@ -584,12 +624,28 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country();
 
   /**
+   * Translated "&Aring;r".
+   * 
+   * @return translated "&Aring;r"
+   * @gwt.key year
+   */
+  String year();
+
+  /**
    * Translated "Ansatt".
    * 
    * @return translated "Ansatt"
    * @gwt.key employee
    */
   String employee();
+
+  /**
+   * Translated "Pris for meldmesskap".
+   * 
+   * @return translated "Pris for meldmesskap"
+   * @gwt.key cost_membership
+   */
+  String cost_membership();
 
   /**
    * Translated "Beskrivelse".

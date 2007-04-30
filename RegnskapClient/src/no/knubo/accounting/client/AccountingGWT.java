@@ -10,6 +10,7 @@ import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonEditView;
 import no.knubo.accounting.client.views.PersonSearchView;
+import no.knubo.accounting.client.views.StandardvaluesView;
 import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -136,10 +137,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     private Command commandSettings() {
-        final AccountingGWT around = this;
         return new Command() {
 
             public void execute() {
+                StandardvaluesView widget = StandardvaluesView.show(messages, constants);
+                widget.init();
+                setActiveWidget(widget);
             }
 
         };
