@@ -32,6 +32,8 @@ public class ShowMembershipView extends Composite implements ClickListener {
     private final Constants constants;
 
     private final ViewCallback caller;
+    
+    private String action;
 
     public static ShowMembershipView show(I18NAccount messages,
             Constants constants, ViewCallback caller) {
@@ -74,16 +76,19 @@ public class ShowMembershipView extends Composite implements ClickListener {
     public void initShowMembers() {
         init();
         header.setHTML(messages.member_heading_year());
+        action = "year";
     }
 
     public void initShowTrainingMembers() {
         init();
         header.setHTML(messages.member_heading_train());
+        action = "training";
     }
 
     public void initShowClassMembers() {
         init();
         header.setHTML(messages.member_heading_course());
+        action = "class";
     }
 
     private void init() {
@@ -93,7 +98,11 @@ public class ShowMembershipView extends Composite implements ClickListener {
     }
 
     public void onClick(Widget sender) {
-
+        if(sender == previousImage) {
+            
+        } else if(sender == nextImage) {
+            
+        }
     }
 
 }
