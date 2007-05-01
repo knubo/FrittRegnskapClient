@@ -7,6 +7,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.MonthHeaderCache;
+import no.knubo.accounting.client.misc.ImageFactory;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -70,10 +71,10 @@ public class MonthView extends Composite implements ResponseTextHandler,
         dockPanel = new DockPanel();
         newTable();
 
-        backImage = new Image("images/go-previous.png");
+        backImage = ImageFactory.previousImage();
         backImage.addClickListener(this);
 
-        nextImage = new Image("images/go-next.png");
+        nextImage = ImageFactory.nextImage();
         nextImage.addClickListener(this);
 
         monthYearCombo = new ListBox();

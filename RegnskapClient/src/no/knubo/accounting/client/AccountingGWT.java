@@ -10,6 +10,7 @@ import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonEditView;
 import no.knubo.accounting.client.views.PersonSearchView;
+import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.StandardvaluesView;
 import no.knubo.accounting.client.views.ViewCallback;
 
@@ -70,6 +71,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, Commando.SHOW_MONTH));
         showMenu.addItem(messages.menuitem_showmembers(), true, new Commando(
                 this, Commando.SHOW_MEMBERS));
+        showMenu.addItem(messages.menuitem_showtraining(), true, new Commando(
+                this, Commando.SHOW_TRAINING_MEMBERS));
+        showMenu.addItem(messages.menuitem_showclassmembers(), true,
+                new Commando(this, Commando.SHOW_CLASS_MEMBERS));
+
         peopleMenu.addItem(messages.menuitem_addperson(), true, new Commando(
                 this, Commando.ADD_PERSON));
         peopleMenu.addItem(messages.menuitem_findperson(), true, new Commando(
@@ -122,6 +128,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         static final int FIND_PERSON = 7;
 
+        static final int SHOW_CLASS_MEMBERS = 8;
+
+        static final int SHOW_TRAINING_MEMBERS = 9;
+
         public void execute() {
             Widget widget = null;
 
@@ -144,12 +154,20 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = PersonSearchView.show(callback, messages, constants);
                 break;
             case SHOW_MONTH:
-                widget = (MonthView) monthLoader.getInstance(constants,
-                        messages, callback);
+                widget = monthLoader.getInstance(constants, messages, callback);
                 ((MonthView) widget).init();
                 break;
             case SHOW_MEMBERS:
-                // TODO
+                widget = ShowMembershipView.show(messages, constants, callback);
+                ((ShowMembershipView) widget).initShowMembers();
+                break;
+            case SHOW_CLASS_MEMBERS:
+                widget = ShowMembershipView.show(messages, constants, callback);
+                ((ShowMembershipView) widget).initShowClassMembers();
+                break;
+            case SHOW_TRAINING_MEMBERS:
+                widget = ShowMembershipView.show(messages, constants, callback);
+                ((ShowMembershipView) widget).initShowTrainingMembers();
                 break;
             }
             if (widget == null) {
@@ -158,7 +176,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             }
             setActiveWidget(widget);
         }
-
     }
 
     private void setActiveWidget(Widget widget) {

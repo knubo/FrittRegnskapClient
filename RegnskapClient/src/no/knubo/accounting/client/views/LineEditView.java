@@ -7,6 +7,7 @@ import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -235,7 +236,7 @@ public class LineEditView extends Composite implements ClickListener {
 		postsTable.setText(rowcount, 4, amount);
 		postsTable.getCellFormatter().setStyleName(rowcount, 4, "right");
 
-		Image removeImage = new Image("images/list-remove.png");
+		Image removeImage = ImageFactory.removeImage();
 		postsTable.setWidget(rowcount, 5, removeImage);
 		removeImage.addClickListener(this);
 
@@ -425,10 +426,10 @@ public class LineEditView extends Composite implements ClickListener {
 
 		HorizontalPanel hp = new HorizontalPanel();
 
-		previousImage = new Image("images/go-previous.png");
+		previousImage = ImageFactory.previousImage();
 		previousImage.addClickListener(this);
 
-		nextImage = new Image("images/go-next.png");
+		nextImage = ImageFactory.nextImage();
 		nextImage.addClickListener(this);
 		hp.add(previousImage);
 		hp.add(nextImage);

@@ -191,6 +191,9 @@ public class StandardvaluesView extends Composite implements ClickListener {
                 yearBox, monthBox, semesterBox, costCourseBox, costPracticeBox,
                 costMembershipBox });
 
+        masterValidator.range(messages.illegal_month(), new Integer(1),
+                new Integer(12), new Widget[] { monthBox });
+
         return masterValidator.validateStatus();
 
     }

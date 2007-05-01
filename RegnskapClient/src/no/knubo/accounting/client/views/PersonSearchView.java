@@ -4,6 +4,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.ImageFactory;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -212,7 +213,7 @@ public class PersonSearchView extends Composite implements ClickListener {
                             : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
 
-                    Image image = new Image("images/edit-find-replace.png");
+                    Image image = ImageFactory.editImage();
                     image.addClickListener(me);
                     idHolder.add(Util.str(obj.get("id")), image);
                     resultTable.setWidget(row, 7, image);

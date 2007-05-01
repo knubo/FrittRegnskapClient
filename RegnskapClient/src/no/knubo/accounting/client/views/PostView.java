@@ -6,6 +6,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
+import no.knubo.accounting.client.misc.ImageFactory;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -79,9 +80,9 @@ public class PostView extends DialogBox implements ClickListener,
 		/* Widgets placements */
 		DockPanel dp = new DockPanel();
 
-		editImage = new Image("images/edit-find-replace.png");
+		editImage = ImageFactory.editImage();
 		editImage.addClickListener(this);
-		closeImage = new Image("images/close.png");
+		closeImage = ImageFactory.closeImage();
 		closeImage.addClickListener(this);
 		table.setWidget(0, 5, editImage);
 		table.setWidget(0, 6, closeImage);
