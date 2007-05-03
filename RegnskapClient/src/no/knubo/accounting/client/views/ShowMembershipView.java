@@ -74,7 +74,9 @@ public class ShowMembershipView extends Composite implements ClickListener {
         header = new HTML();
         periodeHeader = new HTML();
         previousImage = ImageFactory.previousImage();
+        previousImage.addClickListener(this);
         nextImage = ImageFactory.nextImage();
+        nextImage.addClickListener(this);
         HorizontalPanel hp = new HorizontalPanel();
         hp.add(previousImage);
         hp.add(periodeHeader);
@@ -92,22 +94,22 @@ public class ShowMembershipView extends Composite implements ClickListener {
     public void initShowMembers() {
         header.setHTML(messages.member_heading_year());
         action = "year";
-        init();
+        init("");
     }
 
     public void initShowTrainingMembers() {
         header.setHTML(messages.member_heading_train());
         action = "training";
-        init();
+        init("");
     }
 
     public void initShowClassMembers() {
         header.setHTML(messages.member_heading_course());
         action = "class";
-        init();
+        init("");
     }
 
-    private void init() {
+    private void init(String posparam) {
         setVisible(true);
         idHolder.init();
 
@@ -161,29 +163,30 @@ public class ShowMembershipView extends Composite implements ClickListener {
         };
         // TODO Report stuff as being loaded.
         if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "registers/members.php?action=" + action, getValues)) {
+                + "registers/members.php?" + posparam + "&action=" + action,
+                getValues)) {
             Window.alert("Failed to load data.");
         }
     }
 
     public void onClick(Widget sender) {
         if (sender == previousImage) {
-            doPrevious();
+            doNext(-1);
         } else if (sender == nextImage) {
-            doNext();
+            doNext(1);
         } else {
             doEditUser(sender);
         }
     }
 
-    private void doNext() {
-        // TODO Auto-generated method stub
-        
-    }
+    private void doNext(int diff) {
+        if (currentSemester != 0) {
+            init("semester=" + (currentSemester + diff));
+            return;
+        }
 
-    private void doPrevious() {
-        // TODO Auto-generated method stub
-        
+        init("year=" + (currentYear + diff));
+
     }
 
     private void doEditUser(Widget sender) {
