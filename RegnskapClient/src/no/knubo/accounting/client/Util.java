@@ -3,6 +3,7 @@ package no.knubo.accounting.client;
 import java.util.HashMap;
 
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Timer;
@@ -344,5 +345,16 @@ public class Util {
                 return;
             }
         }
+    }
+
+    public static int getInt(JSONValue value) {
+        if(value == null) {
+            return 0;
+        }
+        JSONNumber number = value.isNumber();
+        if(number == null) {
+            return 0;
+        }
+        return (int) number.getValue();
     }
 }

@@ -2,8 +2,17 @@ package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.HTTPRequest;
+import com.google.gwt.user.client.ResponseTextHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -32,8 +41,14 @@ public class ShowMembershipView extends Composite implements ClickListener {
     private final Constants constants;
 
     private final ViewCallback caller;
-    
+
     private String action;
+
+    protected int currentYear;
+
+    protected int currentSemester;
+
+    private IdHolder idHolder;
 
     public static ShowMembershipView show(I18NAccount messages,
             Constants constants, ViewCallback caller) {
@@ -71,38 +86,110 @@ public class ShowMembershipView extends Composite implements ClickListener {
         dp.add(table, DockPanel.NORTH);
 
         initWidget(dp);
+        idHolder = new IdHolder();
     }
 
     public void initShowMembers() {
-        init();
         header.setHTML(messages.member_heading_year());
         action = "year";
+        init();
     }
 
     public void initShowTrainingMembers() {
-        init();
         header.setHTML(messages.member_heading_train());
         action = "training";
+        init();
     }
 
     public void initShowClassMembers() {
-        init();
         header.setHTML(messages.member_heading_course());
         action = "class";
+        init();
     }
 
     private void init() {
+        setVisible(true);
+        idHolder.init();
+
         while (table.getRowCount() > 1) {
             table.removeRow(1);
+        }
+
+        ResponseTextHandler getValues = new ResponseTextHandler() {
+
+            public void onCompletion(String responseText) {
+                JSONValue value = JSONParser.parse(responseText);
+
+                if (value == null) {
+                    Window.alert("Failed to load data.");
+                    return;
+                }
+
+                JSONObject root = value.isObject();
+
+                /* Both year and semester isn't present at the same time */
+                currentYear = Util.getInt(root.get("year"));
+                currentSemester = Util.getInt(root.get("semester"));
+
+                JSONArray members = root.get("members").isArray();
+
+                String count = String.valueOf(members.size());
+                periodeHeader.setHTML(messages.members_navig_heading(Util
+                        .str(root.get("text")), count));
+
+                for (int i = 0; i < members.size(); i++) {
+                    JSONArray names = members.get(i).isArray();
+
+                    int row = i + 1;
+                    String firstname = Util.str(names.get(0));
+                    String lastname = Util.str(names.get(1));
+                    String id = Util.str(names.get(2));
+                    table.setText(row, 0, lastname);
+                    table.setText(row, 1, firstname);
+
+                    Image editUserImage = ImageFactory.editImage();
+                    editUserImage.addClickListener(me);
+                    table.setWidget(row, 2, editUserImage);
+
+                    idHolder.add(id, editUserImage);
+                    String style = (row % 2 == 0) ? "showlineposts2"
+                            : "showlineposts1";
+                    table.getRowFormatter().setStyleName(row, style);
+                }
+            }
+
+        };
+        // TODO Report stuff as being loaded.
+        if (!HTTPRequest.asyncGet(this.constants.baseurl()
+                + "registers/members.php?action=" + action, getValues)) {
+            Window.alert("Failed to load data.");
         }
     }
 
     public void onClick(Widget sender) {
-        if(sender == previousImage) {
-            
-        } else if(sender == nextImage) {
-            
+        if (sender == previousImage) {
+            doPrevious();
+        } else if (sender == nextImage) {
+            doNext();
+        } else {
+            doEditUser(sender);
         }
+    }
+
+    private void doNext() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private void doPrevious() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private void doEditUser(Widget sender) {
+        String userId = idHolder.findId(sender);
+        setVisible(false);
+        caller.editPerson(userId);
     }
 
 }
