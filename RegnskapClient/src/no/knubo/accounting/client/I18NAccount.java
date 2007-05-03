@@ -120,6 +120,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String save_ok();
 
   /**
+   * Translated "{0} - {1} medlemmer".
+   * 
+   * @return translated "{0} - {1} medlemmer"
+   * @gwt.key members_navig_heading
+   */
+  String members_navig_heading(String arg0,  String arg1);
+
+  /**
    * Translated "Feltet m&aring; fylles ut".
    * 
    * @return translated "Feltet m&aring; fylles ut"
@@ -414,14 +422,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key field_money
    */
   String field_money();
-
-  /**
-   * Translated "medlemmer".
-   * 
-   * @return translated "medlemmer"
-   * @gwt.key members
-   */
-  String members();
 
   /**
    * Translated "Adresse".
