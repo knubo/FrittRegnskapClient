@@ -368,6 +368,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_06();
 
   /**
+   * Translated "Om regnskapssystemet".
+   * 
+   * @return translated "Om regnskapssystemet"
+   * @gwt.key menuitem_about
+   */
+  String menuitem_about();
+
+  /**
    * Translated "X".
    * 
    * @return translated "X"

@@ -5,6 +5,8 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.views.modules.UserSearchCallback;
+import no.knubo.accounting.client.views.modules.UserSearchFields;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -16,17 +18,14 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PersonSearchView extends Composite implements ClickListener {
+public class PersonSearchView extends Composite implements ClickListener, UserSearchCallback {
 
     private static PersonSearchView me;
 
@@ -45,64 +44,24 @@ public class PersonSearchView extends Composite implements ClickListener {
 
     private final ViewCallback caller;
 
-    private TextBox firstnameBox;
-
-    private TextBox lastnameBox;
-
-    private TextBox emailBox;
-
-    private ListBox employeeList;
-
-    private Button searchButton;
-
-    private Button clearButton;
-
     private FlexTable resultTable;
 
     private IdHolder idHolder;
+
+    private UserSearchFields userSearchFields;
 
     private PersonSearchView(ViewCallback caller, I18NAccount messages,
             Constants constants) {
         this.caller = caller;
         this.messages = messages;
         this.constants = constants;
+        userSearchFields = new UserSearchFields(messages, this);
 
         this.idHolder = new IdHolder();
 
         DockPanel dp = new DockPanel();
-        FlexTable searchTable = new FlexTable();
-        searchTable.setStyleName("edittable");
 
-        dp.add(searchTable, DockPanel.NORTH);
-
-        firstnameBox = new TextBox();
-        firstnameBox.setMaxLength(50);
-        lastnameBox = new TextBox();
-        lastnameBox.setMaxLength(50);
-        emailBox = new TextBox();
-        emailBox.setMaxLength(100);
-        employeeList = new ListBox();
-        employeeList.setVisibleItemCount(1);
-        employeeList.addItem("", "");
-        employeeList.addItem(messages.not_employee(), "0");
-        employeeList.addItem(messages.employee(), "1");
-
-        searchTable.setText(0, 0, messages.firstname());
-        searchTable.setWidget(0, 1, firstnameBox);
-        searchTable.setText(0, 2, messages.lastname());
-        searchTable.setWidget(0, 3, lastnameBox);
-        searchTable.setText(1, 0, messages.email());
-        searchTable.setWidget(1, 1, emailBox);
-        searchTable.getFlexCellFormatter().setColSpan(1, 1, 3);
-        searchTable.setText(2, 0, messages.employee());
-        searchTable.setWidget(2, 1, employeeList);
-
-        searchButton = new Button(messages.search());
-        searchButton.addClickListener(this);
-        searchTable.setWidget(3, 0, searchButton);
-        clearButton = new Button(messages.clear());
-        clearButton.addClickListener(this);
-        searchTable.setWidget(3, 1, clearButton);
+        dp.add(userSearchFields.getSearchTable(), DockPanel.NORTH);
 
         resultTable = new FlexTable();
         dp.add(resultTable, DockPanel.NORTH);
@@ -122,13 +81,8 @@ public class PersonSearchView extends Composite implements ClickListener {
     }
 
     public void onClick(Widget sender) {
-        if (sender == searchButton) {
-            doSearch();
-        } else if (sender == clearButton) {
-            doClear();
-        } else {
-            doEditPerson(sender);
-        }
+
+        doEditPerson(sender);
     }
 
     private void doEditPerson(Widget sender) {
@@ -138,25 +92,10 @@ public class PersonSearchView extends Composite implements ClickListener {
         caller.editPerson(id);
     }
 
-    private void doClear() {
-        firstnameBox.setText("");
-        lastnameBox.setText("");
-        emailBox.setText("");
-        employeeList.setSelectedIndex(0);
-    }
-
-    private void doSearch() {
+    public void doSearch(StringBuffer searchRequest) {
         while (resultTable.getRowCount() > 1) {
             resultTable.removeRow(1);
         }
-
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("action=search");
-        Util.addPostParam(sb, "firstname", firstnameBox.getText());
-        Util.addPostParam(sb, "lastname", lastnameBox.getText());
-        Util.addPostParam(sb, "email", emailBox.getText());
-        Util.addPostParam(sb, "employee", Util.getSelected(employeeList));
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
@@ -196,10 +135,10 @@ public class PersonSearchView extends Composite implements ClickListener {
                     int row = i + 1;
                     resultTable.setHTML(row, 0, firstname);
                     resultTable.setHTML(row, 1, lastname);
-                    resultTable.setHTML(row, 2, Util.str(obj.get("address")));
-                    resultTable.setHTML(row, 3, Util.str(obj.get("phone")));
-                    resultTable.setHTML(row, 4, cellphone);
-                    resultTable.setHTML(row, 5, Util.str(obj.get("email")));
+                    resultTable.setHTML(row, 2, Util.str(obj.get("email")));
+                    resultTable.setHTML(row, 3, Util.str(obj.get("address")));
+                    resultTable.setHTML(row, 4, Util.str(obj.get("phone")));
+                    resultTable.setHTML(row, 5, cellphone);
 
                     if ("1".equals(Util.str(obj.get("employee")))) {
                         resultTable.setHTML(row, 6, messages.x());
@@ -224,7 +163,7 @@ public class PersonSearchView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(searchRequest.toString(), callback);
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

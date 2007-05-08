@@ -82,7 +82,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, Commando.FIND_PERSON));
         settingsMenu.addItem(messages.menuitem_values(), true, new Commando(
                 this, Commando.SETTINGS));
-
+        aboutMenu.addItem(messages.menuitem_about(), true, new Commando(this,
+                Commando.ABOUT));
         activeView.add(aboutLoader.getInstance(constants, messages, this),
                 DockPanel.CENTER);
 
@@ -132,6 +133,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         static final int SHOW_TRAINING_MEMBERS = 9;
 
+        public static final int ABOUT = 10;
+
         public void execute() {
             Widget widget = null;
 
@@ -168,6 +171,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case SHOW_TRAINING_MEMBERS:
                 widget = ShowMembershipView.show(messages, constants, callback);
                 ((ShowMembershipView) widget).initShowTrainingMembers();
+                break;
+            case ABOUT:
+                widget = AboutView.loader().getInstance(constants, messages, callback);
                 break;
             }
             if (widget == null) {
