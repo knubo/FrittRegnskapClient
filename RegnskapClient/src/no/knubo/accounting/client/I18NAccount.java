@@ -96,6 +96,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String search();
 
   /**
+   * Translated "Registrer medlemsskap".
+   * 
+   * @return translated "Registrer medlemsskap"
+   * @gwt.key register_membership
+   */
+  String register_membership();
+
+  /**
    * Translated "Dag".
    * 
    * @return translated "Dag"
@@ -272,20 +280,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country_finland();
 
   /**
+   * Translated "For mange treff. Viser kun {0}.".
+   * 
+   * @return translated "For mange treff. Viser kun {0}."
+   * @gwt.key too_many_hits
+   */
+  String too_many_hits(String arg0);
+
+  /**
    * Translated "Sverige".
    * 
    * @return translated "Sverige"
    * @gwt.key country_sweeden
    */
   String country_sweeden();
-
-  /**
-   * Translated "For mange treff. Viser de {0} f&oslash;rste.".
-   * 
-   * @return translated "For mange treff. Viser de {0} f&oslash;rste."
-   * @gwt.key too_many_hits
-   */
-  String too_many_hits(String arg0);
 
   /**
    * Translated "Feltet m&aring; ha st&oslash;rre verdi enn 0".
@@ -536,6 +544,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_03();
 
   /**
+   * Translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag.".
+   * 
+   * @return translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag."
+   * @gwt.key register_membership_help
+   */
+  String register_membership_help();
+
+  /**
    * Translated "M&aring;nedsoversikt".
    * 
    * @return translated "M&aring;nedsoversikt"
@@ -606,6 +622,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key lines
    */
   String lines();
+
+  /**
+   * Translated "Registrering av medlemsskap".
+   * 
+   * @return translated "Registrering av medlemsskap"
+   * @gwt.key register_membership_header
+   */
+  String register_membership_header();
 
   /**
    * Translated "Adresse".

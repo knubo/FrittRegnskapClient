@@ -17,11 +17,13 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,6 +47,17 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
         DockPanel dp = new DockPanel();
 
+        HTML header = new HTML();
+        String headerText = "<h2>" + messages.register_membership_header()
+                + "</h2>";
+        header.setHTML(headerText);
+
+        HTML help = new HTML();
+        help.setHTML(messages.register_membership_help());
+
+        dp.add(header, DockPanel.NORTH);
+        dp.add(help, DockPanel.NORTH);
+
         dp.add(userSearchFields.getSearchTable(), DockPanel.NORTH);
 
         resultTable = new FlexTable();
@@ -60,6 +73,11 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         resultTable.setHTML(0, 6, messages.paid_day());
         resultTable.setHTML(0, 7, messages.post());
         dp.add(resultTable, DockPanel.NORTH);
+
+        Button button = new Button(messages.register_membership());
+        button.addClickListener(this);
+        dp.add(button, DockPanel.NORTH);
+
         initWidget(dp);
     }
 
@@ -110,11 +128,11 @@ public class RegisterMembershipView extends Composite implements ClickListener,
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject obj = array.get(i).isObject();
 
-                    if(i > 30) {
+                    if (i > 30) {
                         Window.alert(messages.too_many_hits("30"));
                         return;
                     }
-                    
+
                     String firstname = Util.str(obj.get("firstname"));
                     String lastname = Util.str(obj.get("lastname"));
 
@@ -144,7 +162,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
                     payments.setVisibleItemCount(1);
                     PosttypeCache.getInstance(constants)
                             .fillMembershipPayments(payments);
-                    
+
                     resultTable.setWidget(row, 7, payments);
 
                     String style = (row % 2 == 0) ? "showlineposts2"
