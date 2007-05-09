@@ -317,7 +317,7 @@ public class LineEditView extends Composite implements ClickListener {
 		/* Above remove button. */
 		table.addCell(3);
 
-		PosttypeCache.getInstance(constants).fill(accountNameBox);
+		PosttypeCache.getInstance(constants).fillAllPosts(accountNameBox);
 		Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
 		// table.setText(2, 2, messages.fordring());

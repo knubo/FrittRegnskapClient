@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
 /**
@@ -23,60 +24,103 @@ import com.google.gwt.user.client.ui.ListBox;
  * @author knuterikborgen
  * 
  */
-public class PosttypeCache implements ResponseTextHandler, Registry {
+public class PosttypeCache implements Registry {
 
-	private static PosttypeCache instance;
+    private static PosttypeCache instance;
 
-	Map typeGivesDescription;
-	List originalSort;
+    Map typeGivesDescription;
 
-	public static PosttypeCache getInstance(Constants constants) {
-		if (instance == null) {
-			instance = new PosttypeCache(constants);
-		}
-		return instance;
-	}
+    List originalSort;
 
-	private PosttypeCache(Constants constants) {
-		if (!HTTPRequest.asyncGet(constants.baseurl()
-				+ "registers/posttypes.php", this)) {
-            //TODO report errors.
-		}
-	}
+    List memberPaymentPosts;
 
-	public void onCompletion(String responseText) {
-		JSONValue jsonValue = JSONParser.parse(responseText);
-		JSONArray array = jsonValue.isArray();
+    public static PosttypeCache getInstance(Constants constants) {
+        if (instance == null) {
+            instance = new PosttypeCache(constants);
+        }
+        return instance;
+    }
 
-		typeGivesDescription = new HashMap();
-		originalSort = new ArrayList();
-		for (int i = 0; i < array.size(); i++) {
-			JSONObject obj = array.get(i).isObject();
+    private PosttypeCache(Constants constants) {
+        ResponseTextHandler handlerTypes = new ResponseTextHandler() {
 
-			String key = Util.str(obj.get("PostType"));
-			typeGivesDescription.put(key, Util
-					.str(obj.get("Description")));
-			originalSort.add(key);
-		}
-	}
-	
-	public String getDescription(String type) {
-		return (String) typeGivesDescription.get(type);
-	}
-	
-	public void fill(ListBox box) {
-		box.insertItem("", 0);
-		int pos = 1;
-		for (Iterator i = originalSort.iterator(); i.hasNext();) {
-			String k = (String) i.next();
-			
-			String desc = (String) typeGivesDescription.get(k);
-			
-			box.insertItem(desc, k, pos++);
-		}
-	}
+            public void onCompletion(String responseText) {
+                JSONValue jsonValue = JSONParser.parse(responseText);
+                JSONArray array = jsonValue.isArray();
 
-	public boolean keyExists(String key) {
-		return typeGivesDescription.containsKey(key);
-	}
+                typeGivesDescription = new HashMap();
+                originalSort = new ArrayList();
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject obj = array.get(i).isObject();
+
+                    String key = Util.str(obj.get("PostType"));
+                    typeGivesDescription.put(key, Util.str(obj
+                            .get("Description")));
+                    originalSort.add(key);
+                }
+            }
+
+        };
+        if (!HTTPRequest.asyncGet(constants.baseurl()
+                + "registers/posttypes.php", handlerTypes)) {
+            String error = "Failed to load posttype cache. The application will not work properly.";
+            Window.alert(error);
+        }
+
+        ResponseTextHandler handlerMembershipPayment = new ResponseTextHandler() {
+
+            public void onCompletion(String responseText) {
+                JSONValue value = JSONParser.parse(responseText);
+                JSONArray array = value.isArray();
+
+                memberPaymentPosts = new ArrayList();
+
+                for (int i = 0; i < array.size(); i++) {
+                    JSONValue elem = array.get(i);
+
+                    memberPaymentPosts.add(Util.str(elem));
+                }
+            }
+
+        };
+        if (!HTTPRequest.asyncGet(constants.baseurl()
+                + "defaults/post_defaults.php?selection=membershippayment",
+                handlerMembershipPayment)) {
+            String error = "Failed to load posttype cache. The application will not work properly.";
+            Window.alert(error);
+        }
+
+    }
+
+    public String getDescription(String type) {
+        return (String) typeGivesDescription.get(type);
+    }
+
+    public void fillAllPosts(ListBox box) {
+        box.insertItem("", 0);
+        int pos = 1;
+        for (Iterator i = originalSort.iterator(); i.hasNext();) {
+            String k = (String) i.next();
+
+            String desc = (String) typeGivesDescription.get(k);
+
+            box.insertItem(desc, k, pos++);
+        }
+    }
+
+    public void fillMembershipPayments(ListBox box) {
+        int pos = 1;
+        for (Iterator i = memberPaymentPosts.iterator(); i.hasNext();) {
+            String k = (String) i.next();
+
+            String desc = (String) typeGivesDescription.get(k);
+
+            box.insertItem(desc, k, pos++);
+        }
+    }
+
+    
+    public boolean keyExists(String key) {
+        return typeGivesDescription.containsKey(key);
+    }
 }

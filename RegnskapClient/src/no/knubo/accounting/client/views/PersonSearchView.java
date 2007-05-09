@@ -48,14 +48,13 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
 
     private IdHolder idHolder;
 
-    private UserSearchFields userSearchFields;
 
     private PersonSearchView(ViewCallback caller, I18NAccount messages,
             Constants constants) {
         this.caller = caller;
         this.messages = messages;
         this.constants = constants;
-        userSearchFields = new UserSearchFields(messages, this);
+        UserSearchFields userSearchFields = new UserSearchFields(messages, this);
 
         this.idHolder = new IdHolder();
 

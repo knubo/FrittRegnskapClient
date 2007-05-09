@@ -10,6 +10,7 @@ import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonEditView;
 import no.knubo.accounting.client.views.PersonSearchView;
+import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.StandardvaluesView;
 import no.knubo.accounting.client.views.ViewCallback;
@@ -143,7 +144,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = LineEditView.show(callback, messages, constants, null);
                 break;
             case REGISTER_MEMBERSHIP:
-                // TODO
+                widget = RegisterMembershipView.show(messages, constants,
+                        callback);
                 break;
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants);
@@ -173,7 +175,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((ShowMembershipView) widget).initShowTrainingMembers();
                 break;
             case ABOUT:
-                widget = AboutView.loader().getInstance(constants, messages, callback);
+                widget = AboutView.loader().getInstance(constants, messages,
+                        callback);
                 break;
             }
             if (widget == null) {

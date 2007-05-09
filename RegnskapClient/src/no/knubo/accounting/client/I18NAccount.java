@@ -8,52 +8,12 @@ package no.knubo.accounting.client;
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
   /**
-   * Translated "Telefon".
-   * 
-   * @return translated "Telefon"
-   * @gwt.key phone
-   */
-  String phone();
-
-  /**
-   * Translated "Fordring".
-   * 
-   * @return translated "Fordring"
-   * @gwt.key fordring
-   */
-  String fordring();
-
-  /**
-   * Translated "September".
-   * 
-   * @return translated "September"
-   * @gwt.key month_09
-   */
-  String month_09();
-
-  /**
    * Translated "Ulovlig m&aring;ned".
    * 
    * @return translated "Ulovlig m&aring;ned"
    * @gwt.key illegal_month
    */
   String illegal_month();
-
-  /**
-   * Translated "Ny linje".
-   * 
-   * @return translated "Ny linje"
-   * @gwt.key newline
-   */
-  String newline();
-
-  /**
-   * Translated "Vis kursmedlemsskap".
-   * 
-   * @return translated "Vis kursmedlemsskap"
-   * @gwt.key menuitem_showclassmembers
-   */
-  String menuitem_showclassmembers();
 
   /**
    * Translated "Logg inn".
@@ -64,44 +24,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String login();
 
   /**
-   * Translated "Postnr".
-   * 
-   * @return translated "Postnr"
-   * @gwt.key postnmb
-   */
-  String postnmb();
-
-  /**
-   * Translated "August".
-   * 
-   * @return translated "August"
-   * @gwt.key month_08
-   */
-  String month_08();
-
-  /**
    * Translated "Bilag".
    * 
    * @return translated "Bilag"
    * @gwt.key attachment
    */
   String attachment();
-
-  /**
-   * Translated "Dato".
-   * 
-   * @return translated "Dato"
-   * @gwt.key date
-   */
-  String date();
-
-  /**
-   * Translated "Treningsmedlemmer".
-   * 
-   * @return translated "Treningsmedlemmer"
-   * @gwt.key member_heading_train
-   */
-  String member_heading_train();
 
   /**
    * Translated "Personer".
@@ -120,14 +48,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String save_ok();
 
   /**
-   * Translated "{0} - {1} medlemmer".
-   * 
-   * @return translated "{0} - {1} medlemmer"
-   * @gwt.key members_navig_heading
-   */
-  String members_navig_heading(String arg0,  String arg1);
-
-  /**
    * Translated "Feltet m&aring; fylles ut".
    * 
    * @return translated "Feltet m&aring; fylles ut"
@@ -136,52 +56,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String required_field();
 
   /**
-   * Translated "Ikke ansatt".
-   * 
-   * @return translated "Ikke ansatt"
-   * @gwt.key not_employee
-   */
-  String not_employee();
-
-  /**
-   * Translated "Mobil".
-   * 
-   * @return translated "Mobil"
-   * @gwt.key cellphone
-   */
-  String cellphone();
-
-  /**
    * Translated "Nullstill".
    * 
    * @return translated "Nullstill"
    * @gwt.key clear
    */
   String clear();
-
-  /**
-   * Translated "Ulovlig dato".
-   * 
-   * @return translated "Ulovlig dato"
-   * @gwt.key illegal_day
-   */
-  String illegal_day();
-
-  /**
-   * Translated "Februar".
-   * 
-   * @return translated "Februar"
-   * @gwt.key month_02
-   */
-  String month_02();
-
-  /**
-   * Translated "Registrer bilag".
-   * 
-   * @return translated "Registrer bilag"
-   * @gwt.key menuitem_regline
-   */
-  String menuitem_regline();
 
   /**
    * Translated "Standardverdier".
@@ -200,12 +80,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_12();
 
   /**
-   * Translated "DEBET".
+   * Translated "Post".
    * 
-   * @return translated "DEBET"
-   * @gwt.key debet
+   * @return translated "Post"
+   * @gwt.key post
    */
-  String debet();
+  String post();
 
   /**
    * Translated "S&oslash;k".
@@ -216,68 +96,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String search();
 
   /**
-   * Translated "M&aring;ned".
-   * 
-   * @return translated "M&aring;ned"
-   * @gwt.key month
-   */
-  String month();
-
-  /**
-   * Translated "Kursmedlemmer".
-   * 
-   * @return translated "Kursmedlemmer"
-   * @gwt.key member_heading_course
-   */
-  String member_heading_course();
-
-  /**
-   * Translated "Pris for trening".
-   * 
-   * @return translated "Pris for trening"
-   * @gwt.key cost_practice
-   */
-  String cost_practice();
-
-  /**
    * Translated "Dag".
    * 
    * @return translated "Dag"
    * @gwt.key day
    */
   String day();
-
-  /**
-   * Translated "Mai".
-   * 
-   * @return translated "Mai"
-   * @gwt.key month_05
-   */
-  String month_05();
-
-  /**
-   * Translated "Opprett".
-   * 
-   * @return translated "Opprett"
-   * @gwt.key save
-   */
-  String save();
-
-  /**
-   * Translated "S&oslash;ket ga Ingen treff".
-   * 
-   * @return translated "S&oslash;ket ga Ingen treff"
-   * @gwt.key no_result
-   */
-  String no_result();
-
-  /**
-   * Translated "Registrer medlemsskap".
-   * 
-   * @return translated "Registrer medlemsskap"
-   * @gwt.key menuitem_registerMembership
-   */
-  String menuitem_registerMembership();
 
   /**
    * Translated "Norge".
@@ -288,36 +112,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country_norway();
 
   /**
-   * Translated "April".
+   * Translated "S&oslash;ket ga Ingen treff".
    * 
-   * @return translated "April"
-   * @gwt.key month_04
+   * @return translated "S&oslash;ket ga Ingen treff"
+   * @gwt.key no_result
    */
-  String month_04();
-
-  /**
-   * Translated "Forekomst finnes ikke".
-   * 
-   * @return translated "Forekomst finnes ikke"
-   * @gwt.key registry_invalid_key
-   */
-  String registry_invalid_key();
-
-  /**
-   * Translated "Mars".
-   * 
-   * @return translated "Mars"
-   * @gwt.key month_03
-   */
-  String month_03();
-
-  /**
-   * Translated "M&aring;nedsoversikt".
-   * 
-   * @return translated "M&aring;nedsoversikt"
-   * @gwt.key title_monthview
-   */
-  String title_monthview();
+  String no_result();
 
   /**
    * Translated "Rapporter".
@@ -336,36 +136,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country_denmark();
 
   /**
-   * Translated "Fornavn".
+   * Translated "Treningsmedlemsskap".
    * 
-   * @return translated "Fornavn"
-   * @gwt.key firstname
+   * @return translated "Treningsmedlemsskap"
+   * @gwt.key train_membership
    */
-  String firstname();
-
-  /**
-   * Translated "Ulovlig epostadresse".
-   * 
-   * @return translated "Ulovlig epostadresse"
-   * @gwt.key invalid_email
-   */
-  String invalid_email();
-
-  /**
-   * Translated "Laster inn siden...".
-   * 
-   * @return translated "Laster inn siden..."
-   * @gwt.key loding_page
-   */
-  String loding_page();
-
-  /**
-   * Translated "Juni".
-   * 
-   * @return translated "Juni"
-   * @gwt.key month_06
-   */
-  String month_06();
+  String train_membership();
 
   /**
    * Translated "Om regnskapssystemet".
@@ -384,36 +160,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String x();
 
   /**
-   * Translated "Standardinnstillinger for regnskap".
-   * 
-   * @return translated "Standardinnstillinger for regnskap"
-   * @gwt.key standardsettings
-   */
-  String standardsettings();
-
-  /**
-   * Translated "Pris for kurs".
-   * 
-   * @return translated "Pris for kurs"
-   * @gwt.key cost_course
-   */
-  String cost_course();
-
-  /**
    * Translated "Bilaget er benyttet tidligere.".
    * 
    * @return translated "Bilaget er benyttet tidligere."
    * @gwt.key attachment_used
    */
   String attachment_used();
-
-  /**
-   * Translated "Linjer".
-   * 
-   * @return translated "Linjer"
-   * @gwt.key lines
-   */
-  String lines();
 
   /**
    * Translated "Oppdater".
@@ -430,14 +182,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key field_money
    */
   String field_money();
-
-  /**
-   * Translated "Adresse".
-   * 
-   * @return translated "Adresse"
-   * @gwt.key address
-   */
-  String address();
 
   /**
    * Translated "Person".
@@ -472,14 +216,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_07();
 
   /**
-   * Translated "Klarte ikke koble til server".
-   * 
-   * @return translated "Klarte ikke koble til server"
-   * @gwt.key failedConnect
-   */
-  String failedConnect();
-
-  /**
    * Translated "November".
    * 
    * @return translated "November"
@@ -512,38 +248,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String city();
 
   /**
-   * Translated "Semester".
-   * 
-   * @return translated "Semester"
-   * @gwt.key semester
-   */
-  String semester();
-
-  /**
-   * Translated "S&oslash;k etter person".
-   * 
-   * @return translated "S&oslash;k etter person"
-   * @gwt.key menuitem_findperson
-   */
-  String menuitem_findperson();
-
-  /**
-   * Translated "Passord".
-   * 
-   * @return translated "Passord"
-   * @gwt.key password
-   */
-  String password();
-
-  /**
-   * Translated "Sum".
-   * 
-   * @return translated "Sum"
-   * @gwt.key sum
-   */
-  String sum();
-
-  /**
    * Translated "KREDIT".
    * 
    * @return translated "KREDIT"
@@ -558,46 +262,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key user
    */
   String user();
-
-  /**
-   * Translated "Vis medlemsskap".
-   * 
-   * @return translated "Vis medlemsskap"
-   * @gwt.key menuitem_showmembers
-   */
-  String menuitem_showmembers();
-
-  /**
-   * Translated "Legg til".
-   * 
-   * @return translated "Legg til"
-   * @gwt.key add
-   */
-  String add();
-
-  /**
-   * Translated "...ingen data oppdatert.".
-   * 
-   * @return translated "...ingen data oppdatert."
-   * @gwt.key save_failed
-   */
-  String save_failed();
-
-  /**
-   * Translated "Konto".
-   * 
-   * @return translated "Konto"
-   * @gwt.key account
-   */
-  String account();
-
-  /**
-   * Translated "Other".
-   * 
-   * @return translated "Other"
-   * @gwt.key country_other
-   */
-  String country_other();
 
   /**
    * Translated "Finland".
@@ -616,12 +280,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country_sweeden();
 
   /**
-   * Translated "Post nr. er benyttet tidligere".
+   * Translated "For mange treff. Viser de {0} f&oslash;rste.".
    * 
-   * @return translated "Post nr. er benyttet tidligere"
-   * @gwt.key post_used
+   * @return translated "For mange treff. Viser de {0} f&oslash;rste."
+   * @gwt.key too_many_hits
    */
-  String post_used();
+  String too_many_hits(String arg0);
 
   /**
    * Translated "Feltet m&aring; ha st&oslash;rre verdi enn 0".
@@ -632,20 +296,420 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_to_low_zero();
 
   /**
-   * Translated "S&oslash;ket mislyktes - programfeil eller databasefeil".
-   * 
-   * @return translated "S&oslash;ket mislyktes - programfeil eller databasefeil"
-   * @gwt.key search_failed
-   */
-  String search_failed();
-
-  /**
    * Translated "Oktober".
    * 
    * @return translated "Oktober"
    * @gwt.key month_10
    */
   String month_10();
+
+  /**
+   * Translated "Land".
+   * 
+   * @return translated "Land"
+   * @gwt.key country
+   */
+  String country();
+
+  /**
+   * Translated "Januar".
+   * 
+   * @return translated "Januar"
+   * @gwt.key month_01
+   */
+  String month_01();
+
+  /**
+   * Translated "Fordring".
+   * 
+   * @return translated "Fordring"
+   * @gwt.key fordring
+   */
+  String fordring();
+
+  /**
+   * Translated "Telefon".
+   * 
+   * @return translated "Telefon"
+   * @gwt.key phone
+   */
+  String phone();
+
+  /**
+   * Translated "September".
+   * 
+   * @return translated "September"
+   * @gwt.key month_09
+   */
+  String month_09();
+
+  /**
+   * Translated "Kursmedlemsskap".
+   * 
+   * @return translated "Kursmedlemsskap"
+   * @gwt.key course_membership
+   */
+  String course_membership();
+
+  /**
+   * Translated "Ny linje".
+   * 
+   * @return translated "Ny linje"
+   * @gwt.key newline
+   */
+  String newline();
+
+  /**
+   * Translated "Vis kursmedlemsskap".
+   * 
+   * @return translated "Vis kursmedlemsskap"
+   * @gwt.key menuitem_showclassmembers
+   */
+  String menuitem_showclassmembers();
+
+  /**
+   * Translated "&Aring;rsmedlemskap".
+   * 
+   * @return translated "&Aring;rsmedlemskap"
+   * @gwt.key year_membership
+   */
+  String year_membership();
+
+  /**
+   * Translated "August".
+   * 
+   * @return translated "August"
+   * @gwt.key month_08
+   */
+  String month_08();
+
+  /**
+   * Translated "Postnr".
+   * 
+   * @return translated "Postnr"
+   * @gwt.key postnmb
+   */
+  String postnmb();
+
+  /**
+   * Translated "Dato".
+   * 
+   * @return translated "Dato"
+   * @gwt.key date
+   */
+  String date();
+
+  /**
+   * Translated "Treningsmedlemmer".
+   * 
+   * @return translated "Treningsmedlemmer"
+   * @gwt.key member_heading_train
+   */
+  String member_heading_train();
+
+  /**
+   * Translated "{0} - {1} medlemmer".
+   * 
+   * @return translated "{0} - {1} medlemmer"
+   * @gwt.key members_navig_heading
+   */
+  String members_navig_heading(String arg0,  String arg1);
+
+  /**
+   * Translated "Ikke ansatt".
+   * 
+   * @return translated "Ikke ansatt"
+   * @gwt.key not_employee
+   */
+  String not_employee();
+
+  /**
+   * Translated "Mobil".
+   * 
+   * @return translated "Mobil"
+   * @gwt.key cellphone
+   */
+  String cellphone();
+
+  /**
+   * Translated "Ulovlig dato".
+   * 
+   * @return translated "Ulovlig dato"
+   * @gwt.key illegal_day
+   */
+  String illegal_day();
+
+  /**
+   * Translated "Registrer bilag".
+   * 
+   * @return translated "Registrer bilag"
+   * @gwt.key menuitem_regline
+   */
+  String menuitem_regline();
+
+  /**
+   * Translated "Februar".
+   * 
+   * @return translated "Februar"
+   * @gwt.key month_02
+   */
+  String month_02();
+
+  /**
+   * Translated "DEBET".
+   * 
+   * @return translated "DEBET"
+   * @gwt.key debet
+   */
+  String debet();
+
+  /**
+   * Translated "Kursmedlemmer".
+   * 
+   * @return translated "Kursmedlemmer"
+   * @gwt.key member_heading_course
+   */
+  String member_heading_course();
+
+  /**
+   * Translated "M&aring;ned".
+   * 
+   * @return translated "M&aring;ned"
+   * @gwt.key month
+   */
+  String month();
+
+  /**
+   * Translated "Pris for trening".
+   * 
+   * @return translated "Pris for trening"
+   * @gwt.key cost_practice
+   */
+  String cost_practice();
+
+  /**
+   * Translated "Mai".
+   * 
+   * @return translated "Mai"
+   * @gwt.key month_05
+   */
+  String month_05();
+
+  /**
+   * Translated "Opprett".
+   * 
+   * @return translated "Opprett"
+   * @gwt.key save
+   */
+  String save();
+
+  /**
+   * Translated "Registrer medlemsskap".
+   * 
+   * @return translated "Registrer medlemsskap"
+   * @gwt.key menuitem_registerMembership
+   */
+  String menuitem_registerMembership();
+
+  /**
+   * Translated "April".
+   * 
+   * @return translated "April"
+   * @gwt.key month_04
+   */
+  String month_04();
+
+  /**
+   * Translated "Forekomst finnes ikke".
+   * 
+   * @return translated "Forekomst finnes ikke"
+   * @gwt.key registry_invalid_key
+   */
+  String registry_invalid_key();
+
+  /**
+   * Translated "Mars".
+   * 
+   * @return translated "Mars"
+   * @gwt.key month_03
+   */
+  String month_03();
+
+  /**
+   * Translated "M&aring;nedsoversikt".
+   * 
+   * @return translated "M&aring;nedsoversikt"
+   * @gwt.key title_monthview
+   */
+  String title_monthview();
+
+  /**
+   * Translated "Betalt dag".
+   * 
+   * @return translated "Betalt dag"
+   * @gwt.key paid_day
+   */
+  String paid_day();
+
+  /**
+   * Translated "Fornavn".
+   * 
+   * @return translated "Fornavn"
+   * @gwt.key firstname
+   */
+  String firstname();
+
+  /**
+   * Translated "Ulovlig epostadresse".
+   * 
+   * @return translated "Ulovlig epostadresse"
+   * @gwt.key invalid_email
+   */
+  String invalid_email();
+
+  /**
+   * Translated "Laster inn siden...".
+   * 
+   * @return translated "Laster inn siden..."
+   * @gwt.key loding_page
+   */
+  String loding_page();
+
+  /**
+   * Translated "Juni".
+   * 
+   * @return translated "Juni"
+   * @gwt.key month_06
+   */
+  String month_06();
+
+  /**
+   * Translated "Standardinnstillinger for regnskap".
+   * 
+   * @return translated "Standardinnstillinger for regnskap"
+   * @gwt.key standardsettings
+   */
+  String standardsettings();
+
+  /**
+   * Translated "Pris for kurs".
+   * 
+   * @return translated "Pris for kurs"
+   * @gwt.key cost_course
+   */
+  String cost_course();
+
+  /**
+   * Translated "Linjer".
+   * 
+   * @return translated "Linjer"
+   * @gwt.key lines
+   */
+  String lines();
+
+  /**
+   * Translated "Adresse".
+   * 
+   * @return translated "Adresse"
+   * @gwt.key address
+   */
+  String address();
+
+  /**
+   * Translated "Klarte ikke koble til server".
+   * 
+   * @return translated "Klarte ikke koble til server"
+   * @gwt.key failedConnect
+   */
+  String failedConnect();
+
+  /**
+   * Translated "S&oslash;k etter person".
+   * 
+   * @return translated "S&oslash;k etter person"
+   * @gwt.key menuitem_findperson
+   */
+  String menuitem_findperson();
+
+  /**
+   * Translated "Semester".
+   * 
+   * @return translated "Semester"
+   * @gwt.key semester
+   */
+  String semester();
+
+  /**
+   * Translated "Passord".
+   * 
+   * @return translated "Passord"
+   * @gwt.key password
+   */
+  String password();
+
+  /**
+   * Translated "Sum".
+   * 
+   * @return translated "Sum"
+   * @gwt.key sum
+   */
+  String sum();
+
+  /**
+   * Translated "Legg til".
+   * 
+   * @return translated "Legg til"
+   * @gwt.key add
+   */
+  String add();
+
+  /**
+   * Translated "Vis medlemsskap".
+   * 
+   * @return translated "Vis medlemsskap"
+   * @gwt.key menuitem_showmembers
+   */
+  String menuitem_showmembers();
+
+  /**
+   * Translated "Konto".
+   * 
+   * @return translated "Konto"
+   * @gwt.key account
+   */
+  String account();
+
+  /**
+   * Translated "...ingen data oppdatert.".
+   * 
+   * @return translated "...ingen data oppdatert."
+   * @gwt.key save_failed
+   */
+  String save_failed();
+
+  /**
+   * Translated "Other".
+   * 
+   * @return translated "Other"
+   * @gwt.key country_other
+   */
+  String country_other();
+
+  /**
+   * Translated "Post nr. er benyttet tidligere".
+   * 
+   * @return translated "Post nr. er benyttet tidligere"
+   * @gwt.key post_used
+   */
+  String post_used();
+
+  /**
+   * Translated "S&oslash;ket mislyktes - programfeil eller databasefeil".
+   * 
+   * @return translated "S&oslash;ket mislyktes - programfeil eller databasefeil"
+   * @gwt.key search_failed
+   */
+  String search_failed();
 
   /**
    * Translated "Vis m&aring;ned".
@@ -656,20 +720,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmonth();
 
   /**
-   * Translated "Vis treningsmedlemsskap ".
-   * 
-   * @return translated "Vis treningsmedlemsskap "
-   * @gwt.key menuitem_showtraining
-   */
-  String menuitem_showtraining();
-
-  /**
    * Translated "Etternavn".
    * 
    * @return translated "Etternavn"
    * @gwt.key lastname
    */
   String lastname();
+
+  /**
+   * Translated "Vis treningsmedlemsskap ".
+   * 
+   * @return translated "Vis treningsmedlemsskap "
+   * @gwt.key menuitem_showtraining
+   */
+  String menuitem_showtraining();
 
   /**
    * Translated "Bel&oslash;p".
@@ -688,14 +752,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_addperson();
 
   /**
-   * Translated "Land".
-   * 
-   * @return translated "Land"
-   * @gwt.key country
-   */
-  String country();
-
-  /**
    * Translated "&Aring;r".
    * 
    * @return translated "&Aring;r"
@@ -712,20 +768,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String employee();
 
   /**
-   * Translated "Beskrivelse".
-   * 
-   * @return translated "Beskrivelse"
-   * @gwt.key description
-   */
-  String description();
-
-  /**
    * Translated "Pris for meldmesskap".
    * 
    * @return translated "Pris for meldmesskap"
    * @gwt.key cost_membership
    */
   String cost_membership();
+
+  /**
+   * Translated "Beskrivelse".
+   * 
+   * @return translated "Beskrivelse"
+   * @gwt.key description
+   */
+  String description();
 
   /**
    * Translated "Prosjekt".
@@ -736,14 +792,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String project();
 
   /**
-   * Translated "Epost".
-   * 
-   * @return translated "Epost"
-   * @gwt.key email
-   */
-  String email();
-
-  /**
    * Translated "Detaljer".
    * 
    * @return translated "Detaljer"
@@ -752,12 +800,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String detailsline();
 
   /**
-   * Translated "Januar".
+   * Translated "Epost".
    * 
-   * @return translated "Januar"
-   * @gwt.key month_01
+   * @return translated "Epost"
+   * @gwt.key email
    */
-  String month_01();
+  String email();
 
   /**
    * Translated "Registrer".
