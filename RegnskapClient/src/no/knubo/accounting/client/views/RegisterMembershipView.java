@@ -4,6 +4,9 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.UserSearchCallback;
 import no.knubo.accounting.client.views.modules.UserSearchFields;
 
@@ -16,6 +19,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.HTTPRequest;
+import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -25,7 +30,6 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class RegisterMembershipView extends Composite implements ClickListener,
@@ -33,24 +37,41 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
     private static RegisterMembershipView me;
 
+    public static RegisterMembershipView show(I18NAccount messages,
+            Constants constants, ViewCallback caller) {
+        if (me == null) {
+            me = new RegisterMembershipView(messages, constants);
+        }
+        return me;
+    }
+
     private final I18NAccount messages;
 
     private final Constants constants;
 
     private FlexTable resultTable;
 
+    private HTML header;
+
+    private IdHolder idHolder;
+
+    private UserSearchFields userSearchFields;
+
+    protected String currentYear;
+
+    protected String currentMonth;
+
     private RegisterMembershipView(I18NAccount messages, Constants constants) {
         this.messages = messages;
         this.constants = constants;
 
-        UserSearchFields userSearchFields = new UserSearchFields(messages, this);
+        idHolder = new IdHolder();
+        userSearchFields = new UserSearchFields(messages, this);
 
         DockPanel dp = new DockPanel();
 
-        HTML header = new HTML();
-        String headerText = "<h2>" + messages.register_membership_header()
-                + "</h2>";
-        header.setHTML(headerText);
+        header = new HTML();
+        setHeader();
 
         HTML help = new HTML();
         help.setHTML(messages.register_membership_help());
@@ -81,22 +102,17 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         initWidget(dp);
     }
 
-    public static RegisterMembershipView show(I18NAccount messages,
-            Constants constants, ViewCallback caller) {
-        if (me == null) {
-            me = new RegisterMembershipView(messages, constants);
-        }
-        return me;
-    }
-
-    public void onClick(Widget sender) {
-
+    public void init() {
+        setVisible(true);
+        userSearchFields.setFocus();
     }
 
     public void doSearch(StringBuffer searchRequest) {
         while (resultTable.getRowCount() > 1) {
             resultTable.removeRow(1);
         }
+        idHolder.init();
+
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
 
@@ -107,7 +123,6 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
             public void onResponseReceived(Request request, Response response) {
                 JSONValue value = JSONParser.parse(response.getText());
-
                 if (value == null) {
                     Window.alert(messages.search_failed());
                     return;
@@ -141,22 +156,30 @@ public class RegisterMembershipView extends Composite implements ClickListener,
                     resultTable.setHTML(row, 1, lastname);
                     resultTable.setHTML(row, 2, Util.str(obj.get("email")));
 
-                    resultTable.setWidget(row, 3, new CheckBox());
+                    CheckBox yearCheck = new CheckBox();
+                    resultTable.setWidget(row, 3, yearCheck);
                     resultTable.getCellFormatter().setStyleName(row, 3,
                             "center");
 
-                    resultTable.setWidget(row, 4, new CheckBox());
+                    CheckBox courseCheck = new CheckBox();
+                    resultTable.setWidget(row, 4, courseCheck);
                     resultTable.getCellFormatter().setStyleName(row, 4,
                             "center");
 
-                    resultTable.setWidget(row, 5, new CheckBox());
+                    CheckBox trainCheck = new CheckBox();
+                    resultTable.setWidget(row, 5, trainCheck);
                     resultTable.getCellFormatter().setStyleName(row, 5,
                             "center");
 
-                    TextBox dayBox = new TextBox();
+                    Util.linkJustOne(courseCheck, trainCheck);
+
+                    TextBoxWithErrorText dayBox = new TextBoxWithErrorText();
                     dayBox.setMaxLength(2);
                     dayBox.setVisibleLength(2);
                     resultTable.setWidget(row, 6, dayBox);
+
+                    enableDisableBoxes(obj, yearCheck, courseCheck, trainCheck);
+                    idHolder.add(Util.str(obj.get("id")), dayBox);
 
                     ListBox payments = new ListBox();
                     payments.setVisibleItemCount(1);
@@ -171,6 +194,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
                 }
             }
+
         };
 
         try {
@@ -179,6 +203,129 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             builder.sendRequest(searchRequest.toString(), callback);
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
+        }
+
+    }
+
+    private void enableDisableBoxes(JSONObject obj, CheckBox yearCheck,
+            CheckBox courseCheck, CheckBox trainCheck) {
+        if ("1".equals(Util.str(obj.get("year")))) {
+            yearCheck.setChecked(true);
+            yearCheck.setEnabled(false);
+        }
+
+        if ("1".equals(Util.str(obj.get("course")))) {
+            courseCheck.setChecked(true);
+            courseCheck.setEnabled(false);
+        }
+
+        if ("1".equals(Util.str(obj.get("train")))) {
+            trainCheck.setChecked(true);
+            trainCheck.setEnabled(false);
+        }
+
+    }
+
+    public void onClick(Widget sender) {
+        StringBuffer sb = buildAddMemberParameters();
+
+        if(sb == null) {
+            Window.alert("feil");
+            return;
+        }
+        
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                constants.baseurl() + "accounting/addmembership.php");
+
+        RequestCallback callback = new RequestCallback() {
+            public void onError(Request request, Throwable exception) {
+                Window.alert(exception.getMessage());
+            }
+
+            public void onResponseReceived(Request request, Response response) {
+                JSONValue value = JSONParser.parse(response.getText());
+            }
+        };
+
+        try {
+            builder.setHeader("Content-Type",
+                    "application/x-www-form-urlencoded");
+            builder.sendRequest(sb.toString(), callback);
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
+    }
+
+    private StringBuffer buildAddMemberParameters() {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("action=save");
+        boolean ok = true;
+        
+        for (int i = 1; i < resultTable.getRowCount(); i++) {
+            CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
+            CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
+            CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
+            TextBoxWithErrorText dayBox = (TextBoxWithErrorText) resultTable
+                    .getWidget(i, 6);
+            ListBox post = (ListBox) resultTable.getWidget(i, 7);
+            String id = idHolder.findId(dayBox);
+
+            boolean doYear = yearBox.isEnabled() && yearBox.isChecked();
+            boolean doCourse = courseBox.isEnabled() && courseBox.isChecked();
+            boolean doTrain = trainBox.isEnabled() && trainBox.isChecked();
+
+            if (doYear || doCourse || doTrain) {
+                MasterValidator mv = new MasterValidator();
+                mv.day("!", messages.illegal_day(), Integer
+                        .parseInt(currentYear), Integer.parseInt(currentMonth),
+                        new Widget[] { dayBox });
+                ok = ok && mv.validateStatus();
+            }
+            if (doYear) {
+                Util.addPostParam(sb, "year" + id, "1");
+            }
+            if (doCourse) {
+                Util.addPostParam(sb, "course" + id, "1");
+            }
+            if (doTrain) {
+                Util.addPostParam(sb, "train" + id, "1");
+            }
+            if (dayBox.getText().length() > 0) {
+                Util.addPostParam(sb, "day" + id, dayBox.getText());
+                Util.addPostParam(sb, "post", Util.getSelected(post));
+            }
+        }
+        
+        if(!ok) {
+            return null;
+        }
+        return sb;
+    }
+
+    private void setHeader() {
+        ResponseTextHandler callback = new ResponseTextHandler() {
+
+            public void onCompletion(String responseText) {
+                JSONValue value = JSONParser.parse(responseText);
+
+                JSONObject object = value.isObject();
+
+                String semester = Util.str(object.get("semester"));
+                currentYear = Util.str(object.get("year"));
+                currentMonth = Util.str(object.get("month"));
+
+                String headerText = "<h2>"
+                        + messages.register_membership_header() + " - "
+                        + semester + "-"
+                        + Util.monthString(messages, currentMonth) + "</h2>";
+                header.setHTML(headerText);
+            }
+
+        };
+        if (!HTTPRequest.asyncGet(this.constants.baseurl()
+                + "defaults/semester.php", callback)) {
+            Window.alert("Failed to get proper data");
         }
 
     }

@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 abstract public class ValidatorBase {
 
 	private final String errorText;
+    protected String mouseOver;
 
 	public ValidatorBase(String errorText) {
 		this.errorText = errorText;
@@ -25,6 +26,12 @@ abstract public class ValidatorBase {
 				val.setErrorText(errorText);
 				val.setFocus(true);
 				validationOK = false;
+                
+                if(mouseOver != null) {
+                    val.setMouseOver(mouseOver);
+                } else {
+                    val.setMouseOver(null);
+                }
 			}
 		}
 		

@@ -2,6 +2,7 @@ package no.knubo.accounting.client.misc;
 
 import no.knubo.accounting.client.validation.Validateable;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -72,5 +73,9 @@ public class TextBoxWithErrorText extends Composite implements Validateable {
 	public void setFocus(boolean b) {
 		textBox.setFocus(b);
 	}
+
+    public void setMouseOver(String mouseOver) {
+        textBox.setTitle(mouseOver);
+    }
 
 }

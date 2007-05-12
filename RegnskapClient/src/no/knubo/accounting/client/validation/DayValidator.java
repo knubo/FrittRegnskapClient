@@ -8,13 +8,18 @@ public class DayValidator extends ValidatorBase {
 
 	private final int month;
 
-	public DayValidator(String errorText, int month, int year) {
+    public DayValidator(String errorText, int month, int year) {
 		super(errorText);
 		this.month = month - 1;
 		this.year = year - 1900;
 	}
 
-	protected boolean validate(Validateable val) {
+	public DayValidator(String error, String mouseover, int month, int year) {
+	    this(error,month,year);
+        this.mouseOver = mouseover;
+    }
+
+    protected boolean validate(Validateable val) {
 		int day = 0;
 
 		try {

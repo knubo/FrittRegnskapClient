@@ -7,4 +7,6 @@ public interface Validateable {
 	public String getText();
 
 	public void setFocus(boolean b);
+
+    public void setMouseOver(String mouseOver);
 }

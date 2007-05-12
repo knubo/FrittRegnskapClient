@@ -84,7 +84,8 @@ public class UserSearchFields implements ClickListener {
         Util.addPostParam(sb, "lastname", lastnameBox.getText());
         Util.addPostParam(sb, "employee", Util.getSelected(employeeList));
         Util.addPostParam(sb, "email", emailBox.getText());
-
+        Util.addPostParam(sb, "getmemb", "1");
+        
         searchCallback.doSearch(sb);
     }
 
@@ -93,5 +94,9 @@ public class UserSearchFields implements ClickListener {
         lastnameBox.setText("");
         emailBox.setText("");
         employeeList.setSelectedIndex(0);
+    }
+
+    public void setFocus() {
+       firstnameBox.setFocus(true);
     }
 }

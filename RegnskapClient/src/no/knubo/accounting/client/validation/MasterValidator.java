@@ -19,7 +19,7 @@ public class MasterValidator {
     }
 
     public void day(String error, int year, int month, Widget[] widgets) {
-        DayValidator dayvalidator = new DayValidator(error, month, year);
+        ValidatorBase dayvalidator = new DayValidator(error, month, year);
         status &= dayvalidator.validate(this, widgets);
     }
 
@@ -72,6 +72,12 @@ public class MasterValidator {
         }
 
         return valStatus;
+    }
+
+    public void day(String error, String mouseover, int year, int month,
+            Widget[] widgets) {
+        ValidatorBase dayvalidator = new DayValidator(error, mouseover, month, year);
+        status &= dayvalidator.validate(this, widgets);
     }
 
 }

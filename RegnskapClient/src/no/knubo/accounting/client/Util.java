@@ -3,11 +3,12 @@ package no.knubo.accounting.client;
 import java.util.HashMap;
 
 import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -357,4 +358,32 @@ public class Util {
         }
         return Integer.parseInt(str.stringValue());
     }
+
+    /**
+     * Links two checkboxes and make sure that only one is checked at a time.
+     * 
+     * @param checkOne
+     * @param checkTwo
+     */
+    public static void linkJustOne(final CheckBox checkOne,
+            final CheckBox checkTwo) {
+        ClickListener listener = new ClickListener() {
+
+            public void onClick(Widget sender) {
+                if (sender == checkOne) {
+                    if (checkOne.isChecked()) {
+                        checkTwo.setChecked(false);
+                    }
+                } else if (sender == checkTwo) {
+                    if (checkTwo.isChecked()) {
+                        checkOne.setChecked(false);
+                    }
+                }
+            }
+
+        };
+        checkOne.addClickListener(listener);
+        checkTwo.addClickListener(listener);
+    }
+
 }

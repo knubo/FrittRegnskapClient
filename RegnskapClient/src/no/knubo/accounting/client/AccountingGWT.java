@@ -146,6 +146,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case REGISTER_MEMBERSHIP:
                 widget = RegisterMembershipView.show(messages, constants,
                         callback);
+                ((RegisterMembershipView)widget).init();
                 break;
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants);
