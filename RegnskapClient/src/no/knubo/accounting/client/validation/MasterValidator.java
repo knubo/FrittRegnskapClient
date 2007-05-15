@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.knubo.accounting.client.cache.Registry;
+import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -78,6 +79,21 @@ public class MasterValidator {
             Widget[] widgets) {
         ValidatorBase dayvalidator = new DayValidator(error, mouseover, month, year);
         status &= dayvalidator.validate(this, widgets);
+    }
+
+    public boolean fail(Validateable box, boolean shouldFail, String message) {
+        if (failedFields.contains(box)) {
+            return true;
+        }
+        
+        if(shouldFail) {
+            failedFields.add(box);
+            box.setErrorText(message);
+        } else {
+            box.setErrorText("");
+        }
+        
+        return !shouldFail;
     }
 
 }

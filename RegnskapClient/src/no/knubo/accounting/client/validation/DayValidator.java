@@ -22,6 +22,11 @@ public class DayValidator extends ValidatorBase {
     protected boolean validate(Validateable val) {
 		int day = 0;
 
+        /* Handle blank using mandagtory validators. */
+        if(val.getText().length() == 0) {
+            return true;
+        }
+        
 		try {
 			day = Integer.parseInt(val.getText());
 		} catch (NumberFormatException e) {

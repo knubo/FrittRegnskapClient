@@ -544,20 +544,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_03();
 
   /**
-   * Translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag.".
-   * 
-   * @return translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag."
-   * @gwt.key register_membership_help
-   */
-  String register_membership_help();
-
-  /**
    * Translated "M&aring;nedsoversikt".
    * 
    * @return translated "M&aring;nedsoversikt"
    * @gwt.key title_monthview
    */
   String title_monthview();
+
+  /**
+   * Translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag.".
+   * 
+   * @return translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag."
+   * @gwt.key register_membership_help
+   */
+  String register_membership_help();
 
   /**
    * Translated "Betalt dag".
@@ -614,6 +614,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key cost_course
    */
   String cost_course();
+
+  /**
+   * Translated "Inngis dag m&aring; ogs&aring; medlemsskapstype velges  ".
+   * 
+   * @return translated "Inngis dag m&aring; ogs&aring; medlemsskapstype velges  "
+   * @gwt.key add_member_day_require_action
+   */
+  String add_member_day_require_action();
 
   /**
    * Translated "Linjer".
@@ -816,20 +824,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String project();
 
   /**
-   * Translated "Detaljer".
-   * 
-   * @return translated "Detaljer"
-   * @gwt.key detailsline
-   */
-  String detailsline();
-
-  /**
    * Translated "Epost".
    * 
    * @return translated "Epost"
    * @gwt.key email
    */
   String email();
+
+  /**
+   * Translated "Detaljer".
+   * 
+   * @return translated "Detaljer"
+   * @gwt.key detailsline
+   */
+  String detailsline();
 
   /**
    * Translated "Registrer".

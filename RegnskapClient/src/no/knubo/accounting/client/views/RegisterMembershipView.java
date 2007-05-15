@@ -4,6 +4,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
@@ -33,7 +34,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class RegisterMembershipView extends Composite implements ClickListener,
-        UserSearchCallback {
+        UserSearchCallback, FocusCallback {
 
     private static RegisterMembershipView me;
 
@@ -176,6 +177,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
                     TextBoxWithErrorText dayBox = new TextBoxWithErrorText();
                     dayBox.setMaxLength(2);
                     dayBox.setVisibleLength(2);
+                    dayBox.addFocusListener(me);
                     resultTable.setWidget(row, 6, dayBox);
 
                     enableDisableBoxes(obj, yearCheck, courseCheck, trainCheck);
@@ -229,11 +231,10 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     public void onClick(Widget sender) {
         StringBuffer sb = buildAddMemberParameters();
 
-        if(sb == null) {
-            Window.alert("feil");
+        if (sb == null) {
             return;
         }
-        
+
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/addmembership.php");
 
@@ -261,7 +262,9 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
         sb.append("action=save");
         boolean ok = true;
-        
+
+        MasterValidator mv = new MasterValidator();
+
         for (int i = 1; i < resultTable.getRowCount(); i++) {
             CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
             CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
@@ -276,12 +279,17 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             boolean doTrain = trainBox.isEnabled() && trainBox.isChecked();
 
             if (doYear || doCourse || doTrain) {
-                MasterValidator mv = new MasterValidator();
-                mv.day("!", messages.illegal_day(), Integer
-                        .parseInt(currentYear), Integer.parseInt(currentMonth),
-                        new Widget[] { dayBox });
+                validateDay(mv, dayBox);
                 ok = ok && mv.validateStatus();
             }
+
+            /* If daybox is given, then a checkbox must be set. */
+            if (dayBox.getText().length() > 0) {
+                String message = messages.add_member_day_require_action();
+                boolean shouldFail = (!doYear || !doCourse || !doTrain);
+                ok = ok && mv.fail(dayBox, shouldFail, message);
+            }
+
             if (doYear) {
                 Util.addPostParam(sb, "year" + id, "1");
             }
@@ -296,11 +304,17 @@ public class RegisterMembershipView extends Composite implements ClickListener,
                 Util.addPostParam(sb, "post", Util.getSelected(post));
             }
         }
-        
-        if(!ok) {
+
+        if (!ok) {
             return null;
         }
+
         return sb;
+    }
+
+    private void validateDay(MasterValidator mv, TextBoxWithErrorText dayBox) {
+        mv.day("!", messages.illegal_day(), Integer.parseInt(currentYear),
+                Integer.parseInt(currentMonth), new Widget[] { dayBox });
     }
 
     private void setHeader() {
@@ -328,6 +342,16 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             Window.alert("Failed to get proper data");
         }
 
+    }
+
+    public void onFocus(TextBoxWithErrorText me) {
+        /* Not used */
+    }
+
+    public void onLostFocus(TextBoxWithErrorText textbox) {
+        /* Just flag the error. */
+
+        validateDay(new MasterValidator(), textbox);
     }
 
 }
