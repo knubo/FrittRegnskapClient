@@ -286,7 +286,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             /* If daybox is given, then a checkbox must be set. */
             if (dayBox.getText().length() > 0) {
                 String message = messages.add_member_day_require_action();
-                boolean shouldFail = (!doYear || !doCourse || !doTrain);
+                boolean shouldFail = !doYear && !doCourse && !doTrain;
                 ok = ok && mv.fail(dayBox, shouldFail, message);
             }
 
@@ -301,7 +301,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             }
             if (dayBox.getText().length() > 0) {
                 Util.addPostParam(sb, "day" + id, dayBox.getText());
-                Util.addPostParam(sb, "post", Util.getSelected(post));
+                Util.addPostParam(sb, "post"+ id, Util.getSelected(post));
             }
         }
 
