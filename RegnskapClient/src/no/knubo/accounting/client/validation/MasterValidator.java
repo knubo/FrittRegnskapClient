@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.knubo.accounting.client.cache.Registry;
-import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 
 import com.google.gwt.user.client.ui.Widget;
 
