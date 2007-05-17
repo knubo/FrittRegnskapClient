@@ -244,7 +244,11 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             }
 
             public void onResponseReceived(Request request, Response response) {
-                JSONValue value = JSONParser.parse(response.getText());
+                if("1".equals(response.getText())) {
+                    disableAfterOK();
+                } else {
+                    Window.alert(response.getText());
+                }
             }
         };
 
@@ -255,6 +259,24 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
+    }
+
+    protected void disableAfterOK() {
+        for (int i = 1; i < resultTable.getRowCount(); i++) {
+            CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
+            CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
+            CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
+            
+            if(yearBox.isChecked()) {
+                yearBox.setEnabled(false);
+            }
+            if(courseBox.isChecked()) {
+                courseBox.setEnabled(false);
+            }
+            if(trainBox.isChecked()) {
+                trainBox.setEnabled(false);
+            }
+        }        
     }
 
     private StringBuffer buildAddMemberParameters() {

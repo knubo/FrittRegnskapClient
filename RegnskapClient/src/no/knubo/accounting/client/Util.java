@@ -371,12 +371,16 @@ public class Util {
 
             public void onClick(Widget sender) {
                 if (sender == checkOne) {
-                    if (checkOne.isChecked()) {
+                    if (checkTwo.isEnabled() && checkOne.isChecked()) {
                         checkTwo.setChecked(false);
+                    } else {
+                        checkOne.setChecked(false);
                     }
                 } else if (sender == checkTwo) {
-                    if (checkTwo.isChecked()) {
+                    if (checkOne.isEnabled() && checkTwo.isChecked()) {
                         checkOne.setChecked(false);
+                    } else {
+                        checkTwo.setChecked(false);
                     }
                 }
             }
