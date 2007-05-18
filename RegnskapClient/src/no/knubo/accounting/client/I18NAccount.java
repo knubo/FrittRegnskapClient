@@ -16,6 +16,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String illegal_month();
 
   /**
+   * Translated "Liste over medlemmer per aldersgruppe".
+   * 
+   * @return translated "Liste over medlemmer per aldersgruppe"
+   * @gwt.key menuitem_report_member_per_year
+   */
+  String menuitem_report_member_per_year();
+
+  /**
    * Translated "Logg inn".
    * 
    * @return translated "Logg inn"
@@ -160,6 +168,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_about();
 
   /**
+   * Translated "Hurtigregistrering av standardbilag".
+   * 
+   * @return translated "Hurtigregistrering av standardbilag"
+   * @gwt.key menuitem_register_happening
+   */
+  String menuitem_register_happening();
+
+  /**
    * Translated "X".
    * 
    * @return translated "X"
@@ -214,6 +230,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menu_info
    */
   String menu_info();
+
+  /**
+   * Translated "Vis m&aring;ned med detaljer".
+   * 
+   * @return translated "Vis m&aring;ned med detaljer"
+   * @gwt.key menuitem_showmonthdetails
+   */
+  String menuitem_showmonthdetails();
 
   /**
    * Translated "Juli".
@@ -374,6 +398,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_showclassmembers
    */
   String menuitem_showclassmembers();
+
+  /**
+   * Translated "Registrer telling/flytting".
+   * 
+   * @return translated "Registrer telling/flytting"
+   * @gwt.key menuitem_register_count
+   */
+  String menuitem_register_count();
 
   /**
    * Translated "&Aring;rsmedlemskap".
@@ -656,20 +688,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String failedConnect();
 
   /**
-   * Translated "S&oslash;k etter person".
-   * 
-   * @return translated "S&oslash;k etter person"
-   * @gwt.key menuitem_findperson
-   */
-  String menuitem_findperson();
-
-  /**
    * Translated "Semester".
    * 
    * @return translated "Semester"
    * @gwt.key semester
    */
   String semester();
+
+  /**
+   * Translated "S&oslash;k etter person".
+   * 
+   * @return translated "S&oslash;k etter person"
+   * @gwt.key menuitem_findperson
+   */
+  String menuitem_findperson();
 
   /**
    * Translated "Passord".

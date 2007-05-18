@@ -68,8 +68,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, Commando.LINE_EDIT_VIEW));
         registerMenu.addItem(messages.menuitem_registerMembership(), true,
                 new Commando(this, Commando.REGISTER_MEMBERSHIP));
+        registerMenu.addItem(messages.menuitem_register_happening(), true,
+                new Commando(this, Commando.REGISTER_HAPPENING));
+        registerMenu.addItem(messages.menuitem_register_count(), true,
+                new Commando(this, Commando.REGISTER_COUNT));
         showMenu.addItem(messages.menuitem_showmonth(), true, new Commando(
                 this, Commando.SHOW_MONTH));
+        showMenu.addItem(messages.menuitem_showmonthdetails(), true,
+                new Commando(this, Commando.SHOW_MONTH_DETAILS));
+
         showMenu.addItem(messages.menuitem_showmembers(), true, new Commando(
                 this, Commando.SHOW_MEMBERS));
         showMenu.addItem(messages.menuitem_showtraining(), true, new Commando(
@@ -81,6 +88,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, Commando.ADD_PERSON));
         peopleMenu.addItem(messages.menuitem_findperson(), true, new Commando(
                 this, Commando.FIND_PERSON));
+
+        reportsMenu.addItem(messages.menuitem_report_member_per_year(), true,
+                new Commando(this, Commando.REPORT_MEMBER_PER_YEAR));
+
         settingsMenu.addItem(messages.menuitem_values(), true, new Commando(
                 this, Commando.SETTINGS));
         aboutMenu.addItem(messages.menuitem_about(), true, new Commando(this,
@@ -134,7 +145,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         static final int SHOW_TRAINING_MEMBERS = 9;
 
-        public static final int ABOUT = 10;
+        static final int ABOUT = 10;
+
+        static final int REGISTER_HAPPENING = 11;
+
+        static final int REGISTER_COUNT = 12;
+
+        static final int REPORT_MEMBER_PER_YEAR = 13;
+
+        static final int SHOW_MONTH_DETAILS = 14;
 
         public void execute() {
             Widget widget = null;
@@ -146,7 +165,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case REGISTER_MEMBERSHIP:
                 widget = RegisterMembershipView.show(messages, constants,
                         callback);
-                ((RegisterMembershipView)widget).init();
+                ((RegisterMembershipView) widget).init();
                 break;
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants);
