@@ -144,6 +144,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_reports();
 
   /**
+   * Translated "F&oslash;res p� post".
+   * 
+   * @return translated "F&oslash;res p� post"
+   * @gwt.key register_count_post
+   */
+  String register_count_post();
+
+  /**
    * Translated "Danmark".
    * 
    * @return translated "Danmark"
@@ -190,6 +198,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key attachment_used
    */
   String attachment_used();
+
+  /**
+   * Translated "Val&oslash;r".
+   * 
+   * @return translated "Val&oslash;r"
+   * @gwt.key money_type
+   */
+  String money_type();
 
   /**
    * Translated "Oppdater".
@@ -400,14 +416,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showclassmembers();
 
   /**
-   * Translated "Registrer telling/flytting".
-   * 
-   * @return translated "Registrer telling/flytting"
-   * @gwt.key menuitem_register_count
-   */
-  String menuitem_register_count();
-
-  /**
    * Translated "&Aring;rsmedlemskap".
    * 
    * @return translated "&Aring;rsmedlemskap"
@@ -536,9 +544,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_05();
 
   /**
-   * Translated "Opprett".
+   * Translated "Lagre".
    * 
-   * @return translated "Opprett"
+   * @return translated "Lagre"
    * @gwt.key save
    */
   String save();
@@ -686,6 +694,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key failedConnect
    */
   String failedConnect();
+
+  /**
+   * Translated "Opprett".
+   * 
+   * @return translated "Opprett"
+   * @gwt.key create
+   */
+  String create();
 
   /**
    * Translated "Semester".

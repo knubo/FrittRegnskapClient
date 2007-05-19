@@ -105,7 +105,7 @@ public class LineEditView extends Composite implements ClickListener {
         dp.add(regnLinesView(), DockPanel.NORTH);
 
         registerStandards = new RegisterStandards(constants, messages,
-                dateHeader, attachmentBox, postNmbBox);
+                dateHeader, attachmentBox, postNmbBox, dayBox, descriptionBox);
 
         initWidget(dp);
     }
@@ -559,7 +559,7 @@ public class LineEditView extends Composite implements ClickListener {
     }
 
     private void doUpdate() {
-        if (!validateTop()) {
+        if (!registerStandards.validateTop()) {
             return;
         }
 
@@ -614,24 +614,6 @@ public class LineEditView extends Composite implements ClickListener {
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
-    }
-
-    private boolean validateTop() {
-
-        MasterValidator masterValidator = new MasterValidator();
-
-        masterValidator.mandatory(messages.required_field(), new Widget[] {
-                descriptionBox, attachmentBox, dayBox, postNmbBox });
-
-        masterValidator.range(messages.field_to_low_zero(), new Integer(1),
-                null, new Widget[] { attachmentBox, postNmbBox });
-
-        masterValidator.day(messages.illegal_day(), Integer
-                .parseInt(registerStandards.getCurrentYear()), Integer
-                .parseInt(registerStandards.getCurrentMonth()),
-                new Widget[] { dayBox });
-
-        return masterValidator.validateStatus();
     }
 
     private boolean validateRowInsert() {

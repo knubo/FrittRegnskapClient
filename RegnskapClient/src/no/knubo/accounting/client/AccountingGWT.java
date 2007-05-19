@@ -1,5 +1,6 @@
 package no.knubo.accounting.client;
 
+import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
@@ -10,6 +11,7 @@ import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonEditView;
 import no.knubo.accounting.client.views.PersonSearchView;
+import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.StandardvaluesView;
@@ -70,8 +72,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 new Commando(this, Commando.REGISTER_MEMBERSHIP));
         registerMenu.addItem(messages.menuitem_register_happening(), true,
                 new Commando(this, Commando.REGISTER_HAPPENING));
-        registerMenu.addItem(messages.menuitem_register_count(), true,
-                new Commando(this, Commando.REGISTER_COUNT));
         showMenu.addItem(messages.menuitem_showmonth(), true, new Commando(
                 this, Commando.SHOW_MONTH));
         showMenu.addItem(messages.menuitem_showmonthdetails(), true,
@@ -113,6 +113,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         PosttypeCache.getInstance(cons);
         EmploeeCache.getInstance(cons);
         ProjectCache.getInstance(cons);
+        CountCache.getInstance(cons);
     }
 
     class Commando implements Command {
@@ -149,7 +150,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         static final int REGISTER_HAPPENING = 11;
 
-        static final int REGISTER_COUNT = 12;
 
         static final int REPORT_MEMBER_PER_YEAR = 13;
 
@@ -167,6 +167,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                         callback);
                 ((RegisterMembershipView) widget).init();
                 break;
+            case REGISTER_HAPPENING:
+                widget = RegisterHappeningView.show(messages, constants, callback);
+                ((RegisterHappeningView)widget).init();
+                break;
+                
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants);
                 ((StandardvaluesView) widget).init();

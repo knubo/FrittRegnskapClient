@@ -4,6 +4,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Widget;
 
 public class RegisterStandards {
 
@@ -28,14 +30,22 @@ public class RegisterStandards {
     private final I18NAccount messages;
 
     private final HTML dateHeader;
-    
-    public RegisterStandards(Constants constants, I18NAccount messages, HTML dateHeader,
-            TextBoxWithErrorText attachmentBox, TextBoxWithErrorText postNmbBox) {
+
+    private final TextBoxWithErrorText dayBox;
+
+    private final TextBoxWithErrorText descriptionBox;
+
+    public RegisterStandards(Constants constants, I18NAccount messages,
+            HTML dateHeader, TextBoxWithErrorText attachmentBox,
+            TextBoxWithErrorText postNmbBox, TextBoxWithErrorText dayBox,
+            TextBoxWithErrorText descriptionBox) {
         this.constants = constants;
         this.messages = messages;
         this.dateHeader = dateHeader;
         this.attachmentBox = attachmentBox;
         this.postNmbBox = postNmbBox;
+        this.dayBox = dayBox;
+        this.descriptionBox = descriptionBox;
 
     }
 
@@ -61,6 +71,23 @@ public class RegisterStandards {
                 rh)) {
             Window.alert(messages.failedConnect());
         }
+    }
+
+    public boolean validateTop() {
+
+        MasterValidator masterValidator = new MasterValidator();
+
+        masterValidator.mandatory(messages.required_field(), new Widget[] {
+                descriptionBox, attachmentBox, dayBox, postNmbBox });
+
+        masterValidator.range(messages.field_to_low_zero(), new Integer(1),
+                null, new Widget[] { attachmentBox, postNmbBox });
+
+        masterValidator.day(messages.illegal_day(), Integer
+                .parseInt(currentYear), Integer.parseInt(currentMonth),
+                new Widget[] { dayBox });
+
+        return masterValidator.validateStatus();
     }
 
     public void setDateHeader() {
