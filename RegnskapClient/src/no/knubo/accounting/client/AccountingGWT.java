@@ -92,6 +92,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         reportsMenu.addItem(messages.menuitem_report_member_per_year(), true,
                 new Commando(this, Commando.REPORT_MEMBER_PER_YEAR));
 
+        settingsMenu.addItem(messages.menuitem_edit_happening(), true,
+                new Commando(this, Commando.EDIT_HAPPENING));
         settingsMenu.addItem(messages.menuitem_values(), true, new Commando(
                 this, Commando.SETTINGS));
         aboutMenu.addItem(messages.menuitem_about(), true, new Commando(this,
@@ -150,10 +152,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         static final int REGISTER_HAPPENING = 11;
 
-
         static final int REPORT_MEMBER_PER_YEAR = 13;
 
         static final int SHOW_MONTH_DETAILS = 14;
+
+        static final int EDIT_HAPPENING = 15;
 
         public void execute() {
             Widget widget = null;
@@ -168,10 +171,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((RegisterMembershipView) widget).init();
                 break;
             case REGISTER_HAPPENING:
-                widget = RegisterHappeningView.show(messages, constants, callback);
-                ((RegisterHappeningView)widget).init();
+                widget = RegisterHappeningView.show(messages, constants,
+                        callback);
+                ((RegisterHappeningView) widget).init();
                 break;
-                
+
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants);
                 ((StandardvaluesView) widget).init();

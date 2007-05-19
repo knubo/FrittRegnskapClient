@@ -144,9 +144,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_reports();
 
   /**
-   * Translated "F&oslash;res p� post".
+   * Translated "F&oslash;res p&aring; post".
    * 
-   * @return translated "F&oslash;res p� post"
+   * @return translated "F&oslash;res p&aring; post"
    * @gwt.key register_count_post
    */
   String register_count_post();
@@ -472,6 +472,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String not_employee();
 
   /**
+   * Translated "Standardbilag".
+   * 
+   * @return translated "Standardbilag"
+   * @gwt.key menuitem_edit_happening
+   */
+  String menuitem_edit_happening();
+
+  /**
    * Translated "Mobil".
    * 
    * @return translated "Mobil"
@@ -752,20 +760,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmembers();
 
   /**
-   * Translated "Konto".
-   * 
-   * @return translated "Konto"
-   * @gwt.key account
-   */
-  String account();
-
-  /**
    * Translated "...ingen data oppdatert.".
    * 
    * @return translated "...ingen data oppdatert."
    * @gwt.key save_failed
    */
   String save_failed();
+
+  /**
+   * Translated "Konto".
+   * 
+   * @return translated "Konto"
+   * @gwt.key account
+   */
+  String account();
 
   /**
    * Translated "Other".
