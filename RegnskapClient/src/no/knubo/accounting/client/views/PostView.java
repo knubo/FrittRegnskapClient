@@ -43,7 +43,7 @@ public class PostView extends DialogBox implements ClickListener,
 	public static PostView show(I18NAccount messages, Constants constants,
 			ViewCallback caller, String line) {
 		if (me == null) {
-			me = new PostView(messages, constants, caller, line);
+			me = new PostView(messages, constants, caller);
 		}
 		me.init(line);
 		return me;
@@ -56,11 +56,9 @@ public class PostView extends DialogBox implements ClickListener,
 	 * @param constants
 	 * @param line
 	 * @param caller
-	 * 
-	 * @param line
 	 */
 	private PostView(I18NAccount messages, Constants constants,
-			ViewCallback caller, String line) {
+			ViewCallback caller) {
 		this.messages = messages;
 		this.constants = constants;
 		this.caller = caller;
@@ -90,7 +88,6 @@ public class PostView extends DialogBox implements ClickListener,
 		dp.add(table, DockPanel.NORTH);
 		setWidget(dp);
 
-		init(line);
 	}
 
 	private void init(String line) {

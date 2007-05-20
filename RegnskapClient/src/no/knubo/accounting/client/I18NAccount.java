@@ -88,6 +88,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_12();
 
   /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   * @gwt.key cancel
+   */
+  String cancel();
+
+  /**
    * Translated "Post".
    * 
    * @return translated "Post"
@@ -216,6 +224,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String update();
 
   /**
+   * Translated "Postbeskrivelse".
+   * 
+   * @return translated "Postbeskrivelse"
+   * @gwt.key post_description
+   */
+  String post_description();
+
+  /**
+   * Translated "Standardbilag".
+   * 
+   * @return translated "Standardbilag"
+   * @gwt.key happening
+   */
+  String happening();
+
+  /**
    * Translated "Penger inngis p&aring; format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0".
    * 
    * @return translated "Penger inngis p&aring; format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0"
@@ -254,6 +278,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_showmonthdetails
    */
   String menuitem_showmonthdetails();
+
+  /**
+   * Translated "Telling p&aring;krevd".
+   * 
+   * @return translated "Telling p&aring;krevd"
+   * @gwt.key count_required
+   */
+  String count_required();
 
   /**
    * Translated "Juli".
@@ -358,6 +390,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key country
    */
   String country();
+
+  /**
+   * Translated "DEBET post".
+   * 
+   * @return translated "DEBET post"
+   * @gwt.key debet_post
+   */
+  String debet_post();
 
   /**
    * Translated "Januar".
@@ -712,6 +752,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String create();
 
   /**
+   * Translated "KREDIT post".
+   * 
+   * @return translated "KREDIT post"
+   * @gwt.key kredit_post
+   */
+  String kredit_post();
+
+  /**
    * Translated "Semester".
    * 
    * @return translated "Semester"
@@ -840,6 +888,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_addperson();
 
   /**
+   * Translated "Nytt standardbilag".
+   * 
+   * @return translated "Nytt standardbilag"
+   * @gwt.key new_happening
+   */
+  String new_happening();
+
+  /**
    * Translated "&Aring;r".
    * 
    * @return translated "&Aring;r"
@@ -856,20 +912,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String employee();
 
   /**
-   * Translated "Pris for meldmesskap".
-   * 
-   * @return translated "Pris for meldmesskap"
-   * @gwt.key cost_membership
-   */
-  String cost_membership();
-
-  /**
    * Translated "Beskrivelse".
    * 
    * @return translated "Beskrivelse"
    * @gwt.key description
    */
   String description();
+
+  /**
+   * Translated "Pris for meldmesskap".
+   * 
+   * @return translated "Pris for meldmesskap"
+   * @gwt.key cost_membership
+   */
+  String cost_membership();
 
   /**
    * Translated "Prosjekt".

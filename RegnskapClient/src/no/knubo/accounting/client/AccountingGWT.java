@@ -6,6 +6,7 @@ import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.views.AboutView;
+import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthView;
@@ -175,10 +176,13 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                         callback);
                 ((RegisterHappeningView) widget).init();
                 break;
-
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants);
                 ((StandardvaluesView) widget).init();
+                break;
+            case EDIT_HAPPENING:
+                widget = HappeningsView.show(messages, constants);
+                ((HappeningsView) widget).init();
                 break;
             case ADD_PERSON:
                 widget = PersonEditView.show(constants, messages, callback);

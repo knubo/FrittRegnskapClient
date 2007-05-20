@@ -1,0 +1,297 @@
+package no.knubo.accounting.client.views;
+
+import java.util.HashMap;
+
+import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Widget;
+
+public class HappeningsView extends Composite implements ClickListener {
+
+    private static HappeningsView me;
+
+    private final Constants constants;
+
+    private final I18NAccount messages;
+
+    private FlexTable table;
+
+    private IdHolder idHolder;
+
+    private Button newButton;
+
+    private PosttypeCache posttypeCache;
+
+    private HappeningEditFields editFields;
+
+    protected HashMap dataPerId;
+
+    public HappeningsView(I18NAccount messages, Constants constants) {
+        this.messages = messages;
+        this.constants = constants;
+
+        DockPanel dp = new DockPanel();
+
+        table = new FlexTable();
+        table.setStyleName("tableborder");
+        table.setHTML(0, 0, messages.happening());
+        table.setHTML(0, 1, messages.post_description());
+        table.setHTML(0, 2, messages.debet_post());
+        table.setHTML(0, 3, messages.kredit_post());
+        table.setHTML(0, 4, messages.count_required());
+        table.setHTML(0, 5, "");
+        table.getRowFormatter().setStyleName(0, "header");
+
+        newButton = new Button(messages.new_happening());
+        newButton.addClickListener(this);
+
+        dp.add(newButton, DockPanel.NORTH);
+        dp.add(table, DockPanel.NORTH);
+
+        idHolder = new IdHolder();
+        initWidget(dp);
+    }
+
+    public static HappeningsView show(I18NAccount messages, Constants constants) {
+        if (me == null) {
+            me = new HappeningsView(messages, constants);
+        }
+        me.setVisible(true);
+        return me;
+    }
+
+    public void onClick(Widget sender) {
+        if (editFields == null) {
+            editFields = new HappeningEditFields();
+        }
+
+        int left = sender.getAbsoluteLeft() - 150;
+        int top = sender.getAbsoluteTop() + 10;
+        editFields.setPopupPosition(left, top);
+
+        if (sender == newButton) {
+            editFields.init();
+        } else {
+            editFields.init(idHolder.findId(sender));
+        }
+        editFields.show();
+    }
+
+    public void init() {
+        posttypeCache = PosttypeCache.getInstance(constants);
+        idHolder.init();
+
+        while (table.getRowCount() > 1) {
+            table.removeRow(1);
+        }
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                constants.baseurl() + "registers/happening.php");
+
+        RequestCallback callback = new RequestCallback() {
+            public void onError(Request request, Throwable exception) {
+                Window.alert(exception.getMessage());
+            }
+
+            public void onResponseReceived(Request request, Response response) {
+                JSONValue value = JSONParser.parse(response.getText());
+                JSONArray array = value.isArray();
+
+                dataPerId = new HashMap();
+
+                for (int i = 0; i < array.size(); i++) {
+                    JSONValue one = array.get(i);
+                    JSONObject object = one.isObject();
+
+                    int row = 1 + i;
+
+                    table.setHTML(row, 0, Util.str(object.get("description")));
+                    table.setHTML(row, 1, Util.str(object.get("linedesc")));
+                    table.setHTML(row, 2, posttypeCache
+                            .getDescriptionWithType(Util.str(object
+                                    .get("debetpost"))));
+                    table.setHTML(row, 3, posttypeCache
+                            .getDescriptionWithType(Util.str(object
+                                    .get("kredpost"))));
+                    CheckBox box = new CheckBox();
+                    box.setEnabled(false);
+                    boolean required = "1".equals(Util.str(object
+                            .get("count_req")));
+                    box.setEnabled(required);
+                    table.setWidget(row, 4, box);
+                    table.getCellFormatter().setStyleName(row, 4, "center");
+
+                    Image editImage = ImageFactory.editImage();
+                    editImage.addClickListener(me);
+                    String id = Util.str(object.get("id"));
+                    idHolder.add(id, editImage);
+                    dataPerId.put(id, object);
+
+                    table.setWidget(row, 5, editImage);
+
+                    String style = (row % 2 == 0) ? "showlineposts2"
+                            : "showlineposts1";
+                    table.getRowFormatter().setStyleName(row, style);
+                }
+            }
+        };
+
+        try {
+            builder.setHeader("Content-Type",
+                    "application/x-www-form-urlencoded");
+            builder.sendRequest("action=all", callback);
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
+    }
+
+    class HappeningEditFields extends DialogBox implements ClickListener {
+        private TextBoxWithErrorText happeningBox;
+
+        private TextBoxWithErrorText descBox;
+
+        private ListBox debetListBox;
+
+        private ListBox kreditListBox;
+
+        private CheckBox countReq;
+
+        private Button saveButton;
+
+        private TextBoxWithErrorText debetNmbBox;
+
+        private TextBoxWithErrorText kreditNmbBox;
+
+        private Button cancelButton;
+
+        HappeningEditFields() {
+            setText(messages.happening());
+            FlexTable edittable = new FlexTable();
+            edittable.setStyleName("edittable");
+
+            edittable.setHTML(0, 0, messages.happening());
+            happeningBox = new TextBoxWithErrorText();
+            happeningBox.setMaxLength(40);
+            happeningBox.setVisibleLength(40);
+            edittable.setWidget(0, 1, happeningBox);
+
+            edittable.setHTML(1, 0, messages.post_description());
+            descBox = new TextBoxWithErrorText();
+            descBox.setMaxLength(80);
+            descBox.setVisibleLength(80);
+            edittable.setWidget(1, 1, descBox);
+
+            edittable.setHTML(2, 0, messages.debet_post());
+            debetListBox = new ListBox();
+            debetListBox.setVisibleItemCount(1);
+            posttypeCache.fillAllPosts(debetListBox);
+
+            HTML debetErrorLabel = new HTML();
+            debetNmbBox = new TextBoxWithErrorText(debetErrorLabel);
+            debetNmbBox.setMaxLength(5);
+            debetNmbBox.setVisibleLength(5);
+            Util.syncListbox(debetListBox, debetNmbBox.getTextBox());
+
+            HorizontalPanel debetPanel = new HorizontalPanel();
+            debetPanel.add(debetNmbBox);
+            debetPanel.add(debetListBox);
+            debetPanel.add(debetErrorLabel);
+            edittable.setWidget(2, 1, debetPanel);
+
+            edittable.setHTML(3, 0, messages.kredit_post());
+            kreditListBox = new ListBox();
+            kreditListBox.setVisibleItemCount(1);
+            posttypeCache.fillAllPosts(kreditListBox);
+
+            HTML kreditErrorLabel = new HTML();
+            kreditNmbBox = new TextBoxWithErrorText(kreditErrorLabel);
+            kreditNmbBox.setMaxLength(5);
+            kreditNmbBox.setVisibleLength(5);
+            Util.syncListbox(kreditListBox, kreditNmbBox.getTextBox());
+
+            HorizontalPanel kredPanel = new HorizontalPanel();
+            kredPanel.add(kreditNmbBox);
+            kredPanel.add(kreditListBox);
+            kredPanel.add(kreditErrorLabel);
+            edittable.setWidget(3, 1, kredPanel);
+
+            edittable.setHTML(4, 0, messages.count_required());
+            countReq = new CheckBox();
+            edittable.setWidget(4, 1, countReq);
+
+            DockPanel dp = new DockPanel();
+            dp.add(edittable, DockPanel.NORTH);
+
+            saveButton = new Button(messages.save());
+            saveButton.addClickListener(this);
+            cancelButton = new Button(messages.cancel());
+            cancelButton.addClickListener(this);
+
+            HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.add(saveButton);
+            buttonPanel.add(cancelButton);
+            dp.add(buttonPanel, DockPanel.NORTH);
+            setWidget(dp);
+        }
+
+        public void init(String id) {
+            JSONObject object = (JSONObject) dataPerId.get(id);
+
+            happeningBox.setText(Util.str(object.get("description")));
+            descBox.setText(Util.str(object.get("linedesc")));
+            String debetpost = Util.str(object.get("debetpost"));
+            debetNmbBox.setText(debetpost);
+            String kreditpost = Util.str(object.get("kredpost"));
+            kreditNmbBox.setText(kreditpost);
+            
+            Util.setIndexByValue(debetListBox, debetpost);
+            Util.setIndexByValue(kreditListBox, kreditpost);
+            
+            boolean required = "1".equals(Util.str(object.get("count_req")));
+            countReq.setChecked(required);
+        }
+
+        public void onClick(Widget sender) {
+            if (sender == cancelButton) {
+                hide();
+            }
+        }
+
+        public void init() {
+            happeningBox.setText("");
+            descBox.setText("");
+            debetListBox.setSelectedIndex(0);
+            kreditListBox.setSelectedIndex(0);
+            countReq.setChecked(false);
+            debetNmbBox.setText("");
+            kreditNmbBox.setText("");
+        }
+    }
+}

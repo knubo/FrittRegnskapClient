@@ -96,6 +96,10 @@ public class PosttypeCache implements Registry {
         return (String) typeGivesDescription.get(type);
     }
 
+    public String getDescriptionWithType(String type) {
+        return type + " - " + typeGivesDescription.get(type);
+    }
+
     public void fillAllPosts(ListBox box) {
         box.insertItem("", 0);
         int pos = 1;
@@ -119,7 +123,6 @@ public class PosttypeCache implements Registry {
         }
     }
 
-    
     public boolean keyExists(String key) {
         return typeGivesDescription.containsKey(key);
     }
