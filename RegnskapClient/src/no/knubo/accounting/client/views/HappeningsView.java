@@ -9,6 +9,7 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -92,7 +93,13 @@ public class HappeningsView extends Composite implements ClickListener {
             editFields = new HappeningEditFields();
         }
 
-        int left = sender.getAbsoluteLeft() - 150;
+        int left = 0;
+        if (sender == newButton) {
+            left = sender.getAbsoluteLeft() + 10;
+        } else {
+            left = sender.getAbsoluteLeft() - 250;
+        }
+
         int top = sender.getAbsoluteTop() + 10;
         editFields.setPopupPosition(left, top);
 
@@ -132,35 +139,19 @@ public class HappeningsView extends Composite implements ClickListener {
 
                     int row = 1 + i;
 
-                    table.setHTML(row, 0, Util.str(object.get("description")));
-                    table.setHTML(row, 1, Util.str(object.get("linedesc")));
-                    table.setHTML(row, 2, posttypeCache
-                            .getDescriptionWithType(Util.str(object
-                                    .get("debetpost"))));
-                    table.setHTML(row, 3, posttypeCache
-                            .getDescriptionWithType(Util.str(object
-                                    .get("kredpost"))));
-                    CheckBox box = new CheckBox();
-                    box.setEnabled(false);
+                    String description = Util.str(object.get("description"));
+                    String linedesc = Util.str(object.get("linedesc"));
+                    String debetpost = Util.str(object.get("debetpost"));
+                    String kredpost = Util.str(object.get("kredpost"));
                     boolean required = "1".equals(Util.str(object
                             .get("count_req")));
-                    box.setEnabled(required);
-                    table.setWidget(row, 4, box);
-                    table.getCellFormatter().setStyleName(row, 4, "center");
-
-                    Image editImage = ImageFactory.editImage();
-                    editImage.addClickListener(me);
                     String id = Util.str(object.get("id"));
-                    idHolder.add(id, editImage);
-                    dataPerId.put(id, object);
 
-                    table.setWidget(row, 5, editImage);
-
-                    String style = (row % 2 == 0) ? "showlineposts2"
-                            : "showlineposts1";
-                    table.getRowFormatter().setStyleName(row, style);
+                    addRow(object, row, description, linedesc, debetpost,
+                            kredpost, required, id);
                 }
             }
+
         };
 
         try {
@@ -170,6 +161,30 @@ public class HappeningsView extends Composite implements ClickListener {
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
+    }
+
+    private void addRow(JSONObject object, int row, String description,
+            String linedesc, String debetpost, String kredpost,
+            boolean required, String id) {
+        table.setHTML(row, 0, description);
+        table.setHTML(row, 1, linedesc);
+        table.setHTML(row, 2, posttypeCache.getDescriptionWithType(debetpost));
+        table.setHTML(row, 3, posttypeCache.getDescriptionWithType(kredpost));
+        CheckBox box = new CheckBox();
+        box.setEnabled(false);
+        box.setChecked(required);
+        table.setWidget(row, 4, box);
+        table.getCellFormatter().setStyleName(row, 4, "center");
+
+        Image editImage = ImageFactory.editImage();
+        editImage.addClickListener(me);
+        idHolder.add(id, editImage);
+        dataPerId.put(id, object);
+
+        table.setWidget(row, 5, editImage);
+
+        String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
+        table.getRowFormatter().setStyleName(row, style);
     }
 
     class HappeningEditFields extends DialogBox implements ClickListener {
@@ -190,6 +205,10 @@ public class HappeningsView extends Composite implements ClickListener {
         private TextBoxWithErrorText kreditNmbBox;
 
         private Button cancelButton;
+
+        private String currentId;
+
+        private HTML mainErrorLabel;
 
         HappeningEditFields() {
             setText(messages.happening());
@@ -254,14 +273,19 @@ public class HappeningsView extends Composite implements ClickListener {
             cancelButton = new Button(messages.cancel());
             cancelButton.addClickListener(this);
 
+            mainErrorLabel = new HTML();
+            mainErrorLabel.setStyleName("error");
+
             HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.add(saveButton);
             buttonPanel.add(cancelButton);
+            buttonPanel.add(mainErrorLabel);
             dp.add(buttonPanel, DockPanel.NORTH);
             setWidget(dp);
         }
 
         public void init(String id) {
+            currentId = id;
             JSONObject object = (JSONObject) dataPerId.get(id);
 
             happeningBox.setText(Util.str(object.get("description")));
@@ -270,10 +294,10 @@ public class HappeningsView extends Composite implements ClickListener {
             debetNmbBox.setText(debetpost);
             String kreditpost = Util.str(object.get("kredpost"));
             kreditNmbBox.setText(kreditpost);
-            
+
             Util.setIndexByValue(debetListBox, debetpost);
             Util.setIndexByValue(kreditListBox, kreditpost);
-            
+
             boolean required = "1".equals(Util.str(object.get("count_req")));
             countReq.setChecked(required);
         }
@@ -281,10 +305,93 @@ public class HappeningsView extends Composite implements ClickListener {
         public void onClick(Widget sender) {
             if (sender == cancelButton) {
                 hide();
+            } else if (sender == saveButton && validateFields()) {
+                doSave();
             }
         }
 
+        private void doSave() {
+            StringBuffer sb = new StringBuffer();
+            sb.append("action=save");
+            final String description = happeningBox.getText();
+            final String linedesc = descBox.getText();
+            final String debetpost = debetNmbBox.getText();
+            final String kredpost = kreditNmbBox.getText();
+            final boolean checked = countReq.isChecked();
+            final String reqSent = checked ? "1" : "0";
+            final String sendId = currentId;
+
+            Util.addPostParam(sb, "description", description);
+            Util.addPostParam(sb, "linedesc", linedesc);
+            Util.addPostParam(sb, "debetpost", debetpost);
+            Util.addPostParam(sb, "kredpost", kredpost);
+            Util.addPostParam(sb, "id", sendId);
+            Util.addPostParam(sb, "count_req", reqSent);
+
+            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                    constants.baseurl() + "registers/happening.php");
+
+            RequestCallback callback = new RequestCallback() {
+                public void onError(Request request, Throwable exception) {
+                    Window.alert(exception.getMessage());
+                }
+
+                public void onResponseReceived(Request request,
+                        Response response) {
+                    if ("0".equals(response.getText())) {
+                        mainErrorLabel.setHTML(messages.save_failed());
+                        Util.timedMessage(mainErrorLabel, "", 5);
+                    } else {
+                        if (sendId == null) {
+                            JSONValue value = JSONParser.parse(response
+                                    .getText());
+                            if (value == null) {
+                                String error = "Failed to save data - null value.";
+                                Window.alert(error);
+                                return;
+                            }
+                            JSONObject object = value.isObject();
+
+                            if (object == null) {
+                                String error = "Failed to save data - null object.";
+                                Window.alert(error);
+                                return;
+                            }
+                            int row = table.getRowCount();
+
+                            addRow(object, row, description, linedesc,
+                                    debetpost, kredpost, checked, sendId);
+                        } else {
+                            /* Could probably be more effective but why bother? */
+                            me.init();
+                        }
+                        hide();
+                    }
+                }
+            };
+
+            try {
+                builder.setHeader("Content-Type",
+                        "application/x-www-form-urlencoded");
+                builder.sendRequest(sb.toString(), callback);
+            } catch (RequestException e) {
+                Window.alert("Failed to send the request: " + e.getMessage());
+            }
+
+        }
+
+        private boolean validateFields() {
+            MasterValidator mv = new MasterValidator();
+            mv.mandatory(messages.required_field(), new Widget[] {
+                    happeningBox, descBox, debetNmbBox, kreditNmbBox });
+            mv.registry(messages.registry_invalid_key(), PosttypeCache
+                    .getInstance(constants), new Widget[] { debetNmbBox,
+                    kreditNmbBox });
+            return mv.validateStatus();
+        }
+
         public void init() {
+            currentId = null;
             happeningBox.setText("");
             descBox.setText("");
             debetListBox.setSelectedIndex(0);
