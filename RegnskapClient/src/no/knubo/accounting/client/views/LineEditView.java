@@ -46,7 +46,7 @@ public class LineEditView extends Composite implements ClickListener {
     public static LineEditView show(ViewCallback caller, I18NAccount messages,
             Constants constants, String line) {
         if (me == null) {
-            me = new LineEditView(caller, messages, constants, line);
+            me = new LineEditView(caller, messages, constants);
         }
         me.init(line);
         return me;
@@ -94,7 +94,7 @@ public class LineEditView extends Composite implements ClickListener {
     private RegisterStandards registerStandards;
 
     private LineEditView(ViewCallback caller, I18NAccount messages,
-            Constants constants, String line) {
+            Constants constants) {
 
         this.caller = caller;
         this.messages = messages;

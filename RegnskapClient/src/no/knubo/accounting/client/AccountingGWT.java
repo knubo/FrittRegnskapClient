@@ -2,6 +2,7 @@ package no.knubo.accounting.client;
 
 import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.cache.EmploeeCache;
+import no.knubo.accounting.client.cache.HappeningCache;
 import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
@@ -117,6 +118,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         EmploeeCache.getInstance(cons);
         ProjectCache.getInstance(cons);
         CountCache.getInstance(cons);
+        HappeningCache.getInstance(cons);
     }
 
     class Commando implements Command {
@@ -185,7 +187,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((HappeningsView) widget).init();
                 break;
             case ADD_PERSON:
-                widget = PersonEditView.show(constants, messages, callback);
+                widget = PersonEditView.show(constants, messages);
                 ((PersonEditView) widget).init(null);
                 break;
             case FIND_PERSON:
@@ -244,7 +246,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     public void editPerson(String id) {
-        PersonEditView widget = PersonEditView.show(constants, messages, this);
+        PersonEditView widget = PersonEditView.show(constants, messages);
         widget.init(id);
         setActiveWidget(widget);
 

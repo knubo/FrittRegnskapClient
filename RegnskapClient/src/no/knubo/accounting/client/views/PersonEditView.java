@@ -59,7 +59,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private Button updateButton;
 
-    public PersonEditView(ViewCallback caller, I18NAccount messages,
+    public PersonEditView(I18NAccount messages,
             Constants constants) {
         this.messages = messages;
         this.constants = constants;
@@ -128,9 +128,9 @@ public class PersonEditView extends Composite implements ClickListener {
     }
 
     public static PersonEditView show(Constants constants,
-            I18NAccount messages, ViewCallback caller) {
+            I18NAccount messages) {
         if (me == null) {
-            me = new PersonEditView(caller, messages, constants);
+            me = new PersonEditView(messages, constants);
         }
         return me;
     }

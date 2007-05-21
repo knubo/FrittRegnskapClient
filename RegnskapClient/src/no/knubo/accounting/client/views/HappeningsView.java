@@ -1,10 +1,12 @@
 package no.knubo.accounting.client.views;
 
-import java.util.HashMap;
+import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.CacheCallback;
+import no.knubo.accounting.client.cache.HappeningCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
@@ -16,7 +18,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -34,7 +35,8 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class HappeningsView extends Composite implements ClickListener {
+public class HappeningsView extends Composite implements ClickListener,
+        CacheCallback {
 
     private static HappeningsView me;
 
@@ -51,8 +53,6 @@ public class HappeningsView extends Composite implements ClickListener {
     private PosttypeCache posttypeCache;
 
     private HappeningEditFields editFields;
-
-    protected HashMap dataPerId;
 
     public HappeningsView(I18NAccount messages, Constants constants) {
         this.messages = messages;
@@ -119,53 +119,27 @@ public class HappeningsView extends Composite implements ClickListener {
             table.removeRow(1);
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "registers/happening.php");
+        HappeningCache cache = HappeningCache.getInstance(constants);
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        int row = 1;
+        for (Iterator i = cache.getAll().iterator(); i.hasNext();) {
+            JSONObject object = (JSONObject) i.next();
 
-            public void onResponseReceived(Request request, Response response) {
-                JSONValue value = JSONParser.parse(response.getText());
-                JSONArray array = value.isArray();
+            String description = Util.str(object.get("description"));
+            String linedesc = Util.str(object.get("linedesc"));
+            String debetpost = Util.str(object.get("debetpost"));
+            String kredpost = Util.str(object.get("kredpost"));
+            boolean required = "1".equals(Util.str(object.get("count_req")));
+            String id = Util.str(object.get("id"));
 
-                dataPerId = new HashMap();
-
-                for (int i = 0; i < array.size(); i++) {
-                    JSONValue one = array.get(i);
-                    JSONObject object = one.isObject();
-
-                    int row = 1 + i;
-
-                    String description = Util.str(object.get("description"));
-                    String linedesc = Util.str(object.get("linedesc"));
-                    String debetpost = Util.str(object.get("debetpost"));
-                    String kredpost = Util.str(object.get("kredpost"));
-                    boolean required = "1".equals(Util.str(object
-                            .get("count_req")));
-                    String id = Util.str(object.get("id"));
-
-                    addRow(object, row, description, linedesc, debetpost,
-                            kredpost, required, id);
-                }
-            }
-
-        };
-
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest("action=all", callback);
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
+            addRow(row, description, linedesc, debetpost, kredpost, required,
+                    id);
+            row++;
         }
     }
 
-    private void addRow(JSONObject object, int row, String description,
-            String linedesc, String debetpost, String kredpost,
-            boolean required, String id) {
+    private void addRow(int row, String description, String linedesc,
+            String debetpost, String kredpost, boolean required, String id) {
         table.setHTML(row, 0, description);
         table.setHTML(row, 1, linedesc);
         table.setHTML(row, 2, posttypeCache.getDescriptionWithType(debetpost));
@@ -179,7 +153,6 @@ public class HappeningsView extends Composite implements ClickListener {
         Image editImage = ImageFactory.editImage();
         editImage.addClickListener(me);
         idHolder.add(id, editImage);
-        dataPerId.put(id, object);
 
         table.setWidget(row, 5, editImage);
 
@@ -286,7 +259,9 @@ public class HappeningsView extends Composite implements ClickListener {
 
         public void init(String id) {
             currentId = id;
-            JSONObject object = (JSONObject) dataPerId.get(id);
+
+            JSONObject object = HappeningCache.getInstance(constants)
+                    .getHappening(id);
 
             happeningBox.setText(Util.str(object.get("description")));
             descBox.setText(Util.str(object.get("linedesc")));
@@ -359,11 +334,11 @@ public class HappeningsView extends Composite implements ClickListener {
                             }
                             int row = table.getRowCount();
 
-                            addRow(object, row, description, linedesc,
-                                    debetpost, kredpost, checked, sendId);
+                            addRow(row, description, linedesc, debetpost,
+                                    kredpost, checked, sendId);
                         } else {
                             /* Could probably be more effective but why bother? */
-                            me.init();
+                            HappeningCache.getInstance(constants).flush(me);
                         }
                         hide();
                     }
@@ -400,5 +375,9 @@ public class HappeningsView extends Composite implements ClickListener {
             debetNmbBox.setText("");
             kreditNmbBox.setText("");
         }
+    }
+
+    public void flushCompleted() {
+        me.init();
     }
 }

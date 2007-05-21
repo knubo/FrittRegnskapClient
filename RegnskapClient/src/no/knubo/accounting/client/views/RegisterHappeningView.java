@@ -5,12 +5,15 @@ import java.util.List;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CountCache;
+import no.knubo.accounting.client.cache.HappeningCache;
+import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -19,7 +22,8 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class RegisterHappeningView extends Composite implements ClickListener {
+public class RegisterHappeningView extends Composite implements ClickListener,
+        ChangeListener {
 
     private static RegisterHappeningView me;
 
@@ -57,9 +61,15 @@ public class RegisterHappeningView extends Composite implements ClickListener {
 
     private TextBoxWithErrorText amountBox;
 
+    private IdHolder widgetGivesValue;
+
+    private HappeningCache happeningCache;
+
     private RegisterHappeningView(I18NAccount messages, Constants constants) {
         this.messages = messages;
         this.constants = constants;
+
+        widgetGivesValue = new IdHolder();
 
         VerticalPanel vp = new VerticalPanel();
 
@@ -89,23 +99,23 @@ public class RegisterHappeningView extends Composite implements ClickListener {
         table.setWidget(2, 1, attachmentBox);
         table.setHTML(2, 0, messages.attachment());
 
-        descriptionBox = new TextBoxWithErrorText();
-        descriptionBox.setMaxLength(40);
-        descriptionBox.setVisibleLength(40);
-        table.setWidget(3, 1, descriptionBox);
-        table.setHTML(3, 0, messages.description());
-
         postListBox = new ListBox();
         postListBox.setMultipleSelect(false);
         postListBox.setVisibleItemCount(1);
-        table.setWidget(4, 1, postListBox);
-        table.setHTML(4, 0, messages.register_count_post());
+        postListBox.addChangeListener(this);
+        table.setWidget(3, 1, postListBox);
+        table.setHTML(3, 0, messages.register_count_post());
+
+        descriptionBox = new TextBoxWithErrorText();
+        descriptionBox.setMaxLength(40);
+        descriptionBox.setVisibleLength(40);
+        table.setWidget(4, 1, descriptionBox);
+        table.setHTML(4, 0, messages.description());
 
         table.setHTML(5, 0, messages.amount());
         amountBox = new TextBoxWithErrorText();
         amountBox.setVisibleLength(10);
         table.setWidget(5, 1, amountBox);
-
 
         table.setHTML(6, 0, messages.money_type());
         List counts = CountCache.getInstance(constants).getCounts();
@@ -117,14 +127,14 @@ public class RegisterHappeningView extends Composite implements ClickListener {
             numberBox.setVisibleLength(10);
             table.setHTML(row, 0, count);
             table.setWidget(row, 1, numberBox);
+            widgetGivesValue.add(count, numberBox.getTextBox());
             row++;
         }
 
-        
         Button saveButton = new Button(messages.save());
         saveButton.addClickListener(this);
         table.setWidget(row, 0, saveButton);
-        
+
         registerStandards = new RegisterStandards(constants, messages,
                 dateHeader, attachmentBox, postNmbBox, dayBox, descriptionBox);
 
@@ -132,14 +142,29 @@ public class RegisterHappeningView extends Composite implements ClickListener {
     }
 
     public void init() {
+        widgetGivesValue.init();
+
         postNmbBox.setText("");
         dayBox.setText("");
         attachmentBox.setText("");
         dateHeader.setHTML("...");
+        descriptionBox.setText("");
         registerStandards.fetchInitalData();
+
+        postListBox.clear();
+        happeningCache = HappeningCache.getInstance(constants);
+        happeningCache.fill(postListBox);
     }
 
     public void onClick(Widget sender) {
 
+    }
+
+    public void onChange(Widget sender) {
+        if(sender == postListBox) {
+            String id = Util.getSelected(postListBox);
+            
+            descriptionBox.setText(happeningCache.getLineDescription(id));
+        }
     }
 }
