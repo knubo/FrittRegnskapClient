@@ -47,4 +47,8 @@ public class IdHolder {
 		Window.alert("Failed to find id.");
 		return null;
 	}
+    
+    public List getWidgets() {
+        return widgets;
+    }
 }

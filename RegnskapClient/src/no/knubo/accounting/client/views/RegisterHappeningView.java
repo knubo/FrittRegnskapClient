@@ -8,10 +8,12 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.cache.HappeningCache;
+import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -19,11 +21,12 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class RegisterHappeningView extends Composite implements ClickListener,
-        ChangeListener {
+        ChangeListener, FocusCallback {
 
     private static RegisterHappeningView me;
 
@@ -42,8 +45,6 @@ public class RegisterHappeningView extends Composite implements ClickListener,
     protected String currentYear;
 
     protected String currentMonth;
-
-    private FlexTable mainTable;
 
     private TextBoxWithErrorText dayBox;
 
@@ -128,6 +129,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             table.setHTML(row, 0, count);
             table.setWidget(row, 1, numberBox);
             widgetGivesValue.add(count, numberBox.getTextBox());
+            numberBox.addFocusListener(this);
             row++;
         }
 
@@ -142,7 +144,6 @@ public class RegisterHappeningView extends Composite implements ClickListener,
     }
 
     public void init() {
-        widgetGivesValue.init();
 
         postNmbBox.setText("");
         dayBox.setText("");
@@ -161,10 +162,30 @@ public class RegisterHappeningView extends Composite implements ClickListener,
     }
 
     public void onChange(Widget sender) {
-        if(sender == postListBox) {
+        if (sender == postListBox) {
             String id = Util.getSelected(postListBox);
-            
+
             descriptionBox.setText(happeningCache.getLineDescription(id));
         }
+    }
+
+    public void onFocus(TextBoxWithErrorText me) {
+        /* Me */
+    }
+
+    public void onLostFocus(TextBoxWithErrorText me) {
+        /* Recalc sums */
+
+        double sum = 0;
+        for (Iterator i = widgetGivesValue.getWidgets().iterator(); i.hasNext();) {
+            TextBox widget = (TextBox) i.next();
+            String value = widgetGivesValue.findId(widget);
+
+            if (widget.getText().length() > 0) {
+                sum += Double.parseDouble(value)
+                        * Integer.parseInt(widget.getText());
+            }
+        }
+        amountBox.setText(String.valueOf(sum));
     }
 }
