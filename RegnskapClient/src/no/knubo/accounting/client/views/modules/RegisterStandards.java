@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views.modules;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.ErrorLabelWidget;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -31,14 +32,14 @@ public class RegisterStandards {
 
     private final HTML dateHeader;
 
-    private final TextBoxWithErrorText dayBox;
+    private final ErrorLabelWidget dayBox;
 
-    private final TextBoxWithErrorText descriptionBox;
+    private final ErrorLabelWidget descriptionBox;
 
     public RegisterStandards(Constants constants, I18NAccount messages,
             HTML dateHeader, TextBoxWithErrorText attachmentBox,
-            TextBoxWithErrorText postNmbBox, TextBoxWithErrorText dayBox,
-            TextBoxWithErrorText descriptionBox) {
+            TextBoxWithErrorText postNmbBox, ErrorLabelWidget dayBox,
+            ErrorLabelWidget descriptionBox) {
         this.constants = constants;
         this.messages = messages;
         this.dateHeader = dateHeader;

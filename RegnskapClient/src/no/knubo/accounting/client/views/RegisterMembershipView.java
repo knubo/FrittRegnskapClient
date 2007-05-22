@@ -4,10 +4,12 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.misc.ErrorLabelWidget;
 import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.UserSearchCallback;
 import no.knubo.accounting.client.views.modules.UserSearchFields;
 
@@ -334,7 +336,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         return sb;
     }
 
-    private void validateDay(MasterValidator mv, TextBoxWithErrorText dayBox) {
+    private void validateDay(MasterValidator mv, ErrorLabelWidget dayBox) {
         mv.day("!", messages.illegal_day(), Integer.parseInt(currentYear),
                 Integer.parseInt(currentMonth), new Widget[] { dayBox });
     }
@@ -366,11 +368,11 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
     }
 
-    public void onFocus(TextBoxWithErrorText me) {
+    public void onFocus(Validateable me) {
         /* Not used */
     }
 
-    public void onLostFocus(TextBoxWithErrorText textbox) {
+    public void onLostFocus(ErrorLabelWidget textbox) {
         /* Just flag the error. */
 
         validateDay(new MasterValidator(), textbox);

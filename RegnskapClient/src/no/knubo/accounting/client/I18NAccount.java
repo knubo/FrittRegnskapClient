@@ -376,6 +376,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_to_low_zero();
 
   /**
+   * Translated "Feltet m&aring; v&aelig;re st&oslash;rre eller lik 0".
+   * 
+   * @return translated "Feltet m&aring; v&aelig;re st&oslash;rre eller lik 0"
+   * @gwt.key field_positive
+   */
+  String field_positive();
+
+  /**
    * Translated "Oktober".
    * 
    * @return translated "Oktober"

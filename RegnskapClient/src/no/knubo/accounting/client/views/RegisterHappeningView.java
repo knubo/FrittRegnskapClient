@@ -5,22 +5,23 @@ import java.util.List;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
-import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.cache.HappeningCache;
+import no.knubo.accounting.client.misc.ErrorLabelWidget;
 import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -42,10 +43,6 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
     private final Constants constants;
 
-    protected String currentYear;
-
-    protected String currentMonth;
-
     private TextBoxWithErrorText dayBox;
 
     private TextBoxWithErrorText attachmentBox;
@@ -58,7 +55,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
     private TextBoxWithErrorText descriptionBox;
 
-    private ListBox postListBox;
+    private ListBoxWithErrorText postListBox;
 
     private TextBoxWithErrorText amountBox;
 
@@ -100,10 +97,10 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         table.setWidget(2, 1, attachmentBox);
         table.setHTML(2, 0, messages.attachment());
 
-        postListBox = new ListBox();
-        postListBox.setMultipleSelect(false);
-        postListBox.setVisibleItemCount(1);
-        postListBox.addChangeListener(this);
+        postListBox = new ListBoxWithErrorText();
+        postListBox.getListbox().setMultipleSelect(false);
+        postListBox.getListbox().setVisibleItemCount(1);
+        postListBox.getListbox().addChangeListener(this);
         table.setWidget(3, 1, postListBox);
         table.setHTML(3, 0, messages.register_count_post());
 
@@ -152,31 +149,56 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         descriptionBox.setText("");
         registerStandards.fetchInitalData();
 
-        postListBox.clear();
+        postListBox.getListbox().clear();
         happeningCache = HappeningCache.getInstance(constants);
-        happeningCache.fill(postListBox);
+        happeningCache.fill(postListBox.getListbox());
     }
 
     public void onClick(Widget sender) {
+        if (!validateSave()) {
+            return;
+        }
+    }
 
+    private boolean validateSave() {
+        MasterValidator mv = new MasterValidator();
+
+
+        mv.mandatory(messages.required_field(),
+                new Widget[] { amountBox, descriptionBox, postListBox,
+                        attachmentBox, dayBox, postNmbBox });
+
+        mv.day(messages.illegal_day(), Integer.parseInt(registerStandards.getCurrentYear()), Integer
+                .parseInt(registerStandards.getCurrentMonth()), new Widget[] { dayBox });
+
+        mv.money(messages.field_money(), new Widget[] { amountBox });
+
+        mv.range(messages.field_to_low_zero(), new Integer(1), null,
+                new Widget[] { attachmentBox, postNmbBox });
+
+        mv.range(messages.field_positive(), new Integer(0), null,
+                widgetGivesValue.getWidgetsAsArray());
+
+        return mv.validateStatus();
     }
 
     public void onChange(Widget sender) {
-        if (sender == postListBox) {
-            String id = Util.getSelected(postListBox);
+        if (sender == postListBox.getListbox()) {
+            String id = postListBox.getText();
 
             descriptionBox.setText(happeningCache.getLineDescription(id));
         }
     }
 
-    public void onFocus(TextBoxWithErrorText me) {
-        /* Me */
+    public void onFocus(Validateable me) {
+        /* Not used */
     }
 
-    public void onLostFocus(TextBoxWithErrorText me) {
+    public void onLostFocus(ErrorLabelWidget me) {
         /* Recalc sums */
 
         double sum = 0;
+
         for (Iterator i = widgetGivesValue.getWidgets().iterator(); i.hasNext();) {
             TextBox widget = (TextBox) i.next();
             String value = widgetGivesValue.findId(widget);
@@ -184,8 +206,10 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             if (widget.getText().length() > 0) {
                 sum += Double.parseDouble(value)
                         * Integer.parseInt(widget.getText());
+
             }
         }
+        amountBox.getTextBox().setEnabled(sum == 0);
         amountBox.setText(String.valueOf(sum));
     }
 }

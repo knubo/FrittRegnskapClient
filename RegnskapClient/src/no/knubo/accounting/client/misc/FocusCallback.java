@@ -1,8 +1,10 @@
 package no.knubo.accounting.client.misc;
 
+import no.knubo.accounting.client.validation.Validateable;
+
 public interface FocusCallback {
 
-    void onLostFocus(TextBoxWithErrorText me);
+    void onLostFocus(ErrorLabelWidget me);
 
-    void onFocus(TextBoxWithErrorText me);
+    void onFocus(Validateable me);
 }

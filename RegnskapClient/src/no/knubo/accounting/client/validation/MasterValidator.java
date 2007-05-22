@@ -5,6 +5,7 @@ import java.util.List;
 
 import no.knubo.accounting.client.cache.Registry;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 public class MasterValidator {
@@ -19,6 +20,9 @@ public class MasterValidator {
     }
 
     public void day(String error, int year, int month, Widget[] widgets) {
+        if(month == 0 || year == 0) {
+            Window.alert("Validation of day will fail. Month:"+month+" Year:"+year);
+        }
         ValidatorBase dayvalidator = new DayValidator(error, month, year);
         status &= dayvalidator.validate(this, widgets);
     }

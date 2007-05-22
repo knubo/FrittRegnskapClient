@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.validation;
 
 
+
 public class MandatoryValidator extends ValidatorBase {
 
 	public MandatoryValidator(String errorText) {
