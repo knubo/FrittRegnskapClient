@@ -5,6 +5,7 @@ import java.util.List;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.cache.HappeningCache;
 import no.knubo.accounting.client.misc.ErrorLabelWidget;
@@ -16,6 +17,12 @@ import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -158,6 +165,58 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         if (!validateSave()) {
             return;
         }
+        doSave();
+    }
+
+    private void doSave() {
+        CountCache countCache = CountCache.getInstance(constants);
+        
+        StringBuffer sb = new StringBuffer();
+        sb.append("action=save");
+        
+        Util.addPostParam(sb, "day", dayBox.getText());
+        Util.addPostParam(sb, "desc", descriptionBox.getText());
+        Util.addPostParam(sb, "attachment", attachmentBox.getText());
+        Util.addPostParam(sb, "postnmb", postNmbBox.getText());
+        final String money = Util.fixMoney(amountBox.getText());
+        Util.addPostParam(sb, "amount", money);
+        Util.addPostParam(sb, "post", postListBox.getText());
+
+        for (Iterator i = widgetGivesValue.getWidgets().iterator(); i.hasNext();) {
+            TextBox textBox = (TextBox) i.next();
+            
+            String value = textBox.getText();
+            if (value.length() == 0) {
+                continue;
+            }
+            
+            String id = widgetGivesValue.findId(textBox);
+            String key = countCache.getFieldForCount(id);
+            
+            Util.addPostParam(sb, key, value);
+        }
+        
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                constants.baseurl() + "accounting/addhappening  .php");
+
+        RequestCallback callback = new RequestCallback() {
+            public void onError(Request request, Throwable exception) {
+                Window.alert(exception.getMessage());
+            }
+
+            public void onResponseReceived(Request request, Response response) {
+            }
+
+        };
+
+        try {
+            builder.setHeader("Content-Type",
+                    "application/x-www-form-urlencoded");
+            builder.sendRequest(sb.toString(), callback);
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
+
     }
 
     private boolean validateSave() {
