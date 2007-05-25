@@ -36,8 +36,12 @@ public class CountFields {
 
         table.setHTML(0, 0, messages.count_header());
         table.setText(0, 1, "");
+        table.setText(0, 2, "");
+        table.setText(0, 3, "");
         table.setHTML(1, 0, messages.value());
         table.setHTML(1, 1, messages.count());
+        table.setText(1, 2, "");
+        table.setText(1, 3, "");
 
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
@@ -89,9 +93,18 @@ public class CountFields {
                     table.getCellFormatter().setStyleName(row, 0, "right");
 
                     if (object.containsKey(field)) {
-                        table.setText(row, 1, Util.strSkipNull(object
-                                .get(field)));
-                        table.getCellFormatter().setStyleName(row, 1, "right");
+                        String val = Util.strSkipNull(object.get(field));
+                        
+                        if(!val.equals("")) {
+                            table.setText(row, 1, "x "+val);
+                            table.setText(row, 2, "=");
+                            table.setText(row, 3, String.valueOf(Double.parseDouble(val) * Double.parseDouble(count)));
+                            table.getCellFormatter().setStyleName(row, 3, "right");
+                        } else {
+                            table.setText(row, 1, "");
+                            table.setText(row, 2, "");
+                            table.setText(row, 3, "");
+                        }
                     }
                     table.getRowFormatter().setStyleName(
                             row,
