@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.validation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.cache.Registry;
@@ -20,8 +21,9 @@ public class MasterValidator {
     }
 
     public void day(String error, int year, int month, Widget[] widgets) {
-        if(month == 0 || year == 0) {
-            Window.alert("Validation of day will fail. Month:"+month+" Year:"+year);
+        if (month == 0 || year == 0) {
+            Window.alert("Validation of day will fail. Month:" + month
+                    + " Year:" + year);
         }
         ValidatorBase dayvalidator = new DayValidator(error, month, year);
         status &= dayvalidator.validate(this, widgets);
@@ -80,7 +82,8 @@ public class MasterValidator {
 
     public void day(String error, String mouseover, int year, int month,
             Widget[] widgets) {
-        ValidatorBase dayvalidator = new DayValidator(error, mouseover, month, year);
+        ValidatorBase dayvalidator = new DayValidator(error, mouseover, month,
+                year);
         status &= dayvalidator.validate(this, widgets);
     }
 
@@ -88,15 +91,26 @@ public class MasterValidator {
         if (failedFields.contains(box)) {
             return true;
         }
-        
-        if(shouldFail) {
+
+        if (shouldFail) {
             failedFields.add(box);
             box.setErrorText(message);
         } else {
             box.setErrorText("");
         }
-        
+
         return !shouldFail;
+    }
+
+    public void range(String error, Integer minVal, Integer maxVal, List widgets) {
+        Widget[] widgetList = new Widget[widgets.size()];
+
+        int pos = 0;
+        for (Iterator i = widgets.iterator(); i.hasNext();) {
+            Widget widget = (Widget) i.next();
+            widgetList[pos++] = widget;
+        }
+        range(error, minVal, maxVal, widgetList);
     }
 
 }

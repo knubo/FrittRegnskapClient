@@ -51,8 +51,4 @@ public class IdHolder {
     public List getWidgets() {
         return widgets;
     }
-    
-    public Widget[] getWidgetsAsArray() {
-        return (Widget[]) widgets.toArray();
-    }
 }

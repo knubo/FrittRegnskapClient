@@ -15,8 +15,11 @@ public class RangeValidator extends ValidatorBase {
 		String sval = val.getText();
 		
 		try {
-			int value = Integer.parseInt(sval);
-			
+            int value = 0;
+            if(sval != null && sval.length() > 0) {
+                value = Integer.parseInt(sval);
+            }
+            
 			if(minValue != null && value < minValue.intValue()) {
 				return false;
 			}

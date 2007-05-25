@@ -112,7 +112,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         return menu;
     }
 
-    private void loadCaches(Constants cons) {
+    public static void loadCaches(Constants cons) {
         MonthHeaderCache.getInstance(cons);
         PosttypeCache.getInstance(cons);
         EmploeeCache.getInstance(cons);

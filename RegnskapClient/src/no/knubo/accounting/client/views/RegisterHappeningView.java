@@ -22,6 +22,9 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ChangeListener;
@@ -38,8 +41,11 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
     private static RegisterHappeningView me;
 
+    private static ViewCallback caller;
+
     public static RegisterHappeningView show(I18NAccount messages,
             Constants constants, ViewCallback caller) {
+        RegisterHappeningView.caller = caller;
         if (me == null) {
             me = new RegisterHappeningView(messages, constants);
         }
@@ -50,27 +56,27 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
     private final Constants constants;
 
-    private TextBoxWithErrorText dayBox;
+     TextBoxWithErrorText dayBox;
 
-    private TextBoxWithErrorText attachmentBox;
+     TextBoxWithErrorText attachmentBox;
 
-    private TextBoxWithErrorText postNmbBox;
+     TextBoxWithErrorText postNmbBox;
 
-    private HTML dateHeader;
+     HTML dateHeader;
 
-    private RegisterStandards registerStandards;
+     RegisterStandards registerStandards;
 
-    private TextBoxWithErrorText descriptionBox;
+     TextBoxWithErrorText descriptionBox;
 
-    private ListBoxWithErrorText postListBox;
+     ListBoxWithErrorText postListBox;
 
-    private TextBoxWithErrorText amountBox;
+     TextBoxWithErrorText amountBox;
 
-    private IdHolder widgetGivesValue;
+     IdHolder widgetGivesValue;
 
-    private HappeningCache happeningCache;
+     HappeningCache happeningCache;
 
-    private RegisterHappeningView(I18NAccount messages, Constants constants) {
+    protected RegisterHappeningView(I18NAccount messages, Constants constants) {
         this.messages = messages;
         this.constants = constants;
 
@@ -168,12 +174,12 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         doSave();
     }
 
-    private void doSave() {
+    void doSave() {
         CountCache countCache = CountCache.getInstance(constants);
-        
+
         StringBuffer sb = new StringBuffer();
         sb.append("action=save");
-        
+
         Util.addPostParam(sb, "day", dayBox.getText());
         Util.addPostParam(sb, "desc", descriptionBox.getText());
         Util.addPostParam(sb, "attachment", attachmentBox.getText());
@@ -184,20 +190,20 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
         for (Iterator i = widgetGivesValue.getWidgets().iterator(); i.hasNext();) {
             TextBox textBox = (TextBox) i.next();
-            
+
             String value = textBox.getText();
             if (value.length() == 0) {
                 continue;
             }
-            
+
             String id = widgetGivesValue.findId(textBox);
             String key = countCache.getFieldForCount(id);
-            
+
             Util.addPostParam(sb, key, value);
         }
-        
+
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "accounting/addhappening  .php");
+                constants.baseurl() + "accounting/addhappening.php");
 
         RequestCallback callback = new RequestCallback() {
             public void onError(Request request, Throwable exception) {
@@ -205,6 +211,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             }
 
             public void onResponseReceived(Request request, Response response) {
+                handleSaveResponse(response);
             }
 
         };
@@ -219,16 +226,41 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
     }
 
+    void handleSaveResponse(Response response) {
+        if (response.getText() == null || response.getText().length() == 0) {
+            Window.alert(messages.failedConnect());
+            return;
+        }
+
+        JSONValue value = JSONParser.parse(response.getText());
+
+        if (value == null) {
+            Window.alert(messages.failedConnect());
+            return;
+        }
+
+        JSONObject object = value.isObject();
+
+        if (object == null) {
+            Window.alert(messages.failedConnect());
+            return;
+        }
+
+        String lineid = Util.str(object.get("id"));
+
+        caller.openDetails(lineid);
+    }
+
     private boolean validateSave() {
         MasterValidator mv = new MasterValidator();
-
 
         mv.mandatory(messages.required_field(),
                 new Widget[] { amountBox, descriptionBox, postListBox,
                         attachmentBox, dayBox, postNmbBox });
 
-        mv.day(messages.illegal_day(), Integer.parseInt(registerStandards.getCurrentYear()), Integer
-                .parseInt(registerStandards.getCurrentMonth()), new Widget[] { dayBox });
+        mv.day(messages.illegal_day(), Integer.parseInt(registerStandards
+                .getCurrentYear()), Integer.parseInt(registerStandards
+                .getCurrentMonth()), new Widget[] { dayBox });
 
         mv.money(messages.field_money(), new Widget[] { amountBox });
 
@@ -236,7 +268,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
                 new Widget[] { attachmentBox, postNmbBox });
 
         mv.range(messages.field_positive(), new Integer(0), null,
-                widgetGivesValue.getWidgetsAsArray());
+                widgetGivesValue.getWidgets());
 
         return mv.validateStatus();
     }
