@@ -390,4 +390,12 @@ public class Util {
         checkTwo.addClickListener(listener);
     }
 
+    public static String strSkipNull(JSONValue value) {
+        String string = str(value);
+        if(string.equals("null")) {
+            return "";
+        }
+        return string;
+    }
+
 }

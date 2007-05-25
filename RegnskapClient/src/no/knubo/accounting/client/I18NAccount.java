@@ -336,6 +336,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kredit();
 
   /**
+   * Translated "Val&oslash;r".
+   * 
+   * @return translated "Val&oslash;r"
+   * @gwt.key value
+   */
+  String value();
+
+  /**
    * Translated "Brukernavn".
    * 
    * @return translated "Brukernavn"
@@ -472,20 +480,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String year_membership();
 
   /**
-   * Translated "August".
-   * 
-   * @return translated "August"
-   * @gwt.key month_08
-   */
-  String month_08();
-
-  /**
    * Translated "Postnr".
    * 
    * @return translated "Postnr"
    * @gwt.key postnmb
    */
   String postnmb();
+
+  /**
+   * Translated "August".
+   * 
+   * @return translated "August"
+   * @gwt.key month_08
+   */
+  String month_08();
 
   /**
    * Translated "Dato".
@@ -662,6 +670,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key paid_day
    */
   String paid_day();
+
+  /**
+   * Translated "Telling".
+   * 
+   * @return translated "Telling"
+   * @gwt.key count_header
+   */
+  String count_header();
 
   /**
    * Translated "Fornavn".
@@ -958,6 +974,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key detailsline
    */
   String detailsline();
+
+  /**
+   * Translated "Antall".
+   * 
+   * @return translated "Antall"
+   * @gwt.key count
+   */
+  String count();
 
   /**
    * Translated "Registrer".

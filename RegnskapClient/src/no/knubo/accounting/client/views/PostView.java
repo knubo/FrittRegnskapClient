@@ -7,6 +7,7 @@ import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.views.modules.CountFields;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -40,6 +41,8 @@ public class PostView extends DialogBox implements ClickListener,
 
 	private String currentId;
 
+    private CountFields countfields;
+
 	public static PostView show(I18NAccount messages, Constants constants,
 			ViewCallback caller, String line) {
 		if (me == null) {
@@ -65,7 +68,10 @@ public class PostView extends DialogBox implements ClickListener,
 		setText(messages.detailsline());
 		table = new FlexTable();
 		table.setStyleName("tableborder");
-
+        
+        countfields = new CountFields(constants,messages);
+       
+        
 		header(0, 0, messages.postnmb(), table);
 		header(1, 0, messages.attachment(), table);
 		header(2, 0, messages.date(), table);
@@ -86,6 +92,7 @@ public class PostView extends DialogBox implements ClickListener,
 		table.setWidget(0, 6, closeImage);
 
 		dp.add(table, DockPanel.NORTH);
+        dp.add(countfields.getTable(), DockPanel.NORTH);
 		setWidget(dp);
 
 	}
@@ -100,6 +107,7 @@ public class PostView extends DialogBox implements ClickListener,
 				+ "accounting/showline.php?line=" + line, this)) {
 			// TODO Report errors.
 		}
+        countfields.init(line);
 	}
 
 	private void header(int row, int col, String text, FlexTable table) {
