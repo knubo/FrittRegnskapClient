@@ -10,6 +10,7 @@ import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.views.modules.CountFields;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.http.client.Request;
@@ -93,6 +94,8 @@ public class LineEditView extends Composite implements ClickListener {
 
     private RegisterStandards registerStandards;
 
+    private CountFields countFields;
+
     private LineEditView(ViewCallback caller, I18NAccount messages,
             Constants constants) {
 
@@ -102,8 +105,13 @@ public class LineEditView extends Composite implements ClickListener {
         DockPanel dp = new DockPanel();
         dp.add(mainFields(), DockPanel.NORTH);
         dp.add(newFields(), DockPanel.NORTH);
-        dp.add(regnLinesView(), DockPanel.NORTH);
-
+        
+        countFields = new CountFields(constants,messages);
+        HorizontalPanel hp = new HorizontalPanel();
+        hp.add(regnLinesView());
+        hp.add(countFields.getTable());
+        dp.add(hp, DockPanel.NORTH);
+        
         registerStandards = new RegisterStandards(constants, messages,
                 dateHeader, attachmentBox, postNmbBox, dayBox, descriptionBox);
 
@@ -133,6 +141,7 @@ public class LineEditView extends Composite implements ClickListener {
 
         if (line != null) {
             showLine(line);
+            countFields.init(line);
         } else {
             registerStandards.fetchInitalData();
             dayBox.setFocus(true);

@@ -94,12 +94,15 @@ public class CountFields {
 
                     if (object.containsKey(field)) {
                         String val = Util.strSkipNull(object.get(field));
-                        
-                        if(!val.equals("")) {
-                            table.setText(row, 1, "x "+val);
+
+                        if (!val.equals("")) {
+                            table.setText(row, 1, "x " + val);
                             table.setText(row, 2, "=");
-                            table.setText(row, 3, String.valueOf(Double.parseDouble(val) * Double.parseDouble(count)));
-                            table.getCellFormatter().setStyleName(row, 3, "right");
+                            table.setText(row, 3, String.valueOf(Double
+                                    .parseDouble(val)
+                                    * Double.parseDouble(count)));
+                            table.getCellFormatter().setStyleName(row, 3,
+                                    "right");
                         } else {
                             table.setText(row, 1, "");
                             table.setText(row, 2, "");
