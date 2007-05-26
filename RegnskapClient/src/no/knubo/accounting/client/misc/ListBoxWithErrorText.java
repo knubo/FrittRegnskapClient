@@ -19,9 +19,9 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements
     public ListBoxWithErrorText() {
         super(new ListBox());
         listbox = (ListBox) widget;
-        
+
         HorizontalPanel hp = new HorizontalPanel();
-        
+
         hp.add(listbox);
         hp.add(label);
         initWidget(hp);
@@ -30,11 +30,16 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements
     public ListBoxWithErrorText(HTML errorLabel) {
         super(new ListBox(), errorLabel);
         listbox = (ListBox) widget;
-        
+
         initWidget(listbox);
     }
 
     public ListBox getListbox() {
         return listbox;
+    }
+
+    public void setSelectedIndex(int i) {
+        setErrorText("");
+        listbox.setSelectedIndex(i);
     }
 }

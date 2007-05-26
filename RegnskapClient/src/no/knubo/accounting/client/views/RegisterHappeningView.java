@@ -247,8 +247,21 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         }
 
         String lineid = Util.str(object.get("id"));
-
+        resetFields();
         caller.openDetails(lineid);
+    }
+
+    private void resetFields() {
+        dayBox.setText("");
+        postListBox.setSelectedIndex(0);
+        amountBox.setText("");
+        List amountBoxes = widgetGivesValue.getWidgets();
+        
+        for (Iterator i = amountBoxes.iterator(); i.hasNext();) {
+            TextBox one = (TextBox) i.next();
+            
+            one.setText("");
+        }
     }
 
     private boolean validateSave() {
@@ -269,7 +282,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
         mv.range(messages.field_positive(), new Integer(0), null,
                 widgetGivesValue.getWidgets());
-
+        
         return mv.validateStatus();
     }
 
