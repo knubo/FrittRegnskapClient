@@ -14,6 +14,7 @@ import no.knubo.accounting.client.views.MonthDetailsView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonEditView;
 import no.knubo.accounting.client.views.PersonSearchView;
+import no.knubo.accounting.client.views.ProjectEditView;
 import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
@@ -95,6 +96,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         reportsMenu.addItem(messages.menuitem_report_member_per_year(), true,
                 new Commando(this, Commando.REPORT_MEMBER_PER_YEAR));
 
+        settingsMenu.addItem(messages.menuitem_projects(), true, new Commando(
+                this, Commando.EDIT_PROJECTS));
         settingsMenu.addItem(messages.menuitem_edit_happening(), true,
                 new Commando(this, Commando.EDIT_HAPPENING));
         settingsMenu.addItem(messages.menuitem_values(), true, new Commando(
@@ -162,6 +165,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         static final int EDIT_HAPPENING = 15;
 
+        public static final int EDIT_PROJECTS = 16;
+
         public void execute() {
             Widget widget = null;
 
@@ -187,6 +192,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = HappeningsView.show(messages, constants);
                 ((HappeningsView) widget).init();
                 break;
+            case EDIT_PROJECTS:
+                widget = ProjectEditView.show(messages, constants);
+                ((ProjectEditView)widget).init();
+                break;
             case ADD_PERSON:
                 widget = PersonEditView.show(constants, messages);
                 ((PersonEditView) widget).init(null);
@@ -199,9 +208,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((MonthView) widget).init();
                 break;
             case SHOW_MONTH_DETAILS:
-                widget = MonthDetailsView.getInstance(constants, messages, callback);
+                widget = MonthDetailsView.getInstance(constants, messages,
+                        callback);
                 ((MonthDetailsView) widget).init();
-                break;                
+                break;
             case SHOW_MEMBERS:
                 widget = ShowMembershipView.show(messages, constants, callback);
                 ((ShowMembershipView) widget).initShowMembers();

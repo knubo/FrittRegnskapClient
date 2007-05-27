@@ -96,20 +96,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_12();
 
   /**
-   * Translated "Avbryt".
-   * 
-   * @return translated "Avbryt"
-   * @gwt.key cancel
-   */
-  String cancel();
-
-  /**
    * Translated "Post".
    * 
    * @return translated "Post"
    * @gwt.key post
    */
   String post();
+
+  /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   * @gwt.key cancel
+   */
+  String cancel();
 
   /**
    * Translated "S&oslash;k".
@@ -432,20 +432,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_01();
 
   /**
-   * Translated "Fordring".
-   * 
-   * @return translated "Fordring"
-   * @gwt.key fordring
-   */
-  String fordring();
-
-  /**
    * Translated "Telefon".
    * 
    * @return translated "Telefon"
    * @gwt.key phone
    */
   String phone();
+
+  /**
+   * Translated "Fordring".
+   * 
+   * @return translated "Fordring"
+   * @gwt.key fordring
+   */
+  String fordring();
 
   /**
    * Translated "September".
@@ -728,6 +728,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String standardsettings();
 
   /**
+   * Translated "Prosjekter".
+   * 
+   * @return translated "Prosjekter"
+   * @gwt.key menuitem_projects
+   */
+  String menuitem_projects();
+
+  /**
    * Translated "Pris for kurs".
    * 
    * @return translated "Pris for kurs"
@@ -966,6 +974,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key project
    */
   String project();
+
+  /**
+   * Translated "Nytt prosjekt".
+   * 
+   * @return translated "Nytt prosjekt"
+   * @gwt.key new_project
+   */
+  String new_project();
 
   /**
    * Translated "Epost".
