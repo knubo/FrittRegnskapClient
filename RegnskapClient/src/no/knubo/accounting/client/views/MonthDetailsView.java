@@ -212,7 +212,26 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
     }
 
     public void onClick(Widget sender) {
-        // TODO Auto-generated method stub
+        
+        if (sender == nextImage) {
+            int m = Integer.parseInt(currentMonth) + 1;
+
+            if (m > 12) {
+                int y = Integer.parseInt(currentYear) + 1;
+                load(String.valueOf(y), String.valueOf(m));
+            } else {
+                load(currentYear, String.valueOf(m));
+            }
+        } else {
+            int m = Integer.parseInt(currentMonth) - 1;
+
+            if (m < 1) {
+                int y = Integer.parseInt(currentYear) - 1;
+                load(String.valueOf(y), "12");
+            } else {
+                load(currentYear, String.valueOf(m));
+            }
+        }
 
     }
 
@@ -222,6 +241,14 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         String value = Util.getSelected(listBox);
         String[] monthYear = value.split("/");
 
+        String year = monthYear[0];
+        String month = monthYear[1];
+
+        load(year, month);
+
+    }
+
+    private void load(String year, String month) {
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
@@ -230,10 +257,9 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         currentMonth = null;
         
         if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "accounting/showmonthpost.php?year=" + monthYear[0]
-                + "&month=" + monthYear[1], this)) {
+                + "accounting/showmonthpost.php?year=" + year
+                + "&month=" + month, this)) {
             Window.alert(messages.failedConnect());
         }
-
     }
 }
