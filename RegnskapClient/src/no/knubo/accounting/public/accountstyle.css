@@ -27,17 +27,19 @@
   white-space:nowrap;
 }
 
-.showlineposts1 TD {
+.showlineposts1 {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-  font-size:100%;
   vertical-align:bottom;
   PADDING:2px 8px 2px 0px;
   white-space:nowrap;
 }
 
-.showlineposts2 TD {
+.smallerfont {
+  font-size:80%;
+}
+
+.showlineposts2 {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-  font-size:100%;
   background-color:#FF9;
   vertical-align:bottom;
   PADDING:2px 8px 2px 0px;
@@ -178,14 +180,11 @@ TD.desc {
   border-left-width: 0px
 }
 
-.showpostheader TD {
-  background-color:#ecf1f3;
-  font-size:80%;
-  border-style: solid; 
-  border-top-width: 1px; 
-  border-bottom-width: 0px; 
-  border-right-width: 1px; 
-  border-left-width: 0px
+.showpostheader td {
+background-color:#ECF1F3;
+border-style:solid;
+border-width:1px 1px 0px 0px;
+font-size:80%;
 }
 
 .kontomain {

@@ -56,6 +56,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String save_ok();
 
   /**
+   * Translated "DEB/KRED".
+   * 
+   * @return translated "DEB/KRED"
+   * @gwt.key debkred
+   */
+  String debkred();
+
+  /**
    * Translated "Feltet m&aring; fylles ut".
    * 
    * @return translated "Feltet m&aring; fylles ut"

@@ -8,6 +8,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.views.modules.YearMonthComboHelper;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -62,6 +63,8 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
     private final ViewCallback caller;
 
+    private YearMonthComboHelper yearMonthComboHelper;
+
     public MonthView(Constants constants, I18NAccount messages,
             ViewCallback caller) {
         this.constants = constants;
@@ -81,8 +84,10 @@ public class MonthView extends Composite implements ResponseTextHandler,
         monthYearCombo.setMultipleSelect(false);
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
-        fillYearMonthCombo();
-
+        
+        yearMonthComboHelper = new YearMonthComboHelper(messages, constants, monthYearCombo);
+        yearMonthComboHelper.fillYearMonthCombo();
+        
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
         navPanel.add(monthYearCombo);
@@ -183,7 +188,7 @@ public class MonthView extends Composite implements ResponseTextHandler,
         currentYear = Util.str(root.get("year"));
         currentMonth = Util.str(root.get("month"));
 
-        Util.setIndexByValue(monthYearCombo, currentYear+"/"+currentMonth);
+        yearMonthComboHelper.setIndex(currentYear, currentMonth);
 
         JSONArray array = lines.isArray();
 
@@ -318,38 +323,6 @@ public class MonthView extends Composite implements ResponseTextHandler,
             } else {
                 getData("?month=" + m + "&year=" + currentYear);
             }
-        }
-    }
-
-    private void fillYearMonthCombo() {
-        ResponseTextHandler resp = new ResponseTextHandler() {
-
-            public void onCompletion(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
-
-                JSONArray array = value.isArray();
-
-                for (int i = 0; i < array.size(); i++) {
-                    JSONObject object = array.get(i).isObject();
-
-                    String month = Util.str(object.get("month"));
-                    String year = Util.str(object.get("year"));
-
-                    String desc = Util.monthString(messages, month) + " "
-                            + year;
-                    String val = year + "/" + month;
-                    monthYearCombo.addItem(desc, val);
-                }
-                
-                if(currentYear != null) {
-                    Util.setIndexByValue(monthYearCombo, currentYear+"/"+currentMonth);
-                }
-            }
-
-        };
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "defaults/yearmonths.php", resp)) {
-            // TODO Report errors.
         }
     }
 

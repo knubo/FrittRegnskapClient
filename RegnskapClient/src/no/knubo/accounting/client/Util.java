@@ -6,6 +6,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -336,16 +337,24 @@ public class Util {
         return text;
     }
 
-    public static void setIndexByValue(ListBox listbox, String string) {
+    public static void setIndexByValue(ListBox listbox, String match) {
         if (listbox.getItemCount() == 0) {
+            Window.alert("No items in combobox");
             return;
         }
+
+        if (match == null) {
+            Window.alert("Can't match null.");
+            return;
+        }
+
         for (int i = listbox.getItemCount(); i-- >= 0;) {
-            if (listbox.getValue(i).equals(string)) {
+            if (match.equals(listbox.getValue(i))) {
                 listbox.setSelectedIndex(i);
                 return;
             }
         }
+        Window.alert("Failed to set value " + match);
     }
 
     public static int getInt(JSONValue value) {
@@ -392,7 +401,7 @@ public class Util {
 
     public static String strSkipNull(JSONValue value) {
         String string = str(value);
-        if(string.equals("null")) {
+        if (string.equals("null")) {
             return "";
         }
         return string;
