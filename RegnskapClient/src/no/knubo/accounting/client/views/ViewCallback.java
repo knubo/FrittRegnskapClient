@@ -17,9 +17,13 @@ public interface ViewCallback {
      */
     public void viewMonth(String year, String month);
 
-    /** Request edit of the person with the given id.
+    /**
+     * Request edit of the person with the given id.
      * 
      * @param id
      */
     public void editPerson(String id);
+
+    /** Request that view of current month and year. */
+    public void viewMonth();
 }

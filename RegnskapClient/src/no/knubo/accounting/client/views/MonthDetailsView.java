@@ -35,8 +35,6 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
 
     private final I18NAccount messages;
 
-    private final ViewCallback caller;
-
     private FlexTable table;
 
     private Image backImage;
@@ -51,11 +49,9 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
 
     private String currentYear;
 
-    public MonthDetailsView(Constants constants, I18NAccount messages,
-            ViewCallback caller) {
+    public MonthDetailsView(Constants constants, I18NAccount messages) {
         this.constants = constants;
         this.messages = messages;
-        this.caller = caller;
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -84,7 +80,6 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
 
         yearMonthComboHelper = new YearMonthComboHelper(messages, constants,
                 monthYearCombo);
-        yearMonthComboHelper.fillYearMonthCombo();
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
@@ -98,14 +93,16 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
     }
 
     public static MonthDetailsView getInstance(Constants constants,
-            I18NAccount messages, ViewCallback caller) {
+            I18NAccount messages) {
         if (me == null) {
-            me = new MonthDetailsView(constants, messages, caller);
+            me = new MonthDetailsView(constants, messages);
         }
         return me;
     }
 
     public void init() {
+        yearMonthComboHelper.fillYearMonthCombo();
+
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }

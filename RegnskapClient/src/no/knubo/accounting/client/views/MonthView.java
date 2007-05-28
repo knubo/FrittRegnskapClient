@@ -85,7 +85,6 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
         yearMonthComboHelper = new YearMonthComboHelper(messages, constants,
                 monthYearCombo);
-        yearMonthComboHelper.fillYearMonthCombo();
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
@@ -119,6 +118,8 @@ public class MonthView extends Composite implements ResponseTextHandler,
     }
 
     private void getData(String params) {
+        yearMonthComboHelper.fillYearMonthCombo();
+
         // TODO Report stuff as being loaded.
         if (!HTTPRequest.asyncGet(this.constants.baseurl()
                 + "accounting/showmonth.php" + params, this)) {

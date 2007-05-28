@@ -41,7 +41,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     private static RegisterMembershipView me;
 
     public static RegisterMembershipView show(I18NAccount messages,
-            Constants constants, ViewCallback caller) {
+            Constants constants) {
         if (me == null) {
             me = new RegisterMembershipView(messages, constants);
         }

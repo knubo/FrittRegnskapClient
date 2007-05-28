@@ -632,6 +632,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String debet();
 
   /**
+   * Translated "Vil du avslutte m&aring;ned?".
+   * 
+   * @return translated "Vil du avslutte m&aring;ned?"
+   * @gwt.key end_month_confirm
+   */
+  String end_month_confirm();
+
+  /**
    * Translated "Kursmedlemmer".
    * 
    * @return translated "Kursmedlemmer"

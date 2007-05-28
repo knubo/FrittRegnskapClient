@@ -10,7 +10,6 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.HTTPRequest;
 import com.google.gwt.user.client.ResponseTextHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
 public class YearMonthComboHelper {
@@ -21,6 +20,10 @@ public class YearMonthComboHelper {
 
     private final ListBox monthYearCombo;
 
+    private String currentYear;
+
+    private String currentMonth;
+
     public YearMonthComboHelper(I18NAccount messages, Constants constants,
             ListBox monthYearCombo) {
         this.messages = messages;
@@ -29,6 +32,7 @@ public class YearMonthComboHelper {
     }
 
     public void fillYearMonthCombo() {
+        monthYearCombo.clear();
         ResponseTextHandler resp = new ResponseTextHandler() {
 
             public void onCompletion(String responseText) {
@@ -47,6 +51,7 @@ public class YearMonthComboHelper {
                     String val = year + "/" + month;
                     monthYearCombo.addItem(desc, val);
                 }
+                setIndex(currentYear, currentMonth);
             }
 
         };
@@ -58,6 +63,8 @@ public class YearMonthComboHelper {
 
     public void setIndex(String currentYear, String currentMonth) {
 
+        this.currentYear = currentYear;
+        this.currentMonth = currentMonth;
         String matchMonth = currentMonth;
         if (currentMonth.startsWith("0")) {
             matchMonth = currentMonth.substring(1);
@@ -66,9 +73,7 @@ public class YearMonthComboHelper {
         if (monthYearCombo.getItemCount() > 0) {
             String value = currentYear + "/" + matchMonth;
             Util.setIndexByValue(monthYearCombo, value);
-        } else {
-            Window.alert("Too early set year and month");
-        }
+        } 
     }
 
 }

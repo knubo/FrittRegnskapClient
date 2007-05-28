@@ -188,8 +188,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = LineEditView.show(callback, messages, constants, null);
                 break;
             case REGISTER_MEMBERSHIP:
-                widget = RegisterMembershipView.show(messages, constants,
-                        callback);
+                widget = RegisterMembershipView.show(messages, constants);
                 ((RegisterMembershipView) widget).init();
                 break;
             case REGISTER_HAPPENING:
@@ -198,8 +197,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((RegisterHappeningView) widget).init();
                 break;
             case END_MONTH:
-                widget = MonthEndView.getInstance(constants, messages);
-                ((MonthEndView)widget).init();
+                widget = MonthEndView
+                        .getInstance(constants, messages, callback);
+                ((MonthEndView) widget).init();
                 break;
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants);
@@ -225,8 +225,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((MonthView) widget).init();
                 break;
             case SHOW_MONTH_DETAILS:
-                widget = MonthDetailsView.getInstance(constants, messages,
-                        callback);
+                widget = MonthDetailsView.getInstance(constants, messages);
                 ((MonthDetailsView) widget).init();
                 break;
             case SHOW_MEMBERS:
@@ -271,6 +270,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MonthView instance = MonthView.getInstance(constants, messages, this);
 
         instance.init(year, month);
+
+        setActiveWidget(instance);
+    }
+
+    public void viewMonth() {
+        MonthView instance = MonthView.getInstance(constants, messages, this);
+
+        instance.init();
 
         setActiveWidget(instance);
     }

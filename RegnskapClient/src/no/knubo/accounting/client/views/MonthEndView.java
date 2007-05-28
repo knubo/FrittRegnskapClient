@@ -33,17 +33,20 @@ public class MonthEndView extends Composite implements ClickListener {
 
     private HTML dateHeader;
 
+    private final ViewCallback callback;
+
     public static MonthEndView getInstance(Constants constants,
-            I18NAccount messages) {
+            I18NAccount messages, ViewCallback callback) {
         if (me == null) {
-            me = new MonthEndView(constants, messages);
+            me = new MonthEndView(constants, messages, callback);
         }
         return me;
     }
 
-    private MonthEndView(Constants constants, I18NAccount messages) {
+    private MonthEndView(Constants constants, I18NAccount messages, ViewCallback callback) {
         this.constants = constants;
         this.messages = messages;
+        this.callback = callback;
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -115,6 +118,27 @@ public class MonthEndView extends Composite implements ClickListener {
     }
 
     public void onClick(Widget sender) {
+        
+        boolean okContinue = Window.confirm(messages.end_month_confirm());
+        
+        if(!okContinue) {
+            return;
+        }
+        
+        ResponseTextHandler rh = new ResponseTextHandler() {
 
+            public void onCompletion(String responseText) {
+                if("1".equals(responseText)) {
+                    callback.viewMonth();
+                } else {
+                    Window.alert("Error from server:"+responseText);
+                }
+            }
+            
+        };
+        if (!HTTPRequest.asyncGet(constants.baseurl() + "accounting/endmonth.php?action=end",
+                rh)) {
+            Window.alert(messages.failedConnect());
+        }
     }
 }
