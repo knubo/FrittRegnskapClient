@@ -312,6 +312,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_info();
 
   /**
+   * Translated "F&oslash;lgende poster vil overf&oslash;res til neste m&aring;ned:".
+   * 
+   * @return translated "F&oslash;lgende poster vil overf&oslash;res til neste m&aring;ned:"
+   * @gwt.key end_month_explain
+   */
+  String end_month_explain();
+
+  /**
    * Translated "Vis m&aring;ned med detaljer".
    * 
    * @return translated "Vis m&aring;ned med detaljer"
@@ -886,6 +894,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_showmembers
    */
   String menuitem_showmembers();
+
+  /**
+   * Translated "Avslutt m&aring;ned".
+   * 
+   * @return translated "Avslutt m&aring;ned"
+   * @gwt.key end_month
+   */
+  String end_month();
 
   /**
    * Translated "...ingen data oppdatert.".
