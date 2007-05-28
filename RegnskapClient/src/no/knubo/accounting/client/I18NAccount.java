@@ -40,6 +40,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment();
 
   /**
+   * Translated "Avslutt &aring;r".
+   * 
+   * @return translated "Avslutt &aring;r"
+   * @gwt.key menuitem_endyear
+   */
+  String menuitem_endyear();
+
+  /**
    * Translated "Personer".
    * 
    * @return translated "Personer"
@@ -86,6 +94,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_values
    */
   String menuitem_values();
+
+  /**
+   * Translated "Fond".
+   * 
+   * @return translated "Fond"
+   * @gwt.key menu_trust
+   */
+  String menu_trust();
 
   /**
    * Translated "Desember".
@@ -136,12 +152,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String day();
 
   /**
-   * Translated "Norge".
+   * Translated "Avslutt m&aring;ned".
    * 
-   * @return translated "Norge"
-   * @gwt.key country_norway
+   * @return translated "Avslutt m&aring;ned"
+   * @gwt.key menuitem_endmonth
    */
-  String country_norway();
+  String menuitem_endmonth();
 
   /**
    * Translated "S&oslash;ket ga Ingen treff".
@@ -150,6 +166,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key no_result
    */
   String no_result();
+
+  /**
+   * Translated "Norge".
+   * 
+   * @return translated "Norge"
+   * @gwt.key country_norway
+   */
+  String country_norway();
+
+  /**
+   * Translated "Fond aktivitet".
+   * 
+   * @return translated "Fond aktivitet"
+   * @gwt.key menuitem_trustactivity
+   */
+  String menuitem_trustactivity();
 
   /**
    * Translated "Rapporter".
@@ -494,6 +526,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key postnmb
    */
   String postnmb();
+
+  /**
+   * Translated "Fond status".
+   * 
+   * @return translated "Fond status"
+   * @gwt.key menuitem_truststatus
+   */
+  String menuitem_truststatus();
 
   /**
    * Translated "August".

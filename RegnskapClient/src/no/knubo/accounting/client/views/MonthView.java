@@ -31,16 +31,14 @@ import com.google.gwt.user.client.ui.Widget;
 public class MonthView extends Composite implements ResponseTextHandler,
         ClickListener, ChangeListener {
 
-    static class MonthLoader extends LazyLoad {
-        private MonthView instance;
+    private static MonthView instance;
 
-        public final Widget getInstance(Constants constants,
-                I18NAccount messages, ViewCallback caller) {
-            if (instance != null) {
-                return instance;
-            }
-            return (instance = new MonthView(constants, messages, caller));
+    public static MonthView getInstance(Constants constants, I18NAccount messages,
+            ViewCallback caller) {
+        if (instance == null) {
+            instance = new MonthView(constants, messages, caller);
         }
+        return instance;
     }
 
     private FlexTable table;
@@ -84,10 +82,11 @@ public class MonthView extends Composite implements ResponseTextHandler,
         monthYearCombo.setMultipleSelect(false);
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
-        
-        yearMonthComboHelper = new YearMonthComboHelper(messages, constants, monthYearCombo);
+
+        yearMonthComboHelper = new YearMonthComboHelper(messages, constants,
+                monthYearCombo);
         yearMonthComboHelper.fillYearMonthCombo();
-        
+
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
         navPanel.add(monthYearCombo);
@@ -173,10 +172,6 @@ public class MonthView extends Composite implements ResponseTextHandler,
             table.getCellFormatter().setStyleName(row + 1, col2, "rightborder");
             table.setText(row + 1, col2++, messages.kredit());
         }
-    }
-
-    public static LazyLoad loader() {
-        return new MonthLoader();
     }
 
     public void onCompletion(String responseText) {

@@ -8,7 +8,6 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.HappeningsView;
-import no.knubo.accounting.client.views.LazyLoad;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.MonthDetailsView;
 import no.knubo.accounting.client.views.MonthView;
@@ -38,10 +37,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     private I18NAccount messages;
 
-    private LazyLoad monthLoader = MonthView.loader();
-
-    private LazyLoad aboutLoader = AboutView.loader();
-
     private DockPanel activeView;
 
     private Constants constants;
@@ -66,6 +61,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar registerMenu = addTopMenu(topMenu, messages.menu_register());
         MenuBar showMenu = addTopMenu(topMenu, messages.menu_show());
         MenuBar peopleMenu = addTopMenu(topMenu, messages.menu_people());
+        MenuBar trustMenu = addTopMenu(topMenu, messages.menu_trust());
         MenuBar reportsMenu = addTopMenu(topMenu, messages.menu_reports());
         MenuBar settingsMenu = addTopMenu(topMenu, messages.menu_settings());
         MenuBar aboutMenu = addTopMenu(topMenu, messages.menu_info());
@@ -76,11 +72,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 new Commando(this, Commando.REGISTER_MEMBERSHIP));
         registerMenu.addItem(messages.menuitem_register_happening(), true,
                 new Commando(this, Commando.REGISTER_HAPPENING));
+        registerMenu.addItem(messages.menuitem_endmonth(), true, new Commando(
+                this, Commando.END_MONTH));
+        registerMenu.addItem(messages.menuitem_endyear(), true, new Commando(
+                this, Commando.END_YEAR));
+
         showMenu.addItem(messages.menuitem_showmonth(), true, new Commando(
                 this, Commando.SHOW_MONTH));
         showMenu.addItem(messages.menuitem_showmonthdetails(), true,
                 new Commando(this, Commando.SHOW_MONTH_DETAILS));
-
         showMenu.addItem(messages.menuitem_showmembers(), true, new Commando(
                 this, Commando.SHOW_MEMBERS));
         showMenu.addItem(messages.menuitem_showtraining(), true, new Commando(
@@ -93,6 +93,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         peopleMenu.addItem(messages.menuitem_findperson(), true, new Commando(
                 this, Commando.FIND_PERSON));
 
+        trustMenu.addItem(messages.menuitem_trustactivity(), true,
+                new Commando(this, Commando.TRUST_ACTIVITY));
+        trustMenu.addItem(messages.menuitem_truststatus(), true, new Commando(
+                this, Commando.TRUST_STATUS));
+
         reportsMenu.addItem(messages.menuitem_report_member_per_year(), true,
                 new Commando(this, Commando.REPORT_MEMBER_PER_YEAR));
 
@@ -104,8 +109,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, Commando.SETTINGS));
         aboutMenu.addItem(messages.menuitem_about(), true, new Commando(this,
                 Commando.ABOUT));
-        activeView.add(aboutLoader.getInstance(constants, messages, this),
-                DockPanel.CENTER);
+        activeView.add(AboutView.getInstance(), DockPanel.CENTER);
 
         RootPanel.get().add(docPanel);
     }
@@ -167,6 +171,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         public static final int EDIT_PROJECTS = 16;
 
+        public static final int END_YEAR = 17;
+
+        public static final int END_MONTH = 18;
+
+        public static final int TRUST_STATUS = 19;
+
+        public static final int TRUST_ACTIVITY = 20;
+
         public void execute() {
             Widget widget = null;
 
@@ -194,7 +206,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case EDIT_PROJECTS:
                 widget = ProjectEditView.show(messages, constants);
-                ((ProjectEditView)widget).init();
+                ((ProjectEditView) widget).init();
                 break;
             case ADD_PERSON:
                 widget = PersonEditView.show(constants, messages);
@@ -204,7 +216,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = PersonSearchView.show(callback, messages, constants);
                 break;
             case SHOW_MONTH:
-                widget = monthLoader.getInstance(constants, messages, callback);
+                widget = MonthView.getInstance(constants, messages, callback);
                 ((MonthView) widget).init();
                 break;
             case SHOW_MONTH_DETAILS:
@@ -225,8 +237,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((ShowMembershipView) widget).initShowTrainingMembers();
                 break;
             case ABOUT:
-                widget = AboutView.loader().getInstance(constants, messages,
-                        callback);
+                widget = AboutView.getInstance();
                 break;
             }
             if (widget == null) {
@@ -252,8 +263,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     public void viewMonth(String year, String month) {
-        MonthView instance = (MonthView) monthLoader.getInstance(constants,
-                messages, this);
+        MonthView instance = MonthView.getInstance(constants, messages, this);
 
         instance.init(year, month);
 

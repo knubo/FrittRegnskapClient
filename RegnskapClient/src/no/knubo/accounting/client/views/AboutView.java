@@ -1,33 +1,22 @@
 package no.knubo.accounting.client.views;
 
-import no.knubo.accounting.client.Constants;
-import no.knubo.accounting.client.I18NAccount;
-
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.Widget;
 
 public class AboutView extends Composite {
 
-	static class AboutLoader extends LazyLoad {
-		private AboutView instance;
+    private static AboutView instance;
 
-		public final Widget getInstance(Constants constants,
-				I18NAccount messages, ViewCallback caller) {
-			if (instance != null) {
-				return instance;
-			}
-			return (instance = new AboutView(constants, messages));
-		}
-	}
+    public static AboutView getInstance() {
+        if (instance == null) {
+            instance = new AboutView();
+        }
+        return instance;
+    }
 
-	private AboutView(Constants constants, I18NAccount messages) {
-		Frame frame = new Frame("about.html");
-		frame.setSize("800", "600");
-		initWidget(frame);
-	}
-	
-	public static LazyLoad loader() {
-		return new AboutLoader();
-	}
+    private AboutView() {
+        Frame frame = new Frame("about.html");
+        frame.setSize("800", "600");
+        initWidget(frame);
+    }
 }
