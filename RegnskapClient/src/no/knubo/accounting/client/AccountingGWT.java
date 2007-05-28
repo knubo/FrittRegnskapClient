@@ -102,6 +102,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         reportsMenu.addItem(messages.menuitem_report_member_per_year(), true,
                 new Commando(this, Commando.REPORT_MEMBER_PER_YEAR));
 
+        settingsMenu.addItem(messages.menuitem_posttypes(), true, new Commando(
+                this, Commando.EDIT_POSTTYPES));
         settingsMenu.addItem(messages.menuitem_projects(), true, new Commando(
                 this, Commando.EDIT_PROJECTS));
         settingsMenu.addItem(messages.menuitem_edit_happening(), true,
@@ -179,6 +181,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         public static final int TRUST_STATUS = 19;
 
         public static final int TRUST_ACTIVITY = 20;
+
+        public static final int EDIT_POSTTYPES = 21;
 
         public void execute() {
             Widget widget = null;

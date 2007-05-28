@@ -96,20 +96,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_values();
 
   /**
-   * Translated "Fond".
-   * 
-   * @return translated "Fond"
-   * @gwt.key menu_trust
-   */
-  String menu_trust();
-
-  /**
    * Translated "Desember".
    * 
    * @return translated "Desember"
    * @gwt.key month_12
    */
   String month_12();
+
+  /**
+   * Translated "Fond".
+   * 
+   * @return translated "Fond"
+   * @gwt.key menu_trust
+   */
+  String menu_trust();
 
   /**
    * Translated "Post".
@@ -742,6 +742,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key count_header
    */
   String count_header();
+
+  /**
+   * Translated "Posttyper".
+   * 
+   * @return translated "Posttyper"
+   * @gwt.key menuitem_posttypes
+   */
+  String menuitem_posttypes();
 
   /**
    * Translated "Fornavn".
