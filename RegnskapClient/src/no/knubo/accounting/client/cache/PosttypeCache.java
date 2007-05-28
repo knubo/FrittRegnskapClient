@@ -56,13 +56,14 @@ public class PosttypeCache implements Registry {
                     String key = Util.str(obj.get("PostType"));
                     typeGivesDescription.put(key, Util.str(obj
                             .get("Description")));
+
                     originalSort.add(key);
                 }
             }
 
         };
         if (!HTTPRequest.asyncGet(constants.baseurl()
-                + "registers/posttypes.php", handlerTypes)) {
+                + "registers/posttypes.php?action=inuse", handlerTypes)) {
             String error = "Failed to load posttype cache. The application will not work properly.";
             Window.alert(error);
         }
