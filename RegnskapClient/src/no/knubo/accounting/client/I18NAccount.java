@@ -768,6 +768,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_posttypes();
 
   /**
+   * Translated "Fond".
+   * 
+   * @return translated "Fond"
+   * @gwt.key trust
+   */
+  String trust();
+
+  /**
    * Translated "Fornavn".
    * 
    * @return translated "Fornavn"

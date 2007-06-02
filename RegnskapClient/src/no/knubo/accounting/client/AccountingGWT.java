@@ -19,6 +19,7 @@ import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.StandardvaluesView;
+import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -243,6 +244,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case SHOW_TRAINING_MEMBERS:
                 widget = ShowMembershipView.show(messages, constants, callback);
                 ((ShowMembershipView) widget).initShowTrainingMembers();
+                break;
+            case TRUST_STATUS:
+                widget = TrustStatusView.getInstance(constants, messages);
+                ((TrustStatusView)widget).init();
                 break;
             case ABOUT:
                 widget = AboutView.getInstance();
