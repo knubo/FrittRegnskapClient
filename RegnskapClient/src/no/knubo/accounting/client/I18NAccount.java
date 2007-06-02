@@ -200,6 +200,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String register_count_post();
 
   /**
+   * Translated "Fondskonto".
+   * 
+   * @return translated "Fondskonto"
+   * @gwt.key trust_account
+   */
+  String trust_account();
+
+  /**
    * Translated "Danmark".
    * 
    * @return translated "Danmark"
@@ -438,6 +446,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key field_positive
    */
   String field_positive();
+
+  /**
+   * Translated "Klubbkonto".
+   * 
+   * @return translated "Klubbkonto"
+   * @gwt.key club_account
+   */
+  String club_account();
 
   /**
    * Translated "Oktober".
