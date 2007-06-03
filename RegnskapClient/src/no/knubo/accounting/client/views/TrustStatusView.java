@@ -80,6 +80,10 @@ public class TrustStatusView extends Composite {
         JSONArray array = value.isArray();
         JSONValue dataVal = object.get("data");
         JSONObject dataObj = dataVal.isObject();
+        JSONValue sumFondVal = object.get("sumfond");
+        JSONValue sumClubVal = object.get("sumclub");
+        JSONObject sumFondObj = sumFondVal.isObject();
+        JSONObject sumClubObj = sumClubVal.isObject();
 
         for (int i = 0; i < array.size(); i++) {
             JSONValue fondVal = array.get(i);
@@ -88,12 +92,15 @@ public class TrustStatusView extends Composite {
             String fond = Util.str(fondObj.get("fond"));
             String description = Util.str(fondObj.get("description"));
             JSONValue fondLines = dataObj.get(fond);
-
-            renderFond(fond, description, fondLines.isArray());
+            String sumFond = Util.money(sumFondObj.get(fond));
+            String sumClub = Util.money(sumClubObj.get(fond));
+            
+            renderFond(fond, description, fondLines.isArray(), sumFond, sumClub);
         }
     }
 
-    private void renderFond(String fond, String description, JSONArray fondlines) {
+    private void renderFond(String fond, String description,
+            JSONArray fondlines, String sumFond, String sumClub) {
         int row = table.getRowCount();
         table.setHTML(row, 0, description);
         table.getRowFormatter().setStyleName(row, "header");
@@ -115,18 +122,24 @@ public class TrustStatusView extends Composite {
             table.getCellFormatter().setStyleName(row, 0, "desc");
             table.setHTML(row, 1, Util.formatDate(lineObj.get("Occured")));
             table.getCellFormatter().setStyleName(row, 1, "desc");
-            
+
             table.setHTML(row, 2, Util.money(lineObj.get("Fond_account")));
             table.getCellFormatter().setStyleName(row, 2, "right colspace");
-            
+
             table.setHTML(row, 3, Util.money(lineObj.get("Club_account")));
             table.getCellFormatter().setStyleName(row, 3, "right colspace");
-            
-            String style = (i % 2 == 0) ? "showlineposts2"
-                    : "showlineposts1";
+
+            String style = (i % 2 == 0) ? "showlineposts2" : "showlineposts1";
             table.getRowFormatter().setStyleName(row, style);
             row++;
         }
+        table.setHTML(row, 0, messages.sum());
+        table.setText(row, 2, sumFond);
+        table.getCellFormatter().setStyleName(row, 2, "right");
+        table.setText(row, 3, sumClub);
+        table.getCellFormatter().setStyleName(row, 3, "right");
+        table.getRowFormatter().setStyleName(row, "sumline");
+        row++;
     }
 
 }

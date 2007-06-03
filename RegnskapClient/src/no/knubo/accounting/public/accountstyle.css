@@ -51,17 +51,13 @@
 
 .sumline {
   background-color:#ecf1f3;
-}
-
-.sumline TD {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-  font-size:80%;
   border-style: solid; 
   border-top-width: 1px; 
   border-bottom-width: 1px; 
   border-right-width: 1px; 
   border-left-width: 0px	
-
+  font-weight: bold;
 }
 
 .colspace {
