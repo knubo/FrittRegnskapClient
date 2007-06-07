@@ -176,14 +176,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country_norway();
 
   /**
-   * Translated "Fond aktivitet".
-   * 
-   * @return translated "Fond aktivitet"
-   * @gwt.key menuitem_trustactivity
-   */
-  String menuitem_trustactivity();
-
-  /**
    * Translated "Rapporter".
    * 
    * @return translated "Rapporter"
@@ -552,9 +544,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String postnmb();
 
   /**
-   * Translated "Fond status".
+   * Translated "Fond status/aktivitet".
    * 
-   * @return translated "Fond status"
+   * @return translated "Fond status/aktivitet"
    * @gwt.key menuitem_truststatus
    */
   String menuitem_truststatus();
@@ -1094,6 +1086,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key detailsline
    */
   String detailsline();
+
+  /**
+   * Translated "Ny fondaktivitet".
+   * 
+   * @return translated "Ny fondaktivitet"
+   * @gwt.key new_trust
+   */
+  String new_trust();
 
   /**
    * Translated "Antall".

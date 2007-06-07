@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -14,11 +15,20 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
-public class TrustStatusView extends Composite {
+public class TrustStatusView extends Composite implements ClickListener {
 
     private static TrustStatusView instance;
 
@@ -27,6 +37,8 @@ public class TrustStatusView extends Composite {
     private final I18NAccount messages;
 
     private FlexTable table;
+
+    private TrustEditFields editFields;
 
     public static TrustStatusView getInstance(Constants constants,
             I18NAccount messages) {
@@ -40,6 +52,10 @@ public class TrustStatusView extends Composite {
         this.constants = constants;
         this.messages = messages;
         DockPanel dp = new DockPanel();
+
+        Button button = new Button(messages.new_trust());
+        button.addClickListener(this);
+        dp.add(button, DockPanel.NORTH);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -94,13 +110,13 @@ public class TrustStatusView extends Composite {
             JSONValue fondLines = dataObj.get(fond);
             String sumFond = Util.money(sumFondObj.get(fond));
             String sumClub = Util.money(sumClubObj.get(fond));
-            
-            renderFond(fond, description, fondLines.isArray(), sumFond, sumClub);
+
+            renderFond(description, fondLines.isArray(), sumFond, sumClub);
         }
     }
 
-    private void renderFond(String fond, String description,
-            JSONArray fondlines, String sumFond, String sumClub) {
+    private void renderFond(String description, JSONArray fondlines,
+            String sumFond, String sumClub) {
         int row = table.getRowCount();
         table.setHTML(row, 0, description);
         table.getRowFormatter().setStyleName(row, "header");
@@ -142,4 +158,88 @@ public class TrustStatusView extends Composite {
         row++;
     }
 
+    public void onClick(Widget sender) {
+        if (editFields == null) {
+            editFields = new TrustEditFields();
+        }
+
+        int left = 0;
+        left = sender.getAbsoluteLeft() + 10;
+
+        int top = sender.getAbsoluteTop() + 10;
+        editFields.setPopupPosition(left, top);
+
+        editFields.init();
+        editFields.show();
+    }
+
+    class TrustEditFields extends DialogBox implements ClickListener {
+
+        private ListBox trustListBox;
+        private HTML errorLabelForDate;
+        private TextBoxWithErrorText dayBox;
+        private TextBoxWithErrorText monthBox;
+        private TextBoxWithErrorText yearBox;
+        private Button saveButton;
+        private Button cancelButton;
+        private HTML mainErrorLabel;
+
+        TrustEditFields() {
+            setText(messages.new_trust());
+            FlexTable edittable = new FlexTable();
+            edittable.setStyleName("edittable");
+
+            edittable.setHTML(0, 0, messages.trust());
+            
+            trustListBox = new ListBox();
+            trustListBox.setVisibleItemCount(1);
+            
+            edittable.setWidget(0, 1, trustListBox);
+            
+            errorLabelForDate = new HTML();
+            
+            dayBox = new TextBoxWithErrorText(errorLabelForDate);
+            dayBox.setMaxLength(2);
+            monthBox = new TextBoxWithErrorText(errorLabelForDate);
+            monthBox.setMaxLength(2);
+            yearBox = new TextBoxWithErrorText(errorLabelForDate);
+            yearBox.setMaxLength(4);
+
+            HorizontalPanel hp = new HorizontalPanel();
+            hp.add(dayBox);
+            hp.add(monthBox);
+            hp.add(yearBox);
+            
+            edittable.setHTML(1, 0, messages.date());
+            edittable.setWidget(1, 1, hp);
+            
+            DockPanel dp = new DockPanel();
+            dp.add(edittable, DockPanel.NORTH);
+
+            saveButton = new Button(messages.save());
+            saveButton.addClickListener(this);
+            cancelButton = new Button(messages.cancel());
+            cancelButton.addClickListener(this);
+
+            mainErrorLabel = new HTML();
+            mainErrorLabel.setStyleName("error");
+
+            HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.add(saveButton);
+            buttonPanel.add(cancelButton);
+            buttonPanel.add(mainErrorLabel);
+            dp.add(buttonPanel, DockPanel.NORTH);
+            setWidget(dp);
+        }
+
+        public void init() {
+
+        }
+
+        public void onClick(Widget sender) {
+            // TODO Auto-generated method stub
+            
+        }
+
+    }
 }
