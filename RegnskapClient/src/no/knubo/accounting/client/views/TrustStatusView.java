@@ -176,12 +176,19 @@ public class TrustStatusView extends Composite implements ClickListener {
     class TrustEditFields extends DialogBox implements ClickListener {
 
         private ListBox trustListBox;
+
         private HTML errorLabelForDate;
+
         private TextBoxWithErrorText dayBox;
+
         private TextBoxWithErrorText monthBox;
+
         private TextBoxWithErrorText yearBox;
+
         private Button saveButton;
+
         private Button cancelButton;
+
         private HTML mainErrorLabel;
 
         TrustEditFields() {
@@ -190,29 +197,36 @@ public class TrustStatusView extends Composite implements ClickListener {
             edittable.setStyleName("edittable");
 
             edittable.setHTML(0, 0, messages.trust());
-            
+
             trustListBox = new ListBox();
             trustListBox.setVisibleItemCount(1);
-            
+
             edittable.setWidget(0, 1, trustListBox);
-            
+
             errorLabelForDate = new HTML();
-            
+
             dayBox = new TextBoxWithErrorText(errorLabelForDate);
             dayBox.setMaxLength(2);
+            dayBox.setVisibleLength(2);
             monthBox = new TextBoxWithErrorText(errorLabelForDate);
             monthBox.setMaxLength(2);
+            monthBox.setVisibleLength(2);
             yearBox = new TextBoxWithErrorText(errorLabelForDate);
             yearBox.setMaxLength(4);
+            yearBox.setVisibleLength(4);
 
             HorizontalPanel hp = new HorizontalPanel();
             hp.add(dayBox);
             hp.add(monthBox);
             hp.add(yearBox);
-            
+
             edittable.setHTML(1, 0, messages.date());
             edittable.setWidget(1, 1, hp);
-            
+
+            edittable.setHTML(2, 0, messages.action());
+            edittable.setHTML(3, 0, messages.description());
+            edittable.setHTML(4, 0, messages.amount());
+
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
@@ -237,8 +251,19 @@ public class TrustStatusView extends Composite implements ClickListener {
         }
 
         public void onClick(Widget sender) {
-            // TODO Auto-generated method stub
+            if (sender == cancelButton) {
+                hide();
+            } else if (sender == saveButton && validateFields()) {
+                doSave();
+            }
+        }
+
+        private void doSave() {
             
+        }
+
+        private boolean validateFields() {
+            return false;
         }
 
     }

@@ -400,6 +400,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String user();
 
   /**
+   * Translated "Aksjon".
+   * 
+   * @return translated "Aksjon"
+   * @gwt.key action
+   */
+  String action();
+
+  /**
    * Translated "Finland".
    * 
    * @return translated "Finland"
