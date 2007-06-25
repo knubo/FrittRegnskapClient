@@ -3,6 +3,8 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.TrustActionCache;
+import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 
 import com.google.gwt.http.client.Request;
@@ -16,7 +18,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -25,7 +27,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TrustStatusView extends Composite implements ClickListener {
@@ -173,23 +174,22 @@ public class TrustStatusView extends Composite implements ClickListener {
         editFields.show();
     }
 
-    class TrustEditFields extends DialogBox implements ClickListener {
-
-        private ListBox trustListBox;
+    class TrustEditFields extends DialogBox implements ClickListener,
+            ChangeListener {
 
         private HTML errorLabelForDate;
+        private HTML mainErrorLabel;
 
+        private ListBoxWithErrorText actionsBox;
+        private ListBoxWithErrorText trustListBox;
         private TextBoxWithErrorText dayBox;
-
         private TextBoxWithErrorText monthBox;
-
         private TextBoxWithErrorText yearBox;
+        private TextBoxWithErrorText descBox;
+        private TextBoxWithErrorText amountBox;
 
         private Button saveButton;
-
         private Button cancelButton;
-
-        private HTML mainErrorLabel;
 
         TrustEditFields() {
             setText(messages.new_trust());
@@ -197,12 +197,25 @@ public class TrustStatusView extends Composite implements ClickListener {
             edittable.setStyleName("edittable");
 
             edittable.setHTML(0, 0, messages.trust());
+            edittable.setHTML(1, 0, messages.action());
+            edittable.setHTML(3, 0, messages.date());
+            edittable.setHTML(4, 0, messages.description());
+            edittable.setHTML(5, 0, messages.amount());
 
-            trustListBox = new ListBox();
-            trustListBox.setVisibleItemCount(1);
+            actionsBox = new ListBoxWithErrorText();
+            actionsBox.getListbox().addChangeListener(this);
+            
+            trustListBox = new ListBoxWithErrorText();
+            trustListBox.getListbox().setVisibleItemCount(1);
+            trustListBox.getListbox().addChangeListener(this);
+
+            TrustActionCache trustActionCache = TrustActionCache
+                    .getInstance(constants);
+            trustActionCache.fillTrustList(trustListBox.getListbox());
 
             edittable.setWidget(0, 1, trustListBox);
-
+            edittable.setWidget(1, 1, actionsBox);
+            
             errorLabelForDate = new HTML();
 
             dayBox = new TextBoxWithErrorText(errorLabelForDate);
@@ -220,12 +233,17 @@ public class TrustStatusView extends Composite implements ClickListener {
             hp.add(monthBox);
             hp.add(yearBox);
 
-            edittable.setHTML(1, 0, messages.date());
-            edittable.setWidget(1, 1, hp);
+            edittable.setWidget(3, 1, hp);
 
-            edittable.setHTML(2, 0, messages.action());
-            edittable.setHTML(3, 0, messages.description());
-            edittable.setHTML(4, 0, messages.amount());
+            descBox = new TextBoxWithErrorText();
+            descBox.setMaxLength(50);
+            descBox.setVisibleLength(50);
+            edittable.setWidget(4, 1, descBox);
+
+            amountBox = new TextBoxWithErrorText();
+            amountBox.setMaxLength(8);
+            amountBox.setVisibleLength(8);
+            edittable.setWidget(5, 1, amountBox);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
@@ -243,11 +261,18 @@ public class TrustStatusView extends Composite implements ClickListener {
             buttonPanel.add(cancelButton);
             buttonPanel.add(mainErrorLabel);
             dp.add(buttonPanel, DockPanel.NORTH);
+
             setWidget(dp);
         }
 
         public void init() {
-
+            dayBox.setText("");
+            descBox.setText("");
+            amountBox.setText("");
+            actionsBox.getListbox().clear();
+            if (trustListBox.getListbox().getItemCount() > 0) {
+                trustListBox.setSelectedIndex(0);
+            }
         }
 
         public void onClick(Widget sender) {
@@ -259,11 +284,29 @@ public class TrustStatusView extends Composite implements ClickListener {
         }
 
         private void doSave() {
-            
+
         }
 
         private boolean validateFields() {
             return false;
+        }
+
+        public void onChange(Widget sender) {
+            TrustActionCache trustActionCache = TrustActionCache
+                    .getInstance(constants);
+
+            if (sender == this.trustListBox.getListbox()) {
+                ListBox listBox = (ListBox) sender;
+
+                String selected = Util.getSelected(listBox);
+                trustActionCache.fillActionList(actionsBox.getListbox(),
+                        selected);
+            }
+
+            if (sender == this.actionsBox.getListbox()) {
+                trustActionCache.fillDefaultDesc(descBox, Util
+                        .getSelected(actionsBox.getListbox()));
+            }
         }
 
     }

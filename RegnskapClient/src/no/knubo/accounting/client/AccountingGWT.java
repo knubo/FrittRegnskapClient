@@ -6,6 +6,7 @@ import no.knubo.accounting.client.cache.HappeningCache;
 import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
+import no.knubo.accounting.client.cache.TrustActionCache;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LineEditView;
@@ -129,6 +130,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         ProjectCache.getInstance(cons);
         CountCache.getInstance(cons);
         HappeningCache.getInstance(cons);
+        TrustActionCache.getInstance(cons);
     }
 
     class Commando implements Command {
