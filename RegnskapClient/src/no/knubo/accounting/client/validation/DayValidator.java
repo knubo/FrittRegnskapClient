@@ -22,7 +22,7 @@ public class DayValidator extends ValidatorBase {
     protected boolean validate(Validateable val) {
 		int day = 0;
 
-        /* Handle blank using mandagtory validators. */
+        /* Handle blank using mandatory validators. */
         if(val.getText().length() == 0) {
             return true;
         }
