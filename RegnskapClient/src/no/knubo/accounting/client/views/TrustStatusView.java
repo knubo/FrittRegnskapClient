@@ -6,6 +6,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.TrustActionCache;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -52,6 +53,7 @@ public class TrustStatusView extends Composite implements ClickListener {
     public TrustStatusView(Constants constants, I18NAccount messages) {
         this.constants = constants;
         this.messages = messages;
+
         DockPanel dp = new DockPanel();
 
         Button button = new Button(messages.new_trust());
@@ -187,11 +189,16 @@ public class TrustStatusView extends Composite implements ClickListener {
         private TextBoxWithErrorText yearBox;
         private TextBoxWithErrorText descBox;
         private TextBoxWithErrorText amountBox;
+        private TextBoxWithErrorText attachmentBox;
+        private TextBoxWithErrorText postNmbBox;
 
         private Button saveButton;
         private Button cancelButton;
+        private RegisterStandards registerStandards;
 
         TrustEditFields() {
+            registerStandards = new RegisterStandards(constants, messages);
+
             setText(messages.new_trust());
             FlexTable edittable = new FlexTable();
             edittable.setStyleName("edittable");
@@ -199,12 +206,14 @@ public class TrustStatusView extends Composite implements ClickListener {
             edittable.setHTML(0, 0, messages.trust());
             edittable.setHTML(1, 0, messages.action());
             edittable.setHTML(3, 0, messages.date());
-            edittable.setHTML(4, 0, messages.description());
-            edittable.setHTML(5, 0, messages.amount());
+            edittable.setHTML(4, 0, messages.attachment());
+            edittable.setHTML(5, 0, messages.postnmb());
+            edittable.setHTML(6, 0, messages.description());
+            edittable.setHTML(7, 0, messages.amount());
 
             actionsBox = new ListBoxWithErrorText();
             actionsBox.getListbox().addChangeListener(this);
-            
+
             trustListBox = new ListBoxWithErrorText();
             trustListBox.getListbox().setVisibleItemCount(1);
             trustListBox.getListbox().addChangeListener(this);
@@ -215,18 +224,13 @@ public class TrustStatusView extends Composite implements ClickListener {
 
             edittable.setWidget(0, 1, trustListBox);
             edittable.setWidget(1, 1, actionsBox);
-            
+
             errorLabelForDate = new HTML();
 
-            dayBox = new TextBoxWithErrorText(errorLabelForDate);
-            dayBox.setMaxLength(2);
-            dayBox.setVisibleLength(2);
-            monthBox = new TextBoxWithErrorText(errorLabelForDate);
-            monthBox.setMaxLength(2);
-            monthBox.setVisibleLength(2);
-            yearBox = new TextBoxWithErrorText(errorLabelForDate);
-            yearBox.setMaxLength(4);
-            yearBox.setVisibleLength(4);
+            dayBox = registerStandards.createDayBox(errorLabelForDate);
+
+            monthBox = registerStandards.createMonthBox(errorLabelForDate);
+            yearBox = registerStandards.createYearBox(errorLabelForDate);
 
             HorizontalPanel hp = new HorizontalPanel();
             hp.add(dayBox);
@@ -235,15 +239,17 @@ public class TrustStatusView extends Composite implements ClickListener {
 
             edittable.setWidget(3, 1, hp);
 
-            descBox = new TextBoxWithErrorText();
-            descBox.setMaxLength(50);
-            descBox.setVisibleLength(50);
-            edittable.setWidget(4, 1, descBox);
+            postNmbBox = registerStandards.getPostNmbBox();
+            edittable.setWidget(4, 1, postNmbBox);
 
-            amountBox = new TextBoxWithErrorText();
-            amountBox.setMaxLength(8);
-            amountBox.setVisibleLength(8);
-            edittable.setWidget(5, 1, amountBox);
+            attachmentBox = registerStandards.createAmountBox();
+            edittable.setWidget(5, 1, attachmentBox);
+
+            descBox = registerStandards.createDescriptionBox();
+            edittable.setWidget(6, 1, descBox);
+
+            amountBox = registerStandards.createAmountBox();
+            edittable.setWidget(7, 1, amountBox);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
@@ -273,6 +279,7 @@ public class TrustStatusView extends Composite implements ClickListener {
             if (trustListBox.getListbox().getItemCount() > 0) {
                 trustListBox.setSelectedIndex(0);
             }
+            registerStandards.fetchInitalData();
         }
 
         public void onClick(Widget sender) {
@@ -288,6 +295,7 @@ public class TrustStatusView extends Composite implements ClickListener {
         }
 
         private boolean validateFields() {
+
             return false;
         }
 
@@ -304,8 +312,29 @@ public class TrustStatusView extends Composite implements ClickListener {
             }
 
             if (sender == this.actionsBox.getListbox()) {
-                trustActionCache.fillDefaultDesc(descBox, Util
-                        .getSelected(actionsBox.getListbox()));
+                String selected = Util.getSelected(actionsBox.getListbox());
+
+                if ("".equals(selected)) {
+                    return;
+                }
+
+                trustActionCache.fillDefaultDesc(descBox, selected);
+
+                boolean addsAccountLine = trustActionCache
+                        .addsAccountLineUponSave(selected);
+
+                if (addsAccountLine) {
+                    monthBox.setText(registerStandards.getCurrentMonth());
+                    yearBox.setText(registerStandards.getCurrentYear());
+                } else {
+                    postNmbBox.setText("");
+                    attachmentBox.setText("");
+                }
+
+                attachmentBox.setEnabled(addsAccountLine);
+                postNmbBox.setEnabled(addsAccountLine);
+                monthBox.setEnabled(!addsAccountLine);
+                yearBox.setEnabled(!addsAccountLine);
             }
         }
 

@@ -102,18 +102,19 @@ public class LineEditView extends Composite implements ClickListener {
         this.caller = caller;
         this.messages = messages;
         this.constants = constants;
+        
+        registerStandards = new RegisterStandards(constants, messages);
+
         DockPanel dp = new DockPanel();
         dp.add(mainFields(), DockPanel.NORTH);
         dp.add(newFields(), DockPanel.NORTH);
-        
-        countFields = new CountFields(constants,messages);
+
+        countFields = new CountFields(constants, messages);
         HorizontalPanel hp = new HorizontalPanel();
         hp.add(regnLinesView());
         hp.add(countFields.getTable());
         dp.add(hp, DockPanel.NORTH);
-        
-        registerStandards = new RegisterStandards(constants, messages,
-                dateHeader, attachmentBox, postNmbBox, dayBox, descriptionBox);
+
 
         initWidget(dp);
     }
@@ -288,8 +289,7 @@ public class LineEditView extends Composite implements ClickListener {
         debKredbox.addItem(messages.kredit(), "-1");
         table.setWidget(1, 0, debKredbox);
 
-        amountBox = new TextBoxWithErrorText();
-        amountBox.setVisibleLength(10);
+        amountBox = registerStandards.createAmountBox();
         table.setWidget(1, 1, amountBox);
         table.getFlexCellFormatter().setColSpan(1, 1, 2);
 
@@ -310,11 +310,6 @@ public class LineEditView extends Composite implements ClickListener {
 
         PosttypeCache.getInstance(constants).fillAllPosts(accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
-
-        // table.setText(2, 2, messages.fordring());
-        // fordringBox = new ListBox();
-        // fordringBox.setVisibleItemCount(1);
-        // table.setWidget(3, 2, fordringBox);
 
         table.setText(4, 0, messages.project());
 
@@ -374,7 +369,7 @@ public class LineEditView extends Composite implements ClickListener {
 
         VerticalPanel vp = new VerticalPanel();
 
-        dateHeader = new HTML();
+        dateHeader = registerStandards.getDateHeader();
         dateHeader.setText("...");
         dateHeader.addClickListener(this);
         vp.add(dateHeader);
@@ -383,27 +378,19 @@ public class LineEditView extends Composite implements ClickListener {
         table.setStyleName("edittable");
         vp.add(table);
 
-        postNmbBox = new TextBoxWithErrorText();
-        postNmbBox.setMaxLength(7);
-        postNmbBox.setVisibleLength(5);
+        postNmbBox = registerStandards.getPostNmbBox();
         table.setWidget(0, 1, postNmbBox);
         table.setText(0, 0, messages.postnmb());
 
-        dayBox = new TextBoxWithErrorText();
-        dayBox.setMaxLength(2);
-        dayBox.setVisibleLength(2);
+        dayBox = registerStandards.createDayBox();
         table.setWidget(1, 1, dayBox);
         table.setText(1, 0, messages.day());
 
-        attachmentBox = new TextBoxWithErrorText();
-        attachmentBox.setMaxLength(7);
-        attachmentBox.setVisibleLength(7);
+        attachmentBox = registerStandards.getAttachmentBox();
         table.setWidget(2, 1, attachmentBox);
         table.setText(2, 0, messages.attachment());
 
-        descriptionBox = new TextBoxWithErrorText();
-        descriptionBox.setMaxLength(40);
-        descriptionBox.setVisibleLength(40);
+        descriptionBox = registerStandards.createDescriptionBox();
         table.setWidget(3, 1, descriptionBox);
         table.setText(3, 0, messages.description());
 

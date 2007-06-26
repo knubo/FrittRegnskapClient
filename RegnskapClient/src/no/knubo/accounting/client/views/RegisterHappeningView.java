@@ -56,35 +56,37 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
     private final Constants constants;
 
-     TextBoxWithErrorText dayBox;
+    TextBoxWithErrorText dayBox;
 
-     TextBoxWithErrorText attachmentBox;
+    TextBoxWithErrorText attachmentBox;
 
-     TextBoxWithErrorText postNmbBox;
+    TextBoxWithErrorText postNmbBox;
 
-     HTML dateHeader;
+    HTML dateHeader;
 
-     RegisterStandards registerStandards;
+    RegisterStandards registerStandards;
 
-     TextBoxWithErrorText descriptionBox;
+    TextBoxWithErrorText descriptionBox;
 
-     ListBoxWithErrorText postListBox;
+    ListBoxWithErrorText postListBox;
 
-     TextBoxWithErrorText amountBox;
+    TextBoxWithErrorText amountBox;
 
-     IdHolder widgetGivesValue;
+    IdHolder widgetGivesValue;
 
-     HappeningCache happeningCache;
+    HappeningCache happeningCache;
 
     protected RegisterHappeningView(I18NAccount messages, Constants constants) {
         this.messages = messages;
         this.constants = constants;
 
+        registerStandards = new RegisterStandards(constants, messages);
+
         widgetGivesValue = new IdHolder();
 
         VerticalPanel vp = new VerticalPanel();
 
-        dateHeader = new HTML();
+        dateHeader = registerStandards.getDateHeader();
         dateHeader.addClickListener(this);
         vp.add(dateHeader);
 
@@ -92,21 +94,15 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         table.setStyleName("edittable");
         vp.add(table);
 
-        postNmbBox = new TextBoxWithErrorText();
-        postNmbBox.setMaxLength(7);
-        postNmbBox.setVisibleLength(5);
+        postNmbBox = registerStandards.getPostNmbBox();
         table.setWidget(0, 1, postNmbBox);
         table.setHTML(0, 0, messages.postnmb());
 
-        dayBox = new TextBoxWithErrorText();
-        dayBox.setMaxLength(2);
-        dayBox.setVisibleLength(2);
+        dayBox = registerStandards.createDayBox();
         table.setWidget(1, 1, dayBox);
         table.setHTML(1, 0, messages.day());
 
-        attachmentBox = new TextBoxWithErrorText();
-        attachmentBox.setMaxLength(7);
-        attachmentBox.setVisibleLength(7);
+        attachmentBox = registerStandards.getAttachmentBox();
         table.setWidget(2, 1, attachmentBox);
         table.setHTML(2, 0, messages.attachment());
 
@@ -117,15 +113,12 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         table.setWidget(3, 1, postListBox);
         table.setHTML(3, 0, messages.register_count_post());
 
-        descriptionBox = new TextBoxWithErrorText();
-        descriptionBox.setMaxLength(40);
-        descriptionBox.setVisibleLength(40);
+        descriptionBox = registerStandards.createDescriptionBox();
         table.setWidget(4, 1, descriptionBox);
         table.setHTML(4, 0, messages.description());
 
         table.setHTML(5, 0, messages.amount());
-        amountBox = new TextBoxWithErrorText();
-        amountBox.setVisibleLength(10);
+        amountBox = registerStandards.createAmountBox();
         table.setWidget(5, 1, amountBox);
 
         table.setHTML(6, 0, messages.money_type());
@@ -146,9 +139,6 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         Button saveButton = new Button(messages.save());
         saveButton.addClickListener(this);
         table.setWidget(row, 0, saveButton);
-
-        registerStandards = new RegisterStandards(constants, messages,
-                dateHeader, attachmentBox, postNmbBox, dayBox, descriptionBox);
 
         initWidget(vp);
     }
@@ -256,10 +246,10 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         postListBox.setSelectedIndex(0);
         amountBox.setText("");
         List amountBoxes = widgetGivesValue.getWidgets();
-        
+
         for (Iterator i = amountBoxes.iterator(); i.hasNext();) {
             TextBox one = (TextBox) i.next();
-            
+
             one.setText("");
         }
     }
@@ -282,7 +272,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
         mv.range(messages.field_positive(), new Integer(0), null,
                 widgetGivesValue.getWidgets());
-        
+
         return mv.validateStatus();
     }
 

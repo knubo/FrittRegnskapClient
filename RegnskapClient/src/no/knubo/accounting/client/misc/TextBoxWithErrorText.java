@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TextBoxWithErrorText extends ErrorLabelWidget implements
@@ -16,7 +17,7 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements
         super(new TextBox(), errorLabel);
         this.label = errorLabel;
         this.textBox = (TextBox) widget;
-        
+
         errorLabel.setStyleName("error");
         initWidget(textBox);
     }
@@ -57,6 +58,11 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements
 
     public String getText() {
         return textBox.getText();
+    }
+
+    public void setEnabled(boolean enabled) {
+        UIObject.setStyleName(textBox.getElement(), "disabled", !enabled);
+        textBox.setEnabled(enabled);
     }
 
     public void addFocusListener(final FocusCallback callback) {

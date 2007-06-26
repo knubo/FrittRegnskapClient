@@ -336,4 +336,7 @@ td.rute {
 .activeview {
   padding: 10px 10px 10px 10px;
 }
- 
+
+.disabled {
+  background-color:lightgrey;
+}

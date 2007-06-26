@@ -99,7 +99,7 @@ public class TrustActionCache {
 
         for (Iterator i = allTrustActions.iterator(); i.hasNext();) {
             JSONObject obj = (JSONObject) i.next();
-            
+
             if (Util.str(obj.get("fond")).equals(selectedFond)) {
                 actionsBox.addItem(Util.str(obj.get("description")), Util
                         .str(obj.get("id")));
@@ -115,7 +115,13 @@ public class TrustActionCache {
             return;
         }
 
-        
         descBox.setText(Util.str(actionObj.get("defaultdesc")));
+    }
+
+    public boolean addsAccountLineUponSave(String selected) {
+        JSONObject actionObj = (JSONObject) trustActionsPerId.get(selected);
+
+        return !Util.isNull(actionObj.get("debetpost"))
+                || !Util.isNull(actionObj.get("creditpost"));
     }
 }
