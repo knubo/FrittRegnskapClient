@@ -6,6 +6,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.TrustActionCache;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.http.client.Request;
@@ -182,7 +183,7 @@ public class TrustStatusView extends Composite implements ClickListener {
         private HTML errorLabelForDate;
         private HTML mainErrorLabel;
 
-        private ListBoxWithErrorText actionsBox;
+        private ListBoxWithErrorText actionListBox;
         private ListBoxWithErrorText trustListBox;
         private TextBoxWithErrorText dayBox;
         private TextBoxWithErrorText monthBox;
@@ -206,13 +207,13 @@ public class TrustStatusView extends Composite implements ClickListener {
             edittable.setHTML(0, 0, messages.trust());
             edittable.setHTML(1, 0, messages.action());
             edittable.setHTML(3, 0, messages.date());
-            edittable.setHTML(4, 0, messages.attachment());
-            edittable.setHTML(5, 0, messages.postnmb());
+            edittable.setHTML(4, 0, messages.postnmb());
+            edittable.setHTML(5, 0, messages.attachment());
             edittable.setHTML(6, 0, messages.description());
             edittable.setHTML(7, 0, messages.amount());
 
-            actionsBox = new ListBoxWithErrorText();
-            actionsBox.getListbox().addChangeListener(this);
+            actionListBox = new ListBoxWithErrorText();
+            actionListBox.getListbox().addChangeListener(this);
 
             trustListBox = new ListBoxWithErrorText();
             trustListBox.getListbox().setVisibleItemCount(1);
@@ -223,7 +224,7 @@ public class TrustStatusView extends Composite implements ClickListener {
             trustActionCache.fillTrustList(trustListBox.getListbox());
 
             edittable.setWidget(0, 1, trustListBox);
-            edittable.setWidget(1, 1, actionsBox);
+            edittable.setWidget(1, 1, actionListBox);
 
             errorLabelForDate = new HTML();
 
@@ -236,13 +237,14 @@ public class TrustStatusView extends Composite implements ClickListener {
             hp.add(dayBox);
             hp.add(monthBox);
             hp.add(yearBox);
+            hp.add(errorLabelForDate);
 
             edittable.setWidget(3, 1, hp);
 
             postNmbBox = registerStandards.getPostNmbBox();
             edittable.setWidget(4, 1, postNmbBox);
 
-            attachmentBox = registerStandards.createAmountBox();
+            attachmentBox = registerStandards.getAttachmentBox();
             edittable.setWidget(5, 1, attachmentBox);
 
             descBox = registerStandards.createDescriptionBox();
@@ -275,11 +277,11 @@ public class TrustStatusView extends Composite implements ClickListener {
             dayBox.setText("");
             descBox.setText("");
             amountBox.setText("");
-            actionsBox.getListbox().clear();
+            actionListBox.getListbox().clear();
             if (trustListBox.getListbox().getItemCount() > 0) {
                 trustListBox.setSelectedIndex(0);
             }
-            registerStandards.fetchInitalData();
+            registerStandards.fetchInitalData(false);
         }
 
         public void onClick(Widget sender) {
@@ -295,8 +297,25 @@ public class TrustStatusView extends Composite implements ClickListener {
         }
 
         private boolean validateFields() {
+            MasterValidator mv = new MasterValidator();
 
-            return false;
+            if (attachmentBox.isEnabled()) {
+                /*
+                 * This one does some of the below + some other nice controls
+                 * valid for postnmb./attachmentnmb.
+                 */
+                registerStandards.validateTop();
+            }
+            mv.mandatory(messages.required_field(), new Widget[] { dayBox,
+                    monthBox, yearBox, actionListBox, trustListBox, descBox,
+                    amountBox });
+
+            mv.day(messages.illegal_day(), Util.getInt(yearBox.getText()), Util
+                    .getInt(monthBox.getText()), new Widget[] { dayBox });
+
+            mv.money(messages.field_money(), new Widget[] { amountBox });
+
+            return mv.validateStatus();
         }
 
         public void onChange(Widget sender) {
@@ -307,12 +326,12 @@ public class TrustStatusView extends Composite implements ClickListener {
                 ListBox listBox = (ListBox) sender;
 
                 String selected = Util.getSelected(listBox);
-                trustActionCache.fillActionList(actionsBox.getListbox(),
+                trustActionCache.fillActionList(actionListBox.getListbox(),
                         selected);
             }
 
-            if (sender == this.actionsBox.getListbox()) {
-                String selected = Util.getSelected(actionsBox.getListbox());
+            if (sender == this.actionListBox.getListbox()) {
+                String selected = Util.getSelected(actionListBox.getListbox());
 
                 if ("".equals(selected)) {
                     return;
@@ -326,6 +345,7 @@ public class TrustStatusView extends Composite implements ClickListener {
                 if (addsAccountLine) {
                     monthBox.setText(registerStandards.getCurrentMonth());
                     yearBox.setText(registerStandards.getCurrentYear());
+                    registerStandards.fetchInitalData(true);
                 } else {
                     postNmbBox.setText("");
                     attachmentBox.setText("");
@@ -336,7 +356,7 @@ public class TrustStatusView extends Composite implements ClickListener {
                 monthBox.setEnabled(!addsAccountLine);
                 yearBox.setEnabled(!addsAccountLine);
             }
-        }
+        }   
 
     }
 }

@@ -144,7 +144,7 @@ public class LineEditView extends Composite implements ClickListener {
             showLine(line);
             countFields.init(line);
         } else {
-            registerStandards.fetchInitalData();
+            registerStandards.fetchInitalData(true);
             dayBox.setFocus(true);
         }
     }

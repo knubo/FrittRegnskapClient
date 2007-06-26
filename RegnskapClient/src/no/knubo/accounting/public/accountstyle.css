@@ -3,6 +3,7 @@
   color: red;
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
   font-weight: normal;
+  white-space:nowrap;
 }
 
 .tableborder {

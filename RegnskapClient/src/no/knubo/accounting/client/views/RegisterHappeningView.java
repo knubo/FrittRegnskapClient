@@ -150,7 +150,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         attachmentBox.setText("");
         dateHeader.setHTML("...");
         descriptionBox.setText("");
-        registerStandards.fetchInitalData();
+        registerStandards.fetchInitalData(true);
 
         postListBox.getListbox().clear();
         happeningCache = HappeningCache.getInstance(constants);

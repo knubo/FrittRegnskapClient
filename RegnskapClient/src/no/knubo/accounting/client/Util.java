@@ -316,6 +316,9 @@ public class Util {
     }
 
     public static String getSelected(ListBox box) {
+        if(box.getItemCount() == 0) {
+            return "";
+        }
         return box.getValue(box.getSelectedIndex());
     }
 
@@ -413,6 +416,14 @@ public class Util {
             return "";
         }
         return string;
+    }
+
+    public static int getInt(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
 }

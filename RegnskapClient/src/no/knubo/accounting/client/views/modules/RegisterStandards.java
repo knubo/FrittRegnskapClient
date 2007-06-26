@@ -41,7 +41,7 @@ public class RegisterStandards {
         postNmbBox = new TextBoxWithErrorText();
     }
 
-    public void fetchInitalData() {
+    public void fetchInitalData(final boolean fillFields) {
 
         ResponseTextHandler rh = new ResponseTextHandler() {
             public void onCompletion(String responseText) {
@@ -51,10 +51,12 @@ public class RegisterStandards {
 
                 currentYear = Util.str(root.get("year"));
                 currentMonth = Util.str(root.get("month"));
-                setDateHeader();
 
-                attachmentBox.setText(Util.str(root.get("attachment")));
-                postNmbBox.setText(Util.str(root.get("postnmb")));
+                if (fillFields) {
+                    setDateHeader();
+                    attachmentBox.setText(Util.str(root.get("attachment")));
+                    postNmbBox.setText(Util.str(root.get("postnmb")));
+                }
             }
 
         };

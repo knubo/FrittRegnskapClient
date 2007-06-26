@@ -79,4 +79,8 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements
         };
         textBox.addFocusListener(eventhandler);
     }
+
+    public boolean isEnabled() {
+        return textBox.isEnabled();
+    }
 }
