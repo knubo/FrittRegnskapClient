@@ -296,7 +296,7 @@ public class LineEditView extends Composite implements ClickListener {
         table.setText(2, 0, messages.account());
 
         HTML errorAccountHtml = new HTML();
-        accountIdBox = new TextBoxWithErrorText(errorAccountHtml);
+        accountIdBox = new TextBoxWithErrorText("account", errorAccountHtml);
         accountIdBox.setVisibleLength(6);
         table.setWidget(3, 0, accountIdBox);
         table.setWidget(3, 2, errorAccountHtml);
@@ -315,7 +315,7 @@ public class LineEditView extends Composite implements ClickListener {
 
         HTML projectErrorLabel = new HTML();
 
-        projectIdBox = new TextBoxWithErrorText(projectErrorLabel);
+        projectIdBox = new TextBoxWithErrorText("project", projectErrorLabel);
         projectIdBox.setVisibleLength(6);
         table.setWidget(5, 0, projectIdBox);
 

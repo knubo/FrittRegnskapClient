@@ -77,17 +77,17 @@ public class StandardvaluesView extends Composite implements ClickListener {
         table.setHTML(4, 0, messages.cost_practice());
         table.setHTML(5, 0, messages.cost_membership());
 
-        yearBox = new TextBoxWithErrorText();
+        yearBox = new TextBoxWithErrorText("year");
         yearBox.setMaxLength(4);
-        monthBox = new TextBoxWithErrorText();
+        monthBox = new TextBoxWithErrorText("month");
         monthBox.setMaxLength(2);
-        semesterBox = new TextBoxWithErrorText();
+        semesterBox = new TextBoxWithErrorText("semester");
         semesterBox.setMaxLength(4);
-        costCourseBox = new TextBoxWithErrorText();
+        costCourseBox = new TextBoxWithErrorText("costcourse");
         costCourseBox.setMaxLength(6);
-        costPracticeBox = new TextBoxWithErrorText();
+        costPracticeBox = new TextBoxWithErrorText("costpractice");
         costPracticeBox.setMaxLength(6);
-        costMembershipBox = new TextBoxWithErrorText();
+        costMembershipBox = new TextBoxWithErrorText("costmembership");
         costMembershipBox.setMaxLength(6);
 
         table.setWidget(0, 1, yearBox);

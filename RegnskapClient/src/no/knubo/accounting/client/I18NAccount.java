@@ -584,6 +584,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String member_heading_train();
 
   /**
+   * Translated "Hjelp".
+   * 
+   * @return translated "Hjelp"
+   * @gwt.key help
+   */
+  String help();
+
+  /**
    * Translated "{0} - {1} medlemmer".
    * 
    * @return translated "{0} - {1} medlemmer"

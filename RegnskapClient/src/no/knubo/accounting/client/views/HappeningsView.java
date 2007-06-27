@@ -189,13 +189,13 @@ public class HappeningsView extends Composite implements ClickListener,
             edittable.setStyleName("edittable");
 
             edittable.setHTML(0, 0, messages.happening());
-            happeningBox = new TextBoxWithErrorText();
+            happeningBox = new TextBoxWithErrorText("happening");
             happeningBox.setMaxLength(40);
             happeningBox.setVisibleLength(40);
             edittable.setWidget(0, 1, happeningBox);
 
             edittable.setHTML(1, 0, messages.post_description());
-            descBox = new TextBoxWithErrorText();
+            descBox = new TextBoxWithErrorText("description");
             descBox.setMaxLength(80);
             descBox.setVisibleLength(80);
             edittable.setWidget(1, 1, descBox);
@@ -206,7 +206,7 @@ public class HappeningsView extends Composite implements ClickListener,
             posttypeCache.fillAllPosts(debetListBox);
 
             HTML debetErrorLabel = new HTML();
-            debetNmbBox = new TextBoxWithErrorText(debetErrorLabel);
+            debetNmbBox = new TextBoxWithErrorText("debetpost", debetErrorLabel);
             debetNmbBox.setMaxLength(5);
             debetNmbBox.setVisibleLength(5);
             Util.syncListbox(debetListBox, debetNmbBox.getTextBox());
@@ -223,7 +223,7 @@ public class HappeningsView extends Composite implements ClickListener,
             posttypeCache.fillAllPosts(kreditListBox);
 
             HTML kreditErrorLabel = new HTML();
-            kreditNmbBox = new TextBoxWithErrorText(kreditErrorLabel);
+            kreditNmbBox = new TextBoxWithErrorText("creditpost", kreditErrorLabel);
             kreditNmbBox.setMaxLength(5);
             kreditNmbBox.setVisibleLength(5);
             Util.syncListbox(kreditListBox, kreditNmbBox.getTextBox());

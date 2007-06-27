@@ -81,17 +81,17 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setText(8, 0, messages.cellphone());
         table.setText(9, 0, messages.employee());
 
-        firstnameBox = new TextBoxWithErrorText();
+        firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
-        lastnameBox = new TextBoxWithErrorText();
+        lastnameBox = new TextBoxWithErrorText("lastname");
         lastnameBox.setMaxLength(50);
-        emailBox = new TextBoxWithErrorText();
+        emailBox = new TextBoxWithErrorText("email");
         emailBox.setMaxLength(100);
-        addressBox = new TextBoxWithErrorText();
+        addressBox = new TextBoxWithErrorText("address");
         addressBox.setMaxLength(80);
-        postnmbBox = new TextBoxWithErrorText();
+        postnmbBox = new TextBoxWithErrorText("postalnumber");
         postnmbBox.setMaxLength(4);
-        cityBox = new TextBoxWithErrorText();
+        cityBox = new TextBoxWithErrorText("city");
         cityBox.setMaxLength(13);
         countryListBox = new ListBox();
         countryListBox.setVisibleItemCount(1);
@@ -100,9 +100,9 @@ public class PersonEditView extends Composite implements ClickListener {
         countryListBox.addItem(messages.country_denmark(), "DK");
         countryListBox.addItem(messages.country_finland(), "FI");
         countryListBox.addItem(messages.country_other(), "??");
-        phoneBox = new TextBoxWithErrorText();
+        phoneBox = new TextBoxWithErrorText("phone");
         phoneBox.setMaxLength(13);
-        cellphoneBox = new TextBoxWithErrorText();
+        cellphoneBox = new TextBoxWithErrorText("cellphone");
         cellphoneBox.setMaxLength(13);
         employeeCheck = new CheckBox();
 

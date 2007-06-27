@@ -13,18 +13,20 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements
         Validateable {
     public TextBox textBox;
 
-    public TextBoxWithErrorText(HTML errorLabel) {
+    public TextBoxWithErrorText(String name, HTML errorLabel) {
         super(new TextBox(), errorLabel);
         this.label = errorLabel;
         this.textBox = (TextBox) widget;
+        textBox.setName(name);
 
         errorLabel.setStyleName("error");
         initWidget(textBox);
     }
 
-    public TextBoxWithErrorText() {
+    public TextBoxWithErrorText(String name) {
         super(new TextBox());
         textBox = (TextBox) widget;
+        textBox.setName(name);
 
         HorizontalPanel hp = new HorizontalPanel();
 

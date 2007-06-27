@@ -176,7 +176,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
                     Util.linkJustOne(courseCheck, trainCheck);
 
-                    TextBoxWithErrorText dayBox = new TextBoxWithErrorText();
+                    TextBoxWithErrorText dayBox = new TextBoxWithErrorText("day");
                     dayBox.setMaxLength(2);
                     dayBox.setVisibleLength(2);
                     dayBox.addFocusListener(me);

@@ -127,7 +127,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         int row = 7;
         for (Iterator i = counts.iterator(); i.hasNext();) {
             String count = (String) i.next();
-            TextBoxWithErrorText numberBox = new TextBoxWithErrorText();
+            TextBoxWithErrorText numberBox = new TextBoxWithErrorText("number"+count);
             numberBox.setVisibleLength(10);
             table.setHTML(row, 0, count);
             table.setWidget(row, 1, numberBox);

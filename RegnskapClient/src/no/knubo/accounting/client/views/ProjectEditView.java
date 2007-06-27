@@ -153,7 +153,7 @@ public class ProjectEditView extends Composite implements ClickListener,
             edittable.setStyleName("edittable");
 
             edittable.setHTML(0, 0, messages.description());
-            projectBox = new TextBoxWithErrorText();
+            projectBox = new TextBoxWithErrorText("project");
             projectBox.setMaxLength(100);
             projectBox.setVisibleLength(100);
             edittable.setWidget(0, 1, projectBox);

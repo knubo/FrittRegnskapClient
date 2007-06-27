@@ -37,8 +37,8 @@ public class RegisterStandards {
         this.constants = constants;
         this.messages = messages;
         dateHeader = new HTML();
-        attachmentBox = new TextBoxWithErrorText();
-        postNmbBox = new TextBoxWithErrorText();
+        attachmentBox = new TextBoxWithErrorText("attachment");
+        postNmbBox = new TextBoxWithErrorText("postnmb");
     }
 
     public void fetchInitalData(final boolean fillFields) {
@@ -118,28 +118,28 @@ public class RegisterStandards {
     }
 
     public TextBoxWithErrorText createDayBox() {
-        dayBox = new TextBoxWithErrorText();
+        dayBox = new TextBoxWithErrorText("day");
         dayBox.setMaxLength(2);
         dayBox.setVisibleLength(2);
         return dayBox;
     }
 
     public TextBoxWithErrorText createDayBox(HTML errorLabel) {
-        dayBox = new TextBoxWithErrorText(errorLabel);
+        dayBox = new TextBoxWithErrorText("day", errorLabel);
         dayBox.setMaxLength(2);
         dayBox.setVisibleLength(2);
         return dayBox;
     }
 
     public TextBoxWithErrorText createDescriptionBox() {
-        descriptionBox = new TextBoxWithErrorText();
+        descriptionBox = new TextBoxWithErrorText("description");
         descriptionBox.setMaxLength(40);
         descriptionBox.setVisibleLength(40);
         return descriptionBox;
     }
 
     public TextBoxWithErrorText createAmountBox() {
-        amountBox = new TextBoxWithErrorText();
+        amountBox = new TextBoxWithErrorText("amount");
         amountBox.setVisibleLength(10);
         return amountBox;
     }
@@ -149,14 +149,14 @@ public class RegisterStandards {
     }
 
     public TextBoxWithErrorText createMonthBox(HTML errorLabelForDate) {
-        monthBox = new TextBoxWithErrorText(errorLabelForDate);
+        monthBox = new TextBoxWithErrorText("month", errorLabelForDate);
         monthBox.setMaxLength(2);
         monthBox.setVisibleLength(2);
         return monthBox;
     }
 
     public TextBoxWithErrorText createYearBox(HTML errorLabelForDate) {
-        yearBox = new TextBoxWithErrorText(errorLabelForDate);
+        yearBox = new TextBoxWithErrorText("year", errorLabelForDate);
         yearBox.setMaxLength(4);
         yearBox.setVisibleLength(4);
         return yearBox;

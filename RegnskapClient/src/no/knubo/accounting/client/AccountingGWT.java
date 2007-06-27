@@ -7,6 +7,7 @@ import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.cache.TrustActionCache;
+import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LineEditView;
@@ -60,7 +61,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView = new DockPanel();
         activeView.setStyleName("activeview");
         docPanel.add(activeView, DockPanel.CENTER);
-
+        docPanel.add(new HelpPanel(messages), DockPanel.EAST);
+        
         MenuBar registerMenu = addTopMenu(topMenu, messages.menu_register());
         MenuBar showMenu = addTopMenu(topMenu, messages.menu_show());
         MenuBar peopleMenu = addTopMenu(topMenu, messages.menu_people());
