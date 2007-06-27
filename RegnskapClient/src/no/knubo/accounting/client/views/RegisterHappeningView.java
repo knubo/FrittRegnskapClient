@@ -12,6 +12,7 @@ import no.knubo.accounting.client.misc.ErrorLabelWidget;
 import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
+import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.validation.Validateable;
@@ -136,7 +137,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             row++;
         }
 
-        Button saveButton = new Button(messages.save());
+        Button saveButton = new NamedButton("RegisterHappening.saveButton", messages.save());
         saveButton.addClickListener(this);
         table.setWidget(row, 0, saveButton);
 

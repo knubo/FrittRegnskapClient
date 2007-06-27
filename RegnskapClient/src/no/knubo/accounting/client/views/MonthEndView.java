@@ -6,6 +6,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.misc.NamedButton;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -56,7 +57,7 @@ public class MonthEndView extends Composite implements ClickListener {
 
         dateHeader = new HTML();
         HTML header = new HTML(messages.end_month_explain());
-        Button endButton = new Button(messages.end_month());
+        Button endButton = new NamedButton("MonthEndView.endButton", messages.end_month());
         endButton.addClickListener(this);
 
         DockPanel dp = new DockPanel();

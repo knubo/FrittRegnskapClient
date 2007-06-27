@@ -9,6 +9,7 @@ import no.knubo.accounting.client.cache.CacheCallback;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -62,8 +63,8 @@ public class ProjectEditView extends Composite implements ClickListener,
         table.setHTML(0, 0, messages.project());
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 0, 2);
-        
-        newButton = new Button(messages.new_project());
+
+        newButton = new NamedButton("ProjectEditView.newButton", messages.new_project());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -161,9 +162,11 @@ public class ProjectEditView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new Button(messages.save());
+            saveButton = new NamedButton("ProjectEditView.saveButton", messages
+                    .save());
             saveButton.addClickListener(this);
-            cancelButton = new Button(messages.cancel());
+            cancelButton = new NamedButton("ProjectEditView.cancelButton",
+                    messages.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();

@@ -8,6 +8,7 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.CountFields;
@@ -339,7 +340,7 @@ public class LineEditView extends Composite implements ClickListener {
         table.getFlexCellFormatter().setColSpan(7, 0, 2);
         EmploeeCache.getInstance(constants).fill(personBox);
 
-        addLineButton = new Button();
+        addLineButton = new NamedButton("LineEditView.addLineButton");
         addLineButton.setText(messages.add());
         addLineButton.addClickListener(this);
         table.setWidget(8, 0, addLineButton);
@@ -394,7 +395,7 @@ public class LineEditView extends Composite implements ClickListener {
         table.setWidget(3, 1, descriptionBox);
         table.setText(3, 0, messages.description());
 
-        updateButton = new Button();
+        updateButton = new NamedButton("LineEditView.updateButton");
         updateButton.setText(messages.update());
         updateButton.addClickListener(this);
 

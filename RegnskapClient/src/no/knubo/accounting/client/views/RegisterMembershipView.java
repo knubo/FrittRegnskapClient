@@ -7,6 +7,7 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.ErrorLabelWidget;
 import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.validation.Validateable;
@@ -98,7 +99,9 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         resultTable.setHTML(0, 7, messages.post());
         dp.add(resultTable, DockPanel.NORTH);
 
-        Button button = new Button(messages.register_membership());
+        Button button = new NamedButton(
+                "RegisterMembershipView.registerMembershipButton", messages
+                        .register_membership());
         button.addClickListener(this);
         dp.add(button, DockPanel.NORTH);
 
@@ -176,7 +179,8 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
                     Util.linkJustOne(courseCheck, trainCheck);
 
-                    TextBoxWithErrorText dayBox = new TextBoxWithErrorText("day");
+                    TextBoxWithErrorText dayBox = new TextBoxWithErrorText(
+                            "day");
                     dayBox.setMaxLength(2);
                     dayBox.setVisibleLength(2);
                     dayBox.addFocusListener(me);
@@ -246,7 +250,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             }
 
             public void onResponseReceived(Request request, Response response) {
-                if("1".equals(response.getText())) {
+                if ("1".equals(response.getText())) {
                     disableAfterOK();
                 } else {
                     Window.alert(response.getText());
@@ -268,17 +272,17 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
             CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
             CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
-            
-            if(yearBox.isChecked()) {
+
+            if (yearBox.isChecked()) {
                 yearBox.setEnabled(false);
             }
-            if(courseBox.isChecked()) {
+            if (courseBox.isChecked()) {
                 courseBox.setEnabled(false);
             }
-            if(trainBox.isChecked()) {
+            if (trainBox.isChecked()) {
                 trainBox.setEnabled(false);
             }
-        }        
+        }
     }
 
     private StringBuffer buildAddMemberParameters() {
@@ -325,7 +329,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             }
             if (dayBox.getText().length() > 0) {
                 Util.addPostParam(sb, "day" + id, dayBox.getText());
-                Util.addPostParam(sb, "post"+ id, Util.getSelected(post));
+                Util.addPostParam(sb, "post" + id, Util.getSelected(post));
             }
         }
 

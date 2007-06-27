@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -106,7 +107,7 @@ public class PersonEditView extends Composite implements ClickListener {
         cellphoneBox.setMaxLength(13);
         employeeCheck = new CheckBox();
 
-        updateButton = new Button(messages.update());
+        updateButton = new NamedButton("PersonEditView.updateButton", messages.update());
         updateButton.addClickListener(this);
 
         saveStatus = new HTML();

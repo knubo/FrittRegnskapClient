@@ -5,6 +5,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.TrustActionCache;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
+import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
@@ -57,7 +58,8 @@ public class TrustStatusView extends Composite implements ClickListener {
 
         DockPanel dp = new DockPanel();
 
-        Button button = new Button(messages.new_trust());
+        Button button = new NamedButton("TrustStatusView.newTrustButton",
+                messages.new_trust());
         button.addClickListener(this);
         dp.add(button, DockPanel.NORTH);
 
@@ -256,9 +258,11 @@ public class TrustStatusView extends Composite implements ClickListener {
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new Button(messages.save());
+            saveButton = new NamedButton("TrustStatusView.saveButton", messages
+                    .save());
             saveButton.addClickListener(this);
-            cancelButton = new Button(messages.cancel());
+            cancelButton = new NamedButton("TrustStatusView.cancelButton",
+                    messages.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -356,7 +360,7 @@ public class TrustStatusView extends Composite implements ClickListener {
                 monthBox.setEnabled(!addsAccountLine);
                 yearBox.setEnabled(!addsAccountLine);
             }
-        }   
+        }
 
     }
 }

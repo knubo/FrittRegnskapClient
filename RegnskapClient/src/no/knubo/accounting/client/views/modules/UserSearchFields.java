@@ -2,6 +2,7 @@ package no.knubo.accounting.client.views.modules;
 
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.NamedButton;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -54,10 +55,12 @@ public class UserSearchFields implements ClickListener {
         searchTable.setText(2, 0, messages.employee());
         searchTable.setWidget(2, 1, employeeList);
 
-        searchButton = new Button(messages.search());
+        searchButton = new NamedButton("UserSearchFields,searchButton",
+                messages.search());
         searchButton.addClickListener(this);
         searchTable.setWidget(3, 0, searchButton);
-        clearButton = new Button(messages.clear());
+        clearButton = new NamedButton("UserSearchFields.clearButton", messages
+                .clear());
         clearButton.addClickListener(this);
         searchTable.setWidget(3, 1, clearButton);
 
@@ -85,7 +88,7 @@ public class UserSearchFields implements ClickListener {
         Util.addPostParam(sb, "employee", Util.getSelected(employeeList));
         Util.addPostParam(sb, "email", emailBox.getText());
         Util.addPostParam(sb, "getmemb", "1");
-        
+
         searchCallback.doSearch(sb);
     }
 
@@ -97,6 +100,6 @@ public class UserSearchFields implements ClickListener {
     }
 
     public void setFocus() {
-       firstnameBox.setFocus(true);
+        firstnameBox.setFocus(true);
     }
 }

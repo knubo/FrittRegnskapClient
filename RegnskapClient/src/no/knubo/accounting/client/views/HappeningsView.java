@@ -10,6 +10,7 @@ import no.knubo.accounting.client.cache.HappeningCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -70,7 +71,8 @@ public class HappeningsView extends Composite implements ClickListener,
         table.setHTML(0, 5, "");
         table.getRowFormatter().setStyleName(0, "header");
 
-        newButton = new Button(messages.new_happening());
+        newButton = new NamedButton("HappeningsView.newButton", messages
+                .new_happening());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -223,7 +225,8 @@ public class HappeningsView extends Composite implements ClickListener,
             posttypeCache.fillAllPosts(kreditListBox);
 
             HTML kreditErrorLabel = new HTML();
-            kreditNmbBox = new TextBoxWithErrorText("creditpost", kreditErrorLabel);
+            kreditNmbBox = new TextBoxWithErrorText("creditpost",
+                    kreditErrorLabel);
             kreditNmbBox.setMaxLength(5);
             kreditNmbBox.setVisibleLength(5);
             Util.syncListbox(kreditListBox, kreditNmbBox.getTextBox());
@@ -241,9 +244,11 @@ public class HappeningsView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new Button(messages.save());
+            saveButton = new NamedButton("HappeningsView.saveButton", messages
+                    .save());
             saveButton.addClickListener(this);
-            cancelButton = new Button(messages.cancel());
+            cancelButton = new NamedButton("HappeningsView.cancelButton",
+                    messages.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
