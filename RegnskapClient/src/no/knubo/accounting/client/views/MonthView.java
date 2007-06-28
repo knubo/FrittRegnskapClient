@@ -72,10 +72,10 @@ public class MonthView extends Composite implements ResponseTextHandler,
         dockPanel = new DockPanel();
         newTable();
 
-        backImage = ImageFactory.previousImage();
+        backImage = ImageFactory.previousImage("MonthView.backImage");
         backImage.addClickListener(this);
 
-        nextImage = ImageFactory.nextImage();
+        nextImage = ImageFactory.nextImage("MonthView.nextImage");
         nextImage.addClickListener(this);
 
         monthYearCombo = new ListBox();

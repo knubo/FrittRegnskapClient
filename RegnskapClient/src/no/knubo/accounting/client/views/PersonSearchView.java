@@ -151,7 +151,7 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
                             : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
 
-                    Image image = ImageFactory.editImage();
+                    Image image = ImageFactory.editImage("PersonSearchView.editImage");
                     image.addClickListener(me);
                     idHolder.add(Util.str(obj.get("id")), image);
                     resultTable.setWidget(row, 7, image);

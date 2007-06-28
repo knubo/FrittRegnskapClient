@@ -127,7 +127,7 @@ public class ProjectEditView extends Composite implements ClickListener,
 
     private void addRow(int row, String project, String id) {
         table.setHTML(row, 0, project);
-        Image editImage = ImageFactory.editImage();
+        Image editImage = ImageFactory.editImage("ProjectEditView.editImage");
         editImage.addClickListener(me);
         idHolder.add(id, editImage);
 

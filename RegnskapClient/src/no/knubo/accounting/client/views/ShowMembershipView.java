@@ -73,9 +73,9 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
         header = new HTML();
         periodeHeader = new HTML();
-        previousImage = ImageFactory.previousImage();
+        previousImage = ImageFactory.previousImage("ShowMembershipView.previousImage");
         previousImage.addClickListener(this);
-        nextImage = ImageFactory.nextImage();
+        nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
         nextImage.addClickListener(this);
         HorizontalPanel hp = new HorizontalPanel();
         hp.add(previousImage);
@@ -149,7 +149,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     table.setText(row, 0, lastname);
                     table.setText(row, 1, firstname);
 
-                    Image editUserImage = ImageFactory.editImage();
+                    Image editUserImage = ImageFactory.editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickListener(me);
                     table.setWidget(row, 2, editUserImage);
 

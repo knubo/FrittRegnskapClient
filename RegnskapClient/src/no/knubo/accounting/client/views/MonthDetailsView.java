@@ -67,10 +67,10 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
 
         DockPanel dp = new DockPanel();
 
-        backImage = ImageFactory.previousImage();
+        backImage = ImageFactory.previousImage("MonthDetailsView.backImage");
         backImage.addClickListener(this);
 
-        nextImage = ImageFactory.nextImage();
+        nextImage = ImageFactory.nextImage("MonthDetailsView.nextImage");
         nextImage.addClickListener(this);
 
         monthYearCombo = new ListBox();

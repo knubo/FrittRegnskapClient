@@ -152,7 +152,7 @@ public class HappeningsView extends Composite implements ClickListener,
         table.setWidget(row, 4, box);
         table.getCellFormatter().setStyleName(row, 4, "center");
 
-        Image editImage = ImageFactory.editImage();
+        Image editImage = ImageFactory.editImage("HappeningsView.editImage");
         editImage.addClickListener(me);
         idHolder.add(id, editImage);
 

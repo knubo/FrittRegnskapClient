@@ -84,9 +84,9 @@ public class PostView extends DialogBox implements ClickListener,
 		/* Widgets placements */
 		DockPanel dp = new DockPanel();
 
-		editImage = ImageFactory.editImage();
+		editImage = ImageFactory.editImage("PostView.editImage");
 		editImage.addClickListener(this);
-		closeImage = ImageFactory.closeImage();
+		closeImage = ImageFactory.closeImage("PostView.closeImage");
 		closeImage.addClickListener(this);
 		table.setWidget(0, 5, editImage);
 		table.setWidget(0, 6, closeImage);
