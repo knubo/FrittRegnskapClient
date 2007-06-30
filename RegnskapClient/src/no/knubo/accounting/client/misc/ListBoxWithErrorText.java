@@ -20,22 +20,21 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements
     public ListBoxWithErrorText(String id) {
         super(new ListBox());
         listbox = (ListBox) widget;
-
-        DOM.setElementAttribute(listbox.getElement(), "id", id);
-
+        
         HorizontalPanel hp = new HorizontalPanel();
 
         hp.add(listbox);
         hp.add(label);
         initWidget(hp);
+        DOM.setElementAttribute(listbox.getElement(), "id", id);
     }
 
     public ListBoxWithErrorText(String id, HTML errorLabel) {
         super(new ListBox(), errorLabel);
         listbox = (ListBox) widget;
-        DOM.setElementAttribute(listbox.getElement(), "id", id);
 
         initWidget(listbox);
+        DOM.setElementAttribute(listbox.getElement(), "id", id);
     }
 
     public ListBox getListbox() {

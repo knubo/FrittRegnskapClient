@@ -102,6 +102,7 @@ public class TrustStatusView extends Composite implements ClickListener {
         JSONArray array = value.isArray();
         JSONValue dataVal = object.get("data");
         JSONObject dataObj = dataVal.isObject();
+
         JSONValue sumFondVal = object.get("sumfond");
         JSONValue sumClubVal = object.get("sumclub");
         JSONObject sumFondObj = sumFondVal.isObject();
@@ -123,6 +124,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
     private void renderFond(String description, JSONArray fondlines,
             String sumFond, String sumClub) {
+
         int row = table.getRowCount();
         table.setHTML(row, 0, description);
         table.getRowFormatter().setStyleName(row, "header");
@@ -214,7 +216,8 @@ public class TrustStatusView extends Composite implements ClickListener {
             edittable.setHTML(6, 0, messages.description());
             edittable.setHTML(7, 0, messages.amount());
 
-            actionListBox = new ListBoxWithErrorText("TrustStatusView.actionList");
+            actionListBox = new ListBoxWithErrorText(
+                    "TrustStatusView.actionList");
             actionListBox.getListbox().addChangeListener(this);
 
             trustListBox = new ListBoxWithErrorText("TrustStatuView.trustList");

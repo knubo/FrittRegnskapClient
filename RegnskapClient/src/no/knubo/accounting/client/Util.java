@@ -108,9 +108,9 @@ public class Util {
 
         JSONString string = value.isString();
         if (string == null) {
-            return value.toString();
+            return value.toString().trim();
         }
-        return string.stringValue();
+        return string.stringValue().trim();
     }
 
     public static String money(JSONValue value) {
