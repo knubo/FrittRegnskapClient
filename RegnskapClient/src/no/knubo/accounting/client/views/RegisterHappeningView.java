@@ -99,16 +99,17 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         postNmbBox = registerStandards.getPostNmbBox();
         table.setWidget(0, 1, postNmbBox);
         table.setHTML(0, 0, messages.postnmb());
-        DOM.setElementAttribute(table.getCellFormatter().getElement(0, 0),
-                "id", "postnmb");
+        Util.setCellId(table, 0, 0, "postnmb");
 
         dayBox = registerStandards.createDayBox();
         table.setWidget(1, 1, dayBox);
         table.setHTML(1, 0, messages.day());
+        Util.setCellId(table, 1, 0, "day");
 
         attachmentBox = registerStandards.getAttachmentBox();
         table.setWidget(2, 1, attachmentBox);
         table.setHTML(2, 0, messages.attachment());
+        Util.setCellId(table, 2, 0, "attachment");
 
         postListBox = new ListBoxWithErrorText("postnmb");
         postListBox.getListbox().setMultipleSelect(false);
@@ -116,17 +117,21 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         postListBox.getListbox().addChangeListener(this);
         table.setWidget(3, 1, postListBox);
         table.setHTML(3, 0, messages.register_count_post());
+        Util.setCellId(table, 3, 0, "post");
 
         descriptionBox = registerStandards.createDescriptionBox();
         table.setWidget(4, 1, descriptionBox);
         table.setHTML(4, 0, messages.description());
+        Util.setCellId(table, 4, 0, "description");
 
         table.setHTML(5, 0, messages.amount());
         amountBox = registerStandards.createAmountBox();
         table.setWidget(5, 1, amountBox);
+        Util.setCellId(table, 5, 0, "amount");
 
         table.setHTML(6, 0, messages.money_type());
         List counts = CountCache.getInstance(constants).getCounts();
+        Util.setCellId(table, 6, 0, "RegisterHappening.MoneyType");
 
         int row = 7;
         for (Iterator i = counts.iterator(); i.hasNext();) {

@@ -5,11 +5,13 @@ import java.util.HashMap;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -29,8 +31,8 @@ public class Util {
      *            The url to forward to.
      */
     public static native void forward(String url) /*-{
-     $wnd.location.href = url;
-     }-*/;
+        $wnd.location.href = url;
+        }-*/;
 
     /**
      * Converts a number into a i18n month from the property file.
@@ -118,7 +120,7 @@ public class Util {
 
         JSONString string = value.isString();
         if (string == null) {
-            return money(value.toString())  ;
+            return money(value.toString());
         }
         return money(string.stringValue());
     }
@@ -316,7 +318,7 @@ public class Util {
     }
 
     public static String getSelected(ListBox box) {
-        if(box.getItemCount() == 0) {
+        if (box.getItemCount() == 0) {
             return "";
         }
         return box.getValue(box.getSelectedIndex());
@@ -409,7 +411,7 @@ public class Util {
         }
         return false;
     }
-    
+
     public static String strSkipNull(JSONValue value) {
         String string = str(value);
         if (string.equals("null")) {
@@ -424,6 +426,11 @@ public class Util {
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+
+    public static void setCellId(FlexTable table, int row, int col, String id) {
+        DOM.setElementAttribute(table.getCellFormatter().getElement(row, col),
+                "id", id);
     }
 
 }
