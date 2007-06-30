@@ -15,8 +15,22 @@ public class HelpPanel extends Composite implements EventPreview {
 
     DisclosurePanel disclosurePanel;
     private HTML html;
+    private int currentPage;
+    private static HelpPanel me;
 
-    public HelpPanel(I18NAccount messages) {
+    public void setCurrentWidget(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public static HelpPanel getInstance(I18NAccount messages) {
+        if (me == null) {
+            me = new HelpPanel(messages);
+        }
+
+        return me;
+    }
+
+    private HelpPanel(I18NAccount messages) {
         disclosurePanel = new DisclosurePanel();
         disclosurePanel.setHeader(new Label(messages.help()));
 
@@ -32,8 +46,8 @@ public class HelpPanel extends Composite implements EventPreview {
 
         String id = DOM.getElementProperty(elem, "id");
 
-        html.setText(" id:" + id + " event:" + DOM.eventToString(event)
-                + " elem:" + elem);
+        html.setText("CP:" + currentPage + " id:" + id + " event:"
+                + DOM.eventToString(event) + " elem:" + elem);
 
         return true;
     }
