@@ -26,6 +26,7 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ChangeListener;
@@ -98,6 +99,8 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         postNmbBox = registerStandards.getPostNmbBox();
         table.setWidget(0, 1, postNmbBox);
         table.setHTML(0, 0, messages.postnmb());
+        DOM.setElementAttribute(table.getCellFormatter().getElement(0, 0),
+                "id", "postnmb");
 
         dayBox = registerStandards.createDayBox();
         table.setWidget(1, 1, dayBox);
@@ -107,7 +110,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         table.setWidget(2, 1, attachmentBox);
         table.setHTML(2, 0, messages.attachment());
 
-        postListBox = new ListBoxWithErrorText();
+        postListBox = new ListBoxWithErrorText("postnmb");
         postListBox.getListbox().setMultipleSelect(false);
         postListBox.getListbox().setVisibleItemCount(1);
         postListBox.getListbox().addChangeListener(this);
@@ -128,7 +131,8 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         int row = 7;
         for (Iterator i = counts.iterator(); i.hasNext();) {
             String count = (String) i.next();
-            TextBoxWithErrorText numberBox = new TextBoxWithErrorText("number"+count);
+            TextBoxWithErrorText numberBox = new TextBoxWithErrorText("number"
+                    + count);
             numberBox.setVisibleLength(10);
             table.setHTML(row, 0, count);
             table.setWidget(row, 1, numberBox);
@@ -137,7 +141,8 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             row++;
         }
 
-        Button saveButton = new NamedButton("RegisterHappening.saveButton", messages.save());
+        Button saveButton = new NamedButton("RegisterHappening.saveButton",
+                messages.save());
         saveButton.addClickListener(this);
         table.setWidget(row, 0, saveButton);
 

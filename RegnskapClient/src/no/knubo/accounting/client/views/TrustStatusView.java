@@ -214,10 +214,10 @@ public class TrustStatusView extends Composite implements ClickListener {
             edittable.setHTML(6, 0, messages.description());
             edittable.setHTML(7, 0, messages.amount());
 
-            actionListBox = new ListBoxWithErrorText();
+            actionListBox = new ListBoxWithErrorText("TrustStatusView.actionList");
             actionListBox.getListbox().addChangeListener(this);
 
-            trustListBox = new ListBoxWithErrorText();
+            trustListBox = new ListBoxWithErrorText("TrustStatuView.trustList");
             trustListBox.getListbox().setVisibleItemCount(1);
             trustListBox.getListbox().addChangeListener(this);
 

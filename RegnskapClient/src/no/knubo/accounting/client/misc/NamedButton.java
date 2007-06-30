@@ -6,15 +6,15 @@ import com.google.gwt.user.client.ui.Button;
 public class NamedButton extends Button {
 
     public NamedButton(String name) {
-        setName(name);
+        setId(name);
     }
 
-    private void setName(String name) {
-        DOM.setElementAttribute(this.getElement(), "name", name);
+    private void setId(String id) {
+        DOM.setElementAttribute(this.getElement(), "id", id);
     }
     
     public NamedButton(String name, String text) {
         super(text);
-        setName(name);
+        setId(name);
     }
 }

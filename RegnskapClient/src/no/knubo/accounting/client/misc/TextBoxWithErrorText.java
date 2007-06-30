@@ -2,6 +2,7 @@ package no.knubo.accounting.client.misc;
 
 import no.knubo.accounting.client.validation.Validateable;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -17,7 +18,7 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements
         super(new TextBox(), errorLabel);
         this.label = errorLabel;
         this.textBox = (TextBox) widget;
-        textBox.setName(name);
+        DOM.setElementAttribute(textBox.getElement(), "id", name);
 
         errorLabel.setStyleName("error");
         initWidget(textBox);
@@ -26,7 +27,7 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements
     public TextBoxWithErrorText(String name) {
         super(new TextBox());
         textBox = (TextBox) widget;
-        textBox.setName(name);
+        DOM.setElementAttribute(textBox.getElement(), "id", name);
 
         HorizontalPanel hp = new HorizontalPanel();
 

@@ -3,6 +3,7 @@ package no.knubo.accounting.client.misc;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.validation.Validateable;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -16,9 +17,11 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements
         return Util.getSelected(listbox);
     }
 
-    public ListBoxWithErrorText() {
+    public ListBoxWithErrorText(String id) {
         super(new ListBox());
         listbox = (ListBox) widget;
+
+        DOM.setElementAttribute(listbox.getElement(), "id", id);
 
         HorizontalPanel hp = new HorizontalPanel();
 
@@ -27,9 +30,10 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements
         initWidget(hp);
     }
 
-    public ListBoxWithErrorText(HTML errorLabel) {
+    public ListBoxWithErrorText(String id, HTML errorLabel) {
         super(new ListBox(), errorLabel);
         listbox = (ListBox) widget;
+        DOM.setElementAttribute(listbox.getElement(), "id", id);
 
         initWidget(listbox);
     }

@@ -30,8 +30,10 @@ public class HelpPanel extends Composite implements EventPreview {
 
         Element elem = DOM.eventGetTarget(event);
 
-        String name = DOM.getElementProperty(elem, "name");
-        html.setText("Elem:" + name);
+        String id = DOM.getElementProperty(elem, "id");
+
+        html.setText(" id:" + id + " event:" + DOM.eventToString(event)
+                + " elem:" + elem);
 
         return true;
     }
