@@ -792,6 +792,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String firstname();
 
   /**
+   * Translated "no".
+   * 
+   * @return translated "no"
+   * @gwt.key HELP_ROOT
+   */
+  String HELP_ROOT();
+
+  /**
    * Translated "Ulovlig epostadresse".
    * 
    * @return translated "Ulovlig epostadresse"

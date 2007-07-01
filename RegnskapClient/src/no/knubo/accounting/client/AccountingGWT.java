@@ -46,24 +46,33 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     private Constants constants;
 
+    private HelpTexts helpTexts;
+
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
         messages = (I18NAccount) GWT.create(I18NAccount.class);
         constants = (Constants) GWT.create(Constants.class);
+        helpTexts = (HelpTexts) GWT.create(HelpTexts.class);
 
         loadCaches(constants);
+        
         DockPanel docPanel = new DockPanel();
+        docPanel.setWidth("100%");
+        docPanel.setHeight("100%");
 
         MenuBar topMenu = new MenuBar();
+        topMenu.setWidth("100%");
         docPanel.add(topMenu, DockPanel.NORTH);
 
         activeView = new DockPanel();
         activeView.setStyleName("activeview");
         docPanel.add(activeView, DockPanel.CENTER);
-        docPanel.add(HelpPanel.getInstance(messages), DockPanel.EAST);
-        
+        HelpPanel helpText = HelpPanel.getInstance(messages, helpTexts);
+        docPanel.add(helpText, DockPanel.EAST);
+        docPanel.setCellWidth(helpText, "100%");
+
         MenuBar registerMenu = addTopMenu(topMenu, messages.menu_register());
         MenuBar showMenu = addTopMenu(topMenu, messages.menu_show());
         MenuBar peopleMenu = addTopMenu(topMenu, messages.menu_people());
@@ -148,11 +157,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         }
 
-
         public void execute() {
             Widget widget = null;
 
-            HelpPanel.getInstance(messages).setCurrentWidget(action);
             switch (action) {
             case WidgetIds.LINE_EDIT_VIEW:
                 widget = LineEditView.show(callback, messages, constants, null);
@@ -212,7 +219,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case TRUST_STATUS:
                 widget = TrustStatusView.getInstance(constants, messages);
-                ((TrustStatusView)widget).init();
+                ((TrustStatusView) widget).init();
                 break;
             case WidgetIds.ABOUT:
                 widget = AboutView.getInstance();
@@ -223,13 +230,13 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 return;
             }
             setActiveWidget(widget);
+            HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget, action);
         }
     }
 
     private void setActiveWidget(Widget widget) {
         activeView.clear();
         activeView.add(widget, DockPanel.CENTER);
-        activeView.setCellWidth(widget, "100%");
         activeView.setCellHeight(widget, "100%");
         activeView.setCellVerticalAlignment(widget, DockPanel.ALIGN_TOP);
     }

@@ -46,10 +46,6 @@
   PADDING:2px 8px 2px 0px;
   white-space:nowrap;
 }
-
-
-
-
 .sumline {
   background-color:#ecf1f3;
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
@@ -341,3 +337,26 @@ td.rute {
 .disabled {
   background-color:lightgrey;
 }
+
+.helpheader H1 {
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+  font-weight: bold;
+  white-space:nowrap;
+  fond-size:18pt;  
+}
+
+.helpheader H2 {
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+  font-weight: bold;
+  white-space:nowrap;
+  fond-size:14pt;  
+}
+
+.contexthelp {
+  background:#F6FEDA none repeat scroll 0%;
+  border:1px solid #98BE10;
+  margin:10px;
+  padding:10px;
+  width: 200px;
+  vertical-align:top;
+ }

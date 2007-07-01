@@ -1,0 +1,4 @@
+#!/bin/sh
+APPDIR=`dirname $0`;
+java -cp "$APPDIR/src:$APPDIR/bin:/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.4.10/gwt-user.jar:/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.4.10/gwt-dev-mac.jar" com.google.gwt.i18n.tools.I18NSync -out $APPDIR/src no.knubo.accounting.client.HelpTexts -createMessages ;
+

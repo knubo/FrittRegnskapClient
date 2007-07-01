@@ -110,7 +110,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         table.setHTML(2, 0, messages.attachment());
         Util.setCellId(table, 2, 0, "attachment");
 
-        postListBox = new ListBoxWithErrorText("postnmb");
+        postListBox = new ListBoxWithErrorText("RegisterhappeningView.post");
         postListBox.getListbox().setMultipleSelect(false);
         postListBox.getListbox().setVisibleItemCount(1);
         postListBox.getListbox().addChangeListener(this);
