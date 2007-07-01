@@ -248,9 +248,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment_used();
 
   /**
-   * Translated "Val&oslash;r".
+   * Translated "Val&oslash;r:".
    * 
-   * @return translated "Val&oslash;r"
+   * @return translated "Val&oslash;r:"
    * @gwt.key money_type
    */
   String money_type();
