@@ -29,8 +29,8 @@ public class HelpPanel extends Composite implements EventPreview {
     public void setCurrentWidget(Widget widget, int currentPage) {
         mainFrame.setUrl("help/" + messages.HELP_ROOT() + "/" + currentPage
                 + "/index.html");
-        mainFrame.setWidth("100%"); 
-        mainFrame.setHeight(widget.getOffsetHeight()+"px");
+        mainFrame.setWidth("100%");
+        mainFrame.setHeight(widget.getOffsetHeight() + "px");
     }
 
     public static HelpPanel getInstance(I18NAccount messages,
@@ -52,7 +52,7 @@ public class HelpPanel extends Composite implements EventPreview {
         mainFrame = new Frame();
         contextHelp = new HTML();
         contextHelp.setStyleName("contexthelp");
-        
+
         HorizontalPanel dp = new HorizontalPanel();
         dp.setWidth("100%");
         dp.add(mainFrame);
@@ -68,12 +68,19 @@ public class HelpPanel extends Composite implements EventPreview {
 
         String id = DOM.getElementProperty(elem, "id");
 
-        String help = "Context help";
-        if(id.equals("postnmb")) {
-            help = "<strong>"+messages.postnmb()+"</strong><br>"+helpTexts.postnmb();
+        String help = "";
+        if (id.equals("postnmb")) {
+            help = "<strong>" + messages.postnmb() + "</strong><br>"
+                    + helpTexts.postnmb();
+        } else if (id.equals("day")) {
+            help = "<strong>" + messages.day() + "</strong><br>"
+                    + helpTexts.day();
+        } else if (id.equals("attachment")) {
+            help = "<strong>" + messages.attachment() + "</strong><br>"
+                    + helpTexts.attachment();
         }
 
-        contextHelp.setHTML(help);            
+        contextHelp.setHTML(help);
         return true;
     }
 }
