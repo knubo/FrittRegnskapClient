@@ -8,6 +8,14 @@ package no.knubo.accounting.client;
 public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   
   /**
+   * Translated "Antall femti&oslash;rer.".
+   * 
+   * @return translated "Antall femti&oslash;rer."
+   * @gwt.key number0.5
+   */
+  String number0_5();
+
+  /**
    * Translated "Dag er dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.".
    * 
    * @return translated "Dag er dagen posteringen skal registreres p&aring; i den aktive m&aring;neden."
@@ -16,12 +24,20 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String day();
 
   /**
-   * Translated "Bilag er bilagsnummeret til posteringeng. Bilagsnummer er p&aring;krevd, men m� ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer.".
+   * Translated "I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r.".
    * 
-   * @return translated "Bilag er bilagsnummeret til posteringeng. Bilagsnummer er p&aring;krevd, men m� ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer."
-   * @gwt.key attachment
+   * @return translated "I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r."
+   * @gwt.key money_type
    */
-  String attachment();
+  String money_type();
+
+  /**
+   * Translated "Antall femhundrelapper.".
+   * 
+   * @return translated "Antall femhundrelapper."
+   * @gwt.key number500
+   */
+  String number500();
 
   /**
    * Translated "Postnr angir sorteringen som posteringen f&aring;r i den aktive m&aring;neden. Postnummeret tildeles automatisk og det er ikke behov for &aring; endre denne med mindre rekkef&oslash;lgen p&aring; posteringen m&aring; endres.".
@@ -30,4 +46,108 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
    * @gwt.key postnmb
    */
   String postnmb();
+
+  /**
+   * Translated "Bilag er bilagsnummeret til posteringen. Bilagsnummer er p&aring;krevd, men m&aring; ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer.".
+   * 
+   * @return translated "Bilag er bilagsnummeret til posteringen. Bilagsnummer er p&aring;krevd, men m&aring; ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer."
+   * @gwt.key attachment
+   */
+  String attachment();
+
+  /**
+   * Translated "Antall tusenlapper.".
+   * 
+   * @return translated "Antall tusenlapper."
+   * @gwt.key number1000
+   */
+  String number1000();
+
+  /**
+   * Translated "Antall femtilapper.".
+   * 
+   * @return translated "Antall femtilapper."
+   * @gwt.key number50
+   */
+  String number50();
+
+  /**
+   * Translated "Antall femmere.".
+   * 
+   * @return translated "Antall femmere."
+   * @gwt.key number5
+   */
+  String number5();
+
+  /**
+   * Translated "Bel&oslash;p for posteringen.".
+   * 
+   * @return translated "Bel&oslash;p for posteringen."
+   * @gwt.key amount
+   */
+  String amount();
+
+  /**
+   * Translated "F&oslash;res p� post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis.".
+   * 
+   * @return translated "F&oslash;res p� post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis."
+   * @gwt.key register_count_post
+   */
+  String register_count_post();
+
+  /**
+   * Translated "Antall tohundrelapper.".
+   * 
+   * @return translated "Antall tohundrelapper."
+   * @gwt.key number200
+   */
+  String number200();
+
+  /**
+   * Translated "Antall hundrelapper.".
+   * 
+   * @return translated "Antall hundrelapper."
+   * @gwt.key number100
+   */
+  String number100();
+
+  /**
+   * Translated "Beskrivelse skal kortfattet oppsumere innholdet i posteringen.".
+   * 
+   * @return translated "Beskrivelse skal kortfattet oppsumere innholdet i posteringen."
+   * @gwt.key description
+   */
+  String description();
+
+  /**
+   * Translated "Lagrer posteringen.".
+   * 
+   * @return translated "Lagrer posteringen."
+   * @gwt.key RegisterHappening_saveButton
+   */
+  String RegisterHappening_saveButton();
+
+  /**
+   * Translated "Antall tyvekroner.".
+   * 
+   * @return translated "Antall tyvekroner."
+   * @gwt.key number20
+   */
+  String number20();
+
+  /**
+   * Translated "Antall tiere.".
+   * 
+   * @return translated "Antall tiere."
+   * @gwt.key number10
+   */
+  String number10();
+
+  /**
+   * Translated "Antall kronestykker.".
+   * 
+   * @return translated "Antall kronestykker."
+   * @gwt.key number1
+   */
+  String number1();
 }

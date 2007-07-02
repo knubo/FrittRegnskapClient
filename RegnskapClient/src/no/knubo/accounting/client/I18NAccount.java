@@ -224,6 +224,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_about();
 
   /**
+   * Translated "Lagre".
+   * 
+   * @return translated "Lagre"
+   * @gwt.key RegisterHappening.saveButton
+   */
+  String RegisterHappening_saveButton();
+
+  /**
    * Translated "Hurtigregistrering av standardbilag".
    * 
    * @return translated "Hurtigregistrering av standardbilag"

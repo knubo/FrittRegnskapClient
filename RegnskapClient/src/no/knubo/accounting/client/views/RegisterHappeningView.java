@@ -110,7 +110,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         table.setHTML(2, 0, messages.attachment());
         Util.setCellId(table, 2, 0, "attachment");
 
-        postListBox = new ListBoxWithErrorText("RegisterhappeningView.post");
+        postListBox = new ListBoxWithErrorText("register_count_post");
         postListBox.getListbox().setMultipleSelect(false);
         postListBox.getListbox().setVisibleItemCount(1);
         postListBox.getListbox().addChangeListener(this);
@@ -130,7 +130,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
         table.setHTML(6, 0, messages.money_type());
         List counts = CountCache.getInstance(constants).getCounts();
-        Util.setCellId(table, 6, 0, "RegisterHappening.MoneyType");
+        Util.setCellId(table, 6, 0, "money_type");
 
         int row = 7;
         for (Iterator i = counts.iterator(); i.hasNext();) {
@@ -145,8 +145,8 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             row++;
         }
 
-        Button saveButton = new NamedButton("RegisterHappening.saveButton",
-                messages.save());
+        Button saveButton = new NamedButton("RegisterHappening_saveButton",
+                messages.RegisterHappening_saveButton());
         saveButton.addClickListener(this);
         table.setWidget(row, 0, saveButton);
 
