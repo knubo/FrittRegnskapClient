@@ -1,7 +1,5 @@
 package no.knubo.accounting.client.views;
 
-import java.util.Iterator;
-
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
@@ -33,7 +31,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TrustStatusView extends Composite implements ClickListener {
@@ -65,8 +62,8 @@ public class TrustStatusView extends Composite implements ClickListener {
 
         DockPanel dp = new DockPanel();
 
-        Button button = new NamedButton("TrustStatusView.newTrustButton",
-                messages.new_trust());
+        Button button = new NamedButton("trustStatusView_newTrustButton",
+                messages.trustStatusView_newTrustButton());
         button.addClickListener(this);
         dp.add(button, DockPanel.NORTH);
 
@@ -231,7 +228,7 @@ public class TrustStatusView extends Composite implements ClickListener {
                     "TrustStatusView.actionList");
             actionListBox.getListbox().addChangeListener(this);
 
-            trustListBox = new ListBoxWithErrorText("TrustStatuView.trustList");
+            trustListBox = new ListBoxWithErrorText("TrustStatusView.trustList");
             trustListBox.getListbox().setVisibleItemCount(1);
             trustListBox.getListbox().addChangeListener(this);
 
@@ -332,6 +329,7 @@ public class TrustStatusView extends Composite implements ClickListener {
                 }
 
                 public void onResponseReceived(Request request, Response response) {
+                    
                 }
 
             };

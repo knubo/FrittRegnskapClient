@@ -100,7 +100,10 @@ public class HelpPanel extends Composite implements EventPreview {
         Element elem = DOM.eventGetTarget(event);
         String id = DOM.getElementProperty(elem, "id");
 
-        if (id.equals("postnmb")) {
+        if (id.equals("trustStatusView_newTrustButton")) {
+            help = formatHelp(messages.trustStatusView_newTrustButton(),
+                    helpTexts.trustStatusView_newTrustButton());
+        } else if (id.equals("postnmb")) {
             help = formatHelp(messages.postnmb(), helpTexts.postnmb());
         } else if (id.equals("day")) {
             help = formatHelp(messages.day(), helpTexts.day());

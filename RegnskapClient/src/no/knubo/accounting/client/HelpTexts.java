@@ -144,6 +144,14 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String description();
 
   /**
+   * Translated "&Aring;pne vindu for registrering av fondsaktivitet.".
+   * 
+   * @return translated "&Aring;pne vindu for registrering av fondsaktivitet."
+   * @gwt.key trustStatusView_newTrustButton
+   */
+  String trustStatusView_newTrustButton();
+
+  /**
    * Translated "Lagrer posteringen.".
    * 
    * @return translated "Lagrer posteringen."

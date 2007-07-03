@@ -648,6 +648,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String illegal_day();
 
   /**
+   * Translated "Ny fondaktivitet".
+   * 
+   * @return translated "Ny fondaktivitet"
+   * @gwt.key trustStatusView_newTrustButton
+   */
+  String trustStatusView_newTrustButton();
+
+  /**
    * Translated "Registrer bilag".
    * 
    * @return translated "Registrer bilag"
