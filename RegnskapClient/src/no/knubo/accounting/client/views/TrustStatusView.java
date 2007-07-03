@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.views;
 
+import java.util.Iterator;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
@@ -31,6 +33,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TrustStatusView extends Composite implements ClickListener {
@@ -242,7 +245,6 @@ public class TrustStatusView extends Composite implements ClickListener {
             errorLabelForDate = new HTML();
 
             dayBox = registerStandards.createDayBox(errorLabelForDate, "day_single");
-
             monthBox = registerStandards.createMonthBox(errorLabelForDate);
             yearBox = registerStandards.createYearBox(errorLabelForDate);
 
@@ -308,6 +310,40 @@ public class TrustStatusView extends Composite implements ClickListener {
         }
 
         private void doSave() {
+            StringBuffer sb = new StringBuffer();
+            sb.append("action=add");
+
+            Util.addPostParam(sb, "day", dayBox.getText());
+            Util.addPostParam(sb, "month", monthBox.getText());
+            Util.addPostParam(sb, "year", yearBox.getText());
+            Util.addPostParam(sb, "desc", descBox.getText());
+            Util.addPostParam(sb, "attachment", attachmentBox.getText());
+            Util.addPostParam(sb, "postnmb", postNmbBox.getText());
+            final String money = Util.fixMoney(amountBox.getText());
+            Util.addPostParam(sb, "amount", money);
+            Util.addPostParam(sb, "action", Util.getSelected(actionListBox.getListbox()));
+
+            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                    constants.baseurl() + "accounting/edittrust.php");
+
+            RequestCallback callback = new RequestCallback() {
+                public void onError(Request request, Throwable exception) {
+                    Window.alert(exception.getMessage());
+                }
+
+                public void onResponseReceived(Request request, Response response) {
+                }
+
+            };
+
+            try {
+                builder.setHeader("Content-Type",
+                        "application/x-www-form-urlencoded");
+                builder.sendRequest(sb.toString(), callback);
+            } catch (RequestException e) {
+                Window.alert("Failed to send the request: " + e.getMessage());
+            }
+            Window.alert("Saved");
 
         }
 
