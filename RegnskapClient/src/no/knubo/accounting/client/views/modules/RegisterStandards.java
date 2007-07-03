@@ -124,8 +124,8 @@ public class RegisterStandards {
         return dayBox;
     }
 
-    public TextBoxWithErrorText createDayBox(HTML errorLabel) {
-        dayBox = new TextBoxWithErrorText("day", errorLabel);
+    public TextBoxWithErrorText createDayBox(HTML errorLabel, String label) {
+        dayBox = new TextBoxWithErrorText(label, errorLabel);
         dayBox.setMaxLength(2);
         dayBox.setVisibleLength(2);
         return dayBox;

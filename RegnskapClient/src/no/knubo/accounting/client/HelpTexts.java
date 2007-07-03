@@ -16,9 +16,17 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String number0_5();
 
   /**
-   * Translated "Dag er dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.".
+   * Translated "M&aring;neden posteringen skal registreres p&aring;.".
    * 
-   * @return translated "Dag er dagen posteringen skal registreres p&aring; i den aktive m&aring;neden."
+   * @return translated "M&aring;neden posteringen skal registreres p&aring;."
+   * @gwt.key month
+   */
+  String month();
+
+  /**
+   * Translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.".
+   * 
+   * @return translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden."
    * @gwt.key day
    */
   String day();
@@ -56,20 +64,20 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String attachment();
 
   /**
-   * Translated "Antall tusenlapper.".
-   * 
-   * @return translated "Antall tusenlapper."
-   * @gwt.key number1000
-   */
-  String number1000();
-
-  /**
    * Translated "Antall femtilapper.".
    * 
    * @return translated "Antall femtilapper."
    * @gwt.key number50
    */
   String number50();
+
+  /**
+   * Translated "Antall tusenlapper.".
+   * 
+   * @return translated "Antall tusenlapper."
+   * @gwt.key number1000
+   */
+  String number1000();
 
   /**
    * Translated "Antall femmere.".
@@ -80,6 +88,14 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String number5();
 
   /**
+   * Translated "Dagen posteringen skal registreres p&aring;.".
+   * 
+   * @return translated "Dagen posteringen skal registreres p&aring;."
+   * @gwt.key day_single
+   */
+  String day_single();
+
+  /**
    * Translated "Bel&oslash;p for posteringen.".
    * 
    * @return translated "Bel&oslash;p for posteringen."
@@ -88,9 +104,17 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String amount();
 
   /**
-   * Translated "F&oslash;res p� post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis.".
+   * Translated "&Aring;ret posteringen skal registreres p&aring;.".
    * 
-   * @return translated "F&oslash;res p� post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis."
+   * @return translated "&Aring;ret posteringen skal registreres p&aring;."
+   * @gwt.key year
+   */
+  String year();
+
+  /**
+   * Translated "F&oslash;res p&aring; post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis.".
+   * 
+   * @return translated "F&oslash;res p&aring; post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis."
    * @gwt.key register_count_post
    */
   String register_count_post();

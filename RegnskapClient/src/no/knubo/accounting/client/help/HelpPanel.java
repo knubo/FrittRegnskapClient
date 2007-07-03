@@ -31,6 +31,10 @@ public class HelpPanel extends Composite implements EventPreview {
     public void setCurrentWidget(Widget widget, int currentPage) {
         mainFrame.setUrl("help/" + messages.HELP_ROOT() + "/" + currentPage
                 + "/index.html");
+        resize(widget);
+    }
+
+    public void resize(Widget widget) {
         mainFrame.setWidth("100%");
         mainFrame.setHeight(widget.getOffsetHeight() + "px");
     }
@@ -59,13 +63,18 @@ public class HelpPanel extends Composite implements EventPreview {
         dp.setWidth("100%");
         dp.add(mainFrame);
         dp.add(contextHelp);
-        DOM.addEventPreview(this);
+        addEventHandler();
         disclosurePanel.add(dp);
         initWidget(disclosurePanel);
 
+        /* Every second poll and see if help should be updated. */
         new Timer() {
-
             public void run() {
+
+                // if(!disclosurePanel.isOpen()) {
+                // return;
+                // }
+
                 if (help != null && prevHelp != help) {
                     contextHelp.setHTML(help);
                     prevHelp = help;
@@ -75,7 +84,19 @@ public class HelpPanel extends Composite implements EventPreview {
         }.scheduleRepeating(1000);
     }
 
+    /**
+     * Each time this is called it makes sure that it is on top of the event
+     * stack so that it receives events.
+     */
+    public void addEventHandler() {
+        DOM.removeEventPreview(this);
+        DOM.addEventPreview(this);
+    }
+
     public boolean onEventPreview(final Event event) {
+        // if(!disclosurePanel.isOpen()) {
+        // return true;
+        // }
         Element elem = DOM.eventGetTarget(event);
         String id = DOM.getElementProperty(elem, "id");
 
@@ -83,6 +104,12 @@ public class HelpPanel extends Composite implements EventPreview {
             help = formatHelp(messages.postnmb(), helpTexts.postnmb());
         } else if (id.equals("day")) {
             help = formatHelp(messages.day(), helpTexts.day());
+        } else if (id.equals("day_single")) {
+            help = formatHelp(messages.day_single(), helpTexts.day_single());
+        } else if (id.equals("month")) {
+            help = formatHelp(messages.month(), helpTexts.month());
+        } else if (id.equals("year")) {
+            help = formatHelp(messages.year(), helpTexts.year());
         } else if (id.equals("attachment")) {
             help = formatHelp(messages.attachment(), helpTexts.attachment());
         } else if (id.equals("description")) {
@@ -117,6 +144,8 @@ public class HelpPanel extends Composite implements EventPreview {
             help = formatHelp("1", helpTexts.number1());
         } else if (id.equals("number0.5")) {
             help = formatHelp("0.5", helpTexts.number0_5());
+        } else {
+            help = "- " + id;
         }
 
         return true;

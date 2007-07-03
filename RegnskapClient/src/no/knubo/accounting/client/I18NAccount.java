@@ -472,6 +472,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String month_10();
 
   /**
+   * Translated "Dag".
+   * 
+   * @return translated "Dag"
+   * @gwt.key day_single
+   */
+  String day_single();
+
+  /**
    * Translated "Land".
    * 
    * @return translated "Land"

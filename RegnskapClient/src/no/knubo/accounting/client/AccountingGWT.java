@@ -57,7 +57,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         helpTexts = (HelpTexts) GWT.create(HelpTexts.class);
 
         loadCaches(constants);
-        
+
         DockPanel docPanel = new DockPanel();
         docPanel.setWidth("100%");
         docPanel.setHeight("100%");
@@ -69,9 +69,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView = new DockPanel();
         activeView.setStyleName("activeview");
         docPanel.add(activeView, DockPanel.CENTER);
-        HelpPanel helpText = HelpPanel.getInstance(messages, helpTexts);
-        docPanel.add(helpText, DockPanel.EAST);
-        docPanel.setCellWidth(helpText, "100%");
+        HelpPanel helpPanel = HelpPanel.getInstance(messages, helpTexts);
+        docPanel.add(helpPanel, DockPanel.EAST);
+        docPanel.setCellWidth(helpPanel, "100%");
 
         MenuBar registerMenu = addTopMenu(topMenu, messages.menu_register());
         MenuBar showMenu = addTopMenu(topMenu, messages.menu_show());
@@ -218,7 +218,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((ShowMembershipView) widget).initShowTrainingMembers();
                 break;
             case TRUST_STATUS:
-                widget = TrustStatusView.getInstance(constants, messages);
+                widget = TrustStatusView.getInstance(constants, messages,
+                        HelpPanel.getInstance(messages, helpTexts));
                 ((TrustStatusView) widget).init();
                 break;
             case WidgetIds.ABOUT:
@@ -230,7 +231,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 return;
             }
             setActiveWidget(widget);
-            HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget, action);
+            HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
+                    action);
         }
     }
 

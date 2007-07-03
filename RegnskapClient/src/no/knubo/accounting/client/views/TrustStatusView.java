@@ -4,6 +4,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.TrustActionCache;
+import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
@@ -44,17 +45,20 @@ public class TrustStatusView extends Composite implements ClickListener {
 
     private TrustEditFields editFields;
 
+    private final HelpPanel helpPanel;
+
     public static TrustStatusView getInstance(Constants constants,
-            I18NAccount messages) {
+            I18NAccount messages, HelpPanel helpPanel) {
         if (instance == null) {
-            instance = new TrustStatusView(constants, messages);
+            instance = new TrustStatusView(constants, messages, helpPanel);
         }
         return instance;
     }
 
-    public TrustStatusView(Constants constants, I18NAccount messages) {
+    public TrustStatusView(Constants constants, I18NAccount messages, HelpPanel helpPanel) {
         this.constants = constants;
         this.messages = messages;
+        this.helpPanel = helpPanel;
 
         DockPanel dp = new DockPanel();
 
@@ -71,7 +75,9 @@ public class TrustStatusView extends Composite implements ClickListener {
     }
 
     public void init() {
-        table.clear();
+        while(table.getRowCount() > 0) {
+            table.removeRow(0);
+        }
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/edittrust.php");
@@ -120,6 +126,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
             renderFond(description, fondLines.isArray(), sumFond, sumClub);
         }
+        helpPanel.resize(this); 
     }
 
     private void renderFond(String description, JSONArray fondlines,
@@ -179,6 +186,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
         editFields.init();
         editFields.show();
+        helpPanel.addEventHandler();
     }
 
     class TrustEditFields extends DialogBox implements ClickListener,
@@ -233,7 +241,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
             errorLabelForDate = new HTML();
 
-            dayBox = registerStandards.createDayBox(errorLabelForDate);
+            dayBox = registerStandards.createDayBox(errorLabelForDate, "day_single");
 
             monthBox = registerStandards.createMonthBox(errorLabelForDate);
             yearBox = registerStandards.createYearBox(errorLabelForDate);
