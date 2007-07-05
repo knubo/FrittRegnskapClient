@@ -222,7 +222,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case TRUST_STATUS:
                 widget = TrustStatusView.getInstance(constants, messages,
-                        HelpPanel.getInstance(messages, helpTexts));
+                        HelpPanel.getInstance(messages, helpTexts), callback);
                 ((TrustStatusView) widget).init();
                 break;
             case WidgetIds.ABOUT:

@@ -5,6 +5,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.TrustActionCache;
 import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.NamedButton;
@@ -49,25 +50,36 @@ public class TrustStatusView extends Composite implements ClickListener {
 
     private final HelpPanel helpPanel;
 
+    private IdHolder idHolder;
+
+    private Button newTrustButton;
+
+    private final ViewCallback callback;
+
     public static TrustStatusView getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel) {
+            I18NAccount messages, HelpPanel helpPanel, ViewCallback callback) {
         if (trustStatusInstance == null) {
-            trustStatusInstance = new TrustStatusView(constants, messages, helpPanel);
+            trustStatusInstance = new TrustStatusView(constants, messages,
+                    helpPanel, callback);
         }
         return trustStatusInstance;
     }
 
-    public TrustStatusView(Constants constants, I18NAccount messages, HelpPanel helpPanel) {
+    public TrustStatusView(Constants constants, I18NAccount messages,
+            HelpPanel helpPanel, ViewCallback callback) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
+        this.callback = callback;
+
+        idHolder = new IdHolder();
 
         DockPanel dp = new DockPanel();
 
-        Button button = new NamedButton("trustStatusView_newTrustButton",
+        newTrustButton = new NamedButton("trustStatusView_newTrustButton",
                 messages.trustStatusView_newTrustButton());
-        button.addClickListener(this);
-        dp.add(button, DockPanel.NORTH);
+        newTrustButton.addClickListener(this);
+        dp.add(newTrustButton, DockPanel.NORTH);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -77,7 +89,8 @@ public class TrustStatusView extends Composite implements ClickListener {
     }
 
     public void init() {
-        while(table.getRowCount() > 0) {
+        idHolder.init();
+        while (table.getRowCount() > 0) {
             table.removeRow(0);
         }
 
@@ -128,7 +141,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
             renderFond(description, fondLines.isArray(), sumFond, sumClub);
         }
-        helpPanel.resize(this); 
+        helpPanel.resize(this);
     }
 
     private void renderFond(String description, JSONArray fondlines,
@@ -165,12 +178,15 @@ public class TrustStatusView extends Composite implements ClickListener {
 
             int accountline = Util.getInt(lineObj.get("AccountLine"));
             if (accountline > 0) {
-                Image viewPostImage = ImageFactory.editImage("TrustStatusView.viewPost");
+                Image viewPostImage = ImageFactory
+                        .editImage("TrustStatusView.viewPost");
+                viewPostImage.addClickListener(this);
                 table.setWidget(row, 4, viewPostImage);
+                idHolder.add(String.valueOf(accountline), viewPostImage);
             } else {
                 table.setText(row, 4, "");
             }
-            
+
             String style = (i % 2 == 0) ? "showlineposts2" : "showlineposts1";
             table.getRowFormatter().setStyleName(row, style);
             row++;
@@ -185,19 +201,26 @@ public class TrustStatusView extends Composite implements ClickListener {
     }
 
     public void onClick(Widget sender) {
-        if (editFields == null) {
-            editFields = new TrustEditFields();
+        if (sender == newTrustButton) {
+            if (editFields == null) {
+                editFields = new TrustEditFields();
+            }
+
+            int left = 0;
+            left = sender.getAbsoluteLeft() + 10;
+
+            int top = sender.getAbsoluteTop() + 10;
+            editFields.setPopupPosition(left, top);
+
+            editFields.init();
+            editFields.show();
+            helpPanel.addEventHandler();
+            return;
         }
-
-        int left = 0;
-        left = sender.getAbsoluteLeft() + 10;
-
-        int top = sender.getAbsoluteTop() + 10;
-        editFields.setPopupPosition(left, top);
-
-        editFields.init();
-        editFields.show();
-        helpPanel.addEventHandler();
+        
+        String id = idHolder.findId(sender);
+        callback.openDetails(id);
+        
     }
 
     class TrustEditFields extends DialogBox implements ClickListener,
@@ -252,7 +275,8 @@ public class TrustStatusView extends Composite implements ClickListener {
 
             errorLabelForDate = new HTML();
 
-            dayBox = registerStandards.createDayBox(errorLabelForDate, "day_single");
+            dayBox = registerStandards.createDayBox(errorLabelForDate,
+                    "day_single");
             monthBox = registerStandards.createMonthBox(errorLabelForDate);
             yearBox = registerStandards.createYearBox(errorLabelForDate);
 
@@ -329,7 +353,8 @@ public class TrustStatusView extends Composite implements ClickListener {
             Util.addPostParam(sb, "postnmb", postNmbBox.getText());
             final String money = Util.fixMoney(amountBox.getText());
             Util.addPostParam(sb, "amount", money);
-            Util.addPostParam(sb, "actionid", Util.getSelected(actionListBox.getListbox()));
+            Util.addPostParam(sb, "actionid", Util.getSelected(actionListBox
+                    .getListbox()));
 
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                     constants.baseurl() + "accounting/edittrust.php");
@@ -339,26 +364,28 @@ public class TrustStatusView extends Composite implements ClickListener {
                     Window.alert(exception.getMessage());
                 }
 
-                public void onResponseReceived(Request request, Response response) {
-                    if(response.getText() == null || response.getText().length() == 0) {
+                public void onResponseReceived(Request request,
+                        Response response) {
+                    if (response.getText() == null
+                            || response.getText().length() == 0) {
                         Window.alert("No response from server");
                         return;
                     }
                     JSONValue value = JSONParser.parse(response.getText());
-                    
-                    if(value == null || value.isObject() == null) {
-                        Window.alert("Error:"+response.getText());                        
+
+                    if (value == null || value.isObject() == null) {
+                        Window.alert("Error:" + response.getText());
                     } else {
                         JSONObject object = value.isObject();
-                        
+
                         JSONValue result = object.get("result");
-                        
-                        if("1".equals(Util.str(result))) {
+
+                        if ("1".equals(Util.str(result))) {
                             hide();
-                            trustStatusInstance.init();                            
+                            trustStatusInstance.init();
                         } else {
-                            //TODO fix to error message.
-                            Window.alert("Failed to add data");                                                    
+                            // TODO fix to error message.
+                            Window.alert("Failed to add data");
                         }
                     }
                 }

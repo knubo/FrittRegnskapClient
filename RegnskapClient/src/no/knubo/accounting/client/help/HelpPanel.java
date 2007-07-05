@@ -27,7 +27,6 @@ public class HelpPanel extends Composite implements EventPreview {
     private final HelpTexts helpTexts;
     private String help;
     private String prevHelp = "";
-
     public void setCurrentWidget(Widget widget, int currentPage) {
         mainFrame.setUrl("help/" + messages.HELP_ROOT() + "/" + currentPage
                 + "/index.html");
