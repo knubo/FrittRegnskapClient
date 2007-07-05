@@ -363,14 +363,12 @@ public class Util {
     }
 
     public static int getInt(JSONValue value) {
-        if (value == null) {
+        if (value == null || isNull(value)) {
             return 0;
         }
-        JSONString str = value.isString();
-        if (str == null) {
-            return 0;
-        }
-        return Integer.parseInt(str.stringValue());
+       
+        String str = str(value);
+        return Integer.parseInt(str.trim());
     }
 
     /**

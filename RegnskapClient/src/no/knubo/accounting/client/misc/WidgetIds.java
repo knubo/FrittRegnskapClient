@@ -20,4 +20,5 @@ public interface WidgetIds {
     public int END_MONTH = 18;
     public int TRUST_STATUS = 19;
     public int EDIT_POSTTYPES = 20;
+    public int EDIT_TRUST_ACTIONS = 21;
 }

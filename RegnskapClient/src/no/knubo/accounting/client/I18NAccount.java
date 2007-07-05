@@ -568,20 +568,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String postnmb();
 
   /**
-   * Translated "Fond status/aktivitet".
-   * 
-   * @return translated "Fond status/aktivitet"
-   * @gwt.key menuitem_truststatus
-   */
-  String menuitem_truststatus();
-
-  /**
    * Translated "August".
    * 
    * @return translated "August"
    * @gwt.key month_08
    */
   String month_08();
+
+  /**
+   * Translated "Fond status/aktivitet".
+   * 
+   * @return translated "Fond status/aktivitet"
+   * @gwt.key menuitem_truststatus
+   */
+  String menuitem_truststatus();
 
   /**
    * Translated "Dato".
@@ -1022,6 +1022,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key search_failed
    */
   String search_failed();
+
+  /**
+   * Translated "Fondsaksjoner".
+   * 
+   * @return translated "Fondsaksjoner"
+   * @gwt.key menuitem_edit_trust_actions
+   */
+  String menuitem_edit_trust_actions();
 
   /**
    * Translated "Vis m&aring;ned".

@@ -66,7 +66,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         topMenu.setWidth("100%");
         docPanel.add(topMenu, DockPanel.NORTH);
         docPanel.setCellHeight(topMenu, "10px   ");
-        
+
         activeView = new DockPanel();
         activeView.setStyleName("activeview");
         docPanel.add(activeView, DockPanel.CENTER);
@@ -121,6 +121,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, Commando.EDIT_PROJECTS));
         settingsMenu.addItem(messages.menuitem_edit_happening(), true,
                 new Commando(this, Commando.EDIT_HAPPENING));
+        settingsMenu.addItem(messages.menuitem_edit_trust_actions(), true,
+                new Commando(this, Commando.EDIT_TRUST_ACTIONS));
         settingsMenu.addItem(messages.menuitem_values(), true, new Commando(
                 this, WidgetIds.SETTINGS));
         aboutMenu.addItem(messages.menuitem_about(), true, new Commando(this,
