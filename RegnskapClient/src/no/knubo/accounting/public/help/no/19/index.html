@@ -4,7 +4,43 @@
 </head>
 <body>
 <h1 class="helpheader">Fond</h1>
+<p>
+Fondsregnskapet er et underregnskap for &aring; holde oversikt over utbetalinger fra fondskonti. Tanken
+er at bel&oslash;pet p&aring; fondskonto er faktisk bel&oslash;p som st&aring;r p&aring; fond, mens bel&oslash;p p&aring; klubbkonto er bel&oslash;p
+som er gitt ut av fond, men midlertidig betalt ut fra klubbkonto. Dette bel&oslash;pet er negativt hvis 
+fondskontoen skylder klubbkontoen penger.
+</p>
+<p>
+Hvilke aksjoner som er tilgjengelig er avhengig av hva som er konfigurert opp, men vanlige aksjoner
+kan v&aelig;re:
+</p>
+<ul>
+<li>Juster bel&oslash;p p&aring; fond (opp eller ned). Dette bare justerer bel&oslash;pet som ligger p&aring; fondet.
+Dette kan for eksempel benyttes til &aring; registrere renter p&aring; fondskonto.
+<li>Juster bel&oslash;p p&aring; klubbkonto (opp eller ned). Denne b&oslash;r i utgangspunktet kun benyttes for
+korrigering av feil.
+<li>Fondsutbetaling ut fra klubbkonto til gitt form&aring;l. Denne settes opp slik at bel&oslash;pet som gis
+ut krediteres fra bankkonto i hovedregnskapet, debeteres til en annen konto i hovedregnskapet.
+Bel&oslash;pet trekkes fra i klubbkonto i fondsregnskapet slik at det kommer et negativt bel&oslash;p 
+i klubbkonyo. 
+<li>Flytte penger fra fondskonto til klubbkonto. Her tilbakef&oslash;res penger som er utbetalt fra
+klubbkonto til klubbkonto fra fondskonto. Denne aksjonen b&oslash;r da kreditere hovedregnskapskonto for 
+fond og debetere penger inn til klubbkonto i hovedregnskapet. I fondsregnskapet blir det trukket
+penger fra fond og lagt til penger til klubbkonto slik at den g&aring;r i balanse (bel&oslash;p = 0).
+<li>Sette penger inn i fond. Her skal fondsbel&oslash;pet &oslash;ke, mens i hovedregnskap krediteres bankkonto
+og debeteres inn til fondskonto.
+</ul>
 
+<p>Posteringene i fondsregnskapet er gruppert per fond og er sortert per dato. Hvis posteringen
+har gitt innslag til hovedregnskapet vil ikonet <img src="../../../images/edit-find-replace.png"> vises
+p&aring; raden. Ved &aring; klikke p&aring; det vil posteringen &aring;pnes.
+</p>
+
+<h2 class="helpheader">Ny fondsaktivitet</h2>
+I ny fondsaktivitet velges fond og hvilken aksjon som skal utf&oslash;res. Hvis aksjonen gir innslag
+til hovedregnskapet blir postnr og bilag p&aring;krevde felter, samt at m&aring;ned og &aring;r l&aring;ses til 
+aktiv m&aring;ned og &aring;r. Hvis aksjonen ikke gir postering til hovedregnskapet skal postnr og bilag ikke 
+fylles ut, samt at det er &aring;pent hvilket &aring;r og m&aring;ned som posterinen skal registreres p&aring;.
 
 </body>
 </html>

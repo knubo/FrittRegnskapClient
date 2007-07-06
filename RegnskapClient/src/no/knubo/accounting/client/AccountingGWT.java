@@ -250,6 +250,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         Widget widget = LineEditView.show(this, messages, constants, id);
 
         setActiveWidget(widget);
+        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
+                WidgetIds.LINE_EDIT_VIEW);
     }
 
     public void viewMonth(String year, String month) {
@@ -258,6 +260,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         instance.init(year, month);
 
         setActiveWidget(instance);
+        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(instance,
+                WidgetIds.SHOW_MONTH);
     }
 
     public void viewMonth() {
@@ -266,12 +270,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         instance.init();
 
         setActiveWidget(instance);
+        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(instance,
+                WidgetIds.SHOW_MONTH);
     }
 
     public void editPerson(String id) {
         PersonEditView widget = PersonEditView.show(constants, messages);
         widget.init(id);
         setActiveWidget(widget);
-
+        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
+                WidgetIds.ADD_PERSON);
     }
 }
