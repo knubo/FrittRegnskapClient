@@ -60,6 +60,8 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private Button updateButton;
 
+    private TextBoxWithErrorText birthdateBox;
+
     public PersonEditView(I18NAccount messages,
             Constants constants) {
         this.messages = messages;
@@ -71,21 +73,25 @@ public class PersonEditView extends Composite implements ClickListener {
 
         dp.add(table, DockPanel.NORTH);
 
-        table.setText(0, 0, messages.firstname());
-        table.setText(1, 0, messages.lastname());
-        table.setText(2, 0, messages.email());
-        table.setText(3, 0, messages.address());
-        table.setText(4, 0, messages.postnmb());
-        table.setText(5, 0, messages.city());
-        table.setText(6, 0, messages.country());
-        table.setText(7, 0, messages.phone());
-        table.setText(8, 0, messages.cellphone());
-        table.setText(9, 0, messages.employee());
+        table.setHTML(0, 0, messages.firstname());
+        table.setHTML(1, 0, messages.lastname());
+        table.setHTML(2, 0, messages.birthdate());
+        table.setHTML(3, 0, messages.email());
+        table.setHTML(4, 0, messages.address());
+        table.setHTML(5, 0, messages.postnmb());
+        table.setHTML(6, 0, messages.city());
+        table.setHTML(7, 0, messages.country());
+        table.setHTML(8, 0, messages.phone());
+        table.setHTML(9, 0, messages.cellphone());
+        table.setHTML(10, 0, messages.employee());
 
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
         lastnameBox = new TextBoxWithErrorText("lastname");
         lastnameBox.setMaxLength(50);
+        birthdateBox = new TextBoxWithErrorText("birthdate");
+        birthdateBox.setMaxLength(10);
+        
         emailBox = new TextBoxWithErrorText("email");
         emailBox.setMaxLength(100);
         addressBox = new TextBoxWithErrorText("address");
@@ -114,16 +120,18 @@ public class PersonEditView extends Composite implements ClickListener {
 
         table.setWidget(0, 1, firstnameBox);
         table.setWidget(1, 1, lastnameBox);
-        table.setWidget(2, 1, emailBox);
-        table.setWidget(3, 1, addressBox);
-        table.setWidget(4, 1, postnmbBox);
-        table.setWidget(5, 1, cityBox);
-        table.setWidget(6, 1, countryListBox);
-        table.setWidget(7, 1, phoneBox);
-        table.setWidget(8, 1, cellphoneBox);
-        table.setWidget(9, 1, employeeCheck);
-        table.setWidget(10, 0, updateButton);
-        table.setWidget(10, 1, saveStatus);
+        table.setWidget(2, 1, birthdateBox);
+        table.setWidget(1, 1, lastnameBox);
+        table.setWidget(3, 1, emailBox);
+        table.setWidget(4, 1, addressBox);
+        table.setWidget(5, 1, postnmbBox);
+        table.setWidget(6, 1, cityBox);
+        table.setWidget(7, 1, countryListBox);
+        table.setWidget(8, 1, phoneBox);
+        table.setWidget(9, 1, cellphoneBox);
+        table.setWidget(10, 1, employeeCheck);
+        table.setWidget(11, 0, updateButton);
+        table.setWidget(11, 1, saveStatus);
 
         initWidget(dp);
     }
@@ -170,18 +178,19 @@ public class PersonEditView extends Composite implements ClickListener {
                     return;
                 }
 
-                firstnameBox.setText(Util.str(object.get("firstname")));
-                lastnameBox.setText(Util.str(object.get("lastname")));
-                addressBox.setText(Util.str(object.get("address")));
-                postnmbBox.setText(Util.str(object.get("postnmb")));
-                cityBox.setText(Util.str(object.get("city")));
-                phoneBox.setText(Util.str(object.get("phone")));
-                cellphoneBox.setText(Util.str(object.get("cellphone")));
+                firstnameBox.setText(Util.str(object.get("FirstName")));
+                lastnameBox.setText(Util.str(object.get("LastName")));
+                birthdateBox.setText(Util.str(object.get("Birthdate")));
+                addressBox.setText(Util.str(object.get("Address")));
+                postnmbBox.setText(Util.str(object.get("PostNmb")));
+                cityBox.setText(Util.str(object.get("City")));
+                phoneBox.setText(Util.str(object.get("Phone")));
+                cellphoneBox.setText(Util.str(object.get("Cellphone")));
                 Util.setIndexByValue(countryListBox, Util.str(object
-                        .get("country")));
-                emailBox.setText(Util.str(object.get("email")));
+                        .get("Country")));
+                emailBox.setText(Util.str(object.get("Email")));
                 employeeCheck.setChecked("1".equals(Util.str(object
-                        .get("employee"))));
+                        .get("IsEmployee"))));
             }
         };
 
@@ -205,6 +214,7 @@ public class PersonEditView extends Composite implements ClickListener {
         sb.append("action=save");
         Util.addPostParam(sb, "id", currentId);
         Util.addPostParam(sb, "firstname", firstnameBox.getText());
+        Util.addPostParam(sb, "birthdate", birthdateBox.getText());
         Util.addPostParam(sb, "lastname", lastnameBox.getText());
         Util.addPostParam(sb, "email", emailBox.getText());
         Util.addPostParam(sb, "address", addressBox.getText());
@@ -225,8 +235,14 @@ public class PersonEditView extends Composite implements ClickListener {
             }
 
             public void onResponseReceived(Request request, Response response) {
-                if ("0".equals(response.getText().trim())) {
-                    saveStatus.setText(messages.save_failed());
+                int id = Util.getInt(response.getText());
+                
+                if (id == 0) {
+                    if("0".equals(response.getText())) {
+                        saveStatus.setText(messages.save_failed());                        
+                    } else {
+                        Window.alert("Server error:"+response.getText());
+                    }
                 } else {
                     saveStatus.setText(messages.save_ok());
                     if (currentId == null) {

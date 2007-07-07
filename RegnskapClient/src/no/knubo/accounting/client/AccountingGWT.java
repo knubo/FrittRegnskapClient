@@ -97,6 +97,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, WidgetIds.SHOW_MONTH));
         showMenu.addItem(messages.menuitem_showmonthdetails(), true,
                 new Commando(this, Commando.SHOW_MONTH_DETAILS));
+        showMenu.addItem(messages.menuitem_showproject(), true, new Commando(this, Commando.SHOW_PROJECT));
+        
         showMenu.addItem(messages.menuitem_showmembers(), true, new Commando(
                 this, WidgetIds.SHOW_MEMBERS));
         showMenu.addItem(messages.menuitem_showtraining(), true, new Commando(
@@ -256,7 +258,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     public void viewMonth(int year, int month) {
         MonthView instance = MonthView.getInstance(constants, messages, this);
-
+        
         instance.init(year, month);
 
         setActiveWidget(instance);

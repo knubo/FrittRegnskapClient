@@ -336,6 +336,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String end_month_explain();
 
   /**
+   * Translated "F&oslash;dselsdato".
+   * 
+   * @return translated "F&oslash;dselsdato"
+   * @gwt.key birthdate
+   */
+  String birthdate();
+
+  /**
    * Translated "Vis m&aring;ned med detaljer".
    * 
    * @return translated "Vis m&aring;ned med detaljer"
@@ -358,6 +366,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key count_required
    */
   String count_required();
+
+  /**
+   * Translated "Vis prosjekt".
+   * 
+   * @return translated "Vis prosjekt"
+   * @gwt.key menuitem_showproject
+   */
+  String menuitem_showproject();
 
   /**
    * Translated "November".
