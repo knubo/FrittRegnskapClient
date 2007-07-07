@@ -24,6 +24,14 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String month();
 
   /**
+   * Translated "Avbryter registreringen og lukker vinudet.".
+   * 
+   * @return translated "Avbryter registreringen og lukker vinudet."
+   * @gwt.key trustStatusView_cancelButton
+   */
+  String trustStatusView_cancelButton();
+
+  /**
    * Translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.".
    * 
    * @return translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden."

@@ -271,9 +271,8 @@ public class RegisterHappeningView extends Composite implements ClickListener,
                 new Widget[] { amountBox, descriptionBox, postListBox,
                         attachmentBox, dayBox, postNmbBox });
 
-        mv.day(messages.illegal_day(), Integer.parseInt(registerStandards
-                .getCurrentYear()), Integer.parseInt(registerStandards
-                .getCurrentMonth()), new Widget[] { dayBox });
+        mv.day(messages.illegal_day(), registerStandards.getCurrentYear(),
+                registerStandards.getCurrentMonth(), new Widget[] { dayBox });
 
         mv.money(messages.field_money(), new Widget[] { amountBox });
 

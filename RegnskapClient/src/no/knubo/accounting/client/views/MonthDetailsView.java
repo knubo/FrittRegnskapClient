@@ -45,9 +45,9 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
 
     private YearMonthComboHelper yearMonthComboHelper;
 
-    private String currentMonth;
+    private int currentMonth;
 
-    private String currentYear;
+    private int currentYear;
 
     public MonthDetailsView(Constants constants, I18NAccount messages) {
         this.constants = constants;
@@ -106,8 +106,8 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
-        currentMonth = null;
-        currentYear = null;
+        currentMonth = 0;
+        currentYear = 0;
 
         if (!HTTPRequest.asyncGet(this.constants.baseurl()
                 + "accounting/showmonthpost.php", this)) {
@@ -144,12 +144,12 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
             table.setText(row, 2, date);
             table.getCellFormatter().setStyleName(row, 2, "datefor");
 
-            if (currentMonth == null && date != null && date.length() > 0) {
-                currentMonth = Util.getMonth(object.get("date")).trim();
+            if (currentMonth == 0 && date != null && date.length() > 0) {
+                currentMonth = Util.getMonth(object.get("date"));
             }
 
-            if (currentYear == null && date != null && date.length() > 0) {
-                currentYear = Util.getYear(object.get("date")).trim()   ;
+            if (currentYear == 0 && date != null && date.length() > 0) {
+                currentYear = Util.getYear(object.get("date"));
             }
 
             table.setText(row, 3, Util.str(object.get("Description")));
@@ -203,7 +203,7 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
             }
         }
 
-        if (currentMonth != null && currentYear != null) {
+        if (currentMonth > 0 && currentYear > 0) {
             yearMonthComboHelper.setIndex(currentYear, currentMonth);
         }
     }
@@ -211,22 +211,22 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
     public void onClick(Widget sender) {
         
         if (sender == nextImage) {
-            int m = Integer.parseInt(currentMonth) + 1;
+            int m = currentMonth + 1;
 
             if (m > 12) {
-                int y = Integer.parseInt(currentYear) + 1;
-                load(String.valueOf(y), String.valueOf(m));
+                int y = currentYear + 1;
+                load(y, m);
             } else {
-                load(currentYear, String.valueOf(m));
+                load(currentYear, m);
             }
         } else {
-            int m = Integer.parseInt(currentMonth) - 1;
+            int m = currentMonth - 1;
 
             if (m < 1) {
-                int y = Integer.parseInt(currentYear) - 1;
-                load(String.valueOf(y), "12");
+                int y = currentYear - 1;
+                load(y, 12);
             } else {
-                load(currentYear, String.valueOf(m));
+                load(currentYear, m);
             }
         }
 
@@ -238,20 +238,20 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         String value = Util.getSelected(listBox);
         String[] monthYear = value.split("/");
 
-        String year = monthYear[0];
-        String month = monthYear[1];
+        int  year = Integer.parseInt(monthYear[0]);
+        int month = Integer.parseInt(monthYear[1]);
 
         load(year, month);
 
     }
 
-    private void load(String year, String month) {
+    private void load(int year, int month) {
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
         
-        currentYear = null;
-        currentMonth = null;
+        currentYear = 0;
+        currentMonth = 0;
         
         if (!HTTPRequest.asyncGet(this.constants.baseurl()
                 + "accounting/showmonthpost.php?year=" + year

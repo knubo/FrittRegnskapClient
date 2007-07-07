@@ -63,7 +63,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
     protected String currentYear;
 
-    protected String currentMonth;
+    protected int currentMonth;
 
     private RegisterMembershipView(I18NAccount messages, Constants constants) {
         this.messages = messages;
@@ -342,7 +342,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
     private void validateDay(MasterValidator mv, ErrorLabelWidget dayBox) {
         mv.day("!", messages.illegal_day(), Integer.parseInt(currentYear),
-                Integer.parseInt(currentMonth), new Widget[] { dayBox });
+                currentMonth, new Widget[] { dayBox });
     }
 
     private void setHeader() {
@@ -355,7 +355,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
                 String semester = Util.str(object.get("semester"));
                 currentYear = Util.str(object.get("year"));
-                currentMonth = Util.str(object.get("month"));
+                currentMonth = Util.getInt(object.get("month"));
 
                 String headerText = "<h2>"
                         + messages.register_membership_header() + " - "

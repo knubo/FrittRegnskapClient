@@ -20,9 +20,9 @@ public class YearMonthComboHelper {
 
     private final ListBox monthYearCombo;
 
-    private String currentYear;
+    private int currentYear;
 
-    private String currentMonth;
+    private int currentMonth;
 
     public YearMonthComboHelper(I18NAccount messages, Constants constants,
             ListBox monthYearCombo) {
@@ -43,8 +43,8 @@ public class YearMonthComboHelper {
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject object = array.get(i).isObject();
 
-                    String month = Util.str(object.get("month"));
-                    String year = Util.str(object.get("year"));
+                    int month = Util.getInt(object.get("month"));
+                    int year = Util.getInt(object.get("year"));
 
                     String desc = Util.monthString(messages, month) + " "
                             + year;
@@ -61,14 +61,11 @@ public class YearMonthComboHelper {
         }
     }
 
-    public void setIndex(String currentYear, String currentMonth) {
+    public void setIndex(int currentYear, int currentMonth) {
 
         this.currentYear = currentYear;
         this.currentMonth = currentMonth;
-        String matchMonth = currentMonth;
-        if (currentMonth.startsWith("0")) {
-            matchMonth = currentMonth.substring(1);
-        }
+        String matchMonth = String.valueOf(currentMonth);
 
         if (monthYearCombo.getItemCount() > 0) {
             String value = currentYear + "/" + matchMonth;

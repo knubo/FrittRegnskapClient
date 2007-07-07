@@ -84,7 +84,7 @@ public class MonthEndView extends Composite implements ClickListener {
                 JSONObject root = jsonValue.isObject();
 
                 String year = Util.str(root.get("year"));
-                String month = Util.str(root.get("month"));
+                int month = Util.getInt(root.get("month"));
 
                 dateHeader.setHTML("<h2>" + Util.monthString(messages, month)
                         + " " + year + "</h2>");

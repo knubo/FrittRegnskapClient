@@ -254,7 +254,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.LINE_EDIT_VIEW);
     }
 
-    public void viewMonth(String year, String month) {
+    public void viewMonth(int year, int month) {
         MonthView instance = MonthView.getInstance(constants, messages, this);
 
         instance.init(year, month);

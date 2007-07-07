@@ -577,8 +577,8 @@ public class LineEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "desc", descriptionBox.getText());
         Util.addPostParam(sb, "attachment", attachmentBox.getText());
         Util.addPostParam(sb, "postnmb", postNmbBox.getText());
-        Util.addPostParam(sb, "month", registerStandards.getCurrentMonth());
-        Util.addPostParam(sb, "year", registerStandards.getCurrentYear());
+        Util.addPostParam(sb, "month", String.valueOf(registerStandards.getCurrentMonth()));
+        Util.addPostParam(sb, "year", String.valueOf(registerStandards.getCurrentYear()));
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/editaccountline.php");

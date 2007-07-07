@@ -27,6 +27,7 @@ public class HelpPanel extends Composite implements EventPreview {
     private final HelpTexts helpTexts;
     private String help;
     private String prevHelp = "";
+
     public void setCurrentWidget(Widget widget, int currentPage) {
         mainFrame.setUrl("help/" + messages.HELP_ROOT() + "/" + currentPage
                 + "/index.html");
@@ -101,6 +102,9 @@ public class HelpPanel extends Composite implements EventPreview {
 
         if (id.equals("trustStatusView_newTrustButton")) {
             help = formatHelp(messages.trustStatusView_newTrustButton(),
+                    helpTexts.trustStatusView_newTrustButton());
+        } else if (id.equals("trustStatusView.cancelButton")) {
+            help = formatHelp(messages.trustStatusView_cancelButton(),
                     helpTexts.trustStatusView_newTrustButton());
         } else if (id.equals("postnmb")) {
             help = formatHelp(messages.postnmb(), helpTexts.postnmb());

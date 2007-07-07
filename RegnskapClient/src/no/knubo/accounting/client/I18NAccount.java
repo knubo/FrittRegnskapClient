@@ -152,6 +152,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String day();
 
   /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   * @gwt.key trustStatusView_cancelButton
+   */
+  String trustStatusView_cancelButton();
+
+  /**
    * Translated "Avslutt m&aring;ned".
    * 
    * @return translated "Avslutt m&aring;ned"
@@ -336,20 +344,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmonthdetails();
 
   /**
-   * Translated "Telling p&aring;krevd".
-   * 
-   * @return translated "Telling p&aring;krevd"
-   * @gwt.key count_required
-   */
-  String count_required();
-
-  /**
    * Translated "Juli".
    * 
    * @return translated "Juli"
    * @gwt.key month_07
    */
   String month_07();
+
+  /**
+   * Translated "Telling p&aring;krevd".
+   * 
+   * @return translated "Telling p&aring;krevd"
+   * @gwt.key count_required
+   */
+  String count_required();
 
   /**
    * Translated "November".

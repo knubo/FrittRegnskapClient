@@ -15,7 +15,7 @@ public interface ViewCallback {
      * @param year
      * @param month
      */
-    public void viewMonth(String year, String month);
+    public void viewMonth(int year, int month);
 
     /**
      * Request edit of the person with the given id.

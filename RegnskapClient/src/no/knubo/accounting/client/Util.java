@@ -3,6 +3,7 @@ package no.knubo.accounting.client;
 import java.util.HashMap;
 
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.DOM;
@@ -39,12 +40,11 @@ public class Util {
      * 
      * @param i18n
      *            I18N interface
-     * @param m
-     *            The month to find, as a wrapped int.
+     * @param month
+     *            The month to find.
      * @return The month string or "ERROR" if not of month 1 - 12.
      */
-    public static String monthString(I18NAccount i18n, String m) {
-        int month = Integer.parseInt(m);
+    public static String monthString(I18NAccount i18n, int month) {
         switch (month) {
         case 1:
             return i18n.month_01();
@@ -224,14 +224,14 @@ public class Util {
      * @param value
      * @return
      */
-    public static String getMonth(JSONValue value) {
+    public static int getMonth(JSONValue value) {
         JSONString string = value.isString();
 
         if (string == null) {
-            return "ERROR";
+            return 0;
         }
 
-        return string.stringValue().substring(3, 5);
+        return Integer.parseInt(string.stringValue().substring(3, 5));
     }
 
     /**
@@ -240,14 +240,14 @@ public class Util {
      * @param value
      * @return
      */
-    public static String getYear(JSONValue value) {
+    public static int getYear(JSONValue value) {
         JSONString string = value.isString();
 
         if (string == null) {
-            return "ERROR";
+            return 0;
         }
 
-        return string.stringValue().substring(6);
+        return Integer.parseInt(string.stringValue().substring(6));
     }
 
     /**
@@ -366,7 +366,13 @@ public class Util {
         if (value == null || isNull(value)) {
             return 0;
         }
-       
+        
+        if(value.isNumber() != null) {
+            JSONNumber numb = value.isNumber();
+            double dub = numb.getValue();
+            return (int)dub;
+        }
+        
         String str = str(value);
         return Integer.parseInt(str.trim());
     }

@@ -306,8 +306,8 @@ public class TrustStatusView extends Composite implements ClickListener {
             saveButton = new NamedButton("TrustStatusView.saveButton", messages
                     .save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("TrustStatusView.cancelButton",
-                    messages.cancel());
+            cancelButton = new NamedButton("trustStatusView.cancelButton",
+                    messages.trustStatusView_cancelButton());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -447,8 +447,8 @@ public class TrustStatusView extends Composite implements ClickListener {
                         .addsAccountLineUponSave(selected);
 
                 if (addsAccountLine) {
-                    monthBox.setText(registerStandards.getCurrentMonth());
-                    yearBox.setText(registerStandards.getCurrentYear());
+                    monthBox.setText(String.valueOf(registerStandards.getCurrentMonth()));
+                    yearBox.setText(String.valueOf(registerStandards.getCurrentYear()));
                     registerStandards.fetchInitalData(true);
                 } else {
                     postNmbBox.setText("");

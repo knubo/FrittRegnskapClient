@@ -53,9 +53,9 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
     private Image nextImage;
 
-    private String currentYear;
+    private int currentYear;
 
-    private String currentMonth;
+    private int currentMonth;
 
     private DockPanel dockPanel;
 
@@ -105,7 +105,7 @@ public class MonthView extends Composite implements ResponseTextHandler,
         getData("");
     }
 
-    public void init(String year, String month) {
+    public void init(int year, int month) {
         dockPanel.remove(table);
         newTable();
         getData("?month=" + month + "&year=" + year);
@@ -181,8 +181,8 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
         JSONValue lines = root.get("lines");
 
-        currentYear = Util.str(root.get("year"));
-        currentMonth = Util.str(root.get("month"));
+        currentYear = Util.getInt(root.get("year"));
+        currentMonth = Util.getInt(root.get("month"));
 
         yearMonthComboHelper.setIndex(currentYear, currentMonth);
 
@@ -302,19 +302,19 @@ public class MonthView extends Composite implements ResponseTextHandler,
         dockPanel.remove(table);
         newTable();
         if (nextMonth) {
-            int m = Integer.parseInt(currentMonth) + 1;
+            int m = currentMonth + 1;
 
             if (m > 12) {
-                int y = Integer.parseInt(currentYear) + 1;
+                int y = currentYear + 1;
                 getData("?month=1&year=" + y);
             } else {
                 getData("?month=" + m + "&year=" + currentYear);
             }
         } else {
-            int m = Integer.parseInt(currentMonth) - 1;
+            int m = currentMonth - 1;
 
             if (m < 1) {
-                int y = Integer.parseInt(currentYear) - 1;
+                int y = currentYear - 1;
                 getData("?month=12&year=" + y);
             } else {
                 getData("?month=" + m + "&year=" + currentYear);
@@ -327,6 +327,6 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
         String value = Util.getSelected(listBox);
         String[] monthYear = value.split("/");
-        init(monthYear[0], monthYear[1]);
+        init(Integer.parseInt(monthYear[0]), Integer.parseInt(monthYear[1]));
     }
 }

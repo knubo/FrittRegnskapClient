@@ -17,8 +17,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class RegisterStandards {
 
-    protected String currentYear;
-    protected String currentMonth;
+    protected int currentYear;
+    protected int currentMonth;
 
     private final Constants constants;
     private final I18NAccount messages;
@@ -49,8 +49,8 @@ public class RegisterStandards {
 
                 JSONObject root = jsonValue.isObject();
 
-                currentYear = Util.str(root.get("year"));
-                currentMonth = Util.str(root.get("month"));
+                currentYear = Util.getInt(root.get("year"));
+                currentMonth = Util.getInt(root.get("month"));
 
                 if (fillFields) {
                     setDateHeader();
@@ -77,8 +77,7 @@ public class RegisterStandards {
         masterValidator.range(messages.field_to_low_zero(), new Integer(1),
                 null, new Widget[] { attachmentBox, postNmbBox });
 
-        masterValidator.day(messages.illegal_day(), Integer
-                .parseInt(currentYear), Integer.parseInt(currentMonth),
+        masterValidator.day(messages.illegal_day(), currentYear, currentMonth,
                 new Widget[] { dayBox });
 
         return masterValidator.validateStatus();
@@ -89,19 +88,19 @@ public class RegisterStandards {
                 + currentYear);
     }
 
-    public String getCurrentMonth() {
+    public int getCurrentMonth() {
         return currentMonth;
     }
 
-    public void setCurrentMonth(String currentMonth) {
+    public void setCurrentMonth(int currentMonth) {
         this.currentMonth = currentMonth;
     }
 
-    public String getCurrentYear() {
+    public int getCurrentYear() {
         return currentYear;
     }
 
-    public void setCurrentYear(String currentYear) {
+    public void setCurrentYear(int currentYear) {
         this.currentYear = currentYear;
     }
 
