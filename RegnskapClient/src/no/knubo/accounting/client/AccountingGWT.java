@@ -24,6 +24,7 @@ import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.StandardvaluesView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
+import no.knubo.accounting.client.views.reporting.ReportMembersBirth;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -165,6 +166,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         public void execute() {
             Widget widget = null;
 
+            HelpPanel helpPanel = HelpPanel.getInstance(messages, helpTexts);
             switch (action) {
             case WidgetIds.LINE_EDIT_VIEW:
                 widget = LineEditView.show(callback, messages, constants, null);
@@ -224,8 +226,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case TRUST_STATUS:
                 widget = TrustStatusView.getInstance(constants, messages,
-                        HelpPanel.getInstance(messages, helpTexts), callback);
+                        helpPanel, callback);
                 ((TrustStatusView) widget).init();
+                break;
+            case REPORT_MEMBER_PER_YEAR:
+                widget = ReportMembersBirth.getInstance(constants, messages, helpPanel);
+                ((ReportMembersBirth)widget).init();
                 break;
             case WidgetIds.ABOUT:
                 widget = AboutView.getInstance();
@@ -236,7 +242,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 return;
             }
             setActiveWidget(widget);
-            HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
+            helpPanel.setCurrentWidget(widget,
                     action);
         }
     }

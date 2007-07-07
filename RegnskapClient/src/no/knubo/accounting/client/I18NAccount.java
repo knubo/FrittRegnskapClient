@@ -288,20 +288,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String post_description();
 
   /**
-   * Translated "Standardbilag".
-   * 
-   * @return translated "Standardbilag"
-   * @gwt.key happening
-   */
-  String happening();
-
-  /**
    * Translated "Penger inngis p&aring; format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0".
    * 
    * @return translated "Penger inngis p&aring; format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0"
    * @gwt.key field_money
    */
   String field_money();
+
+  /**
+   * Translated "Standardbilag".
+   * 
+   * @return translated "Standardbilag"
+   * @gwt.key happening
+   */
+  String happening();
 
   /**
    * Translated "Person".
@@ -358,6 +358,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_07
    */
   String month_07();
+
+  /**
+   * Translated "Alder".
+   * 
+   * @return translated "Alder"
+   * @gwt.key age
+   */
+  String age();
 
   /**
    * Translated "Telling p&aring;krevd".
@@ -702,6 +710,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key debet
    */
   String debet();
+
+  /**
+   * Translated "Oversikt over medlemmer per f&oslash;dselsdato".
+   * 
+   * @return translated "Oversikt over medlemmer per f&oslash;dselsdato"
+   * @gwt.key title_report_membersbirth
+   */
+  String title_report_membersbirth();
 
   /**
    * Translated "Vil du avslutte m&aring;ned?".
