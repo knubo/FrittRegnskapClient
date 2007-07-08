@@ -8,6 +8,14 @@ package no.knubo.accounting.client;
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
   /**
+   * Translated "Mangler f&oslash;dselsdato - {0} medlemmer".
+   * 
+   * @return translated "Mangler f&oslash;dselsdato - {0} medlemmer"
+   * @gwt.key report_year_unset
+   */
+  String report_year_unset(String arg0);
+
+  /**
    * Translated "Ulovlig m&aring;ned".
    * 
    * @return translated "Ulovlig m&aring;ned"
@@ -520,6 +528,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country();
 
   /**
+   * Translated "20 - 25 &aring;r - {0} medlemmer".
+   * 
+   * @return translated "20 - 25 &aring;r - {0} medlemmer"
+   * @gwt.key report_year_25
+   */
+  String report_year_25(String arg0);
+
+  /**
    * Translated "DEBET post".
    * 
    * @return translated "DEBET post"
@@ -936,12 +952,28 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String register_membership_header();
 
   /**
+   * Translated "26 - 30 &aring;r - {0} medlemmer".
+   * 
+   * @return translated "26 - 30 &aring;r - {0} medlemmer"
+   * @gwt.key report_year_30
+   */
+  String report_year_30(String arg0);
+
+  /**
    * Translated "Adresse".
    * 
    * @return translated "Adresse"
    * @gwt.key address
    */
   String address();
+
+  /**
+   * Translated "41+ &aring;r - {0} medlemmer".
+   * 
+   * @return translated "41+ &aring;r - {0} medlemmer"
+   * @gwt.key report_year_above
+   */
+  String report_year_above(String arg0);
 
   /**
    * Translated "Klarte ikke koble til server".
@@ -966,6 +998,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key kredit_post
    */
   String kredit_post();
+
+  /**
+   * Translated "19 &aring;r eller yngre - {0} medlemmer".
+   * 
+   * @return translated "19 &aring;r eller yngre - {0} medlemmer"
+   * @gwt.key report_year_19
+   */
+  String report_year_19(String arg0);
 
   /**
    * Translated "Semester".
@@ -1056,6 +1096,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String post_used();
 
   /**
+   * Translated "31 - 40 &aring;r - {0} medlemmer".
+   * 
+   * @return translated "31 - 40 &aring;r - {0} medlemmer"
+   * @gwt.key report_year_40
+   */
+  String report_year_40(String arg0);
+
+  /**
    * Translated "S&oslash;ket mislyktes - programfeil eller databasefeil".
    * 
    * @return translated "S&oslash;ket mislyktes - programfeil eller databasefeil"
@@ -1126,6 +1174,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key year
    */
   String year();
+
+  /**
+   * Translated "Feil i f&oslash:dselsdato - {0} medlemmer".
+   * 
+   * @return translated "Feil i f&oslash:dselsdato - {0} medlemmer"
+   * @gwt.key report_year_wrong
+   */
+  String report_year_wrong(String arg0);
 
   /**
    * Translated "Ansatt".

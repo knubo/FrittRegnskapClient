@@ -66,19 +66,26 @@ public class ReportMembersBirth extends Composite {
                 JSONValue value = JSONParser.parse(responseText);
                 JSONObject object = value.isObject();
 
-                showCategory("report_year_19", object.get("year_19"));
-                showCategory("report_year_25", object.get("year_25"));
-                showCategory("report_year_30", object.get("year_30"));
-                showCategory("report_year_40", object.get("year_40"));
-                showCategory("report_year_above", object.get("year_above"));
-                showCategory("report_year_unset", object.get("year_unset"));
-                showCategory("report_year_wrong", object.get("year_wrong"));
+                JSONArray a19 = object.get("year_19").isArray();
+                JSONArray a25 = object.get("year_25").isArray();
+                JSONArray a30 = object.get("year_30").isArray();
+                JSONArray a40 = object.get("year_40").isArray();
+                JSONArray aabov = object.get("year_above").isArray();
+                JSONArray auns = object.get("year_unset").isArray();
+                JSONArray awrong = object.get("year_wrong").isArray();
+
+                showCategory(messages.report_year_19(""+a19.size()), a19);
+                showCategory(messages.report_year_25(""+a25.size()), a25);
+                showCategory(messages.report_year_30(""+a30.size()), a30);
+                showCategory(messages.report_year_40(""+a40.size()), a40);
+                showCategory(messages.report_year_above(""+aabov.size()), aabov);
+                showCategory(messages.report_year_unset(""+auns.size()), auns);
+                showCategory(messages.report_year_wrong(""+awrong.size()), awrong);
 
                 helpPanel.resize(reportInstance);
             }
 
-            private void showCategory(String header, JSONValue value) {
-                JSONArray array = value.isArray();
+            private void showCategory(String header, JSONArray array) {
                 int row = table.getRowCount();
                 table.setHTML(row, 0, header);
                 table.getFlexCellFormatter().setColSpan(row, 0, 4);
