@@ -98,8 +98,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, WidgetIds.SHOW_MONTH));
         showMenu.addItem(messages.menuitem_showmonthdetails(), true,
                 new Commando(this, Commando.SHOW_MONTH_DETAILS));
-        showMenu.addItem(messages.menuitem_showproject(), true, new Commando(this, Commando.SHOW_PROJECT));
-        
+        showMenu.addItem(messages.menuitem_showproject(), true, new Commando(
+                this, WidgetIds.SHOW_PROJECT));
+
         showMenu.addItem(messages.menuitem_showmembers(), true, new Commando(
                 this, WidgetIds.SHOW_MEMBERS));
         showMenu.addItem(messages.menuitem_showtraining(), true, new Commando(
@@ -113,19 +114,23 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 this, WidgetIds.FIND_PERSON));
 
         trustMenu.addItem(messages.menuitem_truststatus(), true, new Commando(
-                this, Commando.TRUST_STATUS));
+                this, WidgetIds.TRUST_STATUS));
 
         reportsMenu.addItem(messages.menuitem_report_member_per_year(), true,
-                new Commando(this, Commando.REPORT_MEMBER_PER_YEAR));
+                new Commando(this, WidgetIds.REPORT_MEMBER_PER_YEAR));
+        reportsMenu.addItem(messages.menuitem_report_addresses(), true,
+                new Commando(this, WidgetIds.REPORT_ADDR1ESSES));
+        reportsMenu.addItem(messages.menuitem_report_selectedlines(), true,
+                new Commando(this, WidgetIds.REPORT_SELECTEDLINES));
 
         settingsMenu.addItem(messages.menuitem_posttypes(), true, new Commando(
-                this, Commando.EDIT_POSTTYPES));
+                this, WidgetIds.EDIT_POSTTYPES));
         settingsMenu.addItem(messages.menuitem_projects(), true, new Commando(
-                this, Commando.EDIT_PROJECTS));
+                this, WidgetIds.EDIT_PROJECTS));
         settingsMenu.addItem(messages.menuitem_edit_happening(), true,
-                new Commando(this, Commando.EDIT_HAPPENING));
+                new Commando(this, WidgetIds.EDIT_HAPPENING));
         settingsMenu.addItem(messages.menuitem_edit_trust_actions(), true,
-                new Commando(this, Commando.EDIT_TRUST_ACTIONS));
+                new Commando(this, WidgetIds.EDIT_TRUST_ACTIONS));
         settingsMenu.addItem(messages.menuitem_values(), true, new Commando(
                 this, WidgetIds.SETTINGS));
         aboutMenu.addItem(messages.menuitem_about(), true, new Commando(this,
@@ -230,8 +235,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((TrustStatusView) widget).init();
                 break;
             case REPORT_MEMBER_PER_YEAR:
-                widget = ReportMembersBirth.getInstance(constants, messages, helpPanel);
-                ((ReportMembersBirth)widget).init();
+                widget = ReportMembersBirth.getInstance(constants, messages,
+                        helpPanel);
+                ((ReportMembersBirth) widget).init();
                 break;
             case WidgetIds.ABOUT:
                 widget = AboutView.getInstance();
@@ -242,8 +248,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 return;
             }
             setActiveWidget(widget);
-            helpPanel.setCurrentWidget(widget,
-                    action);
+            helpPanel.setCurrentWidget(widget, action);
         }
     }
 
@@ -264,7 +269,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     public void viewMonth(int year, int month) {
         MonthView instance = MonthView.getInstance(constants, messages, this);
-        
+
         instance.init(year, month);
 
         setActiveWidget(instance);

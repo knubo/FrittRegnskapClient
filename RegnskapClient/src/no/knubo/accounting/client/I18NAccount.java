@@ -56,6 +56,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_endyear();
 
   /**
+   * Translated "Vis detaljer for gitte regnskapslinjer".
+   * 
+   * @return translated "Vis detaljer for gitte regnskapslinjer"
+   * @gwt.key menuitem_report_selectedlines
+   */
+  String menuitem_report_selectedlines();
+
+  /**
    * Translated "Personer".
    * 
    * @return translated "Personer"
@@ -358,6 +366,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_showmonthdetails
    */
   String menuitem_showmonthdetails();
+
+  /**
+   * Translated "Liste over medlemmer med adresser".
+   * 
+   * @return translated "Liste over medlemmer med adresser"
+   * @gwt.key menuitem_report_addresses
+   */
+  String menuitem_report_addresses();
 
   /**
    * Translated "Juli".
@@ -704,20 +720,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String trustStatusView_newTrustButton();
 
   /**
-   * Translated "Registrer bilag".
-   * 
-   * @return translated "Registrer bilag"
-   * @gwt.key menuitem_regline
-   */
-  String menuitem_regline();
-
-  /**
    * Translated "Februar".
    * 
    * @return translated "Februar"
    * @gwt.key month_02
    */
   String month_02();
+
+  /**
+   * Translated "Registrer bilag".
+   * 
+   * @return translated "Registrer bilag"
+   * @gwt.key menuitem_regline
+   */
+  String menuitem_regline();
 
   /**
    * Translated "DEBET".
