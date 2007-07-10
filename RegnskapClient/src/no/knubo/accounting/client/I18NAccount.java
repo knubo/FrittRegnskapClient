@@ -216,6 +216,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String register_count_post();
 
   /**
+   * Translated "Eksporter til regneark".
+   * 
+   * @return translated "Eksporter til regneark"
+   * @gwt.key export_spreadsheet
+   */
+  String export_spreadsheet();
+
+  /**
    * Translated "Fondskonto".
    * 
    * @return translated "Fondskonto"
@@ -230,6 +238,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key country_denmark
    */
   String country_denmark();
+
+  /**
+   * Translated "Oversikt over medlemmers adresser".
+   * 
+   * @return translated "Oversikt over medlemmers adresser"
+   * @gwt.key title_report_membersaddresses
+   */
+  String title_report_membersaddresses();
 
   /**
    * Translated "Treningsmedlemsskap".
@@ -752,6 +768,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String title_report_membersbirth();
 
   /**
+   * Translated "M&aring;ned".
+   * 
+   * @return translated "M&aring;ned"
+   * @gwt.key month
+   */
+  String month();
+
+  /**
    * Translated "Vil du avslutte m&aring;ned?".
    * 
    * @return translated "Vil du avslutte m&aring;ned?"
@@ -766,14 +790,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key member_heading_course
    */
   String member_heading_course();
-
-  /**
-   * Translated "M&aring;ned".
-   * 
-   * @return translated "M&aring;ned"
-   * @gwt.key month
-   */
-  String month();
 
   /**
    * Translated "Pris for trening".
@@ -942,6 +958,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key cost_course
    */
   String cost_course();
+
+  /**
+   * Translated "Mangler adresse".
+   * 
+   * @return translated "Mangler adresse"
+   * @gwt.key missing_address
+   */
+  String missing_address();
 
   /**
    * Translated "Inngis dag m&aring; ogs&aring; medlemsskapstype velges  ".

@@ -90,8 +90,8 @@ public class ReportMembersBirth extends Composite {
                 table.setHTML(row, 0, header);
                 table.getFlexCellFormatter().setColSpan(row, 0, 4);
                 table.getRowFormatter().setStyleName(row, "header");
+                
                 row++;
-
                 for (int i = 0; i < array.size(); i++) {
                     JSONValue person = array.get(i);
                     JSONObject personObj = person.isObject();
