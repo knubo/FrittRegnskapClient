@@ -1000,6 +1000,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String report_year_30(String arg0);
 
   /**
+   * Translated "Dato inngis p� formatet dd.mm.yyyy".
+   * 
+   * @return translated "Dato inngis p� formatet dd.mm.yyyy"
+   * @gwt.key date_format
+   */
+  String date_format();
+
+  /**
    * Translated "Adresse".
    * 
    * @return translated "Adresse"

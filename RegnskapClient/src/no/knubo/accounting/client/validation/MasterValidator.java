@@ -19,6 +19,11 @@ public class MasterValidator {
         status &= mandatoryValidation.validate(this, widgets);
     }
 
+    public void date(String error, Widget[] widgets) {
+        ValidatorBase datevalidator = new DateValidator(error);
+        status &= datevalidator.validate(this, widgets);
+    }
+    
     public void day(String error, int year, int month, Widget[] widgets) {
         ValidatorBase dayvalidator = new DayValidator(error, month, year);
         status &= dayvalidator.validate(this, widgets);
@@ -107,5 +112,7 @@ public class MasterValidator {
         }
         range(error, minVal, maxVal, widgetList);
     }
+
+   
 
 }

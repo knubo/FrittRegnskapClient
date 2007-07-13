@@ -9,6 +9,7 @@ import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.AccountDetailLinesHelper;
 
 import com.google.gwt.http.client.Request;
@@ -142,7 +143,18 @@ public class ReportAccountlines extends Composite implements ClickListener {
     }
 
     private boolean validateSearch() {
-        return true;
+        MasterValidator mv = new MasterValidator();
+
+        Widget[] datewidgets = new Widget[] { fromDateBox, toDateBox };
+        mv.date(messages.date_format(), datewidgets);
+
+        mv.registry(messages.registry_invalid_key(), ProjectCache
+                .getInstance(constants), new Widget[] { projectIdBox });
+
+        mv.registry(messages.registry_invalid_key(), PosttypeCache
+                .getInstance(constants), new Widget[] { accountIdBox });
+
+        return mv.validateStatus();
     }
 
     private void doSearch() {
@@ -152,10 +164,11 @@ public class ReportAccountlines extends Composite implements ClickListener {
         searchRequest.append("action=search");
         Util.addPostParam(searchRequest, "fromdate", fromDateBox.getText());
         Util.addPostParam(searchRequest, "todate", toDateBox.getText());
-        Util.addPostParam(searchRequest, "employee", Util.getSelected(personBox));
+        Util.addPostParam(searchRequest, "employee", Util
+                .getSelected(personBox));
         Util.addPostParam(searchRequest, "project", projectIdBox.getText());
         Util.addPostParam(searchRequest, "account", accountIdBox.getText());
-        
+
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "reports/accountlines.php");
 
