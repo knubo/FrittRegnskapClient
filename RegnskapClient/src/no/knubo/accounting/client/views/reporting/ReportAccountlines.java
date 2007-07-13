@@ -11,11 +11,14 @@ import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.views.modules.AccountDetailLinesHelper;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -76,10 +79,10 @@ public class ReportAccountlines extends Composite implements ClickListener {
         fromDateBox = new TextBoxWithErrorText("from_date");
         fromDateBox.setMaxLength(10);
         fromDateBox.setVisibleLength(10);
+        toDateBox = new TextBoxWithErrorText("to_date");
         toDateBox.setMaxLength(10);
         toDateBox.setVisibleLength(10);
         table.setWidget(1, 1, fromDateBox);
-        toDateBox = new TextBoxWithErrorText("to_date");
         table.setWidget(1, 3, toDateBox);
 
         HTML errorAccountHtml = new HTML();
@@ -130,33 +133,55 @@ public class ReportAccountlines extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    public void init() {
+    public void onClick(Widget sender) {
+        if (sender == clearButton) {
+            doClear();
+        } else if (sender == searchButton && validateSearch()) {
+            doSearch();
+        }
+    }
+
+    private boolean validateSearch() {
+        return true;
+    }
+
+    private void doSearch() {
         accountDetailLinesHelper.init();
+        StringBuffer searchRequest = new StringBuffer();
 
-        ResponseTextHandler getValues = new ResponseTextHandler() {
+        searchRequest.append("action=search");
+        Util.addPostParam(searchRequest, "fromdate", fromDateBox.getText());
+        Util.addPostParam(searchRequest, "todate", toDateBox.getText());
+        Util.addPostParam(searchRequest, "employee", Util.getSelected(personBox));
+        Util.addPostParam(searchRequest, "project", projectIdBox.getText());
+        Util.addPostParam(searchRequest, "account", accountIdBox.getText());
+        
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                constants.baseurl() + "reports/accountlines.php");
 
-            public void onCompletion(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+        RequestCallback callback = new RequestCallback() {
+            public void onError(Request request, Throwable exception) {
+                Window.alert(exception.getMessage());
+            }
+
+            public void onResponseReceived(Request request, Response response) {
+                JSONValue value = JSONParser.parse(response.getText());
                 JSONArray array = value.isArray();
-
                 accountDetailLinesHelper.renderResult(array);
 
                 helpPanel.resize(reportInstance);
             }
 
         };
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "reports/accountlines.php", getValues)) {
-            Window.alert("Failed to load data.");
+
+        try {
+            builder.setHeader("Content-Type",
+                    "application/x-www-form-urlencoded");
+            builder.sendRequest(searchRequest.toString(), callback);
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
         }
 
-    }
-
-    public void onClick(Widget sender) {
-        if(sender == clearButton) {
-            doClear();
-        }
     }
 
     private void doClear() {

@@ -247,7 +247,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case REPORT_SELECTEDLINES:
                 widget = ReportAccountlines.getInstance(constants, messages,
                         helpPanel);
-                ((ReportAccountlines) widget).init();
                 break;
                 
             case WidgetIds.ABOUT:
