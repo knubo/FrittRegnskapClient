@@ -62,8 +62,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private TextBoxWithErrorText birthdateBox;
 
-    public PersonEditView(I18NAccount messages,
-            Constants constants) {
+    public PersonEditView(I18NAccount messages, Constants constants) {
         this.messages = messages;
         this.constants = constants;
 
@@ -91,7 +90,7 @@ public class PersonEditView extends Composite implements ClickListener {
         lastnameBox.setMaxLength(50);
         birthdateBox = new TextBoxWithErrorText("birthdate");
         birthdateBox.setMaxLength(10);
-        
+
         emailBox = new TextBoxWithErrorText("email");
         emailBox.setMaxLength(100);
         addressBox = new TextBoxWithErrorText("address");
@@ -113,7 +112,8 @@ public class PersonEditView extends Composite implements ClickListener {
         cellphoneBox.setMaxLength(13);
         employeeCheck = new CheckBox();
 
-        updateButton = new NamedButton("PersonEditView.updateButton", messages.update());
+        updateButton = new NamedButton("PersonEditView.updateButton", messages
+                .update());
         updateButton.addClickListener(this);
 
         saveStatus = new HTML();
@@ -136,8 +136,7 @@ public class PersonEditView extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    public static PersonEditView show(Constants constants,
-            I18NAccount messages) {
+    public static PersonEditView show(Constants constants, I18NAccount messages) {
         if (me == null) {
             me = new PersonEditView(messages, constants);
         }
@@ -236,12 +235,12 @@ public class PersonEditView extends Composite implements ClickListener {
 
             public void onResponseReceived(Request request, Response response) {
                 int id = Util.getInt(response.getText());
-                
+
                 if (id == 0) {
-                    if("0".equals(response.getText())) {
-                        saveStatus.setText(messages.save_failed());                        
+                    if ("0".equals(response.getText())) {
+                        saveStatus.setText(messages.save_failed());
                     } else {
-                        Window.alert("Server error:"+response.getText());
+                        Window.alert("Server error:" + response.getText());
                     }
                 } else {
                     saveStatus.setText(messages.save_ok());
@@ -291,6 +290,9 @@ public class PersonEditView extends Composite implements ClickListener {
         masterValidator.mandatory(messages.required_field(), new Widget[] {
                 lastnameBox, firstnameBox });
 
+        masterValidator.date(messages.date_format(),
+                new Widget[] { birthdateBox });
+        
         masterValidator.email(messages.invalid_email(),
                 new Widget[] { emailBox });
 
