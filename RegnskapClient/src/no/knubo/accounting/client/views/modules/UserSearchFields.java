@@ -55,11 +55,11 @@ public class UserSearchFields implements ClickListener {
         searchTable.setText(2, 0, messages.employee());
         searchTable.setWidget(2, 1, employeeList);
 
-        searchButton = new NamedButton("UserSearchFields.searchButton",
+        searchButton = new NamedButton("search",
                 messages.search());
         searchButton.addClickListener(this);
         searchTable.setWidget(3, 0, searchButton);
-        clearButton = new NamedButton("UserSearchFields.clearButton", messages
+        clearButton = new NamedButton("clear", messages
                 .clear());
         clearButton.addClickListener(this);
         searchTable.setWidget(3, 1, clearButton);

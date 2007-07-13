@@ -416,14 +416,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String count_required();
 
   /**
-   * Translated "Vis prosjekt".
-   * 
-   * @return translated "Vis prosjekt"
-   * @gwt.key menuitem_showproject
-   */
-  String menuitem_showproject();
-
-  /**
    * Translated "November".
    * 
    * @return translated "November"
@@ -630,6 +622,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_showclassmembers
    */
   String menuitem_showclassmembers();
+
+  /**
+   * Translated "Fradato".
+   * 
+   * @return translated "Fradato"
+   * @gwt.key from_date
+   */
+  String from_date();
 
   /**
    * Translated "&Aring;rsmedlemskap".
@@ -1064,6 +1064,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_findperson();
 
   /**
+   * Translated "Tildato".
+   * 
+   * @return translated "Tildato"
+   * @gwt.key to_date
+   */
+  String to_date();
+
+  /**
    * Translated "Passord".
    * 
    * @return translated "Passord"
@@ -1158,6 +1166,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_edit_trust_actions
    */
   String menuitem_edit_trust_actions();
+
+  /**
+   * Translated "Detaljer for utvalgte regnskapslinjer".
+   * 
+   * @return translated "Detaljer for utvalgte regnskapslinjer"
+   * @gwt.key title_report_accountlines
+   */
+  String title_report_accountlines();
 
   /**
    * Translated "Vis m&aring;ned".

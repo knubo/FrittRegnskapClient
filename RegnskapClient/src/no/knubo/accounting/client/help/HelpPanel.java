@@ -150,8 +150,10 @@ public class HelpPanel extends Composite implements EventPreview {
             help = formatHelp("1", helpTexts.number1());
         } else if (id.equals("number0.5")) {
             help = formatHelp("0.5", helpTexts.number0_5());
-        } else {
-            help = "- " + id;
+        } else if (id.equals("search")) {
+            help = formatHelp(messages.search(), helpTexts.search());
+        } else if (id.equals("clear")) {
+            help = formatHelp(messages.clear(), helpTexts.clear());
         }
 
         return true;
