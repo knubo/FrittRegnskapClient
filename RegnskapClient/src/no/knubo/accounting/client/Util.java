@@ -2,6 +2,7 @@ package no.knubo.accounting.client;
 
 import java.util.HashMap;
 
+import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;
@@ -435,6 +436,14 @@ public class Util {
     public static void setCellId(FlexTable table, int row, int col, String id) {
         DOM.setElementAttribute(table.getCellFormatter().getElement(row, col),
                 "id", id);
+    }
+    
+    public static boolean authFailed(Constants constants, Response response) {
+        if(response.getStatusCode() == 510) {
+            Util.forward(constants.loginURL());
+            return true;
+        }
+        return false;
     }
 
 }

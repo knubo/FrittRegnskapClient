@@ -7,15 +7,20 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.MonthHeaderCache;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.views.modules.YearMonthComboHelper;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -28,8 +33,8 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MonthView extends Composite implements ResponseTextHandler,
-        ClickListener, ChangeListener {
+public class MonthView extends Composite implements 
+        ClickListener, ChangeListener, ServerResponse {
 
     private static MonthView instance;
 
@@ -106,7 +111,7 @@ public class MonthView extends Composite implements ResponseTextHandler,
     public void init(int year, int month) {
         dockPanel.remove(table);
         newTable();
-        getData("?month=" + month + "&year=" + year);
+        getData("month=" + month + "&year=" + year);
     }
 
     private void newTable() {
@@ -117,11 +122,14 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
     private void getData(String params) {
         yearMonthComboHelper.fillYearMonthCombo();
+        
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "accounting/showmonth.php");
 
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "accounting/showmonth.php" + params, this)) {
-            // TODO Report errors.
+        try {
+            builder.sendRequest(params, new AuthResponder(constants, this));
+        } catch (RequestException e) {
+            Window.alert("AU:"+e);
         }
     }
 
@@ -173,7 +181,7 @@ public class MonthView extends Composite implements ResponseTextHandler,
         }
     }
 
-    public void onCompletion(String responseText) {
+    public void serverResponse(String responseText) {
         JSONValue jsonValue = JSONParser.parse(responseText);
         JSONObject root = jsonValue.isObject();
 
@@ -304,18 +312,18 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
             if (m > 12) {
                 int y = currentYear + 1;
-                getData("?month=1&year=" + y);
+                getData("month=1&year=" + y);
             } else {
-                getData("?month=" + m + "&year=" + currentYear);
+                getData("month=" + m + "&year=" + currentYear);
             }
         } else {
             int m = currentMonth - 1;
 
             if (m < 1) {
                 int y = currentYear - 1;
-                getData("?month=12&year=" + y);
+                getData("month=12&year=" + y);
             } else {
-                getData("?month=" + m + "&year=" + currentYear);
+                getData("month=" + m + "&year=" + currentYear);
             }
         }
     }
@@ -327,4 +335,6 @@ public class MonthView extends Composite implements ResponseTextHandler,
         String[] monthYear = value.split("/");
         init(Integer.parseInt(monthYear[0]), Integer.parseInt(monthYear[1]));
     }
+
+   
 }
