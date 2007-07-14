@@ -85,59 +85,63 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar settingsMenu = addTopMenu(topMenu, messages.menu_settings());
         MenuBar aboutMenu = addTopMenu(topMenu, messages.menu_info());
 
-        registerMenu.addItem(messages.menuitem_regline(), true, new Commando(
-                this, WidgetIds.LINE_EDIT_VIEW));
-        registerMenu.addItem(messages.menuitem_registerMembership(), true,
-                new Commando(this, WidgetIds.REGISTER_MEMBERSHIP));
-        registerMenu.addItem(messages.menuitem_register_happening(), true,
-                new Commando(this, WidgetIds.REGISTER_HAPPENING));
-        registerMenu.addItem(messages.menuitem_endmonth(), true, new Commando(
-                this, Commando.END_MONTH));
-        registerMenu.addItem(messages.menuitem_endyear(), true, new Commando(
-                this, Commando.END_YEAR));
+        addMenuItem(registerMenu, messages.menuitem_regline(),
+                WidgetIds.LINE_EDIT_VIEW);
+        addMenuItem(registerMenu, messages.menuitem_registerMembership(),
+                WidgetIds.REGISTER_MEMBERSHIP);
+        addMenuItem(registerMenu, messages.menuitem_register_happening(),
+                WidgetIds.REGISTER_HAPPENING);
+        addMenuItem(registerMenu, messages.menuitem_endmonth(),
+                WidgetIds.END_MONTH);
+        addMenuItem(registerMenu, messages.menuitem_endyear(),
+                WidgetIds.END_YEAR);
 
-        showMenu.addItem(messages.menuitem_showmonth(), true, new Commando(
-                this, WidgetIds.SHOW_MONTH));
-        showMenu.addItem(messages.menuitem_showmonthdetails(), true,
-                new Commando(this, Commando.SHOW_MONTH_DETAILS));
+        addMenuItem(showMenu, messages.menuitem_showmonth(),
+                WidgetIds.SHOW_MONTH);
+        addMenuItem(showMenu, messages.menuitem_showmonthdetails(),
+                WidgetIds.SHOW_MONTH_DETAILS);
+        addMenuItem(showMenu, messages.menuitem_showmembers(),
+                WidgetIds.SHOW_MEMBERS);
+        addMenuItem(showMenu, messages.menuitem_showtraining(),
+                WidgetIds.SHOW_TRAINING_MEMBERS);
+        addMenuItem(showMenu, messages.menuitem_showclassmembers(),
+                WidgetIds.SHOW_CLASS_MEMBERS);
 
-        showMenu.addItem(messages.menuitem_showmembers(), true, new Commando(
-                this, WidgetIds.SHOW_MEMBERS));
-        showMenu.addItem(messages.menuitem_showtraining(), true, new Commando(
-                this, WidgetIds.SHOW_TRAINING_MEMBERS));
-        showMenu.addItem(messages.menuitem_showclassmembers(), true,
-                new Commando(this, WidgetIds.SHOW_CLASS_MEMBERS));
+        addMenuItem(peopleMenu, messages.menuitem_addperson(),
+                WidgetIds.ADD_PERSON);
+        addMenuItem(peopleMenu, messages.menuitem_findperson(),
+                WidgetIds.FIND_PERSON);
 
-        peopleMenu.addItem(messages.menuitem_addperson(), true, new Commando(
-                this, WidgetIds.ADD_PERSON));
-        peopleMenu.addItem(messages.menuitem_findperson(), true, new Commando(
-                this, WidgetIds.FIND_PERSON));
+        addMenuItem(trustMenu, messages.menuitem_truststatus(),
+                WidgetIds.TRUST_STATUS);
 
-        trustMenu.addItem(messages.menuitem_truststatus(), true, new Commando(
-                this, WidgetIds.TRUST_STATUS));
+        addMenuItem(reportsMenu, messages.menuitem_report_member_per_year(),
+                WidgetIds.REPORT_MEMBER_PER_YEAR);
+        addMenuItem(reportsMenu, messages.menuitem_report_addresses(),
+                WidgetIds.REPORT_ADDRESSES);
+        addMenuItem(reportsMenu, messages.menuitem_report_selectedlines(),
+                WidgetIds.REPORT_SELECTEDLINES);
 
-        reportsMenu.addItem(messages.menuitem_report_member_per_year(), true,
-                new Commando(this, WidgetIds.REPORT_MEMBER_PER_YEAR));
-        reportsMenu.addItem(messages.menuitem_report_addresses(), true,
-                new Commando(this, WidgetIds.REPORT_ADDRESSES));
-        reportsMenu.addItem(messages.menuitem_report_selectedlines(), true,
-                new Commando(this, WidgetIds.REPORT_SELECTEDLINES));
+        addMenuItem(settingsMenu, messages.menuitem_posttypes(),
+                WidgetIds.EDIT_POSTTYPES);
+        addMenuItem(settingsMenu, messages.menuitem_projects(),
+                WidgetIds.EDIT_PROJECTS);
+        addMenuItem(settingsMenu, messages.menuitem_edit_happening(),
+                WidgetIds.EDIT_HAPPENING);
+        addMenuItem(settingsMenu, messages.menuitem_edit_trust_actions(),
+                WidgetIds.EDIT_TRUST_ACTIONS);
+        addMenuItem(settingsMenu, messages.menuitem_values(),
+                WidgetIds.SETTINGS);
 
-        settingsMenu.addItem(messages.menuitem_posttypes(), true, new Commando(
-                this, WidgetIds.EDIT_POSTTYPES));
-        settingsMenu.addItem(messages.menuitem_projects(), true, new Commando(
-                this, WidgetIds.EDIT_PROJECTS));
-        settingsMenu.addItem(messages.menuitem_edit_happening(), true,
-                new Commando(this, WidgetIds.EDIT_HAPPENING));
-        settingsMenu.addItem(messages.menuitem_edit_trust_actions(), true,
-                new Commando(this, WidgetIds.EDIT_TRUST_ACTIONS));
-        settingsMenu.addItem(messages.menuitem_values(), true, new Commando(
-                this, WidgetIds.SETTINGS));
-        aboutMenu.addItem(messages.menuitem_about(), true, new Commando(this,
-                WidgetIds.ABOUT));
+        addMenuItem(aboutMenu, messages.menuitem_about(), WidgetIds.ABOUT);
+
         activeView.add(AboutView.getInstance(), DockPanel.CENTER);
 
         RootPanel.get().add(docPanel);
+    }
+
+    private void addMenuItem(MenuBar menu, String title, int widgetId) {
+        menu.addItem(title, true, new Commando(this, widgetId, title));
     }
 
     private MenuBar addTopMenu(MenuBar topMenu, String header) {
@@ -162,10 +166,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         private final ViewCallback callback;
 
-        Commando(ViewCallback callback, int action) {
+        private final String title;
+
+        Commando(ViewCallback callback, int action, String title) {
             this.callback = callback;
             this.action = action;
-
+            this.title = title;
         }
 
         public void execute() {
@@ -240,15 +246,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((ReportMembersBirth) widget).init();
                 break;
             case REPORT_ADDRESSES:
-                widget = ReportMembersAddresses.getInstance(constants, messages,
-                        helpPanel);
+                widget = ReportMembersAddresses.getInstance(constants,
+                        messages, helpPanel);
                 ((ReportMembersAddresses) widget).init();
                 break;
             case REPORT_SELECTEDLINES:
                 widget = ReportAccountlines.getInstance(constants, messages,
                         helpPanel);
                 break;
-                
+
             case WidgetIds.ABOUT:
                 widget = AboutView.getInstance();
                 break;
@@ -258,6 +264,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 return;
             }
             setActiveWidget(widget);
+            Window.setTitle(title);
             helpPanel.setCurrentWidget(widget, action);
         }
     }
@@ -267,6 +274,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView.add(widget, DockPanel.CENTER);
         activeView.setCellHeight(widget, "100%");
         activeView.setCellVerticalAlignment(widget, DockPanel.ALIGN_TOP);
+
     }
 
     public void openDetails(String id) {
@@ -275,6 +283,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         setActiveWidget(widget);
         HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
                 WidgetIds.LINE_EDIT_VIEW);
+        Window.setTitle(messages.menuitem_showmonthdetails());
     }
 
     public void viewMonth(int year, int month) {
@@ -285,6 +294,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         setActiveWidget(instance);
         HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(instance,
                 WidgetIds.SHOW_MONTH);
+        Window.setTitle(messages.menuitem_showmonth());
     }
 
     public void viewMonth() {
@@ -295,13 +305,16 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         setActiveWidget(instance);
         HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(instance,
                 WidgetIds.SHOW_MONTH);
+        Window.setTitle(messages.menuitem_showmonth());
     }
 
     public void editPerson(String id) {
         PersonEditView widget = PersonEditView.show(constants, messages);
+
         widget.init(id);
         setActiveWidget(widget);
         HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
                 WidgetIds.ADD_PERSON);
+        Window.setTitle(messages.menuitem_addperson());
     }
 }

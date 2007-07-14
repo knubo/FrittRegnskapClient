@@ -93,8 +93,6 @@ public class MonthView extends Composite implements ResponseTextHandler,
 
         dockPanel.add(navPanel, DockPanel.NORTH);
 
-        Window.setTitle(messages.title_monthview());
-
         initWidget(dockPanel);
     }
 

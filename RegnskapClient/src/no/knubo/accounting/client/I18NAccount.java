@@ -8,17 +8,17 @@ package no.knubo.accounting.client;
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
   /**
-   * Translated "Mangler f&oslash;dselsdato - {0} medlemmer".
+   * Translated "Mangler fødselsdato - {0} medlemmer".
    * 
-   * @return translated "Mangler f&oslash;dselsdato - {0} medlemmer"
+   * @return translated "Mangler fødselsdato - {0} medlemmer"
    * @gwt.key report_year_unset
    */
   String report_year_unset(String arg0);
 
   /**
-   * Translated "Ulovlig m&aring;ned".
+   * Translated "Ulovlig måned".
    * 
-   * @return translated "Ulovlig m&aring;ned"
+   * @return translated "Ulovlig måned"
    * @gwt.key illegal_month
    */
   String illegal_month();
@@ -48,9 +48,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment();
 
   /**
-   * Translated "Avslutt &aring;r".
+   * Translated "Avslutt år".
    * 
-   * @return translated "Avslutt &aring;r"
+   * @return translated "Avslutt år"
    * @gwt.key menuitem_endyear
    */
   String menuitem_endyear();
@@ -88,9 +88,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String debkred();
 
   /**
-   * Translated "Feltet m&aring; fylles ut".
+   * Translated "Feltet må fylles ut".
    * 
-   * @return translated "Feltet m&aring; fylles ut"
+   * @return translated "Feltet må fylles ut"
    * @gwt.key required_field
    */
   String required_field();
@@ -144,9 +144,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String cancel();
 
   /**
-   * Translated "S&oslash;k".
+   * Translated "Søk".
    * 
-   * @return translated "S&oslash;k"
+   * @return translated "Søk"
    * @gwt.key search
    */
   String search();
@@ -176,17 +176,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String trustStatusView_cancelButton();
 
   /**
-   * Translated "Avslutt m&aring;ned".
+   * Translated "Avslutt måned".
    * 
-   * @return translated "Avslutt m&aring;ned"
+   * @return translated "Avslutt måned"
    * @gwt.key menuitem_endmonth
    */
   String menuitem_endmonth();
 
   /**
-   * Translated "S&oslash;ket ga Ingen treff".
+   * Translated "Søket ga Ingen treff".
    * 
-   * @return translated "S&oslash;ket ga Ingen treff"
+   * @return translated "Søket ga Ingen treff"
    * @gwt.key no_result
    */
   String no_result();
@@ -208,9 +208,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_reports();
 
   /**
-   * Translated "F&oslash;res p&aring; post".
+   * Translated "Føres på post".
    * 
-   * @return translated "F&oslash;res p&aring; post"
+   * @return translated "Føres på post"
    * @gwt.key register_count_post
    */
   String register_count_post();
@@ -296,9 +296,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment_used();
 
   /**
-   * Translated "Val&oslash;r:".
+   * Translated "Valør:".
    * 
-   * @return translated "Val&oslash;r:"
+   * @return translated "Valør:"
    * @gwt.key money_type
    */
   String money_type();
@@ -320,9 +320,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String post_description();
 
   /**
-   * Translated "Penger inngis p&aring; format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0".
+   * Translated "Penger inngis på format 10.45 og må være større enn 0".
    * 
-   * @return translated "Penger inngis p&aring; format 10.45 og m&aring; v&aelig;re st&oslash;rre enn 0"
+   * @return translated "Penger inngis på format 10.45 og må være større enn 0"
    * @gwt.key field_money
    */
   String field_money();
@@ -360,25 +360,25 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_info();
 
   /**
-   * Translated "F&oslash;lgende poster vil overf&oslash;res til neste m&aring;ned:".
+   * Translated "Følgende poster vil overføres til neste måned:".
    * 
-   * @return translated "F&oslash;lgende poster vil overf&oslash;res til neste m&aring;ned:"
+   * @return translated "Følgende poster vil overføres til neste måned:"
    * @gwt.key end_month_explain
    */
   String end_month_explain();
 
   /**
-   * Translated "F&oslash;dselsdato".
+   * Translated "Fødselsdato".
    * 
-   * @return translated "F&oslash;dselsdato"
+   * @return translated "Fødselsdato"
    * @gwt.key birthdate
    */
   String birthdate();
 
   /**
-   * Translated "Vis m&aring;ned med detaljer".
+   * Translated "Vis måned med detaljer".
    * 
-   * @return translated "Vis m&aring;ned med detaljer"
+   * @return translated "Vis måned med detaljer"
    * @gwt.key menuitem_showmonthdetails
    */
   String menuitem_showmonthdetails();
@@ -408,9 +408,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String age();
 
   /**
-   * Translated "Telling p&aring;krevd".
+   * Translated "Telling påkrevd".
    * 
-   * @return translated "Telling p&aring;krevd"
+   * @return translated "Telling påkrevd"
    * @gwt.key count_required
    */
   String count_required();
@@ -456,9 +456,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kredit();
 
   /**
-   * Translated "Val&oslash;r".
+   * Translated "Valør".
    * 
-   * @return translated "Val&oslash;r"
+   * @return translated "Valør"
    * @gwt.key value
    */
   String value();
@@ -504,17 +504,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country_sweeden();
 
   /**
-   * Translated "Feltet m&aring; ha st&oslash;rre verdi enn 0".
+   * Translated "Feltet må ha større verdi enn 0".
    * 
-   * @return translated "Feltet m&aring; ha st&oslash;rre verdi enn 0"
+   * @return translated "Feltet må ha større verdi enn 0"
    * @gwt.key field_to_low_zero
    */
   String field_to_low_zero();
 
   /**
-   * Translated "Feltet m&aring; v&aelig;re st&oslash;rre eller lik 0".
+   * Translated "Feltet må være større eller lik 0".
    * 
-   * @return translated "Feltet m&aring; v&aelig;re st&oslash;rre eller lik 0"
+   * @return translated "Feltet må være større eller lik 0"
    * @gwt.key field_positive
    */
   String field_positive();
@@ -552,9 +552,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country();
 
   /**
-   * Translated "20 - 25 &aring;r - {0} medlemmer".
+   * Translated "20 - 25 år - {0} medlemmer".
    * 
-   * @return translated "20 - 25 &aring;r - {0} medlemmer"
+   * @return translated "20 - 25 år - {0} medlemmer"
    * @gwt.key report_year_25
    */
   String report_year_25(String arg0);
@@ -632,9 +632,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String from_date();
 
   /**
-   * Translated "&Aring;rsmedlemskap".
+   * Translated "Årsmedlemskap".
    * 
-   * @return translated "&Aring;rsmedlemskap"
+   * @return translated "Årsmedlemskap"
    * @gwt.key year_membership
    */
   String year_membership();
@@ -760,25 +760,25 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String debet();
 
   /**
-   * Translated "Oversikt over medlemmer per f&oslash;dselsdato".
+   * Translated "Oversikt over medlemmer per fødselsdato".
    * 
-   * @return translated "Oversikt over medlemmer per f&oslash;dselsdato"
+   * @return translated "Oversikt over medlemmer per fødselsdato"
    * @gwt.key title_report_membersbirth
    */
   String title_report_membersbirth();
 
   /**
-   * Translated "M&aring;ned".
+   * Translated "Måned".
    * 
-   * @return translated "M&aring;ned"
+   * @return translated "Måned"
    * @gwt.key month
    */
   String month();
 
   /**
-   * Translated "Vil du avslutte m&aring;ned?".
+   * Translated "Vil du avslutte måned?".
    * 
-   * @return translated "Vil du avslutte m&aring;ned?"
+   * @return translated "Vil du avslutte måned?"
    * @gwt.key end_month_confirm
    */
   String end_month_confirm();
@@ -846,14 +846,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_03
    */
   String month_03();
-
-  /**
-   * Translated "M&aring;nedsoversikt".
-   * 
-   * @return translated "M&aring;nedsoversikt"
-   * @gwt.key title_monthview
-   */
-  String title_monthview();
 
   /**
    * Translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag.".
@@ -968,9 +960,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String missing_address();
 
   /**
-   * Translated "Inngis dag m&aring; ogs&aring; medlemsskapstype velges  ".
+   * Translated "Inngis dag må også medlemsskapstype velges  ".
    * 
-   * @return translated "Inngis dag m&aring; ogs&aring; medlemsskapstype velges  "
+   * @return translated "Inngis dag må også medlemsskapstype velges  "
    * @gwt.key add_member_day_require_action
    */
   String add_member_day_require_action();
@@ -992,17 +984,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String register_membership_header();
 
   /**
-   * Translated "26 - 30 &aring;r - {0} medlemmer".
+   * Translated "26 - 30 år - {0} medlemmer".
    * 
-   * @return translated "26 - 30 &aring;r - {0} medlemmer"
+   * @return translated "26 - 30 år - {0} medlemmer"
    * @gwt.key report_year_30
    */
   String report_year_30(String arg0);
 
   /**
-   * Translated "Dato inngis p� formatet dd.mm.yyyy".
+   * Translated "Dato inngis på formatet dd.mm.yyyy".
    * 
-   * @return translated "Dato inngis p� formatet dd.mm.yyyy"
+   * @return translated "Dato inngis på formatet dd.mm.yyyy"
    * @gwt.key date_format
    */
   String date_format();
@@ -1016,9 +1008,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String address();
 
   /**
-   * Translated "41+ &aring;r - {0} medlemmer".
+   * Translated "41+ år - {0} medlemmer".
    * 
-   * @return translated "41+ &aring;r - {0} medlemmer"
+   * @return translated "41+ år - {0} medlemmer"
    * @gwt.key report_year_above
    */
   String report_year_above(String arg0);
@@ -1048,9 +1040,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kredit_post();
 
   /**
-   * Translated "19 &aring;r eller yngre - {0} medlemmer".
+   * Translated "19 år eller yngre - {0} medlemmer".
    * 
-   * @return translated "19 &aring;r eller yngre - {0} medlemmer"
+   * @return translated "19 år eller yngre - {0} medlemmer"
    * @gwt.key report_year_19
    */
   String report_year_19(String arg0);
@@ -1064,9 +1056,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String semester();
 
   /**
-   * Translated "S&oslash;k etter person".
+   * Translated "Søk etter person".
    * 
-   * @return translated "S&oslash;k etter person"
+   * @return translated "Søk etter person"
    * @gwt.key menuitem_findperson
    */
   String menuitem_findperson();
@@ -1112,9 +1104,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmembers();
 
   /**
-   * Translated "Avslutt m&aring;ned".
+   * Translated "Avslutt måned".
    * 
-   * @return translated "Avslutt m&aring;ned"
+   * @return translated "Avslutt måned"
    * @gwt.key end_month
    */
   String end_month();
@@ -1152,17 +1144,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String post_used();
 
   /**
-   * Translated "31 - 40 &aring;r - {0} medlemmer".
+   * Translated "31 - 40 år - {0} medlemmer".
    * 
-   * @return translated "31 - 40 &aring;r - {0} medlemmer"
+   * @return translated "31 - 40 år - {0} medlemmer"
    * @gwt.key report_year_40
    */
   String report_year_40(String arg0);
 
   /**
-   * Translated "S&oslash;ket mislyktes - programfeil eller databasefeil".
+   * Translated "Søket mislyktes - programfeil eller databasefeil".
    * 
-   * @return translated "S&oslash;ket mislyktes - programfeil eller databasefeil"
+   * @return translated "Søket mislyktes - programfeil eller databasefeil"
    * @gwt.key search_failed
    */
   String search_failed();
@@ -1184,9 +1176,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String title_report_accountlines();
 
   /**
-   * Translated "Vis m&aring;ned".
+   * Translated "Vis måned".
    * 
-   * @return translated "Vis m&aring;ned"
+   * @return translated "Vis måned"
    * @gwt.key menuitem_showmonth
    */
   String menuitem_showmonth();
@@ -1208,9 +1200,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showtraining();
 
   /**
-   * Translated "Bel&oslash;p".
+   * Translated "Beløp".
    * 
-   * @return translated "Bel&oslash;p"
+   * @return translated "Beløp"
    * @gwt.key amount
    */
   String amount();
@@ -1232,17 +1224,17 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String new_happening();
 
   /**
-   * Translated "&Aring;r".
+   * Translated "År".
    * 
-   * @return translated "&Aring;r"
+   * @return translated "År"
    * @gwt.key year
    */
   String year();
 
   /**
-   * Translated "Feil i f&oslash:dselsdato - {0} medlemmer".
+   * Translated "Feil i fødselsdato - {0} medlemmer".
    * 
-   * @return translated "Feil i f&oslash:dselsdato - {0} medlemmer"
+   * @return translated "Feil i fødselsdato - {0} medlemmer"
    * @gwt.key report_year_wrong
    */
   String report_year_wrong(String arg0);
