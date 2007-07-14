@@ -33,13 +33,13 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MonthView extends Composite implements 
-        ClickListener, ChangeListener, ServerResponse {
+public class MonthView extends Composite implements ClickListener,
+        ChangeListener, ServerResponse {
 
     private static MonthView instance;
 
-    public static MonthView getInstance(Constants constants, I18NAccount messages,
-            ViewCallback caller) {
+    public static MonthView getInstance(Constants constants,
+            I18NAccount messages, ViewCallback caller) {
         if (instance == null) {
             instance = new MonthView(constants, messages, caller);
         }
@@ -122,14 +122,17 @@ public class MonthView extends Composite implements
 
     private void getData(String params) {
         yearMonthComboHelper.fillYearMonthCombo();
-        
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/showmonth.php");
 
         try {
+            builder.setHeader("Content-Type",
+                    "application/x-www-form-urlencoded");
+
             builder.sendRequest(params, new AuthResponder(constants, this));
         } catch (RequestException e) {
-            Window.alert("AU:"+e);
+            Window.alert("AU:" + e);
         }
     }
 
@@ -336,5 +339,4 @@ public class MonthView extends Composite implements
         init(Integer.parseInt(monthYear[0]), Integer.parseInt(monthYear[1]));
     }
 
-   
 }

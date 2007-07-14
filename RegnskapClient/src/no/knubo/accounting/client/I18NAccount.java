@@ -336,6 +336,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String happening();
 
   /**
+   * Translated "Logg ut".
+   * 
+   * @return translated "Logg ut"
+   * @gwt.key menuitem_logout
+   */
+  String menuitem_logout();
+
+  /**
    * Translated "Person".
    * 
    * @return translated "Person"
@@ -430,6 +438,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menu_show
    */
   String menu_show();
+
+  /**
+   * Translated "Logg ut".
+   * 
+   * @return translated "Logg ut"
+   * @gwt.key logout
+   */
+  String logout();
 
   /**
    * Translated "Innstillinger".
@@ -944,20 +960,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_projects();
 
   /**
-   * Translated "Pris for kurs".
-   * 
-   * @return translated "Pris for kurs"
-   * @gwt.key cost_course
-   */
-  String cost_course();
-
-  /**
    * Translated "Mangler adresse".
    * 
    * @return translated "Mangler adresse"
    * @gwt.key missing_address
    */
   String missing_address();
+
+  /**
+   * Translated "Pris for kurs".
+   * 
+   * @return translated "Pris for kurs"
+   * @gwt.key cost_course
+   */
+  String cost_course();
 
   /**
    * Translated "Inngis dag må også medlemsskapstype velges  ".

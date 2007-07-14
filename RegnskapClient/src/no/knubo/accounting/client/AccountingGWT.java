@@ -12,6 +12,7 @@ import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LineEditView;
+import no.knubo.accounting.client.views.LogoutView;
 import no.knubo.accounting.client.views.MonthDetailsView;
 import no.knubo.accounting.client.views.MonthEndView;
 import no.knubo.accounting.client.views.MonthView;
@@ -134,6 +135,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.SETTINGS);
 
         addMenuItem(aboutMenu, messages.menuitem_about(), WidgetIds.ABOUT);
+        addMenuItem(aboutMenu, messages.menuitem_logout(), WidgetIds.LOGOUT);
 
         activeView.add(AboutView.getInstance(), DockPanel.CENTER);
 
@@ -257,6 +259,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
             case WidgetIds.ABOUT:
                 widget = AboutView.getInstance();
+                break;
+            case WidgetIds.LOGOUT:
+                widget = LogoutView.getInstance(constants, messages);
                 break;
             }
             if (widget == null) {

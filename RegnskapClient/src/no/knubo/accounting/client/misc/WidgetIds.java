@@ -23,4 +23,5 @@ public interface WidgetIds {
     public int EDIT_TRUST_ACTIONS = 21;
     public int REPORT_ADDRESSES = 23;
     public int REPORT_SELECTEDLINES = 24;
+    public int LOGOUT = 25;
 }
