@@ -1,3 +1,6 @@
 #!/bin/sh
 APPDIR=`dirname $0`;
-java -XstartOnFirstThread -cp "$APPDIR/src:$APPDIR/bin:/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.3.3/gwt-user.jar:/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.3.3/gwt-dev-mac.jar" com.google.gwt.dev.GWTCompiler -out "$APPDIR/www" "$@" no.knubo.accounting.Login;
+GWT_ROOT='/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.4.10'
+CP="$APPDIR/src:$APPDIR/bin:$GWT_ROOT/gwt-user.jar:$GWT_ROOT/gwt-dev-mac.jar"
+
+java -XstartOnFirstThread -cp "$CP" com.google.gwt.dev.GWTCompiler -out "$APPDIR/www" "$@" no.knubo.accounting.Login;
