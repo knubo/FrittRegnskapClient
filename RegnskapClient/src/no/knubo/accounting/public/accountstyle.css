@@ -94,6 +94,14 @@
   font-weight: normal;
   font-size:80%;
 }
+
+.gwt-PasswordTextBox { 
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-weight: normal;
+  font-size:80%;
+}
+
+
 .gwt-ListBox { 
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
   font-weight: normal;

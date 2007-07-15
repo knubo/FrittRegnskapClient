@@ -52,7 +52,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
         loginButton.addClickListener(this);
 
         userBox = new TextBox();
-        userBox.setVisibleLength(14);
+        userBox.setWidth("12em");
         userBox.setMaxLength(12);
         passBox = new PasswordTextBox();
         passBox.setWidth("12em");
