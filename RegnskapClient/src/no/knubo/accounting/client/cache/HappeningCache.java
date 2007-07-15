@@ -6,12 +6,11 @@ import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -19,12 +18,14 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class HappeningCache {
+public class HappeningCache implements ServerResponse {
     private static HappeningCache instance;
 
     private final Constants constants;
 
     protected HashMap dataPerId;
+
+    private CacheCallback flushcallback;
 
     public static HappeningCache getInstance(Constants constants) {
         if (instance == null) {
@@ -39,39 +40,12 @@ public class HappeningCache {
     }
 
     public void flush(final CacheCallback flushcallback) {
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "registers/happening.php");
-
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
-
-            public void onResponseReceived(Request request, Response response) {
-                JSONValue value = JSONParser.parse(response.getText());
-                JSONArray array = value.isArray();
-
-                dataPerId = new HashMap();
-
-                for (int i = 0; i < array.size(); i++) {
-                    JSONValue one = array.get(i);
-                    JSONObject object = one.isObject();
-
-                    String id = Util.str(object.get("id"));
-                    dataPerId.put(id, object);
-                }
-                if (flushcallback != null) {
-                    flushcallback.flushCompleted();
-                }
-            }
-
-        };
+        this.flushcallback = flushcallback;
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "registers/happening.php?action=all");
 
         try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest("action=all", callback);
+            builder.sendRequest("", new AuthResponder(constants, this));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -105,5 +79,23 @@ public class HappeningCache {
         JSONObject object = (JSONObject) dataPerId.get(id);
         
         return Util.str(object.get("linedesc"));
+    }
+
+    public void serverResponse(String responseText) {
+        JSONValue value = JSONParser.parse(responseText);
+        JSONArray array = value.isArray();
+
+        dataPerId = new HashMap();
+
+        for (int i = 0; i < array.size(); i++) {
+            JSONValue one = array.get(i);
+            JSONObject object = one.isObject();
+
+            String id = Util.str(object.get("id"));
+            dataPerId.put(id, object);
+        }
+        if (flushcallback != null) {
+            flushcallback.flushCompleted();
+        }        
     }
 }

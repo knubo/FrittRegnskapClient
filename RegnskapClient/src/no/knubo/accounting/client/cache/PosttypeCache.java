@@ -8,13 +8,15 @@ import java.util.Map;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
@@ -42,9 +44,10 @@ public class PosttypeCache implements Registry {
     }
 
     private PosttypeCache(Constants constants) {
-        ResponseTextHandler handlerTypes = new ResponseTextHandler() {
+        
+        ServerResponse handlerTypes = new ServerResponse() {
 
-            public void onCompletion(String responseText) {
+            public void serverResponse(String responseText) {
                 JSONValue jsonValue = JSONParser.parse(responseText);
                 JSONArray array = jsonValue.isArray();
 
@@ -62,15 +65,19 @@ public class PosttypeCache implements Registry {
             }
 
         };
-        if (!HTTPRequest.asyncGet(constants.baseurl()
-                + "registers/posttypes.php?action=inuse", handlerTypes)) {
-            String error = "Failed to load posttype cache. The application will not work properly.";
-            Window.alert(error);
+        
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "registers/posttypes.php?action=inuse");
+
+        try {
+            builder.sendRequest("", new AuthResponder(constants, handlerTypes));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
         }
+        
+        ServerResponse handlerMembershipPayment = new ServerResponse() {
 
-        ResponseTextHandler handlerMembershipPayment = new ResponseTextHandler() {
-
-            public void onCompletion(String responseText) {
+            public void serverResponse(String responseText) {
                 JSONValue value = JSONParser.parse(responseText);
                 JSONArray array = value.isArray();
 
@@ -84,11 +91,14 @@ public class PosttypeCache implements Registry {
             }
 
         };
-        if (!HTTPRequest.asyncGet(constants.baseurl()
-                + "defaults/post_defaults.php?selection=membershippayment",
-                handlerMembershipPayment)) {
-            String error = "Failed to load posttype cache. The application will not work properly.";
-            Window.alert(error);
+        
+        RequestBuilder builderMP = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "defaults/post_defaults.php?selection=membershippayment");
+
+        try {
+            builderMP.sendRequest("", new AuthResponder(constants, handlerMembershipPayment));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
         }
 
     }

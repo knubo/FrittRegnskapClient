@@ -7,13 +7,16 @@ import java.util.List;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
 public class ProjectCache implements Registry {
@@ -41,35 +44,39 @@ public class ProjectCache implements Registry {
     }
 
     public void flush(final CacheCallback flushcallback) {
-        ResponseTextHandler resphandler = new ResponseTextHandler() {
-            public void onCompletion(String responseText) {
+        ServerResponse resphandler = new ServerResponse() {
+            public void serverResponse(String responseText) {
                 JSONValue jsonValue = JSONParser.parse(responseText);
                 JSONArray array = jsonValue.isArray();
-                
+
                 projectGivesDesc = new HashMap();
                 originalSort = new ArrayList();
                 allObjects = new ArrayList();
-                
+
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject obj = array.get(i).isObject();
-                    
+
                     allObjects.add(obj);
                     String key = Util.str(obj.get("project"));
                     projectGivesDesc.put(key, Util.str(obj.get("description")));
                     originalSort.add(key);
                 }
-                if(flushcallback != null) {
+                if (flushcallback != null) {
                     flushcallback.flushCompleted();
                 }
             }
-            
+
         };
-        if (!HTTPRequest.asyncGet(constants.baseurl()
-                + "registers/projects.php?action=all", resphandler )) {
-            // TODO report errors
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "registers/projects.php?action=all");
+
+        try {
+            builder.sendRequest("", new AuthResponder(constants, resphandler));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
         }
     }
-
 
     /**
      * Fills the box with projects, adds blank as first choice.

@@ -5,21 +5,22 @@ import java.util.List;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
+import com.google.gwt.user.client.Window;
 
 /**
  * This class does lazy loading of the various post types that the system has.
  * 
- * @author knuterikborgen
- * 
  */
-public class MonthHeaderCache implements ResponseTextHandler {
+public class MonthHeaderCache implements ServerResponse {
 
 	private static MonthHeaderCache instance;
 
@@ -34,13 +35,17 @@ public class MonthHeaderCache implements ResponseTextHandler {
 	}
 
 	private MonthHeaderCache(Constants constants) {
-		if (!HTTPRequest.asyncGet(constants.baseurl()
-				+ "registers/monthcolumns.php", this)) {
-            //TODO Report errors,
-		}
+	    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "registers/monthcolumns.php");
+
+        try {
+            builder.sendRequest("", new AuthResponder(constants, this));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
 	}
 
-	public void onCompletion(String responseText) {
+	public void serverResponse(String responseText) {
 		JSONValue jsonValue = JSONParser.parse(responseText);
 		JSONArray array = jsonValue.isArray();
 		headersByName = new ArrayList();
