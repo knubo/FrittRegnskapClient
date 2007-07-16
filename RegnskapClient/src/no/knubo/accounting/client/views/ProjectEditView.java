@@ -64,7 +64,7 @@ public class ProjectEditView extends Composite implements ClickListener,
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 0, 2);
 
-        newButton = new NamedButton("ProjectEditView.newButton", messages.new_project());
+        newButton = new NamedButton("projectEditView_newButton", messages.projectEditView_newButton());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -127,7 +127,7 @@ public class ProjectEditView extends Composite implements ClickListener,
 
     private void addRow(int row, String project, String id) {
         table.setHTML(row, 0, project);
-        Image editImage = ImageFactory.editImage("ProjectEditView.editImage");
+        Image editImage = ImageFactory.editImage("projectEditView_editImage");
         editImage.addClickListener(me);
         idHolder.add(id, editImage);
 
@@ -162,10 +162,10 @@ public class ProjectEditView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("ProjectEditView.saveButton", messages
+            saveButton = new NamedButton("projectEditView_saveButton", messages
                     .save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("ProjectEditView.cancelButton",
+            cancelButton = new NamedButton("projectEditView_cancelButton",
                     messages.cancel());
             cancelButton.addClickListener(this);
 

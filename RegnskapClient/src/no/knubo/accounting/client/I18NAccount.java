@@ -104,6 +104,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String clear();
 
   /**
+   * Translated "Brukere".
+   * 
+   * @return translated "Brukere"
+   * @gwt.key menuitem_useradm
+   */
+  String menuitem_useradm();
+
+  /**
    * Translated "Standardverdier".
    * 
    * @return translated "Standardverdier"
@@ -288,6 +296,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String x();
 
   /**
+   * Translated "Brukere".
+   * 
+   * @return translated "Brukere"
+   * @gwt.key title_user_adm
+   */
+  String title_user_adm();
+
+  /**
    * Translated "Bilaget er benyttet tidligere.".
    * 
    * @return translated "Bilaget er benyttet tidligere."
@@ -352,6 +368,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String person();
 
   /**
+   * Translated "Nytt prosjekt".
+   * 
+   * @return translated "Nytt prosjekt"
+   * @gwt.key projectEditView_newButton
+   */
+  String projectEditView_newButton();
+
+  /**
    * Translated "Medlemmer".
    * 
    * @return translated "Medlemmer"
@@ -384,20 +408,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String birthdate();
 
   /**
-   * Translated "Vis måned med detaljer".
-   * 
-   * @return translated "Vis måned med detaljer"
-   * @gwt.key menuitem_showmonthdetails
-   */
-  String menuitem_showmonthdetails();
-
-  /**
    * Translated "Liste over medlemmer med adresser".
    * 
    * @return translated "Liste over medlemmer med adresser"
    * @gwt.key menuitem_report_addresses
    */
   String menuitem_report_addresses();
+
+  /**
+   * Translated "Vis måned med detaljer".
+   * 
+   * @return translated "Vis måned med detaljer"
+   * @gwt.key menuitem_showmonthdetails
+   */
+  String menuitem_showmonthdetails();
 
   /**
    * Translated "Juli".
@@ -856,6 +880,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String registry_invalid_key();
 
   /**
+   * Translated "Ny bruker".
+   * 
+   * @return translated "Ny bruker"
+   * @gwt.key userEditView_newButton
+   */
+  String userEditView_newButton();
+
+  /**
    * Translated "Mars".
    * 
    * @return translated "Mars"
@@ -1286,14 +1318,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key project
    */
   String project();
-
-  /**
-   * Translated "Nytt prosjekt".
-   * 
-   * @return translated "Nytt prosjekt"
-   * @gwt.key new_project
-   */
-  String new_project();
 
   /**
    * Translated "Epost".
