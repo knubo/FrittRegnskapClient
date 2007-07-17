@@ -124,14 +124,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(reportsMenu, messages.menuitem_report_selectedlines(),
                 WidgetIds.REPORT_SELECTEDLINES);
 
+        addMenuItem(settingsMenu, messages.menuitem_useradm(),
+                WidgetIds.EDIT_USERS);
         addMenuItem(settingsMenu, messages.menuitem_posttypes(),
                 WidgetIds.EDIT_POSTTYPES);
         addMenuItem(settingsMenu, messages.menuitem_projects(),
                 WidgetIds.EDIT_PROJECTS);
         addMenuItem(settingsMenu, messages.menuitem_edit_happening(),
                 WidgetIds.EDIT_HAPPENING);
-        addMenuItem(settingsMenu, messages.menuitem_useradm(),
-                WidgetIds.EDIT_USERS);
         addMenuItem(settingsMenu, messages.menuitem_values(),
                 WidgetIds.SETTINGS);
 
@@ -212,7 +212,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((ProjectEditView) widget).init();
                 break;
             case EDIT_USERS:
-                widget = UsersEditView.show(messages, constants);
+                widget = UsersEditView.show(messages, constants, helpPanel);
                 ((UsersEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:

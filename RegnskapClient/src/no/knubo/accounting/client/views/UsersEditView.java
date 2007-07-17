@@ -5,6 +5,7 @@ import java.util.HashMap;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
@@ -49,9 +50,12 @@ public class UsersEditView extends Composite implements ClickListener {
 
     private HashMap objectPerUsername;
 
-    public UsersEditView(I18NAccount messages, Constants constants) {
+    private final HelpPanel helpPanel;
+
+    public UsersEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel) {
         this.messages = messages;
         this.constants = constants;
+        this.helpPanel = helpPanel;
 
         DockPanel dp = new DockPanel();
 
@@ -77,9 +81,9 @@ public class UsersEditView extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    public static UsersEditView show(I18NAccount messages, Constants constants) {
+    public static UsersEditView show(I18NAccount messages, Constants constants, HelpPanel helpPanel) {
         if (me == null) {
-            me = new UsersEditView(messages, constants);
+            me = new UsersEditView(messages, constants, helpPanel);
         }
         me.setVisible(true);
         return me;
@@ -109,7 +113,8 @@ public class UsersEditView extends Composite implements ClickListener {
     }
 
     public void init() {
-
+        helpPanel.addEventHandler();
+        
         while (table.getRowCount() > 2) {
             table.removeRow(2);
         }
@@ -138,7 +143,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
                     addRow(row++, username, name);
                 }
-
+                helpPanel.resize(me);
             }
         };
 
@@ -162,7 +167,8 @@ public class UsersEditView extends Composite implements ClickListener {
         table.getRowFormatter().setStyleName(row, style);
     }
 
-    class UserEditFields extends DialogBox implements ClickListener {
+    class UserEditFields extends DialogBox implements ClickListener,
+            PersonPickCallback {
         private TextBoxWithErrorText userBox;
 
         private Button saveButton;
@@ -180,11 +186,10 @@ public class UsersEditView extends Composite implements ClickListener {
         private TextBoxWithErrorText personBox;
 
         UserEditFields() {
-            setText(messages.project());
             edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            edittable.setHTML(0, 0, messages.title_edit_new_user());
+            setText(messages.title_edit_new_user());
             userBox = new TextBoxWithErrorText("user");
             userBox.setMaxLength(12);
             userBox.setWidth("12em");
@@ -196,15 +201,15 @@ public class UsersEditView extends Composite implements ClickListener {
             personBox.setVisibleLength(40);
             personBox.setEnabled(false);
 
-            edittable.setText(1, 0, messages.user());
-            edittable.setWidget(1, 1, userBox);
-            edittable.setText(2, 0, messages.password());
-            edittable.setWidget(2, 1, passwordBox);
-            edittable.setText(3, 0, messages.name());
-            edittable.setWidget(3, 1, personBox);
+            edittable.setText(0, 0, messages.user());
+            edittable.setWidget(0, 1, userBox);
+            edittable.setText(1, 0, messages.password());
+            edittable.setWidget(1, 1, passwordBox);
+            edittable.setText(2, 0, messages.name());
+            edittable.setWidget(2, 1, personBox);
             Image searchImage = ImageFactory.searchImage("search_person");
             searchImage.addClickListener(this);
-            edittable.setWidget(3, 2, searchImage);
+            edittable.setWidget(2, 2, searchImage);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
@@ -228,12 +233,12 @@ public class UsersEditView extends Composite implements ClickListener {
         }
 
         public void init(String username) {
+            init();
             JSONObject object = (JSONObject) objectPerUsername.get(username);
             personId = Util.str(object.get("person"));
 
             userBox.setText(username);
             personBox.setText(Util.str(object.get("name")));
-            passwordBox.setText("");
             userBox.setEnabled(false);
         }
 
@@ -243,13 +248,23 @@ public class UsersEditView extends Composite implements ClickListener {
             userBox.setText("");
             userBox.setEnabled(true);
             personBox.setText("");
+            mainErrorLabel.setText("");
         }
 
         public void onClick(Widget sender) {
             if (sender == cancelButton) {
                 hide();
-            } else if (sender == saveButton && validateFields()) {
-                doSave();
+            } else if (sender == saveButton) {
+                if(validateFields()) {
+                    doSave();
+                }
+            } else {
+                int left = sender.getAbsoluteLeft() - 100;
+                int top = sender.getAbsoluteTop() + 10;
+                PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel);
+                view.setPopupPosition(left, top);
+                view.show();
+                view.init();
             }
         }
 
@@ -267,10 +282,24 @@ public class UsersEditView extends Composite implements ClickListener {
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(String responseText) {
-                    // Util.timedMessage(mainErrorLabel, "", 5);
-                    // addRow(row, description, sendId);
-                    hide();
-                    // TODO Auto-generated method stub
+                    JSONValue parse = JSONParser.parse(responseText);
+                    
+                    if(parse == null || parse.isObject() == null) {
+                        mainErrorLabel.setText(messages.save_failed_badly());
+                    } else {
+                        JSONObject object = parse.isObject();
+                        String result = Util.str(object.get("result"));
+                        
+                        if("0".equals(result)) {
+                            mainErrorLabel.setText(messages.save_failed());
+                        } else {
+                            mainErrorLabel.setText(messages.save_ok());
+                            hide();
+                            me.init();
+                        }
+                    }
+                    
+                    Util.timedMessage(mainErrorLabel, "", 5);
                 }
             };
 
@@ -291,6 +320,12 @@ public class UsersEditView extends Composite implements ClickListener {
             mv.mandatory(messages.required_field(), widgets);
 
             return mv.validateStatus();
+        }
+
+        public void pickPerson(String id, JSONObject personObj) {
+            personId = id;
+            personBox.setText(Util.str(personObj.get("firstname")) + " "
+                    + Util.str(personObj.get("lastname")));
         }
     }
 }

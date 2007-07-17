@@ -114,9 +114,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     }
 
     public void doSearch(StringBuffer searchRequest) {
-        while (resultTable.getRowCount() > 1) {
-            resultTable.removeRow(1);
-        }
+        doClear();
         idHolder.init();
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
@@ -380,6 +378,12 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         /* Just flag the error. */
 
         validateDay(new MasterValidator(), textbox);
+    }
+
+    public void doClear() {
+        while (resultTable.getRowCount() > 1) {
+            resultTable.removeRow(1);
+        }        
     }
 
 }

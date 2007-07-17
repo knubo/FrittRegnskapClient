@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.views;
 
+import java.util.HashMap;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
@@ -25,33 +27,53 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PersonSearchView extends Composite implements ClickListener, UserSearchCallback {
+public class PersonSearchView extends Composite implements ClickListener,
+        UserSearchCallback {
 
     private static PersonSearchView me;
+
+    private PersonPickCallback personPick;
+
+    private HashMap idGivesObject;
 
     public static PersonSearchView show(ViewCallback caller,
             I18NAccount messages, Constants constants) {
         if (me == null) {
-            me = new PersonSearchView(caller, messages, constants);
+            me = new PersonSearchView(messages, constants);
         }
+        me.setCaller(caller);
         me.setVisible(true);
         return me;
+    }
+
+    public static PersonSearchView pick(PersonPickCallback personPick,
+            I18NAccount messages, Constants constants) {
+        PersonSearchView psv = new PersonSearchView(messages, constants);
+        psv.setPicker(personPick);
+        psv.setVisible(true);
+        return psv;
+    }
+
+    private void setPicker(PersonPickCallback personPick) {
+        this.personPick = personPick;
+        this.caller = null;
     }
 
     private I18NAccount messages;
 
     private Constants constants;
 
-    private final ViewCallback caller;
-
+    private ViewCallback caller;
     private FlexTable resultTable;
 
     private IdHolder idHolder;
 
-
-    private PersonSearchView(ViewCallback caller, I18NAccount messages,
-            Constants constants) {
+    private void setCaller(ViewCallback caller) {
         this.caller = caller;
+        this.personPick = null;
+    }
+
+    private PersonSearchView(I18NAccount messages, Constants constants) {
         this.messages = messages;
         this.constants = constants;
         UserSearchFields userSearchFields = new UserSearchFields(messages, this);
@@ -80,9 +102,18 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
     }
 
     public void onClick(Widget sender) {
-
-        doEditPerson(sender);
+        if (personPick == null) {
+            doEditPerson(sender);
+        } else {
+            pickPerson(sender);
+        }
     }
+
+    private void pickPerson(Widget sender) {
+        String id = idHolder.findId(sender);
+        JSONObject personObj = (JSONObject) idGivesObject.get(id);
+        personPick.pickPerson(id, personObj);
+    } 
 
     private void doEditPerson(Widget sender) {
         String id = idHolder.findId(sender);
@@ -92,12 +123,14 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
     }
 
     public void doSearch(StringBuffer searchRequest) {
-        while (resultTable.getRowCount() > 1) {
-            resultTable.removeRow(1);
-        }
+        doClear();
+        
+        idGivesObject = new HashMap();
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
+
+        final PersonSearchView personSV = this;
 
         RequestCallback callback = new RequestCallback() {
             public void onError(Request request, Throwable exception) {
@@ -151,9 +184,19 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
                             : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
 
-                    Image image = ImageFactory.editImage("PersonSearchView.editImage");
-                    image.addClickListener(me);
-                    idHolder.add(Util.str(obj.get("id")), image);
+                    Image image = null;
+
+                    if (personPick == null) {
+                        image = ImageFactory
+                                .editImage("personSearchView_editImage");
+                    } else {
+                        image = ImageFactory
+                                .chooseImage("personSearchView_pickImage");
+                    }
+                    image.addClickListener(personSV);
+                    String id = Util.str(obj.get("id"));
+                    idHolder.add(id, image);
+                    idGivesObject.put(id, obj);
                     resultTable.setWidget(row, 7, image);
                 }
             }
@@ -167,5 +210,11 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
             Window.alert("Failed to send the request: " + e.getMessage());
         }
 
+    }
+
+    public void doClear() {
+        while (resultTable.getRowCount() > 1) {
+            resultTable.removeRow(1);
+        }        
     }
 }

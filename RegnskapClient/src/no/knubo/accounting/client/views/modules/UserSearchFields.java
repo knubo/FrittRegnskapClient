@@ -97,6 +97,7 @@ public class UserSearchFields implements ClickListener {
         lastnameBox.setText("");
         emailBox.setText("");
         employeeList.setSelectedIndex(0);
+        searchCallback.doClear();
     }
 
     public void setFocus() {

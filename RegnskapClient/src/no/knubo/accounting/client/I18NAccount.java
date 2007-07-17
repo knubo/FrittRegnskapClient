@@ -96,6 +96,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String required_field();
 
   /**
+   * Translated "Avbryt	".
+   * 
+   * @return translated "Avbryt	"
+   * @gwt.key person_pick_close
+   */
+  String person_pick_close();
+
+  /**
    * Translated "Nullstill".
    * 
    * @return translated "Nullstill"
@@ -432,6 +440,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmonthdetails();
 
   /**
+   * Translated "Feil ved lagring av data".
+   * 
+   * @return translated "Feil ved lagring av data"
+   * @gwt.key save_failed_badly
+   */
+  String save_failed_badly();
+
+  /**
    * Translated "Juli".
    * 
    * @return translated "Juli"
@@ -568,20 +584,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_to_low_zero();
 
   /**
-   * Translated "Feltet må være større eller lik 0".
-   * 
-   * @return translated "Feltet må være større eller lik 0"
-   * @gwt.key field_positive
-   */
-  String field_positive();
-
-  /**
    * Translated "Klubbkonto".
    * 
    * @return translated "Klubbkonto"
    * @gwt.key club_account
    */
   String club_account();
+
+  /**
+   * Translated "Feltet må være større eller lik 0".
+   * 
+   * @return translated "Feltet må være større eller lik 0"
+   * @gwt.key field_positive
+   */
+  String field_positive();
 
   /**
    * Translated "Oktober".
@@ -742,6 +758,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key help
    */
   String help();
+
+  /**
+   * Translated "Velg person".
+   * 
+   * @return translated "Velg person"
+   * @gwt.key choose_person
+   */
+  String choose_person();
 
   /**
    * Translated "{0} - {1} medlemmer".
