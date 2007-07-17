@@ -5,10 +5,12 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.TrustActionCache;
 import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
@@ -97,13 +99,10 @@ public class TrustStatusView extends Composite implements ClickListener {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/edittrust.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        ServerResponse callback = new ServerResponse() {
 
-            public void onResponseReceived(Request request, Response response) {
-                JSONValue value = JSONParser.parse(response.getText());
+            public void serverResponse(String responseText) {
+                JSONValue value = JSONParser.parse(responseText);
                 JSONObject object = value.isObject();
                 renderResult(object);
             }
@@ -112,7 +111,8 @@ public class TrustStatusView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest("action=status", callback);
+            builder.sendRequest("action=status", new AuthResponder(constants,
+                    callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -217,10 +217,10 @@ public class TrustStatusView extends Composite implements ClickListener {
             helpPanel.addEventHandler();
             return;
         }
-        
+
         String id = idHolder.findId(sender);
         callback.openDetails(id);
-        
+
     }
 
     class TrustEditFields extends DialogBox implements ClickListener,
@@ -447,8 +447,10 @@ public class TrustStatusView extends Composite implements ClickListener {
                         .addsAccountLineUponSave(selected);
 
                 if (addsAccountLine) {
-                    monthBox.setText(String.valueOf(registerStandards.getCurrentMonth()));
-                    yearBox.setText(String.valueOf(registerStandards.getCurrentYear()));
+                    monthBox.setText(String.valueOf(registerStandards
+                            .getCurrentMonth()));
+                    yearBox.setText(String.valueOf(registerStandards
+                            .getCurrentYear()));
                     registerStandards.fetchInitalData(true);
                 } else {
                     postNmbBox.setText("");

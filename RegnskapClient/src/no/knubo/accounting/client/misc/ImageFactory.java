@@ -24,6 +24,15 @@ public class ImageFactory {
     public static Image closeImage(String id) {
         return withId(new Image("images/close.png"), id);
     }
+    
+    public static Image searchImage(String id) {
+        return withId(new Image("images/system-search.png"), id);
+    }
+
+    public static Image chooseImage(String id) {
+        return withId(new Image("images/list-add.png"), id);
+    }
+
 
     private static Image withId(Image image, String id) {
         DOM.setElementAttribute(image.getElement(), "id", id);

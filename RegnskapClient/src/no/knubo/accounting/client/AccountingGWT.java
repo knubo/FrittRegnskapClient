@@ -19,6 +19,7 @@ import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonEditView;
 import no.knubo.accounting.client.views.PersonSearchView;
 import no.knubo.accounting.client.views.ProjectEditView;
+import no.knubo.accounting.client.views.UsersEditView;
 import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
@@ -129,15 +130,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.EDIT_PROJECTS);
         addMenuItem(settingsMenu, messages.menuitem_edit_happening(),
                 WidgetIds.EDIT_HAPPENING);
-        addMenuItem(settingsMenu, messages.menuitem_edit_trust_actions(),
-                WidgetIds.EDIT_TRUST_ACTIONS);
+        addMenuItem(settingsMenu, messages.menuitem_useradm(),
+                WidgetIds.EDIT_USERS);
         addMenuItem(settingsMenu, messages.menuitem_values(),
                 WidgetIds.SETTINGS);
 
         addMenuItem(aboutMenu, messages.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, messages.menuitem_logout(), WidgetIds.LOGOUT);
 
-        activeView.add(AboutView.getInstance(), DockPanel.CENTER);
+        activeView.add(AboutView.getInstance(messages), DockPanel.CENTER);
 
         RootPanel.get().add(docPanel);
     }
@@ -210,6 +211,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = ProjectEditView.show(messages, constants);
                 ((ProjectEditView) widget).init();
                 break;
+            case EDIT_USERS:
+                widget = UsersEditView.show(messages, constants);
+                ((UsersEditView) widget).init();
+                break;
             case WidgetIds.ADD_PERSON:
                 widget = PersonEditView.show(constants, messages);
                 ((PersonEditView) widget).init(null);
@@ -258,7 +263,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
 
             case WidgetIds.ABOUT:
-                widget = AboutView.getInstance();
+                widget = AboutView.getInstance(messages);
                 break;
             case WidgetIds.LOGOUT:
                 widget = LogoutView.getInstance(constants, messages);

@@ -184,6 +184,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String trustStatusView_cancelButton();
 
   /**
+   * Translated "Ny/endre bruker".
+   * 
+   * @return translated "Ny/endre bruker"
+   * @gwt.key title_edit_new_user
+   */
+  String title_edit_new_user();
+
+  /**
    * Translated "Avslutt måned".
    * 
    * @return translated "Avslutt måned"
@@ -462,6 +470,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menu_show
    */
   String menu_show();
+
+  /**
+   * Translated "Navn".
+   * 
+   * @return translated "Navn"
+   * @gwt.key name
+   */
+  String name();
 
   /**
    * Translated "Logg ut".
