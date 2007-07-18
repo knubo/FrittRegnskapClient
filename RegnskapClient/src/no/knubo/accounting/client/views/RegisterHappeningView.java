@@ -129,7 +129,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         Util.setCellId(table, 5, 0, "amount");
 
         table.setHTML(6, 0, messages.money_type());
-        List counts = CountCache.getInstance(constants).getCounts();
+        List counts = CountCache.getInstance(constants, messages).getCounts();
         Util.setCellId(table, 6, 0, "money_type");
 
         int row = 7;
@@ -163,7 +163,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         registerStandards.fetchInitalData(true);
 
         postListBox.getListbox().clear();
-        happeningCache = HappeningCache.getInstance(constants);
+        happeningCache = HappeningCache.getInstance(constants, messages);
         happeningCache.fill(postListBox.getListbox());
     }
 
@@ -175,7 +175,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
     }
 
     void doSave() {
-        CountCache countCache = CountCache.getInstance(constants);
+        CountCache countCache = CountCache.getInstance(constants, messages);
 
         StringBuffer sb = new StringBuffer();
         sb.append("action=save");

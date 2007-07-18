@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -36,14 +37,14 @@ public class PosttypeCache implements Registry {
 
     List memberPaymentPosts;
 
-    public static PosttypeCache getInstance(Constants constants) {
+    public static PosttypeCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
-            instance = new PosttypeCache(constants);
+            instance = new PosttypeCache(constants, messages);
         }
         return instance;
     }
 
-    private PosttypeCache(Constants constants) {
+    private PosttypeCache(Constants constants, I18NAccount messages) {
         
         ServerResponse handlerTypes = new ServerResponse() {
 
@@ -70,7 +71,7 @@ public class PosttypeCache implements Registry {
                 constants.baseurl() + "registers/posttypes.php?action=inuse");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, handlerTypes));
+            builder.sendRequest("", new AuthResponder(constants, messages, handlerTypes));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -96,7 +97,7 @@ public class PosttypeCache implements Registry {
                 constants.baseurl() + "defaults/post_defaults.php?selection=membershippayment");
 
         try {
-            builderMP.sendRequest("", new AuthResponder(constants, handlerMembershipPayment));
+            builderMP.sendRequest("", new AuthResponder(constants, messages, handlerMembershipPayment));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

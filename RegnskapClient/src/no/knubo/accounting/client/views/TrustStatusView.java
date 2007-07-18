@@ -112,7 +112,7 @@ public class TrustStatusView extends Composite implements ClickListener {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
             builder.sendRequest("action=status", new AuthResponder(constants,
-                    callback));
+                    messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -267,7 +267,7 @@ public class TrustStatusView extends Composite implements ClickListener {
             trustListBox.getListbox().addChangeListener(this);
 
             TrustActionCache trustActionCache = TrustActionCache
-                    .getInstance(constants);
+                    .getInstance(constants, messages);
             trustActionCache.fillTrustList(trustListBox.getListbox());
 
             edittable.setWidget(0, 1, trustListBox);
@@ -424,7 +424,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
         public void onChange(Widget sender) {
             TrustActionCache trustActionCache = TrustActionCache
-                    .getInstance(constants);
+                    .getInstance(constants, messages);
 
             if (sender == this.trustListBox.getListbox()) {
                 ListBox listBox = (ListBox) sender;

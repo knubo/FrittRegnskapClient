@@ -143,9 +143,9 @@ public class PostView extends DialogBox implements ClickListener,
 			return;
 		}
 		JSONArray array = value.isArray();
-		PosttypeCache postCache = PosttypeCache.getInstance(constants);
-		ProjectCache projectCache = ProjectCache.getInstance(constants);
-		EmploeeCache emploeeCache = EmploeeCache.getInstance(constants);
+		PosttypeCache postCache = PosttypeCache.getInstance(constants, messages);
+		ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
+		EmploeeCache emploeeCache = EmploeeCache.getInstance(constants, messages);
 
 		for (int i = 0; i < array.size(); i++) {
 			JSONValue postVal = array.get(i);

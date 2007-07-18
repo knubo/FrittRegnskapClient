@@ -24,6 +24,8 @@ public class CountFields {
 
     private final Constants constants;
 
+    private final I18NAccount messages;
+
     public FlexTable getTable() {
         return table;
     }
@@ -31,6 +33,7 @@ public class CountFields {
     public CountFields(Constants constants, I18NAccount messages) {
 
         this.constants = constants;
+        this.messages = messages;
         table = new FlexTable();
         table.setStyleName("tableborder");
 
@@ -49,7 +52,7 @@ public class CountFields {
 
     public void init(String line) {
         table.setVisible(true);
-        final CountCache countCache = CountCache.getInstance(constants);
+        final CountCache countCache = CountCache.getInstance(constants, messages);
 
         while (table.getRowCount() > 2) {
             table.removeRow(2);

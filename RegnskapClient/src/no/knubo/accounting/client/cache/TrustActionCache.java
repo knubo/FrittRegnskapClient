@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -34,8 +35,11 @@ public class TrustActionCache {
 
     private Map fondGivesName;
 
-    TrustActionCache(Constants constants) {
+    private final I18NAccount messages;
+
+    TrustActionCache(Constants constants, I18NAccount messages) {
         this.constants = constants;
+        this.messages = messages;
         flush();
     }
 
@@ -72,15 +76,15 @@ public class TrustActionCache {
                 constants.baseurl() + "registers/trustaction.php?action=all");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, resphandler));
+            builder.sendRequest("", new AuthResponder(constants, messages, resphandler));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
     }
 
-    public static TrustActionCache getInstance(Constants constants) {
+    public static TrustActionCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
-            instance = new TrustActionCache(constants);
+            instance = new TrustActionCache(constants, messages);
         }
         return instance;
     }

@@ -98,7 +98,7 @@ public class ReportAccountlines extends Composite implements ClickListener {
         table.setWidget(2, 1, hpAccount);
         table.getFlexCellFormatter().setColSpan(2, 1, 3);
 
-        PosttypeCache.getInstance(constants).fillAllPosts(accountNameBox);
+        PosttypeCache.getInstance(constants, messages).fillAllPosts(accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
         HTML projectErrorLabel = new HTML();
@@ -113,14 +113,14 @@ public class ReportAccountlines extends Composite implements ClickListener {
         table.setWidget(3, 1, hp);
         table.getFlexCellFormatter().setColSpan(3, 1, 3);
 
-        ProjectCache.getInstance(constants).fill(projectNameBox);
+        ProjectCache.getInstance(constants, messages).fill(projectNameBox);
         Util.syncListbox(projectNameBox, projectIdBox.getTextBox());
 
         personBox = new ListBox();
         personBox.setVisibleItemCount(1);
         table.setWidget(4, 1, personBox);
         table.getFlexCellFormatter().setColSpan(4, 1, 3);
-        EmploeeCache.getInstance(constants).fill(personBox);
+        EmploeeCache.getInstance(constants, messages).fill(personBox);
 
         searchButton = new NamedButton("search", messages.search());
         searchButton.addClickListener(this);
@@ -149,10 +149,10 @@ public class ReportAccountlines extends Composite implements ClickListener {
         mv.date(messages.date_format(), datewidgets);
 
         mv.registry(messages.registry_invalid_key(), ProjectCache
-                .getInstance(constants), new Widget[] { projectIdBox });
+                .getInstance(constants, messages), new Widget[] { projectIdBox });
 
         mv.registry(messages.registry_invalid_key(), PosttypeCache
-                .getInstance(constants), new Widget[] { accountIdBox });
+                .getInstance(constants, messages), new Widget[] { accountIdBox });
 
         return mv.validateStatus();
     }

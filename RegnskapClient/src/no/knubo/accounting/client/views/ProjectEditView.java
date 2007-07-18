@@ -106,7 +106,7 @@ public class ProjectEditView extends Composite implements ClickListener,
     }
 
     public void init() {
-        projectCache = ProjectCache.getInstance(constants);
+        projectCache = ProjectCache.getInstance(constants, messages);
         idHolder.init();
 
         while (table.getRowCount() > 1) {
@@ -183,7 +183,7 @@ public class ProjectEditView extends Composite implements ClickListener,
         public void init(String id) {
             currentId = id;
 
-            String project = ProjectCache.getInstance(constants).getName(id);
+            String project = ProjectCache.getInstance(constants, messages).getName(id);
 
             projectBox.setText(project);
         }
@@ -239,7 +239,7 @@ public class ProjectEditView extends Composite implements ClickListener,
                             addRow(row, description, sendId);
                         } else {
                             /* Could probably be more effective but why bother? */
-                            ProjectCache.getInstance(constants).flush(me);
+                            ProjectCache.getInstance(constants, messages).flush(me);
                         }
                         hide();
                     }

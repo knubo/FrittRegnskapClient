@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -27,15 +28,18 @@ public class HappeningCache implements ServerResponse {
 
     private CacheCallback flushcallback;
 
-    public static HappeningCache getInstance(Constants constants) {
+    private final I18NAccount messages;
+
+    public static HappeningCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
-            instance = new HappeningCache(constants);
+            instance = new HappeningCache(constants, messages);
         }
         return instance;
     }
 
-    private HappeningCache(Constants constants) {
+    private HappeningCache(Constants constants, I18NAccount messages) {
         this.constants = constants;
+        this.messages = messages;
         flush(null);
     }
 
@@ -45,7 +49,7 @@ public class HappeningCache implements ServerResponse {
                 constants.baseurl() + "registers/happening.php?action=all");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, this));
+            builder.sendRequest("", new AuthResponder(constants, messages, this));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

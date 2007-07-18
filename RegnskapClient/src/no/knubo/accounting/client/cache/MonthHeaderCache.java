@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -27,19 +28,19 @@ public class MonthHeaderCache implements ServerResponse {
 	List headersByName;
 	List keys;
 
-	public static MonthHeaderCache getInstance(Constants constants) {
+	public static MonthHeaderCache getInstance(Constants constants, I18NAccount messages) {
 		if (instance == null) {
-			instance = new MonthHeaderCache(constants);
+			instance = new MonthHeaderCache(constants, messages);
 		}
 		return instance;
 	}
 
-	private MonthHeaderCache(Constants constants) {
+	private MonthHeaderCache(Constants constants, I18NAccount messages) {
 	    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
                 constants.baseurl() + "registers/monthcolumns.php");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, this));
+            builder.sendRequest("", new AuthResponder(constants, messages, this));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

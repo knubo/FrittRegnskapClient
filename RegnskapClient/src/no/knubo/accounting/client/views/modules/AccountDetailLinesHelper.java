@@ -50,9 +50,9 @@ public class AccountDetailLinesHelper {
 
     public void renderResult(JSONArray array) {
 
-        ProjectCache projectCache = ProjectCache.getInstance(constants);
-        EmploeeCache emploeeCache = EmploeeCache.getInstance(constants);
-        PosttypeCache posttypeCache = PosttypeCache.getInstance(constants);
+        ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
+        EmploeeCache emploeeCache = EmploeeCache.getInstance(constants, messages);
+        PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
         int row = 0;
         for (int i = 0; i < array.size(); i++) {

@@ -152,7 +152,7 @@ public class UsersEditView extends Composite implements ClickListener {
         };
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, callback));
+            builder.sendRequest("", new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -327,7 +327,7 @@ public class UsersEditView extends Composite implements ClickListener {
             try {
                 builder.setHeader("Content-Type",
                         "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                builder.sendRequest(sb.toString(), new AuthResponder(constants, messages,
                         callback));
             } catch (RequestException e) {
                 Window.alert("Failed to send the request: " + e.getMessage());

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -23,9 +24,9 @@ public class ProjectCache implements Registry {
 
     private static ProjectCache instance;
 
-    public static ProjectCache getInstance(Constants constants) {
+    public static ProjectCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
-            instance = new ProjectCache(constants);
+            instance = new ProjectCache(constants, messages);
         }
         return instance;
     }
@@ -38,8 +39,11 @@ public class ProjectCache implements Registry {
 
     private final Constants constants;
 
-    private ProjectCache(Constants constants) {
+    private final I18NAccount messages;
+
+    private ProjectCache(Constants constants, I18NAccount messages) {
         this.constants = constants;
+        this.messages = messages;
         flush(null);
     }
 
@@ -72,7 +76,7 @@ public class ProjectCache implements Registry {
                 constants.baseurl() + "registers/projects.php?action=all");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, resphandler));
+            builder.sendRequest("", new AuthResponder(constants, messages, resphandler));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

@@ -616,6 +616,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String day_single();
 
   /**
+   * Translated "Du har ikke tilgang til operasjonen".
+   * 
+   * @return translated "Du har ikke tilgang til operasjonen"
+   * @gwt.key no_access
+   */
+  String no_access();
+
+  /**
    * Translated "Land".
    * 
    * @return translated "Land"

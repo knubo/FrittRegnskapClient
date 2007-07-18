@@ -77,7 +77,7 @@ public class MonthEndView extends Composite implements ClickListener {
         ResponseTextHandler rh = new ResponseTextHandler() {
             public void onCompletion(String responseText) {
                 PosttypeCache posttypeCache = PosttypeCache
-                        .getInstance(constants);
+                        .getInstance(constants, messages);
 
                 JSONValue jsonValue = JSONParser.parse(responseText);
 

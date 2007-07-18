@@ -50,7 +50,7 @@ public class LogoutView extends Composite implements ClickListener,
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
 
-            builder.sendRequest("action=logout", new AuthResponder(constants,
+            builder.sendRequest("action=logout", new AuthResponder(constants, messages,
                     this));
         } catch (RequestException e) {
             Window.alert("Error from server:" + e);

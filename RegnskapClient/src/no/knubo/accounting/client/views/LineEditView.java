@@ -212,9 +212,9 @@ public class LineEditView extends Composite implements ClickListener {
             String amount, String debkred, String id) {
         int rowcount = postsTable.getRowCount();
 
-        PosttypeCache postCache = PosttypeCache.getInstance(constants);
-        EmploeeCache empCache = EmploeeCache.getInstance(constants);
-        ProjectCache projectCache = ProjectCache.getInstance(constants);
+        PosttypeCache postCache = PosttypeCache.getInstance(constants, messages);
+        EmploeeCache empCache = EmploeeCache.getInstance(constants, messages);
+        ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
 
         postsTable.setText(rowcount, 0, posttype + "-"
                 + postCache.getDescription(posttype));
@@ -309,7 +309,7 @@ public class LineEditView extends Composite implements ClickListener {
         /* Above remove button. */
         table.addCell(3);
 
-        PosttypeCache.getInstance(constants).fillAllPosts(accountNameBox);
+        PosttypeCache.getInstance(constants, messages).fillAllPosts(accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
         table.setText(4, 0, messages.project());
@@ -329,7 +329,7 @@ public class LineEditView extends Composite implements ClickListener {
         table.setWidget(5, 1, hp);
         table.getFlexCellFormatter().setColSpan(5, 1, 2);
 
-        ProjectCache.getInstance(constants).fill(projectNameBox);
+        ProjectCache.getInstance(constants, messages).fill(projectNameBox);
         Util.syncListbox(projectNameBox, projectIdBox.getTextBox());
 
         table.setText(6, 0, messages.person());
@@ -338,7 +338,7 @@ public class LineEditView extends Composite implements ClickListener {
         personBox.setVisibleItemCount(1);
         table.setWidget(7, 0, personBox);
         table.getFlexCellFormatter().setColSpan(7, 0, 2);
-        EmploeeCache.getInstance(constants).fill(personBox);
+        EmploeeCache.getInstance(constants, messages).fill(personBox);
 
         addLineButton = new NamedButton("LineEditView.addLineButton");
         addLineButton.setText(messages.add());
@@ -623,10 +623,10 @@ public class LineEditView extends Composite implements ClickListener {
                 new Widget[] { amountBox });
 
         masterValidator.registry(messages.registry_invalid_key(), ProjectCache
-                .getInstance(constants), new Widget[] { projectIdBox });
+                .getInstance(constants, messages), new Widget[] { projectIdBox });
 
         masterValidator.registry(messages.registry_invalid_key(), PosttypeCache
-                .getInstance(constants), new Widget[] { accountIdBox });
+                .getInstance(constants, messages), new Widget[] { accountIdBox });
 
         return masterValidator.validateStatus();
     }

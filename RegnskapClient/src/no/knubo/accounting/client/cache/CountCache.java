@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -27,14 +28,17 @@ public class CountCache implements ServerResponse {
 
     private final Constants constants;
 
-    public CountCache(Constants constants) {
+    private final I18NAccount messages;
+
+    public CountCache(Constants constants, I18NAccount messages) {
         this.constants = constants;
+        this.messages = messages;
         flush();
     }
 
-    public static CountCache getInstance(Constants constants) {
+    public static CountCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
-            instance = new CountCache(constants);
+            instance = new CountCache(constants, messages);
         }
         return instance;
     }
@@ -67,7 +71,7 @@ public class CountCache implements ServerResponse {
                 constants.baseurl() + "registers/count.php");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, this));
+            builder.sendRequest("", new AuthResponder(constants, messages, this));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

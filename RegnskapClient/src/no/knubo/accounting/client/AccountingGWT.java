@@ -61,7 +61,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         constants = (Constants) GWT.create(Constants.class);
         helpTexts = (HelpTexts) GWT.create(HelpTexts.class);
 
-        loadCaches(constants);
+        loadCaches(constants, messages);
 
         DockPanel docPanel = new DockPanel();
         docPanel.setWidth("100%");
@@ -153,14 +153,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         return menu;
     }
 
-    public static void loadCaches(Constants cons) {
-        MonthHeaderCache.getInstance(cons);
-        PosttypeCache.getInstance(cons);
-        EmploeeCache.getInstance(cons);
-        ProjectCache.getInstance(cons);
-        CountCache.getInstance(cons);
-        HappeningCache.getInstance(cons);
-        TrustActionCache.getInstance(cons);
+    public static void loadCaches(Constants cons, I18NAccount messages) {
+        MonthHeaderCache.getInstance(cons, messages);
+        PosttypeCache.getInstance(cons, messages);
+        EmploeeCache.getInstance(cons, messages);
+        ProjectCache.getInstance(cons, messages);
+        CountCache.getInstance(cons, messages);
+        HappeningCache.getInstance(cons, messages);
+        TrustActionCache.getInstance(cons, messages);
     }
 
     class Commando implements Command, WidgetIds {

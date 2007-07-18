@@ -114,14 +114,14 @@ public class HappeningsView extends Composite implements ClickListener,
     }
 
     public void init() {
-        posttypeCache = PosttypeCache.getInstance(constants);
+        posttypeCache = PosttypeCache.getInstance(constants, messages);
         idHolder.init();
 
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
 
-        HappeningCache cache = HappeningCache.getInstance(constants);
+        HappeningCache cache = HappeningCache.getInstance(constants, messages);
 
         int row = 1;
         for (Iterator i = cache.getAll().iterator(); i.hasNext();) {
@@ -265,7 +265,7 @@ public class HappeningsView extends Composite implements ClickListener,
         public void init(String id) {
             currentId = id;
 
-            JSONObject object = HappeningCache.getInstance(constants)
+            JSONObject object = HappeningCache.getInstance(constants, messages)
                     .getHappening(id);
 
             happeningBox.setText(Util.str(object.get("description")));
@@ -343,7 +343,7 @@ public class HappeningsView extends Composite implements ClickListener,
                                     kredpost, checked, sendId);
                         } else {
                             /* Could probably be more effective but why bother? */
-                            HappeningCache.getInstance(constants).flush(me);
+                            HappeningCache.getInstance(constants, messages).flush(me);
                         }
                         hide();
                     }
@@ -365,7 +365,7 @@ public class HappeningsView extends Composite implements ClickListener,
             mv.mandatory(messages.required_field(), new Widget[] {
                     happeningBox, descBox, debetNmbBox, kreditNmbBox });
             mv.registry(messages.registry_invalid_key(), PosttypeCache
-                    .getInstance(constants), new Widget[] { debetNmbBox,
+                    .getInstance(constants, messages), new Widget[] { debetNmbBox,
                     kreditNmbBox });
             return mv.validateStatus();
         }

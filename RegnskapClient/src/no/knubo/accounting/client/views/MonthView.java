@@ -127,7 +127,7 @@ public class MonthView extends Composite implements ClickListener,
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
 
-            builder.sendRequest(params, new AuthResponder(constants, this));
+            builder.sendRequest(params, new AuthResponder(constants, messages, this));
         } catch (RequestException e) {
             Window.alert("AU:" + e);
         }
@@ -159,7 +159,7 @@ public class MonthView extends Composite implements ClickListener,
 
         /* Colposition for row 2 */
         int col2 = 1;
-        List names = MonthHeaderCache.getInstance(constants).headers();
+        List names = MonthHeaderCache.getInstance(constants, messages).headers();
 
         for (Iterator i = names.iterator(); i.hasNext();) {
             String header = (String) i.next();
@@ -245,7 +245,7 @@ public class MonthView extends Composite implements ClickListener,
         JSONObject kredObj = kred.isObject();
 
         int col = 4;
-        for (Iterator i = MonthHeaderCache.getInstance(constants).keys()
+        for (Iterator i = MonthHeaderCache.getInstance(constants, messages).keys()
                 .iterator(); i.hasNext();) {
 
             String k = (String) i.next();

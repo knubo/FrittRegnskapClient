@@ -189,7 +189,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
                     ListBox payments = new ListBox();
                     payments.setVisibleItemCount(1);
-                    PosttypeCache.getInstance(constants)
+                    PosttypeCache.getInstance(constants, messages)
                             .fillMembershipPayments(payments);
 
                     resultTable.setWidget(row, 7, payments);
