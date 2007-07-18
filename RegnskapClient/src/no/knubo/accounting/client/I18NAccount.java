@@ -392,6 +392,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String projectEditView_newButton();
 
   /**
+   * Translated "Fikk ikke forventet svar fra server. Operasjonen er trolig ikke gjennomført.".
+   * 
+   * @return translated "Fikk ikke forventet svar fra server. Operasjonen er trolig ikke gjennomført."
+   * @gwt.key bad_server_response
+   */
+  String bad_server_response();
+
+  /**
+   * Translated "Slett bruker?".
+   * 
+   * @return translated "Slett bruker?"
+   * @gwt.key delete_user_question
+   */
+  String delete_user_question();
+
+  /**
    * Translated "Medlemmer".
    * 
    * @return translated "Medlemmer"
@@ -416,6 +432,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String end_month_explain();
 
   /**
+   * Translated "Vis måned med detaljer".
+   * 
+   * @return translated "Vis måned med detaljer"
+   * @gwt.key menuitem_showmonthdetails
+   */
+  String menuitem_showmonthdetails();
+
+  /**
    * Translated "Fødselsdato".
    * 
    * @return translated "Fødselsdato"
@@ -430,14 +454,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_report_addresses
    */
   String menuitem_report_addresses();
-
-  /**
-   * Translated "Vis måned med detaljer".
-   * 
-   * @return translated "Vis måned med detaljer"
-   * @gwt.key menuitem_showmonthdetails
-   */
-  String menuitem_showmonthdetails();
 
   /**
    * Translated "Feil ved lagring av data".
@@ -1296,20 +1312,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmonth();
 
   /**
-   * Translated "Etternavn".
-   * 
-   * @return translated "Etternavn"
-   * @gwt.key lastname
-   */
-  String lastname();
-
-  /**
    * Translated "Vis treningsmedlemsskap ".
    * 
    * @return translated "Vis treningsmedlemsskap "
    * @gwt.key menuitem_showtraining
    */
   String menuitem_showtraining();
+
+  /**
+   * Translated "Etternavn".
+   * 
+   * @return translated "Etternavn"
+   * @gwt.key lastname
+   */
+  String lastname();
 
   /**
    * Translated "Beløp".

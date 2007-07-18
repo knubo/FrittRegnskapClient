@@ -44,7 +44,6 @@ public class IdHolder {
 				return id;
 			}
 		}
-		Window.alert("Failed to find id.");
 		return null;
 	}
     

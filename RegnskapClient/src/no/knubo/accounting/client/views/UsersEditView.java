@@ -43,7 +43,8 @@ public class UsersEditView extends Composite implements ClickListener {
 
     private FlexTable table;
 
-    private IdHolder idHolder;
+    private IdHolder idHolderEditImages;
+    private IdHolder idHolderDeleteImages;
 
     private Button newButton;
 
@@ -65,12 +66,13 @@ public class UsersEditView extends Composite implements ClickListener {
         table.setStyleName("tableborder");
         table.setHTML(0, 0, messages.title_user_adm());
         table.getRowFormatter().setStyleName(0, "header");
-        table.getFlexCellFormatter().setColSpan(0, 0, 4);
+        table.getFlexCellFormatter().setColSpan(0, 0, 5);
 
         table.setHTML(1, 0, messages.user());
         table.setHTML(1, 1, messages.name());
         table.setHTML(1, 2, messages.read_only_access());
         table.setHTML(1, 3, "");
+        table.setHTML(1, 4, "");
         table.getRowFormatter().setStyleName(1, "header");
 
         newButton = new NamedButton("userEditView.newButton", messages
@@ -80,7 +82,8 @@ public class UsersEditView extends Composite implements ClickListener {
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
 
-        idHolder = new IdHolder();
+        idHolderEditImages = new IdHolder();
+        idHolderDeleteImages = new IdHolder();
         initWidget(dp);
     }
 
@@ -94,26 +97,72 @@ public class UsersEditView extends Composite implements ClickListener {
     }
 
     public void onClick(Widget sender) {
-        if (editFields == null) {
-            editFields = new UserEditFields();
-        }
 
-        int left = 0;
-        if (sender == newButton) {
-            left = sender.getAbsoluteLeft() + 10;
+        if (sender == newButton || idHolderEditImages.findId(sender) != null) {
+            if (editFields == null) {
+                editFields = new UserEditFields();
+            }
+
+            int left = 0;
+            if (sender == newButton) {
+                left = sender.getAbsoluteLeft() + 10;
+            } else {
+                left = sender.getAbsoluteLeft() - 250;
+            }
+
+            int top = sender.getAbsoluteTop() + 10;
+            editFields.setPopupPosition(left, top);
+
+            if (sender == newButton) {
+                editFields.init();
+            } else {
+                editFields.init(idHolderEditImages.findId(sender));
+            }
+            editFields.show();
         } else {
-            left = sender.getAbsoluteLeft() - 250;
+            doDelete(idHolderDeleteImages.findId(sender));
+        }
+    }
+
+    private void doDelete(String username) {
+        boolean cont = Window.confirm(messages.delete_user_question());
+        if (!cont) {
+            return;
         }
 
-        int top = sender.getAbsoluteTop() + 10;
-        editFields.setPopupPosition(left, top);
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                constants.baseurl() + "registers/users.php");
 
-        if (sender == newButton) {
-            editFields.init();
-        } else {
-            editFields.init(idHolder.findId(sender));
+        StringBuffer sb = new StringBuffer();
+        sb.append("action=delete");
+
+        Util.addPostParam(sb, "username", username);
+        
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(String responseText) {
+                JSONValue value = JSONParser.parse(responseText);
+                JSONObject object = value.isObject();
+                
+                String result = Util.str(object.get("result"));
+                
+                if("1".equals(result)) {
+                    init();
+                } else {
+                    Window.alert(messages.bad_server_response());
+                }
+            }
+        };
+
+        try {
+            builder.setHeader("Content-Type",
+                    "application/x-www-form-urlencoded");
+            builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                    messages, callback));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
         }
-        editFields.show();
+
     }
 
     public void init() {
@@ -123,7 +172,8 @@ public class UsersEditView extends Composite implements ClickListener {
             table.removeRow(2);
         }
 
-        idHolder.init();
+        idHolderEditImages.init();
+        idHolderDeleteImages.init();
         objectPerUsername = new HashMap();
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
@@ -152,7 +202,8 @@ public class UsersEditView extends Composite implements ClickListener {
         };
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, messages, callback));
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -163,14 +214,20 @@ public class UsersEditView extends Composite implements ClickListener {
         table.setHTML(row, 0, username);
         table.setHTML(row, 1, name);
         table.setHTML(row, 2, "1".equals(readOnlyAccess) ? messages.x() : "");
-        
+
         table.getCellFormatter().setStyleName(row, 2, "center");
-        
+
         Image editImage = ImageFactory.editImage("userEditView_editImage");
         editImage.addClickListener(me);
-        idHolder.add(username, editImage);
+        idHolderEditImages.add(username, editImage);
+
+        Image deleteImage = ImageFactory
+                .deleteImage("userEditView.deleteImage");
+        deleteImage.addClickListener(this);
+        idHolderDeleteImages.add(username, deleteImage);
 
         table.setWidget(row, 3, editImage);
+        table.setWidget(row, 4, deleteImage);
 
         String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
         table.getRowFormatter().setStyleName(row, style);
@@ -327,8 +384,8 @@ public class UsersEditView extends Composite implements ClickListener {
             try {
                 builder.setHeader("Content-Type",
                         "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants, messages,
-                        callback));
+                builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                        messages, callback));
             } catch (RequestException e) {
                 Window.alert("Failed to send the request: " + e.getMessage());
             }

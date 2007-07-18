@@ -33,9 +33,13 @@ public class ImageFactory {
         return withId(new Image("images/list-add.png"), id);
     }
 
+    public static Image deleteImage(String id) {
+        return withId(new Image("images/edit-delete.png"), id);
+    }
 
     private static Image withId(Image image, String id) {
         DOM.setElementAttribute(image.getElement(), "id", id);
         return image;
     }
+
 }
