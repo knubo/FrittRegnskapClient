@@ -10,6 +10,7 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.misc.NamedCheckBox;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
@@ -52,7 +53,8 @@ public class UsersEditView extends Composite implements ClickListener {
 
     private final HelpPanel helpPanel;
 
-    public UsersEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel) {
+    public UsersEditView(I18NAccount messages, Constants constants,
+            HelpPanel helpPanel) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -63,11 +65,12 @@ public class UsersEditView extends Composite implements ClickListener {
         table.setStyleName("tableborder");
         table.setHTML(0, 0, messages.title_user_adm());
         table.getRowFormatter().setStyleName(0, "header");
-        table.getFlexCellFormatter().setColSpan(0, 0, 3);
+        table.getFlexCellFormatter().setColSpan(0, 0, 4);
 
         table.setHTML(1, 0, messages.user());
         table.setHTML(1, 1, messages.name());
-        table.setHTML(1, 2, "");
+        table.setHTML(1, 2, messages.read_only_access());
+        table.setHTML(1, 3, "");
         table.getRowFormatter().setStyleName(1, "header");
 
         newButton = new NamedButton("userEditView.newButton", messages
@@ -81,7 +84,8 @@ public class UsersEditView extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    public static UsersEditView show(I18NAccount messages, Constants constants, HelpPanel helpPanel) {
+    public static UsersEditView show(I18NAccount messages, Constants constants,
+            HelpPanel helpPanel) {
         if (me == null) {
             me = new UsersEditView(messages, constants, helpPanel);
         }
@@ -114,7 +118,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
     public void init() {
         helpPanel.addEventHandler();
-        
+
         while (table.getRowCount() > 2) {
             table.removeRow(2);
         }
@@ -138,10 +142,10 @@ public class UsersEditView extends Composite implements ClickListener {
 
                     String username = Util.str(object.get("username"));
                     String name = Util.str(object.get("name"));
-
+                    String readOnlyAccess = Util.str(object.get("readonly"));
                     objectPerUsername.put(username, object);
 
-                    addRow(row++, username, name);
+                    addRow(row++, username, name, readOnlyAccess);
                 }
                 helpPanel.resize(me);
             }
@@ -154,14 +158,19 @@ public class UsersEditView extends Composite implements ClickListener {
         }
     }
 
-    private void addRow(int row, String username, String name) {
+    private void addRow(int row, String username, String name,
+            String readOnlyAccess) {
         table.setHTML(row, 0, username);
         table.setHTML(row, 1, name);
+        table.setHTML(row, 2, "1".equals(readOnlyAccess) ? messages.x() : "");
+        
+        table.getCellFormatter().setStyleName(row, 2, "center");
+        
         Image editImage = ImageFactory.editImage("userEditView_editImage");
         editImage.addClickListener(me);
         idHolder.add(username, editImage);
 
-        table.setWidget(row, 2, editImage);
+        table.setWidget(row, 3, editImage);
 
         String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
         table.getRowFormatter().setStyleName(row, style);
@@ -185,6 +194,8 @@ public class UsersEditView extends Composite implements ClickListener {
 
         private TextBoxWithErrorText personBox;
 
+        private NamedCheckBox readOnlyBox;
+
         UserEditFields() {
             edittable = new FlexTable();
             edittable.setStyleName("edittable");
@@ -201,6 +212,8 @@ public class UsersEditView extends Composite implements ClickListener {
             personBox.setVisibleLength(40);
             personBox.setEnabled(false);
 
+            readOnlyBox = new NamedCheckBox("read_only_access");
+
             edittable.setText(0, 0, messages.user());
             edittable.setWidget(0, 1, userBox);
             edittable.setText(1, 0, messages.password());
@@ -210,6 +223,9 @@ public class UsersEditView extends Composite implements ClickListener {
             Image searchImage = ImageFactory.searchImage("search_person");
             searchImage.addClickListener(this);
             edittable.setWidget(2, 2, searchImage);
+
+            edittable.setText(3, 0, messages.read_only_access());
+            edittable.setWidget(3, 1, readOnlyBox);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
@@ -240,6 +256,8 @@ public class UsersEditView extends Composite implements ClickListener {
             userBox.setText(username);
             personBox.setText(Util.str(object.get("name")));
             userBox.setEnabled(false);
+            boolean isReadOnly = "1".equals(Util.str(object.get("readonly")));
+            readOnlyBox.setChecked(isReadOnly);
         }
 
         public void init() {
@@ -255,13 +273,14 @@ public class UsersEditView extends Composite implements ClickListener {
             if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton) {
-                if(validateFields()) {
+                if (validateFields()) {
                     doSave();
                 }
             } else {
                 int left = sender.getAbsoluteLeft() - 100;
                 int top = sender.getAbsoluteTop() + 10;
-                PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel);
+                PersonPickView view = PersonPickView.show(messages, constants,
+                        this, helpPanel);
                 view.setPopupPosition(left, top);
                 view.show();
                 view.init();
@@ -275,6 +294,8 @@ public class UsersEditView extends Composite implements ClickListener {
             Util.addPostParam(sb, "username", userBox.getText());
             Util.addPostParam(sb, "password", passwordBox.getText());
             Util.addPostParam(sb, "person", personId);
+            Util.addPostParam(sb, "readonly", readOnlyBox.isChecked() ? "1"
+                    : "0");
 
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                     constants.baseurl() + "registers/users.php");
@@ -283,14 +304,14 @@ public class UsersEditView extends Composite implements ClickListener {
 
                 public void serverResponse(String responseText) {
                     JSONValue parse = JSONParser.parse(responseText);
-                    
-                    if(parse == null || parse.isObject() == null) {
+
+                    if (parse == null || parse.isObject() == null) {
                         mainErrorLabel.setText(messages.save_failed_badly());
                     } else {
                         JSONObject object = parse.isObject();
                         String result = Util.str(object.get("result"));
-                        
-                        if("0".equals(result)) {
+
+                        if ("0".equals(result)) {
                             mainErrorLabel.setText(messages.save_failed());
                         } else {
                             mainErrorLabel.setText(messages.save_ok());
@@ -298,7 +319,7 @@ public class UsersEditView extends Composite implements ClickListener {
                             me.init();
                         }
                     }
-                    
+
                     Util.timedMessage(mainErrorLabel, "", 5);
                 }
             };
@@ -316,8 +337,14 @@ public class UsersEditView extends Composite implements ClickListener {
 
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
+
             Widget[] widgets = new Widget[] { userBox, personBox };
             mv.mandatory(messages.required_field(), widgets);
+
+            if (userBox.isEnabled()) {
+                mv.mandatory(messages.required_field(),
+                        new Widget[] { passwordBox });
+            }
 
             return mv.validateStatus();
         }

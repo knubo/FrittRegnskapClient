@@ -1096,6 +1096,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String address();
 
   /**
+   * Translated "Kun lesetilgang".
+   * 
+   * @return translated "Kun lesetilgang"
+   * @gwt.key read_only_access
+   */
+  String read_only_access();
+
+  /**
    * Translated "41+ år - {0} medlemmer".
    * 
    * @return translated "41+ år - {0} medlemmer"
