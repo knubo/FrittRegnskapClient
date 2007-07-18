@@ -6,19 +6,18 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.CountFields;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -451,16 +450,13 @@ public class LineEditView extends Composite implements ClickListener {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/editaccountpost.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        ServerResponse callback = new ServerResponse() {
 
-            public void onResponseReceived(Request request, Response response) {
-                if ("0".equals(response.getText().trim())) {
+            public void serverResponse(String serverResponse) {
+                if ("0".equals(serverResponse)) {
                     rowErrorLabel.setText(messages.save_failed());
                 } else {
-                    String[] parts = response.getText().trim().split(":");
+                    String[] parts = serverResponse.split(":");
                     // Parts[0] should be same as id, but I use id.
                     removeVisibleRow(id);
                     removeSumLine();
@@ -473,7 +469,7 @@ public class LineEditView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -523,18 +519,14 @@ public class LineEditView extends Composite implements ClickListener {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/editaccountpost.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        ServerResponse callback = new ServerResponse() {
 
-            public void onResponseReceived(Request request, Response response) {
-                String data = response.getText().trim();
-                if ("0".equals(data)) {
+            public void serverResponse(String serverResponse) {
+                if ("0".equals(serverResponse)) {
                     rowErrorLabel.setText(messages.save_failed());
                 } else {
                     removeSumLine();
-                    String[] parts = data.split(":");
+                    String[] parts = serverResponse.split(":");
 
                     addRegnLine(post_type, personId, projectId, Util
                             .money(money), debk, parts[0]);
@@ -542,13 +534,12 @@ public class LineEditView extends Composite implements ClickListener {
                 }
                 Util.timedMessage(updateLabel, "", 5);
             }
-
         };
 
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -583,19 +574,17 @@ public class LineEditView extends Composite implements ClickListener {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/editaccountline.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        ServerResponse callback = new ServerResponse() {
 
-            public void onResponseReceived(Request request, Response response) {
-                if ("0".equals(response.getText().trim())) {
+            public void serverResponse(String serverResponse) {
+                
+                if ("0".equals(serverResponse)) {
                     updateLabel.setText(messages.save_failed());
                 } else {
                     updateLabel.setText(messages.save_ok());
 
                     if (currentLine == null) {
-                        currentLine = response.getText().trim();
+                        currentLine = serverResponse;
                         addLineButton.setEnabled(true);
                     }
                 }
@@ -607,7 +596,7 @@ public class LineEditView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

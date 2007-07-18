@@ -552,6 +552,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String action();
 
   /**
+   * Translated "Fikk ikke svar fra server. Program- eller databasefeil.".
+   * 
+   * @return translated "Fikk ikke svar fra server. Program- eller databasefeil."
+   * @gwt.key no_server_response
+   */
+  String no_server_response();
+
+  /**
    * Translated "Finland".
    * 
    * @return translated "Finland"

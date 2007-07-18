@@ -15,11 +15,8 @@ import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -359,22 +356,13 @@ public class TrustStatusView extends Composite implements ClickListener {
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                     constants.baseurl() + "accounting/edittrust.php");
 
-            RequestCallback callback = new RequestCallback() {
-                public void onError(Request request, Throwable exception) {
-                    Window.alert(exception.getMessage());
-                }
+            ServerResponse callback = new ServerResponse() {
 
-                public void onResponseReceived(Request request,
-                        Response response) {
-                    if (response.getText() == null
-                            || response.getText().length() == 0) {
-                        Window.alert("No response from server");
-                        return;
-                    }
-                    JSONValue value = JSONParser.parse(response.getText());
+                public void serverResponse(String serverResponse) {
+                    JSONValue value = JSONParser.parse(serverResponse);
 
                     if (value == null || value.isObject() == null) {
-                        Window.alert("Error:" + response.getText());
+                        Window.alert("Error:" + serverResponse);
                     } else {
                         JSONObject object = value.isObject();
 
@@ -394,7 +382,7 @@ public class TrustStatusView extends Composite implements ClickListener {
             try {
                 builder.setHeader("Content-Type",
                         "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), callback);
+                builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
             } catch (RequestException e) {
                 Window.alert("Failed to send the request: " + e.getMessage());
             }

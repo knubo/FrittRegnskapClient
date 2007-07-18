@@ -32,7 +32,13 @@ public class AuthResponder implements RequestCallback {
         } else if (response.getStatusCode() == 511) {
             Window.alert(messages.no_access());
         } else {
-            callback.serverResponse(response.getText());
+            String data = response.getText();
+            if(data == null || data.length() == 0) {
+                Window.alert(messages.no_server_response());
+            } else {
+                data = data.trim();
+            }
+            callback.serverResponse(data);
         }
     }
 

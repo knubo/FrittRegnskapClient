@@ -3,15 +3,14 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -158,13 +157,9 @@ public class PersonEditView extends Composite implements ClickListener {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
-
-            public void onResponseReceived(Request request, Response response) {
-                JSONValue value = JSONParser.parse(response.getText());
+        ServerResponse callback = new ServerResponse() {
+            public void serverResponse(String serverResponse) {
+                JSONValue value = JSONParser.parse(serverResponse);
 
                 if (value == null) {
                     Window.alert("Failed to load person");
@@ -196,7 +191,7 @@ public class PersonEditView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -228,24 +223,21 @@ public class PersonEditView extends Composite implements ClickListener {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        ServerResponse callback = new ServerResponse() {
 
-            public void onResponseReceived(Request request, Response response) {
-                int id = Util.getInt(response.getText());
+            public void serverResponse(String serverResponse) {
+                int id = Util.getInt(serverResponse);
 
                 if (id == 0) {
-                    if ("0".equals(response.getText())) {
+                    if ("0".equals(serverResponse)) {
                         saveStatus.setText(messages.save_failed());
                     } else {
-                        Window.alert("Server error:" + response.getText());
+                        Window.alert("Server error:" + serverResponse);
                     }
                 } else {
                     saveStatus.setText(messages.save_ok());
                     if (currentId == null) {
-                        currentId = response.getText();
+                        currentId = serverResponse;
                         updateButton.setHTML(messages.update());
                     }
                 }
@@ -256,7 +248,7 @@ public class PersonEditView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

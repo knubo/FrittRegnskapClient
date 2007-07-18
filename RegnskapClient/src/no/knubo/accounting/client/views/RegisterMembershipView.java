@@ -4,21 +4,20 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ErrorLabelWidget;
 import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.UserSearchCallback;
 import no.knubo.accounting.client.views.modules.UserSearchFields;
 
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -120,13 +119,10 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        ServerResponse callback = new ServerResponse() {
 
-            public void onResponseReceived(Request request, Response response) {
-                JSONValue value = JSONParser.parse(response.getText());
+            public void serverResponse(String serverResponse) {
+                JSONValue value = JSONParser.parse(serverResponse);
                 if (value == null) {
                     Window.alert(messages.search_failed());
                     return;
@@ -206,7 +202,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(searchRequest.toString(), callback);
+            builder.sendRequest(searchRequest.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -242,16 +238,13 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/addmembership.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        ServerResponse callback = new ServerResponse() {
 
-            public void onResponseReceived(Request request, Response response) {
-                if ("1".equals(response.getText())) {
+            public void serverResponse(String serverResponse) {
+                if ("1".equals(serverResponse)) {
                     disableAfterOK();
                 } else {
-                    Window.alert(response.getText());
+                    Window.alert(messages.save_failed_badly());
                 }
             }
         };
@@ -259,7 +252,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

@@ -8,21 +8,20 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.cache.HappeningCache;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ErrorLabelWidget;
 import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -205,13 +204,9 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/addhappening.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
-
-            public void onResponseReceived(Request request, Response response) {
-                handleSaveResponse(response);
+        ServerResponse callback = new ServerResponse() {
+            public void serverResponse(String responseText) {
+                handleSaveResponse(responseText);
             }
 
         };
@@ -219,20 +214,20 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
 
     }
 
-    void handleSaveResponse(Response response) {
-        if (response.getText() == null || response.getText().length() == 0) {
+    void handleSaveResponse(String response) {
+        if (response.length() == 0) {
             Window.alert(messages.failedConnect());
             return;
         }
 
-        JSONValue value = JSONParser.parse(response.getText());
+        JSONValue value = JSONParser.parse(response);
 
         if (value == null) {
             Window.alert(messages.failedConnect());

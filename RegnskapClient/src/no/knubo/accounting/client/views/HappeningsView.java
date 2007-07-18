@@ -8,17 +8,16 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CacheCallback;
 import no.knubo.accounting.client.cache.HappeningCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -311,23 +310,18 @@ public class HappeningsView extends Composite implements ClickListener,
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                     constants.baseurl() + "registers/happening.php");
 
-            RequestCallback callback = new RequestCallback() {
-                public void onError(Request request, Throwable exception) {
-                    Window.alert(exception.getMessage());
-                }
+            ServerResponse callback = new ServerResponse() {
 
-                public void onResponseReceived(Request request,
-                        Response response) {
-                    if ("0".equals(response.getText())) {
+                public void serverResponse(String serverResponse) {
+                    if ("0".equals(serverResponse)) {
                         mainErrorLabel.setHTML(messages.save_failed());
                         Util.timedMessage(mainErrorLabel, "", 5);
                     } else {
                         if (sendId == null) {
-                            JSONValue value = JSONParser.parse(response
-                                    .getText());
+                            JSONValue value = JSONParser.parse(serverResponse);
                             if (value == null) {
-                                String error = "Failed to save data - null value.";
-                                Window.alert(error);
+                                mainErrorLabel.setHTML(messages.save_failed_badly());
+                                Util.timedMessage(mainErrorLabel, "", 5);
                                 return;
                             }
                             JSONObject object = value.isObject();
@@ -353,7 +347,7 @@ public class HappeningsView extends Composite implements ClickListener,
             try {
                 builder.setHeader("Content-Type",
                         "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), callback);
+                builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
             } catch (RequestException e) {
                 Window.alert("Failed to send the request: " + e.getMessage());
             }

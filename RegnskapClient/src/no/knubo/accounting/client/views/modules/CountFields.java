@@ -2,21 +2,20 @@ package no.knubo.accounting.client.views.modules;
 
 import java.util.Iterator;
 
-import com.google.gwt.http.client.Request;
+import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.CountCache;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
+
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
-
-import no.knubo.accounting.client.Constants;
-import no.knubo.accounting.client.I18NAccount;
-import no.knubo.accounting.client.Util;
-import no.knubo.accounting.client.cache.CountCache;
 
 public class CountFields {
 
@@ -66,13 +65,10 @@ public class CountFields {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/countget.php");
 
-        RequestCallback callback = new RequestCallback() {
-            public void onError(Request request, Throwable exception) {
-                Window.alert(exception.getMessage());
-            }
+        ServerResponse callback = new ServerResponse() {
 
-            public void onResponseReceived(Request request, Response response) {
-                JSONValue value = JSONParser.parse(response.getText());
+            public void serverResponse(String serverResponse) {
+                JSONValue value = JSONParser.parse(serverResponse);
 
                 if (value == null) {
                     table.setVisible(false);
@@ -125,7 +121,7 @@ public class CountFields {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), callback);
+            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
