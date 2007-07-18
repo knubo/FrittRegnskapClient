@@ -21,7 +21,7 @@ public class AboutView extends Composite {
 
     private AboutView() {
         Frame frame = new Frame("about.html");
-        frame.setSize("800", "600");
+        frame.setSize("600", "600");
         initWidget(frame);
         Window.setTitle(messages.menuitem_about());
     }
