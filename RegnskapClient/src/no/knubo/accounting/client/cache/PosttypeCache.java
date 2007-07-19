@@ -68,7 +68,7 @@ public class PosttypeCache implements Registry {
         };
         
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/posttypes.php?action=inuse");
+                constants.baseurl() + "registers/posttypes.php?action=all");
 
         try {
             builder.sendRequest("", new AuthResponder(constants, messages, handlerTypes));

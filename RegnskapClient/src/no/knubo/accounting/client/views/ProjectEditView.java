@@ -63,7 +63,8 @@ public class ProjectEditView extends Composite implements ClickListener,
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 0, 2);
 
-        newButton = new NamedButton("projectEditView_newButton", messages.projectEditView_newButton());
+        newButton = new NamedButton("projectEditView_newButton", messages
+                .projectEditView_newButton());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -126,13 +127,15 @@ public class ProjectEditView extends Composite implements ClickListener,
 
     private void addRow(int row, String project, String id) {
         table.setHTML(row, 0, project);
+        table.getCellFormatter().setStyleName(row, 0, "desc");
+
         Image editImage = ImageFactory.editImage("projectEditView_editImage");
         editImage.addClickListener(me);
         idHolder.add(id, editImage);
 
         table.setWidget(row, 1, editImage);
 
-        String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
+        String style = (((row + 1) % 6) < 3) ? "line2" : "line1";
         table.getRowFormatter().setStyleName(row, style);
     }
 
@@ -182,7 +185,8 @@ public class ProjectEditView extends Composite implements ClickListener,
         public void init(String id) {
             currentId = id;
 
-            String project = ProjectCache.getInstance(constants, messages).getName(id);
+            String project = ProjectCache.getInstance(constants, messages)
+                    .getName(id);
 
             projectBox.setText(project);
         }
@@ -233,7 +237,8 @@ public class ProjectEditView extends Composite implements ClickListener,
                             addRow(row, description, sendId);
                         } else {
                             /* Could probably be more effective but why bother? */
-                            ProjectCache.getInstance(constants, messages).flush(me);
+                            ProjectCache.getInstance(constants, messages)
+                                    .flush(me);
                         }
                         hide();
                     }
@@ -243,7 +248,8 @@ public class ProjectEditView extends Composite implements ClickListener,
             try {
                 builder.setHeader("Content-Type",
                         "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
+                builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                        messages, callback));
             } catch (RequestException e) {
                 Window.alert("Failed to send the request: " + e.getMessage());
             }

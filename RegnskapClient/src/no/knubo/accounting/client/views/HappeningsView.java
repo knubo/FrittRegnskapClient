@@ -145,6 +145,11 @@ public class HappeningsView extends Composite implements ClickListener,
         table.setHTML(row, 1, linedesc);
         table.setHTML(row, 2, posttypeCache.getDescriptionWithType(debetpost));
         table.setHTML(row, 3, posttypeCache.getDescriptionWithType(kredpost));
+
+        for (int i = 0; i < 4; i++) {
+            table.getCellFormatter().setStyleName(row, i, "desc");
+        }
+
         CheckBox box = new CheckBox();
         box.setEnabled(false);
         box.setChecked(required);
@@ -157,7 +162,7 @@ public class HappeningsView extends Composite implements ClickListener,
 
         table.setWidget(row, 5, editImage);
 
-        String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
+        String style = (((row + 2) % 6) < 3) ? "line2" : "line1";
         table.getRowFormatter().setStyleName(row, style);
     }
 
@@ -320,7 +325,8 @@ public class HappeningsView extends Composite implements ClickListener,
                         if (sendId == null) {
                             JSONValue value = JSONParser.parse(serverResponse);
                             if (value == null) {
-                                mainErrorLabel.setHTML(messages.save_failed_badly());
+                                mainErrorLabel.setHTML(messages
+                                        .save_failed_badly());
                                 Util.timedMessage(mainErrorLabel, "", 5);
                                 return;
                             }
@@ -337,7 +343,8 @@ public class HappeningsView extends Composite implements ClickListener,
                                     kredpost, checked, sendId);
                         } else {
                             /* Could probably be more effective but why bother? */
-                            HappeningCache.getInstance(constants, messages).flush(me);
+                            HappeningCache.getInstance(constants, messages)
+                                    .flush(me);
                         }
                         hide();
                     }
@@ -347,7 +354,8 @@ public class HappeningsView extends Composite implements ClickListener,
             try {
                 builder.setHeader("Content-Type",
                         "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
+                builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                        messages, callback));
             } catch (RequestException e) {
                 Window.alert("Failed to send the request: " + e.getMessage());
             }
@@ -359,8 +367,8 @@ public class HappeningsView extends Composite implements ClickListener,
             mv.mandatory(messages.required_field(), new Widget[] {
                     happeningBox, descBox, debetNmbBox, kreditNmbBox });
             mv.registry(messages.registry_invalid_key(), PosttypeCache
-                    .getInstance(constants, messages), new Widget[] { debetNmbBox,
-                    kreditNmbBox });
+                    .getInstance(constants, messages), new Widget[] {
+                    debetNmbBox, kreditNmbBox });
             return mv.validateStatus();
         }
 

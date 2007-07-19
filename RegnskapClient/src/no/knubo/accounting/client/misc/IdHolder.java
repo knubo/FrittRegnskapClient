@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 /** Indexes a set of widgets based on an id string. */
@@ -29,6 +28,22 @@ public class IdHolder {
 		widgets.add(widget);
 	}
 
+	public void remove(String id) {
+	    Iterator widgetIt = widgets.iterator();
+	    Iterator idsIt = ids.iterator();
+	    
+	    while(idsIt.hasNext()) {
+	        String oneId  = (String) idsIt.next();
+	        widgetIt.next();
+	        
+	        if(oneId.equals(id)) {
+	            idsIt.remove();
+	            widgetIt.remove();
+	            return;
+	        }
+	    }
+	}
+	
 	/**
 	 * Finds the id for a given widget.
 	 * @param sender The widget to find.

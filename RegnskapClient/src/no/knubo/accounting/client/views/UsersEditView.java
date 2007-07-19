@@ -137,16 +137,16 @@ public class UsersEditView extends Composite implements ClickListener {
         sb.append("action=delete");
 
         Util.addPostParam(sb, "username", username);
-        
+
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(String responseText) {
                 JSONValue value = JSONParser.parse(responseText);
                 JSONObject object = value.isObject();
-                
+
                 String result = Util.str(object.get("result"));
-                
-                if("1".equals(result)) {
+
+                if ("1".equals(result)) {
                     init();
                 } else {
                     Window.alert(messages.bad_server_response());
@@ -216,6 +216,7 @@ public class UsersEditView extends Composite implements ClickListener {
         table.setHTML(row, 2, "1".equals(readOnlyAccess) ? messages.x() : "");
 
         table.getCellFormatter().setStyleName(row, 2, "center");
+        table.getCellFormatter().setStyleName(row, 1, "desc");
 
         Image editImage = ImageFactory.editImage("userEditView_editImage");
         editImage.addClickListener(me);
@@ -229,7 +230,7 @@ public class UsersEditView extends Composite implements ClickListener {
         table.setWidget(row, 3, editImage);
         table.setWidget(row, 4, deleteImage);
 
-        String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
+        String style = (((row + 2) % 6) < 3) ? "line2" : "line1";
         table.getRowFormatter().setStyleName(row, style);
     }
 
