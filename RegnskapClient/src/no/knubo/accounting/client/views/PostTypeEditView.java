@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.views;
 
+import java.util.HashMap;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
@@ -36,6 +38,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
     private IdHolder idHolderNotInUse;
     private IdHolder idHolderEdit;
     private NamedButton button;
+    private HashMap objectPerId;
 
     public static PostTypeEditView show(I18NAccount messages,
             Constants constants, HelpPanel helpPanel) {
@@ -61,6 +64,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
         idHolderInUse = new IdHolder();
         idHolderNotInUse = new IdHolder();
         idHolderEdit = new IdHolder();
+        objectPerId = new HashMap();
         inUseTable = createTable(messages.title_posttype_edit_in_use());
         notInUseTable = createTable(messages.title_posttype_edit_not_in_use());
 
@@ -93,7 +97,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
         idHolderInUse.init();
         idHolderNotInUse.init();
         idHolderEdit.init();
-
+        objectPerId.clear();
         while (inUseTable.getRowCount() > 2) {
             inUseTable.removeRow(2);
         }
@@ -122,6 +126,8 @@ public class PostTypeEditView extends Composite implements ClickListener {
                     String colAccAccountPlan = Util.str(object
                             .get("DetailPost"));
 
+                    objectPerId.put(id, object);
+
                     if ("1".equals(inUse)) {
                         addRow(inUseTable, idHolderInUse, id, description,
                                 inUse, colAccMonth, colAccAccountPlan);
@@ -135,39 +141,100 @@ public class PostTypeEditView extends Composite implements ClickListener {
                 helpPanel.resize(me);
             }
 
-            private void addRow(FlexTable table, IdHolder idHolder, String id,
-                    String description, String inUse, String colAccMonth,
-                    String colAccAccountPlan) {
-                int row = table.getRowCount();
+        };
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    callback));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
 
-                table.setText(row, 0, id);
-                table.setText(row, 1, description);
-                table.setText(row, 2, colAccMonth);
-                table.setText(row, 3, colAccAccountPlan);
+    }
 
-                table.getCellFormatter().setStyleName(row, 1, "desc");
+    private void addRow(FlexTable table, IdHolder idHolder, String id,
+            String description, String inUse, String colAccMonth,
+            String colAccAccountPlan) {
+        int row = table.getRowCount();
 
-                Image actionImage = null;
-                if ("1".equals(inUse)) {
-                    actionImage = ImageFactory
-                            .removeImage("postTypeEditView.removeImage");
+        table.setText(row, 0, id);
+        table.setText(row, 1, description);
+        table.setText(row, 2, colAccMonth);
+        table.setText(row, 3, colAccAccountPlan);
+
+        table.getCellFormatter().setStyleName(row, 1, "desc");
+
+        Image actionImage = null;
+        if ("1".equals(inUse)) {
+            actionImage = ImageFactory
+                    .removeImage("postTypeEditView.removeImage");
+        } else {
+            actionImage = ImageFactory
+                    .chooseImage("postTypeEditView.chooseImage");
+        }
+        actionImage.addClickListener(me);
+        idHolder.add(id, actionImage);
+
+        Image editImage = ImageFactory.editImage("postTypeEditView.editImage");
+        editImage.addClickListener(me);
+        idHolderEdit.add(id, editImage);
+
+        table.setWidget(row, 4, editImage);
+        table.setWidget(row, 5, actionImage);
+
+        String style = (((row + 1) % 6) < 3) ? "line2" : "line1";
+        table.getRowFormatter().setStyleName(row, style);
+    }
+
+    public void onClick(Widget sender) {
+        String id = null;
+
+        id = idHolderInUse.findId(sender);
+        if (id != null) {
+            changeUse(id, 0, idHolderInUse, idHolderNotInUse);
+        }
+
+        id = idHolderNotInUse.findId(sender);
+        if (id != null) {
+            changeUse(id, 1, idHolderNotInUse, idHolderInUse);
+        }
+    }
+
+    private void changeUse(final String id, final int use,
+            final IdHolder outofHolder, final IdHolder intoHolder) {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "registers/posttypes.php?action=use&use="
+                        + use + "&posttype=" + id);
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(String responseText) {
+                JSONValue parse = JSONParser.parse(responseText);
+                JSONObject respObj = parse.isObject();
+                if ("1".equals(Util.str(respObj.get("result")))) {
+                    int line = outofHolder.remove(id);
+
+                    JSONObject object = (JSONObject) objectPerId.get(id);
+                    String id = Util.str(object.get("PostType"));
+                    String description = Util.str(object.get("Description"));
+                    String colAccMonth = Util.str(object.get("CollPost"));
+                    String colAccAccountPlan = Util.str(object
+                            .get("DetailPost"));
+
+                    FlexTable table = null;
+                    if (use == 0) {
+                        table = notInUseTable;
+                        inUseTable.removeRow(line + 2);
+                    } else {
+                        table = inUseTable;
+                        notInUseTable.removeRow(line + 2);
+                    }
+
+                    addRow(table, intoHolder, id, description, String.valueOf(use),
+                            colAccMonth, colAccAccountPlan);
+
                 } else {
-                    actionImage = ImageFactory
-                            .chooseImage("postTypeEditView.chooseImage");
+                    Window.alert(messages.bad_server_response());
                 }
-                actionImage.addClickListener(me);
-                idHolder.add(id, actionImage);
-
-                Image editImage = ImageFactory
-                        .editImage("postTypeEditView.editImage");
-                editImage.addClickListener(me);
-                idHolderEdit.add(id, editImage);
-
-                table.setWidget(row, 4, editImage);
-                table.setWidget(row, 5, actionImage);
-
-                String style = (((row + 1) % 6) < 3) ? "line2" : "line1";
-                table.getRowFormatter().setStyleName(row, style);
 
             }
 
@@ -179,10 +246,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
 
+        // int rowPos = idHolderNotInUse.remove(id);
     }
 
-    public void onClick(Widget sender) {
-        // TODO Auto-generated method stub
-
-    }
 }

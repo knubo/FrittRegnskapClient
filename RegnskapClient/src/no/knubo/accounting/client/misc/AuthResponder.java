@@ -35,9 +35,9 @@ public class AuthResponder implements RequestCallback {
             String data = response.getText();
             if(data == null || data.length() == 0) {
                 Window.alert(messages.no_server_response());
-            } else {
-                data = data.trim();
+                return;
             }
+            data = data.trim();
             callback.serverResponse(data);
         }
     }

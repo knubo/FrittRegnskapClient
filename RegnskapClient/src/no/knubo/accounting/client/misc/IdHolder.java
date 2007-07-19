@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 /** Indexes a set of widgets based on an id string. */
@@ -28,9 +29,10 @@ public class IdHolder {
 		widgets.add(widget);
 	}
 
-	public void remove(String id) {
+	public int remove(String id) {
 	    Iterator widgetIt = widgets.iterator();
 	    Iterator idsIt = ids.iterator();
+	    int pos = 0;
 	    
 	    while(idsIt.hasNext()) {
 	        String oneId  = (String) idsIt.next();
@@ -39,9 +41,12 @@ public class IdHolder {
 	        if(oneId.equals(id)) {
 	            idsIt.remove();
 	            widgetIt.remove();
-	            return;
+	            return pos;
 	        }
+	        pos++;
 	    }
+	    Window.alert("Should have found id to remove - program error.");
+	    return 0;
 	}
 	
 	/**
