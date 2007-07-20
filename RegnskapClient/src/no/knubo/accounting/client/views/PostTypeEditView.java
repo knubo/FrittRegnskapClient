@@ -5,6 +5,8 @@ import java.util.HashMap;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.AccountPlanCache;
+import no.knubo.accounting.client.cache.MonthHeaderCache;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
@@ -110,6 +112,11 @@ public class PostTypeEditView extends Composite implements ClickListener {
                 constants.baseurl()
                         + "registers/posttypes.php?action=all&disableFilter=1");
 
+        final MonthHeaderCache monthHeaderCache = MonthHeaderCache.getInstance(
+                constants, messages);
+        final AccountPlanCache accountPlanCache = AccountPlanCache.getInstance(
+                constants, messages);
+
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(String responseText) {
@@ -128,13 +135,18 @@ public class PostTypeEditView extends Composite implements ClickListener {
 
                     objectPerId.put(id, object);
 
+                    String colAccMonthDesc = monthHeaderCache
+                            .getDescription(colAccMonth);
+
+                    String colAccAccountPlanDesc = accountPlanCache
+                            .idGivesName(colAccAccountPlan);
                     if ("1".equals(inUse)) {
                         addRow(inUseTable, idHolderInUse, id, description,
-                                inUse, colAccMonth, colAccAccountPlan);
+                                inUse, colAccMonthDesc, colAccAccountPlanDesc);
                     } else {
                         addRow(notInUseTable, idHolderNotInUse, id,
-                                description, inUse, colAccMonth,
-                                colAccAccountPlan);
+                                description, inUse, colAccMonthDesc,
+                                colAccAccountPlanDesc);
                     }
 
                 }
@@ -161,8 +173,9 @@ public class PostTypeEditView extends Composite implements ClickListener {
         table.setText(row, 2, colAccMonth);
         table.setText(row, 3, colAccAccountPlan);
 
-        table.getCellFormatter().setStyleName(row, 1, "desc");
-
+        for (int i = 1; i < 4; i++) {
+            table.getCellFormatter().setStyleName(row, i, "desc");
+        }
         Image actionImage = null;
         if ("1".equals(inUse)) {
             actionImage = ImageFactory
@@ -220,6 +233,11 @@ public class PostTypeEditView extends Composite implements ClickListener {
                     String colAccAccountPlan = Util.str(object
                             .get("DetailPost"));
 
+                    final MonthHeaderCache monthHeaderCache = MonthHeaderCache
+                            .getInstance(constants, messages);
+                    final AccountPlanCache accountPlanCache = AccountPlanCache
+                            .getInstance(constants, messages);
+
                     FlexTable table = null;
                     if (use == 0) {
                         table = notInUseTable;
@@ -229,8 +247,10 @@ public class PostTypeEditView extends Composite implements ClickListener {
                         notInUseTable.removeRow(line + 2);
                     }
 
-                    addRow(table, intoHolder, id, description, String.valueOf(use),
-                            colAccMonth, colAccAccountPlan);
+                    addRow(table, intoHolder, id, description, String
+                            .valueOf(use), monthHeaderCache
+                            .getDescription(colAccMonth), accountPlanCache
+                            .idGivesName(colAccAccountPlan));
 
                 } else {
                     Window.alert(messages.bad_server_response());
@@ -245,8 +265,5 @@ public class PostTypeEditView extends Composite implements ClickListener {
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
-
-        // int rowPos = idHolderNotInUse.remove(id);
     }
-
 }

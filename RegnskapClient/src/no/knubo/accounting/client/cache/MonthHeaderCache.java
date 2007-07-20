@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.cache;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
@@ -18,8 +19,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 
 /**
- * This class does lazy loading of the various post types that the system has.
- * 
+ * Cache for MonthHeaders - this is the account collection posts for month view.
  */
 public class MonthHeaderCache implements ServerResponse {
 
@@ -58,6 +58,22 @@ public class MonthHeaderCache implements ServerResponse {
 			keys.add(Util.str(obj.get("Id")));
 			headersByName.add(Util.str(obj.get("Name")));
 		}
+	}
+	
+	public String getDescription(String id) {
+	    Iterator idIt = keys.iterator();
+	    Iterator descIt = headersByName.iterator();
+
+	    while (idIt.hasNext()) {
+            String elem = (String) idIt.next();
+            String desc = (String) descIt.next();
+            
+            if(elem.equals(id)) {
+                return desc;
+            }
+        }
+	    
+	    return "";
 	}
 	
 	/**

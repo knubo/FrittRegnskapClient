@@ -1,5 +1,6 @@
 package no.knubo.accounting.client;
 
+import no.knubo.accounting.client.cache.AccountPlanCache;
 import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.HappeningCache;
@@ -162,6 +163,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         CountCache.getInstance(cons, messages);
         HappeningCache.getInstance(cons, messages);
         TrustActionCache.getInstance(cons, messages);
+        AccountPlanCache.getInstance(cons, messages);
     }
 
     class Commando implements Command, WidgetIds {
@@ -218,7 +220,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case EDIT_ACCOUNTS:
                 widget = PostTypeEditView.show(messages, constants, helpPanel);
-                ((PostTypeEditView)widget).init();
+                ((PostTypeEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
                 widget = PersonEditView.show(constants, messages);
