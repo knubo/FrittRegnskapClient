@@ -264,6 +264,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String export_spreadsheet();
 
   /**
+   * Translated "Oprett/Endre kontotype".
+   * 
+   * @return translated "Oprett/Endre kontotype"
+   * @gwt.key title_edit_posttype
+   */
+  String title_edit_posttype();
+
+  /**
    * Translated "Fondskonto".
    * 
    * @return translated "Fondskonto"

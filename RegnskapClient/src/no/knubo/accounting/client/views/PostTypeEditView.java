@@ -11,8 +11,11 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
@@ -23,8 +26,11 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -41,6 +47,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
     private IdHolder idHolderEdit;
     private NamedButton button;
     private HashMap objectPerId;
+    private PostTypeEditFields editFields;
 
     public static PostTypeEditView show(I18NAccount messages,
             Constants constants, HelpPanel helpPanel) {
@@ -201,15 +208,51 @@ public class PostTypeEditView extends Composite implements ClickListener {
     public void onClick(Widget sender) {
         String id = null;
 
+        if (sender == button) {
+            edit(sender, "");
+            return;
+        }
+
+        id = idHolderEdit.findId(sender);
+        if (id != null) {
+            edit(sender, id);
+            return;
+        }
+
         id = idHolderInUse.findId(sender);
         if (id != null) {
             changeUse(id, 0, idHolderInUse, idHolderNotInUse);
+            return;
         }
 
         id = idHolderNotInUse.findId(sender);
         if (id != null) {
             changeUse(id, 1, idHolderNotInUse, idHolderInUse);
+            return;
         }
+    }
+
+    private void edit(Widget sender, String id) {
+        if (editFields == null) {
+            editFields = new PostTypeEditFields();
+        }
+
+        int left = 0;
+        if (sender == button) {
+            left = sender.getAbsoluteLeft() + 20;
+        } else {
+            left = sender.getAbsoluteLeft() - 700;
+        }
+
+        int top = sender.getAbsoluteTop() + 10;
+        editFields.setPopupPosition(left, top);
+
+        if (sender == button) {
+            editFields.init();
+        } else {
+            editFields.init(id);
+        }
+        editFields.show();
     }
 
     private void changeUse(final String id, final int use,
@@ -265,5 +308,139 @@ public class PostTypeEditView extends Composite implements ClickListener {
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
+    }
+
+    class PostTypeEditFields extends DialogBox implements ClickListener {
+
+        private NamedButton saveButton;
+        private NamedButton cancelButton;
+        private HTML mainErrorLabel;
+        private String currentId;
+        private TextBoxWithErrorText accountBox;
+        private TextBoxWithErrorText descBox;
+        private ListBoxWithErrorText colMonthListBox;
+        private ListBoxWithErrorText colAccountPlanListBox;
+
+        PostTypeEditFields() {
+            setText(messages.title_edit_posttype());
+            FlexTable edittable = new FlexTable();
+            edittable.setStyleName("edittable");
+
+            edittable.setHTML(0, 0, messages.account());
+            edittable.setHTML(1, 0, messages.description());
+            edittable.setText(2, 0, messages.account_collection_month());
+            edittable.setText(3, 0, messages.account_collection_accountplan());
+
+            accountBox = new TextBoxWithErrorText("account");
+            edittable.setWidget(0, 1, accountBox);
+
+            descBox = new TextBoxWithErrorText("description");
+            descBox.setVisibleLength(100);
+            descBox.setMaxLength(100);
+            edittable.setWidget(1, 1, descBox);
+            
+
+            colMonthListBox = new ListBoxWithErrorText(
+                    "account_collection_month");
+            edittable.setWidget(2, 1, colMonthListBox);
+
+            colAccountPlanListBox = new ListBoxWithErrorText(
+                    "account_collection_accountplan");
+            edittable.setWidget(3, 1, colAccountPlanListBox);
+
+            MonthHeaderCache.getInstance(constants, messages).fill(
+                    colMonthListBox.getListbox());
+            AccountPlanCache.getInstance(constants, messages).fill(
+                    colAccountPlanListBox.getListbox());
+
+            DockPanel dp = new DockPanel();
+            dp.add(edittable, DockPanel.NORTH);
+
+            saveButton = new NamedButton("HappeningsView.saveButton", messages
+                    .save());
+            saveButton.addClickListener(this);
+            cancelButton = new NamedButton("HappeningsView.cancelButton",
+                    messages.cancel());
+            cancelButton.addClickListener(this);
+
+            mainErrorLabel = new HTML();
+            mainErrorLabel.setStyleName("error");
+
+            HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.add(saveButton);
+            buttonPanel.add(cancelButton);
+            buttonPanel.add(mainErrorLabel);
+            dp.add(buttonPanel, DockPanel.NORTH);
+            setWidget(dp);
+        }
+
+        public void init() {
+            currentId = null;
+            accountBox.setText("");
+            descBox.setText("");
+            accountBox.setEnabled(true);
+            colMonthListBox.setSelectedIndex(0);
+            colAccountPlanListBox.setSelectedIndex(0);
+        }
+
+        public void init(String id) {
+            init();
+            currentId = id;
+
+            JSONObject obj = (JSONObject) objectPerId.get(id);
+            
+            accountBox.setText(Util.str(obj.get("PostType")));
+            descBox.setText(Util.str(obj.get("Description")));
+         
+            Util.setIndexByValue(colMonthListBox.getListbox(), Util.str(obj
+                    .get("CollPost")));
+            
+            Util.setIndexByValue(colAccountPlanListBox.getListbox(), Util.str(obj
+                    .get("DetailPost")));
+
+            accountBox.setEnabled(false);
+        }
+
+        public void onClick(Widget sender) {
+            if (sender == cancelButton) {
+                hide();
+            } else if (sender == saveButton && validateFields()) {
+                doSave();
+            }
+        }
+
+        private void doSave() {
+            StringBuffer sb = new StringBuffer();
+            sb.append("action=save");
+            final String sendId = currentId;
+
+            Util.addPostParam(sb, "id", sendId);
+
+            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                    constants.baseurl() + "registers/posttype.php");
+
+            ServerResponse callback = new ServerResponse() {
+
+                public void serverResponse(String serverResponse) {
+                    hide();
+                }
+            };
+
+            try {
+                builder.setHeader("Content-Type",
+                        "application/x-www-form-urlencoded");
+                builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                        messages, callback));
+            } catch (RequestException e) {
+                Window.alert("Failed to send the request: " + e.getMessage());
+            }
+
+        }
+
+        private boolean validateFields() {
+            MasterValidator mv = new MasterValidator();
+            return mv.validateStatus();
+        }
+
     }
 }

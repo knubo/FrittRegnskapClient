@@ -17,80 +17,98 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ListBox;
 
 /**
  * Cache for MonthHeaders - this is the account collection posts for month view.
  */
 public class MonthHeaderCache implements ServerResponse {
 
-	private static MonthHeaderCache instance;
+    private static MonthHeaderCache instance;
 
-	List headersByName;
-	List keys;
+    List headersByName;
+    List keys;
 
-	public static MonthHeaderCache getInstance(Constants constants, I18NAccount messages) {
-		if (instance == null) {
-			instance = new MonthHeaderCache(constants, messages);
-		}
-		return instance;
-	}
+    public static MonthHeaderCache getInstance(Constants constants,
+            I18NAccount messages) {
+        if (instance == null) {
+            instance = new MonthHeaderCache(constants, messages);
+        }
+        return instance;
+    }
 
-	private MonthHeaderCache(Constants constants, I18NAccount messages) {
-	    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+    private MonthHeaderCache(Constants constants, I18NAccount messages) {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
                 constants.baseurl() + "registers/monthcolumns.php");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, messages, this));
+            builder.sendRequest("",
+                    new AuthResponder(constants, messages, this));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
-	}
+    }
 
-	public void serverResponse(String responseText) {
-		JSONValue jsonValue = JSONParser.parse(responseText);
-		JSONArray array = jsonValue.isArray();
-		headersByName = new ArrayList();
-		keys = new ArrayList();
+    public void serverResponse(String responseText) {
+        JSONValue jsonValue = JSONParser.parse(responseText);
+        JSONArray array = jsonValue.isArray();
+        headersByName = new ArrayList();
+        keys = new ArrayList();
 
-		for (int i = 0; i < array.size(); i++) {
-			JSONObject obj = array.get(i).isObject();
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject obj = array.get(i).isObject();
 
-			keys.add(Util.str(obj.get("Id")));
-			headersByName.add(Util.str(obj.get("Name")));
-		}
-	}
-	
-	public String getDescription(String id) {
-	    Iterator idIt = keys.iterator();
-	    Iterator descIt = headersByName.iterator();
+            keys.add(Util.str(obj.get("Id")));
+            headersByName.add(Util.str(obj.get("Name")));
+        }
+    }
 
-	    while (idIt.hasNext()) {
+    public String getDescription(String id) {
+        Iterator idIt = keys.iterator();
+        Iterator descIt = headersByName.iterator();
+
+        while (idIt.hasNext()) {
             String elem = (String) idIt.next();
             String desc = (String) descIt.next();
-            
-            if(elem.equals(id)) {
+
+            if (elem.equals(id)) {
                 return desc;
             }
         }
-	    
-	    return "";
-	}
-	
-	/**
-	 * All headers in display order.
-	 * @return List of Strings.
-	 */
-	public List headers() {
-		return headersByName;
-	}
-	
-	/**
-	 * Returns the keys of the headers.
-	 * @return The list of keys.
-	 */
-	public List keys() {
-		return keys;
-	}
-	
+
+        return "";
+    }
+
+    /**
+     * All headers in display order.
+     * 
+     * @return List of Strings.
+     */
+    public List headers() {
+        return headersByName;
+    }
+
+    /**
+     * Returns the keys of the headers.
+     * 
+     * @return The list of keys.
+     */
+    public List keys() {
+        return keys;
+    }
+
+    public void fill(ListBox box) {
+        box.addItem("");
+
+        Iterator idIt = keys.iterator();
+        Iterator descIt = headersByName.iterator();
+
+        while (idIt.hasNext()) {
+            String elem = (String) idIt.next();
+            String desc = (String) descIt.next();
+
+            box.addItem(desc, elem);
+        }
+    }
 
 }
