@@ -15,7 +15,8 @@ public class AuthResponder implements RequestCallback {
     private final ServerResponse callback;
     private final I18NAccount messages;
 
-    public AuthResponder(Constants constants, I18NAccount messages, ServerResponse callback) {
+    public AuthResponder(Constants constants, I18NAccount messages,
+            ServerResponse callback) {
         this.constants = constants;
         this.messages = messages;
         this.callback = callback;
@@ -31,9 +32,11 @@ public class AuthResponder implements RequestCallback {
             Util.forward(constants.loginURL());
         } else if (response.getStatusCode() == 511) {
             Window.alert(messages.no_access());
+        } else if (response.getStatusCode() == 512) {
+            Window.alert("DB error:"+response.getText());
         } else {
             String data = response.getText();
-            if(data == null || data.length() == 0) {
+            if (data == null || data.length() == 0) {
                 Window.alert(messages.no_server_response());
                 return;
             }

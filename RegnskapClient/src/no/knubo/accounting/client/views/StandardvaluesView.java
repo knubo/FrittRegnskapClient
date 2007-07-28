@@ -128,7 +128,9 @@ public class StandardvaluesView extends Composite implements ClickListener {
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(String serverResponse) {
-                if ("1".equals(serverResponse)) {
+                JSONValue parse = JSONParser.parse(serverResponse);
+                JSONObject object = parse.isObject();
+                if ("1".equals(Util.str(object.get("result")))) {
                     statusHTML.setHTML(messages.save_ok());
                 } else {
                     statusHTML.setHTML(messages.save_failed());
@@ -141,7 +143,8 @@ public class StandardvaluesView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages ,callback));
+            builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                    messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
