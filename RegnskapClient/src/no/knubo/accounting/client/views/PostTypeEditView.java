@@ -338,7 +338,6 @@ public class PostTypeEditView extends Composite implements ClickListener {
             descBox.setVisibleLength(100);
             descBox.setMaxLength(100);
             edittable.setWidget(1, 1, descBox);
-            
 
             colMonthListBox = new ListBoxWithErrorText(
                     "account_collection_month");
@@ -376,6 +375,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
 
         public void init() {
             currentId = null;
+            mainErrorLabel.setText("");
             accountBox.setText("");
             descBox.setText("");
             accountBox.setEnabled(true);
@@ -388,15 +388,15 @@ public class PostTypeEditView extends Composite implements ClickListener {
             currentId = id;
 
             JSONObject obj = (JSONObject) objectPerId.get(id);
-            
+
             accountBox.setText(Util.str(obj.get("PostType")));
             descBox.setText(Util.str(obj.get("Description")));
-         
+
             Util.setIndexByValue(colMonthListBox.getListbox(), Util.str(obj
                     .get("CollPost")));
-            
-            Util.setIndexByValue(colAccountPlanListBox.getListbox(), Util.str(obj
-                    .get("DetailPost")));
+
+            Util.setIndexByValue(colAccountPlanListBox.getListbox(), Util
+                    .str(obj.get("DetailPost")));
 
             accountBox.setEnabled(false);
         }
@@ -414,15 +414,30 @@ public class PostTypeEditView extends Composite implements ClickListener {
             sb.append("action=save");
             final String sendId = currentId;
 
-            Util.addPostParam(sb, "id", sendId);
-
+            Util.addPostParam(sb, "posttype", sendId);
+            Util.addPostParam(sb, "desc", descBox.getText());
+            Util.addPostParam(sb, "collpost", colMonthListBox.getText());
+            Util.addPostParam(sb, "detailpost", colAccountPlanListBox.getText());
+            
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/posttype.php");
+                    constants.baseurl() + "registers/posttypes.php");
 
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(String serverResponse) {
-                    hide();
+                    JSONValue parse = JSONParser.parse(serverResponse);
+                    JSONObject object = parse.isObject();
+
+                    String result = Util.str(object.get("result"));
+
+                    if ("1".equals(result)) {
+                        hide();
+                        me.init();
+                    } else {
+                        mainErrorLabel.setText(messages.save_failed());
+                        Util.timedMessage(mainErrorLabel, "", 5);
+                    }
+
                 }
             };
 
@@ -439,6 +454,9 @@ public class PostTypeEditView extends Composite implements ClickListener {
 
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
+
+            mv.mandatory(messages.required_field(), new Widget[] { accountBox,
+                    descBox, colMonthListBox });
             return mv.validateStatus();
         }
 

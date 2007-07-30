@@ -608,9 +608,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String country_finland();
 
   /**
-   * Translated "Kontoer ikke i bruk".
+   * Translated "Konti ikke i bruk".
    * 
-   * @return translated "Kontoer ikke i bruk"
+   * @return translated "Konti ikke i bruk"
    * @gwt.key title_posttype_edit_not_in_use
    */
   String title_posttype_edit_not_in_use();
@@ -1176,9 +1176,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String read_only_access();
 
   /**
-   * Translated "Kontoer i bruk".
+   * Translated "Konti i bruk".
    * 
-   * @return translated "Kontoer i bruk"
+   * @return translated "Konti i bruk"
    * @gwt.key title_posttype_edit_in_use
    */
   String title_posttype_edit_in_use();
