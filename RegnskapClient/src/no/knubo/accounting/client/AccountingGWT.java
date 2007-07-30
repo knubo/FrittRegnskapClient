@@ -9,6 +9,7 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.cache.TrustActionCache;
 import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.HappeningsView;
@@ -21,12 +22,12 @@ import no.knubo.accounting.client.views.PersonEditView;
 import no.knubo.accounting.client.views.PersonSearchView;
 import no.knubo.accounting.client.views.PostTypeEditView;
 import no.knubo.accounting.client.views.ProjectEditView;
-import no.knubo.accounting.client.views.UsersEditView;
 import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.StandardvaluesView;
 import no.knubo.accounting.client.views.TrustStatusView;
+import no.knubo.accounting.client.views.UsersEditView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.reporting.ReportAccountlines;
 import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
@@ -37,6 +38,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -55,6 +57,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     private HelpTexts helpTexts;
 
+    private static Image blankImage;
+
+    private static Image loadingImage;
+
     /**
      * This is the entry point method.
      */
@@ -71,6 +77,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         MenuBar topMenu = new MenuBar();
         topMenu.setWidth("100%");
+        blankImage = ImageFactory.blankImage(16, 16);
+        blankImage.setVisible(true);
+        loadingImage = ImageFactory.loadingImage("loading");
+        loadingImage.setVisible(false);
+        docPanel.add(blankImage, DockPanel.WEST);
+        docPanel.add(loadingImage, DockPanel.WEST);
         docPanel.add(topMenu, DockPanel.NORTH);
         docPanel.setCellHeight(topMenu, "10px   ");
 
@@ -333,5 +345,24 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
                 WidgetIds.ADD_PERSON);
         Window.setTitle(messages.menuitem_addperson());
+    }
+
+    public static void setLoading() {
+        if (loadingImage != null) {
+            loadingImage.setVisible(true);
+        }
+        if (blankImage != null) {
+            blankImage.setVisible(false);
+        }
+    }
+
+    public static void setDoneLoading() {
+        if (loadingImage != null) {
+            loadingImage.setVisible(false);
+        }
+        if (blankImage != null) {
+            blankImage.setVisible(true);
+        }
+
     }
 }

@@ -24,7 +24,7 @@ public class ImageFactory {
     public static Image closeImage(String id) {
         return withId(new Image("images/close.png"), id);
     }
-    
+
     public static Image searchImage(String id) {
         return withId(new Image("images/system-search.png"), id);
     }
@@ -35,6 +35,16 @@ public class ImageFactory {
 
     public static Image deleteImage(String id) {
         return withId(new Image("images/edit-delete.png"), id);
+    }
+
+    public static Image loadingImage(String id) {
+        return withId(new Image("images/ajax-loader.gif"), id);
+    }
+
+    public static Image blankImage(int sizex, int sizey) {
+        Image img = new Image("images/blank.gif");
+        img.setSize(sizex + "px", sizey + "px");
+        return img;
     }
 
     private static Image withId(Image image, String id) {

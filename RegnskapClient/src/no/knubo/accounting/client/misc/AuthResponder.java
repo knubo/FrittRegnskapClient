@@ -1,5 +1,6 @@
 package no.knubo.accounting.client.misc;
 
+import no.knubo.accounting.client.AccountingGWT;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
@@ -20,6 +21,7 @@ public class AuthResponder implements RequestCallback {
         this.constants = constants;
         this.messages = messages;
         this.callback = callback;
+        AccountingGWT.setLoading();
 
     }
 
@@ -28,6 +30,7 @@ public class AuthResponder implements RequestCallback {
     }
 
     public void onResponseReceived(Request request, Response response) {
+        AccountingGWT.setDoneLoading();
         if (response.getStatusCode() == 510) {
             Util.forward(constants.loginURL());
         } else if (response.getStatusCode() == 511) {
