@@ -92,10 +92,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
             JSONString string = error.isString();
             infoLabel.setText(string.stringValue());
         } else {
-            JSONValue url = isObject.get("url");
-            JSONString string = url.isString();
-
-            Util.forward(string.stringValue());
+            Util.forward(constants.appURL());
         }
     }
 

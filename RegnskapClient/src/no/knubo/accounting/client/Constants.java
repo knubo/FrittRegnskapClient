@@ -8,12 +8,20 @@ package no.knubo.accounting.client;
 public interface Constants extends com.google.gwt.i18n.client.Constants {
   
   /**
-   * Translated "/RegnskapClient/www/no.knubo.accounting.Login/Login.html".
+   * Translated "../no.knubo.accounting.Login/Login.html".
    * 
-   * @return translated "/RegnskapClient/www/no.knubo.accounting.Login/Login.html"
+   * @return translated "../no.knubo.accounting.Login/Login.html"
    * @gwt.key loginURL
    */
   String loginURL();
+
+  /**
+   * Translated "../no.knubo.accounting.AccountingGWT/AccountingGWT.html".
+   * 
+   * @return translated "../no.knubo.accounting.AccountingGWT/AccountingGWT.html"
+   * @gwt.key appURL
+   */
+  String appURL();
 
   /**
    * Translated "/RegnskapServer/services/".

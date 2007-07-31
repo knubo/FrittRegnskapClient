@@ -363,6 +363,5 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         if (blankImage != null) {
             blankImage.setVisible(true);
         }
-
     }
 }
