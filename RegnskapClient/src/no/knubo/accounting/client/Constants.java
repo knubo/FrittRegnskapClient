@@ -24,9 +24,9 @@ public interface Constants extends com.google.gwt.i18n.client.Constants {
   String appURL();
 
   /**
-   * Translated "/RegnskapServer/services/".
+   * Translated "../../../RegnskapServer/services/".
    * 
-   * @return translated "/RegnskapServer/services/"
+   * @return translated "../../../RegnskapServer/services/"
    * @gwt.key baseurl
    */
   String baseurl();
