@@ -26,4 +26,5 @@ public interface WidgetIds {
     public int LOGOUT = 25;
     public int EDIT_USERS = 26;
     public int EDIT_ACCOUNTS = 27;
+    public int REPORT_LETTER = 28;
 }

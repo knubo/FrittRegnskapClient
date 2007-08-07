@@ -48,6 +48,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment();
 
   /**
+   * Translated "Massebrev".
+   * 
+   * @return translated "Massebrev"
+   * @gwt.key menuitem_report_letter
+   */
+  String menuitem_report_letter();
+
+  /**
    * Translated "Avslutt år".
    * 
    * @return translated "Avslutt år"
@@ -464,20 +472,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmonthdetails();
 
   /**
-   * Translated "Fødselsdato".
-   * 
-   * @return translated "Fødselsdato"
-   * @gwt.key birthdate
-   */
-  String birthdate();
-
-  /**
    * Translated "Liste over medlemmer med adresser".
    * 
    * @return translated "Liste over medlemmer med adresser"
    * @gwt.key menuitem_report_addresses
    */
   String menuitem_report_addresses();
+
+  /**
+   * Translated "Fødselsdato".
+   * 
+   * @return translated "Fødselsdato"
+   * @gwt.key birthdate
+   */
+  String birthdate();
 
   /**
    * Translated "Feil ved lagring av data".
@@ -752,20 +760,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String newline();
 
   /**
-   * Translated "Konti".
-   * 
-   * @return translated "Konti"
-   * @gwt.key menuitem_accounts
-   */
-  String menuitem_accounts();
-
-  /**
    * Translated "Vis kursmedlemsskap".
    * 
    * @return translated "Vis kursmedlemsskap"
    * @gwt.key menuitem_showclassmembers
    */
   String menuitem_showclassmembers();
+
+  /**
+   * Translated "Konti".
+   * 
+   * @return translated "Konti"
+   * @gwt.key menuitem_accounts
+   */
+  String menuitem_accounts();
 
   /**
    * Translated "Fradato".
@@ -1016,6 +1024,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String register_membership_help();
 
   /**
+   * Translated "Flett brev".
+   * 
+   * @return translated "Flett brev"
+   * @gwt.key join_letters
+   */
+  String join_letters();
+
+  /**
    * Translated "Betalt dag".
    * 
    * @return translated "Betalt dag"
@@ -1174,6 +1190,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key read_only_access
    */
   String read_only_access();
+
+  /**
+   * Translated "Brevmal".
+   * 
+   * @return translated "Brevmal"
+   * @gwt.key letter_template
+   */
+  String letter_template();
 
   /**
    * Translated "Konti i bruk".
