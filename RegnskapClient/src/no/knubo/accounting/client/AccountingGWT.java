@@ -30,6 +30,7 @@ import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.UsersEditView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.reporting.ReportAccountlines;
+import no.knubo.accounting.client.views.reporting.ReportMail;
 import no.knubo.accounting.client.views.reporting.ReportMassLetters;
 import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
 import no.knubo.accounting.client.views.reporting.ReportMembersBirth;
@@ -140,6 +141,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.REPORT_SELECTEDLINES);
         addMenuItem(reportsMenu, messages.menuitem_report_letter(),
                 WidgetIds.REPORT_LETTER);
+        addMenuItem(reportsMenu, messages.menuitem_report_email(),
+                WidgetIds.REPORT_EMAIL);
 
         addMenuItem(settingsMenu, messages.menuitem_useradm(),
                 WidgetIds.EDIT_USERS);
@@ -284,9 +287,13 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                         helpPanel);
                 break;
             case REPORT_LETTER:
-                widget = ReportMassLetters.getInstance(constants, messages, helpPanel);
+                widget = ReportMassLetters.getInstance(constants, messages);
                 ((ReportMassLetters) widget).init();
                 break;
+            case REPORT_EMAIL:
+                widget = ReportMail.getInstance(constants, messages);
+                break;
+                
             case WidgetIds.ABOUT:
                 widget = AboutView.getInstance(messages);
                 break;

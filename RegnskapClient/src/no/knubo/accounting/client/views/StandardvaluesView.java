@@ -58,6 +58,8 @@ public class StandardvaluesView extends Composite implements ClickListener {
 
     private final I18NAccount messages;
 
+    private TextBoxWithErrorText emailBox;
+
     public StandardvaluesView(I18NAccount messages, Constants constants) {
         this.messages = messages;
         this.constants = constants;
@@ -76,6 +78,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         table.setHTML(3, 0, messages.cost_course());
         table.setHTML(4, 0, messages.cost_practice());
         table.setHTML(5, 0, messages.cost_membership());
+        table.setHTML(6, 0, messages.mail_sender());
 
         yearBox = new TextBoxWithErrorText("year");
         yearBox.setMaxLength(4);
@@ -89,21 +92,24 @@ public class StandardvaluesView extends Composite implements ClickListener {
         costPracticeBox.setMaxLength(6);
         costMembershipBox = new TextBoxWithErrorText("costmembership");
         costMembershipBox.setMaxLength(6);
-
+        emailBox = new TextBoxWithErrorText("mail_sender");
+        emailBox.setVisibleLength(80);
+        
         table.setWidget(0, 1, yearBox);
         table.setWidget(1, 1, monthBox);
         table.setWidget(2, 1, semesterBox);
         table.setWidget(3, 1, costCourseBox);
         table.setWidget(4, 1, costPracticeBox);
         table.setWidget(5, 1, costMembershipBox);
+        table.setWidget(6, 1, emailBox);
 
         updateButton = new NamedButton("StandardValuesView.updateButton",
                 messages.update());
         updateButton.addClickListener(this);
         statusHTML = new HTML();
 
-        table.setWidget(6, 0, updateButton);
-        table.setWidget(6, 1, statusHTML);
+        table.setWidget(7, 0, updateButton);
+        table.setWidget(7, 1, statusHTML);
         initWidget(dp);
     }
 
@@ -121,6 +127,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         Util.addPostParam(sb, "cost_course", costCourseBox.getText());
         Util.addPostParam(sb, "cost_practice", costPracticeBox.getText());
         Util.addPostParam(sb, "cost_membership", costMembershipBox.getText());
+        Util.addPostParam(sb, "email_sender", emailBox.getText());
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/standard.php");
@@ -175,6 +182,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
                 costPracticeBox.setText(Util.str(object.get("cost_practice")));
                 costMembershipBox.setText(Util.str(object
                         .get("cost_membership")));
+                emailBox.setText(Util.str(object.get("email_sender")));
             }
 
         };

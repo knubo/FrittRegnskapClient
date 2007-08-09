@@ -6,7 +6,6 @@ import java.util.Iterator;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
-import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -28,24 +27,20 @@ public class ReportMassLetters extends Composite implements ClickListener {
     private static ReportMassLetters reportInstance;
     private final Constants constants;
     private final I18NAccount messages;
-    private final HelpPanel helpPanel;
     private FlexTable table;
     private ArrayList radiobuttons;
 
     public static ReportMassLetters getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel) {
+            I18NAccount messages) {
         if (reportInstance == null) {
-            reportInstance = new ReportMassLetters(constants, messages,
-                    helpPanel);
+            reportInstance = new ReportMassLetters(constants, messages);
         }
         return reportInstance;
     }
 
-    public ReportMassLetters(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel) {
+    public ReportMassLetters(Constants constants, I18NAccount messages) {
         this.constants = constants;
         this.messages = messages;
-        this.helpPanel = helpPanel;
 
         table = new FlexTable();
         table.setStyleName("edittable");

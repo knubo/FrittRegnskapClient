@@ -374,3 +374,13 @@ td.rute {
     margin-left: 50px;
 	margin-top: 50px;
  }
+ 
+.emailsendname {
+ 	text-align: left;
+ 	width: 400px;
+ }
+ 
+ .emailsendemail {
+ 	text-align: left;
+ 	width: 400px;
+}
