@@ -61,6 +61,8 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private TextBoxWithErrorText birthdateBox;
 
+    private CheckBox newsletterCheck;
+
     public PersonEditView(I18NAccount messages, Constants constants) {
         this.messages = messages;
         this.constants = constants;
@@ -82,6 +84,7 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setHTML(8, 0, messages.phone());
         table.setHTML(9, 0, messages.cellphone());
         table.setHTML(10, 0, messages.employee());
+        table.setHTML(11, 0, messages.newsletter());
 
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
@@ -110,6 +113,7 @@ public class PersonEditView extends Composite implements ClickListener {
         cellphoneBox = new TextBoxWithErrorText("cellphone");
         cellphoneBox.setMaxLength(13);
         employeeCheck = new CheckBox();
+        newsletterCheck = new CheckBox();
 
         updateButton = new NamedButton("PersonEditView.updateButton", messages
                 .update());
@@ -129,9 +133,9 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setWidget(8, 1, phoneBox);
         table.setWidget(9, 1, cellphoneBox);
         table.setWidget(10, 1, employeeCheck);
-        table.setWidget(11, 0, updateButton);
-        table.setWidget(11, 1, saveStatus);
-
+        table.setWidget(11, 1, newsletterCheck);
+        table.setWidget(12, 0, updateButton);
+        table.setWidget(12, 1, saveStatus);
         initWidget(dp);
     }
 
@@ -185,13 +189,16 @@ public class PersonEditView extends Composite implements ClickListener {
                 emailBox.setText(Util.str(object.get("Email")));
                 employeeCheck.setChecked("1".equals(Util.str(object
                         .get("IsEmployee"))));
+                newsletterCheck.setChecked("1".equals(Util.str(object
+                        .get("Newsletter"))));
             }
         };
 
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
+            builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                    messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -219,6 +226,8 @@ public class PersonEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "cellphone", cellphoneBox.getText());
         String isChecked = employeeCheck.isChecked() ? "1" : "0";
         Util.addPostParam(sb, "employee", isChecked);
+        String newsletter = newsletterCheck.isChecked() ? "1" : "0";
+        Util.addPostParam(sb, "newsletter", newsletter);
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
@@ -248,7 +257,8 @@ public class PersonEditView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
+            builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                    messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -268,7 +278,7 @@ public class PersonEditView extends Composite implements ClickListener {
             phoneBox.setText("");
             cellphoneBox.setText("");
             employeeCheck.setChecked(false);
-
+            newsletterCheck.setChecked(false);
             updateButton.setHTML(messages.save());
         } else {
             doOpen();
@@ -284,7 +294,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
         masterValidator.date(messages.date_format(),
                 new Widget[] { birthdateBox });
-        
+
         masterValidator.email(messages.invalid_email(),
                 new Widget[] { emailBox });
 

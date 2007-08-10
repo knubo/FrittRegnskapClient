@@ -896,6 +896,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String required_field();
 
   /**
+   * Translated "Nyhetsbrev".
+   * 
+   * @return translated "Nyhetsbrev"
+   * @gwt.key newsletter
+   */
+  String newsletter();
+
+  /**
    * Translated "Brukere".
    * 
    * @return translated "Brukere"

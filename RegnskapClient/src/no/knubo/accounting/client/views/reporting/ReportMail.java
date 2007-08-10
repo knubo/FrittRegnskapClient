@@ -211,12 +211,12 @@ public class ReportMail extends Composite implements ClickListener {
             infoTable.setText(0, 2, "(" + (receivers.size() - currentIndex)
                     + ")");
 
-            StringBuffer searchRequest = new StringBuffer();
+            StringBuffer mailRequest = new StringBuffer();
 
-            searchRequest.append("action=email");
-            Util.addPostParam(searchRequest, "subject", titleBox.getText());
-            Util.addPostParam(searchRequest, "email", email);
-            Util.addPostParam(searchRequest, "body", bodyBox.getText());
+            mailRequest.append("action=email");
+            Util.addPostParam(mailRequest, "subject", titleBox.getText());
+            Util.addPostParam(mailRequest, "email", email);
+            Util.addPostParam(mailRequest, "body", bodyBox.getText());
 
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                     constants.baseurl() + "reports/email.php");
@@ -255,7 +255,7 @@ public class ReportMail extends Composite implements ClickListener {
             try {
                 builder.setHeader("Content-Type",
                         "application/x-www-form-urlencoded");
-                builder.sendRequest(searchRequest.toString(),
+                builder.sendRequest(mailRequest.toString(),
                         new AuthResponder(constants, messages, callback));
             } catch (RequestException e) {
                 Window.alert("Failed to send the request: " + e.getMessage());
