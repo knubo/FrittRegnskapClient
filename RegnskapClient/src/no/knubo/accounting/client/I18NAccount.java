@@ -1638,4 +1638,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menu_register
    */
   String menu_register();
+
+  /**
+   * Translated "Testutsending".
+   * 
+   * @return translated "Testutsending"
+   * @gwt.key mail_test
+   */
+  String mail_test();
 }

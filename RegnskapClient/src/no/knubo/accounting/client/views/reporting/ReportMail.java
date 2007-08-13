@@ -60,6 +60,8 @@ public class ReportMail extends Composite implements ClickListener {
                 "members");
         reciversListBox.getListbox().addItem(messages.mail_query_newsletter(),
                 "newsletter");
+        reciversListBox.getListbox().addItem(messages.mail_test(),
+        "test");
         mainTable.setWidget(0, 1, reciversListBox);
 
         titleBox = new TextBoxWithErrorText("mail_title");

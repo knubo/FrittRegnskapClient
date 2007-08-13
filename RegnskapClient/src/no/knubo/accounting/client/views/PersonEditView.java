@@ -88,15 +88,19 @@ public class PersonEditView extends Composite implements ClickListener {
 
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
+        firstnameBox.setVisibleLength(50);
         lastnameBox = new TextBoxWithErrorText("lastname");
         lastnameBox.setMaxLength(50);
+        lastnameBox.setVisibleLength(50);
         birthdateBox = new TextBoxWithErrorText("birthdate");
         birthdateBox.setMaxLength(10);
 
         emailBox = new TextBoxWithErrorText("email");
         emailBox.setMaxLength(100);
+        emailBox.setVisibleLength(100);
         addressBox = new TextBoxWithErrorText("address");
         addressBox.setMaxLength(80);
+        addressBox.setVisibleLength(80);
         postnmbBox = new TextBoxWithErrorText("postalnumber");
         postnmbBox.setMaxLength(4);
         cityBox = new TextBoxWithErrorText("city");

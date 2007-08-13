@@ -143,8 +143,8 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     JSONArray names = members.get(i).isArray();
 
                     int row = i + 1;
-                    String firstname = Util.str(names.get(0));
-                    String lastname = Util.str(names.get(1));
+                    String firstname = Util.str(names.get(1));
+                    String lastname = Util.str(names.get(0));
                     String id = Util.str(names.get(2));
                     table.setText(row, 0, lastname);
                     table.setText(row, 1, firstname);
