@@ -35,7 +35,7 @@ public class HelpPanel extends Composite implements EventPreview {
     }
 
     public void resize(Widget widget) {
-        mainFrame.setWidth("100%");
+        mainFrame.setWidth("450px");
         int height = widget.getOffsetHeight();
         if(height < 400) {
             height=400;

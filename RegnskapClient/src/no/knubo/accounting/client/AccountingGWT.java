@@ -204,7 +204,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             HelpPanel helpPanel = HelpPanel.getInstance(messages, helpTexts);
             switch (action) {
             case WidgetIds.LINE_EDIT_VIEW:
-                widget = LineEditView.show(callback, messages, constants, null);
+                widget = LineEditView.show(callback, messages, constants, null,
+                        HelpPanel.getInstance(messages, helpTexts));
                 break;
             case WidgetIds.REGISTER_MEMBERSHIP:
                 widget = RegisterMembershipView.show(messages, constants);
@@ -293,7 +294,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case REPORT_EMAIL:
                 widget = ReportMail.getInstance(constants, messages);
                 break;
-                
+
             case WidgetIds.ABOUT:
                 widget = AboutView.getInstance(messages);
                 break;
@@ -320,7 +321,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     public void openDetails(String id) {
-        Widget widget = LineEditView.show(this, messages, constants, id);
+        Widget widget = LineEditView.show(this, messages, constants, id,
+                HelpPanel.getInstance(messages, helpTexts));
 
         setActiveWidget(widget);
         HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,

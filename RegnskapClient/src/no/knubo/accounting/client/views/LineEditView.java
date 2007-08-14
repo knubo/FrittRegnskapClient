@@ -6,6 +6,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
+import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
@@ -45,9 +46,9 @@ public class LineEditView extends Composite implements ClickListener {
     private IdHolder removeIdHolder = new IdHolder();
 
     public static LineEditView show(ViewCallback caller, I18NAccount messages,
-            Constants constants, String line) {
+            Constants constants, String line, HelpPanel helpPanel) {
         if (me == null) {
-            me = new LineEditView(caller, messages, constants);
+            me = new LineEditView(caller, messages, constants, helpPanel);
         }
         me.init(line);
         return me;
@@ -96,13 +97,16 @@ public class LineEditView extends Composite implements ClickListener {
 
     private CountFields countFields;
 
+    private final HelpPanel helpPanel;
+
     private LineEditView(ViewCallback caller, I18NAccount messages,
-            Constants constants) {
+            Constants constants, HelpPanel helpPanel) {
 
         this.caller = caller;
         this.messages = messages;
         this.constants = constants;
-        
+        this.helpPanel = helpPanel;
+
         registerStandards = new RegisterStandards(constants, messages);
 
         DockPanel dp = new DockPanel();
@@ -114,7 +118,6 @@ public class LineEditView extends Composite implements ClickListener {
         hp.add(regnLinesView());
         hp.add(countFields.getTable());
         dp.add(hp, DockPanel.NORTH);
-
 
         initWidget(dp);
     }
@@ -147,6 +150,7 @@ public class LineEditView extends Composite implements ClickListener {
             registerStandards.fetchInitalData(true);
             dayBox.setFocus(true);
         }
+        helpPanel.resize(me);
     }
 
     protected String currentLine;
@@ -211,9 +215,11 @@ public class LineEditView extends Composite implements ClickListener {
             String amount, String debkred, String id) {
         int rowcount = postsTable.getRowCount();
 
-        PosttypeCache postCache = PosttypeCache.getInstance(constants, messages);
+        PosttypeCache postCache = PosttypeCache
+                .getInstance(constants, messages);
         EmploeeCache empCache = EmploeeCache.getInstance(constants, messages);
-        ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
+        ProjectCache projectCache = ProjectCache.getInstance(constants,
+                messages);
 
         postsTable.setText(rowcount, 0, posttype + "-"
                 + postCache.getDescription(posttype));
@@ -228,7 +234,8 @@ public class LineEditView extends Composite implements ClickListener {
         postsTable.setText(rowcount, 4, amount);
         postsTable.getCellFormatter().setStyleName(rowcount, 4, "right");
 
-        Image removeImage = ImageFactory.removeImage("LineEditView.removeImage");
+        Image removeImage = ImageFactory
+                .removeImage("LineEditView.removeImage");
         postsTable.setWidget(rowcount, 5, removeImage);
         removeImage.addClickListener(this);
 
@@ -308,7 +315,8 @@ public class LineEditView extends Composite implements ClickListener {
         /* Above remove button. */
         table.addCell(3);
 
-        PosttypeCache.getInstance(constants, messages).fillAllPosts(accountNameBox);
+        PosttypeCache.getInstance(constants, messages).fillAllPosts(
+                accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
         table.setText(4, 0, messages.project());
@@ -404,7 +412,8 @@ public class LineEditView extends Composite implements ClickListener {
 
         HorizontalPanel hp = new HorizontalPanel();
 
-        previousImage = ImageFactory.previousImage("ShowMembershipView.previousImage");
+        previousImage = ImageFactory
+                .previousImage("ShowMembershipView.previousImage");
         previousImage.addClickListener(this);
 
         nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
@@ -422,7 +431,7 @@ public class LineEditView extends Composite implements ClickListener {
         } else if (sender == addLineButton) {
             doRowInsert();
         } else if (sender == nextImage) {
-
+            
         } else if (sender == previousImage) {
 
         } else if (sender == dateHeader) {
@@ -469,7 +478,8 @@ public class LineEditView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
+            builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                    messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -539,7 +549,8 @@ public class LineEditView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
+            builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                    messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -568,8 +579,10 @@ public class LineEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "desc", descriptionBox.getText());
         Util.addPostParam(sb, "attachment", attachmentBox.getText());
         Util.addPostParam(sb, "postnmb", postNmbBox.getText());
-        Util.addPostParam(sb, "month", String.valueOf(registerStandards.getCurrentMonth()));
-        Util.addPostParam(sb, "year", String.valueOf(registerStandards.getCurrentYear()));
+        Util.addPostParam(sb, "month", String.valueOf(registerStandards
+                .getCurrentMonth()));
+        Util.addPostParam(sb, "year", String.valueOf(registerStandards
+                .getCurrentYear()));
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/editaccountline.php");
@@ -577,7 +590,7 @@ public class LineEditView extends Composite implements ClickListener {
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(String serverResponse) {
-                
+
                 if ("0".equals(serverResponse)) {
                     updateLabel.setText(messages.save_failed());
                 } else {
@@ -596,7 +609,8 @@ public class LineEditView extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
+            builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                    messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -612,10 +626,12 @@ public class LineEditView extends Composite implements ClickListener {
                 new Widget[] { amountBox });
 
         masterValidator.registry(messages.registry_invalid_key(), ProjectCache
-                .getInstance(constants, messages), new Widget[] { projectIdBox });
+                .getInstance(constants, messages),
+                new Widget[] { projectIdBox });
 
         masterValidator.registry(messages.registry_invalid_key(), PosttypeCache
-                .getInstance(constants, messages), new Widget[] { accountIdBox });
+                .getInstance(constants, messages),
+                new Widget[] { accountIdBox });
 
         return masterValidator.validateStatus();
     }

@@ -131,6 +131,7 @@ public class ReportAccountlines extends Composite implements ClickListener {
         dp.add(table, DockPanel.NORTH);
         dp.add(accountDetailLinesHelper.getTable(), DockPanel.NORTH);
         initWidget(dp);
+        helpPanel.resize(this);
     }
 
     public void onClick(Widget sender) {
