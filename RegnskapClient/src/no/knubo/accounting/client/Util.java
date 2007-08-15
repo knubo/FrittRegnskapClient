@@ -33,8 +33,8 @@ public class Util {
      *            The url to forward to.
      */
     public static native void forward(String url) /*-{
-        $wnd.location.href = url;
-        }-*/;
+                       $wnd.location.href = url;
+                       }-*/;
 
     /**
      * Converts a number into a i18n month from the property file.
@@ -127,22 +127,23 @@ public class Util {
     }
 
     public static String money(String original) {
-        String str = original;
-
-        if (str.charAt(0) == '-') {
-            return "-" + money(str.substring(1));
+        if (original.charAt(0) == '-') {
+            return "-" + money(original.substring(1));
         }
 
-        if (str.indexOf('.') == -1) {
-            str = str + ".00";
-        }
+        int sepPos = original.indexOf('.');
 
-        String x = str.substring(0, str.length() - 3);
+        String x = null;
+        if (sepPos == -1) {
+            x = original;
+        } else {
+            x = original.substring(0, sepPos);
+        }
         // 100000000.00
         int count = x.length() / 3;
 
-        if (count < 0) {
-            return str;
+        if (count == 0) {
+            return x + fixDecimal(original, sepPos);
         }
         int left = x.length() % 3;
 
@@ -163,7 +164,23 @@ public class Util {
                 res += ",";
             }
         }
-        return res + "." + str.substring(str.length() - 2);
+        return res + fixDecimal(original, sepPos);
+    }
+
+    private static String fixDecimal(String str, int sepPos) {
+        if (sepPos == -1) {
+            return ".00";
+        }
+
+        String sub = str.substring(sepPos);
+        switch (sub.length()) {
+        case 3:
+            return sub;
+        case 2:
+            return sub + "0";
+        default:
+            return sub.substring(0, 3);
+        }
     }
 
     public static String debkred(I18NAccount messages, JSONValue value) {
@@ -181,11 +198,11 @@ public class Util {
             return messages.debet();
         }
 
-        if("-1".equals(string)) {
+        if ("-1".equals(string)) {
             return messages.kredit();
         }
-        
-        return ""; 
+
+        return "";
     }
 
     /**
@@ -371,13 +388,13 @@ public class Util {
         if (value == null || isNull(value)) {
             return 0;
         }
-        
-        if(value.isNumber() != null) {
+
+        if (value.isNumber() != null) {
             JSONNumber numb = value.isNumber();
             double dub = numb.getValue();
-            return (int)dub;
+            return (int) dub;
         }
-        
+
         String str = str(value);
         return Integer.parseInt(str.trim());
     }
@@ -441,9 +458,9 @@ public class Util {
         DOM.setElementAttribute(table.getCellFormatter().getElement(row, col),
                 "id", id);
     }
-    
+
     public static boolean authFailed(Constants constants, Response response) {
-        if(response.getStatusCode() == 510) {
+        if (response.getStatusCode() == 510) {
             Util.forward(constants.loginURL());
             return true;
         }
