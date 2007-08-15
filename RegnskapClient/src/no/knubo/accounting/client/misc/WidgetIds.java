@@ -19,6 +19,7 @@ public interface WidgetIds {
     public int END_YEAR = 17;
     public int END_MONTH = 18;
     public int TRUST_STATUS = 19;
+    public int REPORT_USERS_EMAIL = 20;
     public int EDIT_TRUST_ACTIONS = 21;
     public int REPORT_ADDRESSES = 23;
     public int REPORT_SELECTEDLINES = 24;

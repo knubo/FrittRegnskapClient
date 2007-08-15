@@ -728,6 +728,22 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_showmembers();
 
   /**
+   * Translated "Ny fondsaksjon".
+   * 
+   * @return translated "Ny fondsaksjon"
+   * @gwt.key new_trustaction
+   */
+  String new_trustaction();
+
+  /**
+   * Translated "Epostadresser til medlemmer".
+   * 
+   * @return translated "Epostadresser til medlemmer"
+   * @gwt.key title_report_users_email
+   */
+  String title_report_users_email();
+
+  /**
    * Translated "Status".
    * 
    * @return translated "Status"
@@ -1462,6 +1478,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key paid_day
    */
   String paid_day();
+
+  /**
+   * Translated "Personers epostadresser".
+   * 
+   * @return translated "Personers epostadresser"
+   * @gwt.key menuitem_report_users_email
+   */
+  String menuitem_report_users_email();
 
   /**
    * Translated "Telling".

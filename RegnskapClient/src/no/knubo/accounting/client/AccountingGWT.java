@@ -35,6 +35,7 @@ import no.knubo.accounting.client.views.reporting.ReportMail;
 import no.knubo.accounting.client.views.reporting.ReportMassLetters;
 import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
 import no.knubo.accounting.client.views.reporting.ReportMembersBirth;
+import no.knubo.accounting.client.views.reporting.ReportUsersEmail;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -144,6 +145,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.REPORT_LETTER);
         addMenuItem(reportsMenu, messages.menuitem_report_email(),
                 WidgetIds.REPORT_EMAIL);
+        addMenuItem(reportsMenu, messages.menuitem_report_users_email(),
+                WidgetIds.REPORT_USERS_EMAIL);
 
         addMenuItem(settingsMenu, messages.menuitem_useradm(),
                 WidgetIds.EDIT_USERS);
@@ -245,7 +248,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((PostTypeEditView) widget).init();
                 break;
             case EDIT_TRUST_ACTIONS:
-                widget = TrustActionEditView.show(messages, constants, helpPanel);
+                widget = TrustActionEditView.show(messages, constants,
+                        helpPanel);
                 ((TrustActionEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
@@ -300,6 +304,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case REPORT_EMAIL:
                 widget = ReportMail.getInstance(constants, messages);
+                break;
+            case REPORT_USERS_EMAIL:
+                widget = ReportUsersEmail.getInstance(constants, messages,
+                        helpPanel);
+                ((ReportUsersEmail) widget).init();
                 break;
 
             case WidgetIds.ABOUT:
