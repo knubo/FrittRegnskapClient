@@ -181,7 +181,11 @@ public class Util {
             return messages.debet();
         }
 
-        return messages.kredit();
+        if("-1".equals(string)) {
+            return messages.kredit();
+        }
+        
+        return ""; 
     }
 
     /**
@@ -354,7 +358,7 @@ public class Util {
             return;
         }
 
-        for (int i = listbox.getItemCount(); i-- >= 0;) {
+        for (int i = listbox.getItemCount(); i-- > 0;) {
             if (match.equals(listbox.getValue(i))) {
                 listbox.setSelectedIndex(i);
                 return;

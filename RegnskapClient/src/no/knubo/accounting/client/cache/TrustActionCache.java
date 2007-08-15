@@ -40,10 +40,10 @@ public class TrustActionCache {
     TrustActionCache(Constants constants, I18NAccount messages) {
         this.constants = constants;
         this.messages = messages;
-        flush();
+        flush(null);
     }
 
-    public void flush() {
+    public void flush(final CacheCallback flushcallback) {
         allTrustActions = new ArrayList();
         trustActionsPerId = new HashMap();
         fondGivesName = new HashMap();
@@ -68,21 +68,25 @@ public class TrustActionCache {
                     fondGivesName.put(Util.str(obj.get("fond")), Util.str(obj
                             .get("description")));
                 }
-
+                if(flushcallback != null) {
+                    flushcallback.flushCompleted();
+                }
             }
         };
-        
+
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
                 constants.baseurl() + "registers/trustaction.php?action=all");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, messages, resphandler));
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    resphandler));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
     }
 
-    public static TrustActionCache getInstance(Constants constants, I18NAccount messages) {
+    public static TrustActionCache getInstance(Constants constants,
+            I18NAccount messages) {
         if (instance == null) {
             instance = new TrustActionCache(constants, messages);
         }
@@ -135,4 +139,17 @@ public class TrustActionCache {
         return !Util.isNull(actionObj.get("debetpost"))
                 || !Util.isNull(actionObj.get("creditpost"));
     }
+
+    public List getAll() {
+        return allTrustActions;
+    }
+
+    public JSONObject getTrustAction(String id) {
+        return (JSONObject) trustActionsPerId.get(id);
+    }
+
+    public String trustGivesDesc(String trust) {
+        return (String) fondGivesName.get(trust);
+    }
+
 }

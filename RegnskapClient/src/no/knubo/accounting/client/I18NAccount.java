@@ -376,6 +376,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String too_many_hits(String arg0);
 
   /**
+   * Translated "Debetpost".
+   * 
+   * @return translated "Debetpost"
+   * @gwt.key trust_debetpost
+   */
+  String trust_debetpost();
+
+  /**
    * Translated "Dag".
    * 
    * @return translated "Dag"
@@ -656,6 +664,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String create();
 
   /**
+   * Translated "Aksjon fondskonto".
+   * 
+   * @return translated "Aksjon fondskonto"
+   * @gwt.key trust_actiontrust
+   */
+  String trust_actiontrust();
+
+  /**
    * Translated "19 år eller yngre - {0} medlemmer".
    * 
    * @return translated "19 år eller yngre - {0} medlemmer"
@@ -736,9 +752,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String search_failed();
 
   /**
-   * Translated "Detaljer for utvalgte regnskapslinjer".
+   * Translated "Detaljer for utvalgte posteringer".
    * 
-   * @return translated "Detaljer for utvalgte regnskapslinjer"
+   * @return translated "Detaljer for utvalgte posteringer"
    * @gwt.key title_report_accountlines
    */
   String title_report_accountlines();
@@ -856,9 +872,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String mail_receivers();
 
   /**
-   * Translated "Vis detaljer for gitte regnskapslinjer".
+   * Translated "Vis detaljer for utvalgte posteringer".
    * 
-   * @return translated "Vis detaljer for gitte regnskapslinjer"
+   * @return translated "Vis detaljer for utvalgte posteringer"
    * @gwt.key menuitem_report_selectedlines
    */
   String menuitem_report_selectedlines();
@@ -974,6 +990,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key register_count_post
    */
   String register_count_post();
+
+  /**
+   * Translated "Kreditpost".
+   * 
+   * @return translated "Kreditpost"
+   * @gwt.key trust_creditpost
+   */
+  String trust_creditpost();
 
   /**
    * Translated "Avsender for epost".
@@ -1144,6 +1168,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kredit();
 
   /**
+   * Translated "Standard beskrivelse".
+   * 
+   * @return translated "Standard beskrivelse"
+   * @gwt.key trust_default_desc
+   */
+  String trust_default_desc();
+
+  /**
    * Translated "Finland".
    * 
    * @return translated "Finland"
@@ -1198,6 +1230,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_10
    */
   String month_10();
+
+  /**
+   * Translated "Aksjon klubbkonto".
+   * 
+   * @return translated "Aksjon klubbkonto"
+   * @gwt.key trust_actionclub
+   */
+  String trust_actionclub();
 
   /**
    * Translated "20 - 25 år - {0} medlemmer".
@@ -1640,9 +1680,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_register();
 
   /**
-   * Translated "Testutsending".
+   * Translated "Testutsending til deg selv".
    * 
-   * @return translated "Testutsending"
+   * @return translated "Testutsending til deg selv"
    * @gwt.key mail_test
    */
   String mail_test();

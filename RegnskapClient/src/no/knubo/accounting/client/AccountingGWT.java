@@ -26,6 +26,7 @@ import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.StandardvaluesView;
+import no.knubo.accounting.client.views.TrustActionEditView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.UsersEditView;
 import no.knubo.accounting.client.views.ViewCallback;
@@ -146,6 +147,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(settingsMenu, messages.menuitem_useradm(),
                 WidgetIds.EDIT_USERS);
+        addMenuItem(settingsMenu, messages.menuitem_edit_trust_actions(),
+                WidgetIds.EDIT_TRUST_ACTIONS);
         addMenuItem(settingsMenu, messages.menuitem_accounts(),
                 WidgetIds.EDIT_ACCOUNTS);
         addMenuItem(settingsMenu, messages.menuitem_projects(),
@@ -240,6 +243,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case EDIT_ACCOUNTS:
                 widget = PostTypeEditView.show(messages, constants, helpPanel);
                 ((PostTypeEditView) widget).init();
+                break;
+            case EDIT_TRUST_ACTIONS:
+                widget = TrustActionEditView.show(messages, constants, helpPanel);
+                ((TrustActionEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
                 widget = PersonEditView.show(constants, messages);
