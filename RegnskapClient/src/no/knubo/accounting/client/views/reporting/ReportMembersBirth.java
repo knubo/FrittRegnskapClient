@@ -4,13 +4,15 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -60,9 +62,12 @@ public class ReportMembersBirth extends Composite {
             table.removeRow(2);
         }
 
-        ResponseTextHandler getValues = new ResponseTextHandler() {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "reports/membership_birth.php");
 
-            public void onCompletion(String responseText) {
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(String responseText) {
                 JSONValue value = JSONParser.parse(responseText);
                 JSONObject object = value.isObject();
 
@@ -107,12 +112,15 @@ public class ReportMembersBirth extends Composite {
                     row++;
                 }
             }
+
         };
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "reports/membership_birth.php", getValues)) {
-            Window.alert("Failed to load data.");
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    callback));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
         }
+        
 
     }
 }

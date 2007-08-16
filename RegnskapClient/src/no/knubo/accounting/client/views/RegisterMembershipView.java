@@ -4,6 +4,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ErrorLabelWidget;
 import no.knubo.accounting.client.misc.FocusCallback;
@@ -41,9 +42,9 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     private static RegisterMembershipView me;
 
     public static RegisterMembershipView show(I18NAccount messages,
-            Constants constants) {
+            Constants constants, HelpPanel helpPanel) {
         if (me == null) {
-            me = new RegisterMembershipView(messages, constants);
+            me = new RegisterMembershipView(messages, constants, helpPanel);
         }
         return me;
     }
@@ -64,9 +65,12 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
     protected int currentMonth;
 
-    private RegisterMembershipView(I18NAccount messages, Constants constants) {
+    private final HelpPanel helpPanel;
+
+    private RegisterMembershipView(I18NAccount messages, Constants constants, HelpPanel helpPanel) {
         this.messages = messages;
         this.constants = constants;
+        this.helpPanel = helpPanel;
 
         idHolder = new IdHolder();
         userSearchFields = new UserSearchFields(messages, this);
@@ -110,6 +114,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     public void init() {
         setVisible(true);
         userSearchFields.setFocus();
+        helpPanel.resize(this);
     }
 
     public void doSearch(StringBuffer searchRequest) {

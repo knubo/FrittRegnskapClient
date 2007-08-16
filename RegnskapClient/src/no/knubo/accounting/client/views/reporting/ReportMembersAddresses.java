@@ -4,14 +4,16 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -71,9 +73,13 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
             table.removeRow(2);
         }
 
-        ResponseTextHandler getValues = new ResponseTextHandler() {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "reports/membership_addresses.php");
 
-            public void onCompletion(String responseText) {
+        ServerResponse callback = new ServerResponse() {
+
+
+            public void serverResponse(String responseText) {
                 JSONValue value = JSONParser.parse(responseText);
                 JSONArray array = value.isArray();
 
@@ -107,25 +113,28 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
             private void setData(int row, JSONObject object) {
                 table.setHTML(row, 0, Util.str(object.get("firstname")));
                 table.setHTML(row, 1, Util.str(object.get("lastname")));
-                table.setHTML(row, 2, Util.str(object.get("address")));
-                table.setHTML(row, 3, Util.str(object.get("postnmb")));
-                table.setHTML(row, 4, Util.str(object.get("city")));
-                table.setHTML(row, 5, Util.str(object.get("email")));
+                table.setHTML(row, 2, Util.strSkipNull(object.get("address")));
+                table.setHTML(row, 3, Util.strSkipNull(object.get("postnmb")));
+                table.setHTML(row, 4, Util.strSkipNull(object.get("city")));
+                table.setHTML(row, 5, Util.strSkipNull(object.get("email")));
                 table.setHTML(row, 6, Util.str(object.get("birthdate")));
-                table.setHTML(row, 7, Util.str(object.get("cellphone")));
-                table.setHTML(row, 8, Util.str(object.get("phone")));
+                table.setHTML(row, 7, Util.strSkipNull(object.get("cellphone")));
+                table.setHTML(row, 8, Util.strSkipNull(object.get("phone")));
 
                 String style = (row % 2 == 0) ? "showlineposts2"
                         : "showlineposts1";
                 table.getRowFormatter().setStyleName(row, style);
             }
-        };
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "reports/membership_addresses.php", getValues)) {
-            Window.alert("Failed to load data.");
-        }
 
+        };
+        
+        
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    callback));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
     }
 
     public void onClick(Widget sender) {
