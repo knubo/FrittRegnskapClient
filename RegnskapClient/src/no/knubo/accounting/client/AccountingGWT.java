@@ -164,7 +164,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(aboutMenu, messages.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, messages.menuitem_logout(), WidgetIds.LOGOUT);
 
-        activeView.add(AboutView.getInstance(messages), DockPanel.CENTER);
+        new Commando(null, WidgetIds.ABOUT, messages.menuitem_about()).execute();
 
         RootPanel.get().add(docPanel);
     }
