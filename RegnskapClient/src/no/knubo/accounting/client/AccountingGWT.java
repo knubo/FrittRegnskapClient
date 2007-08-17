@@ -164,7 +164,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(aboutMenu, messages.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, messages.menuitem_logout(), WidgetIds.LOGOUT);
 
-        new Commando(null, WidgetIds.ABOUT, messages.menuitem_about()).execute();
+        new Commando(null, WidgetIds.ABOUT, messages.menuitem_about())
+                .execute();
 
         RootPanel.get().add(docPanel);
     }
@@ -214,7 +215,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                         HelpPanel.getInstance(messages, helpTexts));
                 break;
             case WidgetIds.REGISTER_MEMBERSHIP:
-                widget = RegisterMembershipView.show(messages, constants, helpPanel);
+                widget = RegisterMembershipView.show(messages, constants,
+                        helpPanel);
                 ((RegisterMembershipView) widget).init();
                 break;
             case WidgetIds.REGISTER_HAPPENING:
@@ -253,7 +255,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((TrustActionEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
-                widget = PersonEditView.show(constants, messages);
+                widget = PersonEditView.show(constants, messages, helpPanel);
                 ((PersonEditView) widget).init(null);
                 break;
             case WidgetIds.FIND_PERSON:
@@ -268,15 +270,18 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((MonthDetailsView) widget).init();
                 break;
             case WidgetIds.SHOW_MEMBERS:
-                widget = ShowMembershipView.show(messages, constants, callback);
+                widget = ShowMembershipView.show(messages, constants, callback,
+                        helpPanel);
                 ((ShowMembershipView) widget).initShowMembers();
                 break;
             case WidgetIds.SHOW_CLASS_MEMBERS:
-                widget = ShowMembershipView.show(messages, constants, callback);
+                widget = ShowMembershipView.show(messages, constants, callback,
+                        helpPanel);
                 ((ShowMembershipView) widget).initShowClassMembers();
                 break;
             case WidgetIds.SHOW_TRAINING_MEMBERS:
-                widget = ShowMembershipView.show(messages, constants, callback);
+                widget = ShowMembershipView.show(messages, constants, callback,
+                        helpPanel);
                 ((ShowMembershipView) widget).initShowTrainingMembers();
                 break;
             case TRUST_STATUS:
@@ -369,7 +374,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     public void editPerson(String id) {
-        PersonEditView widget = PersonEditView.show(constants, messages);
+        PersonEditView widget = PersonEditView.show(constants, messages,
+                HelpPanel.getInstance(messages, helpTexts));
 
         widget.init(id);
         setActiveWidget(widget);

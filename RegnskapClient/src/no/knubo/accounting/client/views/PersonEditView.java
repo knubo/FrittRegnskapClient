@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -63,9 +64,13 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private CheckBox newsletterCheck;
 
-    public PersonEditView(I18NAccount messages, Constants constants) {
+    private final HelpPanel helpPanel;
+
+    public PersonEditView(I18NAccount messages, Constants constants,
+            HelpPanel helpPanel) {
         this.messages = messages;
         this.constants = constants;
+        this.helpPanel = helpPanel;
 
         DockPanel dp = new DockPanel();
         FlexTable table = new FlexTable();
@@ -143,9 +148,10 @@ public class PersonEditView extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    public static PersonEditView show(Constants constants, I18NAccount messages) {
+    public static PersonEditView show(Constants constants,
+            I18NAccount messages, HelpPanel helpPanel) {
         if (me == null) {
-            me = new PersonEditView(messages, constants);
+            me = new PersonEditView(messages, constants, helpPanel);
         }
         return me;
     }
@@ -288,6 +294,7 @@ public class PersonEditView extends Composite implements ClickListener {
             doOpen();
             updateButton.setHTML(messages.update());
         }
+        helpPanel.resize(this);
     }
 
     private boolean validateSave() {

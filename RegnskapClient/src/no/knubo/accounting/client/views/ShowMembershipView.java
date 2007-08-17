@@ -3,15 +3,19 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -50,19 +54,22 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
     private IdHolder idHolder;
 
+    final HelpPanel helpPanel;
+
     public static ShowMembershipView show(I18NAccount messages,
-            Constants constants, ViewCallback caller) {
+            Constants constants, ViewCallback caller, HelpPanel helpPanel) {
         if (me == null) {
-            me = new ShowMembershipView(messages, constants, caller);
+            me = new ShowMembershipView(messages, constants, caller, helpPanel);
         }
         return me;
     }
 
     public ShowMembershipView(I18NAccount messages, Constants constants,
-            ViewCallback caller) {
+            ViewCallback caller, HelpPanel helpPanel) {
         this.messages = messages;
         this.constants = constants;
         this.caller = caller;
+        this.helpPanel = helpPanel;
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -73,7 +80,8 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
         header = new HTML();
         periodeHeader = new HTML();
-        previousImage = ImageFactory.previousImage("ShowMembershipView.previousImage");
+        previousImage = ImageFactory
+                .previousImage("ShowMembershipView.previousImage");
         previousImage.addClickListener(this);
         nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
         nextImage.addClickListener(this);
@@ -117,9 +125,13 @@ public class ShowMembershipView extends Composite implements ClickListener {
             table.removeRow(1);
         }
 
-        ResponseTextHandler getValues = new ResponseTextHandler() {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "registers/members.php?" + posparam
+                        + "&action=" + action);
 
-            public void onCompletion(String responseText) {
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(String responseText) {
                 JSONValue value = JSONParser.parse(responseText);
 
                 if (value == null) {
@@ -149,7 +161,8 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     table.setText(row, 0, lastname);
                     table.setText(row, 1, firstname);
 
-                    Image editUserImage = ImageFactory.editImage("ShowMembershipView.editUserImage");
+                    Image editUserImage = ImageFactory
+                            .editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickListener(me);
                     table.setWidget(row, 2, editUserImage);
 
@@ -158,15 +171,16 @@ public class ShowMembershipView extends Composite implements ClickListener {
                             : "showlineposts1";
                     table.getRowFormatter().setStyleName(row, style);
                 }
+                helpPanel.resize(me);
             }
-
         };
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "registers/members.php?" + posparam + "&action=" + action,
-                getValues)) {
-            Window.alert("Failed to load data.");
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    callback));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
         }
+
     }
 
     public void onClick(Widget sender) {

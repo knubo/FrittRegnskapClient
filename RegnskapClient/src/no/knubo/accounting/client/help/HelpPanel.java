@@ -35,12 +35,21 @@ public class HelpPanel extends Composite implements EventPreview {
     }
 
     public void resize(Widget widget) {
-        mainFrame.setWidth("450px");
+
+        int width = widget.getOffsetWidth();
         int height = widget.getOffsetHeight();
-        if(height < 400) {
-            height=400;
+        
+        if (widget.getOffsetWidth() > 800) {
+            mainFrame.setWidth("400px");
+        } else {
+            mainFrame.setWidth((900 - width)+"px");
         }
-        mainFrame.setHeight(height + "px");
+        
+        if (height < 400) {
+            mainFrame.setHeight("400px");
+        } else {
+            mainFrame.setHeight(height+"px");
+        }
     }
 
     public static HelpPanel getInstance(I18NAccount messages,
