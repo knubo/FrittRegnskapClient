@@ -736,9 +736,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String new_trustaction();
 
   /**
-   * Translated "Epostadresser til medlemmer".
+   * Translated "Personer med Epostadresser".
    * 
-   * @return translated "Epostadresser til medlemmer"
+   * @return translated "Personer med Epostadresser"
    * @gwt.key title_report_users_email
    */
   String title_report_users_email();
