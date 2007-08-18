@@ -40,6 +40,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_people();
 
   /**
+   * Translated "Følgende felter er ikke validert ok: {0}.".
+   * 
+   * @return translated "Følgende felter er ikke validert ok: {0}."
+   * @gwt.key field_validation_fail
+   */
+  String field_validation_fail(String arg0);
+
+  /**
    * Translated "Avbryt	".
    * 
    * @return translated "Avbryt	"
@@ -430,6 +438,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key menuitem_showclassmembers
    */
   String menuitem_showclassmembers();
+
+  /**
+   * Translated "Fond".
+   * 
+   * @return translated "Fond"
+   * @gwt.key menuitem_edit_trust
+   */
+  String menuitem_edit_trust();
 
   /**
    * Translated "Fradato".

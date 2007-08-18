@@ -1,5 +1,8 @@
 package no.knubo.accounting.client.views;
 
+import java.util.HashMap;
+import java.util.List;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
@@ -7,6 +10,7 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithValidation;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -242,7 +246,7 @@ public class PersonEditView extends Composite implements ClickListener {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
 
-        ServerResponse callback = new ServerResponse() {
+        ServerResponseWithValidation callback = new ServerResponseWithValidation() {
 
             public void serverResponse(String serverResponse) {
                 int id = Util.getInt(serverResponse);
@@ -261,6 +265,16 @@ public class PersonEditView extends Composite implements ClickListener {
                     }
                 }
                 Util.timedMessage(saveStatus, "", 5);
+            }
+
+            public void validationError(List fields) {
+                HashMap translate = new HashMap();
+                translate.put("email","epost");
+                
+                String fieldtext = Util.translate(fields, translate);
+                
+                saveStatus.setText(messages.field_validation_fail(fieldtext));
+                Util.timedMessage(saveStatus, "", 10);
             }
         };
 

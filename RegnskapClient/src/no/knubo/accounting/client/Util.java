@@ -1,6 +1,8 @@
 package no.knubo.accounting.client;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
@@ -33,8 +35,8 @@ public class Util {
      *            The url to forward to.
      */
     public static native void forward(String url) /*-{
-                       $wnd.location.href = url;
-                       }-*/;
+                          $wnd.location.href = url;
+                          }-*/;
 
     /**
      * Converts a number into a i18n month from the property file.
@@ -465,6 +467,34 @@ public class Util {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Iterates fields and looks them up in translate. If found, it uses that
+     * value, if not found it writes the non translated value in [].
+     * 
+     * @param fields
+     * @param translate
+     * @return The concatenated field list.
+     */
+    public static String translate(List fields, HashMap translate) {
+        StringBuffer sb = new StringBuffer();
+
+        for (Iterator i = fields.iterator(); i.hasNext();) {
+            String fieldName = (String) i.next();
+
+            String translated = (String) translate.get(fieldName);
+
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            if (translated != null) {
+                sb.append(translated);
+            } else {
+                sb.append("["+fieldName+"]");
+            }
+        }
+        return sb.toString();
     }
 
 }

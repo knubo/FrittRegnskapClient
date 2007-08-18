@@ -16,8 +16,9 @@ public class EmailValidator extends ValidatorBase {
         int apos = email.indexOf('@');
 
         /* One char before and not last sign, not 2+ of them. */
-        return apos > 0 && apos != (email.length() - 1)
+        boolean clientCheck = apos > 0 && apos != (email.length() - 1)
                 && email.indexOf('@', apos + 1) == -1;
+        
+        return clientCheck;
     }
-
 }
