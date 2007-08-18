@@ -150,6 +150,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(settingsMenu, messages.menuitem_useradm(),
                 WidgetIds.EDIT_USERS);
+        addMenuItem(settingsMenu, messages.menuitem_edit_trust(),
+                WidgetIds.EDIT_TRUST);
         addMenuItem(settingsMenu, messages.menuitem_edit_trust_actions(),
                 WidgetIds.EDIT_TRUST_ACTIONS);
         addMenuItem(settingsMenu, messages.menuitem_accounts(),
