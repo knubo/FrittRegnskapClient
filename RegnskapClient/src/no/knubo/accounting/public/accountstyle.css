@@ -6,6 +6,14 @@
   white-space:nowrap;
 }
 
+.normal {
+  PADDING:2px 2px 2px 2px;
+  color: black;
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+  font-weight: normal;
+  white-space:nowrap;
+}
+
 .tableborder {
  border-collapse: collapse;
  border-style: solid; 

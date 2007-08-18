@@ -8,6 +8,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.HTMLWithError;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithValidation;
@@ -26,7 +27,6 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -60,7 +60,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private TextBoxWithErrorText addressBox;
 
-    private HTML saveStatus;
+    private HTMLWithError saveStatus;
 
     private Button updateButton;
 
@@ -132,7 +132,7 @@ public class PersonEditView extends Composite implements ClickListener {
                 .update());
         updateButton.addClickListener(this);
 
-        saveStatus = new HTML();
+        saveStatus = new HTMLWithError();
 
         table.setWidget(0, 1, firstnameBox);
         table.setWidget(1, 1, lastnameBox);
@@ -273,8 +273,7 @@ public class PersonEditView extends Composite implements ClickListener {
                 
                 String fieldtext = Util.translate(fields, translate);
                 
-                saveStatus.setText(messages.field_validation_fail(fieldtext));
-                Util.timedMessage(saveStatus, "", 10);
+                saveStatus.setError(messages.field_validation_fail(fieldtext));
             }
         };
 
