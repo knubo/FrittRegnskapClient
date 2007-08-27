@@ -28,11 +28,9 @@ public class TrustActionCache {
     private static TrustActionCache instance;
 
     private Constants constants;
-
     private List allTrustActions;
-
     private Map trustActionsPerId;
-
+    private JSONArray typeArray;
     private Map fondGivesName;
 
     private final I18NAccount messages;
@@ -49,6 +47,7 @@ public class TrustActionCache {
         fondGivesName = new HashMap();
 
         ServerResponse resphandler = new ServerResponse() {
+
             public void serverResponse(String responseText) {
                 JSONValue jsonValue = JSONParser.parse(responseText);
                 JSONObject mainObject = jsonValue.isObject();
@@ -61,14 +60,14 @@ public class TrustActionCache {
                     trustActionsPerId.put(Util.str(obj.get("id")), obj);
                 }
 
-                JSONArray typeArray = mainObject.get("types").isArray();
+                typeArray = mainObject.get("types").isArray();
 
                 for (int i = 0; i < typeArray.size(); i++) {
                     JSONObject obj = typeArray.get(i).isObject();
                     fondGivesName.put(Util.str(obj.get("fond")), Util.str(obj
                             .get("description")));
                 }
-                if(flushcallback != null) {
+                if (flushcallback != null) {
                     flushcallback.flushCompleted();
                 }
             }
@@ -142,6 +141,10 @@ public class TrustActionCache {
 
     public List getAll() {
         return allTrustActions;
+    }
+
+    public JSONArray getAllTrust() {
+        return typeArray;
     }
 
     public JSONObject getTrustAction(String id) {

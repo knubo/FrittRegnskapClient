@@ -27,6 +27,7 @@ import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.StandardvaluesView;
 import no.knubo.accounting.client.views.TrustActionEditView;
+import no.knubo.accounting.client.views.TrustEditView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.UsersEditView;
 import no.knubo.accounting.client.views.ViewCallback;
@@ -255,6 +256,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = TrustActionEditView.show(messages, constants,
                         helpPanel);
                 ((TrustActionEditView) widget).init();
+                break;
+            case EDIT_TRUST:
+                widget = TrustEditView.show(messages, constants, helpPanel);
+                ((TrustEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
                 widget = PersonEditView.show(constants, messages, helpPanel);

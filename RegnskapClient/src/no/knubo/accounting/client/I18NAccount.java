@@ -1328,6 +1328,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menuitem_accounts();
 
   /**
+   * Translated "Nytt fond".
+   * 
+   * @return translated "Nytt fond"
+   * @gwt.key trustEditView_newButton
+   */
+  String trustEditView_newButton();
+
+  /**
    * Translated "ok".
    * 
    * @return translated "ok"
