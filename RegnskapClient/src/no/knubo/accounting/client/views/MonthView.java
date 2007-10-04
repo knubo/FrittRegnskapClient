@@ -143,12 +143,6 @@ public class MonthView extends Composite implements ClickListener,
 
         int row = 0;
         int col = 1;
-        table.addCell(row);
-        table.addCell(row);
-        table.addCell(row);
-        table.addCell(row);
-
-        table.addCell(row + 1);
         table.getFlexCellFormatter().setColSpan(row + 1, 0, 4);
         table.getCellFormatter().setStyleName(row + 1, 0, "leftborder");
 
@@ -166,13 +160,10 @@ public class MonthView extends Composite implements ClickListener,
 
             /* The posts headers, using 2 colspan */
             table.getFlexCellFormatter().setColSpan(row, col, 2);
-            table.addCell(row);
             table.getCellFormatter().setStyleName(row, col, "center");
             table.setText(row, col++, header);
 
             /* Add DEBET/KREDIT headers */
-            table.addCell(row + 1);
-            table.addCell(row + 1);
 
             table.getCellFormatter().setStyleName(row + 1, col2, "leftborder");
             table.setText(row + 1, col2++, messages.debet());
@@ -214,16 +205,16 @@ public class MonthView extends Composite implements ClickListener,
                 rowStyle = (rowStyle.equals("line1")) ? "line2" : "line1";
             }
 
-            table.addCell(rowIndex);
+//            table.addCell(rowIndex);
             table.setText(rowIndex, 0, Util.str(rowdata.get("Postnmb")) + "/"
                     + Util.str(rowdata.get("Id")));
             table.getCellFormatter().setStyleName(rowIndex, 0, "right");
 
-            table.addCell(rowIndex);
+//            table.addCell(rowIndex);
             table.setText(rowIndex, 1, Util.str(rowdata.get("Attachment")));
             table.getCellFormatter().setStyleName(rowIndex, 1, "right");
 
-            table.addCell(rowIndex);
+//            table.addCell(rowIndex);
             table.setText(rowIndex, 2, Util.str(rowdata.get("date")));
             table.getCellFormatter().setStyleName(rowIndex, 2, "datefor");
 
@@ -261,7 +252,6 @@ public class MonthView extends Composite implements ClickListener,
     }
 
     private void printDebKredVal(int rowIndex, JSONObject obj, int col, String k) {
-        table.addCell(rowIndex);
         table.getCellFormatter().setStyleName(rowIndex, col, "right");
 
         if (obj == null) {
