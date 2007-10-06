@@ -25,7 +25,7 @@ public class DateValidator extends ValidatorBase {
         
         try {
             day = Integer.parseInt(split[0]);
-            month = Integer.parseInt(split[1]);
+            month = Integer.parseInt(split[1]) - 1;
             year = Integer.parseInt(split[2]);
         } catch (NumberFormatException e) {
             return false;
