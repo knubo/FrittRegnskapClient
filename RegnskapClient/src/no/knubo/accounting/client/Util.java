@@ -383,7 +383,6 @@ public class Util {
                 return;
             }
         }
-        Window.alert("Failed to set value " + match);
     }
 
     public static int getInt(JSONValue value) {

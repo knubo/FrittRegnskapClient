@@ -9,6 +9,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.HTMLWithError;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithValidation;
@@ -27,6 +28,8 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -70,8 +73,12 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private final HelpPanel helpPanel;
 
+    private Image deleteImage;
+
+    private CheckBox hiddenCheck;
+
     public PersonEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, final ViewCallback caller) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -94,6 +101,11 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setHTML(9, 0, messages.cellphone());
         table.setHTML(10, 0, messages.employee());
         table.setHTML(11, 0, messages.newsletter());
+        table.setHTML(12, 0, messages.hidden_person());
+
+        deleteImage = ImageFactory.deleteImage("user.edit.deleteImage");
+        table.setWidget(0, 2, deleteImage);
+        deleteImage.addClickListener(this);
 
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
@@ -127,12 +139,23 @@ public class PersonEditView extends Composite implements ClickListener {
         cellphoneBox.setMaxLength(13);
         employeeCheck = new CheckBox();
         newsletterCheck = new CheckBox();
+        hiddenCheck = new CheckBox();
 
         updateButton = new NamedButton("PersonEditView.updateButton", messages
                 .update());
         updateButton.addClickListener(this);
 
         saveStatus = new HTMLWithError();
+
+        Hyperlink toSearch = new Hyperlink(messages.back_search(),
+                "personSearch");
+        toSearch.addClickListener(new ClickListener() {
+
+            public void onClick(Widget sender) {
+                caller.searchPerson();
+            }
+
+        });
 
         table.setWidget(0, 1, firstnameBox);
         table.setWidget(1, 1, lastnameBox);
@@ -147,15 +170,17 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setWidget(9, 1, cellphoneBox);
         table.setWidget(10, 1, employeeCheck);
         table.setWidget(11, 1, newsletterCheck);
-        table.setWidget(12, 0, updateButton);
-        table.setWidget(12, 1, saveStatus);
+        table.setWidget(12, 1, hiddenCheck);
+        table.setWidget(13, 0, updateButton);
+        table.setWidget(13, 1, saveStatus);
+        table.setWidget(14, 0, toSearch);
         initWidget(dp);
     }
 
     public static PersonEditView show(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel) {
+            I18NAccount messages, HelpPanel helpPanel, ViewCallback caller) {
         if (me == null) {
-            me = new PersonEditView(messages, constants, helpPanel);
+            me = new PersonEditView(messages, constants, helpPanel, caller);
         }
         return me;
     }
@@ -163,7 +188,13 @@ public class PersonEditView extends Composite implements ClickListener {
     public void onClick(Widget sender) {
         if (sender == updateButton) {
             doSave();
+        } else if (sender == deleteImage) {
+            doDelete();
         }
+    }
+
+    private void doDelete() {
+
     }
 
     private void doOpen() {
@@ -205,6 +236,8 @@ public class PersonEditView extends Composite implements ClickListener {
                         .get("IsEmployee"))));
                 newsletterCheck.setChecked("1".equals(Util.str(object
                         .get("Newsletter"))));
+                hiddenCheck.setChecked("1".equals(Util
+                        .str(object.get("Hidden"))));
             }
         };
 
@@ -242,6 +275,8 @@ public class PersonEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "employee", isChecked);
         String newsletter = newsletterCheck.isChecked() ? "1" : "0";
         Util.addPostParam(sb, "newsletter", newsletter);
+        String hidden = hiddenCheck.isChecked() ? "1" : "0";
+        Util.addPostParam(sb, "hidden", hidden);
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/persons.php");
@@ -269,10 +304,10 @@ public class PersonEditView extends Composite implements ClickListener {
 
             public void validationError(List fields) {
                 HashMap translate = new HashMap();
-                translate.put("email","epost");
-                
+                translate.put("email", "epost");
+
                 String fieldtext = Util.translate(fields, translate);
-                
+
                 saveStatus.setError(messages.field_validation_fail(fieldtext));
             }
         };

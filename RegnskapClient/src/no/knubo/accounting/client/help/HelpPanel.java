@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HelpPanel extends Composite implements EventPreview {
@@ -38,17 +38,17 @@ public class HelpPanel extends Composite implements EventPreview {
 
         int width = widget.getOffsetWidth();
         int height = widget.getOffsetHeight();
-        
-        if (widget.getOffsetWidth() > 800) {
+
+        if ((800 - width) < 400) {
             mainFrame.setWidth("400px");
         } else {
-            mainFrame.setWidth((900 - width)+"px");
+            mainFrame.setWidth((800 - width) + "px");
         }
-        
+
         if (height < 400) {
             mainFrame.setHeight("400px");
         } else {
-            mainFrame.setHeight(height+"px");
+            mainFrame.setHeight(height + "px");
         }
     }
 
@@ -72,10 +72,10 @@ public class HelpPanel extends Composite implements EventPreview {
         contextHelp = new HTML();
         contextHelp.setStyleName("contexthelp");
 
-        HorizontalPanel dp = new HorizontalPanel();
+        VerticalPanel dp = new VerticalPanel();
         dp.setWidth("100%");
-        dp.add(mainFrame);
         dp.add(contextHelp);
+        dp.add(mainFrame);
         addEventHandler();
         disclosurePanel.add(dp);
         initWidget(disclosurePanel);
@@ -167,6 +167,9 @@ public class HelpPanel extends Composite implements EventPreview {
             help = formatHelp(messages.search(), helpTexts.search());
         } else if (id.equals("clear")) {
             help = formatHelp(messages.clear(), helpTexts.clear());
+        } else if (id.equals("hidden_person")) {
+            help = formatHelp(messages.hidden_person(), helpTexts
+                    .hidden_person());
         }
 
         return true;

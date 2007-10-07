@@ -76,7 +76,8 @@ public class PersonSearchView extends Composite implements ClickListener,
         this.messages = messages;
         this.constants = constants;
         UserSearchFields userSearchFields = new UserSearchFields(messages, this);
-
+        userSearchFields.includeHidden();
+        
         this.idHolder = new IdHolder();
 
         DockPanel dp = new DockPanel();
@@ -97,7 +98,6 @@ public class PersonSearchView extends Composite implements ClickListener,
         resultTable.setHTML(0, 6, messages.employee());
         resultTable.setHTML(0, 7, "");
         initWidget(dp);
-
     }
 
     public void onClick(Widget sender) {

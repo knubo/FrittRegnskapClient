@@ -800,20 +800,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String lastname();
 
   /**
-   * Translated "Opprett/endre person".
-   * 
-   * @return translated "Opprett/endre person"
-   * @gwt.key menuitem_addperson
-   */
-  String menuitem_addperson();
-
-  /**
    * Translated "Beløp".
    * 
    * @return translated "Beløp"
    * @gwt.key amount
    */
   String amount();
+
+  /**
+   * Translated "Vedlikehold av person".
+   * 
+   * @return translated "Vedlikehold av person"
+   * @gwt.key menuitem_addperson
+   */
+  String menuitem_addperson();
 
   /**
    * Translated "Nytt standardbilag".
@@ -1352,6 +1352,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String mail_confirm(String arg0);
 
   /**
+   * Translated "Skjul".
+   * 
+   * @return translated "Skjul"
+   * @gwt.key hidden_person
+   */
+  String hidden_person();
+
+  /**
    * Translated "Fond status/aktivitet".
    * 
    * @return translated "Fond status/aktivitet"
@@ -1422,6 +1430,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key month_02
    */
   String month_02();
+
+  /**
+   * Translated "Til søk".
+   * 
+   * @return translated "Til søk"
+   * @gwt.key back_search
+   */
+  String back_search();
 
   /**
    * Translated "DEBET".

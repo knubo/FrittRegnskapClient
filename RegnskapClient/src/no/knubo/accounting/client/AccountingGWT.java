@@ -262,7 +262,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((TrustEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
-                widget = PersonEditView.show(constants, messages, helpPanel);
+                widget = PersonEditView.show(constants, messages, helpPanel, callback);
                 ((PersonEditView) widget).init(null);
                 break;
             case WidgetIds.FIND_PERSON:
@@ -368,6 +368,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.SHOW_MONTH);
         Window.setTitle(messages.menuitem_showmonth());
     }
+    
+    public void searchPerson() {
+        PersonSearchView widget = PersonSearchView.show(this, messages, constants);
+        setActiveWidget(widget);
+        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
+                WidgetIds.FIND_PERSON);
+        Window.setTitle(messages.menuitem_showmonth());
+    }
 
     public void viewMonth() {
         MonthView instance = MonthView.getInstance(constants, messages, this);
@@ -382,7 +390,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     public void editPerson(String id) {
         PersonEditView widget = PersonEditView.show(constants, messages,
-                HelpPanel.getInstance(messages, helpTexts));
+                HelpPanel.getInstance(messages, helpTexts), this);
 
         widget.init(id);
         setActiveWidget(widget);

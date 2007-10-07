@@ -3,7 +3,7 @@ package no.knubo.accounting.client.views;
 public interface ViewCallback {
 
     /**
-     * Requests that detail vindow is opened.
+     * Requests that detail window for a post is opened.
      * 
      * @param id
      */
@@ -26,4 +26,9 @@ public interface ViewCallback {
 
     /** Request that view of current month and year. */
     public void viewMonth();
+
+    /**
+     * Request view of person search.
+     */
+    public void searchPerson();
 }

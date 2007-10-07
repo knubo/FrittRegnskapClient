@@ -16,6 +16,14 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String money_type();
 
   /**
+   * Translated "Personen er skjult fra s&oslash;k.".
+   * 
+   * @return translated "Personen er skjult fra s&oslash;k."
+   * @gwt.key hidden_person
+   */
+  String hidden_person();
+
+  /**
    * Translated "Bilag er bilagsnummeret til posteringen. Bilagsnummer er p&aring;krevd, men m&aring; ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer.".
    * 
    * @return translated "Bilag er bilagsnummeret til posteringen. Bilagsnummer er p&aring;krevd, men m&aring; ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer."
@@ -112,20 +120,20 @@ public interface HelpTexts extends com.google.gwt.i18n.client.Messages {
   String search();
 
   /**
-   * Translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.".
-   * 
-   * @return translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden."
-   * @gwt.key day
-   */
-  String day();
-
-  /**
    * Translated "Avbryter registreringen og lukker vinudet.".
    * 
    * @return translated "Avbryter registreringen og lukker vinudet."
    * @gwt.key trustStatusView_cancelButton
    */
   String trustStatusView_cancelButton();
+
+  /**
+   * Translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.".
+   * 
+   * @return translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden."
+   * @gwt.key day
+   */
+  String day();
 
   /**
    * Translated "Antall femhundrelapper.".

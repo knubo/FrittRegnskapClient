@@ -28,6 +28,8 @@ public class UserSearchFields implements ClickListener {
 
     private final UserSearchCallback searchCallback;
 
+    private boolean excludeHidden = true;
+
     public UserSearchFields(I18NAccount messages,
             UserSearchCallback searchCallback) {
         this.searchCallback = searchCallback;
@@ -55,12 +57,10 @@ public class UserSearchFields implements ClickListener {
         searchTable.setText(2, 0, messages.employee());
         searchTable.setWidget(2, 1, employeeList);
 
-        searchButton = new NamedButton("search",
-                messages.search());
+        searchButton = new NamedButton("search", messages.search());
         searchButton.addClickListener(this);
         searchTable.setWidget(3, 0, searchButton);
-        clearButton = new NamedButton("clear", messages
-                .clear());
+        clearButton = new NamedButton("clear", messages.clear());
         clearButton.addClickListener(this);
         searchTable.setWidget(3, 1, clearButton);
 
@@ -76,7 +76,10 @@ public class UserSearchFields implements ClickListener {
         } else if (sender == clearButton) {
             doClear();
         }
+    }
 
+    public void includeHidden() {
+        excludeHidden = false;
     }
 
     private void doSearch() {
@@ -89,6 +92,9 @@ public class UserSearchFields implements ClickListener {
         Util.addPostParam(sb, "email", emailBox.getText());
         Util.addPostParam(sb, "getmemb", "1");
 
+        if (excludeHidden) {
+            Util.addPostParam(sb, "hidden", "1");
+        }
         searchCallback.doSearch(sb);
     }
 
