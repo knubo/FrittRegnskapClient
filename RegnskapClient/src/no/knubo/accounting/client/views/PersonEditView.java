@@ -73,8 +73,6 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private final HelpPanel helpPanel;
 
-    private Image deleteImage;
-
     private CheckBox hiddenCheck;
 
     public PersonEditView(I18NAccount messages, Constants constants,
@@ -102,10 +100,6 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setHTML(10, 0, messages.employee());
         table.setHTML(11, 0, messages.newsletter());
         table.setHTML(12, 0, messages.hidden_person());
-
-        deleteImage = ImageFactory.deleteImage("user.edit.deleteImage");
-        table.setWidget(0, 2, deleteImage);
-        deleteImage.addClickListener(this);
 
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
@@ -188,13 +182,7 @@ public class PersonEditView extends Composite implements ClickListener {
     public void onClick(Widget sender) {
         if (sender == updateButton) {
             doSave();
-        } else if (sender == deleteImage) {
-            doDelete();
         }
-    }
-
-    private void doDelete() {
-
     }
 
     private void doOpen() {

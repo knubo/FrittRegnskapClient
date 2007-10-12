@@ -61,9 +61,19 @@
   border-top-width: 1px; 
   border-bottom-width: 1px; 
   border-right-width: 1px; 
-  border-left-width: 0px	
+  border-left-width: 0px;	
   font-weight: bold;
 }
+
+.sumline TD {
+  font-size:80%;
+  border-style: solid; 
+  border-top-width: 0px; 
+  border-bottom-width: 1px; 
+  border-right-width: 1px; 
+  border-left-width: 1px
+}
+
 
 .colspace {
   padding-left: 10px;	

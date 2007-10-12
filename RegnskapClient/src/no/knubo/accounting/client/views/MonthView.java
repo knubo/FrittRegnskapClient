@@ -17,6 +17,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
@@ -127,7 +128,8 @@ public class MonthView extends Composite implements ClickListener,
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
 
-            builder.sendRequest(params, new AuthResponder(constants, messages, this));
+            builder.sendRequest(params, new AuthResponder(constants, messages,
+                    this));
         } catch (RequestException e) {
             Window.alert("AU:" + e);
         }
@@ -151,9 +153,10 @@ public class MonthView extends Composite implements ClickListener,
 
         table.setText(row, col++, messages.description());
 
-        /* Colposition for row 2 */
+        /* Column-position for row 2 */
         int col2 = 1;
-        List names = MonthHeaderCache.getInstance(constants, messages).headers();
+        List names = MonthHeaderCache.getInstance(constants, messages)
+                .headers();
 
         for (Iterator i = names.iterator(); i.hasNext();) {
             String header = (String) i.next();
@@ -176,7 +179,12 @@ public class MonthView extends Composite implements ClickListener,
         JSONValue jsonValue = JSONParser.parse(responseText);
         JSONObject root = jsonValue.isObject();
 
-        JSONValue lines = root.get("lines");
+        JSONValue monthInfo = root.get("monthinfo");
+        JSONObject monthObj = monthInfo.isObject();
+
+        JSONValue debetsums = monthObj.get("debetsums");
+        JSONValue creditsums = monthObj.get("creditsums");
+        JSONValue lines = monthObj.get("lines");
 
         currentYear = Util.getInt(root.get("year"));
         currentMonth = Util.getInt(root.get("month"));
@@ -185,6 +193,37 @@ public class MonthView extends Composite implements ClickListener,
 
         JSONArray array = lines.isArray();
 
+        showLines(array);
+        showDebetCreditSums(debetsums.isObject(), creditsums.isObject());
+
+    }
+
+    private void showDebetCreditSums(JSONObject debetSums, JSONObject creditSums) {
+        int row = table.getRowCount();
+        table.setText(row, 3, messages.sum());
+        table.getRowFormatter().setStyleName(row, "sumline");
+        render_posts(row, debetSums, creditSums);
+
+        /* Subtract credit sum from debet sum to show sum for total */
+        for (Iterator i = creditSums.keySet().iterator(); i.hasNext();) {
+            String key = (String) i.next();
+            String toSubtract = Util.str(creditSums.get(key));
+
+            String oldValue = "0";
+            if (debetSums.containsKey(key)) {
+                oldValue = Util.str(debetSums.get(key));
+            }
+            
+            double sum = Double.parseDouble(oldValue) - Double.parseDouble(toSubtract);
+            
+            debetSums.put(key, new JSONString(String.valueOf(sum)));
+        }
+        
+        render_posts(row+1, debetSums, new JSONObject());
+        table.getRowFormatter().setStyleName(row+1, "sumline");
+    }
+
+    private void showLines(JSONArray array) {
         /* Every 3. line flip style for row */
         String rowStyle = "line1";
 
@@ -195,7 +234,6 @@ public class MonthView extends Composite implements ClickListener,
 
             if (rowdata == null) {
                 Window.alert("Didn't get rowdata:" + array.get(i));
-                return;
             }
             /* +2 to skip headers. */
             int rowIndex = table.insertRow(i + 2);
@@ -205,16 +243,13 @@ public class MonthView extends Composite implements ClickListener,
                 rowStyle = (rowStyle.equals("line1")) ? "line2" : "line1";
             }
 
-//            table.addCell(rowIndex);
             table.setText(rowIndex, 0, Util.str(rowdata.get("Postnmb")) + "/"
                     + Util.str(rowdata.get("Id")));
             table.getCellFormatter().setStyleName(rowIndex, 0, "right");
 
-//            table.addCell(rowIndex);
             table.setText(rowIndex, 1, Util.str(rowdata.get("Attachment")));
             table.getCellFormatter().setStyleName(rowIndex, 1, "right");
 
-//            table.addCell(rowIndex);
             table.setText(rowIndex, 2, Util.str(rowdata.get("date")));
             table.getCellFormatter().setStyleName(rowIndex, 2, "datefor");
 
@@ -236,8 +271,8 @@ public class MonthView extends Composite implements ClickListener,
         JSONObject kredObj = kred.isObject();
 
         int col = 4;
-        for (Iterator i = MonthHeaderCache.getInstance(constants, messages).keys()
-                .iterator(); i.hasNext();) {
+        for (Iterator i = MonthHeaderCache.getInstance(constants, messages)
+                .keys().iterator(); i.hasNext();) {
 
             String k = (String) i.next();
 
