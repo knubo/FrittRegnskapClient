@@ -9,7 +9,6 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.HTMLWithError;
-import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithValidation;
@@ -18,6 +17,7 @@ import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -29,7 +29,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -75,6 +74,8 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private CheckBox hiddenCheck;
 
+    private FlexTable membershipsTable;
+
     public PersonEditView(I18NAccount messages, Constants constants,
             HelpPanel helpPanel, final ViewCallback caller) {
         this.messages = messages;
@@ -85,7 +86,11 @@ public class PersonEditView extends Composite implements ClickListener {
         FlexTable table = new FlexTable();
         table.setStyleName("edittable");
 
+        membershipsTable = new FlexTable();
+        membershipsTable.setStyleName("tableborder");
+        
         dp.add(table, DockPanel.NORTH);
+        dp.add(membershipsTable, DockPanel.NORTH);
 
         table.setHTML(0, 0, messages.firstname());
         table.setHTML(1, 0, messages.lastname());
@@ -208,25 +213,10 @@ public class PersonEditView extends Composite implements ClickListener {
                     Window.alert("Failed to load person");
                     return;
                 }
-
-                firstnameBox.setText(Util.str(object.get("FirstName")));
-                lastnameBox.setText(Util.str(object.get("LastName")));
-                birthdateBox.setText(Util.str(object.get("Birthdate")));
-                addressBox.setText(Util.str(object.get("Address")));
-                postnmbBox.setText(Util.str(object.get("PostNmb")));
-                cityBox.setText(Util.str(object.get("City")));
-                phoneBox.setText(Util.str(object.get("Phone")));
-                cellphoneBox.setText(Util.str(object.get("Cellphone")));
-                Util.setIndexByValue(countryListBox, Util.str(object
-                        .get("Country")));
-                emailBox.setText(Util.str(object.get("Email")));
-                employeeCheck.setChecked("1".equals(Util.str(object
-                        .get("IsEmployee"))));
-                newsletterCheck.setChecked("1".equals(Util.str(object
-                        .get("Newsletter"))));
-                hiddenCheck.setChecked("1".equals(Util
-                        .str(object.get("Hidden"))));
+                setPesonData(object);
+                showMemberships(object.get("Memberships"));
             }
+
         };
 
         try {
@@ -238,6 +228,65 @@ public class PersonEditView extends Composite implements ClickListener {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
 
+    }
+
+    protected void showMemberships(JSONValue value) {
+        JSONObject obj = value.isObject();
+
+        if (obj == null) {
+            return;
+        }
+
+        showMemberships(messages.train_membership(), obj.get("train").isArray());
+        showMemberships(messages.course_membership(), obj.get("course")
+                .isArray());
+        showMemberships(messages.year_membership(), obj.get("year").isArray());
+    }
+
+    private void showMemberships(String title, JSONArray memberships) {
+        
+        if(memberships.size() == 0) {
+            return;
+        }
+        
+        int rows = membershipsTable.getRowCount();
+        membershipsTable.setText(rows, 0, title);
+        membershipsTable.getRowFormatter().setStyleName(rows, "header");
+
+        rows++;
+           
+        for (int i = 0; i < memberships.size(); i++) {
+            JSONObject obj = memberships.get(i).isObject();
+
+            int row = rows + i;
+            
+            if (obj.containsKey("Text")) {
+                membershipsTable.setHTML(row, 0, Util.str(obj.get("Text")));
+            } else {
+                membershipsTable.setHTML(row, 0, Util.str(obj.get("Year")));
+            }
+            
+            String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
+            membershipsTable.getRowFormatter().setStyleName(row, style);
+        }
+    }
+
+    void setPesonData(JSONObject object) {
+        firstnameBox.setText(Util.str(object.get("FirstName")));
+        lastnameBox.setText(Util.str(object.get("LastName")));
+        birthdateBox.setText(Util.str(object.get("Birthdate")));
+        addressBox.setText(Util.str(object.get("Address")));
+        postnmbBox.setText(Util.str(object.get("PostNmb")));
+        cityBox.setText(Util.str(object.get("City")));
+        phoneBox.setText(Util.str(object.get("Phone")));
+        cellphoneBox.setText(Util.str(object.get("Cellphone")));
+        Util.setIndexByValue(countryListBox, Util.str(object.get("Country")));
+        emailBox.setText(Util.str(object.get("Email")));
+        employeeCheck
+                .setChecked("1".equals(Util.str(object.get("IsEmployee"))));
+        newsletterCheck.setChecked("1".equals(Util
+                .str(object.get("Newsletter"))));
+        hiddenCheck.setChecked("1".equals(Util.str(object.get("Hidden"))));
     }
 
     private void doSave() {
@@ -312,6 +361,10 @@ public class PersonEditView extends Composite implements ClickListener {
 
     public void init(String currentId) {
         this.currentId = currentId;
+
+        while (membershipsTable.getRowCount() > 0) {
+            membershipsTable.removeRow(0);
+        }
 
         if (currentId == null) {
             firstnameBox.setText("");
