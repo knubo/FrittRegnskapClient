@@ -9,6 +9,8 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.HTMLWithError;
+import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithValidation;
@@ -29,6 +31,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -39,42 +42,29 @@ public class PersonEditView extends Composite implements ClickListener {
     private static PersonEditView me;
 
     private final I18NAccount messages;
-
     private final Constants constants;
 
     private TextBoxWithErrorText firstnameBox;
-
     private TextBoxWithErrorText lastnameBox;
-
     private TextBoxWithErrorText emailBox;
-
     private TextBoxWithErrorText postnmbBox;
-
     private TextBoxWithErrorText cityBox;
-
     private ListBox countryListBox;
-
     private TextBoxWithErrorText phoneBox;
-
     private TextBoxWithErrorText cellphoneBox;
-
     private CheckBox employeeCheck;
-
     private TextBoxWithErrorText addressBox;
-
     private HTMLWithError saveStatus;
-
+    private CheckBox newsletterCheck;
+    private TextBoxWithErrorText birthdateBox;
     private Button updateButton;
 
-    private TextBoxWithErrorText birthdateBox;
-
-    private CheckBox newsletterCheck;
-
     private final HelpPanel helpPanel;
-
     private CheckBox hiddenCheck;
 
     private FlexTable membershipsTable;
+
+    private IdHolder deleteIdHolder;
 
     public PersonEditView(I18NAccount messages, Constants constants,
             HelpPanel helpPanel, final ViewCallback caller) {
@@ -88,7 +78,9 @@ public class PersonEditView extends Composite implements ClickListener {
 
         membershipsTable = new FlexTable();
         membershipsTable.setStyleName("tableborder");
-        
+
+        deleteIdHolder = new IdHolder();
+
         dp.add(table, DockPanel.NORTH);
         dp.add(membershipsTable, DockPanel.NORTH);
 
@@ -187,6 +179,71 @@ public class PersonEditView extends Composite implements ClickListener {
     public void onClick(Widget sender) {
         if (sender == updateButton) {
             doSave();
+            return;
+        }
+        String deleteId = deleteIdHolder.findId(sender);
+
+        if (deleteId != null) {
+            doDeleteMembership(deleteId);
+        }
+    }
+
+    private void doDeleteMembership(String deleteId) {
+        boolean confirm = Window.confirm(messages.confirm_delete());
+
+        if (!confirm) {
+            return;
+        }
+
+        if (deleteId.startsWith("year")) {
+            String year = deleteId.substring(4);
+            sendDeleteMessage("year=" + year + "&action=deleteyear");
+        } else if (deleteId.startsWith("train")) {
+            String semester = deleteId.substring(5);
+            sendDeleteMessage("semester=" + semester + "&action=deletetrain");
+
+        } else if (deleteId.startsWith("course")) {
+            String semester = deleteId.substring(6);
+            sendDeleteMessage("semester=" + semester + "&action=deletecourse");
+
+        }
+
+    }
+
+    private void sendDeleteMessage(String deletemessage) {
+        String toSend = deletemessage + "&personId=" + currentId;
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "registers/members.php?" + toSend);
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(String responseText) {
+                JSONValue value = JSONParser.parse(responseText);
+
+                if (value == null) {
+                    Window.alert("Failed to delete.");
+                    return;
+                }
+                JSONObject object = value.isObject();
+                
+                if(object == null) {
+                    Window.alert(messages.save_failed_badly());
+                    return;
+                }
+
+                if ("0".equals(Util.str(object.get("result")))) {
+                    Window.alert(messages.save_failed_badly());
+                } else {
+                    init(currentId);
+                }
+            }
+        };
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    callback));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
         }
     }
 
@@ -237,37 +294,49 @@ public class PersonEditView extends Composite implements ClickListener {
             return;
         }
 
-        showMemberships(messages.train_membership(), obj.get("train").isArray());
-        showMemberships(messages.course_membership(), obj.get("course")
+        showMemberships("train", messages.train_membership(), obj.get("train")
                 .isArray());
-        showMemberships(messages.year_membership(), obj.get("year").isArray());
+        showMemberships("course", messages.course_membership(), obj.get(
+                "course").isArray());
+        showMemberships("year", messages.year_membership(), obj.get("year")
+                .isArray());
     }
 
-    private void showMemberships(String title, JSONArray memberships) {
-        
-        if(memberships.size() == 0) {
+    private void showMemberships(String type, String title,
+            JSONArray memberships) {
+
+        if (memberships.size() == 0) {
             return;
         }
-        
+
         int rows = membershipsTable.getRowCount();
         membershipsTable.setText(rows, 0, title);
+        membershipsTable.getFlexCellFormatter().setColSpan(rows, 0, 2);
         membershipsTable.getRowFormatter().setStyleName(rows, "header");
 
         rows++;
-           
+
         for (int i = 0; i < memberships.size(); i++) {
             JSONObject obj = memberships.get(i).isObject();
 
             int row = rows + i;
-            
+
+            Image deleteImage = ImageFactory
+                    .deleteImage("personeditview.deleteImage");
+            deleteImage.addClickListener(this);
+            membershipsTable.setWidget(row, 1, deleteImage);
+
             if (obj.containsKey("Text")) {
                 membershipsTable.setHTML(row, 0, Util.str(obj.get("Text")));
+                deleteIdHolder.add(type + obj.get("Semester"), deleteImage);
             } else {
                 membershipsTable.setHTML(row, 0, Util.str(obj.get("Year")));
+                deleteIdHolder.add(type + obj.get("Year"), deleteImage);
             }
-            
+
             String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
             membershipsTable.getRowFormatter().setStyleName(row, style);
+
         }
     }
 
@@ -361,6 +430,8 @@ public class PersonEditView extends Composite implements ClickListener {
 
     public void init(String currentId) {
         this.currentId = currentId;
+
+        deleteIdHolder.init();
 
         while (membershipsTable.getRowCount() > 0) {
             membershipsTable.removeRow(0);

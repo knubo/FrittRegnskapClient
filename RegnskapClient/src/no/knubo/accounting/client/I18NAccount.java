@@ -464,6 +464,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String year_membership();
 
   /**
+   * Translated "Vil du virkelig slette forekomst?".
+   * 
+   * @return translated "Vil du virkelig slette forekomst?"
+   * @gwt.key confirm_delete
+   */
+  String confirm_delete();
+
+  /**
    * Translated "Treningsmedlemmer".
    * 
    * @return translated "Treningsmedlemmer"
