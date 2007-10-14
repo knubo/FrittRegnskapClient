@@ -45,6 +45,7 @@ public class ReportAccountlines extends Composite implements ClickListener {
     private ListBox personBox;
     private NamedButton searchButton;
     private NamedButton clearButton;
+    private TextBoxWithErrorText descBox;
 
     public static ReportAccountlines getInstance(Constants constants,
             I18NAccount messages, HelpPanel helpPanel) {
@@ -70,11 +71,12 @@ public class ReportAccountlines extends Composite implements ClickListener {
         table.setHTML(0, 0, messages.title_report_accountlines());
         table.getFlexCellFormatter().setColSpan(0, 0, 4);
         // table.getRowFormatter().setStyleName(0, "header");
-        table.setHTML(1, 0, messages.from_date());
-        table.setHTML(1, 2, messages.to_date());
-        table.setHTML(2, 0, messages.account());
-        table.setHTML(3, 0, messages.project());
-        table.setHTML(4, 0, messages.employee());
+        table.setText(1, 0, messages.from_date());
+        table.setText(1, 2, messages.to_date());
+        table.setText(2, 0, messages.account());
+        table.setText(3, 0, messages.project());
+        table.setText(4, 0, messages.employee());
+        table.setText(5, 0, messages.description());
 
         fromDateBox = new TextBoxWithErrorText("from_date");
         fromDateBox.setMaxLength(10);
@@ -97,7 +99,8 @@ public class ReportAccountlines extends Composite implements ClickListener {
         table.setWidget(2, 1, hpAccount);
         table.getFlexCellFormatter().setColSpan(2, 1, 3);
 
-        PosttypeCache.getInstance(constants, messages).fillAllPosts(accountNameBox);
+        PosttypeCache.getInstance(constants, messages).fillAllPosts(
+                accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
         HTML projectErrorLabel = new HTML();
@@ -121,12 +124,15 @@ public class ReportAccountlines extends Composite implements ClickListener {
         table.getFlexCellFormatter().setColSpan(4, 1, 3);
         EmploeeCache.getInstance(constants, messages).fill(personBox);
 
+        descBox = new TextBoxWithErrorText("description");
+        table.setWidget(5, 1, descBox);
+
         searchButton = new NamedButton("search", messages.search());
         searchButton.addClickListener(this);
-        table.setWidget(5, 0, searchButton);
+        table.setWidget(6, 0, searchButton);
         clearButton = new NamedButton("clear", messages.clear());
         clearButton.addClickListener(this);
-        table.setWidget(5, 1, clearButton);
+        table.setWidget(6, 1, clearButton);
 
         dp.add(table, DockPanel.NORTH);
         dp.add(accountDetailLinesHelper.getTable(), DockPanel.NORTH);
@@ -148,11 +154,11 @@ public class ReportAccountlines extends Composite implements ClickListener {
         Widget[] datewidgets = new Widget[] { fromDateBox, toDateBox };
         mv.date(messages.date_format(), datewidgets);
 
-        mv.registry(messages.registry_invalid_key(), ProjectCache
-                .getInstance(constants, messages), new Widget[] { projectIdBox });
+        mv.registry(messages.registry_invalid_key(), ProjectCache.getInstance(
+                constants, messages), new Widget[] { projectIdBox });
 
-        mv.registry(messages.registry_invalid_key(), PosttypeCache
-                .getInstance(constants, messages), new Widget[] { accountIdBox });
+        mv.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(
+                constants, messages), new Widget[] { accountIdBox });
 
         return mv.validateStatus();
     }
@@ -168,7 +174,8 @@ public class ReportAccountlines extends Composite implements ClickListener {
                 .getSelected(personBox));
         Util.addPostParam(searchRequest, "project", projectIdBox.getText());
         Util.addPostParam(searchRequest, "account", accountIdBox.getText());
-
+        Util.addPostParam(searchRequest, "description", descBox.getText());
+        
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "reports/accountlines.php");
 
@@ -187,7 +194,8 @@ public class ReportAccountlines extends Composite implements ClickListener {
         try {
             builder.setHeader("Content-Type",
                     "application/x-www-form-urlencoded");
-            builder.sendRequest(searchRequest.toString(), new AuthResponder(constants, messages, callback));
+            builder.sendRequest(searchRequest.toString(), new AuthResponder(
+                    constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -202,5 +210,6 @@ public class ReportAccountlines extends Composite implements ClickListener {
         projectIdBox.setText("");
         projectNameBox.setSelectedIndex(0);
         personBox.setSelectedIndex(0);
+        descBox.setText("");
     }
 }
