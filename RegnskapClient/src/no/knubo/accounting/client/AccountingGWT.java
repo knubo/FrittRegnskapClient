@@ -200,7 +200,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         private final ViewCallback callback;
 
-        private final String title;
+        private String title;
 
         Commando(ViewCallback callback, int action, String title) {
             this.callback = callback;
@@ -324,7 +324,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
 
             case WidgetIds.ABOUT:
-                widget = AboutView.getInstance(messages);
+                widget = AboutView.getInstance(constants, messages);
+                title = title + " - "+AboutView.CLIENT_VERSION;
                 break;
             case WidgetIds.LOGOUT:
                 widget = LogoutView.getInstance(constants, messages);

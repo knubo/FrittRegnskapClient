@@ -50,7 +50,7 @@ public class LineEditView extends Composite implements ClickListener {
         if (me == null) {
             me = new LineEditView(caller, messages, constants, helpPanel);
         }
-        me.init(line);
+        me.init(line, null);
         return me;
     }
 
@@ -122,7 +122,7 @@ public class LineEditView extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    private void init(String line) {
+    private void init(String line, String navigate) {
         currentLine = line;
 
         postNmbBox.setText("");
@@ -144,7 +144,7 @@ public class LineEditView extends Composite implements ClickListener {
         addLineButton.setEnabled(line != null);
 
         if (line != null) {
-            showLine(line);
+            showLine(line, navigate);
             countFields.init(line);
         } else {
             registerStandards.fetchInitalData(true);
@@ -161,7 +161,9 @@ public class LineEditView extends Composite implements ClickListener {
 
     private Image nextImage;
 
-    private void showLine(String line) {
+    private Label currentId;
+
+    private void showLine(String line, String navigate) {
 
         ResponseTextHandler rh = new ResponseTextHandler() {
             public void onCompletion(String responseText) {
@@ -169,6 +171,8 @@ public class LineEditView extends Composite implements ClickListener {
 
                 JSONObject root = jsonValue.isObject();
 
+                currentLine = Util.str(root.get("Id"));
+                currentId.setText(currentLine);
                 registerStandards.setCurrentMonth(Util.getMonth(root
                         .get("date")));
                 registerStandards
@@ -192,8 +196,8 @@ public class LineEditView extends Composite implements ClickListener {
         };
         // TODO Report stuff as being loaded.
         if (!HTTPRequest.asyncGet(constants.baseurl()
-                + "accounting/editaccountline.php?action=query&line=" + line,
-                rh)) {
+                + "accounting/editaccountline.php?action=query&line=" + line
+                + (navigate != null ? "&" + navigate : ""), rh)) {
             Window.alert("Failed to load");
         }
     }
@@ -418,7 +422,9 @@ public class LineEditView extends Composite implements ClickListener {
 
         nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
         nextImage.addClickListener(this);
+        currentId = new Label();
         hp.add(previousImage);
+        hp.add(currentId);
         hp.add(nextImage);
         table.setWidget(0, 2, hp);
 
@@ -431,9 +437,9 @@ public class LineEditView extends Composite implements ClickListener {
         } else if (sender == addLineButton) {
             doRowInsert();
         } else if (sender == nextImage) {
-            
+            init(currentLine, "navigate=next");
         } else if (sender == previousImage) {
-
+            init(currentLine, "navigate=previous");
         } else if (sender == dateHeader) {
             caller.viewMonth(registerStandards.getCurrentYear(),
                     registerStandards.getCurrentMonth());

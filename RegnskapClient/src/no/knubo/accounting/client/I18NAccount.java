@@ -1024,6 +1024,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String menu_reports();
 
   /**
+   * Translated "Din cachet(?) versjon av klienten er ikke på samme versjon som serverversjonen. Klientversjonen er {0} og serverversjonen er {1}. Prøv en shift reload av siden. Dette kan gjøre at deler av applikasjonen ikke fungerer som forventet.".
+   * 
+   * @return translated "Din cachet(?) versjon av klienten er ikke på samme versjon som serverversjonen. Klientversjonen er {0} og serverversjonen er {1}. Prøv en shift reload av siden. Dette kan gjøre at deler av applikasjonen ikke fungerer som forventet."
+   * @gwt.key version_mismatch
+   */
+  String version_mismatch(String arg0,  String arg1);
+
+  /**
    * Translated "Føres på post".
    * 
    * @return translated "Føres på post"
