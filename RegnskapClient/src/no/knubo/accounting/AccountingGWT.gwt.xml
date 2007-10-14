@@ -9,4 +9,10 @@
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class='no.knubo.accounting.client.AccountingGWT'/>
   	<stylesheet src='accountstyle.css'/>
+
+	<!-- Norwegian language, independent of country -->
+    <extend-property name="locale" values="no"/>
+
+	<!-- English language, independent of country -->
+    <extend-property name="locale" values="en"/>
 </module>

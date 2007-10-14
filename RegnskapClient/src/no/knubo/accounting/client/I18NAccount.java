@@ -1296,14 +1296,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String report_year_25(String arg0);
 
   /**
-   * Translated "Fordring".
-   * 
-   * @return translated "Fordring"
-   * @gwt.key fordring
-   */
-  String fordring();
-
-  /**
    * Translated "Telefon".
    * 
    * @return translated "Telefon"

@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Frame;
 public class AboutView extends Composite {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "0.91";
+    public static final String CLIENT_VERSION = "1.0";
 
     private static AboutView instance;
 
