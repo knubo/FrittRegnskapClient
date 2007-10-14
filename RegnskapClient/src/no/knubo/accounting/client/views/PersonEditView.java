@@ -94,8 +94,8 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setHTML(7, 0, messages.country());
         table.setHTML(8, 0, messages.phone());
         table.setHTML(9, 0, messages.cellphone());
-        table.setHTML(10, 0, messages.employee());
-        table.setHTML(11, 0, messages.newsletter());
+        table.setHTML(10, 0, messages.newsletter());
+        table.setHTML(11, 0, messages.employee());
         table.setHTML(12, 0, messages.hidden_person());
 
         firstnameBox = new TextBoxWithErrorText("firstname");
@@ -159,8 +159,8 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setWidget(7, 1, countryListBox);
         table.setWidget(8, 1, phoneBox);
         table.setWidget(9, 1, cellphoneBox);
-        table.setWidget(10, 1, employeeCheck);
-        table.setWidget(11, 1, newsletterCheck);
+        table.setWidget(10, 1, newsletterCheck);
+        table.setWidget(11, 1, employeeCheck);
         table.setWidget(12, 1, hiddenCheck);
         table.setWidget(13, 0, updateButton);
         table.setWidget(13, 1, saveStatus);
