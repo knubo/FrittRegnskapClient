@@ -20,12 +20,14 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -46,6 +48,7 @@ public class ReportAccountlines extends Composite implements ClickListener {
     private NamedButton searchButton;
     private NamedButton clearButton;
     private TextBoxWithErrorText descBox;
+    private CheckBox showOnlyPosts;
 
     public static ReportAccountlines getInstance(Constants constants,
             I18NAccount messages, HelpPanel helpPanel) {
@@ -69,14 +72,15 @@ public class ReportAccountlines extends Composite implements ClickListener {
         table.setStyleName("edittable");
 
         table.setHTML(0, 0, messages.title_report_accountlines());
-        table.getFlexCellFormatter().setColSpan(0, 0, 4);
+        table.getFlexCellFormatter().setColSpan(0, 0, 3);
         // table.getRowFormatter().setStyleName(0, "header");
         table.setText(1, 0, messages.from_date());
-        table.setText(1, 2, messages.to_date());
         table.setText(2, 0, messages.account());
         table.setText(3, 0, messages.project());
         table.setText(4, 0, messages.employee());
         table.setText(5, 0, messages.description());
+
+        HorizontalPanel datesHP = new HorizontalPanel();
 
         fromDateBox = new TextBoxWithErrorText("from_date");
         fromDateBox.setMaxLength(10);
@@ -84,8 +88,11 @@ public class ReportAccountlines extends Composite implements ClickListener {
         toDateBox = new TextBoxWithErrorText("to_date");
         toDateBox.setMaxLength(10);
         toDateBox.setVisibleLength(10);
-        table.setWidget(1, 1, fromDateBox);
-        table.setWidget(1, 3, toDateBox);
+
+        datesHP.add(fromDateBox);
+        datesHP.add(new Label(messages.to_date()));
+        datesHP.add(toDateBox);
+        table.setWidget(1, 1, datesHP);
 
         HTML errorAccountHtml = new HTML();
         accountIdBox = new TextBoxWithErrorText("account", errorAccountHtml);
@@ -97,7 +104,6 @@ public class ReportAccountlines extends Composite implements ClickListener {
         hpAccount.add(accountNameBox);
         hpAccount.add(errorAccountHtml);
         table.setWidget(2, 1, hpAccount);
-        table.getFlexCellFormatter().setColSpan(2, 1, 3);
 
         PosttypeCache.getInstance(constants, messages).fillAllPosts(
                 accountNameBox);
@@ -113,7 +119,6 @@ public class ReportAccountlines extends Composite implements ClickListener {
         hp.add(projectNameBox);
         hp.add(projectErrorLabel);
         table.setWidget(3, 1, hp);
-        table.getFlexCellFormatter().setColSpan(3, 1, 3);
 
         ProjectCache.getInstance(constants, messages).fill(projectNameBox);
         Util.syncListbox(projectNameBox, projectIdBox.getTextBox());
@@ -121,18 +126,28 @@ public class ReportAccountlines extends Composite implements ClickListener {
         personBox = new ListBox();
         personBox.setVisibleItemCount(1);
         table.setWidget(4, 1, personBox);
-        table.getFlexCellFormatter().setColSpan(4, 1, 3);
         EmploeeCache.getInstance(constants, messages).fill(personBox);
 
         descBox = new TextBoxWithErrorText("description");
         table.setWidget(5, 1, descBox);
 
+        HorizontalPanel shp = new HorizontalPanel();
+        showOnlyPosts = new CheckBox();
+        shp.add(showOnlyPosts);
+        shp.add(new Label(messages.show_only_selcted_post()));
+
+        table.setWidget(6, 1, shp);
+
+        HorizontalPanel buttonBlock = new HorizontalPanel();
         searchButton = new NamedButton("search", messages.search());
         searchButton.addClickListener(this);
-        table.setWidget(6, 0, searchButton);
+        buttonBlock.add(searchButton);
         clearButton = new NamedButton("clear", messages.clear());
         clearButton.addClickListener(this);
-        table.setWidget(6, 1, clearButton);
+        buttonBlock.add(clearButton);
+
+        table.setWidget(7, 0, buttonBlock);
+        table.getFlexCellFormatter().setColSpan(7, 0, 2);
 
         dp.add(table, DockPanel.NORTH);
         dp.add(accountDetailLinesHelper.getTable(), DockPanel.NORTH);
@@ -173,9 +188,10 @@ public class ReportAccountlines extends Composite implements ClickListener {
         Util.addPostParam(searchRequest, "employee", Util
                 .getSelected(personBox));
         Util.addPostParam(searchRequest, "project", projectIdBox.getText());
-        Util.addPostParam(searchRequest, "account", accountIdBox.getText());
+        final String accountId = accountIdBox.getText();
+        Util.addPostParam(searchRequest, "account", accountId);
         Util.addPostParam(searchRequest, "description", descBox.getText());
-        
+
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "reports/accountlines.php");
 
@@ -184,8 +200,9 @@ public class ReportAccountlines extends Composite implements ClickListener {
             public void serverResponse(String serverResponse) {
                 JSONValue value = JSONParser.parse(serverResponse);
                 JSONArray array = value.isArray();
-                accountDetailLinesHelper.renderResult(array);
 
+                accountDetailLinesHelper.renderResult(array, showOnlyPosts
+                        .isChecked() ? accountId : null);
                 helpPanel.resize(reportInstance);
             }
 
@@ -211,5 +228,6 @@ public class ReportAccountlines extends Composite implements ClickListener {
         projectNameBox.setSelectedIndex(0);
         personBox.setSelectedIndex(0);
         descBox.setText("");
+        showOnlyPosts.setChecked(false);
     }
 }

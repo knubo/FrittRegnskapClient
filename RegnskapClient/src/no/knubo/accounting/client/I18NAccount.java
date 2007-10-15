@@ -208,6 +208,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String train_membership();
 
   /**
+   * Translated "Vis kun valgt poster med valgt konto".
+   * 
+   * @return translated "Vis kun valgt poster med valgt konto"
+   * @gwt.key show_only_selcted_post
+   */
+  String show_only_selcted_post();
+
+  /**
    * Translated "Lagre".
    * 
    * @return translated "Lagre"

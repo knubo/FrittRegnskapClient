@@ -104,7 +104,7 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         JSONValue value = JSONParser.parse(responseText);
         JSONArray array = value.isArray();
 
-        accountDetailLinesHelper.renderResult(array);
+        accountDetailLinesHelper.renderResult(array, null);
         currentMonth = accountDetailLinesHelper.getMonthAfterRender();
         currentYear = accountDetailLinesHelper.getYearAfterRender();
 

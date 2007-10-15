@@ -119,6 +119,14 @@
   font-size:80%;
 }
 
+.gwt-Label {
+  font-size:80%;
+  font-weight:bold;
+  vertical-align:bottom;
+  padding-right:3px;
+  padding-top:2px;
+}
+
 
 .gwt-ListBox { 
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular;

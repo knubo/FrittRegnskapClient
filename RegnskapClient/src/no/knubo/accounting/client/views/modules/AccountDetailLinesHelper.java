@@ -48,13 +48,18 @@ public class AccountDetailLinesHelper {
         }
     }
 
-    public void renderResult(JSONArray array) {
+    public void renderResult(JSONArray array, String filterPostType) {
 
-        ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
-        EmploeeCache emploeeCache = EmploeeCache.getInstance(constants, messages);
-        PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
+        ProjectCache projectCache = ProjectCache.getInstance(constants,
+                messages);
+        EmploeeCache emploeeCache = EmploeeCache.getInstance(constants,
+                messages);
+        PosttypeCache posttypeCache = PosttypeCache.getInstance(constants,
+                messages);
 
         int row = 0;
+        double sum = 0;
+
         for (int i = 0; i < array.size(); i++) {
             JSONValue one = array.get(i);
 
@@ -102,15 +107,17 @@ public class AccountDetailLinesHelper {
                 JSONValue postVal = postArr.get(j);
 
                 JSONObject postObj = postVal.isObject();
+                String posttype = Util.str(postObj.get("Post_type"));
+
+                if (filterPostType != null && !filterPostType.equals(posttype)) {
+                    continue;
+                }
 
                 row++;
 
-                table.getRowFormatter().setStyleName(
-                        row,
-                        (j % 2 == 0) ? "smallerfont showlineposts2"
-                                : "smallerfont showlineposts1");
-
-                String posttype = Util.str(postObj.get("Post_type"));
+                String style = (j % 2 == 0) ? "smallerfont showlineposts2"
+                        : "smallerfont showlineposts1";
+                table.getRowFormatter().setStyleName(row, style);
 
                 table.setText(row, 3, posttype + " "
                         + posttypeCache.getDescription(posttype));
@@ -124,13 +131,24 @@ public class AccountDetailLinesHelper {
                         .get("Person"))));
                 table.getCellFormatter().setStyleName(row, 5, "desc");
 
-                table.setText(row, 6, Util.debkred(messages, postObj
-                        .get("Debet")));
+                JSONValue debkred = postObj.get("Debet");
+                table.setText(row, 6, Util.debkred(messages, debkred));
 
+                if("1".equals(Util.str(debkred))) {
+                    sum +=Double.parseDouble(Util.str(postObj.get("Amount")));
+                } else {
+                    sum -=Double.parseDouble(Util.str(postObj.get("Amount")));
+                }
                 table.setText(row, 7, Util.money(postObj.get("Amount")));
                 table.getCellFormatter().setStyleName(row, 7, "right");
-
             }
+        }
+        if (filterPostType != null) {
+            row++;
+            table.setText(row, 0, messages.sum());
+            table.setText(row, 7, String.valueOf(sum));
+            table.getCellFormatter().setStyleName(row, 7, "right");
+            table.getRowFormatter().setStyleName(row, "sumline");
         }
     }
 
