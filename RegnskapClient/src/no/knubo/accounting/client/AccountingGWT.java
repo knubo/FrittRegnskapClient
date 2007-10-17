@@ -32,6 +32,7 @@ import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.UsersEditView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.reporting.ReportAccountlines;
+import no.knubo.accounting.client.views.reporting.ReportAccounttracking;
 import no.knubo.accounting.client.views.reporting.ReportMail;
 import no.knubo.accounting.client.views.reporting.ReportMassLetters;
 import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
@@ -148,6 +149,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.REPORT_EMAIL);
         addMenuItem(reportsMenu, messages.menuitem_report_users_email(),
                 WidgetIds.REPORT_USERS_EMAIL);
+        addMenuItem(reportsMenu, messages.menuitem_report_accounttrack(),
+                WidgetIds.REPORT_ACCOUNTTRACK);
 
         addMenuItem(settingsMenu, messages.menuitem_useradm(),
                 WidgetIds.EDIT_USERS);
@@ -262,7 +265,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((TrustEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
-                widget = PersonEditView.show(constants, messages, helpPanel, callback);
+                widget = PersonEditView.show(constants, messages, helpPanel,
+                        callback);
                 ((PersonEditView) widget).init(null);
                 break;
             case WidgetIds.FIND_PERSON:
@@ -296,6 +300,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                         helpPanel, callback);
                 ((TrustStatusView) widget).init();
                 break;
+            case REPORT_ACCOUNTTRACK:
+                widget = ReportAccounttracking.getInstance(constants, messages);
+                break;
             case REPORT_MEMBER_PER_YEAR:
                 widget = ReportMembersBirth.getInstance(constants, messages,
                         helpPanel);
@@ -325,7 +332,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
             case WidgetIds.ABOUT:
                 widget = AboutView.getInstance(constants, messages);
-                title = title + " - "+AboutView.CLIENT_VERSION;
+                title = title + " - " + AboutView.CLIENT_VERSION;
                 break;
             case WidgetIds.LOGOUT:
                 widget = LogoutView.getInstance(constants, messages);
@@ -369,9 +376,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.SHOW_MONTH);
         Window.setTitle(messages.menuitem_showmonth());
     }
-    
+
     public void searchPerson() {
-        PersonSearchView widget = PersonSearchView.show(this, messages, constants);
+        PersonSearchView widget = PersonSearchView.show(this, messages,
+                constants);
         setActiveWidget(widget);
         HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
                 WidgetIds.FIND_PERSON);

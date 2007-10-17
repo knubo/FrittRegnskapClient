@@ -208,9 +208,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String train_membership();
 
   /**
-   * Translated "Vis kun valgt poster med valgt konto".
+   * Translated "Vis kun poster med valgt konto".
    * 
-   * @return translated "Vis kun valgt poster med valgt konto"
+   * @return translated "Vis kun poster med valgt konto"
    * @gwt.key show_only_selcted_post
    */
   String show_only_selcted_post();
@@ -526,6 +526,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key trustStatusView_newTrustButton
    */
   String trustStatusView_newTrustButton();
+
+  /**
+   * Translated "Accounts for status report".
+   * 
+   * @return translated "Accounts for status report"
+   * @gwt.key menuitem_accounttrack
+   */
+  String menuitem_accounttrack();
 
   /**
    * Translated "Oversikt over medlemmer per fødselsdato".
@@ -1336,9 +1344,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String newline();
 
   /**
-   * Translated "Konti".
+   * Translated "Konti for status for utvalgte konti".
    * 
-   * @return translated "Konti"
+   * @return translated "Konti for status for utvalgte konti"
    * @gwt.key menuitem_accounts
    */
   String menuitem_accounts();
@@ -1694,6 +1702,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key report_year_40
    */
   String report_year_40(String arg0);
+
+  /**
+   * Translated "Status for utvalgte konti".
+   * 
+   * @return translated "Status for utvalgte konti"
+   * @gwt.key menuitem_report_accounttrack
+   */
+  String menuitem_report_accounttrack();
 
   /**
    * Translated "Vis måned".
