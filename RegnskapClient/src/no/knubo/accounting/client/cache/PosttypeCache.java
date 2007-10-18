@@ -2,6 +2,7 @@ package no.knubo.accounting.client.cache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,8 @@ public class PosttypeCache implements Registry {
 
     List memberPaymentPosts;
 
-    public static PosttypeCache getInstance(Constants constants, I18NAccount messages) {
+    public static PosttypeCache getInstance(Constants constants,
+            I18NAccount messages) {
         if (instance == null) {
             instance = new PosttypeCache(constants, messages);
         }
@@ -45,7 +47,7 @@ public class PosttypeCache implements Registry {
     }
 
     private PosttypeCache(Constants constants, I18NAccount messages) {
-        
+
         ServerResponse handlerTypes = new ServerResponse() {
 
             public void serverResponse(String responseText) {
@@ -66,16 +68,17 @@ public class PosttypeCache implements Registry {
             }
 
         };
-        
+
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
                 constants.baseurl() + "registers/posttypes.php?action=all");
 
         try {
-            builder.sendRequest("", new AuthResponder(constants, messages, handlerTypes));
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    handlerTypes));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
-        
+
         ServerResponse handlerMembershipPayment = new ServerResponse() {
 
             public void serverResponse(String responseText) {
@@ -92,12 +95,15 @@ public class PosttypeCache implements Registry {
             }
 
         };
-        
-        RequestBuilder builderMP = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "defaults/post_defaults.php?selection=membershippayment");
+
+        RequestBuilder builderMP = new RequestBuilder(
+                RequestBuilder.GET,
+                constants.baseurl()
+                        + "defaults/post_defaults.php?selection=membershippayment");
 
         try {
-            builderMP.sendRequest("", new AuthResponder(constants, messages, handlerMembershipPayment));
+            builderMP.sendRequest("", new AuthResponder(constants, messages,
+                    handlerMembershipPayment));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }
@@ -113,15 +119,7 @@ public class PosttypeCache implements Registry {
     }
 
     public void fillAllPosts(ListBox box) {
-        box.insertItem("", 0);
-        int pos = 1;
-        for (Iterator i = originalSort.iterator(); i.hasNext();) {
-            String k = (String) i.next();
-
-            String desc = (String) typeGivesDescription.get(k);
-
-            box.insertItem(desc, k, pos++);
-        }
+        fillAllPosts(box, null, true, false);
     }
 
     public void fillMembershipPayments(ListBox box) {
@@ -137,5 +135,40 @@ public class PosttypeCache implements Registry {
 
     public boolean keyExists(String key) {
         return typeGivesDescription.containsKey(key);
+    }
+
+    public void fillAllPosts(ListBox box, ListBox excludeBox, boolean addBlanc,
+            boolean includeKey) {
+
+        HashSet excludeKeys = setUpExcludeKeys(excludeBox);
+
+        if (addBlanc) {
+            box.insertItem("", 0);
+        }
+        int pos = 1;
+        for (Iterator i = originalSort.iterator(); i.hasNext();) {
+            String k = (String) i.next();
+
+            if (excludeKeys.contains(k)) {
+                continue;
+            }
+
+            String desc = (String) typeGivesDescription.get(k);
+
+            if (includeKey) {
+                desc = k + " " + desc;
+            }
+            box.insertItem(desc, k, pos++);
+        }
+
+    }
+
+    private HashSet setUpExcludeKeys(ListBox excludeBox) {
+        HashSet hs = new HashSet(excludeBox.getItemCount());
+
+        for (int i = 0; i < excludeBox.getItemCount(); i++) {
+            hs.add(excludeBox.getValue(i));
+        }
+        return hs;
     }
 }

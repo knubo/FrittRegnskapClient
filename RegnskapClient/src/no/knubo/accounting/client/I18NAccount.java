@@ -528,9 +528,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String trustStatusView_newTrustButton();
 
   /**
-   * Translated "Accounts for status report".
+   * Translated "Konti for status for utvalgte konti".
    * 
-   * @return translated "Accounts for status report"
+   * @return translated "Konti for status for utvalgte konti"
    * @gwt.key menuitem_accounttrack
    */
   String menuitem_accounttrack();
@@ -566,6 +566,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key save
    */
   String save();
+
+  /**
+   * Translated "Valgte konti".
+   * 
+   * @return translated "Valgte konti"
+   * @gwt.key chosen_accounts
+   */
+  String chosen_accounts();
 
   /**
    * Translated "Forekomst finnes ikke".
@@ -1344,9 +1352,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String newline();
 
   /**
-   * Translated "Konti for status for utvalgte konti".
+   * Translated "Konti".
    * 
-   * @return translated "Konti for status for utvalgte konti"
+   * @return translated "Konti"
    * @gwt.key menuitem_accounts
    */
   String menuitem_accounts();
@@ -1616,6 +1624,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String address();
 
   /**
+   * Translated "Tilgjenglige konti".
+   * 
+   * @return translated "Tilgjenglige konti"
+   * @gwt.key available_accounts
+   */
+  String available_accounts();
+
+  /**
    * Translated "Brevmal".
    * 
    * @return translated "Brevmal"
@@ -1752,20 +1768,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String description();
 
   /**
-   * Translated "Detaljer".
-   * 
-   * @return translated "Detaljer"
-   * @gwt.key detailsline
-   */
-  String detailsline();
-
-  /**
    * Translated "Epost".
    * 
    * @return translated "Epost"
    * @gwt.key email
    */
   String email();
+
+  /**
+   * Translated "Detaljer".
+   * 
+   * @return translated "Detaljer"
+   * @gwt.key detailsline
+   */
+  String detailsline();
 
   /**
    * Translated "Registrer".

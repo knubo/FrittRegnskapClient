@@ -14,6 +14,15 @@ public class ImageFactory {
         return withId(new Image("images/go-next.png"), id);
     }
 
+    public static Image previousImageBig(String id) {
+        return withId(new Image("images/go-previous-big.png"), id);
+    }
+
+    public static Image nextImageBig(String id) {
+        return withId(new Image("images/go-next-big.png"), id);
+    }
+
+
     public static Image removeImage(String id) {
         return withId(new Image("images/list-remove.png"), id);
     }
