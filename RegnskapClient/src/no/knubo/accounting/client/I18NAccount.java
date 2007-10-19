@@ -8,6 +8,14 @@ package no.knubo.accounting.client;
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
   /**
+   * Translated "Tilgang".
+   * 
+   * @return translated "Tilgang"
+   * @gwt.key access
+   */
+  String access();
+
+  /**
    * Translated "Mangler fødselsdato - {0} medlemmer".
    * 
    * @return translated "Mangler fødselsdato - {0} medlemmer"
@@ -568,6 +576,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String save();
 
   /**
+   * Translated "Full tilgang".
+   * 
+   * @return translated "Full tilgang"
+   * @gwt.key full_access
+   */
+  String full_access();
+
+  /**
    * Translated "Valgte konti".
    * 
    * @return translated "Valgte konti"
@@ -624,20 +640,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String loding_page();
 
   /**
-   * Translated "Prosjekter".
-   * 
-   * @return translated "Prosjekter"
-   * @gwt.key menuitem_projects
-   */
-  String menuitem_projects();
-
-  /**
    * Translated "Standardinnstillinger for regnskap".
    * 
    * @return translated "Standardinnstillinger for regnskap"
    * @gwt.key standardsettings
    */
   String standardsettings();
+
+  /**
+   * Translated "Prosjekter".
+   * 
+   * @return translated "Prosjekter"
+   * @gwt.key menuitem_projects
+   */
+  String menuitem_projects();
 
   /**
    * Translated "Pris for kurs".
@@ -1702,6 +1718,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key country_other
    */
   String country_other();
+
+  /**
+   * Translated "Redusert skrivetilgang".
+   * 
+   * @return translated "Redusert skrivetilgang"
+   * @gwt.key reduced_write_access
+   */
+  String reduced_write_access();
 
   /**
    * Translated "Post nr. er benyttet tidligere".

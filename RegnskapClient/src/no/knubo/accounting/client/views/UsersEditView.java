@@ -9,6 +9,7 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.NamedCheckBox;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -70,7 +71,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
         table.setHTML(1, 0, messages.user());
         table.setHTML(1, 1, messages.name());
-        table.setHTML(1, 2, messages.read_only_access());
+        table.setHTML(1, 2, messages.access());
         table.setHTML(1, 3, "");
         table.setHTML(1, 4, "");
         table.getRowFormatter().setStyleName(1, "header");
@@ -193,9 +194,12 @@ public class UsersEditView extends Composite implements ClickListener {
                     String username = Util.str(object.get("username"));
                     String name = Util.str(object.get("name"));
                     String readOnlyAccess = Util.str(object.get("readonly"));
+                    String reducedWriteAccess = Util.str(object
+                            .get("reducedwrite"));
                     objectPerUsername.put(username, object);
 
-                    addRow(row++, username, name, readOnlyAccess);
+                    addRow(row++, username, name, readOnlyAccess,
+                            reducedWriteAccess);
                 }
                 helpPanel.resize(me);
             }
@@ -210,12 +214,19 @@ public class UsersEditView extends Composite implements ClickListener {
     }
 
     private void addRow(int row, String username, String name,
-            String readOnlyAccess) {
+            String readOnlyAccess, String reducedwrite) {
         table.setHTML(row, 0, username);
         table.setHTML(row, 1, name);
-        table.setHTML(row, 2, "1".equals(readOnlyAccess) ? messages.x() : "");
 
-        table.getCellFormatter().setStyleName(row, 2, "center");
+        if ("1".equals(reducedwrite)) {
+            table.setHTML(row, 2, messages.reduced_write_access());
+        } else if ("1".equals(readOnlyAccess)) {
+            table.setHTML(row, 2, messages.read_only_access());
+        } else {
+            table.setHTML(row, 2, messages.full_access());
+        }
+
+        table.getCellFormatter().setStyleName(row, 2, "desc");
         table.getCellFormatter().setStyleName(row, 1, "desc");
 
         Image editImage = ImageFactory.editImage("userEditView_editImage");
@@ -236,6 +247,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
     class UserEditFields extends DialogBox implements ClickListener,
             PersonPickCallback {
+
         private TextBoxWithErrorText userBox;
 
         private Button saveButton;
@@ -252,7 +264,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
         private TextBoxWithErrorText personBox;
 
-        private NamedCheckBox readOnlyBox;
+        private ListBoxWithErrorText accessList;
 
         UserEditFields() {
             edittable = new FlexTable();
@@ -270,7 +282,11 @@ public class UsersEditView extends Composite implements ClickListener {
             personBox.setVisibleLength(40);
             personBox.setEnabled(false);
 
-            readOnlyBox = new NamedCheckBox("read_only_access");
+            accessList = new ListBoxWithErrorText("access");
+            accessList.getListbox().setVisibleItemCount(1);
+            accessList.getListbox().addItem(messages.full_access());
+            accessList.getListbox().addItem(messages.reduced_write_access());
+            accessList.getListbox().addItem(messages.read_only_access());
 
             edittable.setText(0, 0, messages.user());
             edittable.setWidget(0, 1, userBox);
@@ -283,7 +299,7 @@ public class UsersEditView extends Composite implements ClickListener {
             edittable.setWidget(2, 2, searchImage);
 
             edittable.setText(3, 0, messages.read_only_access());
-            edittable.setWidget(3, 1, readOnlyBox);
+            edittable.setWidget(3, 1, accessList);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
@@ -315,7 +331,19 @@ public class UsersEditView extends Composite implements ClickListener {
             personBox.setText(Util.str(object.get("name")));
             userBox.setEnabled(false);
             boolean isReadOnly = "1".equals(Util.str(object.get("readonly")));
-            readOnlyBox.setChecked(isReadOnly);
+            boolean reducedWrite = "1".equals(Util.str(object
+                    .get("reducedwrite")));
+
+            if (reducedWrite) {
+                Util.setIndexByValue(accessList.getListbox(), messages
+                        .reduced_write_access());
+            } else if (isReadOnly) {
+                Util.setIndexByValue(accessList.getListbox(), messages
+                        .read_only_access());
+            } else {
+                Util.setIndexByValue(accessList.getListbox(), messages
+                        .full_access());
+            }
         }
 
         public void init() {
@@ -352,8 +380,17 @@ public class UsersEditView extends Composite implements ClickListener {
             Util.addPostParam(sb, "username", userBox.getText());
             Util.addPostParam(sb, "password", passwordBox.getText());
             Util.addPostParam(sb, "person", personId);
-            Util.addPostParam(sb, "readonly", readOnlyBox.isChecked() ? "1"
-                    : "0");
+
+            if (accessList.getText().equals(messages.reduced_write_access())) {
+                Util.addPostParam(sb, "readonly", "1");
+                Util.addPostParam(sb, "reducedwrite", "1");
+            } else if (accessList.getText().equals(messages.read_only_access())) {
+                Util.addPostParam(sb, "readonly", "1");
+                Util.addPostParam(sb, "reducedwrite", "0");
+            } else {
+                Util.addPostParam(sb, "readonly", "0");
+                Util.addPostParam(sb, "reducedwrite", "0");                
+            }
 
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                     constants.baseurl() + "registers/users.php");
