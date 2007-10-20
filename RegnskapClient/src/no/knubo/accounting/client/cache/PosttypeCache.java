@@ -164,6 +164,9 @@ public class PosttypeCache implements Registry {
     }
 
     private HashSet setUpExcludeKeys(ListBox excludeBox) {
+        if(excludeBox == null) {
+            return new HashSet();
+        }
         HashSet hs = new HashSet(excludeBox.getItemCount());
 
         for (int i = 0; i < excludeBox.getItemCount(); i++) {
