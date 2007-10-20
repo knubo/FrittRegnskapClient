@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CacheCallback;
@@ -51,19 +52,22 @@ public class ProjectEditView extends Composite implements ClickListener,
 
     private ProjectCache projectCache;
 
-    public ProjectEditView(I18NAccount messages, Constants constants) {
+    private final Elements elements;
+
+    public ProjectEditView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.project());
+        table.setHTML(0, 0, elements.project());
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 0, 2);
 
-        newButton = new NamedButton("projectEditView_newButton", messages
+        newButton = new NamedButton("projectEditView_newButton", elements
                 .projectEditView_newButton());
         newButton.addClickListener(this);
 
@@ -74,9 +78,9 @@ public class ProjectEditView extends Composite implements ClickListener,
         initWidget(dp);
     }
 
-    public static ProjectEditView show(I18NAccount messages, Constants constants) {
+    public static ProjectEditView show(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
-            me = new ProjectEditView(messages, constants);
+            me = new ProjectEditView(messages, constants, elements);
         }
         me.setVisible(true);
         return me;
@@ -151,11 +155,11 @@ public class ProjectEditView extends Composite implements ClickListener,
         private HTML mainErrorLabel;
 
         ProjectEditFields() {
-            setText(messages.project());
+            setText(elements.project());
             FlexTable edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            edittable.setHTML(0, 0, messages.description());
+            edittable.setHTML(0, 0, elements.description());
             projectBox = new TextBoxWithErrorText("project");
             projectBox.setMaxLength(100);
             projectBox.setVisibleLength(100);
@@ -164,11 +168,11 @@ public class ProjectEditView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("projectEditView_saveButton", messages
+            saveButton = new NamedButton("projectEditView_saveButton", elements
                     .save());
             saveButton.addClickListener(this);
             cancelButton = new NamedButton("projectEditView_cancelButton",
-                    messages.cancel());
+                    elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();

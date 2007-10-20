@@ -23,8 +23,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Various nifty utilities for the project.
- * 
- * @author knuterikborgen
  */
 public class Util {
 
@@ -47,7 +45,7 @@ public class Util {
      *            The month to find.
      * @return The month string or "ERROR" if not of month 1 - 12.
      */
-    public static String monthString(I18NAccount i18n, int month) {
+    public static String monthString(Elements i18n, int month) {
         switch (month) {
         case 1:
             return i18n.month_01();
@@ -185,7 +183,7 @@ public class Util {
         }
     }
 
-    public static String debkred(I18NAccount messages, JSONValue value) {
+    public static String debkred(Elements messages, JSONValue value) {
         JSONString string = value.isString();
 
         if (string == null) {
@@ -195,7 +193,7 @@ public class Util {
         return debkred(messages, string.stringValue());
     }
 
-    public static String debkred(I18NAccount messages, String string) {
+    public static String debkred(Elements messages, String string) {
         if ("1".equals(string)) {
             return messages.debet();
         }

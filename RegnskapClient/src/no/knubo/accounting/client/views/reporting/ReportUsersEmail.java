@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.reporting;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
@@ -24,33 +25,35 @@ public class ReportUsersEmail extends Composite {
     private final I18NAccount messages;
     private final HelpPanel helpPanel;
     private FlexTable table;
+    private final Elements elements;
 
     public static ReportUsersEmail getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel) {
+            I18NAccount messages, HelpPanel helpPanel, Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportUsersEmail(constants, messages,
-                    helpPanel);
+                    helpPanel, elements);
         }
         return reportInstance;
     }
 
     public ReportUsersEmail(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.title_report_users_email());
+        table.setHTML(0, 0, elements.title_report_users_email());
         table.getFlexCellFormatter().setColSpan(0, 0, 9);
         table.getRowFormatter().setStyleName(0, "header");
-        table.setHTML(1, 0, messages.firstname());
-        table.setHTML(1, 1, messages.lastname());
-        table.setHTML(1, 2, messages.email());
-        table.setHTML(1, 3, messages.newsletter());
+        table.setHTML(1, 0, elements.firstname());
+        table.setHTML(1, 1, elements.lastname());
+        table.setHTML(1, 2, elements.email());
+        table.setHTML(1, 3, elements.newsletter());
         table.getRowFormatter().setStyleName(1, "header");
 
         dp.add(table, DockPanel.NORTH);
@@ -87,7 +90,7 @@ public class ReportUsersEmail extends Composite {
                 table.setHTML(row, 1, Util.str(object.get("lastname")));
                 table.setHTML(row, 2, Util.str(object.get("email")));
                 table.setHTML(row, 3, "1".equals(Util.str(object
-                        .get("newsletter"))) ? messages.x() : "");
+                        .get("newsletter"))) ? elements.x() : "");
                 table.getCellFormatter().setStyleName(row, 3, "center");
 
                 String style = (row % 2 == 0) ? "showlineposts2"

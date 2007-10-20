@@ -1,0 +1,6 @@
+#!/bin/sh
+APPDIR=`dirname $0`;
+GWT_ROOT='/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.4.10'
+CP="$APPDIR/src:$APPDIR/bin:$GWT_ROOT/gwt-user.jar:$GWT_ROOT/gwt-dev-mac.jar"
+java -cp "$CP" com.google.gwt.i18n.tools.I18NSync -out $APPDIR/src no.knubo.accounting.client.Elements;
+

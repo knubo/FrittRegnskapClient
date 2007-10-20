@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.reporting;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
@@ -51,34 +52,34 @@ public class ReportAccountlines extends Composite implements ClickListener {
     private CheckBox showOnlyPosts;
 
     public static ReportAccountlines getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel) {
+            I18NAccount messages, HelpPanel helpPanel, Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportAccountlines(constants, messages,
-                    helpPanel);
+                    helpPanel, elements);
         }
         return reportInstance;
     }
 
     public ReportAccountlines(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
 
         DockPanel dp = new DockPanel();
         accountDetailLinesHelper = new AccountDetailLinesHelper(constants,
-                messages);
+                messages, elements);
         table = new FlexTable();
         table.setStyleName("edittable");
 
-        table.setHTML(0, 0, messages.title_report_accountlines());
+        table.setHTML(0, 0, elements.title_report_accountlines());
         table.getFlexCellFormatter().setColSpan(0, 0, 3);
         // table.getRowFormatter().setStyleName(0, "header");
-        table.setText(1, 0, messages.from_date());
-        table.setText(2, 0, messages.account());
-        table.setText(3, 0, messages.project());
-        table.setText(4, 0, messages.employee());
-        table.setText(5, 0, messages.description());
+        table.setText(1, 0, elements.from_date());
+        table.setText(2, 0, elements.account());
+        table.setText(3, 0, elements.project());
+        table.setText(4, 0, elements.employee());
+        table.setText(5, 0, elements.description());
 
         HorizontalPanel datesHP = new HorizontalPanel();
 
@@ -90,7 +91,7 @@ public class ReportAccountlines extends Composite implements ClickListener {
         toDateBox.setVisibleLength(10);
 
         datesHP.add(fromDateBox);
-        datesHP.add(new Label(messages.to_date()));
+        datesHP.add(new Label(elements.to_date()));
         datesHP.add(toDateBox);
         table.setWidget(1, 1, datesHP);
 
@@ -134,15 +135,15 @@ public class ReportAccountlines extends Composite implements ClickListener {
         HorizontalPanel shp = new HorizontalPanel();
         showOnlyPosts = new CheckBox();
         shp.add(showOnlyPosts);
-        shp.add(new Label(messages.show_only_selcted_post()));
+        shp.add(new Label(elements.show_only_selcted_post()));
 
         table.setWidget(6, 1, shp);
 
         HorizontalPanel buttonBlock = new HorizontalPanel();
-        searchButton = new NamedButton("search", messages.search());
+        searchButton = new NamedButton("search", elements.search());
         searchButton.addClickListener(this);
         buttonBlock.add(searchButton);
-        clearButton = new NamedButton("clear", messages.clear());
+        clearButton = new NamedButton("clear", elements.clear());
         clearButton.addClickListener(this);
         buttonBlock.add(clearButton);
 

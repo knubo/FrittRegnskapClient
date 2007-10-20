@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.MonthHeaderCache;
@@ -37,9 +38,9 @@ public class MonthView extends Composite implements ClickListener,
     private static MonthView instance;
 
     public static MonthView getInstance(Constants constants,
-            I18NAccount messages, ViewCallback caller) {
+            I18NAccount messages, ViewCallback caller, Elements elements) {
         if (instance == null) {
-            instance = new MonthView(constants, messages, caller);
+            instance = new MonthView(constants, messages, caller, elements);
         }
         return instance;
     }
@@ -66,11 +67,14 @@ public class MonthView extends Composite implements ClickListener,
 
     private YearMonthComboHelper yearMonthComboHelper;
 
+    private final Elements elements;
+
     public MonthView(Constants constants, I18NAccount messages,
-            ViewCallback caller) {
+            ViewCallback caller, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.caller = caller;
+        this.elements = elements;
 
         dockPanel = new DockPanel();
         newTable();
@@ -87,7 +91,7 @@ public class MonthView extends Composite implements ClickListener,
         monthYearCombo.addChangeListener(this);
 
         yearMonthComboHelper = new YearMonthComboHelper(messages, constants,
-                monthYearCombo);
+                monthYearCombo, elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
@@ -148,10 +152,10 @@ public class MonthView extends Composite implements ClickListener,
         table.getFlexCellFormatter().setColSpan(row + 1, 0, 4);
         table.getCellFormatter().setStyleName(row + 1, 0, "leftborder");
 
-        table.setText(row, col++, messages.attachment());
-        table.setText(row, col++, messages.date());
+        table.setText(row, col++, elements.attachment());
+        table.setText(row, col++, elements.date());
 
-        table.setText(row, col++, messages.description());
+        table.setText(row, col++, elements.description());
 
         /* Column-position for row 2 */
         int col2 = 1;
@@ -169,9 +173,9 @@ public class MonthView extends Composite implements ClickListener,
             /* Add DEBET/KREDIT headers */
 
             table.getCellFormatter().setStyleName(row + 1, col2, "leftborder");
-            table.setText(row + 1, col2++, messages.debet());
+            table.setText(row + 1, col2++, elements.debet());
             table.getCellFormatter().setStyleName(row + 1, col2, "rightborder");
-            table.setText(row + 1, col2++, messages.kredit());
+            table.setText(row + 1, col2++, elements.kredit());
         }
     }
 
@@ -200,7 +204,7 @@ public class MonthView extends Composite implements ClickListener,
 
     private void showDebetCreditSums(JSONObject debetSums, JSONObject creditSums) {
         int row = table.getRowCount();
-        table.setText(row, 3, messages.sum());
+        table.setText(row, 3, elements.sum());
         table.getRowFormatter().setStyleName(row, "sumline");
         render_posts(row, debetSums, creditSums);
 
@@ -213,14 +217,15 @@ public class MonthView extends Composite implements ClickListener,
             if (debetSums.containsKey(key)) {
                 oldValue = Util.str(debetSums.get(key));
             }
-            
-            double sum = Double.parseDouble(oldValue) - Double.parseDouble(toSubtract);
-            
+
+            double sum = Double.parseDouble(oldValue)
+                    - Double.parseDouble(toSubtract);
+
             debetSums.put(key, new JSONString(String.valueOf(sum)));
         }
-        
-        render_posts(row+1, debetSums, new JSONObject());
-        table.getRowFormatter().setStyleName(row+1, "sumline");
+
+        render_posts(row + 1, debetSums, new JSONObject());
+        table.getRowFormatter().setStyleName(row + 1, "sumline");
     }
 
     private void showLines(JSONArray array) {
@@ -322,7 +327,8 @@ public class MonthView extends Composite implements ClickListener,
      * @param line
      */
     private void openDetails(Hyperlink link, String line) {
-        PostView pv = PostView.show(messages, constants, caller, line);
+        PostView pv = PostView
+                .show(messages, constants, caller, line, elements);
         int left = link.getAbsoluteLeft() + 100;
         int top = link.getAbsoluteTop() + 10;
         pv.setPopupPosition(left, top);

@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
@@ -42,9 +43,9 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     private static RegisterMembershipView me;
 
     public static RegisterMembershipView show(I18NAccount messages,
-            Constants constants, HelpPanel helpPanel) {
+            Constants constants, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new RegisterMembershipView(messages, constants, helpPanel);
+            me = new RegisterMembershipView(messages, constants, helpPanel, elements);
         }
         return me;
     }
@@ -67,13 +68,16 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
     private final HelpPanel helpPanel;
 
-    private RegisterMembershipView(I18NAccount messages, Constants constants, HelpPanel helpPanel) {
+    private final Elements elements;
+
+    private RegisterMembershipView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         idHolder = new IdHolder();
-        userSearchFields = new UserSearchFields(messages, this);
+        userSearchFields = new UserSearchFields(this, elements);
 
         DockPanel dp = new DockPanel();
 
@@ -81,7 +85,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         setHeader();
 
         HTML help = new HTML();
-        help.setHTML(messages.register_membership_help());
+        help.setHTML(elements.register_membership_help());
 
         dp.add(header, DockPanel.NORTH);
         dp.add(help, DockPanel.NORTH);
@@ -92,18 +96,18 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         resultTable.setStyleName("tableborder");
 
         resultTable.getRowFormatter().setStyleName(0, "header");
-        resultTable.setHTML(0, 0, messages.firstname());
-        resultTable.setHTML(0, 1, messages.lastname());
-        resultTable.setHTML(0, 2, messages.email());
-        resultTable.setHTML(0, 3, messages.year_membership());
-        resultTable.setHTML(0, 4, messages.course_membership());
-        resultTable.setHTML(0, 5, messages.train_membership());
-        resultTable.setHTML(0, 6, messages.paid_day());
-        resultTable.setHTML(0, 7, messages.post());
+        resultTable.setHTML(0, 0, elements.firstname());
+        resultTable.setHTML(0, 1, elements.lastname());
+        resultTable.setHTML(0, 2, elements.email());
+        resultTable.setHTML(0, 3, elements.year_membership());
+        resultTable.setHTML(0, 4, elements.course_membership());
+        resultTable.setHTML(0, 5, elements.train_membership());
+        resultTable.setHTML(0, 6, elements.paid_day());
+        resultTable.setHTML(0, 7, elements.post());
         dp.add(resultTable, DockPanel.NORTH);
 
         Button button = new NamedButton(
-                "RegisterMembershipView.registerMembershipButton", messages
+                "RegisterMembershipView.registerMembershipButton", elements
                         .register_membership());
         button.addClickListener(this);
         dp.add(button, DockPanel.NORTH);
@@ -354,9 +358,9 @@ public class RegisterMembershipView extends Composite implements ClickListener,
                 currentMonth = Util.getInt(object.get("month"));
 
                 String headerText = "<h2>"
-                        + messages.register_membership_header() + " - "
+                        + elements.register_membership_header() + " - "
                         + semester + "-"
-                        + Util.monthString(messages, currentMonth) + "</h2>";
+                        + Util.monthString(elements, currentMonth) + "</h2>";
                 header.setHTML(headerText);
             }
 

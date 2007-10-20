@@ -57,15 +57,13 @@ import com.google.gwt.user.client.ui.Widget;
 public class AccountingGWT implements EntryPoint, ViewCallback {
 
     private I18NAccount messages;
+    private Constants constants;
+    private HelpTexts helpTexts;
+    private Elements elements;
 
     private DockPanel activeView;
 
-    private Constants constants;
-
-    private HelpTexts helpTexts;
-
     private static Image blankImage;
-
     private static Image loadingImage;
 
     /**
@@ -75,6 +73,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         messages = (I18NAccount) GWT.create(I18NAccount.class);
         constants = (Constants) GWT.create(Constants.class);
         helpTexts = (HelpTexts) GWT.create(HelpTexts.class);
+        elements = (Elements) GWT.create(Elements.class);
 
         loadCaches(constants, messages);
 
@@ -96,84 +95,84 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView = new DockPanel();
         activeView.setStyleName("activeview");
         docPanel.add(activeView, DockPanel.CENTER);
-        HelpPanel helpPanel = HelpPanel.getInstance(messages, helpTexts);
+        HelpPanel helpPanel = HelpPanel.getInstance(elements, helpTexts);
         docPanel.add(helpPanel, DockPanel.EAST);
         docPanel.setCellWidth(helpPanel, "100%");
 
-        MenuBar registerMenu = addTopMenu(topMenu, messages.menu_register());
-        MenuBar showMenu = addTopMenu(topMenu, messages.menu_show());
-        MenuBar peopleMenu = addTopMenu(topMenu, messages.menu_people());
-        MenuBar trustMenu = addTopMenu(topMenu, messages.menu_trust());
-        MenuBar reportsMenu = addTopMenu(topMenu, messages.menu_reports());
-        MenuBar settingsMenu = addTopMenu(topMenu, messages.menu_settings());
-        MenuBar aboutMenu = addTopMenu(topMenu, messages.menu_info());
+        MenuBar registerMenu = addTopMenu(topMenu, elements.menu_register());
+        MenuBar showMenu = addTopMenu(topMenu, elements.menu_show());
+        MenuBar peopleMenu = addTopMenu(topMenu, elements.menu_people());
+        MenuBar trustMenu = addTopMenu(topMenu, elements.menu_trust());
+        MenuBar reportsMenu = addTopMenu(topMenu, elements.menu_reports());
+        MenuBar settingsMenu = addTopMenu(topMenu, elements.menu_settings());
+        MenuBar aboutMenu = addTopMenu(topMenu, elements.menu_info());
 
-        addMenuItem(registerMenu, messages.menuitem_regline(),
+        addMenuItem(registerMenu, elements.menuitem_regline(),
                 WidgetIds.LINE_EDIT_VIEW);
-        addMenuItem(registerMenu, messages.menuitem_registerMembership(),
+        addMenuItem(registerMenu, elements.menuitem_registerMembership(),
                 WidgetIds.REGISTER_MEMBERSHIP);
-        addMenuItem(registerMenu, messages.menuitem_register_happening(),
+        addMenuItem(registerMenu, elements.menuitem_register_happening(),
                 WidgetIds.REGISTER_HAPPENING);
-        addMenuItem(registerMenu, messages.menuitem_endmonth(),
+        addMenuItem(registerMenu, elements.menuitem_endmonth(),
                 WidgetIds.END_MONTH);
-        addMenuItem(registerMenu, messages.menuitem_endyear(),
+        addMenuItem(registerMenu, elements.menuitem_endyear(),
                 WidgetIds.END_YEAR);
 
-        addMenuItem(showMenu, messages.menuitem_showmonth(),
+        addMenuItem(showMenu, elements.menuitem_showmonth(),
                 WidgetIds.SHOW_MONTH);
-        addMenuItem(showMenu, messages.menuitem_showmonthdetails(),
+        addMenuItem(showMenu, elements.menuitem_showmonthdetails(),
                 WidgetIds.SHOW_MONTH_DETAILS);
-        addMenuItem(showMenu, messages.menuitem_showmembers(),
+        addMenuItem(showMenu, elements.menuitem_showmembers(),
                 WidgetIds.SHOW_MEMBERS);
-        addMenuItem(showMenu, messages.menuitem_showtraining(),
+        addMenuItem(showMenu, elements.menuitem_showtraining(),
                 WidgetIds.SHOW_TRAINING_MEMBERS);
-        addMenuItem(showMenu, messages.menuitem_showclassmembers(),
+        addMenuItem(showMenu, elements.menuitem_showclassmembers(),
                 WidgetIds.SHOW_CLASS_MEMBERS);
 
-        addMenuItem(peopleMenu, messages.menuitem_addperson(),
+        addMenuItem(peopleMenu, elements.menuitem_addperson(),
                 WidgetIds.ADD_PERSON);
-        addMenuItem(peopleMenu, messages.menuitem_findperson(),
+        addMenuItem(peopleMenu, elements.menuitem_findperson(),
                 WidgetIds.FIND_PERSON);
 
-        addMenuItem(trustMenu, messages.menuitem_truststatus(),
+        addMenuItem(trustMenu, elements.menuitem_truststatus(),
                 WidgetIds.TRUST_STATUS);
 
-        addMenuItem(reportsMenu, messages.menuitem_report_member_per_year(),
+        addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(),
                 WidgetIds.REPORT_MEMBER_PER_YEAR);
-        addMenuItem(reportsMenu, messages.menuitem_report_addresses(),
+        addMenuItem(reportsMenu, elements.menuitem_report_addresses(),
                 WidgetIds.REPORT_ADDRESSES);
-        addMenuItem(reportsMenu, messages.menuitem_report_selectedlines(),
+        addMenuItem(reportsMenu, elements.menuitem_report_selectedlines(),
                 WidgetIds.REPORT_SELECTEDLINES);
-        addMenuItem(reportsMenu, messages.menuitem_report_letter(),
+        addMenuItem(reportsMenu, elements.menuitem_report_letter(),
                 WidgetIds.REPORT_LETTER);
-        addMenuItem(reportsMenu, messages.menuitem_report_email(),
+        addMenuItem(reportsMenu, elements.menuitem_report_email(),
                 WidgetIds.REPORT_EMAIL);
-        addMenuItem(reportsMenu, messages.menuitem_report_users_email(),
+        addMenuItem(reportsMenu, elements.menuitem_report_users_email(),
                 WidgetIds.REPORT_USERS_EMAIL);
-        addMenuItem(reportsMenu, messages.menuitem_report_accounttrack(),
+        addMenuItem(reportsMenu, elements.menuitem_report_accounttrack(),
                 WidgetIds.REPORT_ACCOUNTTRACK);
 
-        addMenuItem(settingsMenu, messages.menuitem_useradm(),
+        addMenuItem(settingsMenu, elements.menuitem_useradm(),
                 WidgetIds.EDIT_USERS);
-        addMenuItem(settingsMenu, messages.menuitem_edit_trust(),
+        addMenuItem(settingsMenu, elements.menuitem_edit_trust(),
                 WidgetIds.EDIT_TRUST);
-        addMenuItem(settingsMenu, messages.menuitem_edit_trust_actions(),
+        addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(),
                 WidgetIds.EDIT_TRUST_ACTIONS);
-        addMenuItem(settingsMenu, messages.menuitem_accounts(),
+        addMenuItem(settingsMenu, elements.menuitem_accounts(),
                 WidgetIds.EDIT_ACCOUNTS);
-        addMenuItem(settingsMenu, messages.menuitem_accounttrack(),
+        addMenuItem(settingsMenu, elements.menuitem_accounttrack(),
                 WidgetIds.EDIT_ACCOUNTTRACK);
-        addMenuItem(settingsMenu, messages.menuitem_projects(),
+        addMenuItem(settingsMenu, elements.menuitem_projects(),
                 WidgetIds.EDIT_PROJECTS);
-        addMenuItem(settingsMenu, messages.menuitem_edit_happening(),
+        addMenuItem(settingsMenu, elements.menuitem_edit_happening(),
                 WidgetIds.EDIT_HAPPENING);
-        addMenuItem(settingsMenu, messages.menuitem_values(),
+        addMenuItem(settingsMenu, elements.menuitem_values(),
                 WidgetIds.SETTINGS);
 
-        addMenuItem(aboutMenu, messages.menuitem_about(), WidgetIds.ABOUT);
-        addMenuItem(aboutMenu, messages.menuitem_logout(), WidgetIds.LOGOUT);
+        addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
+        addMenuItem(aboutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
-        new Commando(null, WidgetIds.ABOUT, messages.menuitem_about())
+        new Commando(null, WidgetIds.ABOUT, elements.menuitem_about())
                 .execute();
 
         RootPanel.get().add(docPanel);
@@ -217,123 +216,132 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         public void execute() {
             Widget widget = null;
 
-            HelpPanel helpPanel = HelpPanel.getInstance(messages, helpTexts);
+            HelpPanel helpPanel = HelpPanel.getInstance(elements, helpTexts);
             switch (action) {
             case WidgetIds.LINE_EDIT_VIEW:
                 widget = LineEditView.show(callback, messages, constants, null,
-                        HelpPanel.getInstance(messages, helpTexts));
+                        HelpPanel.getInstance(elements, helpTexts), elements);
                 break;
             case WidgetIds.REGISTER_MEMBERSHIP:
                 widget = RegisterMembershipView.show(messages, constants,
-                        helpPanel);
+                        helpPanel, elements);
                 ((RegisterMembershipView) widget).init();
                 break;
             case WidgetIds.REGISTER_HAPPENING:
                 widget = RegisterHappeningView.show(messages, constants,
-                        callback);
+                        callback, elements);
                 ((RegisterHappeningView) widget).init();
                 break;
             case END_MONTH:
-                widget = MonthEndView
-                        .getInstance(constants, messages, callback);
+                widget = MonthEndView.getInstance(constants, messages,
+                        callback, elements);
                 ((MonthEndView) widget).init();
                 break;
             case WidgetIds.SETTINGS:
-                widget = StandardvaluesView.show(messages, constants);
+                widget = StandardvaluesView.show(messages, constants, elements);
                 ((StandardvaluesView) widget).init();
                 break;
             case EDIT_HAPPENING:
-                widget = HappeningsView.show(messages, constants);
+                widget = HappeningsView.show(messages, constants, elements);
                 ((HappeningsView) widget).init();
                 break;
             case EDIT_PROJECTS:
-                widget = ProjectEditView.show(messages, constants);
+                widget = ProjectEditView.show(messages, constants, elements);
                 ((ProjectEditView) widget).init();
                 break;
             case EDIT_USERS:
-                widget = UsersEditView.show(messages, constants, helpPanel);
+                widget = UsersEditView.show(messages, constants, helpPanel,
+                        elements);
                 ((UsersEditView) widget).init();
                 break;
             case EDIT_ACCOUNTS:
-                widget = PostTypeEditView.show(messages, constants, helpPanel);
+                widget = PostTypeEditView.show(messages, constants, helpPanel,
+                        elements);
                 ((PostTypeEditView) widget).init();
                 break;
             case EDIT_ACCOUNTTRACK:
-                widget = AccountTrackEditView.show(messages, constants, helpPanel);
-                ((AccountTrackEditView)widget).init();
+                widget = AccountTrackEditView.show(messages, constants,
+                        helpPanel, elements);
+                ((AccountTrackEditView) widget).init();
                 break;
             case EDIT_TRUST_ACTIONS:
                 widget = TrustActionEditView.show(messages, constants,
-                        helpPanel);
+                        helpPanel, elements);
                 ((TrustActionEditView) widget).init();
                 break;
             case EDIT_TRUST:
-                widget = TrustEditView.show(messages, constants, helpPanel);
+                widget = TrustEditView.show(messages, constants, helpPanel,
+                        elements);
                 ((TrustEditView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
                 widget = PersonEditView.show(constants, messages, helpPanel,
-                        callback);
+                        callback, elements);
                 ((PersonEditView) widget).init(null);
                 break;
             case WidgetIds.FIND_PERSON:
-                widget = PersonSearchView.show(callback, messages, constants);
+                widget = PersonSearchView.show(callback, messages, constants,
+                        elements);
                 break;
             case WidgetIds.SHOW_MONTH:
-                widget = MonthView.getInstance(constants, messages, callback);
+                widget = MonthView.getInstance(constants, messages, callback,
+                        elements);
                 ((MonthView) widget).init();
                 break;
             case SHOW_MONTH_DETAILS:
-                widget = MonthDetailsView.getInstance(constants, messages);
+                widget = MonthDetailsView.getInstance(constants, messages,
+                        elements);
                 ((MonthDetailsView) widget).init();
                 break;
             case WidgetIds.SHOW_MEMBERS:
                 widget = ShowMembershipView.show(messages, constants, callback,
-                        helpPanel);
+                        helpPanel, elements);
                 ((ShowMembershipView) widget).initShowMembers();
                 break;
             case WidgetIds.SHOW_CLASS_MEMBERS:
                 widget = ShowMembershipView.show(messages, constants, callback,
-                        helpPanel);
+                        helpPanel, elements);
                 ((ShowMembershipView) widget).initShowClassMembers();
                 break;
             case WidgetIds.SHOW_TRAINING_MEMBERS:
                 widget = ShowMembershipView.show(messages, constants, callback,
-                        helpPanel);
+                        helpPanel, elements);
                 ((ShowMembershipView) widget).initShowTrainingMembers();
                 break;
             case TRUST_STATUS:
                 widget = TrustStatusView.getInstance(constants, messages,
-                        helpPanel, callback);
+                        helpPanel, callback, elements);
                 ((TrustStatusView) widget).init();
                 break;
             case REPORT_ACCOUNTTRACK:
-                widget = ReportAccounttracking.getInstance(constants, messages);
+                widget = ReportAccounttracking.getInstance(constants, messages,
+                        elements);
                 break;
             case REPORT_MEMBER_PER_YEAR:
                 widget = ReportMembersBirth.getInstance(constants, messages,
-                        helpPanel);
+                        helpPanel, elements);
                 ((ReportMembersBirth) widget).init();
                 break;
             case REPORT_ADDRESSES:
                 widget = ReportMembersAddresses.getInstance(constants,
-                        messages, helpPanel);
+                        messages, helpPanel, elements);
                 ((ReportMembersAddresses) widget).init();
                 break;
             case REPORT_SELECTEDLINES:
                 widget = ReportAccountlines.getInstance(constants, messages,
-                        helpPanel);
+                        helpPanel, elements);
                 break;
             case REPORT_LETTER:
-                widget = ReportMassLetters.getInstance(constants, messages);
+                widget = ReportMassLetters.getInstance(constants, messages,
+                        elements);
                 ((ReportMassLetters) widget).init();
                 break;
             case REPORT_EMAIL:
-                widget = ReportMail.getInstance(constants, messages);
+                widget = ReportMail.getInstance(constants, messages, elements);
                 break;
             case REPORT_USERS_EMAIL:
                 widget = ReportUsersEmail.getInstance(constants, messages,
-                        helpPanel);
+                        helpPanel, elements);
                 ((ReportUsersEmail) widget).init();
                 break;
 
@@ -342,7 +350,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 title = title + " - " + AboutView.CLIENT_VERSION;
                 break;
             case WidgetIds.LOGOUT:
-                widget = LogoutView.getInstance(constants, messages);
+                widget = LogoutView.getInstance(constants, messages, elements);
                 break;
             }
             if (widget == null) {
@@ -365,54 +373,56 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     public void openDetails(String id) {
         Widget widget = LineEditView.show(this, messages, constants, id,
-                HelpPanel.getInstance(messages, helpTexts));
+                HelpPanel.getInstance(elements, helpTexts), elements);
 
         setActiveWidget(widget);
-        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
+        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget,
                 WidgetIds.LINE_EDIT_VIEW);
-        Window.setTitle(messages.menuitem_showmonthdetails());
+        Window.setTitle(elements.menuitem_showmonthdetails());
     }
 
     public void viewMonth(int year, int month) {
-        MonthView instance = MonthView.getInstance(constants, messages, this);
+        MonthView instance = MonthView.getInstance(constants, messages, this,
+                elements);
 
         instance.init(year, month);
 
         setActiveWidget(instance);
-        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(instance,
+        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(instance,
                 WidgetIds.SHOW_MONTH);
-        Window.setTitle(messages.menuitem_showmonth());
+        Window.setTitle(elements.menuitem_showmonth());
     }
 
     public void searchPerson() {
         PersonSearchView widget = PersonSearchView.show(this, messages,
-                constants);
+                constants, elements);
         setActiveWidget(widget);
-        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
+        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget,
                 WidgetIds.FIND_PERSON);
-        Window.setTitle(messages.menuitem_showmonth());
+        Window.setTitle(elements.menuitem_showmonth());
     }
 
     public void viewMonth() {
-        MonthView instance = MonthView.getInstance(constants, messages, this);
+        MonthView instance = MonthView.getInstance(constants, messages, this,
+                elements);
 
         instance.init();
 
         setActiveWidget(instance);
-        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(instance,
+        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(instance,
                 WidgetIds.SHOW_MONTH);
-        Window.setTitle(messages.menuitem_showmonth());
+        Window.setTitle(elements.menuitem_showmonth());
     }
 
     public void editPerson(String id) {
         PersonEditView widget = PersonEditView.show(constants, messages,
-                HelpPanel.getInstance(messages, helpTexts), this);
+                HelpPanel.getInstance(elements, helpTexts), this, elements);
 
         widget.init(id);
         setActiveWidget(widget);
-        HelpPanel.getInstance(messages, helpTexts).setCurrentWidget(widget,
+        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget,
                 WidgetIds.ADD_PERSON);
-        Window.setTitle(messages.menuitem_addperson());
+        Window.setTitle(elements.menuitem_addperson());
     }
 
     public static void setLoading() {

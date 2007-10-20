@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.reporting;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
@@ -28,39 +29,41 @@ import com.google.gwt.user.client.ui.Widget;
 public class ReportMail extends Composite implements ClickListener {
     private static ReportMail reportInstance;
     private final Constants constants;
-    private final I18NAccount messages;
+    private final Elements elements;
     private FlexTable table;
     ListBoxWithErrorText reciversListBox;
     TextBoxWithErrorText titleBox;
     NamedTextArea bodyBox;
     protected JSONArray receivers;
     private EmailSendStatus emailSendStatusView;
+    private I18NAccount messages;
 
     public static ReportMail getInstance(Constants constants,
-            I18NAccount messages) {
+            I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
-            reportInstance = new ReportMail(constants, messages);
+            reportInstance = new ReportMail(constants, messages, elements);
         }
         return reportInstance;
     }
 
-    public ReportMail(Constants constants, I18NAccount messages) {
+    public ReportMail(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
+        this.elements = elements;
 
         FlexTable mainTable = new FlexTable();
         mainTable.setStyleName("edittable");
-        mainTable.setText(0, 0, messages.mail_receivers());
-        mainTable.setText(1, 0, messages.mail_title());
-        mainTable.setText(2, 0, messages.mail_body());
+        mainTable.setText(0, 0, elements.mail_receivers());
+        mainTable.setText(1, 0, elements.mail_title());
+        mainTable.setText(2, 0, elements.mail_body());
 
         reciversListBox = new ListBoxWithErrorText("mail_receivers");
         reciversListBox.getListbox().addItem("", "");
-        reciversListBox.getListbox().addItem(messages.mail_query_members(),
+        reciversListBox.getListbox().addItem(elements.mail_query_members(),
                 "members");
-        reciversListBox.getListbox().addItem(messages.mail_query_newsletter(),
+        reciversListBox.getListbox().addItem(elements.mail_query_newsletter(),
                 "newsletter");
-        reciversListBox.getListbox().addItem(messages.mail_test(),
+        reciversListBox.getListbox().addItem(elements.mail_test(),
         "test");
         mainTable.setWidget(0, 1, reciversListBox);
 
@@ -74,16 +77,16 @@ public class ReportMail extends Composite implements ClickListener {
         bodyBox.setVisibleLines(30);
         mainTable.setWidget(2, 1, bodyBox);
 
-        NamedButton sendButton = new NamedButton("mail_send", messages
+        NamedButton sendButton = new NamedButton("mail_send", elements
                 .mail_send());
         sendButton.addClickListener(this);
         mainTable.setWidget(3, 0, sendButton);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setText(0, 0, messages.name());
-        table.setText(0, 1, messages.email());
-        table.setText(0, 2, messages.status());
+        table.setText(0, 0, elements.name());
+        table.setText(0, 1, elements.email());
+        table.setText(0, 2, elements.status());
         table.getRowFormatter().setStyleName(0, "header");
 
         DockPanel dp = new DockPanel();
@@ -159,16 +162,16 @@ public class ReportMail extends Composite implements ClickListener {
 
             infoTable = new FlexTable();
             infoTable.setStyleName("tableborder");
-            infoTable.setText(0, 0, messages.mail_sending());
-            infoTable.setText(1, 0, messages.name());
-            infoTable.setText(2, 0, messages.email());
+            infoTable.setText(0, 0, elements.mail_sending());
+            infoTable.setText(1, 0, elements.name());
+            infoTable.setText(2, 0, elements.email());
             infoTable.getRowFormatter().setStyleName(0, "header");
             infoTable.setWidget(0, 1, ImageFactory
                     .loadingImage("image_loading"));
             infoTable.getCellFormatter().setWidth(0, 1, "30px");
             infoTable.getColumnFormatter().setStyleName(1, "emailsendname");
             infoTable.getColumnFormatter().setStyleName(2, "emailsendemail");
-            NamedButton cancelButton = new NamedButton("abort", messages
+            NamedButton cancelButton = new NamedButton("abort", elements
                     .abort());
             cancelButton.addClickListener(this);
             infoTable.setWidget(3, 0, cancelButton);
@@ -243,7 +246,7 @@ public class ReportMail extends Composite implements ClickListener {
                         table.setStyleName("error");
                         table.setText(1, 2, "error");
                     } else {
-                        table.setText(1, 2, messages.ok());
+                        table.setText(1, 2, elements.ok());
                     }
                     if (receivers.size() > currentIndex) {
                         sendOneEmail();

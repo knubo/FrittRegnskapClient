@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.TrustActionCache;
@@ -55,28 +56,31 @@ public class TrustStatusView extends Composite implements ClickListener {
 
     private final ViewCallback callback;
 
+    private final Elements elements;
+
     public static TrustStatusView getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel, ViewCallback callback) {
+            I18NAccount messages, HelpPanel helpPanel, ViewCallback callback, Elements elements) {
         if (trustStatusInstance == null) {
             trustStatusInstance = new TrustStatusView(constants, messages,
-                    helpPanel, callback);
+                    helpPanel, callback, elements);
         }
         return trustStatusInstance;
     }
 
     public TrustStatusView(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel, ViewCallback callback) {
+            HelpPanel helpPanel, ViewCallback callback, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
         this.callback = callback;
+        this.elements = elements;
 
         idHolder = new IdHolder();
 
         DockPanel dp = new DockPanel();
 
         newTrustButton = new NamedButton("trustStatusView_newTrustButton",
-                messages.trustStatusView_newTrustButton());
+                elements.trustStatusView_newTrustButton());
         newTrustButton.addClickListener(this);
         dp.add(newTrustButton, DockPanel.NORTH);
 
@@ -150,10 +154,10 @@ public class TrustStatusView extends Composite implements ClickListener {
         table.getFlexCellFormatter().setColSpan(row, 0, 5);
         row++;
 
-        table.setHTML(row, 0, messages.description());
-        table.setHTML(row, 1, messages.date());
-        table.setHTML(row, 2, messages.trust_account());
-        table.setHTML(row, 3, messages.club_account());
+        table.setHTML(row, 0, elements.description());
+        table.setHTML(row, 1, elements.date());
+        table.setHTML(row, 2, elements.trust_account());
+        table.setHTML(row, 3, elements.club_account());
         table.setHTML(row, 4, "");
         table.getRowFormatter().setStyleName(row, "header");
         row++;
@@ -188,7 +192,7 @@ public class TrustStatusView extends Composite implements ClickListener {
             table.getRowFormatter().setStyleName(row, style);
             row++;
         }
-        table.setHTML(row, 0, messages.sum());
+        table.setHTML(row, 0, elements.sum());
         table.setText(row, 2, sumFond);
         table.getCellFormatter().setStyleName(row, 2, "right");
         table.setText(row, 3, sumClub);
@@ -241,19 +245,19 @@ public class TrustStatusView extends Composite implements ClickListener {
         private RegisterStandards registerStandards;
 
         TrustEditFields() {
-            registerStandards = new RegisterStandards(constants, messages);
+            registerStandards = new RegisterStandards(constants, messages, elements);
 
-            setText(messages.new_trust());
+            setText(elements.new_trust());
             FlexTable edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            edittable.setHTML(0, 0, messages.trust());
-            edittable.setHTML(1, 0, messages.action());
-            edittable.setHTML(3, 0, messages.date());
-            edittable.setHTML(4, 0, messages.postnmb());
-            edittable.setHTML(5, 0, messages.attachment());
-            edittable.setHTML(6, 0, messages.description());
-            edittable.setHTML(7, 0, messages.amount());
+            edittable.setHTML(0, 0, elements.trust());
+            edittable.setHTML(1, 0, elements.action());
+            edittable.setHTML(3, 0, elements.date());
+            edittable.setHTML(4, 0, elements.postnmb());
+            edittable.setHTML(5, 0, elements.attachment());
+            edittable.setHTML(6, 0, elements.description());
+            edittable.setHTML(7, 0, elements.amount());
 
             actionListBox = new ListBoxWithErrorText(
                     "TrustStatusView.actionList");
@@ -300,11 +304,11 @@ public class TrustStatusView extends Composite implements ClickListener {
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("TrustStatusView.saveButton", messages
+            saveButton = new NamedButton("TrustStatusView.saveButton", elements
                     .save());
             saveButton.addClickListener(this);
             cancelButton = new NamedButton("trustStatusView.cancelButton",
-                    messages.trustStatusView_cancelButton());
+                    elements.trustStatusView_cancelButton());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();

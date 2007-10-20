@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.reporting;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
@@ -26,16 +27,16 @@ public class ReportMembersBirth extends Composite {
     private FlexTable table;
 
     public static ReportMembersBirth getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel) {
+            I18NAccount messages, HelpPanel helpPanel, Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportMembersBirth(constants, messages,
-                    helpPanel);
+                    helpPanel, elements);
         }
         return reportInstance;
     }
 
     public ReportMembersBirth(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
@@ -44,13 +45,13 @@ public class ReportMembersBirth extends Composite {
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.title_report_membersbirth());
+        table.setHTML(0, 0, elements.title_report_membersbirth());
         table.getFlexCellFormatter().setColSpan(0, 0, 4);
         table.getRowFormatter().setStyleName(0, "header");
-        table.setHTML(1, 0, messages.lastname());
-        table.setHTML(1, 1, messages.firstname());
-        table.setHTML(1, 2, messages.birthdate());
-        table.setHTML(1, 3, messages.age());
+        table.setHTML(1, 0, elements.lastname());
+        table.setHTML(1, 1, elements.firstname());
+        table.setHTML(1, 2, elements.birthdate());
+        table.setHTML(1, 3, elements.age());
         table.getRowFormatter().setStyleName(1, "header");
 
         dp.add(table, DockPanel.NORTH);

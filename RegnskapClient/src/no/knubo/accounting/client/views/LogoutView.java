@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
@@ -21,11 +22,13 @@ public class LogoutView extends Composite implements ClickListener,
     private static LogoutView instance;
     private static I18NAccount messages;
     private static Constants constants;
+    private static Elements elements;
 
     public static LogoutView getInstance(Constants constants,
-            I18NAccount messages) {
+            I18NAccount messages, Elements elements) {
         LogoutView.messages = messages;
         LogoutView.constants = constants;
+        LogoutView.elements = elements;
         if (instance == null) {
             instance = new LogoutView();
         }
@@ -35,7 +38,7 @@ public class LogoutView extends Composite implements ClickListener,
     private LogoutView() {
         DockPanel dp = new DockPanel();
 
-        NamedButton logoutButton = new NamedButton("logout", messages.logout());
+        NamedButton logoutButton = new NamedButton("logout", elements.logout());
         logoutButton.addClickListener(this);
         dp.add(logoutButton, DockPanel.NORTH);
 

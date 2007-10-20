@@ -1,6 +1,6 @@
 package no.knubo.accounting.client.views.modules;
 
-import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.NamedButton;
 
@@ -30,8 +30,7 @@ public class UserSearchFields implements ClickListener {
 
     private boolean excludeHidden = true;
 
-    public UserSearchFields(I18NAccount messages,
-            UserSearchCallback searchCallback) {
+    public UserSearchFields(UserSearchCallback searchCallback, Elements elements) {
         this.searchCallback = searchCallback;
         searchTable = new FlexTable();
         searchTable.setStyleName("edittable");
@@ -44,23 +43,23 @@ public class UserSearchFields implements ClickListener {
         employeeList = new ListBox();
         employeeList.setVisibleItemCount(1);
         employeeList.addItem("", "");
-        employeeList.addItem(messages.not_employee(), "0");
-        employeeList.addItem(messages.employee(), "1");
+        employeeList.addItem(elements.not_employee(), "0");
+        employeeList.addItem(elements.employee(), "1");
 
-        searchTable.setText(0, 0, messages.firstname());
+        searchTable.setText(0, 0, elements.firstname());
         searchTable.setWidget(0, 1, firstnameBox);
-        searchTable.setText(0, 2, messages.lastname());
+        searchTable.setText(0, 2, elements.lastname());
         searchTable.setWidget(0, 3, lastnameBox);
-        searchTable.setText(1, 0, messages.email());
+        searchTable.setText(1, 0, elements.email());
         searchTable.setWidget(1, 1, emailBox);
         searchTable.getFlexCellFormatter().setColSpan(1, 1, 3);
-        searchTable.setText(2, 0, messages.employee());
+        searchTable.setText(2, 0, elements.employee());
         searchTable.setWidget(2, 1, employeeList);
 
-        searchButton = new NamedButton("search", messages.search());
+        searchButton = new NamedButton("search", elements.search());
         searchButton.addClickListener(this);
         searchTable.setWidget(3, 0, searchButton);
-        clearButton = new NamedButton("clear", messages.clear());
+        clearButton = new NamedButton("clear", elements.clear());
         clearButton.addClickListener(this);
         searchTable.setWidget(3, 1, clearButton);
 

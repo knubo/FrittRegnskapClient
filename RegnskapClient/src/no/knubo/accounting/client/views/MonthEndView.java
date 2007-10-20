@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
@@ -36,28 +37,31 @@ public class MonthEndView extends Composite implements ClickListener {
 
     private final ViewCallback callback;
 
+    private final Elements elements;
+
     public static MonthEndView getInstance(Constants constants,
-            I18NAccount messages, ViewCallback callback) {
+            I18NAccount messages, ViewCallback callback, Elements elements) {
         if (me == null) {
-            me = new MonthEndView(constants, messages, callback);
+            me = new MonthEndView(constants, messages, callback, elements);
         }
         return me;
     }
 
-    private MonthEndView(Constants constants, I18NAccount messages, ViewCallback callback) {
+    private MonthEndView(Constants constants, I18NAccount messages, ViewCallback callback, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.callback = callback;
+        this.elements = elements;
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.post());
-        table.setHTML(0, 1, messages.amount());
+        table.setHTML(0, 0, elements.post());
+        table.setHTML(0, 1, elements.amount());
         table.getRowFormatter().setStyleName(0, "header");
 
         dateHeader = new HTML();
-        HTML header = new HTML(messages.end_month_explain());
-        Button endButton = new NamedButton("MonthEndView.endButton", messages.end_month());
+        HTML header = new HTML(elements.end_month_explain());
+        Button endButton = new NamedButton("MonthEndView.endButton", elements.end_month());
         endButton.addClickListener(this);
 
         DockPanel dp = new DockPanel();
@@ -86,7 +90,7 @@ public class MonthEndView extends Composite implements ClickListener {
                 String year = Util.str(root.get("year"));
                 int month = Util.getInt(root.get("month"));
 
-                dateHeader.setHTML("<h2>" + Util.monthString(messages, month)
+                dateHeader.setHTML("<h2>" + Util.monthString(elements, month)
                         + " " + year + "</h2>");
 
                 JSONValue postsValue = root.get("posts");

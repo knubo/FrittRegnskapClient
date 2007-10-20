@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import java.util.HashMap;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
@@ -36,9 +37,9 @@ public class PersonSearchView extends Composite implements ClickListener,
     private HashMap idGivesObject;
 
     public static PersonSearchView show(ViewCallback caller,
-            I18NAccount messages, Constants constants) {
+            I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
-            me = new PersonSearchView(messages, constants);
+            me = new PersonSearchView(messages, constants, elements);
         }
         me.setCaller(caller);
         me.setVisible(true);
@@ -46,8 +47,8 @@ public class PersonSearchView extends Composite implements ClickListener,
     }
 
     public static PersonSearchView pick(PersonPickCallback personPick,
-            I18NAccount messages, Constants constants) {
-        PersonSearchView psv = new PersonSearchView(messages, constants);
+            I18NAccount messages, Constants constants, Elements elements) {
+        PersonSearchView psv = new PersonSearchView(messages, constants, elements);
         psv.setPicker(personPick);
         psv.setVisible(true);
         return psv;
@@ -67,15 +68,18 @@ public class PersonSearchView extends Composite implements ClickListener,
 
     private IdHolder idHolder;
 
+    private final Elements elements;
+
     private void setCaller(ViewCallback caller) {
         this.caller = caller;
         this.personPick = null;
     }
 
-    private PersonSearchView(I18NAccount messages, Constants constants) {
+    private PersonSearchView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
-        UserSearchFields userSearchFields = new UserSearchFields(messages, this);
+        this.elements = elements;
+        UserSearchFields userSearchFields = new UserSearchFields(this, elements);
         userSearchFields.includeHidden();
         
         this.idHolder = new IdHolder();
@@ -89,13 +93,13 @@ public class PersonSearchView extends Composite implements ClickListener,
         resultTable.setStyleName("tableborder");
 
         resultTable.getRowFormatter().setStyleName(0, "header");
-        resultTable.setHTML(0, 0, messages.firstname());
-        resultTable.setHTML(0, 1, messages.lastname());
-        resultTable.setHTML(0, 2, messages.email());
-        resultTable.setHTML(0, 3, messages.address());
-        resultTable.setHTML(0, 4, messages.phone());
-        resultTable.setHTML(0, 5, messages.cellphone());
-        resultTable.setHTML(0, 6, messages.employee());
+        resultTable.setHTML(0, 0, elements.firstname());
+        resultTable.setHTML(0, 1, elements.lastname());
+        resultTable.setHTML(0, 2, elements.email());
+        resultTable.setHTML(0, 3, elements.address());
+        resultTable.setHTML(0, 4, elements.phone());
+        resultTable.setHTML(0, 5, elements.cellphone());
+        resultTable.setHTML(0, 6, elements.employee());
         resultTable.setHTML(0, 7, "");
         initWidget(dp);
     }
@@ -169,7 +173,7 @@ public class PersonSearchView extends Composite implements ClickListener,
                     resultTable.setHTML(row, 5, cellphone);
 
                     if ("1".equals(Util.str(obj.get("employee")))) {
-                        resultTable.setHTML(row, 6, messages.x());
+                        resultTable.setHTML(row, 6, elements.x());
                     } else {
                         resultTable.setHTML(row, 6, "");
                     }

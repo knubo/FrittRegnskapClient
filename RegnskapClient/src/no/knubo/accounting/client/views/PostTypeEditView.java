@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import java.util.HashMap;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.AccountPlanCache;
@@ -48,25 +49,27 @@ public class PostTypeEditView extends Composite implements ClickListener {
     private NamedButton button;
     private HashMap objectPerId;
     private PostTypeEditFields editFields;
+    private Elements elements;
 
     public static PostTypeEditView show(I18NAccount messages,
-            Constants constants, HelpPanel helpPanel) {
+            Constants constants, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new PostTypeEditView(messages, constants, helpPanel);
+            me = new PostTypeEditView(messages, constants, helpPanel, elements);
         }
         me.setVisible(true);
         return me;
     }
 
     public PostTypeEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
-        button = new NamedButton("new_account", messages.new_account());
+        button = new NamedButton("new_account", elements.new_account());
         button.addClickListener(this);
         dp.add(button, DockPanel.NORTH);
 
@@ -74,8 +77,8 @@ public class PostTypeEditView extends Composite implements ClickListener {
         idHolderNotInUse = new IdHolder();
         idHolderEdit = new IdHolder();
         objectPerId = new HashMap();
-        inUseTable = createTable(messages.title_posttype_edit_in_use());
-        notInUseTable = createTable(messages.title_posttype_edit_not_in_use());
+        inUseTable = createTable(elements.title_posttype_edit_in_use());
+        notInUseTable = createTable(elements.title_posttype_edit_not_in_use());
 
         dp.add(inUseTable, DockPanel.NORTH);
         dp.add(notInUseTable, DockPanel.NORTH);
@@ -90,10 +93,10 @@ public class PostTypeEditView extends Composite implements ClickListener {
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 0, 6);
 
-        table.setText(1, 0, messages.account());
-        table.setText(1, 1, messages.description());
-        table.setText(1, 2, messages.account_collection_month());
-        table.setText(1, 3, messages.account_collection_accountplan());
+        table.setText(1, 0, elements.account());
+        table.setText(1, 1, elements.description());
+        table.setText(1, 2, elements.account_collection_month());
+        table.setText(1, 3, elements.account_collection_accountplan());
         table.setText(1, 4, "");
         table.setText(1, 5, "");
 
@@ -322,14 +325,14 @@ public class PostTypeEditView extends Composite implements ClickListener {
         private ListBoxWithErrorText colAccountPlanListBox;
 
         PostTypeEditFields() {
-            setText(messages.title_edit_posttype());
+            setText(elements.title_edit_posttype());
             FlexTable edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            edittable.setHTML(0, 0, messages.account());
-            edittable.setHTML(1, 0, messages.description());
-            edittable.setText(2, 0, messages.account_collection_month());
-            edittable.setText(3, 0, messages.account_collection_accountplan());
+            edittable.setHTML(0, 0, elements.account());
+            edittable.setHTML(1, 0, elements.description());
+            edittable.setText(2, 0, elements.account_collection_month());
+            edittable.setText(3, 0, elements.account_collection_accountplan());
 
             accountBox = new TextBoxWithErrorText("account");
             edittable.setWidget(0, 1, accountBox);
@@ -355,11 +358,11 @@ public class PostTypeEditView extends Composite implements ClickListener {
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("HappeningsView.saveButton", messages
+            saveButton = new NamedButton("HappeningsView.saveButton", elements
                     .save());
             saveButton.addClickListener(this);
             cancelButton = new NamedButton("HappeningsView.cancelButton",
-                    messages.cancel());
+                    elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();

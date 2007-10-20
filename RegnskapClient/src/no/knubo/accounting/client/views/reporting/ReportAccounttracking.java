@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views.reporting;
 import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
@@ -23,9 +24,9 @@ public class ReportAccounttracking extends Composite {
     private static ReportAccounttracking reportInstance;
 
     public static ReportAccounttracking getInstance(Constants constants,
-            I18NAccount messages) {
+            I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
-            reportInstance = new ReportAccounttracking(constants, messages);
+            reportInstance = new ReportAccounttracking(constants, messages, elements);
         }
         reportInstance.init();
         return reportInstance;
@@ -35,18 +36,18 @@ public class ReportAccounttracking extends Composite {
     private I18NAccount messages;
     private FlexTable table;
 
-    private ReportAccounttracking(Constants constants, I18NAccount messages) {
+    private ReportAccounttracking(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setText(0, 0, messages.menuitem_report_accounttrack());
+        table.setText(0, 0, elements.menuitem_report_accounttrack());
         table.getFlexCellFormatter().setColSpan(0, 0, 3);
         table.getRowFormatter().setStyleName(0, "header");
-        table.setText(1, 0, messages.account());
-        table.setText(1, 1, messages.description());
-        table.setText(1, 2, messages.sum());
+        table.setText(1, 0, elements.account());
+        table.setText(1, 1, elements.description());
+        table.setText(1, 2, elements.sum());
         table.getRowFormatter().setStyleName(1, "header");
 
         DockPanel dp = new DockPanel();

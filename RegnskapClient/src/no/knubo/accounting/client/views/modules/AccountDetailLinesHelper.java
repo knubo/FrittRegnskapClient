@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.modules;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
@@ -20,20 +21,22 @@ public class AccountDetailLinesHelper {
     private final I18NAccount messages;
     private int currentMonth;
     private int currentYear;
+    private final Elements elements;
 
-    public AccountDetailLinesHelper(Constants constants, I18NAccount messages) {
+    public AccountDetailLinesHelper(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
+        this.elements = elements;
         table = new FlexTable();
         table.setStyleName("tableborder");
 
-        table.setHTML(0, 1, messages.attachment());
-        table.setHTML(0, 2, messages.date());
-        table.setHTML(0, 3, messages.description());
-        table.setHTML(0, 4, messages.project());
-        table.setHTML(0, 5, messages.employee());
-        table.setHTML(0, 6, messages.debkred());
-        table.setHTML(0, 7, messages.amount());
+        table.setHTML(0, 1, elements.attachment());
+        table.setHTML(0, 2, elements.date());
+        table.setHTML(0, 3, elements.description());
+        table.setHTML(0, 4, elements.project());
+        table.setHTML(0, 5, elements.employee());
+        table.setHTML(0, 6, elements.debkred());
+        table.setHTML(0, 7, elements.amount());
         table.getRowFormatter().setStyleName(0, "header");
 
     }
@@ -132,7 +135,7 @@ public class AccountDetailLinesHelper {
                 table.getCellFormatter().setStyleName(row, 5, "desc");
 
                 JSONValue debkred = postObj.get("Debet");
-                table.setText(row, 6, Util.debkred(messages, debkred));
+                table.setText(row, 6, Util.debkred(elements, debkred));
 
                 if("1".equals(Util.str(debkred))) {
                     sum +=Double.parseDouble(Util.str(postObj.get("Amount")));
@@ -145,7 +148,7 @@ public class AccountDetailLinesHelper {
         }
         if (filterPostType != null) {
             row++;
-            table.setText(row, 0, messages.sum());
+            table.setText(row, 0, elements.sum());
             table.setText(row, 7, String.valueOf(sum));
             table.getCellFormatter().setStyleName(row, 7, "right");
             table.getRowFormatter().setStyleName(row, "sumline");

@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
@@ -46,9 +47,11 @@ public class LineEditView extends Composite implements ClickListener {
     private IdHolder removeIdHolder = new IdHolder();
 
     public static LineEditView show(ViewCallback caller, I18NAccount messages,
-            Constants constants, String line, HelpPanel helpPanel) {
+            Constants constants, String line, HelpPanel helpPanel,
+            Elements elements) {
         if (me == null) {
-            me = new LineEditView(caller, messages, constants, helpPanel);
+            me = new LineEditView(caller, messages, constants, helpPanel,
+                    elements);
         }
         me.init(line, null);
         return me;
@@ -99,21 +102,24 @@ public class LineEditView extends Composite implements ClickListener {
 
     private final HelpPanel helpPanel;
 
+    private final Elements elements;
+
     private LineEditView(ViewCallback caller, I18NAccount messages,
-            Constants constants, HelpPanel helpPanel) {
+            Constants constants, HelpPanel helpPanel, Elements elements) {
 
         this.caller = caller;
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
-        registerStandards = new RegisterStandards(constants, messages);
+        registerStandards = new RegisterStandards(constants, messages, elements);
 
         DockPanel dp = new DockPanel();
         dp.add(mainFields(), DockPanel.NORTH);
         dp.add(newFields(), DockPanel.NORTH);
 
-        countFields = new CountFields(constants, messages);
+        countFields = new CountFields(constants, messages, elements);
         HorizontalPanel hp = new HorizontalPanel();
         hp.add(regnLinesView());
         hp.add(countFields.getTable());
@@ -234,7 +240,7 @@ public class LineEditView extends Composite implements ClickListener {
         postsTable.setText(rowcount, 1, projectCache.getName(project));
         postsTable.setText(rowcount, 2, empCache.getName(person));
 
-        postsTable.setText(rowcount, 3, Util.debkred(messages, debkred));
+        postsTable.setText(rowcount, 3, Util.debkred(elements, debkred));
         postsTable.setText(rowcount, 4, amount);
         postsTable.getCellFormatter().setStyleName(rowcount, 4, "right");
 
@@ -255,7 +261,7 @@ public class LineEditView extends Composite implements ClickListener {
      */
     private void addSumLineSetDefaults(String sumAmount) {
         int row = postsTable.getRowCount();
-        postsTable.setText(row, 0, messages.sum());
+        postsTable.setText(row, 0, elements.sum());
         postsTable.setText(row, 4, Util.money(Util.fixMoney(sumAmount)));
 
         projectNameBox.setSelectedIndex(0);
@@ -292,19 +298,19 @@ public class LineEditView extends Composite implements ClickListener {
         table.setStyleName("edittable");
         panel.add(table);
 
-        table.setHTML(0, 1, messages.amount());
+        table.setHTML(0, 1, elements.amount());
 
         debKredbox = new ListBox();
         debKredbox.setVisibleItemCount(1);
-        debKredbox.addItem(messages.debet(), "1");
-        debKredbox.addItem(messages.kredit(), "-1");
+        debKredbox.addItem(elements.debet(), "1");
+        debKredbox.addItem(elements.kredit(), "-1");
         table.setWidget(1, 0, debKredbox);
 
         amountBox = registerStandards.createAmountBox();
         table.setWidget(1, 1, amountBox);
         table.getFlexCellFormatter().setColSpan(1, 1, 2);
 
-        table.setText(2, 0, messages.account());
+        table.setText(2, 0, elements.account());
 
         HTML errorAccountHtml = new HTML();
         accountIdBox = new TextBoxWithErrorText("account", errorAccountHtml);
@@ -323,7 +329,7 @@ public class LineEditView extends Composite implements ClickListener {
                 accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
-        table.setText(4, 0, messages.project());
+        table.setText(4, 0, elements.project());
 
         HTML projectErrorLabel = new HTML();
 
@@ -343,7 +349,7 @@ public class LineEditView extends Composite implements ClickListener {
         ProjectCache.getInstance(constants, messages).fill(projectNameBox);
         Util.syncListbox(projectNameBox, projectIdBox.getTextBox());
 
-        table.setText(6, 0, messages.person());
+        table.setText(6, 0, elements.person());
 
         personBox = new ListBox();
         personBox.setVisibleItemCount(1);
@@ -352,7 +358,7 @@ public class LineEditView extends Composite implements ClickListener {
         EmploeeCache.getInstance(constants, messages).fill(personBox);
 
         addLineButton = new NamedButton("LineEditView.addLineButton");
-        addLineButton.setText(messages.add());
+        addLineButton.setText(elements.add());
         addLineButton.addClickListener(this);
         table.setWidget(8, 0, addLineButton);
 
@@ -367,11 +373,11 @@ public class LineEditView extends Composite implements ClickListener {
         vp.add(postsTable);
 
         postsTable.getRowFormatter().setStyleName(0, "header");
-        postsTable.setText(0, 0, messages.account());
-        postsTable.setText(0, 1, messages.project());
-        postsTable.setText(0, 2, messages.person());
-        postsTable.setText(0, 3, messages.debet() + "/" + messages.kredit());
-        postsTable.setHTML(0, 4, messages.amount());
+        postsTable.setText(0, 0, elements.account());
+        postsTable.setText(0, 1, elements.project());
+        postsTable.setText(0, 2, elements.person());
+        postsTable.setText(0, 3, elements.debet() + "/" + elements.kredit());
+        postsTable.setHTML(0, 4, elements.amount());
         postsTable.getFlexCellFormatter().setColSpan(0, 4, 2);
 
         return vp;
@@ -392,22 +398,22 @@ public class LineEditView extends Composite implements ClickListener {
 
         postNmbBox = registerStandards.getPostNmbBox();
         table.setWidget(0, 1, postNmbBox);
-        table.setText(0, 0, messages.postnmb());
+        table.setText(0, 0, elements.postnmb());
 
         dayBox = registerStandards.createDayBox();
         table.setWidget(1, 1, dayBox);
-        table.setText(1, 0, messages.day());
+        table.setText(1, 0, elements.day());
 
         attachmentBox = registerStandards.getAttachmentBox();
         table.setWidget(2, 1, attachmentBox);
-        table.setText(2, 0, messages.attachment());
+        table.setText(2, 0, elements.attachment());
 
         descriptionBox = registerStandards.createDescriptionBox();
         table.setWidget(3, 1, descriptionBox);
-        table.setText(3, 0, messages.description());
+        table.setText(3, 0, elements.description());
 
         updateButton = new NamedButton("LineEditView.updateButton");
-        updateButton.setText(messages.update());
+        updateButton.setText(elements.update());
         updateButton.addClickListener(this);
 
         table.setWidget(4, 0, updateButton);

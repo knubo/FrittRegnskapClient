@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CacheCallback;
@@ -53,22 +54,25 @@ public class TrustEditView extends Composite implements ClickListener,
 
     private final HelpPanel helpPanel;
 
+    private final Elements elements;
+
     public TrustEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.trust());
-        table.setHTML(0, 1, messages.description());
+        table.setHTML(0, 0, elements.trust());
+        table.setHTML(0, 1, elements.description());
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 1, 2);
 
-        newButton = new NamedButton("trustEditView_newButton", messages
+        newButton = new NamedButton("trustEditView_newButton", elements
                 .trustEditView_newButton());
         newButton.addClickListener(this);
 
@@ -80,9 +84,9 @@ public class TrustEditView extends Composite implements ClickListener,
     }
 
     public static TrustEditView show(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new TrustEditView(messages, constants, helpPanel);
+            me = new TrustEditView(messages, constants, helpPanel, elements);
         }
         me.setVisible(true);
         return me;
@@ -159,17 +163,17 @@ public class TrustEditView extends Composite implements ClickListener,
         private TextBoxWithErrorText descBox;
 
         TrustEditFields() {
-            setText(messages.trust());
+            setText(elements.trust());
             FlexTable edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            edittable.setHTML(0, 0, messages.trust());
+            edittable.setHTML(0, 0, elements.trust());
             trustBox = new TextBoxWithErrorText("trust");
             trustBox.setMaxLength(3);
             trustBox.setVisibleLength(3);
             edittable.setWidget(0, 1, trustBox);
 
-            edittable.setHTML(1, 0, messages.description());
+            edittable.setHTML(1, 0, elements.description());
             descBox = new TextBoxWithErrorText("description");
             descBox.setMaxLength(50);
             descBox.setVisibleLength(50);
@@ -178,11 +182,11 @@ public class TrustEditView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("trustEditView_saveButton", messages
+            saveButton = new NamedButton("trustEditView_saveButton", elements
                     .save());
             saveButton.addClickListener(this);
             cancelButton = new NamedButton("trustEditView_cancelButton",
-                    messages.cancel());
+                    elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();

@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.modules;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
@@ -32,10 +33,12 @@ public class RegisterStandards {
     private TextBoxWithErrorText amountBox;
     private TextBoxWithErrorText monthBox;
     private TextBoxWithErrorText yearBox;
+    private final Elements elements;
 
-    public RegisterStandards(Constants constants, I18NAccount messages) {
+    public RegisterStandards(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
+        this.elements = elements;
         dateHeader = new HTML();
         attachmentBox = new TextBoxWithErrorText("attachment");
         postNmbBox = new TextBoxWithErrorText("postnmb");
@@ -84,7 +87,7 @@ public class RegisterStandards {
     }
 
     public void setDateHeader() {
-        dateHeader.setHTML(Util.monthString(messages, currentMonth) + " "
+        dateHeader.setHTML(Util.monthString(elements, currentMonth) + " "
                 + currentYear);
     }
 

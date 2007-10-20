@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CacheCallback;
@@ -54,23 +55,26 @@ public class HappeningsView extends Composite implements ClickListener,
 
     private HappeningEditFields editFields;
 
-    public HappeningsView(I18NAccount messages, Constants constants) {
+    private final Elements elements;
+
+    public HappeningsView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.happening());
-        table.setHTML(0, 1, messages.post_description());
-        table.setHTML(0, 2, messages.debet_post());
-        table.setHTML(0, 3, messages.kredit_post());
-        table.setHTML(0, 4, messages.count_required());
+        table.setHTML(0, 0, elements.happening());
+        table.setHTML(0, 1, elements.post_description());
+        table.setHTML(0, 2, elements.debet_post());
+        table.setHTML(0, 3, elements.kredit_post());
+        table.setHTML(0, 4, elements.count_required());
         table.setHTML(0, 5, "");
         table.getRowFormatter().setStyleName(0, "header");
 
-        newButton = new NamedButton("HappeningsView.newButton", messages
+        newButton = new NamedButton("HappeningsView.newButton", elements
                 .new_happening());
         newButton.addClickListener(this);
 
@@ -81,9 +85,9 @@ public class HappeningsView extends Composite implements ClickListener,
         initWidget(dp);
     }
 
-    public static HappeningsView show(I18NAccount messages, Constants constants) {
+    public static HappeningsView show(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
-            me = new HappeningsView(messages, constants);
+            me = new HappeningsView(messages, constants, elements);
         }
         me.setVisible(true);
         return me;
@@ -190,23 +194,23 @@ public class HappeningsView extends Composite implements ClickListener,
         private HTML mainErrorLabel;
 
         HappeningEditFields() {
-            setText(messages.happening());
+            setText(elements.happening());
             FlexTable edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            edittable.setHTML(0, 0, messages.happening());
+            edittable.setHTML(0, 0, elements.happening());
             happeningBox = new TextBoxWithErrorText("happening");
             happeningBox.setMaxLength(40);
             happeningBox.setVisibleLength(40);
             edittable.setWidget(0, 1, happeningBox);
 
-            edittable.setHTML(1, 0, messages.post_description());
+            edittable.setHTML(1, 0, elements.post_description());
             descBox = new TextBoxWithErrorText("description");
             descBox.setMaxLength(80);
             descBox.setVisibleLength(80);
             edittable.setWidget(1, 1, descBox);
 
-            edittable.setHTML(2, 0, messages.debet_post());
+            edittable.setHTML(2, 0, elements.debet_post());
             debetListBox = new ListBox();
             debetListBox.setVisibleItemCount(1);
             posttypeCache.fillAllPosts(debetListBox);
@@ -223,7 +227,7 @@ public class HappeningsView extends Composite implements ClickListener,
             debetPanel.add(debetErrorLabel);
             edittable.setWidget(2, 1, debetPanel);
 
-            edittable.setHTML(3, 0, messages.kredit_post());
+            edittable.setHTML(3, 0, elements.kredit_post());
             kreditListBox = new ListBox();
             kreditListBox.setVisibleItemCount(1);
             posttypeCache.fillAllPosts(kreditListBox);
@@ -241,18 +245,18 @@ public class HappeningsView extends Composite implements ClickListener,
             kredPanel.add(kreditErrorLabel);
             edittable.setWidget(3, 1, kredPanel);
 
-            edittable.setHTML(4, 0, messages.count_required());
+            edittable.setHTML(4, 0, elements.count_required());
             countReq = new CheckBox();
             edittable.setWidget(4, 1, countReq);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("HappeningsView.saveButton", messages
+            saveButton = new NamedButton("HappeningsView.saveButton", elements
                     .save());
             saveButton.addClickListener(this);
             cancelButton = new NamedButton("HappeningsView.cancelButton",
-                    messages.cancel());
+                    elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();

@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.NamedButton;
@@ -20,10 +21,11 @@ public class PersonPickView extends DialogBox implements ClickListener,
     private static HelpPanel helpPanel;
 
     public static PersonPickView show(I18NAccount messages,
-            Constants constants, PersonPickCallback personPick, HelpPanel helpPanel) {
+            Constants constants, PersonPickCallback personPick,
+            HelpPanel helpPanel, Elements elements) {
         PersonPickView.helpPanel = helpPanel;
         if (me == null) {
-            me = new PersonPickView(messages, constants, personPick);
+            me = new PersonPickView(messages, constants, personPick, elements);
         }
         return me;
     }
@@ -37,14 +39,14 @@ public class PersonPickView extends DialogBox implements ClickListener,
      * @param caller
      */
     private PersonPickView(I18NAccount messages, Constants constants,
-            PersonPickCallback personPick) {
+            PersonPickCallback personPick, Elements elements) {
         this.personPick = personPick;
-        setText(messages.choose_person());
+        setText(elements.choose_person());
         
         DockPanel dp = new DockPanel();
-        dp.add(PersonSearchView.pick(this, messages, constants),
+        dp.add(PersonSearchView.pick(this, messages, constants, elements),
                 DockPanel.NORTH);
-        Button hideButton = new NamedButton("person_pick_close", messages
+        Button hideButton = new NamedButton("person_pick_close", elements
                 .person_pick_close());
         hideButton.addClickListener(this);
         dp.add(hideButton, DockPanel.NORTH);

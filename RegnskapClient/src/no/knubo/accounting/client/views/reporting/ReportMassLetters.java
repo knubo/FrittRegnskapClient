@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
@@ -29,23 +30,25 @@ public class ReportMassLetters extends Composite implements ClickListener {
     private final I18NAccount messages;
     private FlexTable table;
     private ArrayList radiobuttons;
+    private final Elements elements;
 
     public static ReportMassLetters getInstance(Constants constants,
-            I18NAccount messages) {
+            I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
-            reportInstance = new ReportMassLetters(constants, messages);
+            reportInstance = new ReportMassLetters(constants, messages, elements);
         }
         return reportInstance;
     }
 
-    public ReportMassLetters(Constants constants, I18NAccount messages) {
+    public ReportMassLetters(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
+        this.elements = elements;
 
         table = new FlexTable();
         table.setStyleName("edittable");
 
-        table.setText(0, 0, messages.letter_template());
+        table.setText(0, 0, elements.letter_template());
         table.getRowFormatter().setStyleName(0, "header");
         radiobuttons = new ArrayList();
 
@@ -81,7 +84,7 @@ public class ReportMassLetters extends Composite implements ClickListener {
                     table.setWidget(1 + i, 0, rb);
                 }
                 int row = table.getRowCount();
-                NamedButton button = new NamedButton("join_letters", messages
+                NamedButton button = new NamedButton("join_letters", elements
                         .join_letters());
                 button.addClickListener(reportInstance);
                 table.setWidget(row, 0, button);

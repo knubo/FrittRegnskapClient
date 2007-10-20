@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CacheCallback;
@@ -42,7 +43,8 @@ public class TrustActionEditView extends Composite implements ClickListener,
     private static TrustActionEditView me;
 
     private final Constants constants;
-
+    private final HelpPanel helpPanel;
+    private final Elements elements;
     private final I18NAccount messages;
 
     private FlexTable table;
@@ -52,34 +54,32 @@ public class TrustActionEditView extends Composite implements ClickListener,
     private Button newButton;
 
     private TrustActionEditFields editFields;
-
     private TrustActionCache trustActionCache;
-
-    private final HelpPanel helpPanel;
-
     private PosttypeCache posttypeCache;
 
+
     public TrustActionEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setText(0, 0, messages.trust());
-        table.setText(0, 1, messages.description());
-        table.setText(0, 2, messages.trust_default_desc());
-        table.setText(0, 3, messages.trust_actionclub());
-        table.setText(0, 4, messages.trust_actiontrust());
-        table.setText(0, 5, messages.trust_debetpost());
-        table.setText(0, 6, messages.trust_creditpost());
+        table.setText(0, 0, elements.trust());
+        table.setText(0, 1, elements.description());
+        table.setText(0, 2, elements.trust_default_desc());
+        table.setText(0, 3, elements.trust_actionclub());
+        table.setText(0, 4, elements.trust_actiontrust());
+        table.setText(0, 5, elements.trust_debetpost());
+        table.setText(0, 6, elements.trust_creditpost());
         table.setText(0, 7, "");
         table.getRowFormatter().setStyleName(0, "header");
 
-        newButton = new NamedButton("new_trust", messages.new_trust());
+        newButton = new NamedButton("new_trust", elements.new_trust());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -90,9 +90,9 @@ public class TrustActionEditView extends Composite implements ClickListener,
     }
 
     public static TrustActionEditView show(I18NAccount messages,
-            Constants constants, HelpPanel helpPanel) {
+            Constants constants, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new TrustActionEditView(messages, constants, helpPanel);
+            me = new TrustActionEditView(messages, constants, helpPanel, elements);
         }
         me.setVisible(true);
         return me;
@@ -155,8 +155,8 @@ public class TrustActionEditView extends Composite implements ClickListener,
         table.setText(row, 0, trustActionCache.trustGivesDesc(trust));
         table.setText(row, 1, desc);
         table.setText(row, 2, defaultdesc);
-        table.setText(row, 3, Util.debkred(messages, actionclub));
-        table.setText(row, 4, Util.debkred(messages, actiontrust));
+        table.setText(row, 3, Util.debkred(elements, actionclub));
+        table.setText(row, 4, Util.debkred(elements, actiontrust));
 
         if (!("".equals(debetpost))) {
             table.setText(row, 5, posttypeCache
@@ -210,38 +210,38 @@ public class TrustActionEditView extends Composite implements ClickListener,
         private ListBox accountDebNameBox;
 
         TrustActionEditFields() {
-            setText(messages.project());
+            setText(elements.project());
             FlexTable edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            edittable.setText(0, 0, messages.trust());
+            edittable.setText(0, 0, elements.trust());
             trustBox = new ListBoxWithErrorText("trust");
             trustActionCache.fillTrustList(trustBox.getListbox());
             edittable.setWidget(0, 1, trustBox);
 
-            edittable.setText(1, 0, messages.description());
+            edittable.setText(1, 0, elements.description());
             descBox = new TextBoxWithErrorText("description");
             descBox.setMaxLength(40);
             descBox.setVisibleLength(40);
             edittable.setWidget(1, 1, descBox);
 
-            edittable.setText(2, 0, messages.trust_default_desc());
+            edittable.setText(2, 0, elements.trust_default_desc());
             defaultDescBox = new TextBoxWithErrorText("trust_default_desc");
             defaultDescBox.setMaxLength(50);
             defaultDescBox.setVisibleLength(50);
             edittable.setWidget(2, 1, defaultDescBox);
 
-            edittable.setText(3, 0, messages.trust_actionclub());
+            edittable.setText(3, 0, elements.trust_actionclub());
             actionClubBox = new ListBox();
             addDebetKredit(actionClubBox);
             edittable.setWidget(3, 1, actionClubBox);
 
-            edittable.setText(4, 0, messages.trust_actiontrust());
+            edittable.setText(4, 0, elements.trust_actiontrust());
             actionTrustBox = new ListBox();
             addDebetKredit(actionTrustBox);
             edittable.setWidget(4, 1, actionTrustBox);
 
-            edittable.setText(5, 0, messages.trust_creditpost());
+            edittable.setText(5, 0, elements.trust_creditpost());
             HorizontalPanel hpcred = new HorizontalPanel();
 
             HTML errorAccountCredHtml = new HTML();
@@ -261,7 +261,7 @@ public class TrustActionEditView extends Composite implements ClickListener,
 
             edittable.setWidget(5, 1, hpcred);
 
-            edittable.setText(6, 0, messages.trust_debetpost());
+            edittable.setText(6, 0, elements.trust_debetpost());
             HorizontalPanel hpdeb = new HorizontalPanel();
 
             HTML errorAccountDebHtml = new HTML();
@@ -284,11 +284,11 @@ public class TrustActionEditView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("projectEditView_saveButton", messages
+            saveButton = new NamedButton("projectEditView_saveButton", elements
                     .save());
             saveButton.addClickListener(this);
             cancelButton = new NamedButton("projectEditView_cancelButton",
-                    messages.cancel());
+                    elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -305,8 +305,8 @@ public class TrustActionEditView extends Composite implements ClickListener,
         private void addDebetKredit(ListBox listBox) {
             listBox.setVisibleItemCount(1);
             listBox.addItem("", "0");
-            listBox.addItem(messages.debet(), "1");
-            listBox.addItem(messages.kredit(), "-1");
+            listBox.addItem(elements.debet(), "1");
+            listBox.addItem(elements.kredit(), "-1");
         }
 
         public void init(String id) {

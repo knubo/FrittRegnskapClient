@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import java.util.HashMap;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
@@ -11,7 +12,6 @@ import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.NamedButton;
-import no.knubo.accounting.client.misc.NamedCheckBox;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
@@ -55,28 +55,31 @@ public class UsersEditView extends Composite implements ClickListener {
 
     private final HelpPanel helpPanel;
 
+    private Elements elements;
+
     public UsersEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.title_user_adm());
+        table.setHTML(0, 0, elements.title_user_adm());
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 0, 5);
 
-        table.setHTML(1, 0, messages.user());
-        table.setHTML(1, 1, messages.name());
-        table.setHTML(1, 2, messages.access());
+        table.setHTML(1, 0, elements.user());
+        table.setHTML(1, 1, elements.name());
+        table.setHTML(1, 2, elements.access());
         table.setHTML(1, 3, "");
         table.setHTML(1, 4, "");
         table.getRowFormatter().setStyleName(1, "header");
 
-        newButton = new NamedButton("userEditView.newButton", messages
+        newButton = new NamedButton("userEditView.newButton", elements
                 .userEditView_newButton());
         newButton.addClickListener(this);
 
@@ -89,9 +92,9 @@ public class UsersEditView extends Composite implements ClickListener {
     }
 
     public static UsersEditView show(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new UsersEditView(messages, constants, helpPanel);
+            me = new UsersEditView(messages, constants, helpPanel, elements);
         }
         me.setVisible(true);
         return me;
@@ -219,11 +222,11 @@ public class UsersEditView extends Composite implements ClickListener {
         table.setHTML(row, 1, name);
 
         if ("1".equals(reducedwrite)) {
-            table.setHTML(row, 2, messages.reduced_write_access());
+            table.setHTML(row, 2, elements.reduced_write_access());
         } else if ("1".equals(readOnlyAccess)) {
-            table.setHTML(row, 2, messages.read_only_access());
+            table.setHTML(row, 2, elements.read_only_access());
         } else {
-            table.setHTML(row, 2, messages.full_access());
+            table.setHTML(row, 2, elements.full_access());
         }
 
         table.getCellFormatter().setStyleName(row, 2, "desc");
@@ -270,7 +273,7 @@ public class UsersEditView extends Composite implements ClickListener {
             edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            setText(messages.title_edit_new_user());
+            setText(elements.title_edit_new_user());
             userBox = new TextBoxWithErrorText("user");
             userBox.setMaxLength(12);
             userBox.setWidth("12em");
@@ -284,31 +287,31 @@ public class UsersEditView extends Composite implements ClickListener {
 
             accessList = new ListBoxWithErrorText("access");
             accessList.getListbox().setVisibleItemCount(1);
-            accessList.getListbox().addItem(messages.full_access());
-            accessList.getListbox().addItem(messages.reduced_write_access());
-            accessList.getListbox().addItem(messages.read_only_access());
+            accessList.getListbox().addItem(elements.full_access());
+            accessList.getListbox().addItem(elements.reduced_write_access());
+            accessList.getListbox().addItem(elements.read_only_access());
 
-            edittable.setText(0, 0, messages.user());
+            edittable.setText(0, 0, elements.user());
             edittable.setWidget(0, 1, userBox);
-            edittable.setText(1, 0, messages.password());
+            edittable.setText(1, 0, elements.password());
             edittable.setWidget(1, 1, passwordBox);
-            edittable.setText(2, 0, messages.name());
+            edittable.setText(2, 0, elements.name());
             edittable.setWidget(2, 1, personBox);
             Image searchImage = ImageFactory.searchImage("search_person");
             searchImage.addClickListener(this);
             edittable.setWidget(2, 2, searchImage);
 
-            edittable.setText(3, 0, messages.read_only_access());
+            edittable.setText(3, 0, elements.read_only_access());
             edittable.setWidget(3, 1, accessList);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("userEditView_saveButton", messages
+            saveButton = new NamedButton("userEditView_saveButton", elements
                     .save());
             saveButton.addClickListener(this);
             cancelButton = new NamedButton("usertEditView_cancelButton",
-                    messages.cancel());
+                    elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -335,13 +338,13 @@ public class UsersEditView extends Composite implements ClickListener {
                     .get("reducedwrite")));
 
             if (reducedWrite) {
-                Util.setIndexByValue(accessList.getListbox(), messages
+                Util.setIndexByValue(accessList.getListbox(), elements
                         .reduced_write_access());
             } else if (isReadOnly) {
-                Util.setIndexByValue(accessList.getListbox(), messages
+                Util.setIndexByValue(accessList.getListbox(), elements
                         .read_only_access());
             } else {
-                Util.setIndexByValue(accessList.getListbox(), messages
+                Util.setIndexByValue(accessList.getListbox(), elements
                         .full_access());
             }
         }
@@ -366,7 +369,7 @@ public class UsersEditView extends Composite implements ClickListener {
                 int left = sender.getAbsoluteLeft() - 100;
                 int top = sender.getAbsoluteTop() + 10;
                 PersonPickView view = PersonPickView.show(messages, constants,
-                        this, helpPanel);
+                        this, helpPanel, elements);
                 view.setPopupPosition(left, top);
                 view.show();
                 view.init();
@@ -381,15 +384,15 @@ public class UsersEditView extends Composite implements ClickListener {
             Util.addPostParam(sb, "password", passwordBox.getText());
             Util.addPostParam(sb, "person", personId);
 
-            if (accessList.getText().equals(messages.reduced_write_access())) {
+            if (accessList.getText().equals(elements.reduced_write_access())) {
                 Util.addPostParam(sb, "readonly", "1");
                 Util.addPostParam(sb, "reducedwrite", "1");
-            } else if (accessList.getText().equals(messages.read_only_access())) {
+            } else if (accessList.getText().equals(elements.read_only_access())) {
                 Util.addPostParam(sb, "readonly", "1");
                 Util.addPostParam(sb, "reducedwrite", "0");
             } else {
                 Util.addPostParam(sb, "readonly", "0");
-                Util.addPostParam(sb, "reducedwrite", "0");                
+                Util.addPostParam(sb, "reducedwrite", "0");
             }
 
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,

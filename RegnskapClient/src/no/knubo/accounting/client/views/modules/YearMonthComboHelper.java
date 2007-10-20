@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.modules;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 
@@ -24,11 +25,14 @@ public class YearMonthComboHelper {
 
     private int currentMonth;
 
+    private final Elements elements;
+
     public YearMonthComboHelper(I18NAccount messages, Constants constants,
-            ListBox monthYearCombo) {
+            ListBox monthYearCombo, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.monthYearCombo = monthYearCombo;
+        this.elements = elements;
     }
 
     public void fillYearMonthCombo() {
@@ -46,7 +50,7 @@ public class YearMonthComboHelper {
                     int month = Util.getInt(object.get("month"));
                     int year = Util.getInt(object.get("year"));
 
-                    String desc = Util.monthString(messages, month) + " "
+                    String desc = Util.monthString(elements, month) + " "
                             + year;
                     String val = year + "/" + month;
                     monthYearCombo.addItem(desc, val);

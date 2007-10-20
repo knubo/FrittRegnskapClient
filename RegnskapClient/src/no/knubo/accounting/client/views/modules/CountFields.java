@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views.modules;
 import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CountCache;
@@ -29,19 +30,19 @@ public class CountFields {
         return table;
     }
 
-    public CountFields(Constants constants, I18NAccount messages) {
+    public CountFields(Constants constants, I18NAccount messages, Elements elements) {
 
         this.constants = constants;
         this.messages = messages;
         table = new FlexTable();
         table.setStyleName("tableborder");
 
-        table.setHTML(0, 0, messages.count_header());
+        table.setHTML(0, 0, elements.count_header());
         table.setText(0, 1, "");
         table.setText(0, 2, "");
         table.setText(0, 3, "");
-        table.setHTML(1, 0, messages.value());
-        table.setHTML(1, 1, messages.count());
+        table.setHTML(1, 0, elements.value());
+        table.setHTML(1, 1, elements.count());
         table.setText(1, 2, "");
         table.setText(1, 3, "");
 

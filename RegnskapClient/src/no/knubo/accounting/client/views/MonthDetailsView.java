@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.ImageFactory;
@@ -45,11 +46,11 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
 
     private AccountDetailLinesHelper accountDetailLinesHelper;
 
-    public MonthDetailsView(Constants constants, I18NAccount messages) {
+    public MonthDetailsView(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
 
-        accountDetailLinesHelper = new AccountDetailLinesHelper(constants, messages);
+        accountDetailLinesHelper = new AccountDetailLinesHelper(constants, messages, elements);
 
         DockPanel dp = new DockPanel();
 
@@ -65,7 +66,7 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         monthYearCombo.addChangeListener(this);
 
         yearMonthComboHelper = new YearMonthComboHelper(messages, constants,
-                monthYearCombo);
+                monthYearCombo, elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
@@ -79,9 +80,9 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
     }
 
     public static MonthDetailsView getInstance(Constants constants,
-            I18NAccount messages) {
+            I18NAccount messages, Elements elements) {
         if (me == null) {
-            me = new MonthDetailsView(constants, messages);
+            me = new MonthDetailsView(constants, messages, elements);
         }
         return me;
     }

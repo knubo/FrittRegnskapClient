@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
@@ -55,25 +56,28 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
     final HelpPanel helpPanel;
 
+    private final Elements elements;
+
     public static ShowMembershipView show(I18NAccount messages,
-            Constants constants, ViewCallback caller, HelpPanel helpPanel) {
+            Constants constants, ViewCallback caller, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new ShowMembershipView(messages, constants, caller, helpPanel);
+            me = new ShowMembershipView(messages, constants, caller, helpPanel, elements);
         }
         return me;
     }
 
     public ShowMembershipView(I18NAccount messages, Constants constants,
-            ViewCallback caller, HelpPanel helpPanel) {
+            ViewCallback caller, HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.caller = caller;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.lastname());
-        table.setHTML(0, 1, messages.firstname());
+        table.setHTML(0, 0, elements.lastname());
+        table.setHTML(0, 1, elements.firstname());
         table.setHTML(0, 2, "");
         table.getRowFormatter().setStyleName(0, "header");
 
@@ -99,19 +103,19 @@ public class ShowMembershipView extends Composite implements ClickListener {
     }
 
     public void initShowMembers() {
-        header.setHTML(messages.member_heading_year());
+        header.setHTML(elements.member_heading_year());
         action = "year";
         init("");
     }
 
     public void initShowTrainingMembers() {
-        header.setHTML(messages.member_heading_train());
+        header.setHTML(elements.member_heading_train());
         action = "training";
         init("");
     }
 
     public void initShowClassMembers() {
-        header.setHTML(messages.member_heading_course());
+        header.setHTML(elements.member_heading_course());
         action = "class";
         init("");
     }

@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
@@ -39,16 +40,16 @@ public class AccountTrackEditView extends Composite implements ClickListener {
     private Image previousImageBig;
 
     public static AccountTrackEditView show(I18NAccount messages,
-            Constants constants, HelpPanel helpPanel) {
+            Constants constants, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new AccountTrackEditView(messages, constants, helpPanel);
+            me = new AccountTrackEditView(messages, constants, helpPanel, elements);
         }
         me.setVisible(true);
         return me;
     }
 
     public AccountTrackEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -70,11 +71,11 @@ public class AccountTrackEditView extends Composite implements ClickListener {
         DockPanel dp = new DockPanel();
         
         VerticalPanel vpChosen = new VerticalPanel();
-        vpChosen.add(new Label(messages.chosen_accounts()));
+        vpChosen.add(new Label(elements.chosen_accounts()));
         vpChosen.add(chosenList);
         
         VerticalPanel vpAvailable = new VerticalPanel();
-        vpAvailable.add(new Label(messages.available_accounts()));
+        vpAvailable.add(new Label(elements.available_accounts()));
         vpAvailable.add(availableList);
         
         dp.add(vpChosen, DockPanel.WEST);

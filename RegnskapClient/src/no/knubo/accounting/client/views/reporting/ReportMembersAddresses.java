@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.reporting;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
@@ -27,41 +28,43 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
     private final I18NAccount messages;
     private final HelpPanel helpPanel;
     private FlexTable table;
+    private final Elements elements;
 
     public static ReportMembersAddresses getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel) {
+            I18NAccount messages, HelpPanel helpPanel, Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportMembersAddresses(constants, messages,
-                    helpPanel);
+                    helpPanel, elements);
         }
         return reportInstance;
     }
 
     public ReportMembersAddresses(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel) {
+            HelpPanel helpPanel, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
-        NamedButton exportButton = new NamedButton("export_spreadsheet", messages.export_spreadsheet());
+        NamedButton exportButton = new NamedButton("export_spreadsheet", elements.export_spreadsheet());
         dp.add(exportButton, DockPanel.NORTH);
         exportButton.addClickListener(this);
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, messages.title_report_membersaddresses());
+        table.setHTML(0, 0, elements.title_report_membersaddresses());
         table.getFlexCellFormatter().setColSpan(0, 0, 9);
         table.getRowFormatter().setStyleName(0, "header");
-        table.setHTML(1, 0, messages.firstname());
-        table.setHTML(1, 1, messages.lastname());
-        table.setHTML(1, 2, messages.address());
-        table.setHTML(1, 3, messages.postnmb());
-        table.setHTML(1, 4, messages.city());
-        table.setHTML(1, 5, messages.email());
-        table.setHTML(1, 6, messages.birthdate());
-        table.setHTML(1, 7, messages.cellphone());
-        table.setHTML(1, 8, messages.phone());
+        table.setHTML(1, 0, elements.firstname());
+        table.setHTML(1, 1, elements.lastname());
+        table.setHTML(1, 2, elements.address());
+        table.setHTML(1, 3, elements.postnmb());
+        table.setHTML(1, 4, elements.city());
+        table.setHTML(1, 5, elements.email());
+        table.setHTML(1, 6, elements.birthdate());
+        table.setHTML(1, 7, elements.cellphone());
+        table.setHTML(1, 8, elements.phone());
         table.getRowFormatter().setStyleName(1, "header");
 
         dp.add(table, DockPanel.NORTH);
@@ -85,7 +88,7 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
 
                 int row = table.getRowCount();
                 int badRow = row;
-                table.setHTML(badRow, 0, messages.missing_address());
+                table.setHTML(badRow, 0, elements.missing_address());
                 table.getRowFormatter().setStyleName(badRow, "header");
                 table.getFlexCellFormatter().setColSpan(badRow, 0, 9);
                 badRow++;

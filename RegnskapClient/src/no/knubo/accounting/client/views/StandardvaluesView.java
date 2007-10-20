@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
@@ -30,9 +31,9 @@ public class StandardvaluesView extends Composite implements ClickListener {
     private static StandardvaluesView me;
 
     public static StandardvaluesView show(I18NAccount messages,
-            Constants constants) {
+            Constants constants, Elements elements) {
         if (me == null) {
-            me = new StandardvaluesView(messages, constants);
+            me = new StandardvaluesView(messages, constants, elements);
         }
         me.setVisible(true);
         return me;
@@ -60,25 +61,25 @@ public class StandardvaluesView extends Composite implements ClickListener {
 
     private TextBoxWithErrorText emailBox;
 
-    public StandardvaluesView(I18NAccount messages, Constants constants) {
+    public StandardvaluesView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         DockPanel dp = new DockPanel();
 
-        HTML html = new HTML(messages.standardsettings());
+        HTML html = new HTML(elements.standardsettings());
         dp.add(html, DockPanel.NORTH);
 
         FlexTable table = new FlexTable();
         table.setStyleName("edittable");
         dp.add(table, DockPanel.NORTH);
 
-        table.setHTML(0, 0, messages.year());
-        table.setHTML(1, 0, messages.month());
-        table.setHTML(2, 0, messages.semester());
-        table.setHTML(3, 0, messages.cost_course());
-        table.setHTML(4, 0, messages.cost_practice());
-        table.setHTML(5, 0, messages.cost_membership());
-        table.setHTML(6, 0, messages.mail_sender());
+        table.setHTML(0, 0, elements.year());
+        table.setHTML(1, 0, elements.month());
+        table.setHTML(2, 0, elements.semester());
+        table.setHTML(3, 0, elements.cost_course());
+        table.setHTML(4, 0, elements.cost_practice());
+        table.setHTML(5, 0, elements.cost_membership());
+        table.setHTML(6, 0, elements.mail_sender());
 
         yearBox = new TextBoxWithErrorText("year");
         yearBox.setMaxLength(4);
@@ -104,7 +105,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         table.setWidget(6, 1, emailBox);
 
         updateButton = new NamedButton("StandardValuesView.updateButton",
-                messages.update());
+                elements.update());
         updateButton.addClickListener(this);
         statusHTML = new HTML();
 

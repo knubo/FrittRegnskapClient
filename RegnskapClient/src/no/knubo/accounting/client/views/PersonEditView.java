@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
@@ -66,11 +67,14 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private IdHolder deleteIdHolder;
 
+    private final Elements elements;
+
     public PersonEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, final ViewCallback caller) {
+            HelpPanel helpPanel, final ViewCallback caller, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
+        this.elements = elements;
 
         DockPanel dp = new DockPanel();
         FlexTable table = new FlexTable();
@@ -84,19 +88,19 @@ public class PersonEditView extends Composite implements ClickListener {
         dp.add(table, DockPanel.NORTH);
         dp.add(membershipsTable, DockPanel.NORTH);
 
-        table.setHTML(0, 0, messages.firstname());
-        table.setHTML(1, 0, messages.lastname());
-        table.setHTML(2, 0, messages.birthdate());
-        table.setHTML(3, 0, messages.email());
-        table.setHTML(4, 0, messages.address());
-        table.setHTML(5, 0, messages.postnmb());
-        table.setHTML(6, 0, messages.city());
-        table.setHTML(7, 0, messages.country());
-        table.setHTML(8, 0, messages.phone());
-        table.setHTML(9, 0, messages.cellphone());
-        table.setHTML(10, 0, messages.newsletter());
-        table.setHTML(11, 0, messages.employee());
-        table.setHTML(12, 0, messages.hidden_person());
+        table.setHTML(0, 0, elements.firstname());
+        table.setHTML(1, 0, elements.lastname());
+        table.setHTML(2, 0, elements.birthdate());
+        table.setHTML(3, 0, elements.email());
+        table.setHTML(4, 0, elements.address());
+        table.setHTML(5, 0, elements.postnmb());
+        table.setHTML(6, 0, elements.city());
+        table.setHTML(7, 0, elements.country());
+        table.setHTML(8, 0, elements.phone());
+        table.setHTML(9, 0, elements.cellphone());
+        table.setHTML(10, 0, elements.newsletter());
+        table.setHTML(11, 0, elements.employee());
+        table.setHTML(12, 0, elements.hidden_person());
 
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
@@ -119,11 +123,11 @@ public class PersonEditView extends Composite implements ClickListener {
         cityBox.setMaxLength(13);
         countryListBox = new ListBox();
         countryListBox.setVisibleItemCount(1);
-        countryListBox.addItem(messages.country_norway(), "NO");
-        countryListBox.addItem(messages.country_sweeden(), "SE");
-        countryListBox.addItem(messages.country_denmark(), "DK");
-        countryListBox.addItem(messages.country_finland(), "FI");
-        countryListBox.addItem(messages.country_other(), "??");
+        countryListBox.addItem(elements.country_norway(), "NO");
+        countryListBox.addItem(elements.country_sweeden(), "SE");
+        countryListBox.addItem(elements.country_denmark(), "DK");
+        countryListBox.addItem(elements.country_finland(), "FI");
+        countryListBox.addItem(elements.country_other(), "??");
         phoneBox = new TextBoxWithErrorText("phone");
         phoneBox.setMaxLength(13);
         cellphoneBox = new TextBoxWithErrorText("cellphone");
@@ -132,13 +136,13 @@ public class PersonEditView extends Composite implements ClickListener {
         newsletterCheck = new CheckBox();
         hiddenCheck = new CheckBox();
 
-        updateButton = new NamedButton("PersonEditView.updateButton", messages
+        updateButton = new NamedButton("PersonEditView.updateButton", elements
                 .update());
         updateButton.addClickListener(this);
 
         saveStatus = new HTMLWithError();
 
-        Hyperlink toSearch = new Hyperlink(messages.back_search(),
+        Hyperlink toSearch = new Hyperlink(elements.back_search(),
                 "personSearch");
         toSearch.addClickListener(new ClickListener() {
 
@@ -169,9 +173,9 @@ public class PersonEditView extends Composite implements ClickListener {
     }
 
     public static PersonEditView show(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel, ViewCallback caller) {
+            I18NAccount messages, HelpPanel helpPanel, ViewCallback caller, Elements elements) {
         if (me == null) {
-            me = new PersonEditView(messages, constants, helpPanel, caller);
+            me = new PersonEditView(messages, constants, helpPanel, caller, elements);
         }
         return me;
     }
@@ -294,11 +298,11 @@ public class PersonEditView extends Composite implements ClickListener {
             return;
         }
 
-        showMemberships("train", messages.train_membership(), obj.get("train")
+        showMemberships("train", elements.train_membership(), obj.get("train")
                 .isArray());
-        showMemberships("course", messages.course_membership(), obj.get(
+        showMemberships("course", elements.course_membership(), obj.get(
                 "course").isArray());
-        showMemberships("year", messages.year_membership(), obj.get("year")
+        showMemberships("year", elements.year_membership(), obj.get("year")
                 .isArray());
     }
 
@@ -402,7 +406,7 @@ public class PersonEditView extends Composite implements ClickListener {
                     saveStatus.setText(messages.save_ok());
                     if (currentId == null) {
                         currentId = serverResponse;
-                        updateButton.setHTML(messages.update());
+                        updateButton.setHTML(elements.update());
                     }
                 }
                 Util.timedMessage(saveStatus, "", 5);
@@ -449,10 +453,10 @@ public class PersonEditView extends Composite implements ClickListener {
             cellphoneBox.setText("");
             employeeCheck.setChecked(false);
             newsletterCheck.setChecked(false);
-            updateButton.setHTML(messages.save());
+            updateButton.setHTML(elements.save());
         } else {
             doOpen();
-            updateButton.setHTML(messages.update());
+            updateButton.setHTML(elements.update());
         }
         helpPanel.resize(this);
     }

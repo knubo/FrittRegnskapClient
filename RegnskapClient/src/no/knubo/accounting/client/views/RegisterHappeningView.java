@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CountCache;
@@ -44,10 +45,10 @@ public class RegisterHappeningView extends Composite implements ClickListener,
     private static ViewCallback caller;
 
     public static RegisterHappeningView show(I18NAccount messages,
-            Constants constants, ViewCallback caller) {
+            Constants constants, ViewCallback caller, Elements elements) {
         RegisterHappeningView.caller = caller;
         if (me == null) {
-            me = new RegisterHappeningView(messages, constants);
+            me = new RegisterHappeningView(messages, constants, elements);
         }
         return me;
     }
@@ -76,11 +77,11 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
     HappeningCache happeningCache;
 
-    protected RegisterHappeningView(I18NAccount messages, Constants constants) {
+    protected RegisterHappeningView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
 
-        registerStandards = new RegisterStandards(constants, messages);
+        registerStandards = new RegisterStandards(constants, messages, elements);
 
         widgetGivesValue = new IdHolder();
 
@@ -96,17 +97,17 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
         postNmbBox = registerStandards.getPostNmbBox();
         table.setWidget(0, 1, postNmbBox);
-        table.setHTML(0, 0, messages.postnmb());
+        table.setHTML(0, 0, elements.postnmb());
         Util.setCellId(table, 0, 0, "postnmb");
 
         dayBox = registerStandards.createDayBox();
         table.setWidget(1, 1, dayBox);
-        table.setHTML(1, 0, messages.day());
+        table.setHTML(1, 0, elements.day());
         Util.setCellId(table, 1, 0, "day");
 
         attachmentBox = registerStandards.getAttachmentBox();
         table.setWidget(2, 1, attachmentBox);
-        table.setHTML(2, 0, messages.attachment());
+        table.setHTML(2, 0, elements.attachment());
         Util.setCellId(table, 2, 0, "attachment");
 
         postListBox = new ListBoxWithErrorText("register_count_post");
@@ -114,20 +115,20 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         postListBox.getListbox().setVisibleItemCount(1);
         postListBox.getListbox().addChangeListener(this);
         table.setWidget(3, 1, postListBox);
-        table.setHTML(3, 0, messages.register_count_post());
+        table.setHTML(3, 0, elements.register_count_post());
         Util.setCellId(table, 3, 0, "post");
 
         descriptionBox = registerStandards.createDescriptionBox();
         table.setWidget(4, 1, descriptionBox);
-        table.setHTML(4, 0, messages.description());
+        table.setHTML(4, 0, elements.description());
         Util.setCellId(table, 4, 0, "description");
 
-        table.setHTML(5, 0, messages.amount());
+        table.setHTML(5, 0, elements.amount());
         amountBox = registerStandards.createAmountBox();
         table.setWidget(5, 1, amountBox);
         Util.setCellId(table, 5, 0, "amount");
 
-        table.setHTML(6, 0, messages.money_type());
+        table.setHTML(6, 0, elements.money_type());
         List counts = CountCache.getInstance(constants, messages).getCounts();
         Util.setCellId(table, 6, 0, "money_type");
 
@@ -145,7 +146,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         }
 
         Button saveButton = new NamedButton("RegisterHappening_saveButton",
-                messages.RegisterHappening_saveButton());
+                elements.RegisterHappening_saveButton());
         saveButton.addClickListener(this);
         table.setWidget(row, 0, saveButton);
 

@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
@@ -43,10 +44,12 @@ public class PostView extends DialogBox implements ClickListener,
 
     private CountFields countfields;
 
+    private final Elements elements;
+
 	public static PostView show(I18NAccount messages, Constants constants,
-			ViewCallback caller, String line) {
+			ViewCallback caller, String line, Elements elements) {
 		if (me == null) {
-			me = new PostView(messages, constants, caller);
+			me = new PostView(messages, constants, caller, elements);
 		}
 		me.init(line);
 		return me;
@@ -61,25 +64,26 @@ public class PostView extends DialogBox implements ClickListener,
 	 * @param caller
 	 */
 	private PostView(I18NAccount messages, Constants constants,
-			ViewCallback caller) {
+			ViewCallback caller, Elements elements) {
 		this.messages = messages;
 		this.constants = constants;
 		this.caller = caller;
-		setText(messages.detailsline());
+        this.elements = elements;
+		setText(elements.detailsline());
 		table = new FlexTable();
 		table.setStyleName("tableborder");
         
-        countfields = new CountFields(constants,messages);
+        countfields = new CountFields(constants,messages, elements);
        
         
-		header(0, 0, messages.postnmb(), table);
-		header(1, 0, messages.attachment(), table);
-		header(2, 0, messages.date(), table);
-		header(3, 0, messages.description(), table);
+		header(0, 0, elements.postnmb(), table);
+		header(1, 0, elements.attachment(), table);
+		header(2, 0, elements.date(), table);
+		header(3, 0, elements.description(), table);
 		table.insertRow(4);
 		table.getFlexCellFormatter().setColSpan(4, 0, 4);
 		table.getRowFormatter().setStyleName(4, "showlinebreak");
-		header(5, 0, messages.lines(), table);
+		header(5, 0, elements.lines(), table);
 
 		/* Widgets placements */
 		DockPanel dp = new DockPanel();
@@ -151,7 +155,7 @@ public class PostView extends DialogBox implements ClickListener,
 			JSONValue postVal = array.get(i);
 			JSONObject post = postVal.isObject();
 
-			table.setText(6 + i, 1, Util.debkred(messages, post.get("Debet")));
+			table.setText(6 + i, 1, Util.debkred(elements, post.get("Debet")));
 			table.setText(6 + i, 2, postCache.getDescription(Util.str(post
 					.get("Post_type"))));
 			table.setText(6 + i, 3, projectCache.getName(Util.str(post
