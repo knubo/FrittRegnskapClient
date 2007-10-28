@@ -31,4 +31,5 @@ public interface WidgetIds {
     public int REPORT_EMAIL = 29;
     public int REPORT_ACCOUNTTRACK = 30;
     public int EDIT_ACCOUNTTRACK = 31;
+    public int BUDGET = 32;
 }

@@ -32,6 +32,7 @@ import no.knubo.accounting.client.views.TrustEditView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.UsersEditView;
 import no.knubo.accounting.client.views.ViewCallback;
+import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.reporting.ReportAccountlines;
 import no.knubo.accounting.client.views.reporting.ReportAccounttracking;
 import no.knubo.accounting.client.views.reporting.ReportMail;
@@ -102,6 +103,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar registerMenu = addTopMenu(topMenu, elements.menu_register());
         MenuBar showMenu = addTopMenu(topMenu, elements.menu_show());
         MenuBar peopleMenu = addTopMenu(topMenu, elements.menu_people());
+        MenuBar budgetMenu = addTopMenu(topMenu, elements.menu_budget());
         MenuBar trustMenu = addTopMenu(topMenu, elements.menu_trust());
         MenuBar reportsMenu = addTopMenu(topMenu, elements.menu_reports());
         MenuBar settingsMenu = addTopMenu(topMenu, elements.menu_settings());
@@ -136,6 +138,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(trustMenu, elements.menuitem_truststatus(),
                 WidgetIds.TRUST_STATUS);
+
+        addMenuItem(budgetMenu, elements.menuitem_budget(),
+                WidgetIds.BUDGET);
 
         addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(),
                 WidgetIds.REPORT_MEMBER_PER_YEAR);
@@ -273,6 +278,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = TrustEditView.show(messages, constants, helpPanel,
                         elements);
                 ((TrustEditView) widget).init();
+                break;
+                
+            case BUDGET:
+                widget = BudgetView.show(messages, constants, helpPanel, elements);
                 break;
             case WidgetIds.ADD_PERSON:
                 widget = PersonEditView.show(constants, messages, helpPanel,

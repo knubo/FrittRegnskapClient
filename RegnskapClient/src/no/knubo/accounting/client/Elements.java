@@ -16,36 +16,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String access();
 
   /**
-   * Translated "Liste over medlemmer per aldersgruppe".
-   * 
-   * @return translated "Liste over medlemmer per aldersgruppe"
-   * @gwt.key menuitem_report_member_per_year
-   */
-  String menuitem_report_member_per_year();
-
-  /**
-   * Translated "Logg inn".
-   * 
-   * @return translated "Logg inn"
-   * @gwt.key login
-   */
-  String login();
-
-  /**
    * Translated "Massebrev".
    * 
    * @return translated "Massebrev"
    * @gwt.key menuitem_report_letter
    */
   String menuitem_report_letter();
-
-  /**
-   * Translated "Bilag".
-   * 
-   * @return translated "Bilag"
-   * @gwt.key attachment
-   */
-  String attachment();
 
   /**
    * Translated "Avslutt år".
@@ -56,30 +32,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_endyear();
 
   /**
-   * Translated "Mottagere".
-   * 
-   * @return translated "Mottagere"
-   * @gwt.key mail_receivers
-   */
-  String mail_receivers();
-
-  /**
-   * Translated "Vis detaljer for utvalgte posteringer".
-   * 
-   * @return translated "Vis detaljer for utvalgte posteringer"
-   * @gwt.key menuitem_report_selectedlines
-   */
-  String menuitem_report_selectedlines();
-
-  /**
-   * Translated "Epost tittel".
-   * 
-   * @return translated "Epost tittel"
-   * @gwt.key mail_title
-   */
-  String mail_title();
-
-  /**
    * Translated "Personer".
    * 
    * @return translated "Personer"
@@ -88,12 +40,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_people();
 
   /**
-   * Translated "DEB/KRED".
+   * Translated "Utgifter".
    * 
-   * @return translated "DEB/KRED"
-   * @gwt.key debkred
+   * @return translated "Utgifter"
+   * @gwt.key expences
    */
-  String debkred();
+  String expences();
 
   /**
    * Translated "Avbryt	".
@@ -104,36 +56,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String person_pick_close();
 
   /**
-   * Translated "Nyhetsbrev".
-   * 
-   * @return translated "Nyhetsbrev"
-   * @gwt.key newsletter
-   */
-  String newsletter();
-
-  /**
    * Translated "Nullstill".
    * 
    * @return translated "Nullstill"
    * @gwt.key clear
    */
   String clear();
-
-  /**
-   * Translated "Brukere".
-   * 
-   * @return translated "Brukere"
-   * @gwt.key menuitem_useradm
-   */
-  String menuitem_useradm();
-
-  /**
-   * Translated "Standardverdier".
-   * 
-   * @return translated "Standardverdier"
-   * @gwt.key menuitem_values
-   */
-  String menuitem_values();
 
   /**
    * Translated "Abonnenter av nyhetsbrev".
@@ -144,12 +72,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String mail_query_newsletter();
 
   /**
-   * Translated "Desember".
+   * Translated "Fond".
    * 
-   * @return translated "Desember"
-   * @gwt.key month_12
+   * @return translated "Fond"
+   * @gwt.key menu_trust
    */
-  String month_12();
+  String menu_trust();
 
   /**
    * Translated "Epostutsendelse".
@@ -160,28 +88,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_report_email();
 
   /**
-   * Translated "Fond".
-   * 
-   * @return translated "Fond"
-   * @gwt.key menu_trust
-   */
-  String menu_trust();
-
-  /**
    * Translated "Samlekonto kontoplan".
    * 
    * @return translated "Samlekonto kontoplan"
    * @gwt.key account_collection_accountplan
    */
   String account_collection_accountplan();
-
-  /**
-   * Translated "Post".
-   * 
-   * @return translated "Post"
-   * @gwt.key post
-   */
-  String post();
 
   /**
    * Translated "Avbryt".
@@ -192,20 +104,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String cancel();
 
   /**
+   * Translated "Post".
+   * 
+   * @return translated "Post"
+   * @gwt.key post
+   */
+  String post();
+
+  /**
    * Translated "Medlemmer".
    * 
    * @return translated "Medlemmer"
    * @gwt.key mail_query_members
    */
   String mail_query_members();
-
-  /**
-   * Translated "Søk".
-   * 
-   * @return translated "Søk"
-   * @gwt.key search
-   */
-  String search();
 
   /**
    * Translated "Registrer medlemsskap".
@@ -216,28 +128,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String register_membership();
 
   /**
-   * Translated "Dag".
-   * 
-   * @return translated "Dag"
-   * @gwt.key day
-   */
-  String day();
-
-  /**
    * Translated "Avbryt".
    * 
    * @return translated "Avbryt"
    * @gwt.key trustStatusView_cancelButton
    */
   String trustStatusView_cancelButton();
-
-  /**
-   * Translated "Ny/endre bruker".
-   * 
-   * @return translated "Ny/endre bruker"
-   * @gwt.key title_edit_new_user
-   */
-  String title_edit_new_user();
 
   /**
    * Translated "Avslutt måned".
@@ -264,36 +160,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String new_account();
 
   /**
-   * Translated "Rapporter".
-   * 
-   * @return translated "Rapporter"
-   * @gwt.key menu_reports
-   */
-  String menu_reports();
-
-  /**
-   * Translated "Føres på post".
-   * 
-   * @return translated "Føres på post"
-   * @gwt.key register_count_post
-   */
-  String register_count_post();
-
-  /**
    * Translated "Eksporter til regneark".
    * 
    * @return translated "Eksporter til regneark"
    * @gwt.key export_spreadsheet
    */
   String export_spreadsheet();
-
-  /**
-   * Translated "Kreditpost".
-   * 
-   * @return translated "Kreditpost"
-   * @gwt.key trust_creditpost
-   */
-  String trust_creditpost();
 
   /**
    * Translated "Oprett/Endre kontotype".
@@ -304,20 +176,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String title_edit_posttype();
 
   /**
-   * Translated "Fondskonto".
-   * 
-   * @return translated "Fondskonto"
-   * @gwt.key trust_account
-   */
-  String trust_account();
-
-  /**
    * Translated "Danmark".
    * 
    * @return translated "Danmark"
    * @gwt.key country_denmark
    */
   String country_denmark();
+
+  /**
+   * Translated "Fondskonto".
+   * 
+   * @return translated "Fondskonto"
+   * @gwt.key trust_account
+   */
+  String trust_account();
 
   /**
    * Translated "Oversikt over medlemmers adresser".
@@ -336,14 +208,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String train_membership();
 
   /**
-   * Translated "Avsender for epost".
-   * 
-   * @return translated "Avsender for epost"
-   * @gwt.key mail_sender
-   */
-  String mail_sender();
-
-  /**
    * Translated "Vis kun poster med valgt konto".
    * 
    * @return translated "Vis kun poster med valgt konto"
@@ -352,36 +216,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String show_only_selcted_post();
 
   /**
-   * Translated "Om regnskapssystemet".
-   * 
-   * @return translated "Om regnskapssystemet"
-   * @gwt.key menuitem_about
-   */
-  String menuitem_about();
-
-  /**
    * Translated "Lagre".
    * 
    * @return translated "Lagre"
    * @gwt.key RegisterHappening.saveButton
    */
   String RegisterHappening_saveButton();
-
-  /**
-   * Translated "Hurtigregistrering av standardbilag".
-   * 
-   * @return translated "Hurtigregistrering av standardbilag"
-   * @gwt.key menuitem_register_happening
-   */
-  String menuitem_register_happening();
-
-  /**
-   * Translated "X".
-   * 
-   * @return translated "X"
-   * @gwt.key x
-   */
-  String x();
 
   /**
    * Translated "Brukere".
@@ -408,6 +248,726 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String update();
 
   /**
+   * Translated "Person".
+   * 
+   * @return translated "Person"
+   * @gwt.key person
+   */
+  String person();
+
+  /**
+   * Translated "Info".
+   * 
+   * @return translated "Info"
+   * @gwt.key menu_info
+   */
+  String menu_info();
+
+  /**
+   * Translated "Følgende poster vil overføres til neste måned:".
+   * 
+   * @return translated "Følgende poster vil overføres til neste måned:"
+   * @gwt.key end_month_explain
+   */
+  String end_month_explain();
+
+  /**
+   * Translated "Fødselsdato".
+   * 
+   * @return translated "Fødselsdato"
+   * @gwt.key birthdate
+   */
+  String birthdate();
+
+  /**
+   * Translated "Liste over medlemmer med adresser".
+   * 
+   * @return translated "Liste over medlemmer med adresser"
+   * @gwt.key menuitem_report_addresses
+   */
+  String menuitem_report_addresses();
+
+  /**
+   * Translated "Alder".
+   * 
+   * @return translated "Alder"
+   * @gwt.key age
+   */
+  String age();
+
+  /**
+   * Translated "Juli".
+   * 
+   * @return translated "Juli"
+   * @gwt.key month_07
+   */
+  String month_07();
+
+  /**
+   * Translated "Alle inntekter".
+   * 
+   * @return translated "Alle inntekter"
+   * @gwt.key earnings_all
+   */
+  String earnings_all();
+
+  /**
+   * Translated "Innstillinger".
+   * 
+   * @return translated "Innstillinger"
+   * @gwt.key menu_settings
+   */
+  String menu_settings();
+
+  /**
+   * Translated "By".
+   * 
+   * @return translated "By"
+   * @gwt.key city
+   */
+  String city();
+
+  /**
+   * Translated "Aksjon".
+   * 
+   * @return translated "Aksjon"
+   * @gwt.key action
+   */
+  String action();
+
+  /**
+   * Translated "Brukernavn".
+   * 
+   * @return translated "Brukernavn"
+   * @gwt.key user
+   */
+  String user();
+
+  /**
+   * Translated "Valør".
+   * 
+   * @return translated "Valør"
+   * @gwt.key value
+   */
+  String value();
+
+  /**
+   * Translated "Konti ikke i bruk".
+   * 
+   * @return translated "Konti ikke i bruk"
+   * @gwt.key title_posttype_edit_not_in_use
+   */
+  String title_posttype_edit_not_in_use();
+
+  /**
+   * Translated "Dag".
+   * 
+   * @return translated "Dag"
+   * @gwt.key day_single
+   */
+  String day_single();
+
+  /**
+   * Translated "Debetpost".
+   * 
+   * @return translated "Debetpost"
+   * @gwt.key trust_debetpost
+   */
+  String trust_debetpost();
+
+  /**
+   * Translated "Land".
+   * 
+   * @return translated "Land"
+   * @gwt.key country
+   */
+  String country();
+
+  /**
+   * Translated "DEBET post".
+   * 
+   * @return translated "DEBET post"
+   * @gwt.key debet_post
+   */
+  String debet_post();
+
+  /**
+   * Translated "Januar".
+   * 
+   * @return translated "Januar"
+   * @gwt.key month_01
+   */
+  String month_01();
+
+  /**
+   * Translated "Vis kursmedlemsskap".
+   * 
+   * @return translated "Vis kursmedlemsskap"
+   * @gwt.key menuitem_showclassmembers
+   */
+  String menuitem_showclassmembers();
+
+  /**
+   * Translated "Fond".
+   * 
+   * @return translated "Fond"
+   * @gwt.key menuitem_edit_trust
+   */
+  String menuitem_edit_trust();
+
+  /**
+   * Translated "Fradato".
+   * 
+   * @return translated "Fradato"
+   * @gwt.key from_date
+   */
+  String from_date();
+
+  /**
+   * Translated "Årsmedlemskap".
+   * 
+   * @return translated "Årsmedlemskap"
+   * @gwt.key year_membership
+   */
+  String year_membership();
+
+  /**
+   * Translated "Treningsmedlemmer".
+   * 
+   * @return translated "Treningsmedlemmer"
+   * @gwt.key member_heading_train
+   */
+  String member_heading_train();
+
+  /**
+   * Translated "Hjelp".
+   * 
+   * @return translated "Hjelp"
+   * @gwt.key help
+   */
+  String help();
+
+  /**
+   * Translated "Velg person".
+   * 
+   * @return translated "Velg person"
+   * @gwt.key choose_person
+   */
+  String choose_person();
+
+  /**
+   * Translated "Standardbilag".
+   * 
+   * @return translated "Standardbilag"
+   * @gwt.key menuitem_edit_happening
+   */
+  String menuitem_edit_happening();
+
+  /**
+   * Translated "Mobil".
+   * 
+   * @return translated "Mobil"
+   * @gwt.key cellphone
+   */
+  String cellphone();
+
+  /**
+   * Translated "Ny fondaktivitet".
+   * 
+   * @return translated "Ny fondaktivitet"
+   * @gwt.key trustStatusView_newTrustButton
+   */
+  String trustStatusView_newTrustButton();
+
+  /**
+   * Translated "Inntekter for kurs".
+   * 
+   * @return translated "Inntekter for kurs"
+   * @gwt.key earnings_courses
+   */
+  String earnings_courses();
+
+  /**
+   * Translated "Konti for status for utvalgte konti".
+   * 
+   * @return translated "Konti for status for utvalgte konti"
+   * @gwt.key menuitem_accounttrack
+   */
+  String menuitem_accounttrack();
+
+  /**
+   * Translated "Oversikt over medlemmer per fødselsdato".
+   * 
+   * @return translated "Oversikt over medlemmer per fødselsdato"
+   * @gwt.key title_report_membersbirth
+   */
+  String title_report_membersbirth();
+
+  /**
+   * Translated "Måned".
+   * 
+   * @return translated "Måned"
+   * @gwt.key month
+   */
+  String month();
+
+  /**
+   * Translated "Pris for trening".
+   * 
+   * @return translated "Pris for trening"
+   * @gwt.key cost_practice
+   */
+  String cost_practice();
+
+  /**
+   * Translated "Lagre".
+   * 
+   * @return translated "Lagre"
+   * @gwt.key save
+   */
+  String save();
+
+  /**
+   * Translated "Full tilgang".
+   * 
+   * @return translated "Full tilgang"
+   * @gwt.key full_access
+   */
+  String full_access();
+
+  /**
+   * Translated "Valgte konti".
+   * 
+   * @return translated "Valgte konti"
+   * @gwt.key chosen_accounts
+   */
+  String chosen_accounts();
+
+  /**
+   * Translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag.".
+   * 
+   * @return translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag."
+   * @gwt.key register_membership_help
+   */
+  String register_membership_help();
+
+  /**
+   * Translated "Fornavn".
+   * 
+   * @return translated "Fornavn"
+   * @gwt.key firstname
+   */
+  String firstname();
+
+  /**
+   * Translated "no".
+   * 
+   * @return translated "no"
+   * @gwt.key HELP_ROOT
+   */
+  String HELP_ROOT();
+
+  /**
+   * Translated "Laster inn siden...".
+   * 
+   * @return translated "Laster inn siden..."
+   * @gwt.key loding_page
+   */
+  String loding_page();
+
+  /**
+   * Translated "Prosjekter".
+   * 
+   * @return translated "Prosjekter"
+   * @gwt.key menuitem_projects
+   */
+  String menuitem_projects();
+
+  /**
+   * Translated "Standardinnstillinger for regnskap".
+   * 
+   * @return translated "Standardinnstillinger for regnskap"
+   * @gwt.key standardsettings
+   */
+  String standardsettings();
+
+  /**
+   * Translated "Pris for kurs".
+   * 
+   * @return translated "Pris for kurs"
+   * @gwt.key cost_course
+   */
+  String cost_course();
+
+  /**
+   * Translated "Linjer".
+   * 
+   * @return translated "Linjer"
+   * @gwt.key lines
+   */
+  String lines();
+
+  /**
+   * Translated "Registrering av medlemsskap".
+   * 
+   * @return translated "Registrering av medlemsskap"
+   * @gwt.key register_membership_header
+   */
+  String register_membership_header();
+
+  /**
+   * Translated "Kun lesetilgang".
+   * 
+   * @return translated "Kun lesetilgang"
+   * @gwt.key read_only_access
+   */
+  String read_only_access();
+
+  /**
+   * Translated "Konti i bruk".
+   * 
+   * @return translated "Konti i bruk"
+   * @gwt.key title_posttype_edit_in_use
+   */
+  String title_posttype_edit_in_use();
+
+  /**
+   * Translated "Opprett".
+   * 
+   * @return translated "Opprett"
+   * @gwt.key create
+   */
+  String create();
+
+  /**
+   * Translated "Aksjon fondskonto".
+   * 
+   * @return translated "Aksjon fondskonto"
+   * @gwt.key trust_actiontrust
+   */
+  String trust_actiontrust();
+
+  /**
+   * Translated "Søk etter person".
+   * 
+   * @return translated "Søk etter person"
+   * @gwt.key menuitem_findperson
+   */
+  String menuitem_findperson();
+
+  /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   * @gwt.key abort
+   */
+  String abort();
+
+  /**
+   * Translated "Passord".
+   * 
+   * @return translated "Passord"
+   * @gwt.key password
+   */
+  String password();
+
+  /**
+   * Translated "Sum".
+   * 
+   * @return translated "Sum"
+   * @gwt.key sum
+   */
+  String sum();
+
+  /**
+   * Translated "Legg til".
+   * 
+   * @return translated "Legg til"
+   * @gwt.key add
+   */
+  String add();
+
+  /**
+   * Translated "Vis medlemsskap".
+   * 
+   * @return translated "Vis medlemsskap"
+   * @gwt.key menuitem_showmembers
+   */
+  String menuitem_showmembers();
+
+  /**
+   * Translated "Ny fondsaksjon".
+   * 
+   * @return translated "Ny fondsaksjon"
+   * @gwt.key new_trustaction
+   */
+  String new_trustaction();
+
+  /**
+   * Translated "Personer med Epostadresser".
+   * 
+   * @return translated "Personer med Epostadresser"
+   * @gwt.key title_report_users_email
+   */
+  String title_report_users_email();
+
+  /**
+   * Translated "Status".
+   * 
+   * @return translated "Status"
+   * @gwt.key status
+   */
+  String status();
+
+  /**
+   * Translated "Fondsaksjoner".
+   * 
+   * @return translated "Fondsaksjoner"
+   * @gwt.key menuitem_edit_trust_actions
+   */
+  String menuitem_edit_trust_actions();
+
+  /**
+   * Translated "Detaljer for utvalgte posteringer".
+   * 
+   * @return translated "Detaljer for utvalgte posteringer"
+   * @gwt.key title_report_accountlines
+   */
+  String title_report_accountlines();
+
+  /**
+   * Translated "Etternavn".
+   * 
+   * @return translated "Etternavn"
+   * @gwt.key lastname
+   */
+  String lastname();
+
+  /**
+   * Translated "Vedlikehold av person".
+   * 
+   * @return translated "Vedlikehold av person"
+   * @gwt.key menuitem_addperson
+   */
+  String menuitem_addperson();
+
+  /**
+   * Translated "Beløp".
+   * 
+   * @return translated "Beløp"
+   * @gwt.key amount
+   */
+  String amount();
+
+  /**
+   * Translated "Nytt standardbilag".
+   * 
+   * @return translated "Nytt standardbilag"
+   * @gwt.key new_happening
+   */
+  String new_happening();
+
+  /**
+   * Translated "År".
+   * 
+   * @return translated "År"
+   * @gwt.key year
+   */
+  String year();
+
+  /**
+   * Translated "Prosjekt".
+   * 
+   * @return translated "Prosjekt"
+   * @gwt.key project
+   */
+  String project();
+
+  /**
+   * Translated "Ny fondaktivitet".
+   * 
+   * @return translated "Ny fondaktivitet"
+   * @gwt.key new_trust
+   */
+  String new_trust();
+
+  /**
+   * Translated "Antall".
+   * 
+   * @return translated "Antall"
+   * @gwt.key count
+   */
+  String count();
+
+  /**
+   * Translated "Liste over medlemmer per aldersgruppe".
+   * 
+   * @return translated "Liste over medlemmer per aldersgruppe"
+   * @gwt.key menuitem_report_member_per_year
+   */
+  String menuitem_report_member_per_year();
+
+  /**
+   * Translated "Logg inn".
+   * 
+   * @return translated "Logg inn"
+   * @gwt.key login
+   */
+  String login();
+
+  /**
+   * Translated "Bilag".
+   * 
+   * @return translated "Bilag"
+   * @gwt.key attachment
+   */
+  String attachment();
+
+  /**
+   * Translated "Mottagere".
+   * 
+   * @return translated "Mottagere"
+   * @gwt.key mail_receivers
+   */
+  String mail_receivers();
+
+  /**
+   * Translated "Vis detaljer for utvalgte posteringer".
+   * 
+   * @return translated "Vis detaljer for utvalgte posteringer"
+   * @gwt.key menuitem_report_selectedlines
+   */
+  String menuitem_report_selectedlines();
+
+  /**
+   * Translated "Epost tittel".
+   * 
+   * @return translated "Epost tittel"
+   * @gwt.key mail_title
+   */
+  String mail_title();
+
+  /**
+   * Translated "DEB/KRED".
+   * 
+   * @return translated "DEB/KRED"
+   * @gwt.key debkred
+   */
+  String debkred();
+
+  /**
+   * Translated "Nyhetsbrev".
+   * 
+   * @return translated "Nyhetsbrev"
+   * @gwt.key newsletter
+   */
+  String newsletter();
+
+  /**
+   * Translated "Brukere".
+   * 
+   * @return translated "Brukere"
+   * @gwt.key menuitem_useradm
+   */
+  String menuitem_useradm();
+
+  /**
+   * Translated "Standardverdier".
+   * 
+   * @return translated "Standardverdier"
+   * @gwt.key menuitem_values
+   */
+  String menuitem_values();
+
+  /**
+   * Translated "Desember".
+   * 
+   * @return translated "Desember"
+   * @gwt.key month_12
+   */
+  String month_12();
+
+  /**
+   * Translated "Søk".
+   * 
+   * @return translated "Søk"
+   * @gwt.key search
+   */
+  String search();
+
+  /**
+   * Translated "Dag".
+   * 
+   * @return translated "Dag"
+   * @gwt.key day
+   */
+  String day();
+
+  /**
+   * Translated "Ny/endre bruker".
+   * 
+   * @return translated "Ny/endre bruker"
+   * @gwt.key title_edit_new_user
+   */
+  String title_edit_new_user();
+
+  /**
+   * Translated "Rapporter".
+   * 
+   * @return translated "Rapporter"
+   * @gwt.key menu_reports
+   */
+  String menu_reports();
+
+  /**
+   * Translated "Føres på post".
+   * 
+   * @return translated "Føres på post"
+   * @gwt.key register_count_post
+   */
+  String register_count_post();
+
+  /**
+   * Translated "Kreditpost".
+   * 
+   * @return translated "Kreditpost"
+   * @gwt.key trust_creditpost
+   */
+  String trust_creditpost();
+
+  /**
+   * Translated "Avsender for epost".
+   * 
+   * @return translated "Avsender for epost"
+   * @gwt.key mail_sender
+   */
+  String mail_sender();
+
+  /**
+   * Translated "Om regnskapssystemet".
+   * 
+   * @return translated "Om regnskapssystemet"
+   * @gwt.key menuitem_about
+   */
+  String menuitem_about();
+
+  /**
+   * Translated "Hurtigregistrering av standardbilag".
+   * 
+   * @return translated "Hurtigregistrering av standardbilag"
+   * @gwt.key menuitem_register_happening
+   */
+  String menuitem_register_happening();
+
+  /**
+   * Translated "X".
+   * 
+   * @return translated "X"
+   * @gwt.key x
+   */
+  String x();
+
+  /**
    * Translated "Postbeskrivelse".
    * 
    * @return translated "Postbeskrivelse"
@@ -432,14 +992,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_logout();
 
   /**
-   * Translated "Person".
-   * 
-   * @return translated "Person"
-   * @gwt.key person
-   */
-  String person();
-
-  /**
    * Translated "Nytt prosjekt".
    * 
    * @return translated "Nytt prosjekt"
@@ -456,22 +1008,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String member_heading_year();
 
   /**
-   * Translated "Info".
-   * 
-   * @return translated "Info"
-   * @gwt.key menu_info
-   */
-  String menu_info();
-
-  /**
-   * Translated "Følgende poster vil overføres til neste måned:".
-   * 
-   * @return translated "Følgende poster vil overføres til neste måned:"
-   * @gwt.key end_month_explain
-   */
-  String end_month_explain();
-
-  /**
    * Translated "Vis måned med detaljer".
    * 
    * @return translated "Vis måned med detaljer"
@@ -480,44 +1016,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_showmonthdetails();
 
   /**
-   * Translated "Liste over medlemmer med adresser".
-   * 
-   * @return translated "Liste over medlemmer med adresser"
-   * @gwt.key menuitem_report_addresses
-   */
-  String menuitem_report_addresses();
-
-  /**
-   * Translated "Fødselsdato".
-   * 
-   * @return translated "Fødselsdato"
-   * @gwt.key birthdate
-   */
-  String birthdate();
-
-  /**
-   * Translated "Juli".
-   * 
-   * @return translated "Juli"
-   * @gwt.key month_07
-   */
-  String month_07();
-
-  /**
    * Translated "Telling påkrevd".
    * 
    * @return translated "Telling påkrevd"
    * @gwt.key count_required
    */
   String count_required();
-
-  /**
-   * Translated "Alder".
-   * 
-   * @return translated "Alder"
-   * @gwt.key age
-   */
-  String age();
 
   /**
    * Translated "Spørring".
@@ -544,12 +1048,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_show();
 
   /**
-   * Translated "Navn".
+   * Translated "Send epost".
    * 
-   * @return translated "Navn"
-   * @gwt.key name
+   * @return translated "Send epost"
+   * @gwt.key mail_send
    */
-  String name();
+  String mail_send();
 
   /**
    * Translated "Logg ut".
@@ -560,28 +1064,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String logout();
 
   /**
-   * Translated "Send epost".
+   * Translated "Navn".
    * 
-   * @return translated "Send epost"
-   * @gwt.key mail_send
+   * @return translated "Navn"
+   * @gwt.key name
    */
-  String mail_send();
-
-  /**
-   * Translated "Innstillinger".
-   * 
-   * @return translated "Innstillinger"
-   * @gwt.key menu_settings
-   */
-  String menu_settings();
-
-  /**
-   * Translated "By".
-   * 
-   * @return translated "By"
-   * @gwt.key city
-   */
-  String city();
+  String name();
 
   /**
    * Translated "Sender epost...".
@@ -600,30 +1088,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String kredit();
 
   /**
-   * Translated "Valør".
-   * 
-   * @return translated "Valør"
-   * @gwt.key value
-   */
-  String value();
-
-  /**
-   * Translated "Brukernavn".
-   * 
-   * @return translated "Brukernavn"
-   * @gwt.key user
-   */
-  String user();
-
-  /**
-   * Translated "Aksjon".
-   * 
-   * @return translated "Aksjon"
-   * @gwt.key action
-   */
-  String action();
-
-  /**
    * Translated "Standard beskrivelse".
    * 
    * @return translated "Standard beskrivelse"
@@ -638,14 +1102,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key country_finland
    */
   String country_finland();
-
-  /**
-   * Translated "Konti ikke i bruk".
-   * 
-   * @return translated "Konti ikke i bruk"
-   * @gwt.key title_posttype_edit_not_in_use
-   */
-  String title_posttype_edit_not_in_use();
 
   /**
    * Translated "Melding".
@@ -672,14 +1128,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String club_account();
 
   /**
-   * Translated "Debetpost".
-   * 
-   * @return translated "Debetpost"
-   * @gwt.key trust_debetpost
-   */
-  String trust_debetpost();
-
-  /**
    * Translated "Oktober".
    * 
    * @return translated "Oktober"
@@ -688,44 +1136,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String month_10();
 
   /**
-   * Translated "Dag".
-   * 
-   * @return translated "Dag"
-   * @gwt.key day_single
-   */
-  String day_single();
-
-  /**
    * Translated "Aksjon klubbkonto".
    * 
    * @return translated "Aksjon klubbkonto"
    * @gwt.key trust_actionclub
    */
   String trust_actionclub();
-
-  /**
-   * Translated "Land".
-   * 
-   * @return translated "Land"
-   * @gwt.key country
-   */
-  String country();
-
-  /**
-   * Translated "DEBET post".
-   * 
-   * @return translated "DEBET post"
-   * @gwt.key debet_post
-   */
-  String debet_post();
-
-  /**
-   * Translated "Januar".
-   * 
-   * @return translated "Januar"
-   * @gwt.key month_01
-   */
-  String month_01();
 
   /**
    * Translated "Telefon".
@@ -760,14 +1176,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String newline();
 
   /**
-   * Translated "Vis kursmedlemsskap".
-   * 
-   * @return translated "Vis kursmedlemsskap"
-   * @gwt.key menuitem_showclassmembers
-   */
-  String menuitem_showclassmembers();
-
-  /**
    * Translated "Konti".
    * 
    * @return translated "Konti"
@@ -784,60 +1192,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String trustEditView_newButton();
 
   /**
-   * Translated "Fond".
-   * 
-   * @return translated "Fond"
-   * @gwt.key menuitem_edit_trust
-   */
-  String menuitem_edit_trust();
-
-  /**
    * Translated "ok".
    * 
    * @return translated "ok"
    * @gwt.key ok
    */
   String ok();
-
-  /**
-   * Translated "Fradato".
-   * 
-   * @return translated "Fradato"
-   * @gwt.key from_date
-   */
-  String from_date();
-
-  /**
-   * Translated "Årsmedlemskap".
-   * 
-   * @return translated "Årsmedlemskap"
-   * @gwt.key year_membership
-   */
-  String year_membership();
-
-  /**
-   * Translated "Postnr".
-   * 
-   * @return translated "Postnr"
-   * @gwt.key postnmb
-   */
-  String postnmb();
-
-  /**
-   * Translated "August".
-   * 
-   * @return translated "August"
-   * @gwt.key month_08
-   */
-  String month_08();
-
-  /**
-   * Translated "Fond status/aktivitet".
-   * 
-   * @return translated "Fond status/aktivitet"
-   * @gwt.key menuitem_truststatus
-   */
-  String menuitem_truststatus();
 
   /**
    * Translated "Skjul".
@@ -848,36 +1208,36 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String hidden_person();
 
   /**
+   * Translated "Fond status/aktivitet".
+   * 
+   * @return translated "Fond status/aktivitet"
+   * @gwt.key menuitem_truststatus
+   */
+  String menuitem_truststatus();
+
+  /**
+   * Translated "August".
+   * 
+   * @return translated "August"
+   * @gwt.key month_08
+   */
+  String month_08();
+
+  /**
+   * Translated "Postnr".
+   * 
+   * @return translated "Postnr"
+   * @gwt.key postnmb
+   */
+  String postnmb();
+
+  /**
    * Translated "Dato".
    * 
    * @return translated "Dato"
    * @gwt.key date
    */
   String date();
-
-  /**
-   * Translated "Treningsmedlemmer".
-   * 
-   * @return translated "Treningsmedlemmer"
-   * @gwt.key member_heading_train
-   */
-  String member_heading_train();
-
-  /**
-   * Translated "Hjelp".
-   * 
-   * @return translated "Hjelp"
-   * @gwt.key help
-   */
-  String help();
-
-  /**
-   * Translated "Velg person".
-   * 
-   * @return translated "Velg person"
-   * @gwt.key choose_person
-   */
-  String choose_person();
 
   /**
    * Translated "Ikke ansatt".
@@ -888,28 +1248,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String not_employee();
 
   /**
-   * Translated "Standardbilag".
+   * Translated "Registrer bilag".
    * 
-   * @return translated "Standardbilag"
-   * @gwt.key menuitem_edit_happening
+   * @return translated "Registrer bilag"
+   * @gwt.key menuitem_regline
    */
-  String menuitem_edit_happening();
-
-  /**
-   * Translated "Mobil".
-   * 
-   * @return translated "Mobil"
-   * @gwt.key cellphone
-   */
-  String cellphone();
-
-  /**
-   * Translated "Ny fondaktivitet".
-   * 
-   * @return translated "Ny fondaktivitet"
-   * @gwt.key trustStatusView_newTrustButton
-   */
-  String trustStatusView_newTrustButton();
+  String menuitem_regline();
 
   /**
    * Translated "Februar".
@@ -920,20 +1264,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String month_02();
 
   /**
-   * Translated "Registrer bilag".
+   * Translated "Til søk".
    * 
-   * @return translated "Registrer bilag"
-   * @gwt.key menuitem_regline
+   * @return translated "Til søk"
+   * @gwt.key back_search
    */
-  String menuitem_regline();
-
-  /**
-   * Translated "Konti for status for utvalgte konti".
-   * 
-   * @return translated "Konti for status for utvalgte konti"
-   * @gwt.key menuitem_accounttrack
-   */
-  String menuitem_accounttrack();
+  String back_search();
 
   /**
    * Translated "DEBET".
@@ -944,44 +1280,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String debet();
 
   /**
-   * Translated "Til søk".
-   * 
-   * @return translated "Til søk"
-   * @gwt.key back_search
-   */
-  String back_search();
-
-  /**
-   * Translated "Oversikt over medlemmer per fødselsdato".
-   * 
-   * @return translated "Oversikt over medlemmer per fødselsdato"
-   * @gwt.key title_report_membersbirth
-   */
-  String title_report_membersbirth();
-
-  /**
-   * Translated "Måned".
-   * 
-   * @return translated "Måned"
-   * @gwt.key month
-   */
-  String month();
-
-  /**
    * Translated "Kursmedlemmer".
    * 
    * @return translated "Kursmedlemmer"
    * @gwt.key member_heading_course
    */
   String member_heading_course();
-
-  /**
-   * Translated "Pris for trening".
-   * 
-   * @return translated "Pris for trening"
-   * @gwt.key cost_practice
-   */
-  String cost_practice();
 
   /**
    * Translated "Mai".
@@ -992,14 +1296,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String month_05();
 
   /**
-   * Translated "Lagre".
-   * 
-   * @return translated "Lagre"
-   * @gwt.key save
-   */
-  String save();
-
-  /**
    * Translated "Registrer medlemsskap".
    * 
    * @return translated "Registrer medlemsskap"
@@ -1008,28 +1304,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_registerMembership();
 
   /**
-   * Translated "Full tilgang".
-   * 
-   * @return translated "Full tilgang"
-   * @gwt.key full_access
-   */
-  String full_access();
-
-  /**
    * Translated "April".
    * 
    * @return translated "April"
    * @gwt.key month_04
    */
   String month_04();
-
-  /**
-   * Translated "Valgte konti".
-   * 
-   * @return translated "Valgte konti"
-   * @gwt.key chosen_accounts
-   */
-  String chosen_accounts();
 
   /**
    * Translated "Ny bruker".
@@ -1046,14 +1326,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key month_03
    */
   String month_03();
-
-  /**
-   * Translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag.".
-   * 
-   * @return translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag."
-   * @gwt.key register_membership_help
-   */
-  String register_membership_help();
 
   /**
    * Translated "Flett brev".
@@ -1096,30 +1368,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String trust();
 
   /**
-   * Translated "Fornavn".
-   * 
-   * @return translated "Fornavn"
-   * @gwt.key firstname
-   */
-  String firstname();
-
-  /**
-   * Translated "no".
-   * 
-   * @return translated "no"
-   * @gwt.key HELP_ROOT
-   */
-  String HELP_ROOT();
-
-  /**
-   * Translated "Laster inn siden...".
-   * 
-   * @return translated "Laster inn siden..."
-   * @gwt.key loding_page
-   */
-  String loding_page();
-
-  /**
    * Translated "Juni".
    * 
    * @return translated "Juni"
@@ -1136,52 +1384,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String account_collection_month();
 
   /**
-   * Translated "Standardinnstillinger for regnskap".
-   * 
-   * @return translated "Standardinnstillinger for regnskap"
-   * @gwt.key standardsettings
-   */
-  String standardsettings();
-
-  /**
-   * Translated "Prosjekter".
-   * 
-   * @return translated "Prosjekter"
-   * @gwt.key menuitem_projects
-   */
-  String menuitem_projects();
-
-  /**
    * Translated "Mangler adresse".
    * 
    * @return translated "Mangler adresse"
    * @gwt.key missing_address
    */
   String missing_address();
-
-  /**
-   * Translated "Pris for kurs".
-   * 
-   * @return translated "Pris for kurs"
-   * @gwt.key cost_course
-   */
-  String cost_course();
-
-  /**
-   * Translated "Linjer".
-   * 
-   * @return translated "Linjer"
-   * @gwt.key lines
-   */
-  String lines();
-
-  /**
-   * Translated "Registrering av medlemsskap".
-   * 
-   * @return translated "Registrering av medlemsskap"
-   * @gwt.key register_membership_header
-   */
-  String register_membership_header();
 
   /**
    * Translated "Adresse".
@@ -1200,36 +1408,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String available_accounts();
 
   /**
-   * Translated "Kun lesetilgang".
-   * 
-   * @return translated "Kun lesetilgang"
-   * @gwt.key read_only_access
-   */
-  String read_only_access();
-
-  /**
    * Translated "Brevmal".
    * 
    * @return translated "Brevmal"
    * @gwt.key letter_template
    */
   String letter_template();
-
-  /**
-   * Translated "Konti i bruk".
-   * 
-   * @return translated "Konti i bruk"
-   * @gwt.key title_posttype_edit_in_use
-   */
-  String title_posttype_edit_in_use();
-
-  /**
-   * Translated "Opprett".
-   * 
-   * @return translated "Opprett"
-   * @gwt.key create
-   */
-  String create();
 
   /**
    * Translated "KREDIT post".
@@ -1240,28 +1424,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String kredit_post();
 
   /**
-   * Translated "Aksjon fondskonto".
-   * 
-   * @return translated "Aksjon fondskonto"
-   * @gwt.key trust_actiontrust
-   */
-  String trust_actiontrust();
-
-  /**
    * Translated "Semester".
    * 
    * @return translated "Semester"
    * @gwt.key semester
    */
   String semester();
-
-  /**
-   * Translated "Søk etter person".
-   * 
-   * @return translated "Søk etter person"
-   * @gwt.key menuitem_findperson
-   */
-  String menuitem_findperson();
 
   /**
    * Translated "Tildato".
@@ -1272,60 +1440,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String to_date();
 
   /**
-   * Translated "Passord".
+   * Translated "Budsjett".
    * 
-   * @return translated "Passord"
-   * @gwt.key password
+   * @return translated "Budsjett"
+   * @gwt.key menuitem_budget
    */
-  String password();
-
-  /**
-   * Translated "Avbryt".
-   * 
-   * @return translated "Avbryt"
-   * @gwt.key abort
-   */
-  String abort();
-
-  /**
-   * Translated "Sum".
-   * 
-   * @return translated "Sum"
-   * @gwt.key sum
-   */
-  String sum();
-
-  /**
-   * Translated "Vis medlemsskap".
-   * 
-   * @return translated "Vis medlemsskap"
-   * @gwt.key menuitem_showmembers
-   */
-  String menuitem_showmembers();
-
-  /**
-   * Translated "Legg til".
-   * 
-   * @return translated "Legg til"
-   * @gwt.key add
-   */
-  String add();
-
-  /**
-   * Translated "Ny fondsaksjon".
-   * 
-   * @return translated "Ny fondsaksjon"
-   * @gwt.key new_trustaction
-   */
-  String new_trustaction();
-
-  /**
-   * Translated "Personer med Epostadresser".
-   * 
-   * @return translated "Personer med Epostadresser"
-   * @gwt.key title_report_users_email
-   */
-  String title_report_users_email();
+  String menuitem_budget();
 
   /**
    * Translated "Avslutt måned".
@@ -1360,12 +1480,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String reduced_write_access();
 
   /**
-   * Translated "Status".
+   * Translated "Andre inntekter".
    * 
-   * @return translated "Status"
-   * @gwt.key status
+   * @return translated "Andre inntekter"
+   * @gwt.key earnings_other
    */
-  String status();
+  String earnings_other();
 
   /**
    * Translated "Post nr. er benyttet tidligere".
@@ -1376,20 +1496,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String post_used();
 
   /**
-   * Translated "Fondsaksjoner".
+   * Translated "Status for utvalgte konti".
    * 
-   * @return translated "Fondsaksjoner"
-   * @gwt.key menuitem_edit_trust_actions
+   * @return translated "Status for utvalgte konti"
+   * @gwt.key menuitem_report_accounttrack
    */
-  String menuitem_edit_trust_actions();
-
-  /**
-   * Translated "Detaljer for utvalgte posteringer".
-   * 
-   * @return translated "Detaljer for utvalgte posteringer"
-   * @gwt.key title_report_accountlines
-   */
-  String title_report_accountlines();
+  String menuitem_report_accounttrack();
 
   /**
    * Translated "Vis måned".
@@ -1400,60 +1512,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_showmonth();
 
   /**
-   * Translated "Status for utvalgte konti".
-   * 
-   * @return translated "Status for utvalgte konti"
-   * @gwt.key menuitem_report_accounttrack
-   */
-  String menuitem_report_accounttrack();
-
-  /**
    * Translated "Vis treningsmedlemsskap ".
    * 
    * @return translated "Vis treningsmedlemsskap "
    * @gwt.key menuitem_showtraining
    */
   String menuitem_showtraining();
-
-  /**
-   * Translated "Etternavn".
-   * 
-   * @return translated "Etternavn"
-   * @gwt.key lastname
-   */
-  String lastname();
-
-  /**
-   * Translated "Beløp".
-   * 
-   * @return translated "Beløp"
-   * @gwt.key amount
-   */
-  String amount();
-
-  /**
-   * Translated "Vedlikehold av person".
-   * 
-   * @return translated "Vedlikehold av person"
-   * @gwt.key menuitem_addperson
-   */
-  String menuitem_addperson();
-
-  /**
-   * Translated "Nytt standardbilag".
-   * 
-   * @return translated "Nytt standardbilag"
-   * @gwt.key new_happening
-   */
-  String new_happening();
-
-  /**
-   * Translated "År".
-   * 
-   * @return translated "År"
-   * @gwt.key year
-   */
-  String year();
 
   /**
    * Translated "Ansatt".
@@ -1464,14 +1528,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String employee();
 
   /**
-   * Translated "Beskrivelse".
-   * 
-   * @return translated "Beskrivelse"
-   * @gwt.key description
-   */
-  String description();
-
-  /**
    * Translated "Pris for meldmesskap".
    * 
    * @return translated "Pris for meldmesskap"
@@ -1480,20 +1536,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String cost_membership();
 
   /**
-   * Translated "Prosjekt".
+   * Translated "Beskrivelse".
    * 
-   * @return translated "Prosjekt"
-   * @gwt.key project
+   * @return translated "Beskrivelse"
+   * @gwt.key description
    */
-  String project();
+  String description();
 
   /**
-   * Translated "Epost".
+   * Translated "Budsjett".
    * 
-   * @return translated "Epost"
-   * @gwt.key email
+   * @return translated "Budsjett"
+   * @gwt.key menu_budget
    */
-  String email();
+  String menu_budget();
 
   /**
    * Translated "Detaljer".
@@ -1504,20 +1560,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String detailsline();
 
   /**
-   * Translated "Ny fondaktivitet".
+   * Translated "Epost".
    * 
-   * @return translated "Ny fondaktivitet"
-   * @gwt.key new_trust
+   * @return translated "Epost"
+   * @gwt.key email
    */
-  String new_trust();
-
-  /**
-   * Translated "Antall".
-   * 
-   * @return translated "Antall"
-   * @gwt.key count
-   */
-  String count();
+  String email();
 
   /**
    * Translated "Registrer".

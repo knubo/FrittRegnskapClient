@@ -357,11 +357,35 @@ td.rute {
   padding: 1px 4px 1px 4px;
   background-color:#d7e2e6;
   font-size: smaller;
-  cursor: default;
+  cursor: pointer;
 }
 
 .gwt-MenuBar .gwt-MenuItem-selected {
   background-color: #E8EEF7;
+}
+
+.gwt-TabBarItem {
+  padding: 4px 4px 4px 4px;
+  background-color:#d7e2e6;
+  border:1px dotted black;
+  cursor: pointer;
+}
+
+.gwt-TabBarItem-selected {
+  background-color: #E8EEF7;
+  border-top:2px solid black;
+  border-left:2px solid black;
+  border-right:2px solid black;
+  border-bottom:none;
+}
+
+.gwt-TabPanelBottom {
+  background-color: #E8EEF7;
+  border-left:2px solid black;
+  border-right:2px solid black;
+  border-bottom:2px solid black;
+  border-top:2px solid black;
+  padding:10px;
 }
 
 .activeview {
