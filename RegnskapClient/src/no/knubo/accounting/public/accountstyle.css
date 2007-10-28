@@ -170,6 +170,10 @@ TD.desc a:link, TD.desc a:visited {
   color: black;
 }
 
+TR.desc {
+  white-space:nowrap;
+}
+
 TD.desc {
   white-space:nowrap;
 }
@@ -373,9 +377,9 @@ td.rute {
 
 .gwt-TabBarItem-selected {
   background-color: #E8EEF7;
-  border-top:2px solid black;
-  border-left:2px solid black;
-  border-right:2px solid black;
+  border-top:3px solid black;
+  border-left:3px solid black;
+  border-right:3px solid black;
   border-bottom:none;
 }
 

@@ -36,6 +36,8 @@ public class BudgetView extends Composite {
         TabPanel tabPanel = new TabPanel();
         tabPanel.add(createCourseEarningsView(), elements.earnings_courses());
         tabPanel.add(createOtherEarningsView(), elements.earnings_other());
+        tabPanel.add(createExpencesView(), elements.expences());
+        tabPanel.add(createResultView(), elements.budget_result());
 
         tabPanel.selectTab(0);
 
@@ -44,6 +46,37 @@ public class BudgetView extends Composite {
         dp.add(tabPanel, DockPanel.NORTH);
 
         initWidget(dp);
+    }
+
+    private Widget createResultView() {
+        FlexTable table = new FlexTable();
+        table.setStyleName("tableborder");
+        table.setText(0, 0, elements.year());
+        table.setText(0, 1, elements.budgeted_earnins());
+        table.setText(0, 2, elements.budgeted_expences());
+        table.setText(0, 3, elements.budgeted_result());
+        table.setText(0, 4, elements.budget_result_actual());
+        table.setText(0, 5, elements.budget_differance());
+        table.getRowFormatter().setStyleName(0, "header desc");
+        return table;
+    }
+
+    private Widget createExpencesView() {
+        VerticalPanel vp = new VerticalPanel();
+
+        FlexTable table = new FlexTable();
+        table.setStyleName("tableborder");
+        table.setText(0, 0, elements.account());
+        table.setText(0, 1, "");
+        table.setText(0, 2, elements.description());
+        table.setText(0, 3, elements.amount());
+        table.setText(0, 4, elements.count());
+        table.setText(0, 5, elements.sum());
+        table.getRowFormatter().setStyleName(0, "header");
+
+        vp.add(table);
+
+        return vp;
     }
 
     private Widget createOtherEarningsView() {
@@ -58,9 +91,9 @@ public class BudgetView extends Composite {
         table.setText(0, 4, elements.count());
         table.setText(0, 5, elements.sum());
         table.getRowFormatter().setStyleName(0, "header");
-        
+
         vp.add(table);
-        
+
         return vp;
     }
 

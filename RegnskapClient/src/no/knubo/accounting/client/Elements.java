@@ -152,6 +152,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String country_norway();
 
   /**
+   * Translated "Budsjetert resultat".
+   * 
+   * @return translated "Budsjetert resultat"
+   * @gwt.key budgeted_result
+   */
+  String budgeted_result();
+
+  /**
    * Translated "Ny konto".
    * 
    * @return translated "Ny konto"
@@ -176,20 +184,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String title_edit_posttype();
 
   /**
-   * Translated "Danmark".
-   * 
-   * @return translated "Danmark"
-   * @gwt.key country_denmark
-   */
-  String country_denmark();
-
-  /**
    * Translated "Fondskonto".
    * 
    * @return translated "Fondskonto"
    * @gwt.key trust_account
    */
   String trust_account();
+
+  /**
+   * Translated "Danmark".
+   * 
+   * @return translated "Danmark"
+   * @gwt.key country_denmark
+   */
+  String country_denmark();
 
   /**
    * Translated "Oversikt over medlemmers adresser".
@@ -312,6 +320,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String earnings_all();
 
   /**
+   * Translated "Budsjeterte utgifter".
+   * 
+   * @return translated "Budsjeterte utgifter"
+   * @gwt.key budgeted_expences
+   */
+  String budgeted_expences();
+
+  /**
    * Translated "Innstillinger".
    * 
    * @return translated "Innstillinger"
@@ -328,12 +344,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String city();
 
   /**
-   * Translated "Aksjon".
+   * Translated "Valør".
    * 
-   * @return translated "Aksjon"
-   * @gwt.key action
+   * @return translated "Valør"
+   * @gwt.key value
    */
-  String action();
+  String value();
 
   /**
    * Translated "Brukernavn".
@@ -344,12 +360,12 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String user();
 
   /**
-   * Translated "Valør".
+   * Translated "Aksjon".
    * 
-   * @return translated "Valør"
-   * @gwt.key value
+   * @return translated "Aksjon"
+   * @gwt.key action
    */
-  String value();
+  String action();
 
   /**
    * Translated "Konti ikke i bruk".
@@ -800,6 +816,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String count();
 
   /**
+   * Translated "Differanse".
+   * 
+   * @return translated "Differanse"
+   * @gwt.key budget_differance
+   */
+  String budget_differance();
+
+  /**
    * Translated "Liste over medlemmer per aldersgruppe".
    * 
    * @return translated "Liste over medlemmer per aldersgruppe"
@@ -912,6 +936,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String title_edit_new_user();
 
   /**
+   * Translated "Faktisk resultat".
+   * 
+   * @return translated "Faktisk resultat"
+   * @gwt.key budget_result_actual
+   */
+  String budget_result_actual();
+
+  /**
    * Translated "Rapporter".
    * 
    * @return translated "Rapporter"
@@ -934,6 +966,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key trust_creditpost
    */
   String trust_creditpost();
+
+  /**
+   * Translated "Budsjeterte inntekter".
+   * 
+   * @return translated "Budsjeterte inntekter"
+   * @gwt.key budgeted_earnins
+   */
+  String budgeted_earnins();
 
   /**
    * Translated "Avsender for epost".
@@ -1248,6 +1288,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String not_employee();
 
   /**
+   * Translated "Resultat".
+   * 
+   * @return translated "Resultat"
+   * @gwt.key budget_result
+   */
+  String budget_result();
+
+  /**
    * Translated "Registrer bilag".
    * 
    * @return translated "Registrer bilag"
@@ -1440,20 +1488,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String to_date();
 
   /**
-   * Translated "Budsjett".
-   * 
-   * @return translated "Budsjett"
-   * @gwt.key menuitem_budget
-   */
-  String menuitem_budget();
-
-  /**
    * Translated "Avslutt måned".
    * 
    * @return translated "Avslutt måned"
    * @gwt.key end_month
    */
   String end_month();
+
+  /**
+   * Translated "Budsjett".
+   * 
+   * @return translated "Budsjett"
+   * @gwt.key menuitem_budget
+   */
+  String menuitem_budget();
 
   /**
    * Translated "Konto".
@@ -1552,20 +1600,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_budget();
 
   /**
-   * Translated "Detaljer".
-   * 
-   * @return translated "Detaljer"
-   * @gwt.key detailsline
-   */
-  String detailsline();
-
-  /**
    * Translated "Epost".
    * 
    * @return translated "Epost"
    * @gwt.key email
    */
   String email();
+
+  /**
+   * Translated "Detaljer".
+   * 
+   * @return translated "Detaljer"
+   * @gwt.key detailsline
+   */
+  String detailsline();
 
   /**
    * Translated "Registrer".
