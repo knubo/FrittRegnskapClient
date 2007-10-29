@@ -282,6 +282,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 
             case BUDGET:
                 widget = BudgetView.show(messages, constants, helpPanel, elements);
+                ((BudgetView)widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
                 widget = PersonEditView.show(constants, messages, helpPanel,

@@ -20,6 +20,28 @@
  border-color: #000000; 
 }
 
+.tablecells {
+ border-collapse: collapse;
+ border: 1px;
+ border-style: solid; 
+ border-color: black; 
+}
+
+.tablecells TD {
+border-width: 1px;
+border-style: solid;
+margin: 0;
+padding: 0px;
+}
+
+.noborder TD {
+border:none;
+}
+
+.nowrap {
+  white-space:nowrap;
+}
+
 .datefor {
   white-space:nowrap;
 }
@@ -132,6 +154,16 @@
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
   font-weight: normal;
   font-size:80%;
+}
+
+.headernobox {
+  font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+  font-weight: bold;
+  color: #05143f;
+  background-color: #b7c2c6;
+  font-size:80%;
+  vertical-align:bottom;
+  PADDING:2px 2px 2px 2px;
 }
 
 .header {

@@ -376,20 +376,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String title_posttype_edit_not_in_use();
 
   /**
-   * Translated "Dag".
-   * 
-   * @return translated "Dag"
-   * @gwt.key day_single
-   */
-  String day_single();
-
-  /**
    * Translated "Debetpost".
    * 
    * @return translated "Debetpost"
    * @gwt.key trust_debetpost
    */
   String trust_debetpost();
+
+  /**
+   * Translated "Dag".
+   * 
+   * @return translated "Dag"
+   * @gwt.key day_single
+   */
+  String day_single();
 
   /**
    * Translated "Land".
@@ -646,6 +646,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key title_posttype_edit_in_use
    */
   String title_posttype_edit_in_use();
+
+  /**
+   * Translated "Høst".
+   * 
+   * @return translated "Høst"
+   * @gwt.key fall
+   */
+  String fall();
 
   /**
    * Translated "Opprett".
@@ -1566,6 +1574,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key menuitem_showtraining
    */
   String menuitem_showtraining();
+
+  /**
+   * Translated "Vår".
+   * 
+   * @return translated "Vår"
+   * @gwt.key spring
+   */
+  String spring();
 
   /**
    * Translated "Ansatt".
