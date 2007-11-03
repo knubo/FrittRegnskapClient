@@ -72,6 +72,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
         table.getFlexCellFormatter().setColSpan(4, 1, 2);
         RootPanel.get().add(dp);
         Window.setTitle(elements.login());
+        userBox.setFocus(true);
     }
 
     public void onClick(Widget sender) {
