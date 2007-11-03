@@ -768,20 +768,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String lastname();
 
   /**
-   * Translated "Opprett ny person".
-   * 
-   * @return translated "Opprett ny person"
-   * @gwt.key menuitem_addperson
-   */
-  String menuitem_addperson();
-
-  /**
    * Translated "Beløp".
    * 
    * @return translated "Beløp"
    * @gwt.key amount
    */
   String amount();
+
+  /**
+   * Translated "Opprett ny person".
+   * 
+   * @return translated "Opprett ny person"
+   * @gwt.key menuitem_addperson
+   */
+  String menuitem_addperson();
 
   /**
    * Translated "Nytt standardbilag".
@@ -1382,6 +1382,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key userEditView_newButton
    */
   String userEditView_newButton();
+
+  /**
+   * Translated "Logg ut".
+   * 
+   * @return translated "Logg ut"
+   * @gwt.key menu_logout
+   */
+  String menu_logout();
 
   /**
    * Translated "Mars".

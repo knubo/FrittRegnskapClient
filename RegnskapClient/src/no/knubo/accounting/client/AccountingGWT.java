@@ -107,8 +107,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar trustMenu = addTopMenu(topMenu, elements.menu_trust());
         MenuBar reportsMenu = addTopMenu(topMenu, elements.menu_reports());
         MenuBar settingsMenu = addTopMenu(topMenu, elements.menu_settings());
+        MenuBar logoutMenu = addTopMenu(topMenu, elements.menu_logout());
         MenuBar aboutMenu = addTopMenu(topMenu, elements.menu_info());
-
+        
         addMenuItem(registerMenu, elements.menuitem_regline(),
                 WidgetIds.LINE_EDIT_VIEW);
         addMenuItem(registerMenu, elements.menuitem_registerMembership(),
@@ -174,7 +175,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.SETTINGS);
 
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
-        addMenuItem(aboutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
+        addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
         new Commando(null, WidgetIds.ABOUT, elements.menuitem_about())
                 .execute();
