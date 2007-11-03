@@ -139,8 +139,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(trustMenu, elements.menuitem_truststatus(),
                 WidgetIds.TRUST_STATUS);
 
-        addMenuItem(budgetMenu, elements.menuitem_budget(),
-                WidgetIds.BUDGET);
+        addMenuItem(budgetMenu, elements.menuitem_budget(), WidgetIds.BUDGET);
 
         addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(),
                 WidgetIds.REPORT_MEMBER_PER_YEAR);
@@ -279,10 +278,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                         elements);
                 ((TrustEditView) widget).init();
                 break;
-                
+
             case BUDGET:
-                widget = BudgetView.show(messages, constants, helpPanel, elements);
-                ((BudgetView)widget).init();
+                widget = BudgetView.show(messages, constants, helpPanel,
+                        elements);
+                ((BudgetView) widget).init();
                 break;
             case WidgetIds.ADD_PERSON:
                 widget = PersonEditView.show(constants, messages, helpPanel,
@@ -368,7 +368,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 return;
             }
             setActiveWidget(widget);
-            Window.setTitle(title);
+            if (widget.getTitle() != null && widget.getTitle().length() > 0) {
+                Window.setTitle(widget.getTitle());
+            } else {
+                Window.setTitle(title);
+            }
             helpPanel.setCurrentWidget(widget, action);
         }
     }
@@ -432,7 +436,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         setActiveWidget(widget);
         HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget,
                 WidgetIds.ADD_PERSON);
-        Window.setTitle(elements.menuitem_addperson());
+        Window.setTitle(elements.title_change_person());
     }
 
     public static void setLoading() {

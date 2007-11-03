@@ -768,9 +768,9 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String lastname();
 
   /**
-   * Translated "Vedlikehold av person".
+   * Translated "Opprett ny person".
    * 
-   * @return translated "Vedlikehold av person"
+   * @return translated "Opprett ny person"
    * @gwt.key menuitem_addperson
    */
   String menuitem_addperson();
@@ -830,6 +830,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key budget_differance
    */
   String budget_differance();
+
+  /**
+   * Translated "Endre person".
+   * 
+   * @return translated "Endre person"
+   * @gwt.key title_change_person
+   */
+  String title_change_person();
 
   /**
    * Translated "Liste over medlemmer per aldersgruppe".
