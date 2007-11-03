@@ -136,6 +136,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String trustStatusView_cancelButton();
 
   /**
+   * Translated "Vis alle medlemskap".
+   * 
+   * @return translated "Vis alle medlemskap"
+   * @gwt.key menuitem_showallmembers
+   */
+  String menuitem_showallmembers();
+
+  /**
    * Translated "Avslutt måned".
    * 
    * @return translated "Avslutt måned"
@@ -414,6 +422,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key month_01
    */
   String month_01();
+
+  /**
+   * Translated "Alle medlemskap".
+   * 
+   * @return translated "Alle medlemskap"
+   * @gwt.key member_heading_all
+   */
+  String member_heading_all();
 
   /**
    * Translated "Vis kursmedlemsskap".
