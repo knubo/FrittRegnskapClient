@@ -65,8 +65,8 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
 
-        yearMonthComboHelper = new YearMonthComboHelper(messages, constants,
-                monthYearCombo, elements);
+        yearMonthComboHelper = new YearMonthComboHelper(constants, monthYearCombo,
+                elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);

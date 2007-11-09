@@ -90,8 +90,8 @@ public class MonthView extends Composite implements ClickListener,
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
 
-        yearMonthComboHelper = new YearMonthComboHelper(messages, constants,
-                monthYearCombo, elements);
+        yearMonthComboHelper = new YearMonthComboHelper(constants, monthYearCombo,
+                elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);

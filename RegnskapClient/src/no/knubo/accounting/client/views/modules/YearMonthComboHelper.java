@@ -2,7 +2,6 @@ package no.knubo.accounting.client.views.modules;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
-import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 
 import com.google.gwt.json.client.JSONArray;
@@ -15,8 +14,6 @@ import com.google.gwt.user.client.ui.ListBox;
 
 public class YearMonthComboHelper {
 
-    private final I18NAccount messages;
-
     private final Constants constants;
 
     private final ListBox monthYearCombo;
@@ -27,9 +24,8 @@ public class YearMonthComboHelper {
 
     private final Elements elements;
 
-    public YearMonthComboHelper(I18NAccount messages, Constants constants,
-            ListBox monthYearCombo, Elements elements) {
-        this.messages = messages;
+    public YearMonthComboHelper(Constants constants, ListBox monthYearCombo,
+            Elements elements) {
         this.constants = constants;
         this.monthYearCombo = monthYearCombo;
         this.elements = elements;
