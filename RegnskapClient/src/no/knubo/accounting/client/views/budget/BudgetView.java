@@ -1,5 +1,11 @@
 package no.knubo.accounting.client.views.budget;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -11,7 +17,6 @@ import no.knubo.accounting.client.misc.ServerResponse;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -19,7 +24,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -176,19 +180,9 @@ public class BudgetView extends Composite {
                 JSONValue value = JSONParser.parse(responseText);
 
                 JSONObject root = value.isObject();
-                JSONValue yearObj = root.get("year");
-                JSONValue trainObj = root.get("train");
-                JSONValue courseObj = root.get("course");
-                if (yearObj != null) {
-                    initForYear(yearObj.isArray());
-                }
-                if (trainObj != null) {
-                    initForTrain(trainObj.isArray());
-                }
-                if (courseObj != null) {
-                    initForCourse(courseObj.isArray());
-                }
-
+                ArrayList keys = new ArrayList(root.keySet());
+                Collections.sort(keys);
+                init(keys, root);
                 helpPanel.resize(me);
             }
         };
@@ -200,62 +194,98 @@ public class BudgetView extends Composite {
         }
     }
 
-    protected void initForCourse(JSONArray array) {
-    }
+    protected void init(List keys, JSONObject root) {
+        int pos = 0;
 
-    protected void initForTrain(JSONArray array) {
+        for (Iterator i = keys.iterator(); i.hasNext();) {
+            String key = (String) i.next();
 
-    }
+            String year = key.substring(0, 4);
+            String fall = key.substring(5).trim();
 
-    protected void initForYear(JSONArray array) {
-        for (int i = 0; i < array.size(); i++) {
-            JSONValue value = array.get(i);
+            JSONObject obj = root.get(key).isObject();
 
-            JSONObject object = value.isObject();
+            int yearcount = Util.getInt(obj.get("year"));
+            int coursecount = Util.getInt(obj.get("course"));
+            int traincount = Util.getInt(obj.get("train"));
 
-            String year = Util.str(object.get("year"));
-            int count = Util.getInt(object.get("C"));
+            int column = 1 + (pos++ * 2);
 
-            int springCount = count / 2;
-            int fallCount = count - springCount;
+            if ("0".equals(fall)) {
+                FlexTable table = springEarningsTable;
 
-            int column = 1 + (i * 2);
+                Label label = new Label(elements.spring() + " " + year);
+                Image editImage = ImageFactory.editImage("budget_edit_spring");
 
-            Label springLabel = new Label(elements.spring() + " " + year);
-            springLabel.setStyleName("nowrap headernobox");
-            HorizontalPanel hpSpring = new HorizontalPanel();
-            hpSpring.setStyleName("noborder");
-            hpSpring.add(springLabel);
+                fiillColumn(yearcount, coursecount, traincount, column, table,
+                        label, editImage);
+            } else {
+                FlexTable table = fallEarningsTable;
 
-            Image editSpringImage = ImageFactory
-                    .editImage("budget_edit_spring");
-            hpSpring.add(editSpringImage);
+                Label label = new Label(elements.fall() + " " + year);
+                Image editImage = ImageFactory.editImage("budget_edit_spring");
 
-            springEarningsTable.setWidget(0, column, hpSpring);
-            springEarningsTable.setText(0, column + 1, elements.sum());
-            springEarningsTable.setText(1, column, String.valueOf(springCount));
-            springEarningsTable.getCellFormatter().setStyleName(1, column,
-                    "center");
-
-            Label fallLabel = new Label(elements.fall() + " " + year);
-            fallLabel.setStyleName("nowrap headernobox");
-            HorizontalPanel hpFall = new HorizontalPanel();
-            hpFall.setStyleName("noborder");
-            hpFall.add(fallLabel);
-
-            Image editFallImage = ImageFactory.editImage("budget_edit_spring");
-            hpFall.add(editFallImage);
-
-            fallEarningsTable.setWidget(0, column, hpFall);
-            fallEarningsTable.setText(0, column + 1, elements.sum());
-            fallEarningsTable.setText(1, column, String.valueOf(fallCount));
-            fallEarningsTable.getCellFormatter().setStyleName(1, column,
-                    "center");
+                fiillColumn(yearcount, coursecount, traincount, column, table,
+                        label, editImage);
+            }
         }
-        fallEarningsTable.getColumnFormatter().setStyleName(0, "header desc");
-        fallEarningsTable.getRowFormatter().setStyleName(0, "header desc");
         springEarningsTable.getColumnFormatter().setStyleName(0, "header desc");
         springEarningsTable.getRowFormatter().setStyleName(0, "header desc");
+        fallEarningsTable.getColumnFormatter().setStyleName(0, "header desc");
+        fallEarningsTable.getRowFormatter().setStyleName(0, "header desc");
+    }
+
+    private void fiillColumn(int yearcount, int coursecount, int traincount,
+            int column, FlexTable table, Label label, Image editImage) {
+
+        label.setStyleName("nowrap headernobox");
+        HorizontalPanel header = new HorizontalPanel();
+        header.setStyleName("noborder");
+        header.add(label);
+        header.add(editImage);
+
+        table.setWidget(0, column, header);
+        table.setText(0, column + 1, elements.sum());
+        table.setText(1, column, String.valueOf(yearcount));
+        table.setText(2, column, String.valueOf(coursecount));
+        table.setText(3, column, String.valueOf(traincount));
+
+        table.getCellFormatter().setStyleName(1, column, "center");
+        table.getCellFormatter().setStyleName(2, column, "center");
+        table.getCellFormatter().setStyleName(3, column, "center");
+    }
+
+    public static class YearSeason {
+        final int year;
+        final int season;
+
+        public YearSeason(int year, int season) {
+            this.year = year;
+            this.season = season;
+        }
+
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + season;
+            result = prime * result + year;
+            return result;
+        }
+
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (!(obj instanceof YearSeason))
+                return false;
+            YearSeason other = (YearSeason) obj;
+            if (season != other.season)
+                return false;
+            if (year != other.year)
+                return false;
+            return true;
+        }
 
     }
 }
