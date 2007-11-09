@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.misc;
 
 public interface WidgetIds {
+
     public int LINE_EDIT_VIEW = 1;
     public int REGISTER_MEMBERSHIP = 2;
     public int SETTINGS = 3;
@@ -32,4 +33,5 @@ public interface WidgetIds {
     public int REPORT_ACCOUNTTRACK = 30;
     public int EDIT_ACCOUNTTRACK = 31;
     public int BUDGET = 32;
+    public int SHOW_ALL_MEMBERS = 33;
 }

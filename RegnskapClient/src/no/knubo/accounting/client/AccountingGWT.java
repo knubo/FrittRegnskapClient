@@ -125,6 +125,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.SHOW_MONTH);
         addMenuItem(showMenu, elements.menuitem_showmonthdetails(),
                 WidgetIds.SHOW_MONTH_DETAILS);
+        addMenuItem(showMenu, elements.menuitem_showallmembers(),
+                WidgetIds.SHOW_ALL_MEMBERS);
         addMenuItem(showMenu, elements.menuitem_showmembers(),
                 WidgetIds.SHOW_MEMBERS);
         addMenuItem(showMenu, elements.menuitem_showtraining(),
@@ -308,6 +310,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = ShowMembershipView.show(messages, constants, callback,
                         helpPanel, elements);
                 ((ShowMembershipView) widget).initShowMembers();
+                break;
+            case WidgetIds.SHOW_ALL_MEMBERS:
+                widget = ShowMembershipView.show(messages, constants, callback,
+                        helpPanel, elements);
+                ((ShowMembershipView) widget).initShowAll();
                 break;
             case WidgetIds.SHOW_CLASS_MEMBERS:
                 widget = ShowMembershipView.show(messages, constants, callback,

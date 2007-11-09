@@ -29,39 +29,27 @@ import com.google.gwt.user.client.ui.Widget;
 public class ShowMembershipView extends Composite implements ClickListener {
 
     static ShowMembershipView me;
-
     private FlexTable table;
-
     private HTML header;
-
     private HTML periodeHeader;
-
     private Image previousImage;
-
     private Image nextImage;
-
     private final I18NAccount messages;
-
     private final Constants constants;
-
     private final ViewCallback caller;
-
     private String action;
-
     protected int currentYear;
-
     protected int currentSemester;
-
     private IdHolder idHolder;
-
     final HelpPanel helpPanel;
-
     private final Elements elements;
 
     public static ShowMembershipView show(I18NAccount messages,
-            Constants constants, ViewCallback caller, HelpPanel helpPanel, Elements elements) {
+            Constants constants, ViewCallback caller, HelpPanel helpPanel,
+            Elements elements) {
         if (me == null) {
-            me = new ShowMembershipView(messages, constants, caller, helpPanel, elements);
+            me = new ShowMembershipView(messages, constants, caller, helpPanel,
+                    elements);
         }
         return me;
     }
@@ -76,9 +64,9 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, elements.lastname());
-        table.setHTML(0, 1, elements.firstname());
-        table.setHTML(0, 2, "");
+        table.setText(0, 0, elements.lastname());
+        table.setText(0, 1, elements.firstname());
+        table.setText(0, 5, "");
         table.getRowFormatter().setStyleName(0, "header");
 
         header = new HTML();
@@ -102,6 +90,14 @@ public class ShowMembershipView extends Composite implements ClickListener {
         idHolder = new IdHolder();
     }
 
+    public void initShowAll() {
+        header.setHTML(elements.member_heading_all());
+        table.setText(0, 2, elements.year_membership());
+        table.setText(0, 3, elements.course_membership());
+        table.setText(0, 4, elements.train_membership());
+        initAll("");
+    }
+
     public void initShowMembers() {
         header.setHTML(elements.member_heading_year());
         action = "year";
@@ -123,6 +119,10 @@ public class ShowMembershipView extends Composite implements ClickListener {
     private void init(String posparam) {
         setVisible(true);
         idHolder.init();
+
+        table.setHTML(0, 2, "");
+        table.setHTML(0, 3, "");
+        table.setHTML(0, 4, "");
 
         while (table.getRowCount() > 1) {
             table.removeRow(1);
@@ -167,7 +167,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     Image editUserImage = ImageFactory
                             .editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickListener(me);
-                    table.setWidget(row, 2, editUserImage);
+                    table.setWidget(row, 5, editUserImage);
 
                     idHolder.add(id, editUserImage);
                     String style = (row % 2 == 0) ? "showlineposts2"
@@ -212,4 +212,88 @@ public class ShowMembershipView extends Composite implements ClickListener {
         caller.editPerson(userId);
     }
 
+    private void initAll(String posparam) {
+        setVisible(true);
+        idHolder.init();
+
+        while (table.getRowCount() > 1) {
+            table.removeRow(1);
+        }
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+                constants.baseurl() + "registers/members.php?" + posparam
+                        + "&action=all");
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(String responseText) {
+                JSONValue value = JSONParser.parse(responseText);
+
+                if (value == null) {
+                    Window.alert("Failed to load data.");
+                    return;
+                }
+
+                JSONObject root = value.isObject();
+
+                /* Both year and semester isn't present at the same time */
+                currentYear = Util.getInt(root.get("year"));
+                currentSemester = Util.getInt(root.get("semester"));
+
+                JSONArray members = root.get("members").isArray();
+
+                String count = String.valueOf(members.size());
+                periodeHeader.setHTML(messages.members_navig_heading(Util
+                        .str(root.get("text")), count));
+
+                for (int i = 0; i < members.size(); i++) {
+                    JSONObject info = members.get(i).isObject();
+
+                    int row = i + 1;
+                    String firstname = Util.str(info.get("first"));
+                    String lastname = Util.str(info.get("last"));
+                    
+                    boolean year = Util.getBoolean(info.get("year"));
+                    boolean train = Util.getBoolean(info.get("train"));
+                    boolean course = Util.getBoolean(info.get("course"));
+                    
+                    String id = Util.str(info.get("id"));
+                    table.setText(row, 0, lastname);
+                    table.setText(row, 1, firstname);
+                    
+                    if(year) {
+                        table.setText(row, 2, elements.x());
+                    }
+                    if(course) {
+                        table.setText(row, 3, elements.x());
+                    }
+                    if(train) {
+                        table.setText(row, 4, elements.x());
+                    }
+
+                    table.getCellFormatter().setStyleName(row, 2, "center");
+                    table.getCellFormatter().setStyleName(row, 3, "center");
+                    table.getCellFormatter().setStyleName(row, 4, "center");
+                    
+                    Image editUserImage = ImageFactory
+                            .editImage("ShowMembershipView.editUserImage");
+                    editUserImage.addClickListener(me);
+                    table.setWidget(row, 5, editUserImage);
+
+                    idHolder.add(id, editUserImage);
+                    String style = (row % 2 == 0) ? "showlineposts2"
+                            : "showlineposts1";
+                    table.getRowFormatter().setStyleName(row, style);
+                }
+                helpPanel.resize(me);
+            }
+        };
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages,
+                    callback));
+        } catch (RequestException e) {
+            Window.alert("Failed to send the request: " + e.getMessage());
+        }
+
+    }
 }

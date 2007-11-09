@@ -36,6 +36,10 @@ public class Util {
                           $wnd.location.href = url;
                           }-*/;
 
+    public static boolean getBoolean(JSONValue str) {
+        return "1".equals(str(str));
+    }
+
     /**
      * Converts a number into a i18n month from the property file.
      * 
