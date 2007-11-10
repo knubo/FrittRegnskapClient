@@ -1,12 +1,13 @@
-package no.knubo.accounting.client.views;
+package no.knubo.accounting.client.views.registers;
+
+import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CacheCallback;
-import no.knubo.accounting.client.cache.TrustActionCache;
-import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
@@ -17,7 +18,6 @@ import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -33,10 +33,10 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TrustEditView extends Composite implements ClickListener,
+public class ProjectEditView extends Composite implements ClickListener,
         CacheCallback {
 
-    private static TrustEditView me;
+    private static ProjectEditView me;
 
     private final Constants constants;
 
@@ -48,32 +48,27 @@ public class TrustEditView extends Composite implements ClickListener,
 
     private Button newButton;
 
-    private TrustEditFields editFields;
+    private ProjectEditFields editFields;
 
-    private TrustActionCache trustCache;
-
-    private final HelpPanel helpPanel;
+    private ProjectCache projectCache;
 
     private final Elements elements;
 
-    public TrustEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public ProjectEditView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
-        this.helpPanel = helpPanel;
         this.elements = elements;
 
         DockPanel dp = new DockPanel();
 
         table = new FlexTable();
         table.setStyleName("tableborder");
-        table.setHTML(0, 0, elements.trust());
-        table.setHTML(0, 1, elements.description());
+        table.setHTML(0, 0, elements.project());
         table.getRowFormatter().setStyleName(0, "header");
-        table.getFlexCellFormatter().setColSpan(0, 1, 2);
+        table.getFlexCellFormatter().setColSpan(0, 0, 2);
 
-        newButton = new NamedButton("trustEditView_newButton", elements
-                .trustEditView_newButton());
+        newButton = new NamedButton("projectEditView_newButton", elements
+                .projectEditView_newButton());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -83,10 +78,9 @@ public class TrustEditView extends Composite implements ClickListener,
         initWidget(dp);
     }
 
-    public static TrustEditView show(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public static ProjectEditView show(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
-            me = new TrustEditView(messages, constants, helpPanel, elements);
+            me = new ProjectEditView(messages, constants, elements);
         }
         me.setVisible(true);
         return me;
@@ -94,7 +88,7 @@ public class TrustEditView extends Composite implements ClickListener,
 
     public void onClick(Widget sender) {
         if (editFields == null) {
-            editFields = new TrustEditFields();
+            editFields = new ProjectEditFields();
         }
 
         int left = 0;
@@ -116,76 +110,68 @@ public class TrustEditView extends Composite implements ClickListener,
     }
 
     public void init() {
-        trustCache = TrustActionCache.getInstance(constants, messages);
+        projectCache = ProjectCache.getInstance(constants, messages);
         idHolder.init();
 
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
 
-        JSONArray trusts = trustCache.getAllTrust();
-        for (int pos = 0; pos < trusts.size(); pos++) {
-            JSONObject object = trusts.get(pos).isObject();
+        int row = 1;
+        for (Iterator i = projectCache.getAll().iterator(); i.hasNext();) {
+            JSONObject object = (JSONObject) i.next();
 
-            String trust = Util.str(object.get("description"));
-            String id = Util.str(object.get("fond"));
+            String project = Util.str(object.get("description"));
+            String id = Util.str(object.get("project"));
 
-            addRow(pos + 1, trust, id);
+            addRow(row, project, id);
+            row++;
         }
-        helpPanel.resize(this);
     }
 
-    private void addRow(int row, String trust, String id) {
-        table.setHTML(row, 0, id);
-        table.setHTML(row, 1, trust);
+    private void addRow(int row, String project, String id) {
+        table.setHTML(row, 0, project);
         table.getCellFormatter().setStyleName(row, 0, "desc");
-        table.getCellFormatter().setStyleName(row, 1, "desc");
 
-        Image editImage = ImageFactory.editImage("trustEditView_editImage");
+        Image editImage = ImageFactory.editImage("projectEditView_editImage");
         editImage.addClickListener(me);
         idHolder.add(id, editImage);
 
-        table.setWidget(row, 2, editImage);
+        table.setWidget(row, 1, editImage);
 
         String style = (((row + 1) % 6) < 3) ? "line2" : "line1";
         table.getRowFormatter().setStyleName(row, style);
     }
 
-    class TrustEditFields extends DialogBox implements ClickListener {
-        private TextBoxWithErrorText trustBox;
+    class ProjectEditFields extends DialogBox implements ClickListener {
+        private TextBoxWithErrorText projectBox;
 
         private Button saveButton;
 
         private Button cancelButton;
 
+        private String currentId;
+
         private HTML mainErrorLabel;
 
-        private TextBoxWithErrorText descBox;
-
-        TrustEditFields() {
-            setText(elements.trust());
+        ProjectEditFields() {
+            setText(elements.project());
             FlexTable edittable = new FlexTable();
             edittable.setStyleName("edittable");
 
-            edittable.setHTML(0, 0, elements.trust());
-            trustBox = new TextBoxWithErrorText("trust");
-            trustBox.setMaxLength(3);
-            trustBox.setVisibleLength(3);
-            edittable.setWidget(0, 1, trustBox);
-
-            edittable.setHTML(1, 0, elements.description());
-            descBox = new TextBoxWithErrorText("description");
-            descBox.setMaxLength(50);
-            descBox.setVisibleLength(50);
-            edittable.setWidget(1, 1, descBox);
+            edittable.setHTML(0, 0, elements.description());
+            projectBox = new TextBoxWithErrorText("project");
+            projectBox.setMaxLength(100);
+            projectBox.setVisibleLength(100);
+            edittable.setWidget(0, 1, projectBox);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("trustEditView_saveButton", elements
+            saveButton = new NamedButton("projectEditView_saveButton", elements
                     .save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("trustEditView_cancelButton",
+            cancelButton = new NamedButton("projectEditView_cancelButton",
                     elements.cancel());
             cancelButton.addClickListener(this);
 
@@ -201,12 +187,12 @@ public class TrustEditView extends Composite implements ClickListener,
         }
 
         public void init(String id) {
-            String trust = TrustActionCache.getInstance(constants, messages)
-                    .trustGivesDesc(id);
+            currentId = id;
 
-            trustBox.setText(id);
-            descBox.setText(trust);
-            trustBox.setEnabled(false);
+            String project = ProjectCache.getInstance(constants, messages)
+                    .getName(id);
+
+            projectBox.setText(project);
         }
 
         public void onClick(Widget sender) {
@@ -220,31 +206,46 @@ public class TrustEditView extends Composite implements ClickListener,
         private void doSave() {
             StringBuffer sb = new StringBuffer();
             sb.append("action=save");
-            final String sendId = trustBox.getText();
-            final String description = descBox.getText();
+            final String description = projectBox.getText();
+            final String sendId = currentId;
 
-            Util.addPostParam(sb, "fond", sendId);
             Util.addPostParam(sb, "description", description);
+            Util.addPostParam(sb, "project", sendId);
 
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/trust.php");
+                    constants.baseurl() + "registers/projects.php");
 
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(String serverResponse) {
-                    JSONValue parse = JSONParser.parse(serverResponse);
-                    JSONObject resobj = parse.isObject();
-                    String result = Util.str(resobj.get("result"));
-
-                    if (result.equals("1")) {
-                        /* Could probably be more effective but why bother? */
-                        TrustActionCache.getInstance(constants, messages)
-                                .flush(me);
-                    } else {
+                    if ("0".equals(serverResponse)) {
                         mainErrorLabel.setHTML(messages.save_failed());
                         Util.timedMessage(mainErrorLabel, "", 5);
+                    } else {
+                        if (sendId == null) {
+                            JSONValue value = JSONParser.parse(serverResponse);
+                            if (value == null) {
+                                String error = "Failed to save data - null value.";
+                                Window.alert(error);
+                                return;
+                            }
+                            JSONObject object = value.isObject();
+
+                            if (object == null) {
+                                String error = "Failed to save data - null object.";
+                                Window.alert(error);
+                                return;
+                            }
+                            int row = table.getRowCount();
+
+                            addRow(row, description, sendId);
+                        } else {
+                            /* Could probably be more effective but why bother? */
+                            ProjectCache.getInstance(constants, messages)
+                                    .flush(me);
+                        }
+                        hide();
                     }
-                    hide();
                 }
             };
 
@@ -261,14 +262,14 @@ public class TrustEditView extends Composite implements ClickListener,
 
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
-            Widget[] widgets = new Widget[] { trustBox, descBox };
+            Widget[] widgets = new Widget[] { projectBox };
             mv.mandatory(messages.required_field(), widgets);
             return mv.validateStatus();
         }
 
         public void init() {
-            trustBox.setText("");
-            trustBox.setEnabled(true);
+            currentId = null;
+            projectBox.setText("");
         }
     }
 

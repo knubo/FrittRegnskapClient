@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.views;
+package no.knubo.accounting.client.views.registers;
 
 import java.util.Iterator;
 

@@ -1,5 +1,6 @@
-package no.knubo.accounting.client.views;
+package no.knubo.accounting.client.views.registers;
 
+import no.knubo.accounting.client.views.*;
 import java.util.HashMap;
 import java.util.List;
 
