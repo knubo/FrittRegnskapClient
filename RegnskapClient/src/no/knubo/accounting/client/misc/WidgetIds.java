@@ -13,6 +13,7 @@ public interface WidgetIds {
     public int SHOW_TRAINING_MEMBERS = 9;
     public int ABOUT = 10;
     public int REGISTER_HAPPENING = 11;
+    public int EDIT_PRICES = 12;
     public int REPORT_MEMBER_PER_YEAR = 13;
     public int SHOW_MONTH_DETAILS = 14;
     public int EDIT_HAPPENING = 15;
@@ -34,4 +35,5 @@ public interface WidgetIds {
     public int EDIT_ACCOUNTTRACK = 31;
     public int BUDGET = 32;
     public int SHOW_ALL_MEMBERS = 33;
+    
 }

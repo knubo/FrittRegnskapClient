@@ -51,6 +51,7 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import no.knubo.accounting.client.views.registers.MembershipPriceEditView;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -169,6 +170,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.EDIT_ACCOUNTS);
         addMenuItem(settingsMenu, elements.menuitem_accounttrack(),
                 WidgetIds.EDIT_ACCOUNTTRACK);
+        addMenuItem(settingsMenu, elements.menuitem_membership_prices(),
+                WidgetIds.EDIT_PRICES);
         addMenuItem(settingsMenu, elements.menuitem_projects(),
                 WidgetIds.EDIT_PROJECTS);
         addMenuItem(settingsMenu, elements.menuitem_edit_happening(),
@@ -370,7 +373,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case WidgetIds.LOGOUT:
                 widget = LogoutView.getInstance(constants, messages, elements);
                 break;
+            case EDIT_PRICES:
+                widget = MembershipPriceEditView.show(messages, constants, elements);
+                ((MembershipPriceEditView)widget).init();
+                break;
             }
+            
             if (widget == null) {
                 Window.alert("No action");
                 return;
