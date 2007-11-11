@@ -1256,6 +1256,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_accounts();
 
   /**
+   * Translated "Priser for medlemskap".
+   * 
+   * @return translated "Priser for medlemskap"
+   * @gwt.key menuitem_membership_prices
+   */
+  String menuitem_membership_prices();
+
+  /**
    * Translated "Nytt fond".
    * 
    * @return translated "Nytt fond"
