@@ -100,9 +100,7 @@ public class MembershipPriceEditView extends Composite implements
 
         int row = Integer.parseInt(lineHolder.findId(sender));
 
-        table.getText(row, 1);
-
-        editFields.init(table.getText(row, 0), table.getText(row, 1), table
+        editFields.init(row, table.getText(row, 0), table.getText(row, 1), table
                 .getText(row, 2), table.getText(row, 3), table.getText(row, 4),
                 table.getText(row, 5));
 
@@ -155,8 +153,6 @@ public class MembershipPriceEditView extends Composite implements
 
                         if (priceYear.containsKey(year)) {
                             table.setText(row, 1, (String) priceYear.get(year));
-                            table.getCellFormatter().setStyleName(row, 1,
-                                    "right");
                         }
 
                         Image editImage = ImageFactory
@@ -166,20 +162,23 @@ public class MembershipPriceEditView extends Composite implements
 
                         currentYear = year;
                         lineHolder.add(String.valueOf(row), editImage);
+
+                        for(int j=0;j < 6; j++) {
+                            table.getCellFormatter().setStyleName(row, j,
+                                "right");
+                        }
+
                     }
 
                     if (priceCourse.containsKey(semester)) {
                         table.setText(row, 2 + colPlus, (String) priceCourse
                                 .get(semester));
-                        table.getCellFormatter().setStyleName(row, 2 + colPlus,
-                                "right");
                     }
                     if (priceTrain.containsKey(semester)) {
                         table.setText(row, 3 + colPlus, (String) priceTrain
                                 .get(semester));
-                        table.getCellFormatter().setStyleName(row, 3 + colPlus,
-                                "right");
                     }
+                    
 
                 }
 
@@ -220,6 +219,7 @@ public class MembershipPriceEditView extends Composite implements
         private TextBoxWithErrorText fallCoursePrice;
         private TextBoxWithErrorText fallTrainPrice;
         private String year;
+        private int row;
 
         MembershipPriceEditFields() {
             setText(elements.menuitem_membership_prices());
@@ -279,19 +279,32 @@ public class MembershipPriceEditView extends Composite implements
             StringBuffer sb = new StringBuffer();
             sb.append("action=save");
             Util.addPostParam(sb, "year", year);
-            Util.addPostParam(sb, "yearPrice", yearPrice.getText());
-            Util.addPostParam(sb, "springCoursePrice", springCoursePrice.getText());
-            Util.addPostParam(sb, "springTrainPrice", springTrainPrice.getText());
-            Util.addPostParam(sb, "fallCoursePrice", fallCoursePrice.getText());
-            Util.addPostParam(sb, "fallCoursePrice", fallTrainPrice.getText());
+            Util.addPostParam(sb, "yearPrice", Util.money(yearPrice.getText()));
+            Util.addPostParam(sb, "springCoursePrice", Util.money(springCoursePrice.getText()));
+            Util.addPostParam(sb, "springTrainPrice", Util.money(springTrainPrice.getText()));
+            Util.addPostParam(sb, "fallCoursePrice", Util.money(fallCoursePrice.getText()));
+            Util.addPostParam(sb, "fallTrainPrice", Util.money(fallTrainPrice.getText()));
             
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/projects.php");
+                    constants.baseurl() + "registers/membershipprices.php");
 
             ServerResponse callback = new ServerResponse() {
 
-                public void serverResponse(String serverResponse) {
+                public void serverResponse(String serverResponse) {                    
+                    JSONValue response = JSONParser.parse(serverResponse);
+                    JSONObject responseObj = response.isObject();
                     
+                    if("1".equals(Util.str(responseObj.get("status")))) {
+                        table.setText(row, 1, Util.money(yearPrice.getText()));
+                        table.setText(row, 2, Util.money(springCoursePrice.getText()));
+                        table.setText(row, 3, Util.money(springTrainPrice.getText()));
+                        table.setText(row, 4, Util.money(fallCoursePrice.getText()));
+                        table.setText(row, 5, Util.money(fallTrainPrice.getText())); 
+                        hide();
+                    } else {
+                        mainErrorLabel.setText(messages.save_failed());
+                        Util.timedMessage(mainErrorLabel, "", 10);
+                    }
                 }
             };
             
@@ -307,9 +320,10 @@ public class MembershipPriceEditView extends Composite implements
 
         }
 
-        private void init(String year, String yearPrice,
+        private void init(int row, String year, String yearPrice,
                 String springCoursePrice, String springTrainPrice,
                 String fallCoursePrice, String fallTrainPrice) {
+            this.row = row;
             this.year = year;
             this.yearPrice.setText(yearPrice);
             this.springCoursePrice.setText(springCoursePrice);
@@ -323,8 +337,9 @@ public class MembershipPriceEditView extends Composite implements
 
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
-            
-            mv.mandatory(messages.required_field(), new Widget[] {yearPrice, springCoursePrice, springTrainPrice, fallCoursePrice, fallTrainPrice});
+            Widget[] widgets = new Widget[]{yearPrice, springCoursePrice, springTrainPrice, fallCoursePrice, fallTrainPrice};
+            mv.mandatory(messages.required_field(), widgets);
+            mv.money(messages.field_money(), widgets);
             return mv.validateStatus();
         }
     }
