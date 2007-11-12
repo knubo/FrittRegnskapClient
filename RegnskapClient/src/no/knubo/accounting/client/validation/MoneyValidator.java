@@ -17,7 +17,7 @@ public class MoneyValidator extends ValidatorBase {
 			}
 
 			if (comma == -1) {
-				return Integer.parseInt(money) > 0;
+				return Integer.parseInt(money) >= 0;
 			}
 
 			int big = Integer.parseInt(money.substring(0, comma));

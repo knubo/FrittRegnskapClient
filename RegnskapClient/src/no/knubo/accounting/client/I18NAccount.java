@@ -56,9 +56,9 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String report_year_30(String arg0);
 
   /**
-   * Translated "Penger inngis på format 10.45 og må være større enn 0".
+   * Translated "Penger inngis på format 10.45 og må være større eller lik 0".
    * 
-   * @return translated "Penger inngis på format 10.45 og må være større enn 0"
+   * @return translated "Penger inngis på format 10.45 og må være større eller lik 0"
    * @gwt.key field_money
    */
   String field_money();

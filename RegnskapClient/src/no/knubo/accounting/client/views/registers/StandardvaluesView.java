@@ -89,10 +89,13 @@ public class StandardvaluesView extends Composite implements ClickListener {
         semesterBox.setMaxLength(4);
         costCourseBox = new TextBoxWithErrorText("costcourse");
         costCourseBox.setMaxLength(6);
+        costCourseBox.setEnabled(false);
         costPracticeBox = new TextBoxWithErrorText("costpractice");
         costPracticeBox.setMaxLength(6);
+        costPracticeBox.setEnabled(false);
         costMembershipBox = new TextBoxWithErrorText("costmembership");
         costMembershipBox.setMaxLength(6);
+        costMembershipBox.setEnabled(false);
         emailBox = new TextBoxWithErrorText("mail_sender");
         emailBox.setVisibleLength(80);
         
@@ -125,9 +128,6 @@ public class StandardvaluesView extends Composite implements ClickListener {
         Util.addPostParam(sb, "year", yearBox.getText());
         Util.addPostParam(sb, "month", monthBox.getText());
         Util.addPostParam(sb, "semester", semesterBox.getText());
-        Util.addPostParam(sb, "cost_course", costCourseBox.getText());
-        Util.addPostParam(sb, "cost_practice", costPracticeBox.getText());
-        Util.addPostParam(sb, "cost_membership", costMembershipBox.getText());
         Util.addPostParam(sb, "email_sender", emailBox.getText());
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
@@ -140,6 +140,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
                 JSONObject object = parse.isObject();
                 if ("1".equals(Util.str(object.get("result")))) {
                     statusHTML.setHTML(messages.save_ok());
+                    init();
                 } else {
                     statusHTML.setHTML(messages.save_failed());
                 }
@@ -198,8 +199,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         MasterValidator masterValidator = new MasterValidator();
 
         masterValidator.mandatory(messages.required_field(), new Widget[] {
-                yearBox, monthBox, semesterBox, costCourseBox, costPracticeBox,
-                costMembershipBox });
+                yearBox, monthBox, semesterBox });
 
         masterValidator.range(messages.illegal_month(), new Integer(1),
                 new Integer(12), new Widget[] { monthBox });
