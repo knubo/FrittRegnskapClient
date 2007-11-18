@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.MissingResourceException;
 
 public class HelpPanel extends Composite implements EventPreview {
 
@@ -111,8 +112,26 @@ public class HelpPanel extends Composite implements EventPreview {
         // }
         Element elem = DOM.eventGetTarget(event);
         String id = DOM.getElementProperty(elem, "id");
+        
+        if(id == null) {
+            return true;
+        }
+        
+        String helpText = null;
+        try {
+            helpText = helpTexts.getString(id);        
+        } catch(MissingResourceException e) {
+            helpText = "";
+        }
+        
+        String message = null;
+        try {
+            message = messages.getString(id);        
+        } catch(MissingResourceException e) {
+            message = "";
+        }
 
-        help = formatHelp(messages.getString(id), helpTexts.getString(id));
+        help = formatHelp(message,helpText);
 
         return true;
     }
