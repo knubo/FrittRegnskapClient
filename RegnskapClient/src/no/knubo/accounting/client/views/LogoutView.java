@@ -10,6 +10,8 @@ import no.knubo.accounting.client.misc.ServerResponse;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -60,11 +62,11 @@ public class LogoutView extends Composite implements ClickListener,
         }
     }
 
-    public void serverResponse(String responseText) {
-        if ("1".equals(responseText)) {
+    public void serverResponse(JSONValue val) {
+        JSONObject obj = val.isObject();
+        
+        if ("1".equals(Util.str(obj.get("result")))) {
             Util.forward(constants.loginURL());
-        } else {
-            Window.alert("Error from server:" + responseText);
-        }
+        } 
     }
 }

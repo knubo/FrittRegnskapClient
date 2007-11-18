@@ -17,7 +17,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -137,13 +136,7 @@ public class PersonSearchView extends Composite implements ClickListener,
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String serverResponse) {
-                JSONValue value = JSONParser.parse(serverResponse);
-
-                if (value == null) {
-                    Window.alert(messages.search_failed());
-                    return;
-                }
+            public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
                 if (array == null) {

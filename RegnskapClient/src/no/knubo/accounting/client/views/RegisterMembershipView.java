@@ -130,12 +130,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String serverResponse) {
-                JSONValue value = JSONParser.parse(serverResponse);
-                if (value == null) {
-                    Window.alert(messages.search_failed());
-                    return;
-                }
+            public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
                 if (array == null) {
@@ -249,7 +244,11 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String serverResponse) {
+            public void serverResponse(JSONValue value) {
+                JSONObject obj = value.isObject();
+                
+                String serverResponse = Util.str(obj.get("result"));
+
                 if ("1".equals(serverResponse)) {
                     disableAfterOK();
                 } else {

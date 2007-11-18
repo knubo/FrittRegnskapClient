@@ -46,6 +46,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -397,7 +398,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView.clear();
         activeView.add(widget, DockPanel.CENTER);
         activeView.setCellHeight(widget, "100%");
-        activeView.setCellVerticalAlignment(widget, DockPanel.ALIGN_TOP);
+        activeView.setCellVerticalAlignment(widget, HasVerticalAlignment.ALIGN_TOP);
 
     }
 

@@ -18,7 +18,6 @@ import no.knubo.accounting.client.views.modules.AccountDetailLinesHelper;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -198,8 +197,7 @@ public class ReportAccountlines extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String serverResponse) {
-                JSONValue value = JSONParser.parse(serverResponse);
+            public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
                 accountDetailLinesHelper.renderResult(array, showOnlyPosts

@@ -14,7 +14,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
@@ -49,8 +48,8 @@ public class MonthHeaderCache implements ServerResponse {
         }
     }
 
-    public void serverResponse(String responseText) {
-        JSONValue jsonValue = JSONParser.parse(responseText);
+    public void serverResponse(JSONValue jsonValue) {
+
         JSONArray array = jsonValue.isArray();
         headersByName = new ArrayList();
         keys = new ArrayList();

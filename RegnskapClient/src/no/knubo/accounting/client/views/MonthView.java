@@ -17,7 +17,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
@@ -179,8 +178,7 @@ public class MonthView extends Composite implements ClickListener,
         }
     }
 
-    public void serverResponse(String responseText) {
-        JSONValue jsonValue = JSONParser.parse(responseText);
+    public void serverResponse(JSONValue jsonValue) {
         JSONObject root = jsonValue.isObject();
 
         JSONValue monthInfo = root.get("monthinfo");

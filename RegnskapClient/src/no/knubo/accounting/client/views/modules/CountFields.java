@@ -8,12 +8,11 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.misc.AuthResponder;
-import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -66,15 +65,9 @@ public class CountFields {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "accounting/countget.php");
 
-        ServerResponse callback = new ServerResponse() {
+        ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
-            public void serverResponse(String serverResponse) {
-                JSONValue value = JSONParser.parse(serverResponse);
-
-                if (value == null) {
-                    table.setVisible(false);
-                    return;
-                }
+            public void serverResponse(JSONValue value) {
 
                 JSONObject object = value.isObject();
 
@@ -116,6 +109,10 @@ public class CountFields {
 
                     row++;
                 }
+            }
+
+            public void onError() {
+                table.setVisible(false);
             }
         };
 

@@ -20,7 +20,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -59,7 +58,8 @@ public class TrustStatusView extends Composite implements ClickListener {
     private final Elements elements;
 
     public static TrustStatusView getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel, ViewCallback callback, Elements elements) {
+            I18NAccount messages, HelpPanel helpPanel, ViewCallback callback,
+            Elements elements) {
         if (trustStatusInstance == null) {
             trustStatusInstance = new TrustStatusView(constants, messages,
                     helpPanel, callback, elements);
@@ -102,8 +102,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
                 renderResult(object);
             }
@@ -245,7 +244,8 @@ public class TrustStatusView extends Composite implements ClickListener {
         private RegisterStandards registerStandards;
 
         TrustEditFields() {
-            registerStandards = new RegisterStandards(constants, messages, elements);
+            registerStandards = new RegisterStandards(constants, messages,
+                    elements);
 
             setText(elements.new_trust());
             FlexTable edittable = new FlexTable();
@@ -267,8 +267,8 @@ public class TrustStatusView extends Composite implements ClickListener {
             trustListBox.getListbox().setVisibleItemCount(1);
             trustListBox.getListbox().addChangeListener(this);
 
-            TrustActionCache trustActionCache = TrustActionCache
-                    .getInstance(constants, messages);
+            TrustActionCache trustActionCache = TrustActionCache.getInstance(
+                    constants, messages);
             trustActionCache.fillTrustList(trustListBox.getListbox());
 
             edittable.setWidget(0, 1, trustListBox);
@@ -362,23 +362,18 @@ public class TrustStatusView extends Composite implements ClickListener {
 
             ServerResponse callback = new ServerResponse() {
 
-                public void serverResponse(String serverResponse) {
-                    JSONValue value = JSONParser.parse(serverResponse);
+                public void serverResponse(JSONValue value) {
 
-                    if (value == null || value.isObject() == null) {
-                        Window.alert("Error:" + serverResponse);
+                    JSONObject object = value.isObject();
+
+                    JSONValue result = object.get("result");
+
+                    if ("1".equals(Util.str(result))) {
+                        hide();
+                        trustStatusInstance.init();
                     } else {
-                        JSONObject object = value.isObject();
-
-                        JSONValue result = object.get("result");
-
-                        if ("1".equals(Util.str(result))) {
-                            hide();
-                            trustStatusInstance.init();
-                        } else {
-                            // TODO fix to error message.
-                            Window.alert("Failed to add data");
-                        }
+                        // TODO fix to error message.
+                        Window.alert("Failed to add data");
                     }
                 }
             };
@@ -386,7 +381,8 @@ public class TrustStatusView extends Composite implements ClickListener {
             try {
                 builder.setHeader("Content-Type",
                         "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
+                builder.sendRequest(sb.toString(), new AuthResponder(constants,
+                        messages, callback));
             } catch (RequestException e) {
                 Window.alert("Failed to send the request: " + e.getMessage());
             }
@@ -415,8 +411,8 @@ public class TrustStatusView extends Composite implements ClickListener {
         }
 
         public void onChange(Widget sender) {
-            TrustActionCache trustActionCache = TrustActionCache
-                    .getInstance(constants, messages);
+            TrustActionCache trustActionCache = TrustActionCache.getInstance(
+                    constants, messages);
 
             if (sender == this.trustListBox.getListbox()) {
                 ListBox listBox = (ListBox) sender;

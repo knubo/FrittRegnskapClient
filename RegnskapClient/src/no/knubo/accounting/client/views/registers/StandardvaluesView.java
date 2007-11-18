@@ -135,8 +135,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String serverResponse) {
-                JSONValue parse = JSONParser.parse(serverResponse);
+            public void serverResponse(JSONValue parse) {
                 JSONObject object = parse.isObject();
                 if ("1".equals(Util.str(object.get("result")))) {
                     statusHTML.setHTML(messages.save_ok());

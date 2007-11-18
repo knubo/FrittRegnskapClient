@@ -2,6 +2,7 @@ package no.knubo.accounting.client.views.budget;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,20 +12,18 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
-import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -43,6 +42,9 @@ public class BudgetView extends Composite {
     private FlexTable fallEarningsTable;
     private FlexTable othersEarningsTable;
     private FlexTable expencesTable;
+    private HashMap coursePrices;
+    private HashMap trainPrices;
+    private HashMap yearPrices;
 
     public BudgetView(I18NAccount messages, Constants constants,
             HelpPanel helpPanel, Elements elements) {
@@ -137,7 +139,7 @@ public class BudgetView extends Composite {
         return earningsTable;
     }
 
-    private void fillEarningsTable(FlexTable earningsTable) {
+    private void initEarningsTable(FlexTable earningsTable) {
         earningsTable.setText(0, 0, "");
         earningsTable.setText(1, 0, elements.year_membership());
         earningsTable.setText(2, 0, elements.course_membership());
@@ -167,23 +169,25 @@ public class BudgetView extends Composite {
     }
 
     public void init() {
-        fillEarningsTable(springEarningsTable);
-        fillEarningsTable(fallEarningsTable);
-
+        initEarningsTable(springEarningsTable);
+        initEarningsTable(fallEarningsTable);
+        
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/members.php?action=overview");
+                constants.baseurl() + "accounting/budget.php?action=init");
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue value) {
 
                 JSONObject root = value.isObject();
-                ArrayList keys = new ArrayList(root.keySet());
+                fillPrices(root.get("price").isObject());
+                JSONObject members = root.get("members").isObject();
+                ArrayList keys = new ArrayList(members.keySet());
                 Collections.sort(keys);
-                init(keys, root);
+                fillMemberships(keys, root);
                 helpPanel.resize(me);
             }
+
         };
         try {
             builder.sendRequest("", new AuthResponder(constants, messages,
@@ -193,7 +197,32 @@ public class BudgetView extends Composite {
         }
     }
 
-    protected void init(List keys, JSONObject root) {
+    protected void fillPrices(JSONObject priceObj) {
+        JSONArray course = priceObj.get("course").isArray();
+        JSONArray train = priceObj.get("train").isArray();
+        JSONArray year = priceObj.get("year").isArray();
+        
+        coursePrices = new HashMap();
+        trainPrices = new HashMap();
+        yearPrices = new HashMap();
+        
+        for(int i=0;i < course.size(); i++) {
+            JSONObject obj = course.get(i).isObject();
+            coursePrices.put(Util.str(obj.get("semester")), Util.str(obj.get("amount")));
+        }
+        
+        for(int i=0;i < train.size(); i++) {
+            JSONObject obj = train.get(i).isObject();
+            trainPrices.put(Util.str(obj.get("semester")), Util.str(obj.get("amount")));
+        }
+
+        for(int i=0; i < year.size(); i++) {
+            JSONObject obj = year.get(i).isObject();
+            yearPrices.put(Util.str(obj.get("year")), Util.str(obj.get("amount")));
+        }
+    }
+
+    protected void fillMemberships(List keys, JSONObject root) {
         int pos = 0;
 
         for (Iterator i = keys.iterator(); i.hasNext();) {
@@ -214,18 +243,16 @@ public class BudgetView extends Composite {
                 FlexTable table = springEarningsTable;
 
                 Label label = new Label(elements.spring() + " " + year);
-                Image editImage = ImageFactory.editImage("budget_edit_spring");
 
                 fiillColumn(yearcount, coursecount, traincount, column, table,
-                        label, editImage);
+                        label);
             } else {
                 FlexTable table = fallEarningsTable;
 
                 Label label = new Label(elements.fall() + " " + year);
-                Image editImage = ImageFactory.editImage("budget_edit_spring");
 
                 fiillColumn(yearcount, coursecount, traincount, column, table,
-                        label, editImage);
+                        label);
             }
         }
         springEarningsTable.getColumnFormatter().setStyleName(0, "header desc");
@@ -235,13 +262,12 @@ public class BudgetView extends Composite {
     }
 
     private void fiillColumn(int yearcount, int coursecount, int traincount,
-            int column, FlexTable table, Label label, Image editImage) {
+            int column, FlexTable table, Label label) {
 
         label.setStyleName("nowrap headernobox");
         HorizontalPanel header = new HorizontalPanel();
         header.setStyleName("noborder");
         header.add(label);
-        header.add(editImage);
 
         table.setWidget(0, column, header);
         table.setText(0, column + 1, elements.sum());

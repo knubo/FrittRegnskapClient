@@ -13,14 +13,13 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.NamedButton;
-import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -57,7 +56,8 @@ public class HappeningsView extends Composite implements ClickListener,
 
     private final Elements elements;
 
-    public HappeningsView(I18NAccount messages, Constants constants, Elements elements) {
+    public HappeningsView(I18NAccount messages, Constants constants,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.elements = elements;
@@ -85,7 +85,8 @@ public class HappeningsView extends Composite implements ClickListener,
         initWidget(dp);
     }
 
-    public static HappeningsView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static HappeningsView show(I18NAccount messages,
+            Constants constants, Elements elements) {
         if (me == null) {
             me = new HappeningsView(messages, constants, elements);
         }
@@ -319,39 +320,38 @@ public class HappeningsView extends Composite implements ClickListener,
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                     constants.baseurl() + "registers/happening.php");
 
-            ServerResponse callback = new ServerResponse() {
+            ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
-                public void serverResponse(String serverResponse) {
-                    if ("0".equals(serverResponse)) {
-                        mainErrorLabel.setHTML(messages.save_failed());
-                        Util.timedMessage(mainErrorLabel, "", 5);
-                    } else {
-                        if (sendId == null) {
-                            JSONValue value = JSONParser.parse(serverResponse);
-                            if (value == null) {
-                                mainErrorLabel.setHTML(messages
-                                        .save_failed_badly());
-                                Util.timedMessage(mainErrorLabel, "", 5);
-                                return;
-                            }
-                            JSONObject object = value.isObject();
-
-                            if (object == null) {
-                                String error = "Failed to save data - null object.";
-                                Window.alert(error);
-                                return;
-                            }
-                            int row = table.getRowCount();
-
-                            addRow(row, description, linedesc, debetpost,
-                                    kredpost, checked, sendId);
-                        } else {
-                            /* Could probably be more effective but why bother? */
-                            HappeningCache.getInstance(constants, messages)
-                                    .flush(me);
+                public void serverResponse(JSONValue value) {
+                    if (sendId == null) {
+                        if (value == null) {
+                            mainErrorLabel
+                                    .setHTML(messages.save_failed_badly());
+                            Util.timedMessage(mainErrorLabel, "", 5);
+                            return;
                         }
-                        hide();
+                        JSONObject object = value.isObject();
+
+                        if (object == null) {
+                            String error = "Failed to save data - null object.";
+                            Window.alert(error);
+                            return;
+                        }
+                        int row = table.getRowCount();
+
+                        addRow(row, description, linedesc, debetpost, kredpost,
+                                checked, sendId);
+                    } else {
+                        /* Could probably be more effective but why bother? */
+                        HappeningCache.getInstance(constants, messages).flush(
+                                me);
                     }
+                    hide();
+                }
+
+                public void onError() {
+                    mainErrorLabel.setHTML(messages.save_failed());
+                    Util.timedMessage(mainErrorLabel, "", 5);
                 }
             };
 

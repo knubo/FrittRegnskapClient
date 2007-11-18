@@ -473,11 +473,15 @@ public class LineEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String serverResponse) {
-                if ("0".equals(serverResponse)) {
+            public void serverResponse(JSONValue value) {
+                JSONObject obj = value.isObject();
+                
+                String result = Util.str(obj.get("result"));
+                
+                if ("0".equals(result)) {
                     rowErrorLabel.setText(messages.save_failed());
                 } else {
-                    String[] parts = serverResponse.split(":");
+                    String[] parts = result.split(":");
                     // Parts[0] should be same as id, but I use id.
                     removeVisibleRow(id);
                     removeSumLine();
@@ -543,7 +547,11 @@ public class LineEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String serverResponse) {
+            public void serverResponse(JSONValue value) {
+                JSONObject obj = value.isObject();
+                
+                String serverResponse = Util.str(obj.get("result"));
+
                 if ("0".equals(serverResponse)) {
                     rowErrorLabel.setText(messages.save_failed());
                 } else {
@@ -601,7 +609,10 @@ public class LineEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String serverResponse) {
+            public void serverResponse(JSONValue value) {
+                JSONObject obj = value.isObject();
+                
+                String serverResponse = Util.str(obj.get("result"));
 
                 if ("0".equals(serverResponse)) {
                     updateLabel.setText(messages.save_failed());

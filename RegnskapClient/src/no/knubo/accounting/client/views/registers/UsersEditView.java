@@ -21,7 +21,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -145,8 +144,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
                 String result = Util.str(object.get("result"));
@@ -186,8 +184,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue value) {
 
                 JSONArray array = value.isArray();
                 int row = 2;
@@ -401,8 +398,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
             ServerResponse callback = new ServerResponse() {
 
-                public void serverResponse(String responseText) {
-                    JSONValue parse = JSONParser.parse(responseText);
+                public void serverResponse(JSONValue parse) {
 
                     if (parse == null || parse.isObject() == null) {
                         mainErrorLabel.setText(messages.save_failed_badly());

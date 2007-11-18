@@ -22,7 +22,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -129,8 +128,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue parse = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue parse) {
                 JSONArray array = parse.isArray();
 
                 for (int i = 0; i < array.size(); i++) {
@@ -266,8 +264,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue parse = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue parse) {
                 JSONObject respObj = parse.isObject();
                 if ("1".equals(Util.str(respObj.get("result")))) {
                     int line = outofHolder.remove(id);
@@ -427,8 +424,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
 
             ServerResponse callback = new ServerResponse() {
 
-                public void serverResponse(String serverResponse) {
-                    JSONValue parse = JSONParser.parse(serverResponse);
+                public void serverResponse(JSONValue parse) {
                     JSONObject object = parse.isObject();
 
                     String result = Util.str(object.get("result"));

@@ -1,5 +1,8 @@
 package no.knubo.accounting.client.views.registers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -17,7 +20,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -30,8 +32,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MembershipPriceEditView extends Composite implements
         ClickListener, CacheCallback {
@@ -120,8 +120,7 @@ public class MembershipPriceEditView extends Composite implements
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
                 JSONArray semesters = obj.get("semesters").isArray();
                 JSONObject prices = obj.get("price").isObject();
@@ -290,8 +289,7 @@ public class MembershipPriceEditView extends Composite implements
 
             ServerResponse callback = new ServerResponse() {
 
-                public void serverResponse(String serverResponse) {                    
-                    JSONValue response = JSONParser.parse(serverResponse);
+                public void serverResponse(JSONValue response) {                    
                     JSONObject responseObj = response.isObject();
                     
                     if("1".equals(Util.str(responseObj.get("status")))) {

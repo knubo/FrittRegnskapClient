@@ -4,15 +4,16 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.views.modules.AccountDetailLinesHelper;
 import no.knubo.accounting.client.views.modules.YearMonthComboHelper;
 
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -23,8 +24,8 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MonthDetailsView extends Composite implements ResponseTextHandler,
-        ClickListener, ChangeListener {
+public class MonthDetailsView extends Composite implements 
+        ClickListener, ChangeListener, ServerResponse {
 
     private static MonthDetailsView me;
 
@@ -94,15 +95,18 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         currentMonth = 0;
         currentYear = 0;
 
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "accounting/showmonthpost.php", this)) {
-            Window.alert(messages.failedConnect());
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, 
+                constants.baseurl() + "accounting/showmonthpost.php");
+  
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages ,
+                    this));
+        } catch (RequestException e) {
+            Window.alert("AU:" + e);
         }
-
     }
 
-    public void onCompletion(String responseText) {
-        JSONValue value = JSONParser.parse(responseText);
+    public void serverResponse(JSONValue value) {
         JSONArray array = value.isArray();
 
         accountDetailLinesHelper.renderResult(array, null);
@@ -156,11 +160,17 @@ public class MonthDetailsView extends Composite implements ResponseTextHandler,
         
         currentYear = 0;
         currentMonth = 0;
-        
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,this.constants.baseurl()
                 + "accounting/showmonthpost.php?year=" + year
-                + "&month=" + month, this)) {
-            Window.alert(messages.failedConnect());
+                + "&month=" + month);
+  
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages ,
+                    this));
+        } catch (RequestException e) {
+            Window.alert("AU:" + e);
         }
     }
+
 }

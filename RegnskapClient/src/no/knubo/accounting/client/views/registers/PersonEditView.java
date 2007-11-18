@@ -1,6 +1,5 @@
 package no.knubo.accounting.client.views.registers;
 
-import no.knubo.accounting.client.views.*;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,12 +17,12 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithValidation;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -223,13 +222,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
-
-                if (value == null) {
-                    Window.alert("Failed to delete.");
-                    return;
-                }
+            public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
                 
                 if(object == null) {
@@ -262,13 +255,7 @@ public class PersonEditView extends Composite implements ClickListener {
                 constants.baseurl() + "registers/persons.php");
 
         ServerResponse callback = new ServerResponse() {
-            public void serverResponse(String serverResponse) {
-                JSONValue value = JSONParser.parse(serverResponse);
-
-                if (value == null) {
-                    Window.alert("Failed to load person");
-                    return;
-                }
+            public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
                 if (object == null) {
@@ -394,19 +381,18 @@ public class PersonEditView extends Composite implements ClickListener {
 
         ServerResponseWithValidation callback = new ServerResponseWithValidation() {
 
-            public void serverResponse(String serverResponse) {
-                int id = Util.getInt(serverResponse);
+            public void serverResponse(JSONValue value) {
+                
+                JSONObject obj = value.isObject();
+                
+                String id = Util.str(obj.get("result"));
 
-                if (id == 0) {
-                    if ("0".equals(serverResponse)) {
-                        saveStatus.setText(messages.save_failed());
-                    } else {
-                        Window.alert("Server error:" + serverResponse);
-                    }
+                if ("0".equals(id)) {
+                    saveStatus.setText(messages.save_failed());
                 } else {
                     saveStatus.setText(messages.save_ok());
                     if (currentId == null) {
-                        currentId = serverResponse;
+                        currentId = id;
                         updateButton.setHTML(elements.update());
                     }
                 }

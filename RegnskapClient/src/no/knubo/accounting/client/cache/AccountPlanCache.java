@@ -15,7 +15,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
@@ -48,8 +47,7 @@ public class AccountPlanCache implements ServerResponse {
         return instance;
     }
 
-    public void serverResponse(String responseText) {
-        JSONValue value = JSONParser.parse(responseText);
+    public void serverResponse(JSONValue value) {
         JSONArray array = value.isArray();
 
         for (int i = 0; i < array.size(); i++) {

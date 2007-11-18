@@ -10,12 +10,12 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
@@ -94,8 +94,7 @@ public class AccountTrackEditView extends Composite implements ClickListener {
 
         ServerResponse callback = new ServerResponse() {
 
-            public void serverResponse(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue value) {
                 JSONArray posts = value.isArray();
 
                 PosttypeCache posttypeCache = PosttypeCache.getInstance(
@@ -156,22 +155,15 @@ public class AccountTrackEditView extends Composite implements ClickListener {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 constants.baseurl() + "registers/accounttrack.php");
 
-        ServerResponse callback = new ServerResponse() {
+        ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
-            public void serverResponse(String serverResponse) {
-                JSONValue parse = JSONParser.parse(serverResponse);
-                if (parse == null) {
-                    Window.alert(messages.save_failed_badly());
-                    init();
-                    return;
-                }
-                JSONObject object = parse.isObject();
+            public void serverResponse(JSONValue parse) {
+                /* OK */
+            }
 
-                if (object == null
-                        || "0".equals(Util.str(object.get("result")))) {
-                    Window.alert(messages.save_failed_badly());
-                    init();
-                }
+            public void onError() {
+                Window.alert(messages.save_failed_badly());
+                init();
             }
         };
 

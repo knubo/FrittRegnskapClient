@@ -19,7 +19,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -231,8 +230,7 @@ public class TrustEditView extends Composite implements ClickListener,
 
             ServerResponse callback = new ServerResponse() {
 
-                public void serverResponse(String serverResponse) {
-                    JSONValue parse = JSONParser.parse(serverResponse);
+                public void serverResponse(JSONValue parse) {
                     JSONObject resobj = parse.isObject();
                     String result = Util.str(resobj.get("result"));
 

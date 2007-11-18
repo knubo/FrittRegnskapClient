@@ -19,7 +19,6 @@ import no.knubo.accounting.client.validation.MasterValidator;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -217,25 +216,14 @@ public class ProjectEditView extends Composite implements ClickListener,
 
             ServerResponse callback = new ServerResponse() {
 
-                public void serverResponse(String serverResponse) {
-                    if ("0".equals(serverResponse)) {
+                public void serverResponse(JSONValue value) {
+                    JSONObject object = value.isObject();
+
+                    if ("0".equals(object.get("result"))) {
                         mainErrorLabel.setHTML(messages.save_failed());
                         Util.timedMessage(mainErrorLabel, "", 5);
                     } else {
                         if (sendId == null) {
-                            JSONValue value = JSONParser.parse(serverResponse);
-                            if (value == null) {
-                                String error = "Failed to save data - null value.";
-                                Window.alert(error);
-                                return;
-                            }
-                            JSONObject object = value.isObject();
-
-                            if (object == null) {
-                                String error = "Failed to save data - null object.";
-                                Window.alert(error);
-                                return;
-                            }
                             int row = table.getRowCount();
 
                             addRow(row, description, sendId);

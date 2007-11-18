@@ -24,7 +24,6 @@ import no.knubo.accounting.client.views.modules.RegisterStandards;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -206,8 +205,8 @@ public class RegisterHappeningView extends Composite implements ClickListener,
                 constants.baseurl() + "accounting/addhappening.php");
 
         ServerResponse callback = new ServerResponse() {
-            public void serverResponse(String responseText) {
-                handleSaveResponse(responseText);
+            public void serverResponse(JSONValue value) {
+                handleSaveResponse(value);
             }
 
         };
@@ -222,19 +221,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
     }
 
-    void handleSaveResponse(String response) {
-        if (response.length() == 0) {
-            Window.alert(messages.failedConnect());
-            return;
-        }
-
-        JSONValue value = JSONParser.parse(response);
-
-        if (value == null) {
-            Window.alert(messages.failedConnect());
-            return;
-        }
-
+    void handleSaveResponse(JSONValue value) {
         JSONObject object = value.isObject();
 
         if (object == null) {
