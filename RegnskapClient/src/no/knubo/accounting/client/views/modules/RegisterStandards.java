@@ -64,8 +64,7 @@ public class RegisterStandards {
 
         };
         // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(constants.baseurl() + "defaults/newline.php",
-                rh)) {
+        if (!HTTPRequest.asyncGet(constants.baseurl() + "defaults/newline.php", rh)) {
             Window.alert(messages.failedConnect());
         }
     }
@@ -74,11 +73,11 @@ public class RegisterStandards {
 
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(), new Widget[] {
-                descriptionBox, attachmentBox, dayBox, postNmbBox });
+        masterValidator.mandatory(messages.required_field(), new Widget[] { descriptionBox,
+                attachmentBox, dayBox, postNmbBox });
 
-        masterValidator.range(messages.field_to_low_zero(), new Integer(1),
-                null, new Widget[] { attachmentBox, postNmbBox });
+        masterValidator.range(messages.field_to_low_zero(), new Integer(1), null, new Widget[] {
+                attachmentBox, postNmbBox });
 
         masterValidator.day(messages.illegal_day(), currentYear, currentMonth,
                 new Widget[] { dayBox });
@@ -87,8 +86,7 @@ public class RegisterStandards {
     }
 
     public void setDateHeader() {
-        dateHeader.setHTML(Util.monthString(elements, currentMonth) + " "
-                + currentYear);
+        dateHeader.setHTML(Util.monthString(elements, currentMonth) + " " + currentYear);
     }
 
     public int getCurrentMonth() {

@@ -10,12 +10,9 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 
 public class CountCache implements ServerResponse {
 
@@ -64,14 +61,7 @@ public class CountCache implements ServerResponse {
         counts = new ArrayList();
         countGivesColumn = new HashMap();
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/count.php");
-
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages, this));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, this, "registers/count.php");
     }
 
     public List getCounts() {

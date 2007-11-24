@@ -12,8 +12,6 @@ import no.knubo.accounting.client.misc.NamedTextArea;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -37,8 +35,8 @@ public class ReportMail extends Composite implements ClickListener {
     private EmailSendStatus emailSendStatusView;
     private I18NAccount messages;
 
-    public static ReportMail getInstance(Constants constants,
-            I18NAccount messages, Elements elements) {
+    public static ReportMail getInstance(Constants constants, I18NAccount messages,
+            Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportMail(constants, messages, elements);
         }
@@ -58,12 +56,9 @@ public class ReportMail extends Composite implements ClickListener {
 
         reciversListBox = new ListBoxWithErrorText("mail_receivers");
         reciversListBox.getListbox().addItem("", "");
-        reciversListBox.getListbox().addItem(elements.mail_query_members(),
-                "members");
-        reciversListBox.getListbox().addItem(elements.mail_query_newsletter(),
-                "newsletter");
-        reciversListBox.getListbox().addItem(elements.mail_test(),
-        "test");
+        reciversListBox.getListbox().addItem(elements.mail_query_members(), "members");
+        reciversListBox.getListbox().addItem(elements.mail_query_newsletter(), "newsletter");
+        reciversListBox.getListbox().addItem(elements.mail_test(), "test");
         mainTable.setWidget(0, 1, reciversListBox);
 
         titleBox = new TextBoxWithErrorText("mail_title");
@@ -76,8 +71,7 @@ public class ReportMail extends Composite implements ClickListener {
         bodyBox.setVisibleLines(30);
         mainTable.setWidget(2, 1, bodyBox);
 
-        NamedButton sendButton = new NamedButton("mail_send", elements
-                .mail_send());
+        NamedButton sendButton = new NamedButton("mail_send", elements.mail_send());
         sendButton.addClickListener(this);
         mainTable.setWidget(3, 0, sendButton);
 
@@ -98,12 +92,6 @@ public class ReportMail extends Composite implements ClickListener {
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
-        String selectedList = reciversListBox.getText();
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "reports/email.php?action=list&query="
-                        + selectedList);
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue parse) {
@@ -112,18 +100,13 @@ public class ReportMail extends Composite implements ClickListener {
             }
         };
 
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, callback, "reports/email.php?action=list&query="
+                + reciversListBox.getText());
 
     }
 
     protected void confirmSendEmail() {
-        boolean ok = Window.confirm(messages.mail_confirm(String
-                .valueOf(receivers.size())));
+        boolean ok = Window.confirm(messages.mail_confirm(String.valueOf(receivers.size())));
 
         if (ok) {
             sendEmails();
@@ -163,13 +146,11 @@ public class ReportMail extends Composite implements ClickListener {
             infoTable.setText(1, 0, elements.name());
             infoTable.setText(2, 0, elements.email());
             infoTable.getRowFormatter().setStyleName(0, "header");
-            infoTable.setWidget(0, 1, ImageFactory
-                    .loadingImage("image_loading"));
+            infoTable.setWidget(0, 1, ImageFactory.loadingImage("image_loading"));
             infoTable.getCellFormatter().setWidth(0, 1, "30px");
             infoTable.getColumnFormatter().setStyleName(1, "emailsendname");
             infoTable.getColumnFormatter().setStyleName(2, "emailsendemail");
-            NamedButton cancelButton = new NamedButton("abort", elements
-                    .abort());
+            NamedButton cancelButton = new NamedButton("abort", elements.abort());
             cancelButton.addClickListener(this);
             infoTable.setWidget(3, 0, cancelButton);
 
@@ -210,8 +191,7 @@ public class ReportMail extends Composite implements ClickListener {
             infoTable.setText(1, 1, name);
             final String email = Util.str(user.get("email"));
             infoTable.setText(2, 1, email);
-            infoTable.setText(0, 2, "(" + (receivers.size() - currentIndex)
-                    + ")");
+            infoTable.setText(0, 2, "(" + (receivers.size() - currentIndex) + ")");
 
             StringBuffer mailRequest = new StringBuffer();
 
@@ -219,9 +199,6 @@ public class ReportMail extends Composite implements ClickListener {
             Util.addPostParam(mailRequest, "subject", titleBox.getText());
             Util.addPostParam(mailRequest, "email", email);
             Util.addPostParam(mailRequest, "body", bodyBox.getText());
-
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "reports/email.php");
 
             ServerResponse callback = new ServerResponse() {
 
@@ -232,12 +209,10 @@ public class ReportMail extends Composite implements ClickListener {
                     table.insertRow(1);
                     table.setText(1, 0, name);
                     table.setText(1, 1, email);
-                    
-                    String style = (currentIndex % 2 == 0) ? "showlineposts2"
-                            : "showlineposts1";
+
+                    String style = (currentIndex % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(1, style);
 
-                    
                     if (!("1".equals(Util.str(object.get("status"))))) {
                         table.setStyleName("error");
                         table.setText(1, 2, "error");
@@ -252,16 +227,8 @@ public class ReportMail extends Composite implements ClickListener {
                 }
 
             };
-
-            try {
-                builder.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded");
-                builder.sendRequest(mailRequest.toString(),
-                        new AuthResponder(constants, messages, callback));
-            } catch (RequestException e) {
-                Window.alert("Failed to send the request: " + e.getMessage());
-            }
-
+            
+            AuthResponder.post(constants, messages, callback, mailRequest, "reports/email.php");
         }
     }
 

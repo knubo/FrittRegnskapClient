@@ -12,8 +12,6 @@ import no.knubo.accounting.client.misc.ListBoxWithErrorText;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -39,8 +37,8 @@ public class AccountTrackEditView extends Composite implements ClickListener {
     private Image nextImageBig;
     private Image previousImageBig;
 
-    public static AccountTrackEditView show(I18NAccount messages,
-            Constants constants, HelpPanel helpPanel, Elements elements) {
+    public static AccountTrackEditView show(I18NAccount messages, Constants constants,
+            HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new AccountTrackEditView(messages, constants, helpPanel, elements);
         }
@@ -48,8 +46,8 @@ public class AccountTrackEditView extends Composite implements ClickListener {
         return me;
     }
 
-    public AccountTrackEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public AccountTrackEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -69,15 +67,15 @@ public class AccountTrackEditView extends Composite implements ClickListener {
         vpImages.add(previousImageBig);
         vpImages.setStyleName("accounttrack_midle");
         DockPanel dp = new DockPanel();
-        
+
         VerticalPanel vpChosen = new VerticalPanel();
         vpChosen.add(new Label(elements.chosen_accounts()));
         vpChosen.add(chosenList);
-        
+
         VerticalPanel vpAvailable = new VerticalPanel();
         vpAvailable.add(new Label(elements.available_accounts()));
         vpAvailable.add(availableList);
-        
+
         dp.add(vpChosen, DockPanel.WEST);
         dp.add(vpImages, DockPanel.WEST);
         dp.add(vpAvailable, DockPanel.WEST);
@@ -89,16 +87,12 @@ public class AccountTrackEditView extends Composite implements ClickListener {
         chosenList.getListbox().clear();
         availableList.getListbox().clear();
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/accounttrack.php");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONArray posts = value.isArray();
 
-                PosttypeCache posttypeCache = PosttypeCache.getInstance(
-                        constants, messages);
+                PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
                 for (int i = 0; i < posts.size(); i++) {
                     JSONObject obj = posts.get(i).isObject();
@@ -114,46 +108,35 @@ public class AccountTrackEditView extends Composite implements ClickListener {
 
         };
 
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, callback, "registers/accounttrack.php");
     }
 
     protected void fillAvailableList() {
-        PosttypeCache postTypeCache = PosttypeCache.getInstance(constants,
-                messages);
+        PosttypeCache postTypeCache = PosttypeCache.getInstance(constants, messages);
 
-        postTypeCache.fillAllPosts(availableList.getListbox(), chosenList
-                .getListbox(), false, true);
+        postTypeCache
+                .fillAllPosts(availableList.getListbox(), chosenList.getListbox(), false, true);
     }
 
     public void onClick(Widget sender) {
         if (sender == nextImageBig) {
-            JSONArray change = moveElements(chosenList.getListbox(),
-                    availableList.getListbox());
+            JSONArray change = moveElements(chosenList.getListbox(), availableList.getListbox());
             sendChange("remove", change);
         } else if (sender == previousImageBig) {
-            JSONArray change = moveElements(availableList.getListbox(),
-                    chosenList.getListbox());
+            JSONArray change = moveElements(availableList.getListbox(), chosenList.getListbox());
             sendChange("add", change);
         }
     }
 
     private void sendChange(String action, JSONArray change) {
 
-        if(change.size() == 0) {
+        if (change.size() == 0) {
             Window.alert(messages.save_failed());
             return;
         }
         StringBuffer sb = new StringBuffer();
         sb.append("action=" + action);
         Util.addPostParam(sb, "values", change.toString());
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "registers/accounttrack.php");
 
         ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
@@ -167,15 +150,7 @@ public class AccountTrackEditView extends Composite implements ClickListener {
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                    messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
-
+        AuthResponder.post(constants, messages, callback, sb, "registers/accounttrack.php");
     }
 
     private JSONArray moveElements(ListBox fromList, ListBox toList) {

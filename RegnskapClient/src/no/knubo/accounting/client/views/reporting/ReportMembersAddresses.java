@@ -9,8 +9,6 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -29,17 +27,16 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
     private FlexTable table;
     private final Elements elements;
 
-    public static ReportMembersAddresses getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel, Elements elements) {
+    public static ReportMembersAddresses getInstance(Constants constants, I18NAccount messages,
+            HelpPanel helpPanel, Elements elements) {
         if (reportInstance == null) {
-            reportInstance = new ReportMembersAddresses(constants, messages,
-                    helpPanel, elements);
+            reportInstance = new ReportMembersAddresses(constants, messages, helpPanel, elements);
         }
         return reportInstance;
     }
 
-    public ReportMembersAddresses(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel, Elements elements) {
+    public ReportMembersAddresses(Constants constants, I18NAccount messages, HelpPanel helpPanel,
+            Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
@@ -47,7 +44,8 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
 
         DockPanel dp = new DockPanel();
 
-        NamedButton exportButton = new NamedButton("export_spreadsheet", elements.export_spreadsheet());
+        NamedButton exportButton = new NamedButton("export_spreadsheet", elements
+                .export_spreadsheet());
         dp.add(exportButton, DockPanel.NORTH);
         exportButton.addClickListener(this);
         table = new FlexTable();
@@ -74,9 +72,6 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
         while (table.getRowCount() > 2) {
             table.removeRow(2);
         }
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "reports/membership_addresses.php");
 
         ServerResponse callback = new ServerResponse() {
 
@@ -121,20 +116,13 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
                 table.setHTML(row, 7, Util.strSkipNull(object.get("cellphone")));
                 table.setHTML(row, 8, Util.strSkipNull(object.get("phone")));
 
-                String style = (row % 2 == 0) ? "showlineposts2"
-                        : "showlineposts1";
+                String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                 table.getRowFormatter().setStyleName(row, style);
             }
 
         };
-        
-        
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+
+        AuthResponder.get(constants, messages, callback, "reports/membership_addresses.php");
     }
 
     public void onClick(Widget sender) {

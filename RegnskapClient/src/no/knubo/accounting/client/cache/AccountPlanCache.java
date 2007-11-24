@@ -11,12 +11,9 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
 public class AccountPlanCache implements ServerResponse {
@@ -39,8 +36,7 @@ public class AccountPlanCache implements ServerResponse {
         flush();
     }
 
-    public static AccountPlanCache getInstance(Constants constants,
-            I18NAccount messages) {
+    public static AccountPlanCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
             instance = new AccountPlanCache(constants, messages);
         }
@@ -64,15 +60,8 @@ public class AccountPlanCache implements ServerResponse {
     public void flush() {
         objectGivesId.clear();
         keys.clear();
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/accountplan.php");
 
-        try {
-            builder.sendRequest("",
-                    new AuthResponder(constants, messages, this));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, this, "registers/accountplan.php");
     }
 
     public String idGivesName(String id) {

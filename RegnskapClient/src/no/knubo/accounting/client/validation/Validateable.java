@@ -1,9 +1,8 @@
 package no.knubo.accounting.client.validation;
 
-
 public interface Validateable {
 
-	public String getText();
+    public String getText();
 
     /**
      * Sets error to be displayed if error occures.

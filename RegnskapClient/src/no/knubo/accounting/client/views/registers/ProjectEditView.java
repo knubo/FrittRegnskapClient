@@ -16,11 +16,8 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -32,8 +29,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ProjectEditView extends Composite implements ClickListener,
-        CacheCallback {
+public class ProjectEditView extends Composite implements ClickListener, CacheCallback {
 
     private static ProjectEditView me;
 
@@ -167,11 +163,9 @@ public class ProjectEditView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("projectEditView_saveButton", elements
-                    .save());
+            saveButton = new NamedButton("projectEditView_saveButton", elements.save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("projectEditView_cancelButton",
-                    elements.cancel());
+            cancelButton = new NamedButton("projectEditView_cancelButton", elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -188,8 +182,7 @@ public class ProjectEditView extends Composite implements ClickListener,
         public void init(String id) {
             currentId = id;
 
-            String project = ProjectCache.getInstance(constants, messages)
-                    .getName(id);
+            String project = ProjectCache.getInstance(constants, messages).getName(id);
 
             projectBox.setText(project);
         }
@@ -211,9 +204,6 @@ public class ProjectEditView extends Composite implements ClickListener,
             Util.addPostParam(sb, "description", description);
             Util.addPostParam(sb, "project", sendId);
 
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/projects.php");
-
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(JSONValue value) {
@@ -229,23 +219,14 @@ public class ProjectEditView extends Composite implements ClickListener,
                             addRow(row, description, sendId);
                         } else {
                             /* Could probably be more effective but why bother? */
-                            ProjectCache.getInstance(constants, messages)
-                                    .flush(me);
+                            ProjectCache.getInstance(constants, messages).flush(me);
                         }
                         hide();
                     }
                 }
             };
 
-            try {
-                builder.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                        messages, callback));
-            } catch (RequestException e) {
-                Window.alert("Failed to send the request: " + e.getMessage());
-            }
-
+            AuthResponder.post(constants, messages, callback, sb, "registers/projects.php");
         }
 
         private boolean validateFields() {

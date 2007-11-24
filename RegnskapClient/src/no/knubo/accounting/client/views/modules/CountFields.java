@@ -10,11 +10,8 @@ import no.knubo.accounting.client.cache.CountCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 
 public class CountFields {
@@ -62,9 +59,6 @@ public class CountFields {
         sb.append("action=get");
         Util.addPostParam(sb, "line", line);
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "accounting/countget.php");
-
         ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
             public void serverResponse(JSONValue value) {
@@ -77,8 +71,7 @@ public class CountFields {
                 }
                 int row = 2;
 
-                for (Iterator i = countCache.getCounts().iterator(); i
-                        .hasNext();) {
+                for (Iterator i = countCache.getCounts().iterator(); i.hasNext();) {
                     String count = (String) i.next();
                     String field = countCache.getFieldForCount(count);
 
@@ -91,21 +84,17 @@ public class CountFields {
                         if (!val.equals("")) {
                             table.setText(row, 1, "x " + val);
                             table.setText(row, 2, "=");
-                            table.setText(row, 3, String.valueOf(Double
-                                    .parseDouble(val)
+                            table.setText(row, 3, String.valueOf(Double.parseDouble(val)
                                     * Double.parseDouble(count)));
-                            table.getCellFormatter().setStyleName(row, 3,
-                                    "right");
+                            table.getCellFormatter().setStyleName(row, 3, "right");
                         } else {
                             table.setText(row, 1, "");
                             table.setText(row, 2, "");
                             table.setText(row, 3, "");
                         }
                     }
-                    table.getRowFormatter().setStyleName(
-                            row,
-                            (row % 2 == 0) ? "showlineposts2"
-                                    : "showlineposts1");
+                    table.getRowFormatter().setStyleName(row,
+                            (row % 2 == 0) ? "showlineposts2" : "showlineposts1");
 
                     row++;
                 }
@@ -116,12 +105,6 @@ public class CountFields {
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "accounting/countget.php");
     }
 }

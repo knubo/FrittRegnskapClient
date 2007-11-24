@@ -15,12 +15,9 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -32,8 +29,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TrustEditView extends Composite implements ClickListener,
-        CacheCallback {
+public class TrustEditView extends Composite implements ClickListener, CacheCallback {
 
     private static TrustEditView me;
 
@@ -55,8 +51,8 @@ public class TrustEditView extends Composite implements ClickListener,
 
     private final Elements elements;
 
-    public TrustEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public TrustEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -71,8 +67,7 @@ public class TrustEditView extends Composite implements ClickListener,
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 1, 2);
 
-        newButton = new NamedButton("trustEditView_newButton", elements
-                .trustEditView_newButton());
+        newButton = new NamedButton("trustEditView_newButton", elements.trustEditView_newButton());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -181,11 +176,9 @@ public class TrustEditView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("trustEditView_saveButton", elements
-                    .save());
+            saveButton = new NamedButton("trustEditView_saveButton", elements.save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("trustEditView_cancelButton",
-                    elements.cancel());
+            cancelButton = new NamedButton("trustEditView_cancelButton", elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -200,8 +193,7 @@ public class TrustEditView extends Composite implements ClickListener,
         }
 
         public void init(String id) {
-            String trust = TrustActionCache.getInstance(constants, messages)
-                    .trustGivesDesc(id);
+            String trust = TrustActionCache.getInstance(constants, messages).trustGivesDesc(id);
 
             trustBox.setText(id);
             descBox.setText(trust);
@@ -225,9 +217,6 @@ public class TrustEditView extends Composite implements ClickListener,
             Util.addPostParam(sb, "fond", sendId);
             Util.addPostParam(sb, "description", description);
 
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/trust.php");
-
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(JSONValue parse) {
@@ -236,8 +225,7 @@ public class TrustEditView extends Composite implements ClickListener,
 
                     if (result.equals("1")) {
                         /* Could probably be more effective but why bother? */
-                        TrustActionCache.getInstance(constants, messages)
-                                .flush(me);
+                        TrustActionCache.getInstance(constants, messages).flush(me);
                     } else {
                         mainErrorLabel.setHTML(messages.save_failed());
                         Util.timedMessage(mainErrorLabel, "", 5);
@@ -246,14 +234,7 @@ public class TrustEditView extends Composite implements ClickListener,
                 }
             };
 
-            try {
-                builder.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                        messages, callback));
-            } catch (RequestException e) {
-                Window.alert("Failed to send the request: " + e.getMessage());
-            }
+            AuthResponder.post(constants, messages, callback, sb, "registers/trust.php");
 
         }
 

@@ -6,8 +6,6 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
@@ -25,8 +23,7 @@ public class AboutView extends Composite {
 
     private final I18NAccount messages;
 
-    public static AboutView getInstance(Constants constants,
-            I18NAccount messages) {
+    public static AboutView getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
             instance = new AboutView(constants, messages);
         }
@@ -36,9 +33,6 @@ public class AboutView extends Composite {
     }
 
     private void checkServerVersion() {
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "defaults/about.php?");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
@@ -48,18 +42,13 @@ public class AboutView extends Composite {
                 String serverVersion = Util.str(object.get("serverversion"));
 
                 if (!(CLIENT_VERSION.equals(serverVersion))) {
-                    Window.alert(messages.version_mismatch(CLIENT_VERSION,
-                            serverVersion));
+                    Window.alert(messages.version_mismatch(CLIENT_VERSION, serverVersion));
                 }
 
             }
         };
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+
+        AuthResponder.get(constants, messages, callback, "defaults/about.php");
     }
 
     private AboutView(Constants constants, I18NAccount messages) {

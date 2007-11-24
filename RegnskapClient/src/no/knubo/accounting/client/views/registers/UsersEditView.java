@@ -1,6 +1,5 @@
 package no.knubo.accounting.client.views.registers;
 
-import no.knubo.accounting.client.views.*;
 import java.util.HashMap;
 
 import no.knubo.accounting.client.Constants;
@@ -16,9 +15,9 @@ import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.views.PersonPickCallback;
+import no.knubo.accounting.client.views.PersonPickView;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -57,8 +56,8 @@ public class UsersEditView extends Composite implements ClickListener {
 
     private Elements elements;
 
-    public UsersEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public UsersEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -79,8 +78,7 @@ public class UsersEditView extends Composite implements ClickListener {
         table.setHTML(1, 4, "");
         table.getRowFormatter().setStyleName(1, "header");
 
-        newButton = new NamedButton("userEditView.newButton", elements
-                .userEditView_newButton());
+        newButton = new NamedButton("userEditView.newButton", elements.userEditView_newButton());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -134,9 +132,6 @@ public class UsersEditView extends Composite implements ClickListener {
             return;
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "registers/users.php");
-
         StringBuffer sb = new StringBuffer();
         sb.append("action=delete");
 
@@ -157,14 +152,7 @@ public class UsersEditView extends Composite implements ClickListener {
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                    messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "registers/users.php");
 
     }
 
@@ -179,9 +167,6 @@ public class UsersEditView extends Composite implements ClickListener {
         idHolderDeleteImages.init();
         objectPerUsername = new HashMap();
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/users.php?action=all");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
@@ -195,27 +180,20 @@ public class UsersEditView extends Composite implements ClickListener {
                     String username = Util.str(object.get("username"));
                     String name = Util.str(object.get("name"));
                     String readOnlyAccess = Util.str(object.get("readonly"));
-                    String reducedWriteAccess = Util.str(object
-                            .get("reducedwrite"));
+                    String reducedWriteAccess = Util.str(object.get("reducedwrite"));
                     objectPerUsername.put(username, object);
 
-                    addRow(row++, username, name, readOnlyAccess,
-                            reducedWriteAccess);
+                    addRow(row++, username, name, readOnlyAccess, reducedWriteAccess);
                 }
                 helpPanel.resize(me);
             }
         };
 
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, callback, "registers/users.php?action=all");
     }
 
-    private void addRow(int row, String username, String name,
-            String readOnlyAccess, String reducedwrite) {
+    private void addRow(int row, String username, String name, String readOnlyAccess,
+            String reducedwrite) {
         table.setHTML(row, 0, username);
         table.setHTML(row, 1, name);
 
@@ -234,8 +212,7 @@ public class UsersEditView extends Composite implements ClickListener {
         editImage.addClickListener(me);
         idHolderEditImages.add(username, editImage);
 
-        Image deleteImage = ImageFactory
-                .deleteImage("userEditView.deleteImage");
+        Image deleteImage = ImageFactory.deleteImage("userEditView.deleteImage");
         deleteImage.addClickListener(this);
         idHolderDeleteImages.add(username, deleteImage);
 
@@ -246,8 +223,7 @@ public class UsersEditView extends Composite implements ClickListener {
         table.getRowFormatter().setStyleName(row, style);
     }
 
-    class UserEditFields extends DialogBox implements ClickListener,
-            PersonPickCallback {
+    class UserEditFields extends DialogBox implements ClickListener, PersonPickCallback {
 
         private TextBoxWithErrorText userBox;
 
@@ -305,11 +281,9 @@ public class UsersEditView extends Composite implements ClickListener {
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("userEditView_saveButton", elements
-                    .save());
+            saveButton = new NamedButton("userEditView_saveButton", elements.save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("usertEditView_cancelButton",
-                    elements.cancel());
+            cancelButton = new NamedButton("usertEditView_cancelButton", elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -332,18 +306,14 @@ public class UsersEditView extends Composite implements ClickListener {
             personBox.setText(Util.str(object.get("name")));
             userBox.setEnabled(false);
             boolean isReadOnly = "1".equals(Util.str(object.get("readonly")));
-            boolean reducedWrite = "1".equals(Util.str(object
-                    .get("reducedwrite")));
+            boolean reducedWrite = "1".equals(Util.str(object.get("reducedwrite")));
 
             if (reducedWrite) {
-                Util.setIndexByValue(accessList.getListbox(), elements
-                        .reduced_write_access());
+                Util.setIndexByValue(accessList.getListbox(), elements.reduced_write_access());
             } else if (isReadOnly) {
-                Util.setIndexByValue(accessList.getListbox(), elements
-                        .read_only_access());
+                Util.setIndexByValue(accessList.getListbox(), elements.read_only_access());
             } else {
-                Util.setIndexByValue(accessList.getListbox(), elements
-                        .full_access());
+                Util.setIndexByValue(accessList.getListbox(), elements.full_access());
             }
         }
 
@@ -366,8 +336,8 @@ public class UsersEditView extends Composite implements ClickListener {
             } else {
                 int left = sender.getAbsoluteLeft() - 100;
                 int top = sender.getAbsoluteTop() + 10;
-                PersonPickView view = PersonPickView.show(messages, constants,
-                        this, helpPanel, elements);
+                PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel,
+                        elements);
                 view.setPopupPosition(left, top);
                 view.show();
                 view.init();
@@ -393,9 +363,6 @@ public class UsersEditView extends Composite implements ClickListener {
                 Util.addPostParam(sb, "reducedwrite", "0");
             }
 
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/users.php");
-
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(JSONValue parse) {
@@ -419,14 +386,7 @@ public class UsersEditView extends Composite implements ClickListener {
                 }
             };
 
-            try {
-                builder.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                        messages, callback));
-            } catch (RequestException e) {
-                Window.alert("Failed to send the request: " + e.getMessage());
-            }
+            AuthResponder.post(constants, messages, callback, sb, "registers/users.php");
 
         }
 
@@ -437,8 +397,7 @@ public class UsersEditView extends Composite implements ClickListener {
             mv.mandatory(messages.required_field(), widgets);
 
             if (userBox.isEnabled()) {
-                mv.mandatory(messages.required_field(),
-                        new Widget[] { passwordBox });
+                mv.mandatory(messages.required_field(), new Widget[] { passwordBox });
             }
 
             return mv.validateStatus();

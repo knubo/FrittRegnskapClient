@@ -10,11 +10,8 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -22,8 +19,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 public class ReportAccounttracking extends Composite {
     private static ReportAccounttracking reportInstance;
 
-    public static ReportAccounttracking getInstance(Constants constants,
-            I18NAccount messages, Elements elements) {
+    public static ReportAccounttracking getInstance(Constants constants, I18NAccount messages,
+            Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportAccounttracking(constants, messages, elements);
         }
@@ -60,28 +57,23 @@ public class ReportAccounttracking extends Composite {
             table.removeRow(2);
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "reports/accounttrackstatus.php");
-
         ServerResponse callback = new ServerResponse() {
 
-            
             public void serverResponse(JSONValue value) {
                 JSONObject posts = value.isObject();
 
                 int row = table.getRowCount();
 
                 PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
-                
+
                 for (Iterator i = posts.keySet().iterator(); i.hasNext();) {
                     String key = (String) i.next();
 
                     table.setText(row, 0, key);
-                    table.setText(row,1,posttypeCache.getDescription(key));
+                    table.setText(row, 1, posttypeCache.getDescription(key));
                     table.setText(row, 2, Util.str(posts.get(key)));
-                    
-                    String style = (row % 2 == 0) ? "showlineposts2"
-                            : "showlineposts1";
+
+                    String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(row, style);
                     row++;
                 }
@@ -92,12 +84,8 @@ public class ReportAccounttracking extends Composite {
 
         };
 
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, callback, "reports/accounttrackstatus.php");
+
     }
 
 }

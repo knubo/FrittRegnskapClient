@@ -12,7 +12,7 @@ public class NamedButton extends Button {
     private void setId(String id) {
         DOM.setElementAttribute(this.getElement(), "id", id);
     }
-    
+
     public NamedButton(String name, String text) {
         super(text);
         setId(name);

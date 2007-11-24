@@ -33,8 +33,8 @@ public class Util {
      *            The url to forward to.
      */
     public static native void forward(String url) /*-{
-                          $wnd.location.href = url;
-                          }-*/;
+                             $wnd.location.href = url;
+                             }-*/;
 
     public static boolean getBoolean(JSONValue str) {
         return "1".equals(str(str));
@@ -304,8 +304,7 @@ public class Util {
      * @param seconds
      *            The amount of seconds before the text is set.
      */
-    public static void timedMessage(final Label label, final String message,
-            int seconds) {
+    public static void timedMessage(final Label label, final String message, int seconds) {
 
         Timer runningTimer = (Timer) timers.get(label);
 
@@ -408,8 +407,7 @@ public class Util {
      * @param checkOne
      * @param checkTwo
      */
-    public static void linkJustOne(final CheckBox checkOne,
-            final CheckBox checkTwo) {
+    public static void linkJustOne(final CheckBox checkOne, final CheckBox checkTwo) {
         ClickListener listener = new ClickListener() {
 
             public void onClick(Widget sender) {
@@ -458,8 +456,7 @@ public class Util {
     }
 
     public static void setCellId(FlexTable table, int row, int col, String id) {
-        DOM.setElementAttribute(table.getCellFormatter().getElement(row, col),
-                "id", id);
+        DOM.setElementAttribute(table.getCellFormatter().getElement(row, col), "id", id);
     }
 
     public static boolean authFailed(Constants constants, Response response) {
@@ -492,7 +489,7 @@ public class Util {
             if (translated != null) {
                 sb.append(translated);
             } else {
-                sb.append("["+fieldName+"]");
+                sb.append("[" + fieldName + "]");
             }
         }
         return sb.toString();

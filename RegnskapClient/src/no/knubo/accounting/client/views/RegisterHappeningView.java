@@ -21,8 +21,6 @@ import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
@@ -36,15 +34,15 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class RegisterHappeningView extends Composite implements ClickListener,
-        ChangeListener, FocusCallback {
+public class RegisterHappeningView extends Composite implements ClickListener, ChangeListener,
+        FocusCallback {
 
     private static RegisterHappeningView me;
 
     private static ViewCallback caller;
 
-    public static RegisterHappeningView show(I18NAccount messages,
-            Constants constants, ViewCallback caller, Elements elements) {
+    public static RegisterHappeningView show(I18NAccount messages, Constants constants,
+            ViewCallback caller, Elements elements) {
         RegisterHappeningView.caller = caller;
         if (me == null) {
             me = new RegisterHappeningView(messages, constants, elements);
@@ -134,8 +132,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
         int row = 7;
         for (Iterator i = counts.iterator(); i.hasNext();) {
             String count = (String) i.next();
-            TextBoxWithErrorText numberBox = new TextBoxWithErrorText("number"
-                    + count);
+            TextBoxWithErrorText numberBox = new TextBoxWithErrorText("number" + count);
             numberBox.setVisibleLength(10);
             table.setHTML(row, 0, count);
             table.setWidget(row, 1, numberBox);
@@ -144,8 +141,8 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             row++;
         }
 
-        Button saveButton = new NamedButton("RegisterHappening_saveButton",
-                elements.RegisterHappening_saveButton());
+        Button saveButton = new NamedButton("RegisterHappening_saveButton", elements
+                .RegisterHappening_saveButton());
         saveButton.addClickListener(this);
         table.setWidget(row, 0, saveButton);
 
@@ -201,9 +198,6 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             Util.addPostParam(sb, key, value);
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "accounting/addhappening.php");
-
         ServerResponse callback = new ServerResponse() {
             public void serverResponse(JSONValue value) {
                 handleSaveResponse(value);
@@ -211,13 +205,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
 
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "accounting/addhappening.php");
 
     }
 
@@ -250,20 +238,18 @@ public class RegisterHappeningView extends Composite implements ClickListener,
     private boolean validateSave() {
         MasterValidator mv = new MasterValidator();
 
-        mv.mandatory(messages.required_field(),
-                new Widget[] { amountBox, descriptionBox, postListBox,
-                        attachmentBox, dayBox, postNmbBox });
+        mv.mandatory(messages.required_field(), new Widget[] { amountBox, descriptionBox,
+                postListBox, attachmentBox, dayBox, postNmbBox });
 
-        mv.day(messages.illegal_day(), registerStandards.getCurrentYear(),
-                registerStandards.getCurrentMonth(), new Widget[] { dayBox });
+        mv.day(messages.illegal_day(), registerStandards.getCurrentYear(), registerStandards
+                .getCurrentMonth(), new Widget[] { dayBox });
 
         mv.money(messages.field_money(), new Widget[] { amountBox });
 
-        mv.range(messages.field_to_low_zero(), new Integer(1), null,
-                new Widget[] { attachmentBox, postNmbBox });
+        mv.range(messages.field_to_low_zero(), new Integer(1), null, new Widget[] { attachmentBox,
+                postNmbBox });
 
-        mv.range(messages.field_positive(), new Integer(0), null,
-                widgetGivesValue.getWidgets());
+        mv.range(messages.field_positive(), new Integer(0), null, widgetGivesValue.getWidgets());
 
         return mv.validateStatus();
     }
@@ -290,8 +276,7 @@ public class RegisterHappeningView extends Composite implements ClickListener,
             String value = widgetGivesValue.findId(widget);
 
             if (widget.getText().length() > 0) {
-                sum += Double.parseDouble(value)
-                        * Integer.parseInt(widget.getText());
+                sum += Double.parseDouble(value) * Integer.parseInt(widget.getText());
 
             }
         }

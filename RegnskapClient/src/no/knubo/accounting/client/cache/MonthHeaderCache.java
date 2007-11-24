@@ -10,12 +10,9 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
 /**
@@ -28,8 +25,7 @@ public class MonthHeaderCache implements ServerResponse {
     List headersByName;
     List keys;
 
-    public static MonthHeaderCache getInstance(Constants constants,
-            I18NAccount messages) {
+    public static MonthHeaderCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
             instance = new MonthHeaderCache(constants, messages);
         }
@@ -37,15 +33,8 @@ public class MonthHeaderCache implements ServerResponse {
     }
 
     private MonthHeaderCache(Constants constants, I18NAccount messages) {
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/monthcolumns.php");
 
-        try {
-            builder.sendRequest("",
-                    new AuthResponder(constants, messages, this));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, instance, "registers/monthcolumns.php");
     }
 
     public void serverResponse(JSONValue jsonValue) {

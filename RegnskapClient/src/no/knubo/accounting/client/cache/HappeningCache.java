@@ -10,12 +10,9 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
 public class HappeningCache implements ServerResponse {
@@ -44,14 +41,8 @@ public class HappeningCache implements ServerResponse {
 
     public void flush(final CacheCallback flushcallback) {
         this.flushcallback = flushcallback;
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/happening.php?action=all");
 
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages, this));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, instance, "registers/happening.php?action=all");
     }
 
     public JSONObject getHappening(String id) {
@@ -73,14 +64,13 @@ public class HappeningCache implements ServerResponse {
         for (Iterator i = dataPerId.values().iterator(); i.hasNext();) {
             JSONObject obj = (JSONObject) i.next();
 
-            box.insertItem(Util.str(obj.get("description")), Util.str(obj
-                    .get("id")), pos++);
+            box.insertItem(Util.str(obj.get("description")), Util.str(obj.get("id")), pos++);
         }
     }
 
     public String getLineDescription(String id) {
         JSONObject object = (JSONObject) dataPerId.get(id);
-        
+
         return Util.str(object.get("linedesc"));
     }
 
@@ -98,6 +88,6 @@ public class HappeningCache implements ServerResponse {
         }
         if (flushcallback != null) {
             flushcallback.flushCompleted();
-        }        
+        }
     }
 }

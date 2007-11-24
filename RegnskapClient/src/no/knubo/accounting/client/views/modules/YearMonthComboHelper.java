@@ -24,8 +24,7 @@ public class YearMonthComboHelper {
 
     private final Elements elements;
 
-    public YearMonthComboHelper(Constants constants, ListBox monthYearCombo,
-            Elements elements) {
+    public YearMonthComboHelper(Constants constants, ListBox monthYearCombo, Elements elements) {
         this.constants = constants;
         this.monthYearCombo = monthYearCombo;
         this.elements = elements;
@@ -46,8 +45,7 @@ public class YearMonthComboHelper {
                     int month = Util.getInt(object.get("month"));
                     int year = Util.getInt(object.get("year"));
 
-                    String desc = Util.monthString(elements, month) + " "
-                            + year;
+                    String desc = Util.monthString(elements, month) + " " + year;
                     String val = year + "/" + month;
                     monthYearCombo.addItem(desc, val);
                 }
@@ -55,8 +53,7 @@ public class YearMonthComboHelper {
             }
 
         };
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "defaults/yearmonths.php", resp)) {
+        if (!HTTPRequest.asyncGet(this.constants.baseurl() + "defaults/yearmonths.php", resp)) {
             // TODO Report errors.
         }
     }
@@ -70,7 +67,7 @@ public class YearMonthComboHelper {
         if (monthYearCombo.getItemCount() > 0) {
             String value = currentYear + "/" + matchMonth;
             Util.setIndexByValue(monthYearCombo, value);
-        } 
+        }
     }
 
 }

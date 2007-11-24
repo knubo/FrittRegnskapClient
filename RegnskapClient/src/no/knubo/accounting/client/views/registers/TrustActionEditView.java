@@ -19,11 +19,8 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -36,8 +33,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TrustActionEditView extends Composite implements ClickListener,
-        CacheCallback {
+public class TrustActionEditView extends Composite implements ClickListener, CacheCallback {
 
     private static TrustActionEditView me;
 
@@ -56,9 +52,8 @@ public class TrustActionEditView extends Composite implements ClickListener,
     private TrustActionCache trustActionCache;
     private PosttypeCache posttypeCache;
 
-
-    public TrustActionEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public TrustActionEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -88,8 +83,8 @@ public class TrustActionEditView extends Composite implements ClickListener,
         initWidget(dp);
     }
 
-    public static TrustActionEditView show(I18NAccount messages,
-            Constants constants, HelpPanel helpPanel, Elements elements) {
+    public static TrustActionEditView show(I18NAccount messages, Constants constants,
+            HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new TrustActionEditView(messages, constants, helpPanel, elements);
         }
@@ -158,12 +153,10 @@ public class TrustActionEditView extends Composite implements ClickListener,
         table.setText(row, 4, Util.debkred(elements, actiontrust));
 
         if (!("".equals(debetpost))) {
-            table.setText(row, 5, posttypeCache
-                    .getDescriptionWithType(debetpost));
+            table.setText(row, 5, posttypeCache.getDescriptionWithType(debetpost));
         }
         if (!("".equals(creditpost))) {
-            table.setText(row, 6, posttypeCache
-                    .getDescriptionWithType(creditpost));
+            table.setText(row, 6, posttypeCache.getDescriptionWithType(creditpost));
         }
         table.getCellFormatter().setStyleName(row, 0, "desc");
         table.getCellFormatter().setStyleName(row, 1, "desc");
@@ -244,8 +237,7 @@ public class TrustActionEditView extends Composite implements ClickListener,
             HorizontalPanel hpcred = new HorizontalPanel();
 
             HTML errorAccountCredHtml = new HTML();
-            accountCredIdBox = new TextBoxWithErrorText("account",
-                    errorAccountCredHtml);
+            accountCredIdBox = new TextBoxWithErrorText("account", errorAccountCredHtml);
             accountCredIdBox.setVisibleLength(6);
             accountCredNameBox = new ListBox();
             accountCredNameBox.setVisibleItemCount(1);
@@ -254,8 +246,7 @@ public class TrustActionEditView extends Composite implements ClickListener,
             hpcred.add(accountCredNameBox);
             hpcred.add(errorAccountCredHtml);
 
-            PosttypeCache.getInstance(constants, messages).fillAllPosts(
-                    accountCredNameBox);
+            PosttypeCache.getInstance(constants, messages).fillAllPosts(accountCredNameBox);
             Util.syncListbox(accountCredNameBox, accountCredIdBox.getTextBox());
 
             edittable.setWidget(5, 1, hpcred);
@@ -264,8 +255,7 @@ public class TrustActionEditView extends Composite implements ClickListener,
             HorizontalPanel hpdeb = new HorizontalPanel();
 
             HTML errorAccountDebHtml = new HTML();
-            accountDebIdBox = new TextBoxWithErrorText("account",
-                    errorAccountDebHtml);
+            accountDebIdBox = new TextBoxWithErrorText("account", errorAccountDebHtml);
             accountDebIdBox.setVisibleLength(6);
             accountDebNameBox = new ListBox();
             accountDebNameBox.setVisibleItemCount(1);
@@ -274,8 +264,7 @@ public class TrustActionEditView extends Composite implements ClickListener,
             hpdeb.add(accountDebNameBox);
             hpdeb.add(errorAccountDebHtml);
 
-            PosttypeCache.getInstance(constants, messages).fillAllPosts(
-                    accountDebNameBox);
+            PosttypeCache.getInstance(constants, messages).fillAllPosts(accountDebNameBox);
             Util.syncListbox(accountDebNameBox, accountDebIdBox.getTextBox());
 
             edittable.setWidget(6, 1, hpdeb);
@@ -283,11 +272,9 @@ public class TrustActionEditView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("projectEditView_saveButton", elements
-                    .save());
+            saveButton = new NamedButton("projectEditView_saveButton", elements.save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("projectEditView_cancelButton",
-                    elements.cancel());
+            cancelButton = new NamedButton("projectEditView_cancelButton", elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -348,22 +335,16 @@ public class TrustActionEditView extends Composite implements ClickListener,
             Util.addPostParam(sb, "trust", trustBox.getText());
             Util.addPostParam(sb, "description", descBox.getText());
             Util.addPostParam(sb, "defaultdesc", defaultDescBox.getText());
-            Util
-                    .addPostParam(sb, "clubaction", Util
-                            .getSelected(actionClubBox));
-            Util.addPostParam(sb, "trustaction", Util
-                    .getSelected(actionTrustBox));
+            Util.addPostParam(sb, "clubaction", Util.getSelected(actionClubBox));
+            Util.addPostParam(sb, "trustaction", Util.getSelected(actionTrustBox));
             Util.addPostParam(sb, "debetpost", accountDebIdBox.getText());
             Util.addPostParam(sb, "creditpost", accountCredIdBox.getText());
-
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/trustaction.php");
 
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(JSONValue value) {
                     JSONObject obj = value.isObject();
-                    
+
                     String serverResponse = Util.str(obj.get("result"));
 
                     if ("0".equals(serverResponse)) {
@@ -371,22 +352,14 @@ public class TrustActionEditView extends Composite implements ClickListener,
                         Util.timedMessage(mainErrorLabel, "", 5);
                     } else {
                         /* Could probably be more effective, but why bother? */
-                        TrustActionCache.getInstance(constants, messages)
-                                .flush(me);
+                        TrustActionCache.getInstance(constants, messages).flush(me);
 
                         hide();
                     }
                 }
             };
 
-            try {
-                builder.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                        messages, callback));
-            } catch (RequestException e) {
-                Window.alert("Failed to send the request: " + e.getMessage());
-            }
+            AuthResponder.post(constants, messages, callback, sb, "registers/trustaction.php");
 
         }
 
@@ -394,16 +367,14 @@ public class TrustActionEditView extends Composite implements ClickListener,
             MasterValidator mv = new MasterValidator();
             Widget[] widgets = new Widget[] { descBox, defaultDescBox };
 
-            Widget[] idWidgets = new Widget[] { accountDebIdBox,
-                    accountCredIdBox };
+            Widget[] idWidgets = new Widget[] { accountDebIdBox, accountCredIdBox };
 
-            if (accountDebIdBox.getText().length() > 0
-                    || accountCredIdBox.getText().length() > 0) {
+            if (accountDebIdBox.getText().length() > 0 || accountCredIdBox.getText().length() > 0) {
                 mv.mandatory(messages.required_field(), idWidgets);
             }
 
-            mv.registry(messages.registry_invalid_key(), PosttypeCache
-                    .getInstance(constants, messages), idWidgets);
+            mv.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(constants,
+                    messages), idWidgets);
 
             mv.mandatory(messages.required_field(), widgets);
             return mv.validateStatus();

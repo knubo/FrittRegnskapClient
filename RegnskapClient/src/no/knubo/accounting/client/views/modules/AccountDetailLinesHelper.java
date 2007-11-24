@@ -53,12 +53,9 @@ public class AccountDetailLinesHelper {
 
     public void renderResult(JSONArray array, String filterPostType) {
 
-        ProjectCache projectCache = ProjectCache.getInstance(constants,
-                messages);
-        EmploeeCache emploeeCache = EmploeeCache.getInstance(constants,
-                messages);
-        PosttypeCache posttypeCache = PosttypeCache.getInstance(constants,
-                messages);
+        ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
+        EmploeeCache emploeeCache = EmploeeCache.getInstance(constants, messages);
+        PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
         int row = 0;
         double sum = 0;
@@ -122,25 +119,22 @@ public class AccountDetailLinesHelper {
                         : "smallerfont showlineposts1";
                 table.getRowFormatter().setStyleName(row, style);
 
-                table.setText(row, 3, posttype + " "
-                        + posttypeCache.getDescription(posttype));
+                table.setText(row, 3, posttype + " " + posttypeCache.getDescription(posttype));
                 table.getCellFormatter().setStyleName(row, 3, "desc");
 
-                table.setText(row, 4, projectCache.getName(Util.str(postObj
-                        .get("Project"))));
+                table.setText(row, 4, projectCache.getName(Util.str(postObj.get("Project"))));
                 table.getCellFormatter().setStyleName(row, 4, "desc");
 
-                table.setText(row, 5, emploeeCache.getName(Util.str(postObj
-                        .get("Person"))));
+                table.setText(row, 5, emploeeCache.getName(Util.str(postObj.get("Person"))));
                 table.getCellFormatter().setStyleName(row, 5, "desc");
 
                 JSONValue debkred = postObj.get("Debet");
                 table.setText(row, 6, Util.debkred(elements, debkred));
 
-                if("1".equals(Util.str(debkred))) {
-                    sum +=Double.parseDouble(Util.str(postObj.get("Amount")));
+                if ("1".equals(Util.str(debkred))) {
+                    sum += Double.parseDouble(Util.str(postObj.get("Amount")));
                 } else {
-                    sum -=Double.parseDouble(Util.str(postObj.get("Amount")));
+                    sum -= Double.parseDouble(Util.str(postObj.get("Amount")));
                 }
                 table.setText(row, 7, Util.money(postObj.get("Amount")));
                 table.getCellFormatter().setStyleName(row, 7, "right");

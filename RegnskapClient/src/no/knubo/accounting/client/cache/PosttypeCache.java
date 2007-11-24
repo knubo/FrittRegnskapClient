@@ -13,12 +13,9 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 
 /**
@@ -37,8 +34,7 @@ public class PosttypeCache implements Registry {
 
     List memberPaymentPosts;
 
-    public static PosttypeCache getInstance(Constants constants,
-            I18NAccount messages) {
+    public static PosttypeCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
             instance = new PosttypeCache(constants, messages);
         }
@@ -58,8 +54,7 @@ public class PosttypeCache implements Registry {
                     JSONObject obj = array.get(i).isObject();
 
                     String key = Util.str(obj.get("PostType"));
-                    typeGivesDescription.put(key, Util.str(obj
-                            .get("Description")));
+                    typeGivesDescription.put(key, Util.str(obj.get("Description")));
 
                     originalSort.add(key);
                 }
@@ -67,15 +62,7 @@ public class PosttypeCache implements Registry {
 
         };
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/posttypes.php?action=all");
-
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    handlerTypes));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, handlerTypes, "registers/posttypes.php?action=all");
 
         ServerResponse handlerMembershipPayment = new ServerResponse() {
 
@@ -93,17 +80,8 @@ public class PosttypeCache implements Registry {
 
         };
 
-        RequestBuilder builderMP = new RequestBuilder(
-                RequestBuilder.GET,
-                constants.baseurl()
-                        + "defaults/post_defaults.php?selection=membershippayment");
-
-        try {
-            builderMP.sendRequest("", new AuthResponder(constants, messages,
-                    handlerMembershipPayment));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, handlerMembershipPayment,
+                "defaults/post_defaults.php?selection=membershippayment");
 
     }
 
@@ -134,8 +112,7 @@ public class PosttypeCache implements Registry {
         return typeGivesDescription.containsKey(key);
     }
 
-    public void fillAllPosts(ListBox box, ListBox excludeBox, boolean addBlanc,
-            boolean includeKey) {
+    public void fillAllPosts(ListBox box, ListBox excludeBox, boolean addBlanc, boolean includeKey) {
 
         HashSet excludeKeys = setUpExcludeKeys(excludeBox);
 
@@ -161,7 +138,7 @@ public class PosttypeCache implements Registry {
     }
 
     private HashSet setUpExcludeKeys(ListBox excludeBox) {
-        if(excludeBox == null) {
+        if (excludeBox == null) {
             return new HashSet();
         }
         HashSet hs = new HashSet(excludeBox.getItemCount());

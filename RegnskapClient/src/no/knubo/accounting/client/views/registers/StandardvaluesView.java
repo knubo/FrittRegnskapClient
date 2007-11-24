@@ -10,13 +10,8 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -30,8 +25,8 @@ public class StandardvaluesView extends Composite implements ClickListener {
 
     private static StandardvaluesView me;
 
-    public static StandardvaluesView show(I18NAccount messages,
-            Constants constants, Elements elements) {
+    public static StandardvaluesView show(I18NAccount messages, Constants constants,
+            Elements elements) {
         if (me == null) {
             me = new StandardvaluesView(messages, constants, elements);
         }
@@ -60,6 +55,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
     private final I18NAccount messages;
 
     private TextBoxWithErrorText emailBox;
+    private TextBoxWithErrorText massletterDueDateBox;
 
     public StandardvaluesView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
@@ -80,6 +76,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         table.setHTML(4, 0, elements.cost_practice());
         table.setHTML(5, 0, elements.cost_membership());
         table.setHTML(6, 0, elements.mail_sender());
+        table.setHTML(7, 0, elements.massletter_due_date());
 
         yearBox = new TextBoxWithErrorText("year");
         yearBox.setMaxLength(4);
@@ -98,7 +95,9 @@ public class StandardvaluesView extends Composite implements ClickListener {
         costMembershipBox.setEnabled(false);
         emailBox = new TextBoxWithErrorText("mail_sender");
         emailBox.setVisibleLength(80);
-        
+        massletterDueDateBox = new TextBoxWithErrorText("massletter_due_date");
+        massletterDueDateBox.setMaxLength(10);
+
         table.setWidget(0, 1, yearBox);
         table.setWidget(1, 1, monthBox);
         table.setWidget(2, 1, semesterBox);
@@ -106,14 +105,14 @@ public class StandardvaluesView extends Composite implements ClickListener {
         table.setWidget(4, 1, costPracticeBox);
         table.setWidget(5, 1, costMembershipBox);
         table.setWidget(6, 1, emailBox);
+        table.setWidget(7, 1, massletterDueDateBox);
 
-        updateButton = new NamedButton("StandardValuesView.updateButton",
-                elements.update());
+        updateButton = new NamedButton("StandardValuesView.updateButton", elements.update());
         updateButton.addClickListener(this);
         statusHTML = new HTML();
 
-        table.setWidget(7, 0, updateButton);
-        table.setWidget(7, 1, statusHTML);
+        table.setWidget(8, 0, updateButton);
+        table.setWidget(8, 1, statusHTML);
         initWidget(dp);
     }
 
@@ -129,9 +128,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         Util.addPostParam(sb, "month", monthBox.getText());
         Util.addPostParam(sb, "semester", semesterBox.getText());
         Util.addPostParam(sb, "email_sender", emailBox.getText());
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "registers/standard.php");
+        Util.addPostParam(sb, "massletter_due_date", massletterDueDateBox.getText());
 
         ServerResponse callback = new ServerResponse() {
 
@@ -148,27 +145,15 @@ public class StandardvaluesView extends Composite implements ClickListener {
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                    messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "registers/standard.php");
 
     }
 
     public void init() {
-        ResponseTextHandler getValues = new ResponseTextHandler() {
 
-            public void onCompletion(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+        ServerResponse callback = new ServerResponse() {
 
-                if (value == null) {
-                    Window.alert("Failed to load data.");
-                    return;
-                }
+            public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
                 if (object == null) {
@@ -181,27 +166,27 @@ public class StandardvaluesView extends Composite implements ClickListener {
                 semesterBox.setText(Util.str(object.get("semester")));
                 costCourseBox.setText(Util.str(object.get("cost_course")));
                 costPracticeBox.setText(Util.str(object.get("cost_practice")));
-                costMembershipBox.setText(Util.str(object
-                        .get("cost_membership")));
+                costMembershipBox.setText(Util.str(object.get("cost_membership")));
                 emailBox.setText(Util.str(object.get("email_sender")));
+                massletterDueDateBox.setText(Util.str(object.get("massletter_due_date")));
             }
 
         };
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "registers/standard.php?action=get", getValues)) {
-            Window.alert("Failed to load data.");
-        }
+
+        AuthResponder.get(constants, messages, callback, "registers/standard.php?action=get");
+
     }
 
     private boolean validate() {
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(), new Widget[] {
-                yearBox, monthBox, semesterBox });
+        masterValidator.mandatory(messages.required_field(), new Widget[] { yearBox, monthBox,
+                semesterBox });
 
-        masterValidator.range(messages.illegal_month(), new Integer(1),
-                new Integer(12), new Widget[] { monthBox });
+        masterValidator.range(messages.illegal_month(), new Integer(1), new Integer(12),
+                new Widget[] { monthBox });
+
+        masterValidator.date(messages.date_format(), new Widget[] { massletterDueDateBox });
 
         return masterValidator.validateStatus();
 

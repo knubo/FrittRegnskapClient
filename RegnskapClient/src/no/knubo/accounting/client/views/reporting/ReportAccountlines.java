@@ -15,11 +15,8 @@ import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.AccountDetailLinesHelper;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -50,24 +47,22 @@ public class ReportAccountlines extends Composite implements ClickListener {
     private TextBoxWithErrorText descBox;
     private CheckBox showOnlyPosts;
 
-    public static ReportAccountlines getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel, Elements elements) {
+    public static ReportAccountlines getInstance(Constants constants, I18NAccount messages,
+            HelpPanel helpPanel, Elements elements) {
         if (reportInstance == null) {
-            reportInstance = new ReportAccountlines(constants, messages,
-                    helpPanel, elements);
+            reportInstance = new ReportAccountlines(constants, messages, helpPanel, elements);
         }
         return reportInstance;
     }
 
-    public ReportAccountlines(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel, Elements elements) {
+    public ReportAccountlines(Constants constants, I18NAccount messages, HelpPanel helpPanel,
+            Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
 
         DockPanel dp = new DockPanel();
-        accountDetailLinesHelper = new AccountDetailLinesHelper(constants,
-                messages, elements);
+        accountDetailLinesHelper = new AccountDetailLinesHelper(constants, messages, elements);
         table = new FlexTable();
         table.setStyleName("edittable");
 
@@ -105,8 +100,7 @@ public class ReportAccountlines extends Composite implements ClickListener {
         hpAccount.add(errorAccountHtml);
         table.setWidget(2, 1, hpAccount);
 
-        PosttypeCache.getInstance(constants, messages).fillAllPosts(
-                accountNameBox);
+        PosttypeCache.getInstance(constants, messages).fillAllPosts(accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
         HTML projectErrorLabel = new HTML();
@@ -169,11 +163,11 @@ public class ReportAccountlines extends Composite implements ClickListener {
         Widget[] datewidgets = new Widget[] { fromDateBox, toDateBox };
         mv.date(messages.date_format(), datewidgets);
 
-        mv.registry(messages.registry_invalid_key(), ProjectCache.getInstance(
-                constants, messages), new Widget[] { projectIdBox });
+        mv.registry(messages.registry_invalid_key(), ProjectCache.getInstance(constants, messages),
+                new Widget[] { projectIdBox });
 
-        mv.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(
-                constants, messages), new Widget[] { accountIdBox });
+        mv.registry(messages.registry_invalid_key(),
+                PosttypeCache.getInstance(constants, messages), new Widget[] { accountIdBox });
 
         return mv.validateStatus();
     }
@@ -185,36 +179,26 @@ public class ReportAccountlines extends Composite implements ClickListener {
         searchRequest.append("action=search");
         Util.addPostParam(searchRequest, "fromdate", fromDateBox.getText());
         Util.addPostParam(searchRequest, "todate", toDateBox.getText());
-        Util.addPostParam(searchRequest, "employee", Util
-                .getSelected(personBox));
+        Util.addPostParam(searchRequest, "employee", Util.getSelected(personBox));
         Util.addPostParam(searchRequest, "project", projectIdBox.getText());
         final String accountId = accountIdBox.getText();
         Util.addPostParam(searchRequest, "account", accountId);
         Util.addPostParam(searchRequest, "description", descBox.getText());
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "reports/accountlines.php");
 
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
-                accountDetailLinesHelper.renderResult(array, showOnlyPosts
-                        .isChecked() ? accountId : null);
+                accountDetailLinesHelper.renderResult(array, showOnlyPosts.isChecked() ? accountId
+                        : null);
                 helpPanel.resize(reportInstance);
             }
 
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(searchRequest.toString(), new AuthResponder(
-                    constants, messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder
+                .post(constants, messages, callback, searchRequest, "reports/accountlines.php");
 
     }
 

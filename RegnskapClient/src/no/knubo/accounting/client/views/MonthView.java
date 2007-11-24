@@ -13,8 +13,6 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.views.modules.YearMonthComboHelper;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -31,13 +29,12 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MonthView extends Composite implements ClickListener,
-        ChangeListener, ServerResponse {
+public class MonthView extends Composite implements ClickListener, ChangeListener, ServerResponse {
 
     private static MonthView instance;
 
-    public static MonthView getInstance(Constants constants,
-            I18NAccount messages, ViewCallback caller, Elements elements) {
+    public static MonthView getInstance(Constants constants, I18NAccount messages,
+            ViewCallback caller, Elements elements) {
         if (instance == null) {
             instance = new MonthView(constants, messages, caller, elements);
         }
@@ -68,8 +65,8 @@ public class MonthView extends Composite implements ClickListener,
 
     private final Elements elements;
 
-    public MonthView(Constants constants, I18NAccount messages,
-            ViewCallback caller, Elements elements) {
+    public MonthView(Constants constants, I18NAccount messages, ViewCallback caller,
+            Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.caller = caller;
@@ -89,8 +86,7 @@ public class MonthView extends Composite implements ClickListener,
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
 
-        yearMonthComboHelper = new YearMonthComboHelper(constants, monthYearCombo,
-                elements);
+        yearMonthComboHelper = new YearMonthComboHelper(constants, monthYearCombo, elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
@@ -124,18 +120,7 @@ public class MonthView extends Composite implements ClickListener,
     private void getData(String params) {
         yearMonthComboHelper.fillYearMonthCombo();
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "accounting/showmonth.php");
-
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-
-            builder.sendRequest(params, new AuthResponder(constants, messages,
-                    this));
-        } catch (RequestException e) {
-            Window.alert("AU:" + e);
-        }
+        AuthResponder.get(constants, messages, instance, "accounting/showmonth.php?" + params);
     }
 
     private void setupHeaders() {
@@ -158,8 +143,7 @@ public class MonthView extends Composite implements ClickListener,
 
         /* Column-position for row 2 */
         int col2 = 1;
-        List names = MonthHeaderCache.getInstance(constants, messages)
-                .headers();
+        List names = MonthHeaderCache.getInstance(constants, messages).headers();
 
         for (Iterator i = names.iterator(); i.hasNext();) {
             String header = (String) i.next();
@@ -216,8 +200,7 @@ public class MonthView extends Composite implements ClickListener,
                 oldValue = Util.str(debetSums.get(key));
             }
 
-            double sum = Double.parseDouble(oldValue)
-                    - Double.parseDouble(toSubtract);
+            double sum = Double.parseDouble(oldValue) - Double.parseDouble(toSubtract);
 
             debetSums.put(key, new JSONString(String.valueOf(sum)));
         }
@@ -256,16 +239,14 @@ public class MonthView extends Composite implements ClickListener,
             table.setText(rowIndex, 2, Util.str(rowdata.get("date")));
             table.getCellFormatter().setStyleName(rowIndex, 2, "datefor");
 
-            Hyperlink link = new Hyperlink(
-                    Util.str(rowdata.get("Description")), "detail"
-                            + Util.str(rowdata.get("Id")));
+            Hyperlink link = new Hyperlink(Util.str(rowdata.get("Description")), "detail"
+                    + Util.str(rowdata.get("Id")));
             link.addClickListener(this);
             table.setWidget(rowIndex, 3, link);
 
             table.getCellFormatter().setStyleName(rowIndex, 3, "desc");
 
-            render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata
-                    .get("groupKredMonth"));
+            render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata.get("groupKredMonth"));
         }
     }
 
@@ -274,8 +255,8 @@ public class MonthView extends Composite implements ClickListener,
         JSONObject kredObj = kred.isObject();
 
         int col = 4;
-        for (Iterator i = MonthHeaderCache.getInstance(constants, messages)
-                .keys().iterator(); i.hasNext();) {
+        for (Iterator i = MonthHeaderCache.getInstance(constants, messages).keys().iterator(); i
+                .hasNext();) {
 
             String k = (String) i.next();
 
@@ -298,8 +279,7 @@ public class MonthView extends Composite implements ClickListener,
         JSONValue value = obj.get(k);
 
         if (value != null) {
-            table.setText(rowIndex, col, Util.money(Util.fixMoney(Util
-                    .str(value))));
+            table.setText(rowIndex, col, Util.money(Util.fixMoney(Util.str(value))));
         }
     }
 
@@ -325,8 +305,7 @@ public class MonthView extends Composite implements ClickListener,
      * @param line
      */
     private void openDetails(Hyperlink link, String line) {
-        PostView pv = PostView
-                .show(messages, constants, caller, line, elements);
+        PostView pv = PostView.show(messages, constants, caller, line, elements);
         int left = link.getAbsoluteLeft() + 100;
         int top = link.getAbsoluteTop() + 10;
         pv.setPopupPosition(left, top);

@@ -18,8 +18,6 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -50,8 +48,8 @@ public class PostTypeEditView extends Composite implements ClickListener {
     private PostTypeEditFields editFields;
     private Elements elements;
 
-    public static PostTypeEditView show(I18NAccount messages,
-            Constants constants, HelpPanel helpPanel, Elements elements) {
+    public static PostTypeEditView show(I18NAccount messages, Constants constants,
+            HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new PostTypeEditView(messages, constants, helpPanel, elements);
         }
@@ -59,8 +57,8 @@ public class PostTypeEditView extends Composite implements ClickListener {
         return me;
     }
 
-    public PostTypeEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public PostTypeEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -117,14 +115,8 @@ public class PostTypeEditView extends Composite implements ClickListener {
             notInUseTable.removeRow(2);
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl()
-                        + "registers/posttypes.php?action=all&disableFilter=1");
-
-        final MonthHeaderCache monthHeaderCache = MonthHeaderCache.getInstance(
-                constants, messages);
-        final AccountPlanCache accountPlanCache = AccountPlanCache.getInstance(
-                constants, messages);
+        final MonthHeaderCache monthHeaderCache = MonthHeaderCache.getInstance(constants, messages);
+        final AccountPlanCache accountPlanCache = AccountPlanCache.getInstance(constants, messages);
 
         ServerResponse callback = new ServerResponse() {
 
@@ -138,23 +130,19 @@ public class PostTypeEditView extends Composite implements ClickListener {
                     String description = Util.str(object.get("Description"));
                     String inUse = Util.str(object.get("InUse"));
                     String colAccMonth = Util.str(object.get("CollPost"));
-                    String colAccAccountPlan = Util.str(object
-                            .get("DetailPost"));
+                    String colAccAccountPlan = Util.str(object.get("DetailPost"));
 
                     objectPerId.put(id, object);
 
-                    String colAccMonthDesc = monthHeaderCache
-                            .getDescription(colAccMonth);
+                    String colAccMonthDesc = monthHeaderCache.getDescription(colAccMonth);
 
-                    String colAccAccountPlanDesc = accountPlanCache
-                            .idGivesName(colAccAccountPlan);
+                    String colAccAccountPlanDesc = accountPlanCache.idGivesName(colAccAccountPlan);
                     if ("1".equals(inUse)) {
-                        addRow(inUseTable, idHolderInUse, id, description,
-                                inUse, colAccMonthDesc, colAccAccountPlanDesc);
-                    } else {
-                        addRow(notInUseTable, idHolderNotInUse, id,
-                                description, inUse, colAccMonthDesc,
+                        addRow(inUseTable, idHolderInUse, id, description, inUse, colAccMonthDesc,
                                 colAccAccountPlanDesc);
+                    } else {
+                        addRow(notInUseTable, idHolderNotInUse, id, description, inUse,
+                                colAccMonthDesc, colAccAccountPlanDesc);
                     }
 
                 }
@@ -162,18 +150,14 @@ public class PostTypeEditView extends Composite implements ClickListener {
             }
 
         };
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+
+        AuthResponder.get(constants, messages, callback,
+                "registers/posttypes.php?action=all&disableFilter=1");
 
     }
 
-    private void addRow(FlexTable table, IdHolder idHolder, String id,
-            String description, String inUse, String colAccMonth,
-            String colAccAccountPlan) {
+    private void addRow(FlexTable table, IdHolder idHolder, String id, String description,
+            String inUse, String colAccMonth, String colAccAccountPlan) {
         int row = table.getRowCount();
 
         table.setText(row, 0, id);
@@ -186,11 +170,9 @@ public class PostTypeEditView extends Composite implements ClickListener {
         }
         Image actionImage = null;
         if ("1".equals(inUse)) {
-            actionImage = ImageFactory
-                    .removeImage("postTypeEditView.removeImage");
+            actionImage = ImageFactory.removeImage("postTypeEditView.removeImage");
         } else {
-            actionImage = ImageFactory
-                    .chooseImage("postTypeEditView.chooseImage");
+            actionImage = ImageFactory.chooseImage("postTypeEditView.chooseImage");
         }
         actionImage.addClickListener(me);
         idHolder.add(id, actionImage);
@@ -256,11 +238,8 @@ public class PostTypeEditView extends Composite implements ClickListener {
         editFields.show();
     }
 
-    private void changeUse(final String id, final int use,
-            final IdHolder outofHolder, final IdHolder intoHolder) {
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/posttypes.php?action=use&use="
-                        + use + "&posttype=" + id);
+    private void changeUse(final String id, final int use, final IdHolder outofHolder,
+            final IdHolder intoHolder) {
 
         ServerResponse callback = new ServerResponse() {
 
@@ -273,13 +252,12 @@ public class PostTypeEditView extends Composite implements ClickListener {
                     String id = Util.str(object.get("PostType"));
                     String description = Util.str(object.get("Description"));
                     String colAccMonth = Util.str(object.get("CollPost"));
-                    String colAccAccountPlan = Util.str(object
-                            .get("DetailPost"));
+                    String colAccAccountPlan = Util.str(object.get("DetailPost"));
 
-                    final MonthHeaderCache monthHeaderCache = MonthHeaderCache
-                            .getInstance(constants, messages);
-                    final AccountPlanCache accountPlanCache = AccountPlanCache
-                            .getInstance(constants, messages);
+                    final MonthHeaderCache monthHeaderCache = MonthHeaderCache.getInstance(
+                            constants, messages);
+                    final AccountPlanCache accountPlanCache = AccountPlanCache.getInstance(
+                            constants, messages);
 
                     FlexTable table = null;
                     if (use == 0) {
@@ -290,10 +268,9 @@ public class PostTypeEditView extends Composite implements ClickListener {
                         notInUseTable.removeRow(line + 2);
                     }
 
-                    addRow(table, intoHolder, id, description, String
-                            .valueOf(use), monthHeaderCache
-                            .getDescription(colAccMonth), accountPlanCache
-                            .idGivesName(colAccAccountPlan));
+                    addRow(table, intoHolder, id, description, String.valueOf(use),
+                            monthHeaderCache.getDescription(colAccMonth), accountPlanCache
+                                    .idGivesName(colAccAccountPlan));
 
                 } else {
                     Window.alert(messages.bad_server_response());
@@ -302,12 +279,9 @@ public class PostTypeEditView extends Composite implements ClickListener {
             }
 
         };
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+
+        AuthResponder.get(constants, messages, callback, "registers/posttypes.php?action=use&use="
+                + use + "&posttype=" + id);
     }
 
     class PostTypeEditFields extends DialogBox implements ClickListener {
@@ -339,27 +313,22 @@ public class PostTypeEditView extends Composite implements ClickListener {
             descBox.setMaxLength(100);
             edittable.setWidget(1, 1, descBox);
 
-            colMonthListBox = new ListBoxWithErrorText(
-                    "account_collection_month");
+            colMonthListBox = new ListBoxWithErrorText("account_collection_month");
             edittable.setWidget(2, 1, colMonthListBox);
 
-            colAccountPlanListBox = new ListBoxWithErrorText(
-                    "account_collection_accountplan");
+            colAccountPlanListBox = new ListBoxWithErrorText("account_collection_accountplan");
             edittable.setWidget(3, 1, colAccountPlanListBox);
 
-            MonthHeaderCache.getInstance(constants, messages).fill(
-                    colMonthListBox.getListbox());
+            MonthHeaderCache.getInstance(constants, messages).fill(colMonthListBox.getListbox());
             AccountPlanCache.getInstance(constants, messages).fill(
                     colAccountPlanListBox.getListbox());
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("HappeningsView.saveButton", elements
-                    .save());
+            saveButton = new NamedButton("HappeningsView.saveButton", elements.save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("HappeningsView.cancelButton",
-                    elements.cancel());
+            cancelButton = new NamedButton("HappeningsView.cancelButton", elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -392,8 +361,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
             accountBox.setText(Util.str(obj.get("PostType")));
             descBox.setText(Util.str(obj.get("Description")));
 
-            Util.setIndexByValue(colMonthListBox.getListbox(), Util.str(obj
-                    .get("CollPost")));
+            Util.setIndexByValue(colMonthListBox.getListbox(), Util.str(obj.get("CollPost")));
 
             Util.setIndexByValue(colAccountPlanListBox.getListbox(), Util
                     .str(obj.get("DetailPost")));
@@ -418,9 +386,6 @@ public class PostTypeEditView extends Composite implements ClickListener {
             Util.addPostParam(sb, "desc", descBox.getText());
             Util.addPostParam(sb, "collpost", colMonthListBox.getText());
             Util.addPostParam(sb, "detailpost", colAccountPlanListBox.getText());
-            
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/posttypes.php");
 
             ServerResponse callback = new ServerResponse() {
 
@@ -440,22 +405,15 @@ public class PostTypeEditView extends Composite implements ClickListener {
                 }
             };
 
-            try {
-                builder.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                        messages, callback));
-            } catch (RequestException e) {
-                Window.alert("Failed to send the request: " + e.getMessage());
-            }
+            AuthResponder.post(constants, messages, callback, sb, "registers/posttypes.php");
 
         }
 
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
 
-            mv.mandatory(messages.required_field(), new Widget[] { accountBox,
-                    descBox, colMonthListBox });
+            mv.mandatory(messages.required_field(), new Widget[] { accountBox, descBox,
+                    colMonthListBox });
             return mv.validateStatus();
         }
 

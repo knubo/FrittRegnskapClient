@@ -23,7 +23,7 @@ public class MasterValidator {
         ValidatorBase datevalidator = new DateValidator(error);
         status &= datevalidator.validate(this, widgets);
     }
-    
+
     public void day(String error, int year, int month, Widget[] widgets) {
         ValidatorBase dayvalidator = new DayValidator(error, month, year);
         status &= dayvalidator.validate(this, widgets);
@@ -39,17 +39,14 @@ public class MasterValidator {
         status &= emailValidator.validate(this, widgets);
     }
 
-    public void range(String error, Integer minVal, Integer maxVal,
-            Widget[] widgets) {
-        RangeValidator rangeValidator = new RangeValidator(error, minVal,
-                maxVal);
+    public void range(String error, Integer minVal, Integer maxVal, Widget[] widgets) {
+        RangeValidator rangeValidator = new RangeValidator(error, minVal, maxVal);
 
         status &= rangeValidator.validate(this, widgets);
     }
 
     public void registry(String error, Registry registry, Widget[] widgets) {
-        RegistryValidator registryValidator = new RegistryValidator(error,
-                registry);
+        RegistryValidator registryValidator = new RegistryValidator(error, registry);
 
         status &= registryValidator.validate(this, widgets);
     }
@@ -80,10 +77,8 @@ public class MasterValidator {
         return valStatus;
     }
 
-    public void day(String error, String mouseover, int year, int month,
-            Widget[] widgets) {
-        ValidatorBase dayvalidator = new DayValidator(error, mouseover, month,
-                year);
+    public void day(String error, String mouseover, int year, int month, Widget[] widgets) {
+        ValidatorBase dayvalidator = new DayValidator(error, mouseover, month, year);
         status &= dayvalidator.validate(this, widgets);
     }
 
@@ -112,7 +107,5 @@ public class MasterValidator {
         }
         range(error, minVal, maxVal, widgetList);
     }
-
-   
 
 }

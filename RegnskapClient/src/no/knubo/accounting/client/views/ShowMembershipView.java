@@ -10,12 +10,9 @@ import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -43,18 +40,16 @@ public class ShowMembershipView extends Composite implements ClickListener {
     final HelpPanel helpPanel;
     private final Elements elements;
 
-    public static ShowMembershipView show(I18NAccount messages,
-            Constants constants, ViewCallback caller, HelpPanel helpPanel,
-            Elements elements) {
+    public static ShowMembershipView show(I18NAccount messages, Constants constants,
+            ViewCallback caller, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new ShowMembershipView(messages, constants, caller, helpPanel,
-                    elements);
+            me = new ShowMembershipView(messages, constants, caller, helpPanel, elements);
         }
         return me;
     }
 
-    public ShowMembershipView(I18NAccount messages, Constants constants,
-            ViewCallback caller, HelpPanel helpPanel, Elements elements) {
+    public ShowMembershipView(I18NAccount messages, Constants constants, ViewCallback caller,
+            HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.caller = caller;
@@ -70,8 +65,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
         header = new HTML();
         periodeHeader = new HTML();
-        previousImage = ImageFactory
-                .previousImage("ShowMembershipView.previousImage");
+        previousImage = ImageFactory.previousImage("ShowMembershipView.previousImage");
         previousImage.addClickListener(this);
         nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
         nextImage.addClickListener(this);
@@ -127,10 +121,6 @@ public class ShowMembershipView extends Composite implements ClickListener {
             table.removeRow(1);
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/members.php?" + posparam
-                        + "&action=" + action);
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
@@ -144,8 +134,8 @@ public class ShowMembershipView extends Composite implements ClickListener {
                 JSONArray members = root.get("members").isArray();
 
                 String count = String.valueOf(members.size());
-                periodeHeader.setHTML(messages.members_navig_heading(Util
-                        .str(root.get("text")), count));
+                periodeHeader.setHTML(messages.members_navig_heading(Util.str(root.get("text")),
+                        count));
 
                 for (int i = 0; i < members.size(); i++) {
                     JSONArray names = members.get(i).isArray();
@@ -163,19 +153,15 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     table.setWidget(row, 5, editUserImage);
 
                     idHolder.add(id, editUserImage);
-                    String style = (row % 2 == 0) ? "showlineposts2"
-                            : "showlineposts1";
+                    String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(row, style);
                 }
                 helpPanel.resize(me);
             }
         };
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+
+        AuthResponder.get(constants, messages, callback, "registers/members.php?" + posparam
+                + "&action=" + action);
 
     }
 
@@ -213,10 +199,6 @@ public class ShowMembershipView extends Composite implements ClickListener {
             table.removeRow(1);
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/members.php?" + posparam
-                        + "&action=all");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
@@ -230,8 +212,8 @@ public class ShowMembershipView extends Composite implements ClickListener {
                 JSONArray members = root.get("members").isArray();
 
                 String count = String.valueOf(members.size());
-                periodeHeader.setHTML(messages.members_navig_heading(Util
-                        .str(root.get("text")), count));
+                periodeHeader.setHTML(messages.members_navig_heading(Util.str(root.get("text")),
+                        count));
 
                 for (int i = 0; i < members.size(); i++) {
                     JSONObject info = members.get(i).isObject();
@@ -239,48 +221,44 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     int row = i + 1;
                     String firstname = Util.str(info.get("first"));
                     String lastname = Util.str(info.get("last"));
-                    
+
                     boolean year = Util.getBoolean(info.get("year"));
                     boolean train = Util.getBoolean(info.get("train"));
                     boolean course = Util.getBoolean(info.get("course"));
-                    
+
                     String id = Util.str(info.get("id"));
                     table.setText(row, 0, lastname);
                     table.setText(row, 1, firstname);
-                    
-                    if(year) {
+
+                    if (year) {
                         table.setText(row, 2, elements.x());
                     }
-                    if(course) {
+                    if (course) {
                         table.setText(row, 3, elements.x());
                     }
-                    if(train) {
+                    if (train) {
                         table.setText(row, 4, elements.x());
                     }
 
                     table.getCellFormatter().setStyleName(row, 2, "center");
                     table.getCellFormatter().setStyleName(row, 3, "center");
                     table.getCellFormatter().setStyleName(row, 4, "center");
-                    
+
                     Image editUserImage = ImageFactory
                             .editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickListener(me);
                     table.setWidget(row, 5, editUserImage);
 
                     idHolder.add(id, editUserImage);
-                    String style = (row % 2 == 0) ? "showlineposts2"
-                            : "showlineposts1";
+                    String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(row, style);
                 }
                 helpPanel.resize(me);
             }
         };
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+
+        AuthResponder.get(constants, messages, callback, "registers/members.php?" + posparam
+                + "&action=all");
 
     }
 }

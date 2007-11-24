@@ -19,8 +19,6 @@ import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.ViewCallback;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -69,8 +67,8 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private final Elements elements;
 
-    public PersonEditView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, final ViewCallback caller, Elements elements) {
+    public PersonEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            final ViewCallback caller, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -136,14 +134,12 @@ public class PersonEditView extends Composite implements ClickListener {
         newsletterCheck = new CheckBox();
         hiddenCheck = new CheckBox();
 
-        updateButton = new NamedButton("PersonEditView.updateButton", elements
-                .update());
+        updateButton = new NamedButton("PersonEditView.updateButton", elements.update());
         updateButton.addClickListener(this);
 
         saveStatus = new HTMLWithError();
 
-        Hyperlink toSearch = new Hyperlink(elements.back_search(),
-                "personSearch");
+        Hyperlink toSearch = new Hyperlink(elements.back_search(), "personSearch");
         toSearch.addClickListener(new ClickListener() {
 
             public void onClick(Widget sender) {
@@ -172,8 +168,8 @@ public class PersonEditView extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    public static PersonEditView show(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel, ViewCallback caller, Elements elements) {
+    public static PersonEditView show(Constants constants, I18NAccount messages,
+            HelpPanel helpPanel, ViewCallback caller, Elements elements) {
         if (me == null) {
             me = new PersonEditView(messages, constants, helpPanel, caller, elements);
         }
@@ -217,15 +213,12 @@ public class PersonEditView extends Composite implements ClickListener {
     private void sendDeleteMessage(String deletemessage) {
         String toSend = deletemessage + "&personId=" + currentId;
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/members.php?" + toSend);
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
-                
-                if(object == null) {
+
+                if (object == null) {
                     Window.alert(messages.save_failed_badly());
                     return;
                 }
@@ -237,12 +230,8 @@ public class PersonEditView extends Composite implements ClickListener {
                 }
             }
         };
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+
+        AuthResponder.get(constants, messages, callback, "registers/members.php?" + toSend);
     }
 
     private void doOpen() {
@@ -250,9 +239,6 @@ public class PersonEditView extends Composite implements ClickListener {
 
         sb.append("action=get");
         Util.addPostParam(sb, "id", currentId);
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "registers/persons.php");
 
         ServerResponse callback = new ServerResponse() {
             public void serverResponse(JSONValue value) {
@@ -268,14 +254,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                    messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "registers/persons.php");
 
     }
 
@@ -286,16 +265,12 @@ public class PersonEditView extends Composite implements ClickListener {
             return;
         }
 
-        showMemberships("train", elements.train_membership(), obj.get("train")
-                .isArray());
-        showMemberships("course", elements.course_membership(), obj.get(
-                "course").isArray());
-        showMemberships("year", elements.year_membership(), obj.get("year")
-                .isArray());
+        showMemberships("train", elements.train_membership(), obj.get("train").isArray());
+        showMemberships("course", elements.course_membership(), obj.get("course").isArray());
+        showMemberships("year", elements.year_membership(), obj.get("year").isArray());
     }
 
-    private void showMemberships(String type, String title,
-            JSONArray memberships) {
+    private void showMemberships(String type, String title, JSONArray memberships) {
 
         if (memberships.size() == 0) {
             return;
@@ -313,8 +288,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
             int row = rows + i;
 
-            Image deleteImage = ImageFactory
-                    .deleteImage("personeditview.deleteImage");
+            Image deleteImage = ImageFactory.deleteImage("personeditview.deleteImage");
             deleteImage.addClickListener(this);
             membershipsTable.setWidget(row, 1, deleteImage);
 
@@ -343,10 +317,8 @@ public class PersonEditView extends Composite implements ClickListener {
         cellphoneBox.setText(Util.str(object.get("Cellphone")));
         Util.setIndexByValue(countryListBox, Util.str(object.get("Country")));
         emailBox.setText(Util.str(object.get("Email")));
-        employeeCheck
-                .setChecked("1".equals(Util.str(object.get("IsEmployee"))));
-        newsletterCheck.setChecked("1".equals(Util
-                .str(object.get("Newsletter"))));
+        employeeCheck.setChecked("1".equals(Util.str(object.get("IsEmployee"))));
+        newsletterCheck.setChecked("1".equals(Util.str(object.get("Newsletter"))));
         hiddenCheck.setChecked("1".equals(Util.str(object.get("Hidden"))));
     }
 
@@ -376,15 +348,12 @@ public class PersonEditView extends Composite implements ClickListener {
         String hidden = hiddenCheck.isChecked() ? "1" : "0";
         Util.addPostParam(sb, "hidden", hidden);
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "registers/persons.php");
-
         ServerResponseWithValidation callback = new ServerResponseWithValidation() {
 
             public void serverResponse(JSONValue value) {
-                
+
                 JSONObject obj = value.isObject();
-                
+
                 String id = Util.str(obj.get("result"));
 
                 if ("0".equals(id)) {
@@ -409,14 +378,7 @@ public class PersonEditView extends Composite implements ClickListener {
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                    messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "registers/persons.php");
     }
 
     public void init(String currentId) {
@@ -451,14 +413,12 @@ public class PersonEditView extends Composite implements ClickListener {
     private boolean validateSave() {
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(), new Widget[] {
-                lastnameBox, firstnameBox });
+        masterValidator.mandatory(messages.required_field(), new Widget[] { lastnameBox,
+                firstnameBox });
 
-        masterValidator.date(messages.date_format(),
-                new Widget[] { birthdateBox });
+        masterValidator.date(messages.date_format(), new Widget[] { birthdateBox });
 
-        masterValidator.email(messages.invalid_email(),
-                new Widget[] { emailBox });
+        masterValidator.email(messages.invalid_email(), new Widget[] { emailBox });
 
         return masterValidator.validateStatus();
     }

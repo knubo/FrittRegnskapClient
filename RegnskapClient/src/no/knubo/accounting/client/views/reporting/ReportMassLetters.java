@@ -11,8 +11,6 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
@@ -31,8 +29,8 @@ public class ReportMassLetters extends Composite implements ClickListener {
     private ArrayList radiobuttons;
     private final Elements elements;
 
-    public static ReportMassLetters getInstance(Constants constants,
-            I18NAccount messages, Elements elements) {
+    public static ReportMassLetters getInstance(Constants constants, I18NAccount messages,
+            Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportMassLetters(constants, messages, elements);
         }
@@ -63,9 +61,6 @@ public class ReportMassLetters extends Composite implements ClickListener {
 
         radiobuttons.clear();
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "reports/massletter.php?action=list");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue parse) {
@@ -82,19 +77,13 @@ public class ReportMassLetters extends Composite implements ClickListener {
                     table.setWidget(1 + i, 0, rb);
                 }
                 int row = table.getRowCount();
-                NamedButton button = new NamedButton("join_letters", elements
-                        .join_letters());
+                NamedButton button = new NamedButton("join_letters", elements.join_letters());
                 button.addClickListener(reportInstance);
                 table.setWidget(row, 0, button);
             }
         };
 
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, callback, "reports/massletter.php?action=list");
 
     }
 
@@ -109,8 +98,7 @@ public class ReportMassLetters extends Composite implements ClickListener {
     }
 
     private void doLetter(String template) {
-        Window.open(this.constants.baseurl()
-                + "reports/massletter.php?action=pdf&template=" + template,
-                "_blank", "");
+        Window.open(this.constants.baseurl() + "reports/massletter.php?action=pdf&template="
+                + template, "_blank", "");
     }
 }

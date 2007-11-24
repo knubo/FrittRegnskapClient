@@ -14,8 +14,6 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -62,8 +60,7 @@ public class TrustActionCache {
 
                 for (int i = 0; i < typeArray.size(); i++) {
                     JSONObject obj = typeArray.get(i).isObject();
-                    fondGivesName.put(Util.str(obj.get("fond")), Util.str(obj
-                            .get("description")));
+                    fondGivesName.put(Util.str(obj.get("fond")), Util.str(obj.get("description")));
                 }
                 if (flushcallback != null) {
                     flushcallback.flushCompleted();
@@ -71,19 +68,10 @@ public class TrustActionCache {
             }
         };
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "registers/trustaction.php?action=all");
-
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    resphandler));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, resphandler, "registers/trustaction.php?action=all");
     }
 
-    public static TrustActionCache getInstance(Constants constants,
-            I18NAccount messages) {
+    public static TrustActionCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
             instance = new TrustActionCache(constants, messages);
         }
@@ -95,8 +83,7 @@ public class TrustActionCache {
         for (Iterator i = fondGivesName.entrySet().iterator(); i.hasNext();) {
             Entry entry = (Entry) i.next();
 
-            trustListBox.addItem(entry.getValue().toString(), entry.getKey()
-                    .toString());
+            trustListBox.addItem(entry.getValue().toString(), entry.getKey().toString());
         }
     }
 
@@ -113,8 +100,7 @@ public class TrustActionCache {
             JSONObject obj = (JSONObject) i.next();
 
             if (Util.str(obj.get("fond")).equals(selectedFond)) {
-                actionsBox.addItem(Util.str(obj.get("description")), Util
-                        .str(obj.get("id")));
+                actionsBox.addItem(Util.str(obj.get("description")), Util.str(obj.get("id")));
             }
         }
     }

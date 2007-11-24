@@ -10,11 +10,8 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.views.modules.AccountDetailLinesHelper;
 import no.knubo.accounting.client.views.modules.YearMonthComboHelper;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -24,8 +21,8 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MonthDetailsView extends Composite implements 
-        ClickListener, ChangeListener, ServerResponse {
+public class MonthDetailsView extends Composite implements ClickListener, ChangeListener,
+        ServerResponse {
 
     private static MonthDetailsView me;
 
@@ -66,8 +63,7 @@ public class MonthDetailsView extends Composite implements
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
 
-        yearMonthComboHelper = new YearMonthComboHelper(constants, monthYearCombo,
-                elements);
+        yearMonthComboHelper = new YearMonthComboHelper(constants, monthYearCombo, elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
@@ -80,8 +76,8 @@ public class MonthDetailsView extends Composite implements
         initWidget(dp);
     }
 
-    public static MonthDetailsView getInstance(Constants constants,
-            I18NAccount messages, Elements elements) {
+    public static MonthDetailsView getInstance(Constants constants, I18NAccount messages,
+            Elements elements) {
         if (me == null) {
             me = new MonthDetailsView(constants, messages, elements);
         }
@@ -95,15 +91,7 @@ public class MonthDetailsView extends Composite implements
         currentMonth = 0;
         currentYear = 0;
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, 
-                constants.baseurl() + "accounting/showmonthpost.php");
-  
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages ,
-                    this));
-        } catch (RequestException e) {
-            Window.alert("AU:" + e);
-        }
+        AuthResponder.get(constants, messages, me, "accounting/showmonthpost.php");
     }
 
     public void serverResponse(JSONValue value) {
@@ -119,7 +107,7 @@ public class MonthDetailsView extends Composite implements
     }
 
     public void onClick(Widget sender) {
-        
+
         if (sender == nextImage) {
             int m = currentMonth + 1;
 
@@ -148,7 +136,7 @@ public class MonthDetailsView extends Composite implements
         String value = Util.getSelected(listBox);
         String[] monthYear = value.split("/");
 
-        int  year = Integer.parseInt(monthYear[0]);
+        int year = Integer.parseInt(monthYear[0]);
         int month = Integer.parseInt(monthYear[1]);
 
         load(year, month);
@@ -157,20 +145,12 @@ public class MonthDetailsView extends Composite implements
 
     private void load(int year, int month) {
         accountDetailLinesHelper.init();
-        
+
         currentYear = 0;
         currentMonth = 0;
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,this.constants.baseurl()
-                + "accounting/showmonthpost.php?year=" + year
+        AuthResponder.get(constants, messages, me, "accounting/showmonthpost.php?year=" + year
                 + "&month=" + month);
-  
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages ,
-                    this));
-        } catch (RequestException e) {
-            Window.alert("AU:" + e);
-        }
     }
 
 }

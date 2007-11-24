@@ -18,8 +18,6 @@ import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.CountFields;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -46,12 +44,10 @@ public class LineEditView extends Composite implements ClickListener {
 
     private IdHolder removeIdHolder = new IdHolder();
 
-    public static LineEditView show(ViewCallback caller, I18NAccount messages,
-            Constants constants, String line, HelpPanel helpPanel,
-            Elements elements) {
+    public static LineEditView show(ViewCallback caller, I18NAccount messages, Constants constants,
+            String line, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
-            me = new LineEditView(caller, messages, constants, helpPanel,
-                    elements);
+            me = new LineEditView(caller, messages, constants, helpPanel, elements);
         }
         me.init(line, null);
         return me;
@@ -104,8 +100,8 @@ public class LineEditView extends Composite implements ClickListener {
 
     private final Elements elements;
 
-    private LineEditView(ViewCallback caller, I18NAccount messages,
-            Constants constants, HelpPanel helpPanel, Elements elements) {
+    private LineEditView(ViewCallback caller, I18NAccount messages, Constants constants,
+            HelpPanel helpPanel, Elements elements) {
 
         this.caller = caller;
         this.messages = messages;
@@ -179,10 +175,8 @@ public class LineEditView extends Composite implements ClickListener {
 
                 currentLine = Util.str(root.get("Id"));
                 currentId.setText(currentLine);
-                registerStandards.setCurrentMonth(Util.getMonth(root
-                        .get("date")));
-                registerStandards
-                        .setCurrentYear(Util.getYear(root.get("date")));
+                registerStandards.setCurrentMonth(Util.getMonth(root.get("date")));
+                registerStandards.setCurrentYear(Util.getYear(root.get("date")));
                 registerStandards.setDateHeader();
 
                 dayBox.setText(Util.getDay(root.get("date")));
@@ -221,18 +215,15 @@ public class LineEditView extends Composite implements ClickListener {
         addRegnLine(posttype, person, project, amount, debkred, id);
     }
 
-    private void addRegnLine(String posttype, String person, String project,
-            String amount, String debkred, String id) {
+    private void addRegnLine(String posttype, String person, String project, String amount,
+            String debkred, String id) {
         int rowcount = postsTable.getRowCount();
 
-        PosttypeCache postCache = PosttypeCache
-                .getInstance(constants, messages);
+        PosttypeCache postCache = PosttypeCache.getInstance(constants, messages);
         EmploeeCache empCache = EmploeeCache.getInstance(constants, messages);
-        ProjectCache projectCache = ProjectCache.getInstance(constants,
-                messages);
+        ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
 
-        postsTable.setText(rowcount, 0, posttype + "-"
-                + postCache.getDescription(posttype));
+        postsTable.setText(rowcount, 0, posttype + "-" + postCache.getDescription(posttype));
 
         postsTable.getRowFormatter().setStyleName(rowcount,
                 (rowcount % 2 == 0) ? "showlineposts2" : "showlineposts1");
@@ -244,8 +235,7 @@ public class LineEditView extends Composite implements ClickListener {
         postsTable.setText(rowcount, 4, amount);
         postsTable.getCellFormatter().setStyleName(rowcount, 4, "right");
 
-        Image removeImage = ImageFactory
-                .removeImage("LineEditView.removeImage");
+        Image removeImage = ImageFactory.removeImage("LineEditView.removeImage");
         postsTable.setWidget(rowcount, 5, removeImage);
         removeImage.addClickListener(this);
 
@@ -325,8 +315,7 @@ public class LineEditView extends Composite implements ClickListener {
         /* Above remove button. */
         table.addCell(3);
 
-        PosttypeCache.getInstance(constants, messages).fillAllPosts(
-                accountNameBox);
+        PosttypeCache.getInstance(constants, messages).fillAllPosts(accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
 
         table.setText(4, 0, elements.project());
@@ -422,8 +411,7 @@ public class LineEditView extends Composite implements ClickListener {
 
         HorizontalPanel hp = new HorizontalPanel();
 
-        previousImage = ImageFactory
-                .previousImage("ShowMembershipView.previousImage");
+        previousImage = ImageFactory.previousImage("ShowMembershipView.previousImage");
         previousImage.addClickListener(this);
 
         nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
@@ -447,8 +435,8 @@ public class LineEditView extends Composite implements ClickListener {
         } else if (sender == previousImage) {
             init(currentLine, "navigate=previous");
         } else if (sender == dateHeader) {
-            caller.viewMonth(registerStandards.getCurrentYear(),
-                    registerStandards.getCurrentMonth());
+            caller.viewMonth(registerStandards.getCurrentYear(), registerStandards
+                    .getCurrentMonth());
         } else {
             doRowRemove(sender);
         }
@@ -468,16 +456,13 @@ public class LineEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "id", id);
         Util.addPostParam(sb, "line", currentLine);
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "accounting/editaccountpost.php");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
-                
+
                 String result = Util.str(obj.get("result"));
-                
+
                 if ("0".equals(result)) {
                     rowErrorLabel.setText(messages.save_failed());
                 } else {
@@ -491,14 +476,7 @@ public class LineEditView extends Composite implements ClickListener {
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                    messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.get(constants, messages, callback, "accounting/editaccountpost.php");
 
     }
 
@@ -542,14 +520,11 @@ public class LineEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "project", projectId);
         Util.addPostParam(sb, "person", personId);
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "accounting/editaccountpost.php");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
-                
+
                 String serverResponse = Util.str(obj.get("result"));
 
                 if ("0".equals(serverResponse)) {
@@ -558,22 +533,14 @@ public class LineEditView extends Composite implements ClickListener {
                     removeSumLine();
                     String[] parts = serverResponse.split(":");
 
-                    addRegnLine(post_type, personId, projectId, Util
-                            .money(money), debk, parts[0]);
+                    addRegnLine(post_type, personId, projectId, Util.money(money), debk, parts[0]);
                     addSumLineSetDefaults(parts[1]);
                 }
                 Util.timedMessage(updateLabel, "", 5);
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                    messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "accounting/editaccountpost.php");
 
     }
 
@@ -599,19 +566,14 @@ public class LineEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "desc", descriptionBox.getText());
         Util.addPostParam(sb, "attachment", attachmentBox.getText());
         Util.addPostParam(sb, "postnmb", postNmbBox.getText());
-        Util.addPostParam(sb, "month", String.valueOf(registerStandards
-                .getCurrentMonth()));
-        Util.addPostParam(sb, "year", String.valueOf(registerStandards
-                .getCurrentYear()));
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "accounting/editaccountline.php");
+        Util.addPostParam(sb, "month", String.valueOf(registerStandards.getCurrentMonth()));
+        Util.addPostParam(sb, "year", String.valueOf(registerStandards.getCurrentYear()));
 
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
-                
+
                 String serverResponse = Util.str(obj.get("result"));
 
                 if ("0".equals(serverResponse)) {
@@ -629,32 +591,22 @@ public class LineEditView extends Composite implements ClickListener {
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                    messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "accounting/editaccountline.php");
     }
 
     private boolean validateRowInsert() {
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(), new Widget[] {
-                amountBox, accountIdBox });
+        masterValidator.mandatory(messages.required_field(),
+                new Widget[] { amountBox, accountIdBox });
 
-        masterValidator.money(messages.field_money(),
-                new Widget[] { amountBox });
+        masterValidator.money(messages.field_money(), new Widget[] { amountBox });
 
-        masterValidator.registry(messages.registry_invalid_key(), ProjectCache
-                .getInstance(constants, messages),
-                new Widget[] { projectIdBox });
+        masterValidator.registry(messages.registry_invalid_key(), ProjectCache.getInstance(
+                constants, messages), new Widget[] { projectIdBox });
 
-        masterValidator.registry(messages.registry_invalid_key(), PosttypeCache
-                .getInstance(constants, messages),
-                new Widget[] { accountIdBox });
+        masterValidator.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(
+                constants, messages), new Widget[] { accountIdBox });
 
         return masterValidator.validateStatus();
     }

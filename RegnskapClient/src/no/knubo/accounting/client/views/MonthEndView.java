@@ -39,15 +39,16 @@ public class MonthEndView extends Composite implements ClickListener {
 
     private final Elements elements;
 
-    public static MonthEndView getInstance(Constants constants,
-            I18NAccount messages, ViewCallback callback, Elements elements) {
+    public static MonthEndView getInstance(Constants constants, I18NAccount messages,
+            ViewCallback callback, Elements elements) {
         if (me == null) {
             me = new MonthEndView(constants, messages, callback, elements);
         }
         return me;
     }
 
-    private MonthEndView(Constants constants, I18NAccount messages, ViewCallback callback, Elements elements) {
+    private MonthEndView(Constants constants, I18NAccount messages, ViewCallback callback,
+            Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.callback = callback;
@@ -80,8 +81,7 @@ public class MonthEndView extends Composite implements ClickListener {
 
         ResponseTextHandler rh = new ResponseTextHandler() {
             public void onCompletion(String responseText) {
-                PosttypeCache posttypeCache = PosttypeCache
-                        .getInstance(constants, messages);
+                PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
                 JSONValue jsonValue = JSONParser.parse(responseText);
 
@@ -90,8 +90,8 @@ public class MonthEndView extends Composite implements ClickListener {
                 String year = Util.str(root.get("year"));
                 int month = Util.getInt(root.get("month"));
 
-                dateHeader.setHTML("<h2>" + Util.monthString(elements, month)
-                        + " " + year + "</h2>");
+                dateHeader.setHTML("<h2>" + Util.monthString(elements, month) + " " + year
+                        + "</h2>");
 
                 JSONValue postsValue = root.get("posts");
                 JSONObject object = postsValue.isObject();
@@ -100,13 +100,12 @@ public class MonthEndView extends Composite implements ClickListener {
                 for (Iterator i = object.keySet().iterator(); i.hasNext();) {
                     String post = (String) i.next();
 
-                    table.setHTML(row, 0, post + " -  "
-                            + posttypeCache.getDescription(post));
+                    table.setHTML(row, 0, post + " -  " + posttypeCache.getDescription(post));
                     table.getCellFormatter().setStyleName(row, 0, "desc");
 
                     table.setHTML(row, 1, Util.money(object.get(post)));
                     table.getCellFormatter().setStyleName(row, 1, "right");
-                    
+
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(row, style);
 
@@ -116,33 +115,32 @@ public class MonthEndView extends Composite implements ClickListener {
 
         };
         // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(constants.baseurl() + "accounting/endmonth.php?action=status",
-                rh)) {
+        if (!HTTPRequest
+                .asyncGet(constants.baseurl() + "accounting/endmonth.php?action=status", rh)) {
             Window.alert(messages.failedConnect());
         }
     }
 
     public void onClick(Widget sender) {
-        
+
         boolean okContinue = Window.confirm(messages.end_month_confirm());
-        
-        if(!okContinue) {
+
+        if (!okContinue) {
             return;
         }
-        
+
         ResponseTextHandler rh = new ResponseTextHandler() {
 
             public void onCompletion(String responseText) {
-                if("1".equals(responseText)) {
+                if ("1".equals(responseText)) {
                     callback.viewMonth();
                 } else {
-                    Window.alert("Error from server:"+responseText);
+                    Window.alert("Error from server:" + responseText);
                 }
             }
-            
+
         };
-        if (!HTTPRequest.asyncGet(constants.baseurl() + "accounting/endmonth.php?action=end",
-                rh)) {
+        if (!HTTPRequest.asyncGet(constants.baseurl() + "accounting/endmonth.php?action=end", rh)) {
             Window.alert(messages.failedConnect());
         }
     }

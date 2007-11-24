@@ -10,8 +10,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TextBoxWithErrorText extends ErrorLabelWidget implements
-        Validateable {
+public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateable {
     public TextBox textBox;
 
     public TextBoxWithErrorText(String name, HTML errorLabel) {

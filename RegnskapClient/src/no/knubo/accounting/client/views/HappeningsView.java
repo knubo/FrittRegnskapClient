@@ -17,8 +17,6 @@ import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 import no.knubo.accounting.client.misc.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
@@ -35,8 +33,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class HappeningsView extends Composite implements ClickListener,
-        CacheCallback {
+public class HappeningsView extends Composite implements ClickListener, CacheCallback {
 
     private static HappeningsView me;
 
@@ -56,8 +53,7 @@ public class HappeningsView extends Composite implements ClickListener,
 
     private final Elements elements;
 
-    public HappeningsView(I18NAccount messages, Constants constants,
-            Elements elements) {
+    public HappeningsView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.elements = elements;
@@ -74,8 +70,7 @@ public class HappeningsView extends Composite implements ClickListener,
         table.setHTML(0, 5, "");
         table.getRowFormatter().setStyleName(0, "header");
 
-        newButton = new NamedButton("HappeningsView.newButton", elements
-                .new_happening());
+        newButton = new NamedButton("HappeningsView.newButton", elements.new_happening());
         newButton.addClickListener(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -85,8 +80,7 @@ public class HappeningsView extends Composite implements ClickListener,
         initWidget(dp);
     }
 
-    public static HappeningsView show(I18NAccount messages,
-            Constants constants, Elements elements) {
+    public static HappeningsView show(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new HappeningsView(messages, constants, elements);
         }
@@ -138,14 +132,13 @@ public class HappeningsView extends Composite implements ClickListener,
             boolean required = "1".equals(Util.str(object.get("count_req")));
             String id = Util.str(object.get("id"));
 
-            addRow(row, description, linedesc, debetpost, kredpost, required,
-                    id);
+            addRow(row, description, linedesc, debetpost, kredpost, required, id);
             row++;
         }
     }
 
-    private void addRow(int row, String description, String linedesc,
-            String debetpost, String kredpost, boolean required, String id) {
+    private void addRow(int row, String description, String linedesc, String debetpost,
+            String kredpost, boolean required, String id) {
         table.setHTML(row, 0, description);
         table.setHTML(row, 1, linedesc);
         table.setHTML(row, 2, posttypeCache.getDescriptionWithType(debetpost));
@@ -234,8 +227,7 @@ public class HappeningsView extends Composite implements ClickListener,
             posttypeCache.fillAllPosts(kreditListBox);
 
             HTML kreditErrorLabel = new HTML();
-            kreditNmbBox = new TextBoxWithErrorText("creditpost",
-                    kreditErrorLabel);
+            kreditNmbBox = new TextBoxWithErrorText("creditpost", kreditErrorLabel);
             kreditNmbBox.setMaxLength(5);
             kreditNmbBox.setVisibleLength(5);
             Util.syncListbox(kreditListBox, kreditNmbBox.getTextBox());
@@ -253,11 +245,9 @@ public class HappeningsView extends Composite implements ClickListener,
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("HappeningsView.saveButton", elements
-                    .save());
+            saveButton = new NamedButton("HappeningsView.saveButton", elements.save());
             saveButton.addClickListener(this);
-            cancelButton = new NamedButton("HappeningsView.cancelButton",
-                    elements.cancel());
+            cancelButton = new NamedButton("HappeningsView.cancelButton", elements.cancel());
             cancelButton.addClickListener(this);
 
             mainErrorLabel = new HTML();
@@ -274,8 +264,7 @@ public class HappeningsView extends Composite implements ClickListener,
         public void init(String id) {
             currentId = id;
 
-            JSONObject object = HappeningCache.getInstance(constants, messages)
-                    .getHappening(id);
+            JSONObject object = HappeningCache.getInstance(constants, messages).getHappening(id);
 
             happeningBox.setText(Util.str(object.get("description")));
             descBox.setText(Util.str(object.get("linedesc")));
@@ -317,16 +306,12 @@ public class HappeningsView extends Composite implements ClickListener,
             Util.addPostParam(sb, "id", sendId);
             Util.addPostParam(sb, "count_req", reqSent);
 
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                    constants.baseurl() + "registers/happening.php");
-
             ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
                 public void serverResponse(JSONValue value) {
                     if (sendId == null) {
                         if (value == null) {
-                            mainErrorLabel
-                                    .setHTML(messages.save_failed_badly());
+                            mainErrorLabel.setHTML(messages.save_failed_badly());
                             Util.timedMessage(mainErrorLabel, "", 5);
                             return;
                         }
@@ -339,12 +324,10 @@ public class HappeningsView extends Composite implements ClickListener,
                         }
                         int row = table.getRowCount();
 
-                        addRow(row, description, linedesc, debetpost, kredpost,
-                                checked, sendId);
+                        addRow(row, description, linedesc, debetpost, kredpost, checked, sendId);
                     } else {
                         /* Could probably be more effective but why bother? */
-                        HappeningCache.getInstance(constants, messages).flush(
-                                me);
+                        HappeningCache.getInstance(constants, messages).flush(me);
                     }
                     hide();
                 }
@@ -355,24 +338,16 @@ public class HappeningsView extends Composite implements ClickListener,
                 }
             };
 
-            try {
-                builder.setHeader("Content-Type",
-                        "application/x-www-form-urlencoded");
-                builder.sendRequest(sb.toString(), new AuthResponder(constants,
-                        messages, callback));
-            } catch (RequestException e) {
-                Window.alert("Failed to send the request: " + e.getMessage());
-            }
+            AuthResponder.post(constants, messages, callback, sb, "registers/happening.php");
 
         }
 
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
-            mv.mandatory(messages.required_field(), new Widget[] {
-                    happeningBox, descBox, debetNmbBox, kreditNmbBox });
-            mv.registry(messages.registry_invalid_key(), PosttypeCache
-                    .getInstance(constants, messages), new Widget[] {
+            mv.mandatory(messages.required_field(), new Widget[] { happeningBox, descBox,
                     debetNmbBox, kreditNmbBox });
+            mv.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(constants,
+                    messages), new Widget[] { debetNmbBox, kreditNmbBox });
             return mv.validateStatus();
         }
 

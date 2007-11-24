@@ -8,12 +8,9 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -25,17 +22,16 @@ public class ReportMembersBirth extends Composite {
     private final HelpPanel helpPanel;
     private FlexTable table;
 
-    public static ReportMembersBirth getInstance(Constants constants,
-            I18NAccount messages, HelpPanel helpPanel, Elements elements) {
+    public static ReportMembersBirth getInstance(Constants constants, I18NAccount messages,
+            HelpPanel helpPanel, Elements elements) {
         if (reportInstance == null) {
-            reportInstance = new ReportMembersBirth(constants, messages,
-                    helpPanel, elements);
+            reportInstance = new ReportMembersBirth(constants, messages, helpPanel, elements);
         }
         return reportInstance;
     }
 
-    public ReportMembersBirth(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel, Elements elements) {
+    public ReportMembersBirth(Constants constants, I18NAccount messages, HelpPanel helpPanel,
+            Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
@@ -62,9 +58,6 @@ public class ReportMembersBirth extends Composite {
             table.removeRow(2);
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "reports/membership_birth.php");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
@@ -78,13 +71,13 @@ public class ReportMembersBirth extends Composite {
                 JSONArray auns = object.get("year_unset").isArray();
                 JSONArray awrong = object.get("year_wrong").isArray();
 
-                showCategory(messages.report_year_19(""+a19.size()), a19);
-                showCategory(messages.report_year_25(""+a25.size()), a25);
-                showCategory(messages.report_year_30(""+a30.size()), a30);
-                showCategory(messages.report_year_40(""+a40.size()), a40);
-                showCategory(messages.report_year_above(""+aabov.size()), aabov);
-                showCategory(messages.report_year_unset(""+auns.size()), auns);
-                showCategory(messages.report_year_wrong(""+awrong.size()), awrong);
+                showCategory(messages.report_year_19("" + a19.size()), a19);
+                showCategory(messages.report_year_25("" + a25.size()), a25);
+                showCategory(messages.report_year_30("" + a30.size()), a30);
+                showCategory(messages.report_year_40("" + a40.size()), a40);
+                showCategory(messages.report_year_above("" + aabov.size()), aabov);
+                showCategory(messages.report_year_unset("" + auns.size()), auns);
+                showCategory(messages.report_year_wrong("" + awrong.size()), awrong);
 
                 helpPanel.resize(reportInstance);
             }
@@ -94,7 +87,7 @@ public class ReportMembersBirth extends Composite {
                 table.setHTML(row, 0, header);
                 table.getFlexCellFormatter().setColSpan(row, 0, 4);
                 table.getRowFormatter().setStyleName(row, "header");
-                
+
                 row++;
                 for (int i = 0; i < array.size(); i++) {
                     JSONValue person = array.get(i);
@@ -105,21 +98,15 @@ public class ReportMembersBirth extends Composite {
                     table.setHTML(row, 2, Util.str(personObj.get("birthdate")));
                     table.setHTML(row, 3, Util.str(personObj.get("age")));
                     table.getCellFormatter().setStyleName(row, 3, "center");
-                    String style = (row % 2 == 0) ? "showlineposts2"
-                            : "showlineposts1";
+                    String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(row, style);
                     row++;
                 }
             }
 
         };
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
-        
+
+        AuthResponder.get(constants, messages, callback, "reports/membership_birth.php");
 
     }
 }

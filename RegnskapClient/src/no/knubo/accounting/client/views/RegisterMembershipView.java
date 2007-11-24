@@ -18,8 +18,6 @@ import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.UserSearchCallback;
 import no.knubo.accounting.client.views.modules.UserSearchFields;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -37,13 +35,13 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class RegisterMembershipView extends Composite implements ClickListener,
-        UserSearchCallback, FocusCallback {
+public class RegisterMembershipView extends Composite implements ClickListener, UserSearchCallback,
+        FocusCallback {
 
     private static RegisterMembershipView me;
 
-    public static RegisterMembershipView show(I18NAccount messages,
-            Constants constants, HelpPanel helpPanel, Elements elements) {
+    public static RegisterMembershipView show(I18NAccount messages, Constants constants,
+            HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new RegisterMembershipView(messages, constants, helpPanel, elements);
         }
@@ -70,7 +68,8 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
     private final Elements elements;
 
-    private RegisterMembershipView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
+    private RegisterMembershipView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -106,9 +105,8 @@ public class RegisterMembershipView extends Composite implements ClickListener,
         resultTable.setHTML(0, 7, elements.post());
         dp.add(resultTable, DockPanel.NORTH);
 
-        Button button = new NamedButton(
-                "RegisterMembershipView.registerMembershipButton", elements
-                        .register_membership());
+        Button button = new NamedButton("RegisterMembershipView.registerMembershipButton", elements
+                .register_membership());
         button.addClickListener(this);
         dp.add(button, DockPanel.NORTH);
 
@@ -124,9 +122,6 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     public void doSearch(StringBuffer searchRequest) {
         doClear();
         idHolder.init();
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "registers/persons.php");
 
         ServerResponse callback = new ServerResponse() {
 
@@ -162,23 +157,19 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
                     CheckBox yearCheck = new CheckBox();
                     resultTable.setWidget(row, 3, yearCheck);
-                    resultTable.getCellFormatter().setStyleName(row, 3,
-                            "center");
+                    resultTable.getCellFormatter().setStyleName(row, 3, "center");
 
                     CheckBox courseCheck = new CheckBox();
                     resultTable.setWidget(row, 4, courseCheck);
-                    resultTable.getCellFormatter().setStyleName(row, 4,
-                            "center");
+                    resultTable.getCellFormatter().setStyleName(row, 4, "center");
 
                     CheckBox trainCheck = new CheckBox();
                     resultTable.setWidget(row, 5, trainCheck);
-                    resultTable.getCellFormatter().setStyleName(row, 5,
-                            "center");
+                    resultTable.getCellFormatter().setStyleName(row, 5, "center");
 
                     Util.linkJustOne(courseCheck, trainCheck);
 
-                    TextBoxWithErrorText dayBox = new TextBoxWithErrorText(
-                            "day");
+                    TextBoxWithErrorText dayBox = new TextBoxWithErrorText("day");
                     dayBox.setMaxLength(2);
                     dayBox.setVisibleLength(2);
                     dayBox.addFocusListener(me);
@@ -189,13 +180,11 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
                     ListBox payments = new ListBox();
                     payments.setVisibleItemCount(1);
-                    PosttypeCache.getInstance(constants, messages)
-                            .fillMembershipPayments(payments);
+                    PosttypeCache.getInstance(constants, messages).fillMembershipPayments(payments);
 
                     resultTable.setWidget(row, 7, payments);
 
-                    String style = (row % 2 == 0) ? "showlineposts2"
-                            : "showlineposts1";
+                    String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
 
                 }
@@ -203,18 +192,12 @@ public class RegisterMembershipView extends Composite implements ClickListener,
 
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(searchRequest.toString(), new AuthResponder(constants, messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, searchRequest, "registers/persons.php");
 
     }
 
-    private void enableDisableBoxes(JSONObject obj, CheckBox yearCheck,
-            CheckBox courseCheck, CheckBox trainCheck) {
+    private void enableDisableBoxes(JSONObject obj, CheckBox yearCheck, CheckBox courseCheck,
+            CheckBox trainCheck) {
         if ("1".equals(Util.str(obj.get("year")))) {
             yearCheck.setChecked(true);
             yearCheck.setEnabled(false);
@@ -239,14 +222,11 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             return;
         }
 
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                constants.baseurl() + "accounting/addmembership.php");
-
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
-                
+
                 String serverResponse = Util.str(obj.get("result"));
 
                 if ("1".equals(serverResponse)) {
@@ -257,13 +237,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             }
         };
 
-        try {
-            builder.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded");
-            builder.sendRequest(sb.toString(), new AuthResponder(constants, messages, callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+        AuthResponder.post(constants, messages, callback, sb, "accounting/addmembership.php");
     }
 
     protected void disableAfterOK() {
@@ -296,8 +270,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
             CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
             CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
             CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
-            TextBoxWithErrorText dayBox = (TextBoxWithErrorText) resultTable
-                    .getWidget(i, 6);
+            TextBoxWithErrorText dayBox = (TextBoxWithErrorText) resultTable.getWidget(i, 6);
             ListBox post = (ListBox) resultTable.getWidget(i, 7);
             String id = idHolder.findId(dayBox);
 
@@ -340,8 +313,8 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     }
 
     private void validateDay(MasterValidator mv, ErrorLabelWidget dayBox) {
-        mv.day("!", messages.illegal_day(), Integer.parseInt(currentYear),
-                currentMonth, new Widget[] { dayBox });
+        mv.day("!", messages.illegal_day(), Integer.parseInt(currentYear), currentMonth,
+                new Widget[] { dayBox });
     }
 
     private void setHeader() {
@@ -356,16 +329,13 @@ public class RegisterMembershipView extends Composite implements ClickListener,
                 currentYear = Util.str(object.get("year"));
                 currentMonth = Util.getInt(object.get("month"));
 
-                String headerText = "<h2>"
-                        + elements.register_membership_header() + " - "
-                        + semester + "-"
-                        + Util.monthString(elements, currentMonth) + "</h2>";
+                String headerText = "<h2>" + elements.register_membership_header() + " - "
+                        + semester + "-" + Util.monthString(elements, currentMonth) + "</h2>";
                 header.setHTML(headerText);
             }
 
         };
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "defaults/semester.php", callback)) {
+        if (!HTTPRequest.asyncGet(this.constants.baseurl() + "defaults/semester.php", callback)) {
             Window.alert("Failed to get proper data");
         }
 
@@ -384,7 +354,7 @@ public class RegisterMembershipView extends Composite implements ClickListener,
     public void doClear() {
         while (resultTable.getRowCount() > 1) {
             resultTable.removeRow(1);
-        }        
+        }
     }
 
 }

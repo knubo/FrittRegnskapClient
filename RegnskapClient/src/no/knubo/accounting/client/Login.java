@@ -43,7 +43,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
         messages = (I18NAccount) GWT.create(I18NAccount.class);
         constants = (Constants) GWT.create(Constants.class);
         elements = (Elements) GWT.create(Elements.class);
-        
+
         DockPanel dp = new DockPanel();
         dp.setStyleName("middle");
         FlexTable table = new FlexTable();
@@ -78,9 +78,8 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
     public void onClick(Widget sender) {
         String user = this.userBox.getText();
         String password = this.passBox.getText();
-        if (!HTTPRequest.asyncGet(this.constants.baseurl()
-                + "authenticate.php?user=" + user + "&password=" + password,
-                this)) {
+        if (!HTTPRequest.asyncGet(this.constants.baseurl() + "authenticate.php?user=" + user
+                + "&password=" + password, this)) {
             infoLabel.setText(messages.failedConnect());
         }
     }

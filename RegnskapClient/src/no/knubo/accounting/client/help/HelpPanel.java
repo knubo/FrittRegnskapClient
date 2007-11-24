@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.help;
 
+import java.util.MissingResourceException;
+
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.HelpTexts;
 
@@ -15,7 +17,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.MissingResourceException;
 
 public class HelpPanel extends Composite implements EventPreview {
 
@@ -30,8 +31,7 @@ public class HelpPanel extends Composite implements EventPreview {
     private String prevHelp = "";
 
     public void setCurrentWidget(Widget widget, int currentPage) {
-        mainFrame.setUrl("help/" + messages.HELP_ROOT() + "/" + currentPage
-                + "/index.html");
+        mainFrame.setUrl("help/" + messages.HELP_ROOT() + "/" + currentPage + "/index.html");
         resize(widget);
     }
 
@@ -112,26 +112,26 @@ public class HelpPanel extends Composite implements EventPreview {
         // }
         Element elem = DOM.eventGetTarget(event);
         String id = DOM.getElementProperty(elem, "id");
-        
-        if(id == null) {
+
+        if (id == null) {
             return true;
         }
-        
+
         String helpText = null;
         try {
-            helpText = helpTexts.getString(id);        
-        } catch(MissingResourceException e) {
+            helpText = helpTexts.getString(id);
+        } catch (MissingResourceException e) {
             helpText = "";
         }
-        
+
         String message = null;
         try {
-            message = messages.getString(id);        
-        } catch(MissingResourceException e) {
+            message = messages.getString(id);
+        } catch (MissingResourceException e) {
             message = "";
         }
 
-        help = formatHelp(message,helpText);
+        help = formatHelp(message, helpText);
 
         return true;
     }

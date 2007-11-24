@@ -8,8 +8,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class ListBoxWithErrorText extends ErrorLabelWidget implements
-        Validateable {
+public class ListBoxWithErrorText extends ErrorLabelWidget implements Validateable {
 
     private ListBox listbox;
 
@@ -20,7 +19,7 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements
     public ListBoxWithErrorText(String id) {
         super(new ListBox());
         listbox = (ListBox) widget;
-        
+
         HorizontalPanel hp = new HorizontalPanel();
 
         hp.add(listbox);
@@ -40,7 +39,7 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements
     public ListBoxWithErrorText(String id, boolean multiSelect) {
         super(new ListBox(multiSelect));
         listbox = (ListBox) widget;
-        
+
         HorizontalPanel hp = new HorizontalPanel();
 
         hp.add(listbox);

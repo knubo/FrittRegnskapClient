@@ -14,12 +14,9 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -46,8 +43,8 @@ public class BudgetView extends Composite {
     private HashMap trainPrices;
     private HashMap yearPrices;
 
-    public BudgetView(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -159,8 +156,8 @@ public class BudgetView extends Composite {
         return flexTable;
     }
 
-    public static BudgetView show(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public static BudgetView show(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         if (me == null) {
             me = new BudgetView(messages, constants, helpPanel, elements);
         }
@@ -171,9 +168,6 @@ public class BudgetView extends Composite {
     public void init() {
         initEarningsTable(springEarningsTable);
         initEarningsTable(fallEarningsTable);
-        
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-                constants.baseurl() + "accounting/budget.php?action=init");
 
         ServerResponse callback = new ServerResponse() {
 
@@ -189,34 +183,30 @@ public class BudgetView extends Composite {
             }
 
         };
-        try {
-            builder.sendRequest("", new AuthResponder(constants, messages,
-                    callback));
-        } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
-        }
+
+        AuthResponder.get(constants, messages, callback, "accounting/budget.php?action=init");
     }
 
     protected void fillPrices(JSONObject priceObj) {
         JSONArray course = priceObj.get("course").isArray();
         JSONArray train = priceObj.get("train").isArray();
         JSONArray year = priceObj.get("year").isArray();
-        
+
         coursePrices = new HashMap();
         trainPrices = new HashMap();
         yearPrices = new HashMap();
-        
-        for(int i=0;i < course.size(); i++) {
+
+        for (int i = 0; i < course.size(); i++) {
             JSONObject obj = course.get(i).isObject();
             coursePrices.put(Util.str(obj.get("semester")), Util.str(obj.get("amount")));
         }
-        
-        for(int i=0;i < train.size(); i++) {
+
+        for (int i = 0; i < train.size(); i++) {
             JSONObject obj = train.get(i).isObject();
             trainPrices.put(Util.str(obj.get("semester")), Util.str(obj.get("amount")));
         }
 
-        for(int i=0; i < year.size(); i++) {
+        for (int i = 0; i < year.size(); i++) {
             JSONObject obj = year.get(i).isObject();
             yearPrices.put(Util.str(obj.get("year")), Util.str(obj.get("amount")));
         }
@@ -244,15 +234,13 @@ public class BudgetView extends Composite {
 
                 Label label = new Label(elements.spring() + " " + year);
 
-                fiillColumn(yearcount, coursecount, traincount, column, table,
-                        label);
+                fiillColumn(yearcount, coursecount, traincount, column, table, label);
             } else {
                 FlexTable table = fallEarningsTable;
 
                 Label label = new Label(elements.fall() + " " + year);
 
-                fiillColumn(yearcount, coursecount, traincount, column, table,
-                        label);
+                fiillColumn(yearcount, coursecount, traincount, column, table, label);
             }
         }
         springEarningsTable.getColumnFormatter().setStyleName(0, "header desc");
@@ -261,8 +249,8 @@ public class BudgetView extends Composite {
         fallEarningsTable.getRowFormatter().setStyleName(0, "header desc");
     }
 
-    private void fiillColumn(int yearcount, int coursecount, int traincount,
-            int column, FlexTable table, Label label) {
+    private void fiillColumn(int yearcount, int coursecount, int traincount, int column,
+            FlexTable table, Label label) {
 
         label.setStyleName("nowrap headernobox");
         HorizontalPanel header = new HorizontalPanel();
