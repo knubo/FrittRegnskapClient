@@ -42,7 +42,7 @@ public class HappeningCache implements ServerResponse {
     public void flush(final CacheCallback flushcallback) {
         this.flushcallback = flushcallback;
 
-        AuthResponder.get(constants, messages, instance, "registers/happening.php?action=all");
+        AuthResponder.get(constants, messages, this, "registers/happening.php?action=all");
     }
 
     public JSONObject getHappening(String id) {

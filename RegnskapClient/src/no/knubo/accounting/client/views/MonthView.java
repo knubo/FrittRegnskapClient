@@ -120,7 +120,7 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
     private void getData(String params) {
         yearMonthComboHelper.fillYearMonthCombo();
 
-        AuthResponder.get(constants, messages, instance, "accounting/showmonth.php?" + params);
+        AuthResponder.get(constants, messages, this, "accounting/showmonth.php?" + params);
     }
 
     private void setupHeaders() {

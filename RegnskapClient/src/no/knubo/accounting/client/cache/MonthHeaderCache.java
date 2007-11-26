@@ -34,7 +34,7 @@ public class MonthHeaderCache implements ServerResponse {
 
     private MonthHeaderCache(Constants constants, I18NAccount messages) {
 
-        AuthResponder.get(constants, messages, instance, "registers/monthcolumns.php");
+        AuthResponder.get(constants, messages, this, "registers/monthcolumns.php");
     }
 
     public void serverResponse(JSONValue jsonValue) {
