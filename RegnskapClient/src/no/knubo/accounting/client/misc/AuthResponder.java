@@ -27,6 +27,9 @@ public class AuthResponder implements RequestCallback {
         this.constants = constants;
         this.messages = messages;
         this.callback = callback;
+        if(callback == null) {
+            throw new RuntimeException("Callback cannot be null");
+        }
         AccountingGWT.setLoading();
 
     }
@@ -90,7 +93,6 @@ public class AuthResponder implements RequestCallback {
             String url) {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, constants.baseurl() + url);
 
-        AuthResponder.get(constants, messages, callback, url);
         try {
             builder.sendRequest("", new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
