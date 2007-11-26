@@ -248,7 +248,7 @@ public class PersonEditView extends Composite implements ClickListener {
                     Window.alert("Failed to load person");
                     return;
                 }
-                setPesonData(object);
+                setPersonData(object);
                 showMemberships(object.get("Memberships"));
             }
 
@@ -306,7 +306,7 @@ public class PersonEditView extends Composite implements ClickListener {
         }
     }
 
-    void setPesonData(JSONObject object) {
+    void setPersonData(JSONObject object) {
         firstnameBox.setText(Util.str(object.get("FirstName")));
         lastnameBox.setText(Util.str(object.get("LastName")));
         birthdateBox.setText(Util.str(object.get("Birthdate")));
