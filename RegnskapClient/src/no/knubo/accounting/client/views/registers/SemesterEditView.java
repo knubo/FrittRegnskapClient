@@ -35,7 +35,8 @@ public class SemesterEditView extends Composite implements ClickListener {
     private IdHolder idHolder;
     private final Elements elements;
     private SemesterEditView.SemesterEditFields editFields;
-
+    private int maxYear;
+    
     public SemesterEditView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
@@ -54,6 +55,10 @@ public class SemesterEditView extends Composite implements ClickListener {
         table.setText(1, 3, "");
         table.getRowFormatter().setStyleName(1, "header");
 
+        newButton = new NamedButton("semesterEditView_newButton",elements.new_semester());
+        newButton.addClickListener(this);
+        
+        dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
         idHolder = new IdHolder();
         initWidget(dp);
@@ -102,6 +107,9 @@ public class SemesterEditView extends Composite implements ClickListener {
                 editImage.addClickListener(this);
                 table.setWidget(row, 3, editImage);
                 idHolder.add(String.valueOf(row), editImage);
+                if(maxYear < year) {
+                    maxYear = year;
+                }
             }
 
             table.setHTML(row, fall ? 2 : 1, desc);
@@ -129,7 +137,7 @@ public class SemesterEditView extends Composite implements ClickListener {
         editFields.setPopupPosition(left, top);
 
         if (sender == newButton) {
-            editFields.init();
+            editFields.init(maxYear + 1);
         } else {
             int row = Integer.valueOf(idHolder.findId(sender)).intValue();
             String year = table.getText(row, 0);
@@ -198,28 +206,32 @@ public class SemesterEditView extends Composite implements ClickListener {
         private void doSave() {
             StringBuffer sb = new StringBuffer();
             sb.append("action=save");
-            // final String description = projectBox.getText();
-            // final String sendId = currentId;
-            //
-            // Util.addPostParam(sb, "description", description);
-            // Util.addPostParam(sb, "project", sendId);
-
+            
+            Util.addPostParam(sb, "year", edittable.getText(0, 1));
+            Util.addPostParam(sb, "spring", springBox.getText());
+            Util.addPostParam(sb, "fall", fallBox.getText());
+            
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(JSONValue value) {
                     JSONObject object = value.isObject();
 
-                    
-                    
-                    hide();
+                    if("1".equals(Util.str(object.get("result")))) {
+                        me.init();
+                        hide();
+                    } else {
+                        mainErrorLabel.setText(messages.save_failed());
+                    }
                 }
             };
 
             AuthResponder.post(constants, messages, callback, sb, "registers/semesters.php");
         }
 
-        private void init() {
-            throw new UnsupportedOperationException("Not yet implemented");
+        private void init(int year) {
+            edittable.setHTML(0, 1, String.valueOf(year));
+            springBox.setText("");
+            fallBox.setText("");
         }
 
         private void init(String year, String springDesc, String fallDesc) {
