@@ -12,7 +12,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
-import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

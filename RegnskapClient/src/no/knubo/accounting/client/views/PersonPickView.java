@@ -4,7 +4,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.help.HelpPanel;
-import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.ui.NamedButton;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Button;

@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.misc;
+package no.knubo.accounting.client.ui;
 
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.validation.Validateable;

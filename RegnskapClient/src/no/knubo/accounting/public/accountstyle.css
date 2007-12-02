@@ -30,8 +30,8 @@
 .tablecells TD {
 border-width: 1px;
 border-style: solid;
-margin: 0;
-padding: 0px;
+margin: 0px;
+padding: 0 3 0 3;
 }
 
 .noborder TD {

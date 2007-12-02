@@ -9,10 +9,11 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
-import no.knubo.accounting.client.misc.ListBoxWithErrorText;
-import no.knubo.accounting.client.misc.NamedButton;
 import no.knubo.accounting.client.misc.ServerResponse;
-import no.knubo.accounting.client.misc.TextBoxWithErrorText;
+import no.knubo.accounting.client.ui.AccountTable;
+import no.knubo.accounting.client.ui.ListBoxWithErrorText;
+import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
@@ -41,7 +42,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
     private final I18NAccount messages;
 
-    private FlexTable table;
+    private AccountTable table;
 
     private TrustEditFields editFields;
 
@@ -81,8 +82,7 @@ public class TrustStatusView extends Composite implements ClickListener {
         newTrustButton.addClickListener(this);
         dp.add(newTrustButton, DockPanel.NORTH);
 
-        table = new FlexTable();
-        table.setStyleName("tableborder");
+        table = new AccountTable("tableborder");
         dp.add(table, DockPanel.NORTH);
 
         initWidget(dp);

@@ -13,15 +13,13 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.AccountTable;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -34,11 +32,11 @@ public class BudgetView extends Composite {
     private HelpPanel helpPanel;
     private Elements elements;
 
-    private FlexTable statusTable;
-    private FlexTable springEarningsTable;
-    private FlexTable fallEarningsTable;
-    private FlexTable othersEarningsTable;
-    private FlexTable expencesTable;
+    private AccountTable statusTable;
+    private AccountTable springEarningsTable;
+    private AccountTable fallEarningsTable;
+    private AccountTable othersEarningsTable;
+    private AccountTable expencesTable;
     private HashMap coursePrices;
     private HashMap trainPrices;
     private HashMap yearPrices;
@@ -70,30 +68,28 @@ public class BudgetView extends Composite {
     }
 
     private Widget createResultView() {
-        FlexTable table = new FlexTable();
-        table.setStyleName("tablecells");
+        AccountTable table = new AccountTable("tablecells");
         table.setText(0, 0, elements.year());
         table.setText(0, 1, elements.budgeted_earnins());
         table.setText(0, 2, elements.budgeted_expences());
         table.setText(0, 3, elements.budgeted_result());
         table.setText(0, 4, elements.budget_result_actual());
         table.setText(0, 5, elements.budget_differance());
-        table.getRowFormatter().setStyleName(0, "header desc");
+        table.setHeaderRowStyle(0);
         return table;
     }
 
     private Widget createExpencesView() {
         VerticalPanel vp = new VerticalPanel();
 
-        expencesTable = new FlexTable();
-        expencesTable.setStyleName("tablecells");
+        expencesTable = new AccountTable("tablecells");
         expencesTable.setText(0, 0, elements.account());
         expencesTable.setText(0, 1, "");
         expencesTable.setText(0, 2, elements.description());
         expencesTable.setText(0, 3, elements.amount());
         expencesTable.setText(0, 4, elements.count());
         expencesTable.setText(0, 5, elements.sum());
-        expencesTable.getRowFormatter().setStyleName(0, "header");
+        expencesTable.setHeaderRowStyle(0);
 
         vp.add(expencesTable);
 
@@ -103,15 +99,14 @@ public class BudgetView extends Composite {
     private Widget createOtherEarningsView() {
         VerticalPanel vp = new VerticalPanel();
 
-        othersEarningsTable = new FlexTable();
-        othersEarningsTable.setStyleName("tablecells");
+        othersEarningsTable = new AccountTable("tablecells");
         othersEarningsTable.setText(0, 0, elements.account());
         othersEarningsTable.setText(0, 1, "");
         othersEarningsTable.setText(0, 2, elements.description());
         othersEarningsTable.setText(0, 3, elements.amount());
         othersEarningsTable.setText(0, 4, elements.count());
         othersEarningsTable.setText(0, 5, elements.sum());
-        othersEarningsTable.getRowFormatter().setStyleName(0, "header");
+        othersEarningsTable.setHeaderRowStyle(0);
 
         vp.add(othersEarningsTable);
 
@@ -130,13 +125,12 @@ public class BudgetView extends Composite {
         return vp;
     }
 
-    private FlexTable createEarningsTable() {
-        FlexTable earningsTable = new FlexTable();
-        earningsTable.setStyleName("tablecells");
+    private AccountTable createEarningsTable() {
+        AccountTable earningsTable = new AccountTable("tablecells");
         return earningsTable;
     }
 
-    private void initEarningsTable(FlexTable earningsTable) {
+    private void initEarningsTable(AccountTable earningsTable) {
         earningsTable.setText(0, 0, "");
         earningsTable.setText(1, 0, elements.year_membership());
         earningsTable.setText(2, 0, elements.course_membership());
@@ -144,16 +138,15 @@ public class BudgetView extends Composite {
         earningsTable.setText(4, 0, elements.sum());
     }
 
-    private FlexTable buildStatusTable() {
-        FlexTable flexTable = new FlexTable();
-        flexTable.setStyleName("tablecells");
-        flexTable.setText(0, 0, elements.year());
-        flexTable.setText(1, 0, elements.earnings_courses());
-        flexTable.setText(2, 0, elements.earnings_all());
-        flexTable.setText(3, 0, elements.expences());
-        flexTable.getColumnFormatter().setStyleName(0, "header desc");
+    private AccountTable buildStatusTable() {
+        AccountTable AccountTable = new AccountTable("tablecells");
+        AccountTable.setText(0, 0, elements.year());
+        AccountTable.setText(1, 0, elements.earnings_courses());
+        AccountTable.setText(2, 0, elements.earnings_all());
+        AccountTable.setText(3, 0, elements.expences());
+        AccountTable.setHeaderRowStyle(0);
 
-        return flexTable;
+        return AccountTable;
     }
 
     public static BudgetView show(I18NAccount messages, Constants constants, HelpPanel helpPanel,
@@ -178,7 +171,7 @@ public class BudgetView extends Composite {
                 JSONObject members = root.get("members").isObject();
                 ArrayList keys = new ArrayList(members.keySet());
                 Collections.sort(keys);
-                fillMemberships(keys, root);
+                fillMemberships(keys, members);
                 helpPanel.resize(me);
             }
 
@@ -212,60 +205,78 @@ public class BudgetView extends Composite {
         }
     }
 
-    protected void fillMemberships(List keys, JSONObject root) {
-        int pos = 0;
+    protected void fillMemberships(List yearFallKeys, JSONObject members) {
+        int fallCol = 1;
+        int springCol = 1;
 
-        for (Iterator i = keys.iterator(); i.hasNext();) {
+        for (Iterator i = yearFallKeys.iterator(); i.hasNext();) {
             String key = (String) i.next();
 
             String year = key.substring(0, 4);
             String fall = key.substring(5).trim();
 
-            JSONObject obj = root.get(key).isObject();
-
-            int yearcount = Util.getInt(obj.get("year"));
-            int coursecount = Util.getInt(obj.get("course"));
-            int traincount = Util.getInt(obj.get("train"));
-
-            int column = 1 + (pos++ * 2);
+            JSONObject obj = members.get(key).isObject();
 
             if ("0".equals(fall)) {
-                FlexTable table = springEarningsTable;
+                String label = elements.spring() + " " + year;
 
-                Label label = new Label(elements.spring() + " " + year);
-
-                fiillColumn(yearcount, coursecount, traincount, column, table, label);
+                fiillColumn(obj, year, springCol, springEarningsTable, label);
+                springCol += 2;
             } else {
-                FlexTable table = fallEarningsTable;
+                String label = elements.fall() + " " + year;
 
-                Label label = new Label(elements.fall() + " " + year);
-
-                fiillColumn(yearcount, coursecount, traincount, column, table, label);
+                fiillColumn(obj, year, fallCol, fallEarningsTable, label);
+                fallCol += 2;
             }
         }
-        springEarningsTable.getColumnFormatter().setStyleName(0, "header desc");
-        springEarningsTable.getRowFormatter().setStyleName(0, "header desc");
-        fallEarningsTable.getColumnFormatter().setStyleName(0, "header desc");
-        fallEarningsTable.getRowFormatter().setStyleName(0, "header desc");
+        springEarningsTable.setHeaderColStyle(0);
+        springEarningsTable.setHeaderRowStyle(0);
+        fallEarningsTable.setHeaderColStyle(0);
+        fallEarningsTable.setHeaderRowStyle(0);
     }
 
-    private void fiillColumn(int yearcount, int coursecount, int traincount, int column,
-            FlexTable table, Label label) {
+    private void fiillColumn(JSONObject obj, String year, int column, AccountTable table,
+            String label) {
+        int yearcount = Util.getInt(obj.get("year"));
+        int coursecount = Util.getInt(obj.get("course"));
+        int traincount = Util.getInt(obj.get("train"));
+        String semester = Util.str(obj.get("semester"));
 
-        label.setStyleName("nowrap headernobox");
-        HorizontalPanel header = new HorizontalPanel();
-        header.setStyleName("noborder");
-        header.add(label);
-
-        table.setWidget(0, column, header);
+        table.setText(0, column, label);
         table.setText(0, column + 1, elements.sum());
-        table.setText(1, column, String.valueOf(yearcount));
-        table.setText(2, column, String.valueOf(coursecount));
-        table.setText(3, column, String.valueOf(traincount));
+
+        double sumYear = calcSum(yearcount, year, yearPrices);
+        table.setInt(1, column, yearcount);
+        table.setMoney(1, column + 1, sumYear);
+        table.setTooltip(1, column + 1, elements.cost_membership() + ":" + yearPrices.get(year));
+
+        double sumCourse = calcSum(coursecount, semester, coursePrices);
+        table.setInt(2, column, coursecount);
+        table.setMoney(2, column + 1, sumCourse);
+        table.setTooltip(2, column + 1, elements.cost_course() + ":" + coursePrices.get(semester));
+
+        double sumTrain = calcSum(traincount, semester, trainPrices);
+        table.setInt(3, column, traincount);
+        table.setMoney(3, column + 1, sumTrain);
+        table.setTooltip(3, column + 1, elements.cost_practice() + ":" + trainPrices.get(semester));
+
+        table.setMoney(4, column + 1, (sumYear + sumCourse + sumTrain));
 
         table.getCellFormatter().setStyleName(1, column, "center");
         table.getCellFormatter().setStyleName(2, column, "center");
         table.getCellFormatter().setStyleName(3, column, "center");
+    }
+
+    private double calcSum(int count, String key, HashMap prices) {
+        if (prices == null) {
+            return 0;
+        }
+
+        String price = (String) prices.get(key);
+        if (price == null) {
+            return 0;
+        }
+        return count * Double.parseDouble(price);
     }
 
     public static class YearSeason {

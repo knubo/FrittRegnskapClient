@@ -33,8 +33,8 @@ public class Util {
      *            The url to forward to.
      */
     public static native void forward(String url) /*-{
-                             $wnd.location.href = url;
-                             }-*/;
+                                $wnd.location.href = url;
+                                }-*/;
 
     public static boolean getBoolean(JSONValue str) {
         return "1".equals(str(str));
@@ -494,5 +494,4 @@ public class Util {
         }
         return sb.toString();
     }
-
 }

@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.misc;
+package no.knubo.accounting.client.ui;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.TextArea;

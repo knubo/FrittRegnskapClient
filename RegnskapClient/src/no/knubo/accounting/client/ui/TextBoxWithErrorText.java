@@ -1,5 +1,6 @@
-package no.knubo.accounting.client.misc;
+package no.knubo.accounting.client.ui;
 
+import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.validation.Validateable;
 
 import com.google.gwt.user.client.DOM;

@@ -2,7 +2,7 @@ package no.knubo.accounting.client.views.modules;
 
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.Util;
-import no.knubo.accounting.client.misc.NamedButton;
+import no.knubo.accounting.client.ui.NamedButton;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
