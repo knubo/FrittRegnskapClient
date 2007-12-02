@@ -12,6 +12,7 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
@@ -53,7 +54,7 @@ public class LineEditView extends Composite implements ClickListener {
         return me;
     }
 
-    private FlexTable postsTable;
+    private AccountTable postsTable;
 
     private TextBoxWithErrorText postNmbBox;
 
@@ -357,8 +358,7 @@ public class LineEditView extends Composite implements ClickListener {
     private Widget regnLinesView() {
         VerticalPanel vp = new VerticalPanel();
 
-        postsTable = new FlexTable();
-        postsTable.setStyleName("tableborder");
+        postsTable = new AccountTable("tableborder");
         vp.add(postsTable);
 
         postsTable.getRowFormatter().setStyleName(0, "header");

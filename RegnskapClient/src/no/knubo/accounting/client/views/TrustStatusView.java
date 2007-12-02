@@ -123,19 +123,20 @@ public class TrustStatusView extends Composite implements ClickListener {
             String fond = Util.str(fondObj.get("fond"));
             String description = Util.str(fondObj.get("description"));
             JSONValue fondLines = dataObj.get(fond);
-            String sumFond = Util.money(sumFondObj.get(fond));
-            String sumClub = Util.money(sumClubObj.get(fond));
+            JSONValue sumFond = sumFondObj.get(fond);
+            JSONValue sumClub = sumClubObj.get(fond);
 
             renderFond(description, fondLines.isArray(), sumFond, sumClub);
         }
         helpPanel.resize(this);
     }
 
-    private void renderFond(String description, JSONArray fondlines, String sumFond, String sumClub) {
+    private void renderFond(String description, JSONArray fondlines, JSONValue sumFond,
+            JSONValue sumClub) {
 
         int row = table.getRowCount();
         table.setHTML(row, 0, description);
-        table.getRowFormatter().setStyleName(row, "header");
+        table.setHeaderRowStyle(row);
         table.getFlexCellFormatter().setColSpan(row, 0, 5);
         row++;
 
@@ -144,7 +145,7 @@ public class TrustStatusView extends Composite implements ClickListener {
         table.setHTML(row, 2, elements.trust_account());
         table.setHTML(row, 3, elements.club_account());
         table.setHTML(row, 4, "");
-        table.getRowFormatter().setStyleName(row, "header");
+        table.setHeaderRowStyle(row);
         row++;
 
         for (int i = 0; i < fondlines.size(); i++) {
@@ -156,11 +157,8 @@ public class TrustStatusView extends Composite implements ClickListener {
             table.setHTML(row, 1, Util.formatDate(lineObj.get("Occured")));
             table.getCellFormatter().setStyleName(row, 1, "desc");
 
-            table.setHTML(row, 2, Util.money(lineObj.get("Fond_account")));
-            table.getCellFormatter().setStyleName(row, 2, "right colspace");
-
-            table.setHTML(row, 3, Util.money(lineObj.get("Club_account")));
-            table.getCellFormatter().setStyleName(row, 3, "right colspace");
+            table.setMoney(row, 2, lineObj.get("Fond_account"), "right colspace");
+            table.setMoney(row, 3, lineObj.get("Club_account"), "right colspace");
 
             int accountline = Util.getInt(lineObj.get("AccountLine"));
             if (accountline > 0) {
@@ -171,16 +169,12 @@ public class TrustStatusView extends Composite implements ClickListener {
             } else {
                 table.setText(row, 4, "");
             }
-
-            String style = (i % 2 == 0) ? "showlineposts2" : "showlineposts1";
-            table.getRowFormatter().setStyleName(row, style);
+            table.alternateStyle(row, (i % 2 == 0));
             row++;
         }
         table.setHTML(row, 0, elements.sum());
-        table.setText(row, 2, sumFond);
-        table.getCellFormatter().setStyleName(row, 2, "right");
-        table.setText(row, 3, sumClub);
-        table.getCellFormatter().setStyleName(row, 3, "right");
+        table.setMoney(row, 2, sumFond);
+        table.setMoney(row, 3, sumClub);
         table.getRowFormatter().setStyleName(row, "sumline");
         row++;
     }
