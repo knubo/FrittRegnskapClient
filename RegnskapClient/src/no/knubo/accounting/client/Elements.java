@@ -520,14 +520,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String trustStatusView_newTrustButton();
 
   /**
-   * Translated "Inntekter for kurs".
-   * 
-   * @return translated "Inntekter for kurs"
-   * @gwt.key earnings_courses
-   */
-  String earnings_courses();
-
-  /**
    * Translated "Konti for status for utvalgte konti".
    * 
    * @return translated "Konti for status for utvalgte konti"
@@ -1134,6 +1126,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key menu_show
    */
   String menu_show();
+
+  /**
+   * Translated "Inntekter for medlemskap".
+   * 
+   * @return translated "Inntekter for medlemskap"
+   * @gwt.key earnings_memberships
+   */
+  String earnings_memberships();
 
   /**
    * Translated "Send epost".

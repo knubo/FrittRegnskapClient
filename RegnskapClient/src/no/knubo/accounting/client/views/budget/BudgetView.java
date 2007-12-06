@@ -40,6 +40,7 @@ public class BudgetView extends Composite {
     private HashMap coursePrices;
     private HashMap trainPrices;
     private HashMap yearPrices;
+    private HashMap yearSums;
 
     public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
             Elements elements) {
@@ -53,7 +54,7 @@ public class BudgetView extends Composite {
         DockPanel dp = new DockPanel();
 
         TabPanel tabPanel = new TabPanel();
-        tabPanel.add(createCourseEarningsView(), elements.earnings_courses());
+        tabPanel.add(createCourseEarningsView(), elements.earnings_memberships());
         tabPanel.add(createOtherEarningsView(), elements.earnings_other());
         tabPanel.add(createExpencesView(), elements.expences());
         tabPanel.add(createResultView(), elements.budget_result());
@@ -141,7 +142,7 @@ public class BudgetView extends Composite {
     private AccountTable buildStatusTable() {
         AccountTable AccountTable = new AccountTable("tablecells");
         AccountTable.setText(0, 0, elements.year());
-        AccountTable.setText(1, 0, elements.earnings_courses());
+        AccountTable.setText(1, 0, elements.earnings_memberships());
         AccountTable.setText(2, 0, elements.earnings_all());
         AccountTable.setText(3, 0, elements.expences());
         AccountTable.setHeaderRowStyle(0);
@@ -161,6 +162,7 @@ public class BudgetView extends Composite {
     public void init() {
         initEarningsTable(springEarningsTable);
         initEarningsTable(fallEarningsTable);
+        yearSums = new HashMap();
 
         ServerResponse callback = new ServerResponse() {
 
@@ -172,12 +174,28 @@ public class BudgetView extends Composite {
                 ArrayList keys = new ArrayList(members.keySet());
                 Collections.sort(keys);
                 fillMemberships(keys, members);
+                fillOverallView();
                 helpPanel.resize(me);
             }
 
         };
 
         AuthResponder.get(constants, messages, callback, "accounting/budget.php?action=init");
+    }
+
+    protected void fillOverallView() {
+        ArrayList sums = new ArrayList(yearSums.values());
+        Collections.sort(sums);
+
+        int col = 1;
+        for (Iterator i = sums.iterator(); i.hasNext();) {
+            YearSum yearSum = (YearSum) i.next();
+
+            statusTable.setInt(0, col, yearSum.getYear());
+            statusTable.setMoney(1, col, yearSum.getCourse());
+            statusTable.setMoney(2, col, yearSum.getTotal());
+            col++;
+        }
     }
 
     protected void fillPrices(JSONObject priceObj) {
@@ -260,11 +278,24 @@ public class BudgetView extends Composite {
         table.setMoney(3, column + 1, sumTrain);
         table.setTooltip(3, column + 1, elements.cost_practice() + ":" + trainPrices.get(semester));
 
-        table.setMoney(4, column + 1, (sumYear + sumCourse + sumTrain));
+        double sum = sumYear + sumCourse + sumTrain;
+        addYearCourse(year, sum);
+        table.setMoney(4, column + 1, sum);
 
         table.getCellFormatter().setStyleName(1, column, "center");
         table.getCellFormatter().setStyleName(2, column, "center");
         table.getCellFormatter().setStyleName(3, column, "center");
+    }
+
+    private void addYearCourse(String year, double sum) {
+        YearSum data = (YearSum) yearSums.get(year);
+
+        if (data == null) {
+            data = new YearSum(Integer.parseInt(year));
+            yearSums.put(year, data);
+        }
+
+        data.addCourse(sum);
     }
 
     private double calcSum(int count, String key, HashMap prices) {
@@ -309,6 +340,57 @@ public class BudgetView extends Composite {
             if (year != other.year)
                 return false;
             return true;
+        }
+    }
+
+    class YearSum implements Comparable {
+        int year;
+        double sumCourse;
+        private double sumTotal;
+
+        public YearSum(int year) {
+            this.year = year;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public void addCourse(double d) {
+            sumCourse += d;
+            sumTotal += d;
+        }
+
+        public double getCourse() {
+            return sumCourse;
+        }
+
+        public double getTotal() {
+            return sumTotal;
+        }
+
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + year;
+            return result;
+        }
+
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (!(obj instanceof YearSum))
+                return false;
+            final YearSum other = (YearSum) obj;
+            if (year != other.year)
+                return false;
+            return true;
+        }
+
+        public int compareTo(Object arg0) {
+            return year - ((YearSum) arg0).year;
         }
 
     }

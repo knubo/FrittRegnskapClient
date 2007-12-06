@@ -3,6 +3,7 @@ package no.knubo.accounting.client.ui;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.validation.Validateable;
 
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -55,5 +56,17 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements Validateab
     public void setSelectedIndex(int i) {
         setErrorText("");
         listbox.setSelectedIndex(i);
+    }
+
+    public void setIndexByValue(JSONValue value) {
+        Util.setIndexByValue(listbox, Util.str(value));
+    }
+
+    public void clear() {
+        listbox.clear();
+    }
+
+    public void addItem(JSONValue description, JSONValue value) {
+        listbox.addItem(Util.str(description), Util.str(value));
     }
 }

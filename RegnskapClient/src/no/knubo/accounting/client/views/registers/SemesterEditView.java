@@ -221,6 +221,7 @@ public class SemesterEditView extends Composite implements ClickListener {
                         hide();
                     } else {
                         mainErrorLabel.setText(messages.save_failed());
+                        Util.timedMessage(mainErrorLabel, "", 10);
                     }
                 }
             };
@@ -232,12 +233,14 @@ public class SemesterEditView extends Composite implements ClickListener {
             edittable.setHTML(0, 1, String.valueOf(year));
             springBox.setText("");
             fallBox.setText("");
+            mainErrorLabel.setText("");
         }
 
         private void init(String year, String springDesc, String fallDesc) {
             edittable.setHTML(0, 1, year);
             springBox.setText(springDesc);
             fallBox.setText(fallDesc);
+            mainErrorLabel.setText("");
         }
 
         private boolean validateFields() {

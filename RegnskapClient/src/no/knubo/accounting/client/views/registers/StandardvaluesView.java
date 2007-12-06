@@ -6,13 +6,14 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -40,7 +41,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
 
     private TextBoxWithErrorText monthBox;
 
-    private TextBoxWithErrorText semesterBox;
+    private ListBoxWithErrorText semesterBox;
 
     private TextBoxWithErrorText costCourseBox;
 
@@ -82,8 +83,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         yearBox.setMaxLength(4);
         monthBox = new TextBoxWithErrorText("month");
         monthBox.setMaxLength(2);
-        semesterBox = new TextBoxWithErrorText("semester");
-        semesterBox.setMaxLength(4);
+        semesterBox = new ListBoxWithErrorText("semester");
         costCourseBox = new TextBoxWithErrorText("costcourse");
         costCourseBox.setMaxLength(6);
         costCourseBox.setEnabled(false);
@@ -150,20 +150,37 @@ public class StandardvaluesView extends Composite implements ClickListener {
     }
 
     public void init() {
+        semesterBox.clear();
+        
+        /* Fills first semesters, then standard values */
+        ServerResponse callback = new ServerResponse() {
 
+            public void serverResponse(JSONValue value) {
+                JSONArray arr = value.isArray();
+
+                for(int i = 0; i < arr.size(); i++) {
+                    JSONValue semVal = arr.get(i);
+                    JSONObject obj = semVal.isObject();
+                    
+                    semesterBox.addItem(obj.get("description"), obj.get("semester"));
+                }
+                
+                fillStandardValues();
+            }
+        };
+
+        AuthResponder.get(constants, messages, callback, "registers/semesters.php?action=all");
+    }
+
+    private void fillStandardValues() {
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
-                if (object == null) {
-                    Window.alert("Failed to load data.");
-                    return;
-                }
-
                 yearBox.setText(Util.str(object.get("year")));
                 monthBox.setText(Util.str(object.get("month")));
-                semesterBox.setText(Util.str(object.get("semester")));
+                semesterBox.setIndexByValue(object.get("semester"));
                 costCourseBox.setText(Util.str(object.get("cost_course")));
                 costPracticeBox.setText(Util.str(object.get("cost_practice")));
                 costMembershipBox.setText(Util.str(object.get("cost_membership")));
@@ -174,7 +191,6 @@ public class StandardvaluesView extends Composite implements ClickListener {
         };
 
         AuthResponder.get(constants, messages, callback, "registers/standard.php?action=get");
-
     }
 
     private boolean validate() {
