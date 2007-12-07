@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 /** Indexes a set of widgets based on an id string. */
@@ -57,6 +59,26 @@ public class IdHolder {
      *            The widget to find.
      * @return The id, or null if not found.
      */
+    public Object findObject(Widget sender) {
+        Iterator idIt = ids.iterator();
+        for (Iterator widgetIt = widgets.iterator(); widgetIt.hasNext();) {
+            Widget widget = (Widget) widgetIt.next();
+            Object id = idIt.next();
+
+            if (widget == sender) {
+                return id;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds the id for a given widget.
+     * 
+     * @param sender
+     *            The widget to find.
+     * @return The id, or null if not found.
+     */
     public String findId(Widget sender) {
         Iterator idIt = ids.iterator();
         for (Iterator widgetIt = widgets.iterator(); widgetIt.hasNext();) {
@@ -70,7 +92,13 @@ public class IdHolder {
         return null;
     }
 
+    
     public List getWidgets() {
         return widgets;
+    }
+
+    public void addObject(JSONObject obj, Image widget) {
+        ids.add(obj);
+        widgets.add(widget);        
     }
 }

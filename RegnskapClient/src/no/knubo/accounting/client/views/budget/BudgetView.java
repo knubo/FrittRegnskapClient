@@ -12,19 +12,23 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class BudgetView extends Composite {
+public class BudgetView extends Composite implements ClickListener {
 
     private static BudgetView me;
     private I18NAccount messages;
@@ -41,6 +45,8 @@ public class BudgetView extends Composite {
     private HashMap trainPrices;
     private HashMap yearPrices;
     private HashMap yearSums;
+    private IdHolder membershipIdHolder;
+    private BudgetEditMembershipEditFields editFields;
 
     public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
             Elements elements) {
@@ -52,6 +58,8 @@ public class BudgetView extends Composite {
         statusTable = buildStatusTable();
 
         DockPanel dp = new DockPanel();
+
+        membershipIdHolder = new IdHolder();
 
         TabPanel tabPanel = new TabPanel();
         tabPanel.add(createCourseEarningsView(), elements.earnings_memberships());
@@ -146,7 +154,7 @@ public class BudgetView extends Composite {
         AccountTable.setText(2, 0, elements.earnings_all());
         AccountTable.setText(3, 0, elements.expences());
         AccountTable.setHeaderRowStyle(0);
-
+        AccountTable.setHeaderColStyle(0);
         return AccountTable;
     }
 
@@ -160,6 +168,7 @@ public class BudgetView extends Composite {
     }
 
     public void init() {
+        membershipIdHolder.init();
         initEarningsTable(springEarningsTable);
         initEarningsTable(fallEarningsTable);
         yearSums = new HashMap();
@@ -238,13 +247,11 @@ public class BudgetView extends Composite {
             if ("0".equals(fall)) {
                 String label = elements.spring() + " " + year;
 
-                fiillColumn(obj, year, springCol, springEarningsTable, label);
-                springCol += 2;
+                springCol += fillColumn(obj, year, springCol, springEarningsTable, label);
             } else {
                 String label = elements.fall() + " " + year;
 
-                fiillColumn(obj, year, fallCol, fallEarningsTable, label);
-                fallCol += 2;
+                fallCol += fillColumn(obj, year, fallCol, fallEarningsTable, label);
             }
         }
         springEarningsTable.setHeaderColStyle(0);
@@ -253,15 +260,29 @@ public class BudgetView extends Composite {
         fallEarningsTable.setHeaderRowStyle(0);
     }
 
-    private void fiillColumn(JSONObject obj, String year, int column, AccountTable table,
-            String label) {
+    private int fillColumn(JSONObject obj, String year, int column, AccountTable table, String label) {
         int yearcount = Util.getInt(obj.get("year"));
         int coursecount = Util.getInt(obj.get("course"));
         int traincount = Util.getInt(obj.get("train"));
         String semester = Util.str(obj.get("semester"));
 
         table.setText(0, column, label);
-        table.setText(0, column + 1, elements.sum());
+
+        /* If budget column, add a column with the edit image */
+        if (obj.containsKey("budget")) {
+            Image editImage = ImageFactory.editImage("edit_budget_memberships");
+            editImage.addClickListener(this);
+            membershipIdHolder.addObject(obj, editImage);
+
+            table.setWidget(0, column + 1, editImage);
+            table.getFlexCellFormatter().setColSpan(1, column, 2);
+            table.getFlexCellFormatter().setColSpan(2, column, 2);
+            table.getFlexCellFormatter().setColSpan(3, column, 2);
+            table.getFlexCellFormatter().setColSpan(4, column, 2);
+        }
+        int addpos = (obj.containsKey("budget") ? 2 : 1);
+
+        table.setText(0, column + addpos, elements.sum());
 
         double sumYear = calcSum(yearcount, year, yearPrices);
         table.setInt(1, column, yearcount);
@@ -285,6 +306,8 @@ public class BudgetView extends Composite {
         table.getCellFormatter().setStyleName(1, column, "center");
         table.getCellFormatter().setStyleName(2, column, "center");
         table.getCellFormatter().setStyleName(3, column, "center");
+
+        return 1 + addpos;
     }
 
     private void addYearCourse(String year, double sum) {
@@ -310,88 +333,28 @@ public class BudgetView extends Composite {
         return count * Double.parseDouble(price);
     }
 
-    public static class YearSeason {
-        final int year;
-        final int season;
+    public void onClick(Widget sender) {
+        Object obj = membershipIdHolder.findObject(sender);
 
-        public YearSeason(int year, int season) {
-            this.year = year;
-            this.season = season;
-        }
+        if (obj != null) {
+            doEdit((JSONObject) obj, sender);
 
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + season;
-            result = prime * result + year;
-            return result;
-        }
-
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (!(obj instanceof YearSeason))
-                return false;
-            YearSeason other = (YearSeason) obj;
-            if (season != other.season)
-                return false;
-            if (year != other.year)
-                return false;
-            return true;
         }
     }
 
-    class YearSum implements Comparable {
-        int year;
-        double sumCourse;
-        private double sumTotal;
-
-        public YearSum(int year) {
-            this.year = year;
+    private void doEdit(JSONObject obj, Widget sender) {
+        if (editFields == null) {
+            editFields = new BudgetEditMembershipEditFields(messages, constants, elements);
         }
 
-        public int getYear() {
-            return year;
-        }
+        int left = sender.getAbsoluteLeft() + 10;
 
-        public void addCourse(double d) {
-            sumCourse += d;
-            sumTotal += d;
-        }
+        int top = sender.getAbsoluteTop() + 10;
+        editFields.setPopupPosition(left, top);
 
-        public double getCourse() {
-            return sumCourse;
-        }
-
-        public double getTotal() {
-            return sumTotal;
-        }
-
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + year;
-            return result;
-        }
-
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (!(obj instanceof YearSum))
-                return false;
-            final YearSum other = (YearSum) obj;
-            if (year != other.year)
-                return false;
-            return true;
-        }
-
-        public int compareTo(Object arg0) {
-            return year - ((YearSum) arg0).year;
-        }
+        editFields.init(this, obj);
+        editFields.show();
 
     }
+
 }
