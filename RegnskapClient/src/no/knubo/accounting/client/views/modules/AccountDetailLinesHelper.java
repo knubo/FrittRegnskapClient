@@ -11,6 +11,7 @@ import no.knubo.accounting.client.cache.ProjectCache;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -53,6 +54,8 @@ public class AccountDetailLinesHelper {
 
     public void renderResult(JSONArray array, String filterPostType) {
 
+        currentYear = 0;
+        currentMonth = 0;
         ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
         EmploeeCache emploeeCache = EmploeeCache.getInstance(constants, messages);
         PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
