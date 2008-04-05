@@ -85,10 +85,17 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
                 table.getFlexCellFormatter().setColSpan(badRow, 0, 9);
                 badRow++;
 
+                boolean yearSet = false;
+                
                 for (int i = 0; i < array.size(); i++) {
                     JSONValue persVal = array.get(i);
                     JSONObject object = persVal.isObject();
 
+                    if(!yearSet) {
+                        yearSet = true;
+                        table.setHTML(0, 0, elements.title_report_membersaddresses()+ " "+Util.str(object.get("year")));
+                    }
+                    
                     if (Util.isNull(object.get("address"))
                             || Util.str(object.get("address")).length() == 0) {
                         table.insertRow(badRow);

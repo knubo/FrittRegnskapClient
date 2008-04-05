@@ -476,7 +476,7 @@ public class LineEditView extends Composite implements ClickListener {
             }
         };
 
-        AuthResponder.get(constants, messages, callback, "accounting/editaccountpost.php");
+        AuthResponder.post(constants, messages, callback, sb, "accounting/editaccountpost.php");
 
     }
 

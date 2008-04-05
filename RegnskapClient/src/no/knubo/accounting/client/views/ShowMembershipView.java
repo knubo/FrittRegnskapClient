@@ -144,8 +144,8 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     String firstname = Util.str(names.get(1));
                     String lastname = Util.str(names.get(0));
                     String id = Util.str(names.get(2));
-                    table.setText(row, 0, lastname);
-                    table.setText(row, 1, firstname);
+                    table.setText(row, 1, lastname);
+                    table.setText(row, 0, firstname);
 
                     Image editUserImage = ImageFactory
                             .editImage("ShowMembershipView.editUserImage");
