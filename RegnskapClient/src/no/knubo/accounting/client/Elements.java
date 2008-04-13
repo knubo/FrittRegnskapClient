@@ -40,6 +40,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_people();
 
   /**
+   * Translated "Filer".
+   * 
+   * @return translated "Filer"
+   * @gwt.key files
+   */
+  String files();
+
+  /**
    * Translated "Utgifter".
    * 
    * @return translated "Utgifter"
@@ -568,6 +576,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String full_access();
 
   /**
+   * Translated "Vedlikehold filer".
+   * 
+   * @return translated "Vedlikehold filer"
+   * @gwt.key menuitem_fileManage
+   */
+  String menuitem_fileManage();
+
+  /**
    * Translated "Valgte konti".
    * 
    * @return translated "Valgte konti"
@@ -992,6 +1008,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_reports();
 
   /**
+   * Translated "Velg filer".
+   * 
+   * @return translated "Velg filer"
+   * @gwt.key choose_files
+   */
+  String choose_files();
+
+  /**
    * Translated "Føres på post".
    * 
    * @return translated "Føres på post"
@@ -1046,6 +1070,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key x
    */
   String x();
+
+  /**
+   * Translated "Legg ved filer".
+   * 
+   * @return translated "Legg ved filer"
+   * @gwt.key attach_files
+   */
+  String attach_files();
 
   /**
    * Translated "Postbeskrivelse".
@@ -1110,6 +1142,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key query
    */
   String query();
+
+  /**
+   * Translated "Velg filer som skal vedleggges eposten.".
+   * 
+   * @return translated "Velg filer som skal vedleggges eposten."
+   * @gwt.key choose_attachments
+   */
+  String choose_attachments();
 
   /**
    * Translated "November".
@@ -1656,20 +1696,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String employee();
 
   /**
-   * Translated "Pris for meldmesskap".
-   * 
-   * @return translated "Pris for meldmesskap"
-   * @gwt.key cost_membership
-   */
-  String cost_membership();
-
-  /**
    * Translated "Beskrivelse".
    * 
    * @return translated "Beskrivelse"
    * @gwt.key description
    */
   String description();
+
+  /**
+   * Translated "Pris for meldmesskap".
+   * 
+   * @return translated "Pris for meldmesskap"
+   * @gwt.key cost_membership
+   */
+  String cost_membership();
 
   /**
    * Translated "Budsjett".

@@ -36,4 +36,5 @@ public interface WidgetIds {
     public int BUDGET = 32;
     public int SHOW_ALL_MEMBERS = 33;
     public int EDIT_SEMESTER = 34;
+    public int MANAGE_FILES = 35;
 }

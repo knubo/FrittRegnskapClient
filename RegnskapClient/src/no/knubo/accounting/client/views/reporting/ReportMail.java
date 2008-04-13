@@ -16,11 +16,14 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ReportMail extends Composite implements ClickListener {
@@ -34,6 +37,9 @@ public class ReportMail extends Composite implements ClickListener {
     protected JSONArray receivers;
     private EmailSendStatus emailSendStatusView;
     private I18NAccount messages;
+    private NamedButton sendButton;
+    private NamedButton attachButton;
+    private PickAttachments pickAttachments;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages,
             Elements elements) {
@@ -71,9 +77,13 @@ public class ReportMail extends Composite implements ClickListener {
         bodyBox.setVisibleLines(30);
         mainTable.setWidget(2, 1, bodyBox);
 
-        NamedButton sendButton = new NamedButton("mail_send", elements.mail_send());
+        attachButton = new NamedButton("attach_files", elements.attach_files());
+        attachButton.addClickListener(this);
+        mainTable.setWidget(3, 1, attachButton);
+
+        sendButton = new NamedButton("mail_send", elements.mail_send());
         sendButton.addClickListener(this);
-        mainTable.setWidget(3, 0, sendButton);
+        mainTable.setWidget(4, 0, sendButton);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -88,7 +98,25 @@ public class ReportMail extends Composite implements ClickListener {
         initWidget(dp);
     }
 
+    private void chooseAttachments() {
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue parse) {
+                JSONArray files = parse.isArray();
+
+                openSelectFilesForAttachment(files);
+            }
+        };
+
+        AuthResponder.get(constants, messages, callback, "files/files.php?action=list");
+    }
+
     public void fillReceivers() {
+        if (reciversListBox.getText().length() == 0) {
+            Window.alert(messages.mail_choose_recivers());
+            return;
+        }
+
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
@@ -123,12 +151,17 @@ public class ReportMail extends Composite implements ClickListener {
         emailSendStatusView.setPopupPosition(left, top);
 
         emailSendStatusView.show();
+        emailSendStatusView.center();
         emailSendStatusView.sendEmails();
 
     }
 
     public void onClick(Widget sender) {
-        fillReceivers();
+        if (sender == sendButton) {
+            fillReceivers();
+        } else if (sender == attachButton) {
+            chooseAttachments();
+        }
     }
 
     class EmailSendStatus extends DialogBox implements ClickListener {
@@ -227,9 +260,75 @@ public class ReportMail extends Composite implements ClickListener {
                 }
 
             };
-            
+
             AuthResponder.post(constants, messages, callback, mailRequest, "reports/email.php");
         }
+    }
+
+    protected void openSelectFilesForAttachment(JSONArray files) {
+        if (pickAttachments == null) {
+            pickAttachments = new PickAttachments();
+        }
+        pickAttachments.fillFiles(files);
+        pickAttachments.show();
+        pickAttachments.center();
+
+    }
+
+    class PickAttachments extends DialogBox implements ClickListener {
+
+        private FlexTable filesTable;
+        private NamedButton cancelButton;
+        private NamedButton pickButton;
+
+        PickAttachments() {
+            VerticalPanel dp = new VerticalPanel();
+
+            filesTable = new FlexTable();
+            filesTable.setStyleName("tableborder");
+            filesTable.setTitle(elements.choose_attachments());
+
+            filesTable.getRowFormatter().setStyleName(0, "header");
+            filesTable.setHTML(0, 0, elements.files());
+            filesTable.setHTML(0, 1, elements.choose_files());
+
+            dp.add(filesTable);
+
+            HorizontalPanel hp = new HorizontalPanel();
+            dp.add(hp);
+
+            cancelButton = new NamedButton("abort", elements.abort());
+            cancelButton.addClickListener(this);
+            hp.add(cancelButton);
+
+            pickButton = new NamedButton("choose_file", elements.choose_files());
+            pickButton.addClickListener(this);
+            hp.add(pickButton);
+
+            setWidget(dp);
+
+        }
+
+        public void fillFiles(JSONArray files) {
+            while (filesTable.getRowCount() > 1) {
+                filesTable.removeRow(1);
+            }
+
+            for (int i = 0; i < files.size(); i++) {
+                filesTable.setText(i + 1, 0, Util.str(files.get(i)));
+
+                CheckBox filePick = new CheckBox();
+
+                filesTable.setWidget(i + 1, 1, filePick);
+            }
+        }
+
+        public void onClick(Widget sender) {
+            if (sender == cancelButton) {
+                hide();
+            }
+        }
+
     }
 
 }

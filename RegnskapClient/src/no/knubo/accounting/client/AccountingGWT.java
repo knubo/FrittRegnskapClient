@@ -25,6 +25,7 @@ import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.budget.BudgetView;
+import no.knubo.accounting.client.views.files.ManageFilesView;
 import no.knubo.accounting.client.views.registers.AccountTrackEditView;
 import no.knubo.accounting.client.views.registers.MembershipPriceEditView;
 import no.knubo.accounting.client.views.registers.PersonEditView;
@@ -145,6 +146,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.REPORT_USERS_EMAIL);
         addMenuItem(reportsMenu, elements.menuitem_report_accounttrack(),
                 WidgetIds.REPORT_ACCOUNTTRACK);
+        addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
 
         addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
         addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
@@ -324,6 +326,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case REPORT_USERS_EMAIL:
                 widget = ReportUsersEmail.getInstance(constants, messages, helpPanel, elements);
                 ((ReportUsersEmail) widget).init();
+                break;
+            case MANAGE_FILES:
+                widget = ManageFilesView.getInstance(constants, messages, helpPanel, elements);
+                ((ManageFilesView)widget).init();
                 break;
 
             case WidgetIds.ABOUT:
