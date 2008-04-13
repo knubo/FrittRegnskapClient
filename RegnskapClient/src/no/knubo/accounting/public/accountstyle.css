@@ -14,6 +14,11 @@
   white-space:nowrap;
 }
 
+.insidetable {
+ border-collapse:collapse;
+ background-color:white;
+}
+
 .tableborder {
  border-collapse: collapse;
  border-style: solid; 
