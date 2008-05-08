@@ -113,7 +113,7 @@ public class ReportMail extends Composite implements ClickListener {
     }
     
     protected void setAttachedFiles(List fileNames) {
-        if(attachedFiles.getRowCount() > 0) {
+        while(attachedFiles.getRowCount() > 0) {
             attachedFiles.removeRow(0);
         }
         

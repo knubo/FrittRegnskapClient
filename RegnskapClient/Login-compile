@@ -1,6 +1,6 @@
 #!/bin/sh
 APPDIR=`dirname $0`;
-GWT_ROOT='/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.4.10'
+GWT_ROOT='/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.4.61'
 CP="$APPDIR/src:$APPDIR/bin:$GWT_ROOT/gwt-user.jar:$GWT_ROOT/gwt-dev-mac.jar"
 
 java -XstartOnFirstThread -cp "$CP" com.google.gwt.dev.GWTCompiler -out "$APPDIR/www" "$@" no.knubo.accounting.Login;

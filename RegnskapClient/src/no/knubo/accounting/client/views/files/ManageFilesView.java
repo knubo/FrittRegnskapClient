@@ -4,8 +4,9 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
-import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.IdHolder;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 
 import com.google.gwt.json.client.JSONArray;
@@ -24,29 +25,31 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.Hidden;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ManageFilesView extends Composite {
+public class ManageFilesView extends Composite implements ClickListener {
 
     private static ManageFilesView instance;
     private final I18NAccount messages;
     private final Constants constants;
-    private final HelpPanel helpPanel;
-    private final Elements elements;
     private Label statusLabel;
     private FlexTable table;
+    private IdHolder idHolder;
 
     public static ManageFilesView getInstance(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel, Elements elements) {
+            Elements elements) {
         if (instance == null) {
-            instance = new ManageFilesView(messages, constants, helpPanel, elements);
+            instance = new ManageFilesView(messages, constants, elements);
         }
         return instance;
     }
 
     public void init() {
+        idHolder.init();
+
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
@@ -56,7 +59,14 @@ public class ManageFilesView extends Composite {
                 JSONArray files = value.isArray();
 
                 for (int i = 0; i < files.size(); i++) {
-                    table.setText(i+1, 0, Util.str(files.get(i)));
+                    String fileName = Util.str(files.get(i));
+                    table.setText(i + 1, 0, fileName);
+                    Image deleteImage = ImageFactory.deleteImage("delete_file");
+
+                    deleteImage.addClickListener(instance);
+
+                    idHolder.add(fileName, deleteImage);
+                    table.setWidget(i + 1, 1, deleteImage);
                 }
             }
 
@@ -66,13 +76,12 @@ public class ManageFilesView extends Composite {
 
     }
 
-    private ManageFilesView(final I18NAccount messages, Constants constants, HelpPanel helpPanel,
-            Elements elements) {
+    private ManageFilesView(final I18NAccount messages, Constants constants, Elements elements) {
 
         this.messages = messages;
         this.constants = constants;
-        this.helpPanel = helpPanel;
-        this.elements = elements;
+
+        idHolder = new IdHolder();
 
         DockPanel dp = new DockPanel();
 
@@ -80,6 +89,7 @@ public class ManageFilesView extends Composite {
         table.setStyleName("tableborder");
         table.setText(0, 0, elements.files());
         table.getFlexCellFormatter().setColSpan(0, 0, 2);
+        table.getRowFormatter().setStyleName(0, "header");
 
         dp.add(table, DockPanel.NORTH);
 
@@ -91,11 +101,9 @@ public class ManageFilesView extends Composite {
         form.setEncoding(FormPanel.ENCODING_MULTIPART);
         form.setMethod(FormPanel.METHOD_POST);
 
-        // Create a panel to hold all of the form widgets.
         VerticalPanel panel = new VerticalPanel();
         form.setWidget(panel);
 
-        // Create a TextBox, giving it a name so that it will be submitted.
         final Label tb = new Label("Filnavn");
         panel.add(tb);
 
@@ -104,12 +112,10 @@ public class ManageFilesView extends Composite {
         hidden.setValue("upload");
         panel.add(hidden);
 
-        // Create a FileUpload widget.
         FileUpload upload = new FileUpload();
         upload.setName("uploadFormElement");
         panel.add(upload);
 
-        // Add a 'submit' button.
         panel.add(new Button("Last opp fil", new ClickListener() {
             public void onClick(Widget sender) {
                 form.submit();
@@ -120,12 +126,8 @@ public class ManageFilesView extends Composite {
 
         panel.add(statusLabel);
 
-        // Add an event handler to the form.
         form.addFormHandler(new FormHandler() {
             public void onSubmit(FormSubmitEvent event) {
-                // This event is fired just before the form is submitted. We can
-                // take
-                // this opportunity to perform validation.
                 if (tb.getText().length() == 0) {
                     Window.alert("The text box must not be empty");
                     event.setCancelled(true);
@@ -156,6 +158,7 @@ public class ManageFilesView extends Composite {
                 if ("1".equals(Util.str(jsonObj.get("status")))) {
                     statusLabel.setText(messages.save_ok());
                     Util.timedMessage(statusLabel, "", 15);
+                    init();
                 } else {
                     statusLabel.setText(messages.save_failed());
                     Util.timedMessage(statusLabel, "", 15);
@@ -166,6 +169,32 @@ public class ManageFilesView extends Composite {
         dp.add(form, DockPanel.NORTH);
 
         initWidget(dp);
+    }
+
+    public void onClick(Widget sender) {
+        String fileName = idHolder.findId(sender);
+
+        boolean result = Window.confirm(messages.delete_file_question(fileName));
+
+        if (!result) {
+            return;
+        }
+
+        ServerResponse callback = new ServerResponse() {
+            public void serverResponse(JSONValue value) {
+                JSONObject obj = value.isObject();
+
+                if ("1".equals(Util.str(obj.get("result")))) {
+                    init();
+                } else {
+                    Window.alert(messages.save_failed_badly());
+                }
+            }
+        };
+
+        AuthResponder.get(constants, messages, callback, "files/files.php?action=delete&file="
+                + fileName);
+
     }
 
 }

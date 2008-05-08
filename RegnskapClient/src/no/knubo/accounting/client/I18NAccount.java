@@ -152,6 +152,14 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_validation_fail(String arg0);
 
   /**
+   * Translated "Slett filen {0}?".
+   * 
+   * @return translated "Slett filen {0}?"
+   * @gwt.key delete_file_question
+   */
+  String delete_file_question(String arg0);
+
+  /**
    * Translated "Avbryte utsendelse av mail?".
    * 
    * @return translated "Avbryte utsendelse av mail?"
@@ -232,20 +240,20 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String registry_invalid_key();
 
   /**
-   * Translated "Feltet må ha større verdi enn 0".
-   * 
-   * @return translated "Feltet må ha større verdi enn 0"
-   * @gwt.key field_to_low_zero
-   */
-  String field_to_low_zero();
-
-  /**
    * Translated "31 - 40 år - {0} medlemmer".
    * 
    * @return translated "31 - 40 år - {0} medlemmer"
    * @gwt.key report_year_40
    */
   String report_year_40(String arg0);
+
+  /**
+   * Translated "Feltet må ha større verdi enn 0".
+   * 
+   * @return translated "Feltet må ha større verdi enn 0"
+   * @gwt.key field_to_low_zero
+   */
+  String field_to_low_zero();
 
   /**
    * Translated "Søket mislyktes - programfeil eller databasefeil".

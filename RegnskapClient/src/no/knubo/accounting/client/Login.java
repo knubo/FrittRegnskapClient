@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -59,6 +60,23 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
         userBox.setMaxLength(12);
         passBox = new PasswordTextBox();
         passBox.setWidth("12em");
+        passBox.addKeyboardListener(new KeyboardListener() {
+
+            public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+                /* Not used */
+            }
+
+            public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+                if (keyCode == KEY_ENTER) {
+                    doLogin();
+                }
+            }
+
+            public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+                /* Not used */
+            }
+
+        });
         infoLabel = new HTML();
 
         table.setText(0, 0, elements.login());
@@ -76,6 +94,10 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
     }
 
     public void onClick(Widget sender) {
+        doLogin();
+    }
+
+    private void doLogin() {
         String user = this.userBox.getText();
         String password = this.passBox.getText();
         if (!HTTPRequest.asyncGet(this.constants.baseurl() + "authenticate.php?user=" + user

@@ -328,7 +328,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((ReportUsersEmail) widget).init();
                 break;
             case MANAGE_FILES:
-                widget = ManageFilesView.getInstance(constants, messages, helpPanel, elements);
+                widget = ManageFilesView.getInstance(constants, messages, elements);
                 ((ManageFilesView)widget).init();
                 break;
 
