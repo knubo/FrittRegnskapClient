@@ -63,7 +63,7 @@ public class MonthDetailsView extends Composite implements ClickListener, Change
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
 
-        yearMonthComboHelper = new YearMonthComboHelper(constants, monthYearCombo, elements);
+        yearMonthComboHelper = new YearMonthComboHelper(constants, messages, monthYearCombo, elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);

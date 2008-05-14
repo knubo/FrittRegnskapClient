@@ -36,7 +36,7 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
     private final Constants constants;
     private final I18NAccount messages;
     private FlexTable table;
-    private IdHolder lineHolder;
+    private IdHolder<Integer, Image> lineHolder;
     private MembershipPriceEditFields editFields;
     private final Elements elements;
 
@@ -70,7 +70,7 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
 
         dp.add(table, DockPanel.NORTH);
 
-        lineHolder = new IdHolder();
+        lineHolder = new IdHolder<Integer, Image>();
         initWidget(dp);
     }
 
@@ -93,7 +93,7 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
         int top = sender.getAbsoluteTop() + 10;
         editFields.setPopupPosition(left, top);
 
-        int row = Integer.parseInt(lineHolder.findId(sender));
+        int row = lineHolder.findId(sender);
 
         editFields.init(row, table.getText(row, 0), table.getText(row, 1), table.getText(row, 2),
                 table.getText(row, 3), table.getText(row, 4), table.getText(row, 5));
@@ -115,9 +115,9 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
                 JSONArray semesters = obj.get("semesters").isArray();
                 JSONObject prices = obj.get("price").isObject();
 
-                Map priceYear = getPricesMap(prices.get("year").isArray(), "year");
-                Map priceCourse = getPricesMap(prices.get("course").isArray(), "semester");
-                Map priceTrain = getPricesMap(prices.get("train").isArray(), "semester");
+                Map<String, String> priceYear = getPricesMap(prices.get("year").isArray(), "year");
+                Map<String, String> priceCourse = getPricesMap(prices.get("course").isArray(), "semester");
+                Map<String, String> priceTrain = getPricesMap(prices.get("train").isArray(), "semester");
 
                 String currentYear = null;
 
@@ -136,7 +136,7 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
                         table.setText(row, 0, year);
 
                         if (priceYear.containsKey(year)) {
-                            table.setText(row, 1, (String) priceYear.get(year));
+                            table.setText(row, 1, priceYear.get(year));
                         }
 
                         Image editImage = ImageFactory.editImage("membershipPriceEdit");
@@ -144,7 +144,7 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
                         table.setWidget(row, 6, editImage);
 
                         currentYear = year;
-                        lineHolder.add(String.valueOf(row), editImage);
+                        lineHolder.add(row, editImage);
 
                         for (int j = 0; j < 6; j++) {
                             table.getCellFormatter().setStyleName(row, j, "right");
@@ -153,18 +153,18 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
                     }
 
                     if (priceCourse.containsKey(semester)) {
-                        table.setText(row, 2 + colPlus, (String) priceCourse.get(semester));
+                        table.setText(row, 2 + colPlus, priceCourse.get(semester));
                     }
                     if (priceTrain.containsKey(semester)) {
-                        table.setText(row, 3 + colPlus, (String) priceTrain.get(semester));
+                        table.setText(row, 3 + colPlus, priceTrain.get(semester));
                     }
 
                 }
 
             }
 
-            private Map getPricesMap(JSONArray array, String type) {
-                HashMap result = new HashMap();
+            private Map<String, String> getPricesMap(JSONArray array, String type) {
+                HashMap<String, String> result = new HashMap<String, String>();
 
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject priceObj = array.get(i).isObject();

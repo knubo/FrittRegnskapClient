@@ -1,7 +1,6 @@
 package no.knubo.accounting.client.views.reporting;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
@@ -26,7 +25,7 @@ public class ReportMassLetters extends Composite implements ClickListener {
     private final Constants constants;
     private final I18NAccount messages;
     private FlexTable table;
-    private ArrayList radiobuttons;
+    private ArrayList<RadioButton> radiobuttons;
     private final Elements elements;
 
     public static ReportMassLetters getInstance(Constants constants, I18NAccount messages,
@@ -47,7 +46,7 @@ public class ReportMassLetters extends Composite implements ClickListener {
 
         table.setText(0, 0, elements.letter_template());
         table.getRowFormatter().setStyleName(0, "header");
-        radiobuttons = new ArrayList();
+        radiobuttons = new ArrayList<RadioButton>();
 
         DockPanel dp = new DockPanel();
         dp.add(table, DockPanel.NORTH);
@@ -88,8 +87,7 @@ public class ReportMassLetters extends Composite implements ClickListener {
     }
 
     public void onClick(Widget sender) {
-        for (Iterator i = radiobuttons.iterator(); i.hasNext();) {
-            RadioButton rb = (RadioButton) i.next();
+        for (RadioButton rb : radiobuttons) {
 
             if (rb.isChecked()) {
                 doLetter(rb.getText());

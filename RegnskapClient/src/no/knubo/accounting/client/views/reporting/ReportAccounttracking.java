@@ -1,6 +1,5 @@
 package no.knubo.accounting.client.views.reporting;
 
-import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
@@ -66,9 +65,7 @@ public class ReportAccounttracking extends Composite {
 
                 PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
-                for (Iterator i = posts.keySet().iterator(); i.hasNext();) {
-                    String key = (String) i.next();
-
+                for (String key : posts.keySet()) {
                     table.setText(row, 0, key);
                     table.setText(row, 1, posttypeCache.getDescription(key));
                     table.setText(row, 2, Util.str(posts.get(key)));

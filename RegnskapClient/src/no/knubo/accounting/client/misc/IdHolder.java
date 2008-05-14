@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 /** Indexes a set of widgets based on an id string. */
-public class IdHolder {
+public class IdHolder<A, W extends Widget> {
 
-    private List widgets = new ArrayList();
-    private List ids = new ArrayList();
+    private List<W> widgets = new ArrayList<W>();
+    private List<A> ids = new ArrayList<A>();
 
     /** Empties registered widgets. */
     public void init() {
@@ -27,18 +25,18 @@ public class IdHolder {
      * @param id
      * @param widget
      */
-    public void add(String id, Widget widget) {
+    public void add(A id, W widget) {
         ids.add(id);
         widgets.add(widget);
     }
 
-    public int remove(String id) {
-        Iterator widgetIt = widgets.iterator();
-        Iterator idsIt = ids.iterator();
+    public int remove(A id) {
+        Iterator<W> widgetIt = widgets.iterator();
+        Iterator<A> idsIt = ids.iterator();
         int pos = 0;
 
         while (idsIt.hasNext()) {
-            String oneId = (String) idsIt.next();
+            A oneId = idsIt.next();
             widgetIt.next();
 
             if (oneId.equals(id)) {
@@ -60,9 +58,9 @@ public class IdHolder {
      * @return The id, or null if not found.
      */
     public Object findObject(Widget sender) {
-        Iterator idIt = ids.iterator();
-        for (Iterator widgetIt = widgets.iterator(); widgetIt.hasNext();) {
-            Widget widget = (Widget) widgetIt.next();
+        Iterator<A> idIt = ids.iterator();
+        for (Iterator<W> widgetIt = widgets.iterator(); widgetIt.hasNext();) {
+            Widget widget = widgetIt.next();
             Object id = idIt.next();
 
             if (widget == sender) {
@@ -79,11 +77,11 @@ public class IdHolder {
      *            The widget to find.
      * @return The id, or null if not found.
      */
-    public String findId(Widget sender) {
-        Iterator idIt = ids.iterator();
-        for (Iterator widgetIt = widgets.iterator(); widgetIt.hasNext();) {
-            Widget widget = (Widget) widgetIt.next();
-            String id = (String) idIt.next();
+    public A findId(Widget sender) {
+        Iterator<A> idIt = ids.iterator();
+        for (Iterator<W> widgetIt = widgets.iterator(); widgetIt.hasNext();) {
+            Widget widget = widgetIt.next();
+            A id = idIt.next();
 
             if (widget == sender) {
                 return id;
@@ -93,11 +91,11 @@ public class IdHolder {
     }
 
     
-    public List getWidgets() {
+    public List<W> getWidgets() {
         return widgets;
     }
 
-    public void addObject(JSONObject obj, Image widget) {
+    public void addObject(A obj, W widget) {
         ids.add(obj);
         widgets.add(widget);        
     }

@@ -2,7 +2,6 @@ package no.knubo.accounting.client.cache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
@@ -17,9 +16,9 @@ import com.google.gwt.user.client.ui.ListBox;
 
 public class EmploeeCache implements ServerResponse {
 
-    private HashMap personById;
+    private HashMap<String, String> personById;
 
-    private ArrayList keys;
+    private ArrayList<String> keys;
 
     private static EmploeeCache instance;
 
@@ -42,8 +41,8 @@ public class EmploeeCache implements ServerResponse {
 
     public void serverResponse(JSONValue jsonValue) {
         JSONArray array = jsonValue.isArray();
-        personById = new HashMap();
-        keys = new ArrayList();
+        personById = new HashMap<String, String>();
+        keys = new ArrayList<String>();
 
         for (int i = 0; i < array.size(); i++) {
             JSONObject obj = array.get(i).isObject();
@@ -63,17 +62,16 @@ public class EmploeeCache implements ServerResponse {
     public void fill(ListBox box) {
         box.insertItem("", 0);
         int pos = 1;
-        for (Iterator i = keys.iterator(); i.hasNext();) {
-            String k = (String) i.next();
-
-            String desc = (String) personById.get(k);
+        
+        for(String k: keys) {
+            String desc = personById.get(k);
 
             box.insertItem(desc, k, pos++);
         }
     }
 
     public String getName(String id) {
-        return (String) personById.get(id);
+        return personById.get(id);
     }
 
     public void flush() {

@@ -32,7 +32,7 @@ public class SemesterEditView extends Composite implements ClickListener {
     private Constants constants;
     private FlexTable table;
     private NamedButton newButton;
-    private IdHolder idHolder;
+    private IdHolder<Integer, Image> idHolder;
     private final Elements elements;
     private SemesterEditView.SemesterEditFields editFields;
     private int maxYear;
@@ -60,7 +60,7 @@ public class SemesterEditView extends Composite implements ClickListener {
         
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
-        idHolder = new IdHolder();
+        idHolder = new IdHolder<Integer, Image>();
         initWidget(dp);
     }
 
@@ -106,7 +106,7 @@ public class SemesterEditView extends Composite implements ClickListener {
                 Image editImage = ImageFactory.editImage("semesterEditImage");
                 editImage.addClickListener(this);
                 table.setWidget(row, 3, editImage);
-                idHolder.add(String.valueOf(row), editImage);
+                idHolder.add(row, editImage);
                 if(maxYear < year) {
                     maxYear = year;
                 }
@@ -139,7 +139,7 @@ public class SemesterEditView extends Composite implements ClickListener {
         if (sender == newButton) {
             editFields.init(maxYear + 1);
         } else {
-            int row = Integer.valueOf(idHolder.findId(sender)).intValue();
+            int row = idHolder.findId(sender);
             String year = table.getText(row, 0);
             String springDesc = table.getText(row, 1);
             String fallDesc = table.getText(row, 2);

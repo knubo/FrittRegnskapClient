@@ -36,7 +36,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
     private String action;
     protected int currentYear;
     protected int currentSemester;
-    private IdHolder idHolder;
+    private IdHolder<String, Image> idHolder;
     final HelpPanel helpPanel;
     private final Elements elements;
 
@@ -80,7 +80,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
         dp.add(table, DockPanel.NORTH);
 
         initWidget(dp);
-        idHolder = new IdHolder();
+        idHolder = new IdHolder<String, Image>();
     }
 
     public void initShowAll() {

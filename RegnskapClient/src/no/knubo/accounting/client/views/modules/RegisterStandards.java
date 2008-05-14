@@ -4,15 +4,13 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -46,9 +44,8 @@ public class RegisterStandards {
 
     public void fetchInitalData(final boolean fillFields) {
 
-        ResponseTextHandler rh = new ResponseTextHandler() {
-            public void onCompletion(String responseText) {
-                JSONValue jsonValue = JSONParser.parse(responseText);
+        ServerResponse rh = new ServerResponse() {
+            public void serverResponse(JSONValue jsonValue) {
 
                 JSONObject root = jsonValue.isObject();
 
@@ -63,10 +60,8 @@ public class RegisterStandards {
             }
 
         };
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(constants.baseurl() + "defaults/newline.php", rh)) {
-            Window.alert(messages.failedConnect());
-        }
+
+        AuthResponder.get(constants, messages, rh, constants.baseurl() + "defaults/newline.php");
     }
 
     public boolean validateTop() {
@@ -162,3 +157,4 @@ public class RegisterStandards {
         return yearBox;
     }
 }
+//

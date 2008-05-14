@@ -1,6 +1,5 @@
 package no.knubo.accounting.client.views;
 
-import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
@@ -43,7 +42,7 @@ public class HappeningsView extends Composite implements ClickListener, CacheCal
 
     private FlexTable table;
 
-    private IdHolder idHolder;
+    private IdHolder<String, Image> idHolder;
 
     private Button newButton;
 
@@ -76,7 +75,7 @@ public class HappeningsView extends Composite implements ClickListener, CacheCal
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
 
-        idHolder = new IdHolder();
+        idHolder = new IdHolder<String, Image>();
         initWidget(dp);
     }
 
@@ -122,8 +121,8 @@ public class HappeningsView extends Composite implements ClickListener, CacheCal
         HappeningCache cache = HappeningCache.getInstance(constants, messages);
 
         int row = 1;
-        for (Iterator i = cache.getAll().iterator(); i.hasNext();) {
-            JSONObject object = (JSONObject) i.next();
+
+        for (JSONObject object : cache.getAll()) {
 
             String description = Util.str(object.get("description"));
             String linedesc = Util.str(object.get("linedesc"));

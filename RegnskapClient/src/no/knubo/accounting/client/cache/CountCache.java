@@ -16,9 +16,9 @@ import com.google.gwt.json.client.JSONValue;
 
 public class CountCache implements ServerResponse {
 
-    private ArrayList counts;
+    private ArrayList<String> counts;
 
-    private HashMap countGivesColumn;
+    private HashMap<String, String> countGivesColumn;
 
     private static CountCache instance;
 
@@ -58,18 +58,18 @@ public class CountCache implements ServerResponse {
     }
 
     public void flush() {
-        counts = new ArrayList();
-        countGivesColumn = new HashMap();
+        counts = new ArrayList<String>();
+        countGivesColumn = new HashMap<String, String>();
 
         AuthResponder.get(constants, messages, this, "registers/count.php");
     }
 
-    public List getCounts() {
+    public List<String> getCounts() {
         return counts;
     }
 
     public String getFieldForCount(String count) {
-        return (String) countGivesColumn.get(count);
+        return countGivesColumn.get(count);
     }
 
 }

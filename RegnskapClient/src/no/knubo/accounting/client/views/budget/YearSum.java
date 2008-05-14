@@ -1,6 +1,6 @@
 package no.knubo.accounting.client.views.budget;
 
-class YearSum implements Comparable {
+class YearSum implements Comparable<YearSum> {
     int year;
     double sumCourse;
     private double sumTotal;
@@ -46,8 +46,8 @@ class YearSum implements Comparable {
         return true;
     }
 
-    public int compareTo(Object arg0) {
-        return year - ((YearSum) arg0).year;
+    public int compareTo(YearSum arg0) {
+        return year - arg0.year;
     }
 
 }

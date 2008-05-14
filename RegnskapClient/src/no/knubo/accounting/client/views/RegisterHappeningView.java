@@ -1,6 +1,5 @@
 package no.knubo.accounting.client.views;
 
-import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
@@ -70,7 +69,7 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
 
     TextBoxWithErrorText amountBox;
 
-    IdHolder widgetGivesValue;
+    IdHolder<String, TextBox> widgetGivesValue;
 
     HappeningCache happeningCache;
 
@@ -80,7 +79,7 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
 
         registerStandards = new RegisterStandards(constants, messages, elements);
 
-        widgetGivesValue = new IdHolder();
+        widgetGivesValue = new IdHolder<String, TextBox>();
 
         VerticalPanel vp = new VerticalPanel();
 
@@ -126,12 +125,11 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
         Util.setCellId(table, 5, 0, "amount");
 
         table.setHTML(6, 0, elements.money_type());
-        List counts = CountCache.getInstance(constants, messages).getCounts();
+        List<String> counts = CountCache.getInstance(constants, messages).getCounts();
         Util.setCellId(table, 6, 0, "money_type");
 
         int row = 7;
-        for (Iterator i = counts.iterator(); i.hasNext();) {
-            String count = (String) i.next();
+        for (String count : counts) {
             TextBoxWithErrorText numberBox = new TextBoxWithErrorText("number" + count);
             numberBox.setVisibleLength(10);
             table.setHTML(row, 0, count);
@@ -184,8 +182,7 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
         Util.addPostParam(sb, "amount", money);
         Util.addPostParam(sb, "post", postListBox.getText());
 
-        for (Iterator i = widgetGivesValue.getWidgets().iterator(); i.hasNext();) {
-            TextBox textBox = (TextBox) i.next();
+        for (TextBox textBox : widgetGivesValue.getWidgets()) {
 
             String value = textBox.getText();
             if (value.length() == 0) {
@@ -226,10 +223,9 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
         dayBox.setText("");
         postListBox.setSelectedIndex(0);
         amountBox.setText("");
-        List amountBoxes = widgetGivesValue.getWidgets();
+        List<TextBox> amountBoxes = widgetGivesValue.getWidgets();
 
-        for (Iterator i = amountBoxes.iterator(); i.hasNext();) {
-            TextBox one = (TextBox) i.next();
+        for (TextBox one : amountBoxes) {
 
             one.setText("");
         }
@@ -267,12 +263,11 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
     }
 
     public void onLostFocus(ErrorLabelWidget me) {
-        /* Recalc sums */
+        /* Re-calculate sums */
 
         double sum = 0;
 
-        for (Iterator i = widgetGivesValue.getWidgets().iterator(); i.hasNext();) {
-            TextBox widget = (TextBox) i.next();
+        for (TextBox widget : widgetGivesValue.getWidgets()) {
             String value = widgetGivesValue.findId(widget);
 
             if (widget.getText().length() > 0) {

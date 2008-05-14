@@ -2,14 +2,14 @@ package no.knubo.accounting.client.views.modules;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
 public class YearMonthComboHelper {
@@ -24,18 +24,20 @@ public class YearMonthComboHelper {
 
     private final Elements elements;
 
-    public YearMonthComboHelper(Constants constants, ListBox monthYearCombo, Elements elements) {
+    private final I18NAccount messages;
+
+    public YearMonthComboHelper(Constants constants, I18NAccount messages, ListBox monthYearCombo, Elements elements) {
         this.constants = constants;
+        this.messages = messages;
         this.monthYearCombo = monthYearCombo;
         this.elements = elements;
     }
 
     public void fillYearMonthCombo() {
         monthYearCombo.clear();
-        ResponseTextHandler resp = new ResponseTextHandler() {
+        ServerResponse resp = new ServerResponse() {
 
-            public void onCompletion(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue value) {
 
                 JSONArray array = value.isArray();
 
@@ -53,9 +55,7 @@ public class YearMonthComboHelper {
             }
 
         };
-        if (!HTTPRequest.asyncGet(this.constants.baseurl() + "defaults/yearmonths.php", resp)) {
-            // TODO Report errors.
-        }
+        AuthResponder.get(constants, messages, resp, this.constants.baseurl() + "defaults/yearmonths.php");
     }
 
     public void setIndex(int currentYear, int currentMonth) {

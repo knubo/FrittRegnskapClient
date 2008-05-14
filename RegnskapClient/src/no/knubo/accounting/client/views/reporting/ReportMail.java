@@ -1,7 +1,6 @@
 package no.knubo.accounting.client.views.reporting;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
@@ -28,7 +27,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -88,11 +86,11 @@ public class ReportMail extends Composite implements ClickListener {
 
         attachButton = new NamedButton("attach_files", elements.attach_files());
         attachButton.addClickListener(this);
-        
+
         attachedFiles = new FlexTable();
         attachedFiles.setStyleName("insidetable");
         mainTable.setWidget(3, 1, attachedFiles);
-        
+
         mainTable.setWidget(4, 1, attachButton);
 
         sendButton = new NamedButton("mail_send", elements.mail_send());
@@ -111,23 +109,22 @@ public class ReportMail extends Composite implements ClickListener {
         dp.add(table, DockPanel.NORTH);
         initWidget(dp);
     }
-    
-    protected void setAttachedFiles(List fileNames) {
-        while(attachedFiles.getRowCount() > 0) {
+
+    protected void setAttachedFiles(List<String> fileNames) {
+        while (attachedFiles.getRowCount() > 0) {
             attachedFiles.removeRow(0);
         }
-        
+
         int row = 0;
-        for (Iterator i = fileNames.iterator(); i.hasNext();) {
-            String fileName = (String) i.next();
-            
+        for (String fileName : fileNames) {
+
             attachedFiles.setText(row++, 0, fileName);
         }
     }
 
     private void chooseAttachments() {
-        final ArrayList existingFiles = getSelectedFiles();
-        
+        final ArrayList<String> existingFiles = getSelectedFiles();
+
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue parse) {
@@ -140,10 +137,10 @@ public class ReportMail extends Composite implements ClickListener {
         AuthResponder.get(constants, messages, callback, "files/files.php?action=list");
     }
 
-    private ArrayList getSelectedFiles() {
-        final ArrayList existingFiles = new ArrayList();
-        
-        for(int i = 0; i < attachedFiles.getRowCount(); i++) {
+    private ArrayList<String> getSelectedFiles() {
+        final ArrayList<String> existingFiles = new ArrayList<String>();
+
+        for (int i = 0; i < attachedFiles.getRowCount(); i++) {
             existingFiles.add(attachedFiles.getText(i, 0));
         }
         return existingFiles;
@@ -185,7 +182,7 @@ public class ReportMail extends Composite implements ClickListener {
         }
 
         emailSendStatusView.setAttachmends(getSelectedFiles());
-        
+
         emailSendStatusView.show();
         emailSendStatusView.center();
         emailSendStatusView.sendEmails();
@@ -228,14 +225,13 @@ public class ReportMail extends Composite implements ClickListener {
             setWidget(dp);
         }
 
-        public void setAttachmends(ArrayList selectedFiles) {
+        public void setAttachmends(ArrayList<String> selectedFiles) {
             JSONArray attachments = new JSONArray();
             int pos = 0;
-            for (Iterator i = selectedFiles.iterator(); i.hasNext();) {
-                String fileName = (String) i.next();
+            for (String fileName : selectedFiles) {
                 attachments.set(pos++, new JSONString(fileName));
             }
-            
+
             attachmentsAsJSONString = URL.encode(attachments.toString());
         }
 
@@ -281,7 +277,7 @@ public class ReportMail extends Composite implements ClickListener {
             Util.addPostParam(mailRequest, "email", email);
             Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
             Util.addPostParam(mailRequest, "attachments", attachmentsAsJSONString);
-            
+
             ServerResponse callback = new ServerResponse() {
 
                 public void serverResponse(JSONValue value) {
@@ -314,7 +310,7 @@ public class ReportMail extends Composite implements ClickListener {
         }
     }
 
-    protected void openSelectFilesForAttachment(JSONArray files, ArrayList existingFiles) {
+    protected void openSelectFilesForAttachment(JSONArray files, ArrayList<String> existingFiles) {
         if (pickAttachments == null) {
             pickAttachments = new PickAttachments();
         }
@@ -358,20 +354,20 @@ public class ReportMail extends Composite implements ClickListener {
 
         }
 
-        public void fillFiles(JSONArray files, ArrayList existingFiles) {
+        public void fillFiles(JSONArray files, ArrayList<String> existingFiles) {
             while (pickFilesTable.getRowCount() > 1) {
                 pickFilesTable.removeRow(1);
             }
 
             for (int i = 0; i < files.size(); i++) {
-                
+
                 String fileName = Util.str(files.get(i));
                 pickFilesTable.setText(i + 1, 0, fileName);
 
                 CheckBox filePick = new CheckBox();
 
-                filePick.setChecked(existingFiles.contains(fileName)); 
-                
+                filePick.setChecked(existingFiles.contains(fileName));
+
                 pickFilesTable.setWidget(i + 1, 1, filePick);
                 pickFilesTable.getCellFormatter().setStyleName(i + 1, 1, "center");
             }
@@ -386,7 +382,7 @@ public class ReportMail extends Composite implements ClickListener {
         }
 
         private void pickFiles() {
-            ArrayList fileNames = new ArrayList();
+            ArrayList<String> fileNames = new ArrayList<String>();
             for (int row = 1; row < pickFilesTable.getRowCount(); row++) {
                 CheckBox checkbox = (CheckBox) pickFilesTable.getWidget(row, 1);
 

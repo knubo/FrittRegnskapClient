@@ -2,7 +2,6 @@ package no.knubo.accounting.client.cache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
@@ -27,11 +26,11 @@ public class ProjectCache implements Registry {
         return instance;
     }
 
-    private HashMap projectGivesDesc;
+    private HashMap<String, String> projectGivesDesc;
 
-    private ArrayList originalSort;
+    private ArrayList<String> originalSort;
 
-    private ArrayList allObjects;
+    private ArrayList<JSONObject> allObjects;
 
     private final Constants constants;
 
@@ -48,9 +47,9 @@ public class ProjectCache implements Registry {
             public void serverResponse(JSONValue jsonValue) {
                 JSONArray array = jsonValue.isArray();
 
-                projectGivesDesc = new HashMap();
-                originalSort = new ArrayList();
-                allObjects = new ArrayList();
+                projectGivesDesc = new HashMap<String, String>();
+                originalSort = new ArrayList<String>();
+                allObjects = new ArrayList<JSONObject>();
 
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject obj = array.get(i).isObject();
@@ -78,24 +77,23 @@ public class ProjectCache implements Registry {
     public void fill(ListBox box) {
         box.insertItem("", 0);
         int pos = 1;
-        for (Iterator i = originalSort.iterator(); i.hasNext();) {
-            String k = (String) i.next();
-
-            String desc = (String) projectGivesDesc.get(k);
+        
+        for (String k : originalSort) {
+            String desc = projectGivesDesc.get(k);
 
             box.insertItem(desc, k, pos++);
         }
     }
 
     public String getName(String id) {
-        return (String) projectGivesDesc.get(id);
+        return projectGivesDesc.get(id);
     }
 
     public boolean keyExists(String key) {
         return projectGivesDesc.containsKey(key);
     }
 
-    public List getAll() {
+    public List<JSONObject> getAll() {
         return allObjects;
     }
 

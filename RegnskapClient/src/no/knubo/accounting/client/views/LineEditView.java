@@ -21,10 +21,7 @@ import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -43,7 +40,7 @@ public class LineEditView extends Composite implements ClickListener {
 
     private static LineEditView me;
 
-    private IdHolder removeIdHolder = new IdHolder();
+    private IdHolder<String, Image> removeIdHolder = new IdHolder<String, Image>();
 
     public static LineEditView show(ViewCallback caller, I18NAccount messages, Constants constants,
             String line, HelpPanel helpPanel, Elements elements) {
@@ -168,11 +165,11 @@ public class LineEditView extends Composite implements ClickListener {
 
     private void showLine(String line, String navigate) {
 
-        ResponseTextHandler rh = new ResponseTextHandler() {
-            public void onCompletion(String responseText) {
-                JSONValue jsonValue = JSONParser.parse(responseText);
+        
+        ServerResponse rh = new ServerResponse() {
+            public void serverResponse(JSONValue responseValue) {
 
-                JSONObject root = jsonValue.isObject();
+                JSONObject root = responseValue.isObject();
 
                 currentLine = Util.str(root.get("Id"));
                 currentId.setText(currentLine);
@@ -194,13 +191,12 @@ public class LineEditView extends Composite implements ClickListener {
                 }
                 addSumLineSetDefaults(Util.str(root.get("sum")));
             }
+
         };
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(constants.baseurl()
+        
+        AuthResponder.get(constants, messages, rh, constants.baseurl()
                 + "accounting/editaccountline.php?action=query&line=" + line
-                + (navigate != null ? "&" + navigate : ""), rh)) {
-            Window.alert("Failed to load");
-        }
+                + (navigate != null ? "&" + navigate : ""));
     }
 
     protected void addRegnLine(JSONValue value) {

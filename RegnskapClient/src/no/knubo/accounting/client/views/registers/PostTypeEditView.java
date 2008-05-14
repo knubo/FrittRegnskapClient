@@ -40,11 +40,11 @@ public class PostTypeEditView extends Composite implements ClickListener {
     private final HelpPanel helpPanel;
     private FlexTable inUseTable;
     private FlexTable notInUseTable;
-    private IdHolder idHolderInUse;
-    private IdHolder idHolderNotInUse;
-    private IdHolder idHolderEdit;
+    private IdHolder<String, Image> idHolderInUse;
+    private IdHolder<String, Image> idHolderNotInUse;
+    private IdHolder<String, Image> idHolderEdit;
     private NamedButton button;
-    private HashMap objectPerId;
+    private HashMap<String, JSONObject> objectPerId;
     private PostTypeEditFields editFields;
     private Elements elements;
 
@@ -70,10 +70,10 @@ public class PostTypeEditView extends Composite implements ClickListener {
         button.addClickListener(this);
         dp.add(button, DockPanel.NORTH);
 
-        idHolderInUse = new IdHolder();
-        idHolderNotInUse = new IdHolder();
-        idHolderEdit = new IdHolder();
-        objectPerId = new HashMap();
+        idHolderInUse = new IdHolder<String, Image>();
+        idHolderNotInUse = new IdHolder<String, Image>();
+        idHolderEdit = new IdHolder<String, Image>();
+        objectPerId = new HashMap<String, JSONObject>();
         inUseTable = createTable(elements.title_posttype_edit_in_use());
         notInUseTable = createTable(elements.title_posttype_edit_not_in_use());
 
@@ -156,7 +156,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
 
     }
 
-    private void addRow(FlexTable table, IdHolder idHolder, String id, String description,
+    private void addRow(FlexTable table, IdHolder<String, Image> idHolder, String id, String description,
             String inUse, String colAccMonth, String colAccAccountPlan) {
         int row = table.getRowCount();
 
@@ -238,8 +238,8 @@ public class PostTypeEditView extends Composite implements ClickListener {
         editFields.show();
     }
 
-    private void changeUse(final String id, final int use, final IdHolder outofHolder,
-            final IdHolder intoHolder) {
+    private void changeUse(final String id, final int use, final IdHolder<String, Image> outofHolder,
+            final IdHolder<String, Image> intoHolder) {
 
         ServerResponse callback = new ServerResponse() {
 
@@ -248,7 +248,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
                 if ("1".equals(Util.str(respObj.get("result")))) {
                     int line = outofHolder.remove(id);
 
-                    JSONObject object = (JSONObject) objectPerId.get(id);
+                    JSONObject object = objectPerId.get(id);
                     String id = Util.str(object.get("PostType"));
                     String description = Util.str(object.get("Description"));
                     String colAccMonth = Util.str(object.get("CollPost"));
@@ -356,7 +356,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
             init();
             currentId = id;
 
-            JSONObject obj = (JSONObject) objectPerId.get(id);
+            JSONObject obj = objectPerId.get(id);
 
             accountBox.setText(Util.str(obj.get("PostType")));
             descBox.setText(Util.str(obj.get("Description")));

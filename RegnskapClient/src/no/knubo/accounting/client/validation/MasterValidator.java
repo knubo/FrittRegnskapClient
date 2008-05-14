@@ -1,7 +1,6 @@
 package no.knubo.accounting.client.validation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.cache.Registry;
@@ -11,7 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class MasterValidator {
     boolean status = true;
 
-    List failedFields = new ArrayList();
+    List<Validateable> failedFields = new ArrayList<Validateable>();
 
     public void mandatory(String string, Widget[] widgets) {
         MandatoryValidator mandatoryValidation = new MandatoryValidator(string);
@@ -97,12 +96,11 @@ public class MasterValidator {
         return !shouldFail;
     }
 
-    public void range(String error, Integer minVal, Integer maxVal, List widgets) {
+    public void range(String error, Integer minVal, Integer maxVal, List<? extends Widget> widgets) {
         Widget[] widgetList = new Widget[widgets.size()];
 
         int pos = 0;
-        for (Iterator i = widgets.iterator(); i.hasNext();) {
-            Widget widget = (Widget) i.next();
+        for (Widget widget : widgets) {
             widgetList[pos++] = widget;
         }
         range(error, minVal, maxVal, widgetList);

@@ -25,10 +25,10 @@ public class TrustActionCache {
     private static TrustActionCache instance;
 
     private Constants constants;
-    private List allTrustActions;
-    private Map trustActionsPerId;
+    private List<JSONObject> allTrustActions;
+    private Map<String, JSONObject> trustActionsPerId;
     private JSONArray typeArray;
-    private Map fondGivesName;
+    private Map<String, String> fondGivesName;
 
     private final I18NAccount messages;
 
@@ -39,9 +39,9 @@ public class TrustActionCache {
     }
 
     public void flush(final CacheCallback flushcallback) {
-        allTrustActions = new ArrayList();
-        trustActionsPerId = new HashMap();
-        fondGivesName = new HashMap();
+        allTrustActions = new ArrayList<JSONObject>();
+        trustActionsPerId = new HashMap<String, JSONObject>();
+        fondGivesName = new HashMap<String, String>();
 
         ServerResponse resphandler = new ServerResponse() {
 
@@ -80,10 +80,10 @@ public class TrustActionCache {
 
     public void fillTrustList(ListBox trustListBox) {
         trustListBox.addItem("", "");
-        for (Iterator i = fondGivesName.entrySet().iterator(); i.hasNext();) {
-            Entry entry = (Entry) i.next();
+        for (Iterator<Entry<String, String>> i = fondGivesName.entrySet().iterator(); i.hasNext();) {
+            Entry<String, String> entry = i.next();
 
-            trustListBox.addItem(entry.getValue().toString(), entry.getKey().toString());
+            trustListBox.addItem(entry.getValue(), entry.getKey());
         }
     }
 
@@ -96,9 +96,7 @@ public class TrustActionCache {
 
         actionsBox.addItem("", "");
 
-        for (Iterator i = allTrustActions.iterator(); i.hasNext();) {
-            JSONObject obj = (JSONObject) i.next();
-
+        for (JSONObject obj : allTrustActions) {
             if (Util.str(obj.get("fond")).equals(selectedFond)) {
                 actionsBox.addItem(Util.str(obj.get("description")), Util.str(obj.get("id")));
             }
@@ -106,7 +104,7 @@ public class TrustActionCache {
     }
 
     public void fillDefaultDesc(TextBoxWithErrorText descBox, String selected) {
-        JSONObject actionObj = (JSONObject) trustActionsPerId.get(selected);
+        JSONObject actionObj = trustActionsPerId.get(selected);
 
         if (actionObj == null) {
             Window.alert("Failed to find action obj " + selected);
@@ -117,13 +115,13 @@ public class TrustActionCache {
     }
 
     public boolean addsAccountLineUponSave(String selected) {
-        JSONObject actionObj = (JSONObject) trustActionsPerId.get(selected);
+        JSONObject actionObj = trustActionsPerId.get(selected);
 
         return !Util.isNull(actionObj.get("debetpost"))
                 || !Util.isNull(actionObj.get("creditpost"));
     }
 
-    public List getAll() {
+    public List<JSONObject> getAll() {
         return allTrustActions;
     }
 
@@ -132,11 +130,11 @@ public class TrustActionCache {
     }
 
     public JSONObject getTrustAction(String id) {
-        return (JSONObject) trustActionsPerId.get(id);
+        return trustActionsPerId.get(id);
     }
 
     public String trustGivesDesc(String trust) {
-        return (String) fondGivesName.get(trust);
+        return fondGivesName.get(trust);
     }
 
 }

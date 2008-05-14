@@ -63,7 +63,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
     private FlexTable membershipsTable;
 
-    private IdHolder deleteIdHolder;
+    private IdHolder<String, Image> deleteIdHolder;
 
     private final Elements elements;
 
@@ -81,7 +81,7 @@ public class PersonEditView extends Composite implements ClickListener {
         membershipsTable = new FlexTable();
         membershipsTable.setStyleName("tableborder");
 
-        deleteIdHolder = new IdHolder();
+        deleteIdHolder = new IdHolder<String, Image>();
 
         dp.add(table, DockPanel.NORTH);
         dp.add(membershipsTable, DockPanel.NORTH);
@@ -368,8 +368,8 @@ public class PersonEditView extends Composite implements ClickListener {
                 Util.timedMessage(saveStatus, "", 5);
             }
 
-            public void validationError(List fields) {
-                HashMap translate = new HashMap();
+            public void validationError(List<String> fields) {
+                HashMap<String, String> translate = new HashMap<String, String>();
                 translate.put("email", "epost");
 
                 String fieldtext = Util.translate(fields, translate);

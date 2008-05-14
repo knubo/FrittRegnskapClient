@@ -3,7 +3,6 @@ package no.knubo.accounting.client.views.budget;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
@@ -41,11 +40,11 @@ public class BudgetView extends Composite implements ClickListener {
     private AccountTable fallEarningsTable;
     private AccountTable othersEarningsTable;
     private AccountTable expencesTable;
-    private HashMap coursePrices;
-    private HashMap trainPrices;
-    private HashMap yearPrices;
-    private HashMap yearSums;
-    private IdHolder membershipIdHolder;
+    private HashMap<String, String> coursePrices;
+    private HashMap<String, String> trainPrices;
+    private HashMap<String, String> yearPrices;
+    private HashMap<String, YearSum> yearSums;
+    private IdHolder<JSONObject, Image> membershipIdHolder;
     private BudgetEditMembershipEditFields editFields;
 
     public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
@@ -59,7 +58,7 @@ public class BudgetView extends Composite implements ClickListener {
 
         DockPanel dp = new DockPanel();
 
-        membershipIdHolder = new IdHolder();
+        membershipIdHolder = new IdHolder<JSONObject, Image>();
 
         TabPanel tabPanel = new TabPanel();
         tabPanel.add(createCourseEarningsView(), elements.earnings_memberships());
@@ -171,7 +170,7 @@ public class BudgetView extends Composite implements ClickListener {
         membershipIdHolder.init();
         initEarningsTable(springEarningsTable);
         initEarningsTable(fallEarningsTable);
-        yearSums = new HashMap();
+        yearSums = new HashMap<String, YearSum>();
 
         ServerResponse callback = new ServerResponse() {
 
@@ -180,7 +179,7 @@ public class BudgetView extends Composite implements ClickListener {
                 JSONObject root = value.isObject();
                 fillPrices(root.get("price").isObject());
                 JSONObject members = root.get("members").isObject();
-                ArrayList keys = new ArrayList(members.keySet());
+                ArrayList<String> keys = new ArrayList<String>(members.keySet());
                 Collections.sort(keys);
                 fillMemberships(keys, members);
                 fillOverallView();
@@ -193,12 +192,11 @@ public class BudgetView extends Composite implements ClickListener {
     }
 
     protected void fillOverallView() {
-        ArrayList sums = new ArrayList(yearSums.values());
+        ArrayList<YearSum> sums = new ArrayList<YearSum>(yearSums.values());
         Collections.sort(sums);
 
         int col = 1;
-        for (Iterator i = sums.iterator(); i.hasNext();) {
-            YearSum yearSum = (YearSum) i.next();
+        for (YearSum yearSum : sums) {
 
             statusTable.setInt(0, col, yearSum.getYear());
             statusTable.setMoney(1, col, yearSum.getCourse());
@@ -212,9 +210,9 @@ public class BudgetView extends Composite implements ClickListener {
         JSONArray train = priceObj.get("train").isArray();
         JSONArray year = priceObj.get("year").isArray();
 
-        coursePrices = new HashMap();
-        trainPrices = new HashMap();
-        yearPrices = new HashMap();
+        coursePrices = new HashMap<String, String>();
+        trainPrices = new HashMap<String, String>();
+        yearPrices = new HashMap<String, String>();
 
         for (int i = 0; i < course.size(); i++) {
             JSONObject obj = course.get(i).isObject();
@@ -232,12 +230,11 @@ public class BudgetView extends Composite implements ClickListener {
         }
     }
 
-    protected void fillMemberships(List yearFallKeys, JSONObject members) {
+    protected void fillMemberships(List<String> yearFallKeys, JSONObject members) {
         int fallCol = 1;
         int springCol = 1;
 
-        for (Iterator i = yearFallKeys.iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        for (String key: yearFallKeys) {
 
             String year = key.substring(0, 4);
             String fall = key.substring(5).trim();
@@ -311,7 +308,7 @@ public class BudgetView extends Composite implements ClickListener {
     }
 
     private void addYearCourse(String year, double sum) {
-        YearSum data = (YearSum) yearSums.get(year);
+        YearSum data = yearSums.get(year);
 
         if (data == null) {
             data = new YearSum(Integer.parseInt(year));
@@ -321,12 +318,12 @@ public class BudgetView extends Composite implements ClickListener {
         data.addCourse(sum);
     }
 
-    private double calcSum(int count, String key, HashMap prices) {
+    private double calcSum(int count, String key, HashMap<String, String> prices) {
         if (prices == null) {
             return 0;
         }
 
-        String price = (String) prices.get(key);
+        String price = prices.get(key);
         if (price == null) {
             return 0;
         }

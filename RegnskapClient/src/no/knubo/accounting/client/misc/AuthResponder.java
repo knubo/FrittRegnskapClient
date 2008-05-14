@@ -49,7 +49,7 @@ public class AuthResponder implements RequestCallback {
         } else if (response.getStatusCode() == 513) {
             JSONValue parse = JSONParser.parse(response.getText());
 
-            ArrayList fields = new ArrayList();
+            ArrayList<String> fields = new ArrayList<String>();
             JSONArray array = parse.isArray();
 
             for (int i = 0; i < array.size(); i++) {
@@ -74,7 +74,7 @@ public class AuthResponder implements RequestCallback {
             try {
                 jsonValue = JSONParser.parse(data);
             } catch (Exception e) {
-                /* BAD, but cought below */
+                /* BAD, but caught below */
             }
 
             if (jsonValue == null) {

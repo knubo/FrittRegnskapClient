@@ -1,6 +1,5 @@
 package no.knubo.accounting.client.views;
 
-import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
@@ -86,7 +85,7 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
 
-        yearMonthComboHelper = new YearMonthComboHelper(constants, monthYearCombo, elements);
+        yearMonthComboHelper = new YearMonthComboHelper(constants, messages, monthYearCombo, elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
@@ -143,12 +142,11 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
 
         /* Column-position for row 2 */
         int col2 = 1;
-        List names = MonthHeaderCache.getInstance(constants, messages).headers();
+        List<String> names = MonthHeaderCache.getInstance(constants, messages).headers();
 
-        for (Iterator i = names.iterator(); i.hasNext();) {
-            String header = (String) i.next();
+        for (String header : names) {
 
-            /* The posts headers, using 2 colspan */
+            /* The posts headers */
             table.getFlexCellFormatter().setColSpan(row, col, 2);
             table.getCellFormatter().setStyleName(row, col, "center");
             table.setText(row, col++, header);
@@ -191,8 +189,7 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
         render_posts(row, debetSums, creditSums);
 
         /* Subtract credit sum from debet sum to show sum for total */
-        for (Iterator i = creditSums.keySet().iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        for (String key : creditSums.keySet()) {
             String toSubtract = Util.str(creditSums.get(key));
 
             String oldValue = "0";
@@ -220,6 +217,7 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
 
             if (rowdata == null) {
                 Window.alert("Didn't get rowdata:" + array.get(i));
+                continue;
             }
             /* +2 to skip headers. */
             int rowIndex = table.insertRow(i + 2);
@@ -255,19 +253,16 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
         JSONObject kredObj = kred.isObject();
 
         int col = 4;
-        for (Iterator i = MonthHeaderCache.getInstance(constants, messages).keys().iterator(); i
-                .hasNext();) {
+        for (String k : MonthHeaderCache.getInstance(constants, messages).keys()) {
 
-            String k = (String) i.next();
+         /* DEBET */
+         printDebKredVal(rowIndex, debetObj, col, k);
+         col++;
 
-            /* DEBET */
-            printDebKredVal(rowIndex, debetObj, col, k);
-            col++;
-
-            /* KREDIT */
-            printDebKredVal(rowIndex, kredObj, col, k);
-            col++;
-        }
+         /* KREDIT */
+         printDebKredVal(rowIndex, kredObj, col, k);
+         col++;
+      }
     }
 
     private void printDebKredVal(int rowIndex, JSONObject obj, int col, String k) {

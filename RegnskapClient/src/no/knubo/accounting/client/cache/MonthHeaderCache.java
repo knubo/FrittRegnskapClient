@@ -22,8 +22,8 @@ public class MonthHeaderCache implements ServerResponse {
 
     private static MonthHeaderCache instance;
 
-    List headersByName;
-    List keys;
+    List<String> headersByName;
+    List<String> keys;
 
     public static MonthHeaderCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
@@ -40,8 +40,8 @@ public class MonthHeaderCache implements ServerResponse {
     public void serverResponse(JSONValue jsonValue) {
 
         JSONArray array = jsonValue.isArray();
-        headersByName = new ArrayList();
-        keys = new ArrayList();
+        headersByName = new ArrayList<String>();
+        keys = new ArrayList<String>();
 
         for (int i = 0; i < array.size(); i++) {
             JSONObject obj = array.get(i).isObject();
@@ -52,12 +52,12 @@ public class MonthHeaderCache implements ServerResponse {
     }
 
     public String getDescription(String id) {
-        Iterator idIt = keys.iterator();
-        Iterator descIt = headersByName.iterator();
+        Iterator<String> idIt = keys.iterator();
+        Iterator<String> descIt = headersByName.iterator();
 
         while (idIt.hasNext()) {
-            String elem = (String) idIt.next();
-            String desc = (String) descIt.next();
+            String elem = idIt.next();
+            String desc = descIt.next();
 
             if (elem.equals(id)) {
                 return desc;
@@ -72,7 +72,7 @@ public class MonthHeaderCache implements ServerResponse {
      * 
      * @return List of Strings.
      */
-    public List headers() {
+    public List<String> headers() {
         return headersByName;
     }
 
@@ -81,19 +81,19 @@ public class MonthHeaderCache implements ServerResponse {
      * 
      * @return The list of keys.
      */
-    public List keys() {
+    public List<String> keys() {
         return keys;
     }
 
     public void fill(ListBox box) {
         box.addItem("");
 
-        Iterator idIt = keys.iterator();
-        Iterator descIt = headersByName.iterator();
+        Iterator<String> idIt = keys.iterator();
+        Iterator<String> descIt = headersByName.iterator();
 
         while (idIt.hasNext()) {
-            String elem = (String) idIt.next();
-            String desc = (String) descIt.next();
+            String elem = idIt.next();
+            String desc = descIt.next();
 
             box.addItem(desc, elem);
         }

@@ -1,19 +1,17 @@
 package no.knubo.accounting.client.views;
 
-import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -79,11 +77,9 @@ public class MonthEndView extends Composite implements ClickListener {
             table.removeRow(1);
         }
 
-        ResponseTextHandler rh = new ResponseTextHandler() {
-            public void onCompletion(String responseText) {
+        ServerResponse rh = new ServerResponse() {
+            public void serverResponse(JSONValue jsonValue) {
                 PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
-
-                JSONValue jsonValue = JSONParser.parse(responseText);
 
                 JSONObject root = jsonValue.isObject();
 
@@ -97,8 +93,7 @@ public class MonthEndView extends Composite implements ClickListener {
                 JSONObject object = postsValue.isObject();
 
                 int row = 1;
-                for (Iterator i = object.keySet().iterator(); i.hasNext();) {
-                    String post = (String) i.next();
+                for (String post : object.keySet()) {
 
                     table.setHTML(row, 0, post + " -  " + posttypeCache.getDescription(post));
                     table.getCellFormatter().setStyleName(row, 0, "desc");
@@ -114,11 +109,8 @@ public class MonthEndView extends Composite implements ClickListener {
             }
 
         };
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest
-                .asyncGet(constants.baseurl() + "accounting/endmonth.php?action=status", rh)) {
-            Window.alert(messages.failedConnect());
-        }
+
+        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endmonth.php?action=status");
     }
 
     public void onClick(Widget sender) {
@@ -129,19 +121,16 @@ public class MonthEndView extends Composite implements ClickListener {
             return;
         }
 
-        ResponseTextHandler rh = new ResponseTextHandler() {
+        ServerResponse rh = new ServerResponse() {
 
-            public void onCompletion(String responseText) {
-                if ("1".equals(responseText)) {
+            public void serverResponse(JSONValue resonseObj) {
+                if ("1".equals(Util.str(resonseObj.isString()))) {
                     callback.viewMonth();
-                } else {
-                    Window.alert("Error from server:" + responseText);
                 }
             }
 
         };
-        if (!HTTPRequest.asyncGet(constants.baseurl() + "accounting/endmonth.php?action=end", rh)) {
-            Window.alert(messages.failedConnect());
-        }
+
+        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endmonth.php?action=end");
     }
 }

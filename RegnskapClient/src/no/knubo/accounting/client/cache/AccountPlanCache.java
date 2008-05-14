@@ -2,7 +2,6 @@ package no.knubo.accounting.client.cache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
@@ -24,15 +23,15 @@ public class AccountPlanCache implements ServerResponse {
 
     private final I18NAccount messages;
 
-    private HashMap objectGivesId;
+    private HashMap<String, JSONObject> objectGivesId;
 
-    private List keys;
+    private List<String> keys;
 
     public AccountPlanCache(Constants constants, I18NAccount messages) {
         this.constants = constants;
         this.messages = messages;
-        objectGivesId = new HashMap();
-        keys = new ArrayList();
+        objectGivesId = new HashMap<String, JSONObject>();
+        keys = new ArrayList<String>();
         flush();
     }
 
@@ -65,7 +64,7 @@ public class AccountPlanCache implements ServerResponse {
     }
 
     public String idGivesName(String id) {
-        JSONObject obj = (JSONObject) objectGivesId.get(id);
+        JSONObject obj = objectGivesId.get(id);
         if (obj == null) {
             return "";
         }
@@ -74,12 +73,11 @@ public class AccountPlanCache implements ServerResponse {
 
     public void fill(ListBox box) {
         box.addItem("");
-        for (Iterator i = keys.iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        
+        for(String key : keys) {
             String name = idGivesName(key);
-
+            
             box.addItem(name, key);
         }
     }
-
 }

@@ -4,6 +4,7 @@ import java.util.MissingResourceException;
 
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.HelpTexts;
+import no.knubo.accounting.client.misc.WidgetIds;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -30,8 +31,9 @@ public class HelpPanel extends Composite implements EventPreview {
     private String help;
     private String prevHelp = "";
 
-    public void setCurrentWidget(Widget widget, int currentPage) {
-        mainFrame.setUrl("help/" + messages.HELP_ROOT() + "/" + currentPage + "/index.html");
+    public void setCurrentWidget(Widget widget, WidgetIds currentPage) {
+        mainFrame.setUrl("help/" + messages.HELP_ROOT() + "/" + currentPage.getHelpPageValue()
+                + "/index.html");
         resize(widget);
     }
 
@@ -83,10 +85,6 @@ public class HelpPanel extends Composite implements EventPreview {
         /* Every second poll and see if help should be updated. */
         new Timer() {
             public void run() {
-
-                // if(!disclosurePanel.isOpen()) {
-                // return;
-                // }
 
                 if (help != null && prevHelp != help) {
                     contextHelp.setHTML(help);

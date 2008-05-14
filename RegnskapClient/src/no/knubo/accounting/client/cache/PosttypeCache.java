@@ -3,7 +3,6 @@ package no.knubo.accounting.client.cache;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +27,11 @@ public class PosttypeCache implements Registry {
 
     private static PosttypeCache instance;
 
-    Map typeGivesDescription;
+    Map<String, String> typeGivesDescription;
 
-    List originalSort;
+    List<String> originalSort;
 
-    List memberPaymentPosts;
+    List<String> memberPaymentPosts;
 
     public static PosttypeCache getInstance(Constants constants, I18NAccount messages) {
         if (instance == null) {
@@ -48,8 +47,9 @@ public class PosttypeCache implements Registry {
             public void serverResponse(JSONValue jsonValue) {
                 JSONArray array = jsonValue.isArray();
 
-                typeGivesDescription = new HashMap();
-                originalSort = new ArrayList();
+                typeGivesDescription = new HashMap<String, String>();
+                originalSort = new ArrayList<String>();
+                
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject obj = array.get(i).isObject();
 
@@ -69,7 +69,7 @@ public class PosttypeCache implements Registry {
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
-                memberPaymentPosts = new ArrayList();
+                memberPaymentPosts = new ArrayList<String>();
 
                 for (int i = 0; i < array.size(); i++) {
                     JSONValue elem = array.get(i);
@@ -86,7 +86,7 @@ public class PosttypeCache implements Registry {
     }
 
     public String getDescription(String type) {
-        return (String) typeGivesDescription.get(type);
+        return typeGivesDescription.get(type);
     }
 
     public String getDescriptionWithType(String type) {
@@ -99,10 +99,9 @@ public class PosttypeCache implements Registry {
 
     public void fillMembershipPayments(ListBox box) {
         int pos = 1;
-        for (Iterator i = memberPaymentPosts.iterator(); i.hasNext();) {
-            String k = (String) i.next();
+        for(String k: memberPaymentPosts) {
 
-            String desc = (String) typeGivesDescription.get(k);
+            String desc = typeGivesDescription.get(k);
 
             box.insertItem(desc, k, pos++);
         }
@@ -114,20 +113,18 @@ public class PosttypeCache implements Registry {
 
     public void fillAllPosts(ListBox box, ListBox excludeBox, boolean addBlanc, boolean includeKey) {
 
-        HashSet excludeKeys = setUpExcludeKeys(excludeBox);
+        HashSet<String> excludeKeys = setUpExcludeKeys(excludeBox);
 
         if (addBlanc) {
             box.insertItem("", 0);
         }
         int pos = 1;
-        for (Iterator i = originalSort.iterator(); i.hasNext();) {
-            String k = (String) i.next();
-
+        for (String k : originalSort) {
             if (excludeKeys.contains(k)) {
                 continue;
             }
 
-            String desc = (String) typeGivesDescription.get(k);
+            String desc = typeGivesDescription.get(k);
 
             if (includeKey) {
                 desc = k + " " + desc;
@@ -137,11 +134,11 @@ public class PosttypeCache implements Registry {
 
     }
 
-    private HashSet setUpExcludeKeys(ListBox excludeBox) {
+    private HashSet<String> setUpExcludeKeys(ListBox excludeBox) {
         if (excludeBox == null) {
-            return new HashSet();
+            return new HashSet<String>();
         }
-        HashSet hs = new HashSet(excludeBox.getItemCount());
+        HashSet<String> hs = new HashSet<String>();
 
         for (int i = 0; i < excludeBox.getItemCount(); i++) {
             hs.add(excludeBox.getValue(i));

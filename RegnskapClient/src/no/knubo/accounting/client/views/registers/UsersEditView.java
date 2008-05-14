@@ -43,14 +43,14 @@ public class UsersEditView extends Composite implements ClickListener {
 
     private FlexTable table;
 
-    private IdHolder idHolderEditImages;
-    private IdHolder idHolderDeleteImages;
+    private IdHolder<String, Image> idHolderEditImages;
+    private IdHolder<String, Image> idHolderDeleteImages;
 
     private Button newButton;
 
     private UserEditFields editFields;
 
-    private HashMap objectPerUsername;
+    private HashMap<String, JSONObject> objectPerUsername;
 
     private final HelpPanel helpPanel;
 
@@ -84,8 +84,8 @@ public class UsersEditView extends Composite implements ClickListener {
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
 
-        idHolderEditImages = new IdHolder();
-        idHolderDeleteImages = new IdHolder();
+        idHolderEditImages = new IdHolder<String, Image>();
+        idHolderDeleteImages = new IdHolder<String, Image>();
         initWidget(dp);
     }
 
@@ -165,7 +165,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
         idHolderEditImages.init();
         idHolderDeleteImages.init();
-        objectPerUsername = new HashMap();
+        objectPerUsername = new HashMap<String, JSONObject>();
 
         ServerResponse callback = new ServerResponse() {
 
@@ -299,7 +299,7 @@ public class UsersEditView extends Composite implements ClickListener {
 
         public void init(String username) {
             init();
-            JSONObject object = (JSONObject) objectPerUsername.get(username);
+            JSONObject object = objectPerUsername.get(username);
             personId = Util.str(object.get("person"));
 
             userBox.setText(username);

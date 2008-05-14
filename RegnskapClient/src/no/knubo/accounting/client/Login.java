@@ -1,13 +1,13 @@
 package no.knubo.accounting.client;
 
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
+public class Login implements EntryPoint, ClickListener, ServerResponse {
 
     private PasswordTextBox passBox;
 
@@ -100,16 +100,13 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
     private void doLogin() {
         String user = this.userBox.getText();
         String password = this.passBox.getText();
-        if (!HTTPRequest.asyncGet(this.constants.baseurl() + "authenticate.php?user=" + user
-                + "&password=" + password, this)) {
-            infoLabel.setText(messages.failedConnect());
-        }
+        
+        AuthResponder.get(constants, messages, this, this.constants.baseurl() + "authenticate.php?user=" + user
+                + "&password=" + password);
     }
 
-    public void onCompletion(String responseText) {
-        JSONValue jsonValue = JSONParser.parse(responseText);
-
-        JSONObject isObject = jsonValue.isObject();
+    public void serverResponse(JSONValue resonseObj) {
+        JSONObject isObject = resonseObj.isObject();
 
         JSONValue error = isObject.get("error");
 
@@ -118,7 +115,7 @@ public class Login implements EntryPoint, ClickListener, ResponseTextHandler {
             infoLabel.setText(string.stringValue());
         } else {
             Util.forward(constants.appURL());
-        }
+        }        
     }
 
 }

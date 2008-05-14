@@ -39,7 +39,7 @@ public class TrustEditView extends Composite implements ClickListener, CacheCall
 
     private FlexTable table;
 
-    private IdHolder idHolder;
+    private IdHolder<String, Image> idHolder;
 
     private Button newButton;
 
@@ -73,7 +73,7 @@ public class TrustEditView extends Composite implements ClickListener, CacheCall
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
 
-        idHolder = new IdHolder();
+        idHolder = new IdHolder<String, Image>();
         initWidget(dp);
     }
 

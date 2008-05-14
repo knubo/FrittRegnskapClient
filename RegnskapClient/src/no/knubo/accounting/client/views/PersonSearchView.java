@@ -30,7 +30,7 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
 
     private PersonPickCallback personPick;
 
-    private HashMap idGivesObject;
+    private HashMap<String, JSONObject> idGivesObject;
 
     public static PersonSearchView show(ViewCallback caller, I18NAccount messages,
             Constants constants, Elements elements) {
@@ -62,7 +62,7 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
     private ViewCallback caller;
     private FlexTable resultTable;
 
-    private IdHolder idHolder;
+    private IdHolder<String, Image> idHolder;
 
     private final Elements elements;
 
@@ -78,7 +78,7 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
         UserSearchFields userSearchFields = new UserSearchFields(this, elements);
         userSearchFields.includeHidden();
 
-        this.idHolder = new IdHolder();
+        this.idHolder = new IdHolder<String, Image>();
 
         DockPanel dp = new DockPanel();
 
@@ -110,7 +110,7 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
 
     private void pickPerson(Widget sender) {
         String id = idHolder.findId(sender);
-        JSONObject personObj = (JSONObject) idGivesObject.get(id);
+        JSONObject personObj = idGivesObject.get(id);
         personPick.pickPerson(id, personObj);
     }
 
@@ -124,7 +124,7 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
     public void doSearch(StringBuffer searchRequest) {
         doClear();
 
-        idGivesObject = new HashMap();
+        idGivesObject = new HashMap<String, JSONObject>();
 
         final PersonSearchView personSV = this;
 

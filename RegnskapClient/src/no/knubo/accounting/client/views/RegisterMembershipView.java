@@ -20,10 +20,7 @@ import no.knubo.accounting.client.views.modules.UserSearchFields;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -56,7 +53,7 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
 
     private HTML header;
 
-    private IdHolder idHolder;
+    private IdHolder<String, TextBoxWithErrorText> idHolder;
 
     private UserSearchFields userSearchFields;
 
@@ -75,7 +72,7 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
         this.helpPanel = helpPanel;
         this.elements = elements;
 
-        idHolder = new IdHolder();
+        idHolder = new IdHolder<String, TextBoxWithErrorText>();
         userSearchFields = new UserSearchFields(this, elements);
 
         DockPanel dp = new DockPanel();
@@ -318,10 +315,9 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
     }
 
     private void setHeader() {
-        ResponseTextHandler callback = new ResponseTextHandler() {
+        ServerResponse callback = new ServerResponse() {
 
-            public void onCompletion(String responseText) {
-                JSONValue value = JSONParser.parse(responseText);
+            public void serverResponse(JSONValue value) {
 
                 JSONObject object = value.isObject();
 
@@ -333,11 +329,8 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
                         + semester + "-" + Util.monthString(elements, currentMonth) + "</h2>";
                 header.setHTML(headerText);
             }
-
         };
-        if (!HTTPRequest.asyncGet(this.constants.baseurl() + "defaults/semester.php", callback)) {
-            Window.alert("Failed to get proper data");
-        }
+        AuthResponder.get(constants, messages, callback, this.constants.baseurl() + "defaults/semester.php");
 
     }
 

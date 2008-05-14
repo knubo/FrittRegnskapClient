@@ -7,15 +7,14 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.EmploeeCache;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.cache.ProjectCache;
+import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.views.modules.CountFields;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.HTTPRequest;
-import com.google.gwt.user.client.ResponseTextHandler;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -23,7 +22,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PostView extends DialogBox implements ClickListener, ResponseTextHandler {
+public class PostView extends DialogBox implements ClickListener, ServerResponse {
 
     static PostView me = null;
 
@@ -104,11 +103,7 @@ public class PostView extends DialogBox implements ClickListener, ResponseTextHa
             table.removeRow(5);
         }
 
-        // TODO Report stuff as being loaded.
-        if (!HTTPRequest.asyncGet(constants.baseurl() + "accounting/showline.php?line=" + line,
-                this)) {
-            // TODO Report errors.
-        }
+        AuthResponder.get(constants, messages, this, constants.baseurl() + "accounting/showline.php?line=" + line);
         countfields.init(line);
     }
 
@@ -126,8 +121,7 @@ public class PostView extends DialogBox implements ClickListener, ResponseTextHa
         }
     }
 
-    public void onCompletion(String responseText) {
-        JSONValue jsonValue = JSONParser.parse(responseText);
+    public void serverResponse(JSONValue jsonValue) {
         JSONObject object = jsonValue.isObject();
 
         currentId = Util.str(object.get("Id"));

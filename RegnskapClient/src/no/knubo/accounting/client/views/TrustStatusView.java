@@ -48,7 +48,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
     private final HelpPanel helpPanel;
 
-    private IdHolder idHolder;
+    private IdHolder<String, Image> idHolder;
 
     private Button newTrustButton;
 
@@ -73,7 +73,7 @@ public class TrustStatusView extends Composite implements ClickListener {
         this.callback = callback;
         this.elements = elements;
 
-        idHolder = new IdHolder();
+        idHolder = new IdHolder<String, Image>();
 
         DockPanel dp = new DockPanel();
 

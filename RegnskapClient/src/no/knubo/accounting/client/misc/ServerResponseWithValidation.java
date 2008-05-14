@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ServerResponseWithValidation extends ServerResponse {
 
-    public void validationError(List fields);
+    public void validationError(List<String> fields);
 }

@@ -1,6 +1,5 @@
 package no.knubo.accounting.client.views.modules;
 
-import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
@@ -71,8 +70,7 @@ public class CountFields {
                 }
                 int row = 2;
 
-                for (Iterator i = countCache.getCounts().iterator(); i.hasNext();) {
-                    String count = (String) i.next();
+                for (String count: countCache.getCounts()) {
                     String field = countCache.getFieldForCount(count);
 
                     table.setText(row, 0, count);

@@ -37,7 +37,7 @@ public class ManageFilesView extends Composite implements ClickListener {
     private final Constants constants;
     private Label statusLabel;
     private FlexTable table;
-    private IdHolder idHolder;
+    private IdHolder<String, Image> idHolder;
 
     public static ManageFilesView getInstance(Constants constants, I18NAccount messages,
             Elements elements) {
@@ -81,7 +81,7 @@ public class ManageFilesView extends Composite implements ClickListener {
         this.messages = messages;
         this.constants = constants;
 
-        idHolder = new IdHolder();
+        idHolder = new IdHolder<String, Image>();
 
         DockPanel dp = new DockPanel();
 

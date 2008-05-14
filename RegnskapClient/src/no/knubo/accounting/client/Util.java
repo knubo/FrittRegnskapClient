@@ -1,7 +1,6 @@
 package no.knubo.accounting.client;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.gwt.http.client.Response;
@@ -292,7 +291,7 @@ public class Util {
         return string.stringValue().substring(0, 2);
     }
 
-    public static HashMap timers = new HashMap();
+    public static HashMap<Label, Timer> timers = new HashMap<Label, Timer>();
 
     /**
      * Sets given message after some seconds.
@@ -306,7 +305,7 @@ public class Util {
      */
     public static void timedMessage(final Label label, final String message, int seconds) {
 
-        Timer runningTimer = (Timer) timers.get(label);
+        Timer runningTimer = timers.get(label);
 
         if (runningTimer != null) {
             runningTimer.cancel();
@@ -393,7 +392,7 @@ public class Util {
 
         if (value.isNumber() != null) {
             JSONNumber numb = value.isNumber();
-            double dub = numb.getValue();
+            double dub = numb.doubleValue();
             return (int) dub;
         }
 
@@ -475,13 +474,12 @@ public class Util {
      * @param translate
      * @return The concatenated field list.
      */
-    public static String translate(List fields, HashMap translate) {
+    public static String translate(List<String> fields, HashMap<String,String> translate) {
         StringBuffer sb = new StringBuffer();
 
-        for (Iterator i = fields.iterator(); i.hasNext();) {
-            String fieldName = (String) i.next();
+        for (String fieldName : fields) {
 
-            String translated = (String) translate.get(fieldName);
+            String translated = translate.get(fieldName);
 
             if (sb.length() > 0) {
                 sb.append(", ");

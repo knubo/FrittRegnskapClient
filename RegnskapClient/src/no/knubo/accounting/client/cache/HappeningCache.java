@@ -2,7 +2,6 @@ package no.knubo.accounting.client.cache;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.I18NAccount;
@@ -20,7 +19,7 @@ public class HappeningCache implements ServerResponse {
 
     private final Constants constants;
 
-    protected HashMap dataPerId;
+    protected HashMap<String, JSONObject> dataPerId;
 
     private CacheCallback flushcallback;
 
@@ -39,17 +38,17 @@ public class HappeningCache implements ServerResponse {
         flush(null);
     }
 
-    public void flush(final CacheCallback flushcallback) {
-        this.flushcallback = flushcallback;
+    public void flush(final CacheCallback callback) {
+        this.flushcallback = callback;
 
         AuthResponder.get(constants, messages, this, "registers/happening.php?action=all");
     }
 
     public JSONObject getHappening(String id) {
-        return (JSONObject) dataPerId.get(id);
+        return dataPerId.get(id);
     }
 
-    public Collection getAll() {
+    public Collection<JSONObject> getAll() {
         return dataPerId.values();
     }
 
@@ -61,15 +60,13 @@ public class HappeningCache implements ServerResponse {
     public void fill(ListBox box) {
         box.insertItem("", 0);
         int pos = 1;
-        for (Iterator i = dataPerId.values().iterator(); i.hasNext();) {
-            JSONObject obj = (JSONObject) i.next();
-
+        for(JSONObject obj : dataPerId.values()) {
             box.insertItem(Util.str(obj.get("description")), Util.str(obj.get("id")), pos++);
         }
     }
 
     public String getLineDescription(String id) {
-        JSONObject object = (JSONObject) dataPerId.get(id);
+        JSONObject object = dataPerId.get(id);
 
         return Util.str(object.get("linedesc"));
     }
@@ -77,7 +74,7 @@ public class HappeningCache implements ServerResponse {
     public void serverResponse(JSONValue value) {
         JSONArray array = value.isArray();
 
-        dataPerId = new HashMap();
+        dataPerId = new HashMap<String, JSONObject>();
 
         for (int i = 0; i < array.size(); i++) {
             JSONValue one = array.get(i);
