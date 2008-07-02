@@ -480,6 +480,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String year_membership();
 
   /**
+   * Translated "Kvinne".
+   * 
+   * @return translated "Kvinne"
+   * @gwt.key gender_female
+   */
+  String gender_female();
+
+  /**
    * Translated "Treningsmedlemmer".
    * 
    * @return translated "Treningsmedlemmer"
@@ -1120,6 +1128,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String member_heading_year();
 
   /**
+   * Translated "Mann".
+   * 
+   * @return translated "Mann"
+   * @gwt.key gender_male
+   */
+  String gender_male();
+
+  /**
    * Translated "Vis måned med detaljer".
    * 
    * @return translated "Vis måned med detaljer"
@@ -1438,6 +1454,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key member_heading_course
    */
   String member_heading_course();
+
+  /**
+   * Translated "Kjønn".
+   * 
+   * @return translated "Kjønn"
+   * @gwt.key gender
+   */
+  String gender();
 
   /**
    * Translated "Mai".

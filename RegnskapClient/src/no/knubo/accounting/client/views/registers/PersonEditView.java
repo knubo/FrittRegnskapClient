@@ -56,6 +56,7 @@ public class PersonEditView extends Composite implements ClickListener {
     private HTMLWithError saveStatus;
     private CheckBox newsletterCheck;
     private TextBoxWithErrorText birthdateBox;
+    private ListBox genderBox;
     private Button updateButton;
 
     private final HelpPanel helpPanel;
@@ -97,8 +98,9 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setHTML(8, 0, elements.phone());
         table.setHTML(9, 0, elements.cellphone());
         table.setHTML(10, 0, elements.newsletter());
-        table.setHTML(11, 0, elements.employee());
-        table.setHTML(12, 0, elements.hidden_person());
+        table.setHTML(11, 0, elements.gender());
+        table.setHTML(12, 0, elements.employee());
+        table.setHTML(13, 0, elements.hidden_person());
 
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
@@ -130,6 +132,12 @@ public class PersonEditView extends Composite implements ClickListener {
         phoneBox.setMaxLength(13);
         cellphoneBox = new TextBoxWithErrorText("cellphone");
         cellphoneBox.setMaxLength(13);
+        
+        genderBox = new ListBox();
+        genderBox.addItem("", "");
+        genderBox.addItem(elements.gender_male(), "M");
+        genderBox.addItem(elements.gender_female(), "F");
+        
         employeeCheck = new CheckBox();
         newsletterCheck = new CheckBox();
         hiddenCheck = new CheckBox();
@@ -160,11 +168,12 @@ public class PersonEditView extends Composite implements ClickListener {
         table.setWidget(8, 1, phoneBox);
         table.setWidget(9, 1, cellphoneBox);
         table.setWidget(10, 1, newsletterCheck);
-        table.setWidget(11, 1, employeeCheck);
-        table.setWidget(12, 1, hiddenCheck);
-        table.setWidget(13, 0, updateButton);
-        table.setWidget(13, 1, saveStatus);
-        table.setWidget(14, 0, toSearch);
+        table.setWidget(11, 1, genderBox);
+        table.setWidget(12, 1, employeeCheck);
+        table.setWidget(13, 1, hiddenCheck);
+        table.setWidget(14, 0, updateButton);
+        table.setWidget(14, 1, saveStatus);
+        table.setWidget(15, 0, toSearch);
         initWidget(dp);
     }
 
@@ -320,6 +329,7 @@ public class PersonEditView extends Composite implements ClickListener {
         employeeCheck.setChecked("1".equals(Util.str(object.get("IsEmployee"))));
         newsletterCheck.setChecked("1".equals(Util.str(object.get("Newsletter"))));
         hiddenCheck.setChecked("1".equals(Util.str(object.get("Hidden"))));
+        Util.setIndexByValue(genderBox, Util.str(object.get("Gender")));
     }
 
     private void doSave() {
@@ -347,6 +357,7 @@ public class PersonEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "newsletter", newsletter);
         String hidden = hiddenCheck.isChecked() ? "1" : "0";
         Util.addPostParam(sb, "hidden", hidden);
+        Util.addPostParam(sb, "gender", Util.getSelected(genderBox));
 
         ServerResponseWithValidation callback = new ServerResponseWithValidation() {
 
@@ -403,6 +414,7 @@ public class PersonEditView extends Composite implements ClickListener {
             employeeCheck.setChecked(false);
             newsletterCheck.setChecked(false);
             updateButton.setHTML(elements.save());
+            genderBox.setSelectedIndex(0);
         } else {
             doOpen();
             updateButton.setHTML(elements.update());
@@ -414,7 +426,7 @@ public class PersonEditView extends Composite implements ClickListener {
         MasterValidator masterValidator = new MasterValidator();
 
         masterValidator.mandatory(messages.required_field(), new Widget[] { lastnameBox,
-                firstnameBox });
+                firstnameBox, genderBox });
 
         masterValidator.date(messages.date_format(), new Widget[] { birthdateBox });
 
