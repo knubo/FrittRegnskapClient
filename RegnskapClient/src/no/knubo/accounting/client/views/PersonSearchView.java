@@ -96,7 +96,8 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
         resultTable.setHTML(0, 4, elements.phone());
         resultTable.setHTML(0, 5, elements.cellphone());
         resultTable.setHTML(0, 6, elements.employee());
-        resultTable.setHTML(0, 7, "");
+        resultTable.setHTML(0, 7, elements.gender());
+        resultTable.setHTML(0, 8, "");
         initWidget(dp);
     }
 
@@ -166,6 +167,8 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
                     }
                     resultTable.getCellFormatter().setStyleName(row, 6, "center");
 
+                    resultTable.setHTML(row, 7, Util.str(obj.get("gender")));
+                    
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
 
@@ -180,7 +183,7 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
                     String id = Util.str(obj.get("id"));
                     idHolder.add(id, image);
                     idGivesObject.put(id, obj);
-                    resultTable.setWidget(row, 7, image);
+                    resultTable.setWidget(row, 8, image);
                 }
             }
         };

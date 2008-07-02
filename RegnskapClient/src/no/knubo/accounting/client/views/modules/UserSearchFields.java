@@ -30,6 +30,8 @@ public class UserSearchFields implements ClickListener {
 
     private boolean excludeHidden = true;
 
+    private ListBox genderBox;
+
     public UserSearchFields(UserSearchCallback searchCallback, Elements elements) {
         this.searchCallback = searchCallback;
         searchTable = new FlexTable();
@@ -40,6 +42,7 @@ public class UserSearchFields implements ClickListener {
         lastnameBox.setMaxLength(50);
         emailBox = new TextBox();
         emailBox.setMaxLength(100);
+        emailBox.addStyleName("fullwidth");
         employeeList = new ListBox();
         employeeList.setVisibleItemCount(1);
         employeeList.addItem("", "");
@@ -55,6 +58,14 @@ public class UserSearchFields implements ClickListener {
         searchTable.getFlexCellFormatter().setColSpan(1, 1, 3);
         searchTable.setText(2, 0, elements.employee());
         searchTable.setWidget(2, 1, employeeList);
+
+        genderBox = new ListBox();
+        genderBox.addItem("", "");
+        genderBox.addItem(elements.gender_male(), "M");
+        genderBox.addItem(elements.gender_female(), "F");
+
+        searchTable.setText(2, 2, elements.gender());
+        searchTable.setWidget(2, 3, genderBox);
 
         searchButton = new NamedButton("search", elements.search());
         searchButton.addClickListener(this);
@@ -90,6 +101,7 @@ public class UserSearchFields implements ClickListener {
         Util.addPostParam(sb, "employee", Util.getSelected(employeeList));
         Util.addPostParam(sb, "email", emailBox.getText());
         Util.addPostParam(sb, "getmemb", "1");
+        Util.addPostParam(sb, "gender", Util.getSelected(genderBox));
 
         if (excludeHidden) {
             Util.addPostParam(sb, "hidden", "1");
