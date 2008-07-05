@@ -10,6 +10,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedTextArea;
@@ -72,6 +73,7 @@ public class ReportMail extends Composite implements ClickListener {
         reciversListBox.getListbox().addItem(elements.mail_query_members(), "members");
         reciversListBox.getListbox().addItem(elements.mail_query_newsletter(), "newsletter");
         reciversListBox.getListbox().addItem(elements.mail_test(), "test");
+        reciversListBox.getListbox().addItem(elements.mail_simulate(), "simulate");
         mainTable.setWidget(0, 1, reciversListBox);
 
         titleBox = new TextBoxWithErrorText("mail_title");
@@ -185,7 +187,7 @@ public class ReportMail extends Composite implements ClickListener {
 
         emailSendStatusView.show();
         emailSendStatusView.center();
-        emailSendStatusView.sendEmails();
+        emailSendStatusView.sendEmails( reciversListBox.getText().equals("simulate"));
 
     }
 
@@ -203,6 +205,7 @@ public class ReportMail extends Composite implements ClickListener {
         private boolean pause;
         private FlexTable infoTable;
         private String attachmentsAsJSONString;
+        private boolean simulate;
 
         EmailSendStatus() {
             DockPanel dp = new DockPanel();
@@ -248,7 +251,8 @@ public class ReportMail extends Composite implements ClickListener {
             }
         }
 
-        public void sendEmails() {
+        public void sendEmails(boolean simulate) {
+            this.simulate = simulate;
             currentIndex = 0;
             infoTable.setText(1, 1, "");
             infoTable.setText(2, 1, "");
@@ -272,24 +276,18 @@ public class ReportMail extends Composite implements ClickListener {
 
             StringBuffer mailRequest = new StringBuffer();
 
-            mailRequest.append("action=email");
+            mailRequest.append("action="+ (simulate ? "simulatemail":"email"));
             Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
             Util.addPostParam(mailRequest, "email", email);
             Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
             Util.addPostParam(mailRequest, "attachments", attachmentsAsJSONString);
 
-            ServerResponse callback = new ServerResponse() {
+            ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
                 public void serverResponse(JSONValue value) {
                     JSONObject object = value.isObject();
 
-                    currentIndex++;
-                    table.insertRow(1);
-                    table.setText(1, 0, name);
-                    table.setText(1, 1, email);
-
-                    String style = (currentIndex % 2 == 0) ? "showlineposts2" : "showlineposts1";
-                    table.getRowFormatter().setStyleName(1, style);
+                    fillSentLine(name, email);
 
                     if (!("1".equals(Util.str(object.get("status"))))) {
                         table.setStyleName("error");
@@ -302,6 +300,28 @@ public class ReportMail extends Composite implements ClickListener {
                     } else {
                         hide();
                     }
+                }
+
+                public void onError() {
+                    fillSentLine(name, email);
+                    table.setStyleName("error");
+                    table.setText(1, 2, "error");
+
+                    if (receivers.size() > currentIndex) {
+                        sendOneEmail();
+                    } else {
+                        hide();
+                    }
+                }
+                
+                private void fillSentLine(final String name, final String email) {
+                    currentIndex++;
+                    table.insertRow(1);
+                    table.setText(1, 0, name);
+                    table.setText(1, 1, email);
+
+                    String style = (currentIndex % 2 == 0) ? "showlineposts2" : "showlineposts1";
+                    table.getRowFormatter().setStyleName(1, style);
                 }
 
             };

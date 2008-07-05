@@ -42,6 +42,7 @@ import no.knubo.accounting.client.views.reporting.ReportMail;
 import no.knubo.accounting.client.views.reporting.ReportMassLetters;
 import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
 import no.knubo.accounting.client.views.reporting.ReportMembersBirth;
+import no.knubo.accounting.client.views.reporting.ReportMembersBirthGender;
 import no.knubo.accounting.client.views.reporting.ReportUsersEmail;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -137,6 +138,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(),
                 WidgetIds.REPORT_MEMBER_PER_YEAR);
+        addMenuItem(reportsMenu, elements.menuitem_report_member_per_year_gender(),
+                WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
+        
         addMenuItem(reportsMenu, elements.menuitem_report_addresses(), WidgetIds.REPORT_ADDRESSES);
         addMenuItem(reportsMenu, elements.menuitem_report_selectedlines(),
                 WidgetIds.REPORT_SELECTEDLINES);
@@ -308,6 +312,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = ReportMembersBirth.getInstance(constants, messages, helpPanel, elements);
                 ((ReportMembersBirth) widget).init();
                 break;
+            case REPORT_MEMBER_PER_YEAR_GENDER:
+                widget = ReportMembersBirthGender.getInstance(constants, messages, helpPanel, elements);
+                ((ReportMembersBirthGender) widget).init();
+                break;
+                
             case REPORT_ADDRESSES:
                 widget = ReportMembersAddresses.getInstance(constants, messages, helpPanel,
                         elements);

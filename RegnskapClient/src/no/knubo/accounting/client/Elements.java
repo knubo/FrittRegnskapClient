@@ -184,6 +184,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String budgeted_result();
 
   /**
+   * Translated "Feil".
+   * 
+   * @return translated "Feil"
+   * @gwt.key error
+   */
+  String error();
+
+  /**
    * Translated "Ny konto".
    * 
    * @return translated "Ny konto"
@@ -608,6 +616,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String register_membership_help();
 
   /**
+   * Translated "Menn".
+   * 
+   * @return translated "Menn"
+   * @gwt.key gender_males
+   */
+  String gender_males();
+
+  /**
    * Translated "Fornavn".
    * 
    * @return translated "Fornavn"
@@ -632,20 +648,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String loding_page();
 
   /**
-   * Translated "Prosjekter".
-   * 
-   * @return translated "Prosjekter"
-   * @gwt.key menuitem_projects
-   */
-  String menuitem_projects();
-
-  /**
    * Translated "Standardinnstillinger for regnskap".
    * 
    * @return translated "Standardinnstillinger for regnskap"
    * @gwt.key standardsettings
    */
   String standardsettings();
+
+  /**
+   * Translated "Prosjekter".
+   * 
+   * @return translated "Prosjekter"
+   * @gwt.key menuitem_projects
+   */
+  String menuitem_projects();
 
   /**
    * Translated "Pris for kurs".
@@ -782,6 +798,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key title_report_users_email
    */
   String title_report_users_email();
+
+  /**
+   * Translated "Mangler".
+   * 
+   * @return translated "Mangler"
+   * @gwt.key missing
+   */
+  String missing();
 
   /**
    * Translated "Status".
@@ -1288,6 +1312,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String trust_actionclub();
 
   /**
+   * Translated "Kvinner".
+   * 
+   * @return translated "Kvinner"
+   * @gwt.key gender_females
+   */
+  String gender_females();
+
+  /**
    * Translated "Nytt semester".
    * 
    * @return translated "Nytt semester"
@@ -1358,6 +1390,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key ok
    */
   String ok();
+
+  /**
+   * Translated "Antall medlemmer per kjønn".
+   * 
+   * @return translated "Antall medlemmer per kjønn"
+   * @gwt.key title_report_membersbirth_gender
+   */
+  String title_report_membersbirth_gender();
 
   /**
    * Translated "Skjul".
@@ -1448,20 +1488,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String debet();
 
   /**
-   * Translated "Kursmedlemmer".
-   * 
-   * @return translated "Kursmedlemmer"
-   * @gwt.key member_heading_course
-   */
-  String member_heading_course();
-
-  /**
    * Translated "Kjønn".
    * 
    * @return translated "Kjønn"
    * @gwt.key gender
    */
   String gender();
+
+  /**
+   * Translated "Kursmedlemmer".
+   * 
+   * @return translated "Kursmedlemmer"
+   * @gwt.key member_heading_course
+   */
+  String member_heading_course();
 
   /**
    * Translated "Mai".
@@ -1592,6 +1632,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String available_accounts();
 
   /**
+   * Translated "Simulasjon av utsendelse".
+   * 
+   * @return translated "Simulasjon av utsendelse"
+   * @gwt.key mail_simulate
+   */
+  String mail_simulate();
+
+  /**
    * Translated "Brevmal".
    * 
    * @return translated "Brevmal"
@@ -1622,6 +1670,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key to_date
    */
   String to_date();
+
+  /**
+   * Translated "Medlemsantall per alder og kjønn".
+   * 
+   * @return translated "Medlemsantall per alder og kjønn"
+   * @gwt.key menuitem_report_member_per_year_gender
+   */
+  String menuitem_report_member_per_year_gender();
 
   /**
    * Translated "Avslutt måned".

@@ -27,7 +27,7 @@ public class AuthResponder implements RequestCallback {
         this.constants = constants;
         this.messages = messages;
         this.callback = callback;
-        if(callback == null) {
+        if (callback == null) {
             throw new RuntimeException("Callback cannot be null");
         }
         AccountingGWT.setLoading();
@@ -45,6 +45,7 @@ public class AuthResponder implements RequestCallback {
         } else if (response.getStatusCode() == 511) {
             Window.alert(messages.no_access());
         } else if (response.getStatusCode() == 512) {
+            logError("database", response.getText());
             Window.alert("DB error:" + response.getText());
         } else if (response.getStatusCode() == 513) {
             JSONValue parse = JSONParser.parse(response.getText());
@@ -64,6 +65,7 @@ public class AuthResponder implements RequestCallback {
         } else {
             String data = response.getText();
             if (data == null || data.length() == 0) {
+                logError("error", "no server response");
                 Window.alert(messages.no_server_response());
                 return;
             }
@@ -74,19 +76,53 @@ public class AuthResponder implements RequestCallback {
             try {
                 jsonValue = JSONParser.parse(data);
             } catch (Exception e) {
-                /* BAD, but caught below */
+                /* We catch this below in bad return data */
             }
 
             if (jsonValue == null) {
                 if (callback instanceof ServerResponseWithErrorFeedback) {
                     ((ServerResponseWithErrorFeedback) callback).onError();
                 } else {
+                    logError("baddata", data);
                     Window.alert("Bad return data:" + data);
                 }
             } else {
                 callback.serverResponse(jsonValue);
             }
         }
+    }
+
+    private void logError(String action, String message) {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, constants.baseurl()
+                + "logging.php");
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("action=log");
+        Util.addPostParam(sb, "category", "error");
+        Util.addPostParam(sb, "logaction", action);
+        Util.addPostParam(sb, "message", message);
+
+        try {
+            builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            builder.sendRequest(sb.toString(), AuthResponder.nullCallback());
+        } catch (RequestException e) {
+            /* Silent */
+        }
+
+    }
+
+    private static RequestCallback nullCallback() {
+        return new RequestCallback() {
+
+            public void onError(Request request, Throwable exception) {
+                /* Silent */
+            }
+
+            public void onResponseReceived(Request request, Response response) {
+                /* Silent */
+            }
+
+        };
     }
 
     public static void get(Constants constants, I18NAccount messages, ServerResponse callback,
