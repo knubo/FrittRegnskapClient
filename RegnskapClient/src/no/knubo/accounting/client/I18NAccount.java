@@ -310,4 +310,12 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
    * @gwt.key invalid_email
    */
   String invalid_email();
+
+  /**
+   * Translated "Du er ikke innlogget - �pner innloggingsvindu".
+   * 
+   * @return translated "Du er ikke innlogget - �pner innloggingsvindu"
+   * @gwt.key not_logged_in
+   */
+  String not_logged_in();
 }

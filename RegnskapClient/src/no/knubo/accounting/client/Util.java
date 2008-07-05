@@ -458,14 +458,6 @@ public class Util {
         DOM.setElementAttribute(table.getCellFormatter().getElement(row, col), "id", id);
     }
 
-    public static boolean authFailed(Constants constants, Response response) {
-        if (response.getStatusCode() == 510) {
-            Util.forward(constants.loginURL());
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Iterates fields and looks them up in translate. If found, it uses that
      * value, if not found it writes the non translated value in [].

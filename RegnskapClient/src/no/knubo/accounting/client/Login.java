@@ -101,7 +101,7 @@ public class Login implements EntryPoint, ClickListener, ServerResponse {
         String user = this.userBox.getText();
         String password = this.passBox.getText();
         
-        AuthResponder.get(constants, messages, this, this.constants.baseurl() + "authenticate.php?user=" + user
+        AuthResponder.get(constants, messages, this, "../../RegnskapServer/services/authenticate.php?user=" + user
                 + "&password=" + password);
     }
 

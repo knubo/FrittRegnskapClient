@@ -1,4 +1,4 @@
-'.error {
+.error {
   PADDING:2px 2px 2px 2px;
   color: red;
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
@@ -448,7 +448,7 @@ td.rute {
   font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
   font-weight: bold;
   white-space:nowrap;
-  fond-size:12pt;  
+  font-size:12pt;  
 }
 
 .contexthelp {

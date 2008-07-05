@@ -41,12 +41,13 @@ public class ReportMembersBirth extends Composite {
         table = new FlexTable();
         table.setStyleName("tableborder");
         table.setHTML(0, 0, elements.title_report_membersbirth());
-        table.getFlexCellFormatter().setColSpan(0, 0, 4);
+        table.getFlexCellFormatter().setColSpan(0, 0, 5);
         table.getRowFormatter().setStyleName(0, "header");
         table.setHTML(1, 0, elements.lastname());
         table.setHTML(1, 1, elements.firstname());
         table.setHTML(1, 2, elements.birthdate());
         table.setHTML(1, 3, elements.age());
+        table.setHTML(1, 4, elements.gender());
         table.getRowFormatter().setStyleName(1, "header");
 
         dp.add(table, DockPanel.NORTH);
@@ -85,7 +86,7 @@ public class ReportMembersBirth extends Composite {
             private void showCategory(String header, JSONArray array) {
                 int row = table.getRowCount();
                 table.setHTML(row, 0, header);
-                table.getFlexCellFormatter().setColSpan(row, 0, 4);
+                table.getFlexCellFormatter().setColSpan(row, 0, 5);
                 table.getRowFormatter().setStyleName(row, "header");
 
                 row++;
@@ -97,6 +98,7 @@ public class ReportMembersBirth extends Composite {
                     table.setHTML(row, 1, Util.str(personObj.get("firstname")));
                     table.setHTML(row, 2, Util.str(personObj.get("birthdate")));
                     table.setHTML(row, 3, Util.str(personObj.get("age")));
+                    table.setHTML(row, 4, Util.str(personObj.get("gender")));
                     table.getCellFormatter().setStyleName(row, 3, "center");
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(row, style);
