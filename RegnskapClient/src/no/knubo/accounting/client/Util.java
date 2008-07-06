@@ -3,7 +3,6 @@ package no.knubo.accounting.client;
 import java.util.HashMap;
 import java.util.List;
 
-import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;

@@ -63,6 +63,7 @@ public class UserSearchFields implements ClickListener {
         genderBox.addItem("", "");
         genderBox.addItem(elements.gender_male(), "M");
         genderBox.addItem(elements.gender_female(), "F");
+        genderBox.addItem(elements.gender_unset(), "U");
 
         searchTable.setText(2, 2, elements.gender());
         searchTable.setWidget(2, 3, genderBox);

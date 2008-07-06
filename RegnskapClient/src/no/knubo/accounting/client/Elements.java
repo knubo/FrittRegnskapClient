@@ -448,6 +448,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String month_01();
 
   /**
+   * Translated "Logg".
+   * 
+   * @return translated "Logg"
+   * @gwt.key log
+   */
+  String log();
+
+  /**
    * Translated "Alle medlemskap".
    * 
    * @return translated "Alle medlemskap"
@@ -494,6 +502,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key gender_female
    */
   String gender_female();
+
+  /**
+   * Translated "Id".
+   * 
+   * @return translated "Id"
+   * @gwt.key id
+   */
+  String id();
 
   /**
    * Translated "Treningsmedlemmer".
@@ -800,6 +816,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String title_report_users_email();
 
   /**
+   * Translated "Kategori".
+   * 
+   * @return translated "Kategori"
+   * @gwt.key category
+   */
+  String category();
+
+  /**
    * Translated "Mangler".
    * 
    * @return translated "Mangler"
@@ -1016,6 +1040,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String day();
 
   /**
+   * Translated "Usatt".
+   * 
+   * @return translated "Usatt"
+   * @gwt.key gender_unset
+   */
+  String gender_unset();
+
+  /**
    * Translated "Ny/endre bruker".
    * 
    * @return translated "Ny/endre bruker"
@@ -1040,14 +1072,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_reports();
 
   /**
-   * Translated "Velg filer".
-   * 
-   * @return translated "Velg filer"
-   * @gwt.key choose_files
-   */
-  String choose_files();
-
-  /**
    * Translated "Føres på post".
    * 
    * @return translated "Føres på post"
@@ -1056,12 +1080,28 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String register_count_post();
 
   /**
+   * Translated "Velg filer".
+   * 
+   * @return translated "Velg filer"
+   * @gwt.key choose_files
+   */
+  String choose_files();
+
+  /**
    * Translated "Kreditpost".
    * 
    * @return translated "Kreditpost"
    * @gwt.key trust_creditpost
    */
   String trust_creditpost();
+
+  /**
+   * Translated "Vis logger".
+   * 
+   * @return translated "Vis logger"
+   * @gwt.key menuitem_log
+   */
+  String menuitem_log();
 
   /**
    * Translated "Budsjeterte inntekter".
@@ -1134,6 +1174,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key menuitem_logout
    */
   String menuitem_logout();
+
+  /**
+   * Translated "Melding".
+   * 
+   * @return translated "Melding"
+   * @gwt.key message
+   */
+  String message();
 
   /**
    * Translated "Nytt prosjekt".
@@ -1472,20 +1520,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String month_02();
 
   /**
-   * Translated "Til søk".
-   * 
-   * @return translated "Til søk"
-   * @gwt.key back_search
-   */
-  String back_search();
-
-  /**
    * Translated "DEBET".
    * 
    * @return translated "DEBET"
    * @gwt.key debet
    */
   String debet();
+
+  /**
+   * Translated "Til søk".
+   * 
+   * @return translated "Til søk"
+   * @gwt.key back_search
+   */
+  String back_search();
 
   /**
    * Translated "Kjønn".
@@ -1654,6 +1702,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key kredit_post
    */
   String kredit_post();
+
+  /**
+   * Translated "Tidspunkt".
+   * 
+   * @return translated "Tidspunkt"
+   * @gwt.key occured
+   */
+  String occured();
 
   /**
    * Translated "Semester".

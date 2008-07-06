@@ -9,6 +9,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.Logger;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
@@ -47,6 +48,7 @@ public class ReportMail extends Composite implements ClickListener {
     private NamedButton attachButton;
     private PickAttachments pickAttachments;
     private FlexTable attachedFiles;
+    private Logger logger;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages,
             Elements elements) {
@@ -60,6 +62,8 @@ public class ReportMail extends Composite implements ClickListener {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
+        this.logger = new Logger(this.constants);
+
 
         FlexTable mainTable = new FlexTable();
         mainTable.setStyleName("edittable");
@@ -179,6 +183,8 @@ public class ReportMail extends Composite implements ClickListener {
     }
 
     private void sendEmails() {
+        logger.info("email", "Email sending: "+reciversListBox.getText()+" "+receivers.size());
+        
         if (emailSendStatusView == null) {
             emailSendStatusView = new EmailSendStatus();
         }

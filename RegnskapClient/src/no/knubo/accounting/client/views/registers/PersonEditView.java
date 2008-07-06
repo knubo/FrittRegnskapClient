@@ -401,6 +401,8 @@ public class PersonEditView extends Composite implements ClickListener {
             membershipsTable.removeRow(0);
         }
 
+        genderBox.setSelectedIndex(0);
+
         if (currentId == null) {
             firstnameBox.setText("");
             lastnameBox.setText("");
@@ -414,7 +416,6 @@ public class PersonEditView extends Composite implements ClickListener {
             employeeCheck.setChecked(false);
             newsletterCheck.setChecked(false);
             updateButton.setHTML(elements.save());
-            genderBox.setSelectedIndex(0);
         } else {
             doOpen();
             updateButton.setHTML(elements.update());
