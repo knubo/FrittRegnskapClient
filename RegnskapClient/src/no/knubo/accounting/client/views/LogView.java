@@ -46,9 +46,9 @@ public class LogView extends Composite {
         table.setText(1, 4, elements.user());
         table.setText(1, 5, elements.message());
         table.getRowFormatter().setStyleName(1, "header");
-    
+
         dp.add(table, DockPanel.NORTH);
-        
+
         initWidget(dp);
     }
 
@@ -75,9 +75,8 @@ public class LogView extends Composite {
 
                     String style = (((i) % 6) < 3) ? "line2 logline" : "line1 logline";
                     table.getRowFormatter().addStyleName(i + 2, style);
-                    
-                    table.getCellFormatter().setStyleName(1+2, 1, "nowrap");
 
+                    table.getCellFormatter().setStyleName(1 + 2, 1, "nowrap");
 
                 }
             }
