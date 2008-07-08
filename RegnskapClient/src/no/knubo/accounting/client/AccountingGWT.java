@@ -26,6 +26,7 @@ import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.budget.BudgetView;
+import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
 import no.knubo.accounting.client.views.registers.AccountTrackEditView;
 import no.knubo.accounting.client.views.registers.MembershipPriceEditView;
@@ -167,6 +168,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
+        addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
         addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
         new Commando(null, WidgetIds.ABOUT, elements.menuitem_about()).execute();
@@ -351,6 +353,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case LOGGING:
                 widget = LogView.show(messages, constants, elements);
                 ((LogView) widget).init();
+                break;
+            case BACKUP:
+                widget = BackupView.getInstance(constants, messages, elements);
+                ((BackupView)widget).init();
                 break;
             case LOGOUT:
                 widget = LogoutView.getInstance(constants, messages, elements);

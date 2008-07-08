@@ -16,6 +16,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String access();
 
   /**
+   * Translated "Last ned forrige sikkerhetskopi".
+   * 
+   * @return translated "Last ned forrige sikkerhetskopi"
+   * @gwt.key backup_download_last
+   */
+  String backup_download_last();
+
+  /**
    * Translated "Massebrev".
    * 
    * @return translated "Massebrev"
@@ -72,6 +80,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String clear();
 
   /**
+   * Translated "Start sikkerhetskopiering".
+   * 
+   * @return translated "Start sikkerhetskopiering"
+   * @gwt.key backup_start
+   */
+  String backup_start();
+
+  /**
    * Translated "Abonnenter av nyhetsbrev".
    * 
    * @return translated "Abonnenter av nyhetsbrev"
@@ -104,20 +120,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String account_collection_accountplan();
 
   /**
-   * Translated "Avbryt".
-   * 
-   * @return translated "Avbryt"
-   * @gwt.key cancel
-   */
-  String cancel();
-
-  /**
    * Translated "Post".
    * 
    * @return translated "Post"
    * @gwt.key post
    */
   String post();
+
+  /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   * @gwt.key cancel
+   */
+  String cancel();
 
   /**
    * Translated "Medlemmer".
@@ -190,6 +206,22 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key error
    */
   String error();
+
+  /**
+   * Translated "Starter sikkerhetskopiering".
+   * 
+   * @return translated "Starter sikkerhetskopiering"
+   * @gwt.key backup_init
+   */
+  String backup_init();
+
+  /**
+   * Translated "Progresjon".
+   * 
+   * @return translated "Progresjon"
+   * @gwt.key backup_progress
+   */
+  String backup_progress();
 
   /**
    * Translated "Ny konto".
@@ -270,6 +302,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key title_user_adm
    */
   String title_user_adm();
+
+  /**
+   * Translated "Sikkerhetskopi av database".
+   * 
+   * @return translated "Sikkerhetskopi av database"
+   * @gwt.key title_back
+   */
+  String title_back();
 
   /**
    * Translated "Valør:".
@@ -358,6 +398,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key budgeted_expences
    */
   String budgeted_expences();
+
+  /**
+   * Translated "Pakker filer".
+   * 
+   * @return translated "Pakker filer"
+   * @gwt.key backup_zipping
+   */
+  String backup_zipping();
 
   /**
    * Translated "Innstillinger".
@@ -1000,6 +1048,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String newsletter();
 
   /**
+   * Translated "Siste sikkerhetskopi ".
+   * 
+   * @return translated "Siste sikkerhetskopi "
+   * @gwt.key backup_last
+   */
+  String backup_last();
+
+  /**
    * Translated "Brukere".
    * 
    * @return translated "Brukere"
@@ -1054,6 +1110,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key title_edit_new_user
    */
   String title_edit_new_user();
+
+  /**
+   * Translated "Sikkerhetskopi".
+   * 
+   * @return translated "Sikkerhetskopi"
+   * @gwt.key menuitem_backup
+   */
+  String menuitem_backup();
 
   /**
    * Translated "Faktisk resultat".
@@ -1144,20 +1208,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String x();
 
   /**
-   * Translated "Legg ved filer".
-   * 
-   * @return translated "Legg ved filer"
-   * @gwt.key attach_files
-   */
-  String attach_files();
-
-  /**
    * Translated "Postbeskrivelse".
    * 
    * @return translated "Postbeskrivelse"
    * @gwt.key post_description
    */
   String post_description();
+
+  /**
+   * Translated "Legg ved filer".
+   * 
+   * @return translated "Legg ved filer"
+   * @gwt.key attach_files
+   */
+  String attach_files();
 
   /**
    * Translated "Standardbilag".
@@ -1264,20 +1328,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String earnings_memberships();
 
   /**
-   * Translated "Send epost".
-   * 
-   * @return translated "Send epost"
-   * @gwt.key mail_send
-   */
-  String mail_send();
-
-  /**
    * Translated "Logg ut".
    * 
    * @return translated "Logg ut"
    * @gwt.key logout
    */
   String logout();
+
+  /**
+   * Translated "Send epost".
+   * 
+   * @return translated "Send epost"
+   * @gwt.key mail_send
+   */
+  String mail_send();
 
   /**
    * Translated "Navn".
@@ -1336,6 +1400,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String country_sweeden();
 
   /**
+   * Translated "Tabell:".
+   * 
+   * @return translated "Tabell:"
+   * @gwt.key backup_table
+   */
+  String backup_table();
+
+  /**
    * Translated "Klubbkonto".
    * 
    * @return translated "Klubbkonto"
@@ -1358,6 +1430,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key trust_actionclub
    */
   String trust_actionclub();
+
+  /**
+   * Translated "Laster ned zipfil".
+   * 
+   * @return translated "Laster ned zipfil"
+   * @gwt.key backup_downloading
+   */
+  String backup_downloading();
 
   /**
    * Translated "Kvinner".
@@ -1448,6 +1528,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String title_report_membersbirth_gender();
 
   /**
+   * Translated "Postnr".
+   * 
+   * @return translated "Postnr"
+   * @gwt.key postnmb
+   */
+  String postnmb();
+
+  /**
    * Translated "Skjul".
    * 
    * @return translated "Skjul"
@@ -1470,14 +1558,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key month_08
    */
   String month_08();
-
-  /**
-   * Translated "Postnr".
-   * 
-   * @return translated "Postnr"
-   * @gwt.key postnmb
-   */
-  String postnmb();
 
   /**
    * Translated "Dato".
@@ -1534,6 +1614,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key back_search
    */
   String back_search();
+
+  /**
+   * Translated "Antall tabeller som skal sikkerhetskopieres:".
+   * 
+   * @return translated "Antall tabeller som skal sikkerhetskopieres:"
+   * @gwt.key backup_table_count
+   */
+  String backup_table_count();
 
   /**
    * Translated "Kjønn".
@@ -1712,6 +1800,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String occured();
 
   /**
+   * Translated "Klarte ikke operasjonen:".
+   * 
+   * @return translated "Klarte ikke operasjonen:"
+   * @gwt.key backup_error
+   */
+  String backup_error();
+
+  /**
    * Translated "Semester".
    * 
    * @return translated "Semester"
@@ -1776,20 +1872,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String reduced_write_access();
 
   /**
-   * Translated "Andre inntekter".
-   * 
-   * @return translated "Andre inntekter"
-   * @gwt.key earnings_other
-   */
-  String earnings_other();
-
-  /**
    * Translated "Post nr. er benyttet tidligere".
    * 
    * @return translated "Post nr. er benyttet tidligere"
    * @gwt.key post_used
    */
   String post_used();
+
+  /**
+   * Translated "Andre inntekter".
+   * 
+   * @return translated "Andre inntekter"
+   * @gwt.key earnings_other
+   */
+  String earnings_other();
 
   /**
    * Translated "Status for utvalgte konti".
