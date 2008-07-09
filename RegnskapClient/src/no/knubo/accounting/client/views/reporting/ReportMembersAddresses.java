@@ -51,7 +51,7 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
         table = new FlexTable();
         table.setStyleName("tableborder");
         table.setHTML(0, 0, elements.title_report_membersaddresses());
-        table.getFlexCellFormatter().setColSpan(0, 0, 9);
+        table.getFlexCellFormatter().setColSpan(0, 0, 10);
         table.getRowFormatter().setStyleName(0, "header");
         table.setHTML(1, 0, elements.firstname());
         table.setHTML(1, 1, elements.lastname());
@@ -62,6 +62,7 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
         table.setHTML(1, 6, elements.birthdate());
         table.setHTML(1, 7, elements.cellphone());
         table.setHTML(1, 8, elements.phone());
+        table.setHTML(1, 9, elements.gender());
         table.getRowFormatter().setStyleName(1, "header");
 
         dp.add(table, DockPanel.NORTH);
@@ -82,7 +83,7 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
                 int badRow = row;
                 table.setHTML(badRow, 0, elements.missing_address());
                 table.getRowFormatter().setStyleName(badRow, "header");
-                table.getFlexCellFormatter().setColSpan(badRow, 0, 9);
+                table.getFlexCellFormatter().setColSpan(badRow, 0, 10);
                 badRow++;
 
                 boolean yearSet = false;
@@ -122,6 +123,7 @@ public class ReportMembersAddresses extends Composite implements ClickListener {
                 table.setHTML(row, 6, Util.str(object.get("birthdate")));
                 table.setHTML(row, 7, Util.strSkipNull(object.get("cellphone")));
                 table.setHTML(row, 8, Util.strSkipNull(object.get("phone")));
+                table.setHTML(row, 9, Util.strSkipNull(object.get("gender")));
 
                 String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                 table.getRowFormatter().setStyleName(row, style);
