@@ -952,6 +952,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String year();
 
   /**
+   * Translated "Oversikt for år".
+   * 
+   * @return translated "Oversikt for år"
+   * @gwt.key menuitem_report_year
+   */
+  String menuitem_report_year();
+
+  /**
    * Translated "Prosjekt".
    * 
    * @return translated "Prosjekt"
@@ -1894,6 +1902,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key reduced_write_access
    */
   String reduced_write_access();
+
+  /**
+   * Translated "Kjør rapport".
+   * 
+   * @return translated "Kjør rapport"
+   * @gwt.key do_report
+   */
+  String do_report();
 
   /**
    * Translated "Post nr. er benyttet tidligere".

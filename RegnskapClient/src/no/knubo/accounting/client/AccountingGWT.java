@@ -12,6 +12,7 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.views.AboutView;
+import no.knubo.accounting.client.views.GeneralReportView;
 import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.LogView;
@@ -153,6 +154,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 WidgetIds.REPORT_USERS_EMAIL);
         addMenuItem(reportsMenu, elements.menuitem_report_accounttrack(),
                 WidgetIds.REPORT_ACCOUNTTRACK);
+
+        addMenuItem(reportsMenu, elements.menuitem_report_year(),
+                WidgetIds.REPORT_YEAR);
+
         addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
 
         addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
@@ -345,6 +350,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case REPORT_USERS_EMAIL:
                 widget = ReportUsersEmail.getInstance(constants, messages, helpPanel, elements);
                 ((ReportUsersEmail) widget).init();
+                break;
+            case REPORT_YEAR:
+                widget = GeneralReportView.show(messages, constants, elements);
                 break;
             case MANAGE_FILES:
                 widget = ManageFilesView.getInstance(constants, messages, elements);

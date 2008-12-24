@@ -74,6 +74,12 @@ public class AuthResponder implements RequestCallback {
             }
             data = data.trim();
 
+            if (callback instanceof ServerResponseString) {
+                ServerResponseString srs = (ServerResponseString) callback;
+                srs.serverResponse(data);
+                return;
+            }
+            
             JSONValue jsonValue = null;
 
             try {

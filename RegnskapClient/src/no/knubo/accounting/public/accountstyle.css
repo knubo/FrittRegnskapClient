@@ -491,3 +491,8 @@ td.rute {
 .fullwidth {
   width:100%;
 }
+
+.report {
+  white-space:nowrap;
+  border:1px solid black;
+}
