@@ -448,6 +448,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String action();
 
   /**
+   * Translated "Avslutt semester".
+   * 
+   * @return translated "Avslutt semester"
+   * @gwt.key menuitem_endsemester
+   */
+  String menuitem_endsemester();
+
+  /**
    * Translated "Konti ikke i bruk".
    * 
    * @return translated "Konti ikke i bruk"
@@ -808,20 +816,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_findperson();
 
   /**
-   * Translated "Avbryt".
-   * 
-   * @return translated "Avbryt"
-   * @gwt.key abort
-   */
-  String abort();
-
-  /**
    * Translated "Passord".
    * 
    * @return translated "Passord"
    * @gwt.key password
    */
   String password();
+
+  /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   * @gwt.key abort
+   */
+  String abort();
 
   /**
    * Translated "Sum".
@@ -1440,6 +1448,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String backup_downloading();
 
   /**
+   * Translated "Avslutt semester".
+   * 
+   * @return translated "Avslutt semester"
+   * @gwt.key end_semester
+   */
+  String end_semester();
+
+  /**
    * Translated "Kvinner".
    * 
    * @return translated "Kvinner"
@@ -1670,6 +1686,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
    * @gwt.key userEditView_newButton
    */
   String userEditView_newButton();
+
+  /**
+   * Translated "Følgende poster vil overføres til neste semester:".
+   * 
+   * @return translated "Følgende poster vil overføres til neste semester:"
+   * @gwt.key end_semester_explain
+   */
+  String end_semester_explain();
 
   /**
    * Translated "Logg ut".

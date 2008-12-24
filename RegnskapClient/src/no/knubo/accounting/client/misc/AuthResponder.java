@@ -43,7 +43,7 @@ public class AuthResponder implements RequestCallback {
     public void onResponseReceived(Request request, Response response) {
         AccountingGWT.setDoneLoading();
         if (response.getStatusCode() == 510) {
-            Window.alert(messages.not_logged_in());
+//            Window.alert(messages.not_logged_in());
             Util.forward(constants.loginURL());
         } else if (response.getStatusCode() == 511) {
             Window.alert(messages.no_access());

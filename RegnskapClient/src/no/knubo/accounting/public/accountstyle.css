@@ -6,6 +6,10 @@
   white-space:nowrap;
 }
 
+.flag {
+  color:red;
+}
+
 .normal {
   PADDING:2px 2px 2px 2px;
   color: black;

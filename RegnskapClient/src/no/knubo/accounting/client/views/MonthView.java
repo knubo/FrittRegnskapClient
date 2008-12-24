@@ -85,7 +85,8 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
         monthYearCombo.setVisibleItemCount(1);
         monthYearCombo.addChangeListener(this);
 
-        yearMonthComboHelper = new YearMonthComboHelper(constants, messages, monthYearCombo, elements);
+        yearMonthComboHelper = new YearMonthComboHelper(constants, messages, monthYearCombo,
+                elements);
 
         HorizontalPanel navPanel = new HorizontalPanel();
         navPanel.add(backImage);
@@ -186,7 +187,7 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
         int row = table.getRowCount();
         table.setText(row, 3, elements.sum());
         table.getRowFormatter().setStyleName(row, "sumline");
-        render_posts(row, debetSums, creditSums);
+        render_posts(row, debetSums, creditSums, false);
 
         /* Subtract credit sum from debet sum to show sum for total */
         for (String key : creditSums.keySet()) {
@@ -202,7 +203,7 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
             debetSums.put(key, new JSONString(String.valueOf(sum)));
         }
 
-        render_posts(row + 1, debetSums, new JSONObject());
+        render_posts(row + 1, debetSums, new JSONObject(), true);
         table.getRowFormatter().setStyleName(row + 1, "sumline");
     }
 
@@ -244,28 +245,31 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
 
             table.getCellFormatter().setStyleName(rowIndex, 3, "desc");
 
-            render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata.get("groupKredMonth"));
+            render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata.get("groupKredMonth"),
+                    false);
         }
     }
 
-    private void render_posts(int rowIndex, JSONValue debet, JSONValue kred) {
+    private void render_posts(int rowIndex, JSONValue debet, JSONValue kred,
+            boolean flagNonZeroValues) {
         JSONObject debetObj = debet.isObject();
         JSONObject kredObj = kred.isObject();
 
         int col = 4;
         for (String k : MonthHeaderCache.getInstance(constants, messages).keys()) {
 
-         /* DEBET */
-         printDebKredVal(rowIndex, debetObj, col, k);
-         col++;
+            /* DEBET */
+            printDebKredVal(rowIndex, debetObj, col, k, flagNonZeroValues);
+            col++;
 
-         /* KREDIT */
-         printDebKredVal(rowIndex, kredObj, col, k);
-         col++;
-      }
+            /* KREDIT */
+            printDebKredVal(rowIndex, kredObj, col, k, false);
+            col++;
+        }
     }
 
-    private void printDebKredVal(int rowIndex, JSONObject obj, int col, String k) {
+    private void printDebKredVal(int rowIndex, JSONObject obj, int col, String k,
+            boolean flagNonZeroValues) {
         table.getCellFormatter().setStyleName(rowIndex, col, "right");
 
         if (obj == null) {
@@ -274,7 +278,13 @@ public class MonthView extends Composite implements ClickListener, ChangeListene
         JSONValue value = obj.get(k);
 
         if (value != null) {
-            table.setText(rowIndex, col, Util.money(Util.fixMoney(Util.str(value))));
+            String money = Util.money(Util.fixMoney(Util.str(value)));
+
+            if (flagNonZeroValues && !"0.00".equals(money)) {
+                table.getCellFormatter().addStyleName(rowIndex, col, "flag");
+            }
+
+            table.setText(rowIndex, col, money);
         }
     }
 

@@ -17,7 +17,7 @@ import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.LogView;
 import no.knubo.accounting.client.views.LogoutView;
 import no.knubo.accounting.client.views.MonthDetailsView;
-import no.knubo.accounting.client.views.MonthEndView;
+import no.knubo.accounting.client.views.MonthAndSemesterEndView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonSearchView;
 import no.knubo.accounting.client.views.RegisterHappeningView;
@@ -122,6 +122,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(registerMenu, elements.menuitem_register_happening(),
                 WidgetIds.REGISTER_HAPPENING);
         addMenuItem(registerMenu, elements.menuitem_endmonth(), WidgetIds.END_MONTH);
+        addMenuItem(registerMenu, elements.menuitem_endsemester(), WidgetIds.END_SEMESTER);
         addMenuItem(registerMenu, elements.menuitem_endyear(), WidgetIds.END_YEAR);
 
         addMenuItem(showMenu, elements.menuitem_showmonth(), WidgetIds.SHOW_MONTH);
@@ -229,8 +230,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((RegisterHappeningView) widget).init();
                 break;
             case END_MONTH:
-                widget = MonthEndView.getInstance(constants, messages, callback, elements);
-                ((MonthEndView) widget).init();
+                widget = MonthAndSemesterEndView.getInstance(constants, messages, callback, elements);
+                ((MonthAndSemesterEndView) widget).initEndMonth();
+                break;
+            case END_SEMESTER:
+                widget = MonthAndSemesterEndView.getInstance(constants, messages, callback, elements);
+                ((MonthAndSemesterEndView) widget).initEndSemester();
                 break;
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants, elements);

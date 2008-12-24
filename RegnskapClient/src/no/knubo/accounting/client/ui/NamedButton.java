@@ -9,7 +9,7 @@ public class NamedButton extends Button {
         setId(name);
     }
 
-    private void setId(String id) {
+    public void setId(String id) {
         DOM.setElementAttribute(this.getElement(), "id", id);
     }
 

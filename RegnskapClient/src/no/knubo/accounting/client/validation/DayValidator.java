@@ -36,6 +36,7 @@ public class DayValidator extends ValidatorBase {
         return testDate(day, month, year);
     }
 
+    @SuppressWarnings("deprecation")
     static boolean testDate(int testDay, int testMonth, int testYear) {
         Date date = new Date(testYear, testMonth, testDay, 0, 0, 0);
 
