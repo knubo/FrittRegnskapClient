@@ -493,6 +493,21 @@ td.rute {
 }
 
 .report {
+  border-collapse:collapse;
   white-space:nowrap;
   border:1px solid black;
 }
+
+.report TD {
+  padding: 2px;
+}
+
+.report TR>TD+TD+TD {
+  text-align: right;
+}
+
+.report .sum {
+  font-weight: bold;
+  background-color:lightgrey;
+}
+
