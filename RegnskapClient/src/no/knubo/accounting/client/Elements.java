@@ -312,6 +312,14 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String title_back();
 
   /**
+   * Translated "Ungdomsmedlemsskap".
+   * 
+   * @return translated "Ungdomsmedlemsskap"
+   * @gwt.key youth_membership
+   */
+  String youth_membership();
+
+  /**
    * Translated "Valør:".
    * 
    * @return translated "Valør:"

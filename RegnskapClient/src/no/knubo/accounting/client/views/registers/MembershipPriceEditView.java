@@ -51,19 +51,23 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
         table.setStyleName("tableborder");
 
         table.setText(0, 0, elements.menuitem_membership_prices());
-        table.getFlexCellFormatter().setColSpan(0, 0, 7);
+        table.getFlexCellFormatter().setColSpan(0, 0, 9);
         table.setText(2, 0, elements.year());
         table.setText(1, 1, "");
         table.setText(1, 2, elements.spring());
         table.setText(2, 1, elements.year_membership());
         table.setText(2, 2, elements.course_membership());
         table.setText(2, 3, elements.train_membership());
-        table.setText(1, 4, elements.fall());
-        table.setText(1, 5, "");
+        table.setText(2, 4, elements.youth_membership());
+        table.setText(1, 5, elements.fall());
         table.setText(1, 6, "");
-        table.setText(2, 4, elements.course_membership());
-        table.setText(2, 5, elements.train_membership());
-        table.setText(2, 6, "");
+        table.setText(1, 7, "");
+        table.setText(1, 8, "");
+        table.setText(2, 5, elements.course_membership());
+        table.setText(2, 6, elements.train_membership());
+        table.setText(2, 7, elements.youth_membership());
+        table.setText(2, 8, "");
+        table.setText(2, 9, "");
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
         table.getRowFormatter().setStyleName(2, "header");
@@ -96,7 +100,8 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
         int row = lineHolder.findId(sender);
 
         editFields.init(row, table.getText(row, 0), table.getText(row, 1), table.getText(row, 2),
-                table.getText(row, 3), table.getText(row, 4), table.getText(row, 5));
+                table.getText(row, 3), table.getText(row, 4), table.getText(row, 5), table.getText(
+                        row, 6), table.getText(row, 7));
 
         editFields.show();
     }
@@ -116,8 +121,12 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
                 JSONObject prices = obj.get("price").isObject();
 
                 Map<String, String> priceYear = getPricesMap(prices.get("year").isArray(), "year");
-                Map<String, String> priceCourse = getPricesMap(prices.get("course").isArray(), "semester");
-                Map<String, String> priceTrain = getPricesMap(prices.get("train").isArray(), "semester");
+                Map<String, String> priceCourse = getPricesMap(prices.get("course").isArray(),
+                        "semester");
+                Map<String, String> priceTrain = getPricesMap(prices.get("train").isArray(),
+                        "semester");
+                Map<String, String> priceYouth = getPricesMap(prices.get("youth").isArray(),
+                        "semester");
 
                 String currentYear = null;
 
@@ -127,7 +136,7 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
 
                     String year = Util.str(semObj.get("year"));
                     String semester = Util.str(semObj.get("semester"));
-                    int colPlus = "1".equals(Util.str(semObj.get("fall"))) ? 2 : 0;
+                    int colPlus = "1".equals(Util.str(semObj.get("fall"))) ? 3 : 0;
 
                     if (!year.equals(currentYear)) {
                         row++;
@@ -141,12 +150,12 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
 
                         Image editImage = ImageFactory.editImage("membershipPriceEdit");
                         editImage.addClickListener(me);
-                        table.setWidget(row, 6, editImage);
+                        table.setWidget(row, 8, editImage);
 
                         currentYear = year;
                         lineHolder.add(row, editImage);
 
-                        for (int j = 0; j < 6; j++) {
+                        for (int j = 0; j < 8; j++) {
                             table.getCellFormatter().setStyleName(row, j, "right");
                         }
 
@@ -157,6 +166,9 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
                     }
                     if (priceTrain.containsKey(semester)) {
                         table.setText(row, 3 + colPlus, priceTrain.get(semester));
+                    }
+                    if (priceYouth.containsKey(semester)) {
+                        table.setText(row, 4 + colPlus, priceYouth.get(semester));
                     }
 
                 }
@@ -190,8 +202,10 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
         private TextBoxWithErrorText yearPrice;
         private TextBoxWithErrorText springCoursePrice;
         private TextBoxWithErrorText springTrainPrice;
+        private TextBoxWithErrorText springYouthPrice;
         private TextBoxWithErrorText fallCoursePrice;
         private TextBoxWithErrorText fallTrainPrice;
+        private TextBoxWithErrorText fallYouthPrice;
         private String year;
         private int row;
 
@@ -204,21 +218,27 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
             edittable.setText(2, 0, elements.spring());
             edittable.setText(3, 0, elements.course_membership());
             edittable.setText(4, 0, elements.train_membership());
-            edittable.setText(5, 0, elements.fall());
-            edittable.setText(6, 0, elements.course_membership());
-            edittable.setText(7, 0, elements.train_membership());
+            edittable.setText(5, 0, elements.youth_membership());
+            edittable.setText(6, 0, elements.fall());
+            edittable.setText(7, 0, elements.course_membership());
+            edittable.setText(8, 0, elements.train_membership());
+            edittable.setText(9, 0, elements.youth_membership());
 
             yearPrice = new TextBoxWithErrorText("yearPrice");
             springCoursePrice = new TextBoxWithErrorText("springCoursePrice");
             springTrainPrice = new TextBoxWithErrorText("springTrainPrice");
+            springYouthPrice = new TextBoxWithErrorText("springYouthPrice");
             fallCoursePrice = new TextBoxWithErrorText("fallCoursePrice");
             fallTrainPrice = new TextBoxWithErrorText("fallTrainPrice");
+            fallYouthPrice = new TextBoxWithErrorText("fallYouthPrice");
 
             edittable.setWidget(1, 1, yearPrice);
             edittable.setWidget(3, 1, springCoursePrice);
             edittable.setWidget(4, 1, springTrainPrice);
-            edittable.setWidget(6, 1, fallCoursePrice);
-            edittable.setWidget(7, 1, fallTrainPrice);
+            edittable.setWidget(5, 1, springYouthPrice);
+            edittable.setWidget(7, 1, fallCoursePrice);
+            edittable.setWidget(8, 1, fallTrainPrice);
+            edittable.setWidget(9, 1, fallYouthPrice);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
@@ -255,8 +275,10 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
             Util.addPostParam(sb, "yearPrice", Util.money(yearPrice.getText()));
             Util.addPostParam(sb, "springCoursePrice", Util.money(springCoursePrice.getText()));
             Util.addPostParam(sb, "springTrainPrice", Util.money(springTrainPrice.getText()));
+            Util.addPostParam(sb, "springYouthPrice", Util.money(springYouthPrice.getText()));
             Util.addPostParam(sb, "fallCoursePrice", Util.money(fallCoursePrice.getText()));
             Util.addPostParam(sb, "fallTrainPrice", Util.money(fallTrainPrice.getText()));
+            Util.addPostParam(sb, "fallYouthPrice", Util.money(fallYouthPrice.getText()));
 
             ServerResponse callback = new ServerResponse() {
 
@@ -267,8 +289,10 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
                         table.setText(row, 1, Util.money(yearPrice.getText()));
                         table.setText(row, 2, Util.money(springCoursePrice.getText()));
                         table.setText(row, 3, Util.money(springTrainPrice.getText()));
-                        table.setText(row, 4, Util.money(fallCoursePrice.getText()));
-                        table.setText(row, 5, Util.money(fallTrainPrice.getText()));
+                        table.setText(row, 4, Util.money(springYouthPrice.getText()));
+                        table.setText(row, 5, Util.money(fallCoursePrice.getText()));
+                        table.setText(row, 6, Util.money(fallTrainPrice.getText()));
+                        table.setText(row, 7, Util.money(fallYouthPrice.getText()));
                         hide();
                     } else {
                         mainErrorLabel.setText(messages.save_failed());
@@ -282,14 +306,17 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
         }
 
         private void init(int row, String year, String yearPrice, String springCoursePrice,
-                String springTrainPrice, String fallCoursePrice, String fallTrainPrice) {
+                String springTrainPrice, String springYouthPrice, String fallCoursePrice,
+                String fallTrainPrice, String fallYouthPrice) {
             this.row = row;
             this.year = year;
             this.yearPrice.setText(yearPrice);
             this.springCoursePrice.setText(springCoursePrice);
             this.springTrainPrice.setText(springTrainPrice);
+            this.springYouthPrice.setText(springYouthPrice);
             this.fallCoursePrice.setText(fallCoursePrice);
             this.fallTrainPrice.setText(fallTrainPrice);
+            this.fallYouthPrice.setText(fallYouthPrice);
             setText(elements.menuitem_membership_prices() + " " + year);
 
         }

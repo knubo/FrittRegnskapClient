@@ -60,7 +60,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
         table.setStyleName("tableborder");
         table.setText(0, 0, elements.lastname());
         table.setText(0, 1, elements.firstname());
-        table.setText(0, 5, "");
+        table.setText(0, 6, "");
         table.getRowFormatter().setStyleName(0, "header");
 
         header = new HTML();
@@ -88,6 +88,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
         table.setText(0, 2, elements.year_membership());
         table.setText(0, 3, elements.course_membership());
         table.setText(0, 4, elements.train_membership());
+        table.setText(0, 5, elements.youth_membership());
         initAll("");
     }
 
@@ -116,6 +117,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
         table.setHTML(0, 2, "");
         table.setHTML(0, 3, "");
         table.setHTML(0, 4, "");
+        table.setHTML(0, 5, "");
 
         while (table.getRowCount() > 1) {
             table.removeRow(1);
@@ -150,7 +152,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     Image editUserImage = ImageFactory
                             .editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickListener(me);
-                    table.setWidget(row, 5, editUserImage);
+                    table.setWidget(row, 6, editUserImage);
 
                     idHolder.add(id, editUserImage);
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
@@ -225,6 +227,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     boolean year = Util.getBoolean(info.get("year"));
                     boolean train = Util.getBoolean(info.get("train"));
                     boolean course = Util.getBoolean(info.get("course"));
+                    boolean youth = Util.getBoolean(info.get("youth"));
 
                     String id = Util.str(info.get("id"));
                     table.setText(row, 0, lastname);
@@ -239,15 +242,19 @@ public class ShowMembershipView extends Composite implements ClickListener {
                     if (train) {
                         table.setText(row, 4, elements.x());
                     }
+                    if (youth) {
+                        table.setText(row, 5, elements.x());
+                    }
 
                     table.getCellFormatter().setStyleName(row, 2, "center");
                     table.getCellFormatter().setStyleName(row, 3, "center");
                     table.getCellFormatter().setStyleName(row, 4, "center");
+                    table.getCellFormatter().setStyleName(row, 5, "center");
 
                     Image editUserImage = ImageFactory
                             .editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickListener(me);
-                    table.setWidget(row, 5, editUserImage);
+                    table.setWidget(row, 6, editUserImage);
 
                     idHolder.add(id, editUserImage);
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";

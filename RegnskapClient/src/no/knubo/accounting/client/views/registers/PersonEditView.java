@@ -276,6 +276,7 @@ public class PersonEditView extends Composite implements ClickListener {
 
         showMemberships("train", elements.train_membership(), obj.get("train").isArray());
         showMemberships("course", elements.course_membership(), obj.get("course").isArray());
+        showMemberships("youth", elements.youth_membership(), obj.get("youth").isArray());
         showMemberships("year", elements.year_membership(), obj.get("year").isArray());
     }
 

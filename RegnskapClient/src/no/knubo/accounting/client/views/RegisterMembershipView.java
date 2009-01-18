@@ -98,8 +98,9 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
         resultTable.setHTML(0, 3, elements.year_membership());
         resultTable.setHTML(0, 4, elements.course_membership());
         resultTable.setHTML(0, 5, elements.train_membership());
-        resultTable.setHTML(0, 6, elements.paid_day());
-        resultTable.setHTML(0, 7, elements.post());
+        resultTable.setHTML(0, 6, elements.youth_membership());
+        resultTable.setHTML(0, 7, elements.paid_day());
+        resultTable.setHTML(0, 8, elements.post());
         dp.add(resultTable, DockPanel.NORTH);
 
         Button button = new NamedButton("RegisterMembershipView.registerMembershipButton", elements
@@ -132,7 +133,7 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
 
                 if (array.size() == 0) {
                     resultTable.setHTML(1, 0, messages.no_result());
-                    resultTable.getFlexCellFormatter().setColSpan(1, 0, 7);
+                    resultTable.getFlexCellFormatter().setColSpan(1, 0, 8);
                     return;
                 }
 
@@ -164,22 +165,28 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
                     resultTable.setWidget(row, 5, trainCheck);
                     resultTable.getCellFormatter().setStyleName(row, 5, "center");
 
+                    CheckBox youthCheck = new CheckBox();
+                    resultTable.setWidget(row, 6, youthCheck);
+                    resultTable.getCellFormatter().setStyleName(row, 6, "center");
+                    
                     Util.linkJustOne(courseCheck, trainCheck);
+                    Util.linkJustOne(courseCheck, youthCheck);
+                    Util.linkJustOne(trainCheck, youthCheck);
 
                     TextBoxWithErrorText dayBox = new TextBoxWithErrorText("day");
                     dayBox.setMaxLength(2);
                     dayBox.setVisibleLength(2);
                     dayBox.addFocusListener(me);
-                    resultTable.setWidget(row, 6, dayBox);
+                    resultTable.setWidget(row, 7, dayBox);
 
-                    enableDisableBoxes(obj, yearCheck, courseCheck, trainCheck);
+                    enableDisableBoxes(obj, yearCheck, courseCheck, trainCheck, youthCheck);
                     idHolder.add(Util.str(obj.get("id")), dayBox);
 
                     ListBox payments = new ListBox();
                     payments.setVisibleItemCount(1);
                     PosttypeCache.getInstance(constants, messages).fillMembershipPayments(payments);
 
-                    resultTable.setWidget(row, 7, payments);
+                    resultTable.setWidget(row, 8, payments);
 
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
@@ -194,7 +201,7 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
     }
 
     private void enableDisableBoxes(JSONObject obj, CheckBox yearCheck, CheckBox courseCheck,
-            CheckBox trainCheck) {
+            CheckBox trainCheck, CheckBox youthCheck) {
         if ("1".equals(Util.str(obj.get("year")))) {
             yearCheck.setChecked(true);
             yearCheck.setEnabled(false);
@@ -208,6 +215,11 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
         if ("1".equals(Util.str(obj.get("train")))) {
             trainCheck.setChecked(true);
             trainCheck.setEnabled(false);
+        }
+
+        if ("1".equals(Util.str(obj.get("youth")))) {
+            youthCheck.setChecked(true);
+            youthCheck.setEnabled(false);
         }
 
     }
@@ -242,6 +254,7 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
             CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
             CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
             CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
+            CheckBox youthBox = (CheckBox) resultTable.getWidget(i, 6);
 
             if (yearBox.isChecked()) {
                 yearBox.setEnabled(false);
@@ -251,6 +264,9 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
             }
             if (trainBox.isChecked()) {
                 trainBox.setEnabled(false);
+            }
+            if (youthBox.isChecked()) {
+                youthBox.setEnabled(false);
             }
         }
     }
@@ -267,15 +283,17 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
             CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
             CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
             CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
-            TextBoxWithErrorText dayBox = (TextBoxWithErrorText) resultTable.getWidget(i, 6);
-            ListBox post = (ListBox) resultTable.getWidget(i, 7);
+            CheckBox youthBox = (CheckBox) resultTable.getWidget(i, 6);
+            TextBoxWithErrorText dayBox = (TextBoxWithErrorText) resultTable.getWidget(i, 7);
+            ListBox post = (ListBox) resultTable.getWidget(i, 8);
             String id = idHolder.findId(dayBox);
 
             boolean doYear = yearBox.isEnabled() && yearBox.isChecked();
             boolean doCourse = courseBox.isEnabled() && courseBox.isChecked();
             boolean doTrain = trainBox.isEnabled() && trainBox.isChecked();
+            boolean doYouth = youthBox.isEnabled() && youthBox.isChecked();
 
-            if (doYear || doCourse || doTrain) {
+            if (doYear || doCourse || doTrain || doYouth) {
                 validateDay(mv, dayBox);
                 ok = ok && mv.validateStatus();
             }
@@ -283,7 +301,7 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
             /* If daybox is given, then a checkbox must be set. */
             if (dayBox.getText().length() > 0) {
                 String message = messages.add_member_day_require_action();
-                boolean shouldFail = !doYear && !doCourse && !doTrain;
+                boolean shouldFail = !doYear && !doCourse && !doTrain && !doYouth;
                 ok = ok && mv.fail(dayBox, shouldFail, message);
             }
 
@@ -295,6 +313,9 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
             }
             if (doTrain) {
                 Util.addPostParam(sb, "train" + id, "1");
+            }
+            if (doYouth) {
+                Util.addPostParam(sb, "youth" + id, "1");
             }
             if (dayBox.getText().length() > 0) {
                 Util.addPostParam(sb, "day" + id, dayBox.getText());
