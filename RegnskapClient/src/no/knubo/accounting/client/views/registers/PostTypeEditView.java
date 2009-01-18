@@ -380,8 +380,9 @@ public class PostTypeEditView extends Composite implements ClickListener {
         private void doSave() {
             StringBuffer sb = new StringBuffer();
             sb.append("action=save");
-            final String sendId = currentId;
 
+            final String sendId = currentId != null ? currentId : accountBox.getText();
+            
             Util.addPostParam(sb, "posttype", sendId);
             Util.addPostParam(sb, "desc", descBox.getText());
             Util.addPostParam(sb, "collpost", colMonthListBox.getText());
