@@ -69,7 +69,6 @@ public class AuthResponder implements RequestCallback {
             String data = response.getText();
             if (data == null || data.length() == 0) {
                 logger.error("error", "no server response");
-                Window.alert(messages.no_server_response());
                 return;
             }
             data = data.trim();
