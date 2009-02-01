@@ -1,5 +1,6 @@
 package no.knubo.accounting.client;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -95,6 +96,11 @@ public class Util {
         String[] dateparts = string.stringValue().split("-");
 
         return dateparts[2] + "." + dateparts[1] + "." + dateparts[0];
+    }
+    
+    @SuppressWarnings("deprecation")
+    public static int currentYear() {
+        return new Date().getYear() + 1900;
     }
 
     /**

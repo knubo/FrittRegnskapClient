@@ -12,17 +12,23 @@ import no.knubo.accounting.client.misc.ServerResponse;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
-public class ReportMembersBirthGender extends Composite {
+public class ReportMembersBirthGender extends Composite implements ClickListener {
     private static ReportMembersBirthGender reportInstance;
     private final Constants constants;
     private final I18NAccount messages;
     private final HelpPanel helpPanel;
     private FlexTable table;
     private Elements elements;
+    private TextBox yearBox;
 
     public static ReportMembersBirthGender getInstance(Constants constants, I18NAccount messages,
             HelpPanel helpPanel, Elements elements) {
@@ -40,6 +46,16 @@ public class ReportMembersBirthGender extends Composite {
         this.helpPanel = helpPanel;
 
         DockPanel dp = new DockPanel();
+
+        HorizontalPanel hp = new HorizontalPanel();
+        yearBox = new TextBox();
+        yearBox.setText(""+Util.currentYear());
+        Button yearButton = new Button(elements.do_report());
+        yearButton.addClickListener(this);
+        hp.add(yearBox);
+        hp.add(yearButton);
+        
+        dp.add(hp, DockPanel.NORTH);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -88,7 +104,8 @@ public class ReportMembersBirthGender extends Composite {
 
         };
 
-        AuthResponder.get(constants, messages, callback, "reports/membership_birth_gender.php");
+        table.setHTML(0, 0, elements.title_report_membersbirth_gender()+ " "+yearBox.getText());
+        AuthResponder.get(constants, messages, callback, "reports/membership_birth_gender.php?year="+yearBox.getText());
 
     }
 
@@ -205,5 +222,9 @@ public class ReportMembersBirthGender extends Composite {
             return 10;
         }
         return 0;
+    }
+
+    public void onClick(Widget sender) {
+        init();
     }
 }

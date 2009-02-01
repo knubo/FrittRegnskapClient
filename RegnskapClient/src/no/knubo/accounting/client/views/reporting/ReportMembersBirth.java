@@ -11,16 +11,22 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
-public class ReportMembersBirth extends Composite {
+public class ReportMembersBirth extends Composite implements ClickListener {
     private static ReportMembersBirth reportInstance;
     private final Constants constants;
     private final I18NAccount messages;
     private final HelpPanel helpPanel;
     private FlexTable table;
+    private TextBox yearBox;
 
     public static ReportMembersBirth getInstance(Constants constants, I18NAccount messages,
             HelpPanel helpPanel, Elements elements) {
@@ -38,6 +44,15 @@ public class ReportMembersBirth extends Composite {
 
         DockPanel dp = new DockPanel();
 
+        HorizontalPanel hp = new HorizontalPanel();
+        yearBox = new TextBox();
+        Button yearButton = new Button(elements.do_report());
+        yearButton.addClickListener(this);
+        hp.add(yearBox);
+        hp.add(yearButton);
+        
+        dp.add(hp, DockPanel.NORTH);
+        
         table = new FlexTable();
         table.setStyleName("tableborder");
         table.setHTML(0, 0, elements.title_report_membersbirth());
@@ -108,7 +123,11 @@ public class ReportMembersBirth extends Composite {
 
         };
 
-        AuthResponder.get(constants, messages, callback, "reports/membership_birth.php");
+        AuthResponder.get(constants, messages, callback, "reports/membership_birth.php?year="+yearBox.getText());
 
+    }
+
+    public void onClick(Widget sender) {
+        init();
     }
 }
