@@ -30,6 +30,8 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -49,6 +51,7 @@ public class ReportMail extends Composite implements ClickListener {
     private PickAttachments pickAttachments;
     private FlexTable attachedFiles;
     private Logger logger;
+    private TextBox yearBox;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages,
             Elements elements) {
@@ -64,7 +67,6 @@ public class ReportMail extends Composite implements ClickListener {
         this.elements = elements;
         this.logger = new Logger(this.constants);
 
-
         FlexTable mainTable = new FlexTable();
         mainTable.setStyleName("edittable");
         mainTable.setText(0, 0, elements.mail_receivers());
@@ -72,13 +74,22 @@ public class ReportMail extends Composite implements ClickListener {
         mainTable.setText(2, 0, elements.mail_body());
         mainTable.setText(3, 0, elements.files());
 
+        HorizontalPanel hp = new HorizontalPanel();
+        yearBox = new TextBox();
+        yearBox.setText("" + Util.currentYear());
+
         reciversListBox = new ListBoxWithErrorText("mail_receivers");
         reciversListBox.getListbox().addItem("", "");
         reciversListBox.getListbox().addItem(elements.mail_query_members(), "members");
         reciversListBox.getListbox().addItem(elements.mail_query_newsletter(), "newsletter");
         reciversListBox.getListbox().addItem(elements.mail_test(), "test");
         reciversListBox.getListbox().addItem(elements.mail_simulate(), "simulate");
-        mainTable.setWidget(0, 1, reciversListBox);
+        
+        hp.add(reciversListBox);
+        hp.add(new Label(elements.year()));
+        hp.add(yearBox);
+        
+        mainTable.setWidget(0, 1, hp);
 
         titleBox = new TextBoxWithErrorText("mail_title");
         titleBox.setMaxLength(200);
@@ -170,7 +181,7 @@ public class ReportMail extends Composite implements ClickListener {
         };
 
         AuthResponder.get(constants, messages, callback, "reports/email.php?action=list&query="
-                + reciversListBox.getText());
+                + reciversListBox.getText()+"&year="+yearBox.getText());
 
     }
 
@@ -183,8 +194,10 @@ public class ReportMail extends Composite implements ClickListener {
     }
 
     private void sendEmails() {
-        logger.info("email", "Email sending: "+reciversListBox.getText()+" "+receivers.size());
-        
+        logger
+                .info("email", "Email sending: " + reciversListBox.getText() + " "
+                        + receivers.size());
+
         if (emailSendStatusView == null) {
             emailSendStatusView = new EmailSendStatus();
         }
@@ -193,7 +206,7 @@ public class ReportMail extends Composite implements ClickListener {
 
         emailSendStatusView.show();
         emailSendStatusView.center();
-        emailSendStatusView.sendEmails( reciversListBox.getText().equals("simulate"));
+        emailSendStatusView.sendEmails(reciversListBox.getText().equals("simulate"));
 
     }
 
@@ -282,7 +295,7 @@ public class ReportMail extends Composite implements ClickListener {
 
             StringBuffer mailRequest = new StringBuffer();
 
-            mailRequest.append("action="+ (simulate ? "simulatemail":"email"));
+            mailRequest.append("action=" + (simulate ? "simulatemail" : "email"));
             Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
             Util.addPostParam(mailRequest, "email", email);
             Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
@@ -319,7 +332,7 @@ public class ReportMail extends Composite implements ClickListener {
                         hide();
                     }
                 }
-                
+
                 private void fillSentLine(final String name, final String email) {
                     currentIndex++;
                     table.insertRow(1);
