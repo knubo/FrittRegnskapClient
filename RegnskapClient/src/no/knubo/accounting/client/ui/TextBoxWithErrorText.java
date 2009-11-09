@@ -3,13 +3,15 @@ package no.knubo.accounting.client.ui;
 import no.knubo.accounting.client.misc.FocusCallback;
 import no.knubo.accounting.client.validation.Validateable;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
-import com.google.gwt.user.client.ui.Widget;
 
 public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateable {
     public TextBox textBox;
@@ -59,7 +61,8 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
         textBox.setVisibleLength(i);
     }
 
-    public String getText() {
+    @Override
+	public String getText() {
         return textBox.getText();
     }
 
@@ -70,17 +73,23 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
 
     public void addFocusListener(final FocusCallback callback) {
         final ErrorLabelWidget me = this;
-        FocusListener eventhandler = new FocusListener() {
+        FocusHandler focusHandler = new FocusHandler() {
 
-            public void onFocus(Widget sender) {
+			public void onFocus(FocusEvent event) {
                 callback.onFocus(me);
-            }
-
-            public void onLostFocus(Widget sender) {
-                callback.onLostFocus(me);
-            }
+			}
         };
-        textBox.addFocusListener(eventhandler);
+
+        
+        BlurHandler blurHandler = new BlurHandler() {
+			
+			public void onBlur(BlurEvent event) {
+				callback.onLostFocus(me);
+			}
+		};
+        
+        textBox.addFocusHandler(focusHandler);
+        textBox.addBlurHandler(blurHandler);
     }
 
     public boolean isEnabled() {

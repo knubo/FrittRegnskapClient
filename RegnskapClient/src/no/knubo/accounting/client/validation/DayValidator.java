@@ -19,7 +19,8 @@ public class DayValidator extends ValidatorBase {
         this.mouseOver = mouseover;
     }
 
-    protected boolean validate(Validateable val) {
+    @Override
+	protected boolean validate(Validateable val) {
         int day = 0;
 
         /* Handle blank using mandatory validators. */

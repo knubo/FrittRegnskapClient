@@ -11,18 +11,19 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
-public class BackupView extends Composite implements ClickListener {
+public class BackupView extends Composite implements ClickHandler {
 
     private static BackupView instance;
     private final I18NAccount messages;
@@ -49,11 +50,11 @@ public class BackupView extends Composite implements ClickListener {
         table.getRowFormatter().setStyleName(0, "header");
 
         startBackup = new NamedButton("start_backup", elements.backup_start());
-        startBackup.addClickListener(this);
+        startBackup.addClickHandler(this);
         table.setWidget(2, 1, startBackup);
 
         downloadLast = new NamedButton("downloadLast", elements.backup_download_last());
-        downloadLast.addClickListener(this);
+        downloadLast.addClickHandler(this);
         table.setWidget(3, 1, downloadLast);
 
         table.setText(4, 0, elements.backup_progress());
@@ -101,8 +102,10 @@ public class BackupView extends Composite implements ClickListener {
         AuthResponder.get(constants, messages, callback, "backup.php?action=info");
     }
 
-    public void onClick(Widget sender) {
-        if (sender == startBackup) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+    	
+    	if (sender == startBackup) {
             startBackup.setEnabled(false);
             startBackup();
         } else if (sender == downloadLast) {

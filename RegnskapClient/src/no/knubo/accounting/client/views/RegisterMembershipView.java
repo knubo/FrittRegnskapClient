@@ -18,13 +18,14 @@ import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.UserSearchCallback;
 import no.knubo.accounting.client.views.modules.UserSearchFields;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -32,7 +33,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class RegisterMembershipView extends Composite implements ClickListener, UserSearchCallback,
+public class RegisterMembershipView extends Composite implements ClickHandler, UserSearchCallback,
         FocusCallback {
 
     private static RegisterMembershipView me;
@@ -105,7 +106,7 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
 
         Button button = new NamedButton("RegisterMembershipView.registerMembershipButton", elements
                 .register_membership());
-        button.addClickListener(this);
+        button.addClickHandler(this);
         dp.add(button, DockPanel.NORTH);
 
         initWidget(dp);
@@ -203,28 +204,28 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
     private void enableDisableBoxes(JSONObject obj, CheckBox yearCheck, CheckBox courseCheck,
             CheckBox trainCheck, CheckBox youthCheck) {
         if ("1".equals(Util.str(obj.get("year")))) {
-            yearCheck.setChecked(true);
+            yearCheck.setValue(true);
             yearCheck.setEnabled(false);
         }
 
         if ("1".equals(Util.str(obj.get("course")))) {
-            courseCheck.setChecked(true);
+            courseCheck.setValue(true);
             courseCheck.setEnabled(false);
         }
 
         if ("1".equals(Util.str(obj.get("train")))) {
-            trainCheck.setChecked(true);
+            trainCheck.setValue(true);
             trainCheck.setEnabled(false);
         }
 
         if ("1".equals(Util.str(obj.get("youth")))) {
-            youthCheck.setChecked(true);
+            youthCheck.setValue(true);
             youthCheck.setEnabled(false);
         }
 
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
         StringBuffer sb = buildAddMemberParameters();
 
         if (sb == null) {
@@ -256,16 +257,16 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
             CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
             CheckBox youthBox = (CheckBox) resultTable.getWidget(i, 6);
 
-            if (yearBox.isChecked()) {
+            if (yearBox.getValue()) {
                 yearBox.setEnabled(false);
             }
-            if (courseBox.isChecked()) {
+            if (courseBox.getValue()) {
                 courseBox.setEnabled(false);
             }
-            if (trainBox.isChecked()) {
+            if (trainBox.getValue()) {
                 trainBox.setEnabled(false);
             }
-            if (youthBox.isChecked()) {
+            if (youthBox.getValue()) {
                 youthBox.setEnabled(false);
             }
         }
@@ -288,10 +289,10 @@ public class RegisterMembershipView extends Composite implements ClickListener, 
             ListBox post = (ListBox) resultTable.getWidget(i, 8);
             String id = idHolder.findId(dayBox);
 
-            boolean doYear = yearBox.isEnabled() && yearBox.isChecked();
-            boolean doCourse = courseBox.isEnabled() && courseBox.isChecked();
-            boolean doTrain = trainBox.isEnabled() && trainBox.isChecked();
-            boolean doYouth = youthBox.isEnabled() && youthBox.isChecked();
+            boolean doYear = yearBox.isEnabled() && yearBox.getValue();
+            boolean doCourse = courseBox.isEnabled() && courseBox.getValue();
+            boolean doTrain = trainBox.isEnabled() && trainBox.getValue();
+            boolean doYouth = youthBox.isEnabled() && youthBox.getValue();
 
             if (doYear || doCourse || doTrain || doYouth) {
                 validateDay(mv, dayBox);

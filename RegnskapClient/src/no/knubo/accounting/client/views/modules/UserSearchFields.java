@@ -4,14 +4,15 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.ui.NamedButton;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class UserSearchFields implements ClickListener {
+public class UserSearchFields implements ClickHandler {
     private TextBox firstnameBox;
 
     private TextBox lastnameBox;
@@ -69,10 +70,10 @@ public class UserSearchFields implements ClickListener {
         searchTable.setWidget(2, 3, genderBox);
 
         searchButton = new NamedButton("search", elements.search());
-        searchButton.addClickListener(this);
+        searchButton.addClickHandler(this);
         searchTable.setWidget(3, 0, searchButton);
         clearButton = new NamedButton("clear", elements.clear());
-        clearButton.addClickListener(this);
+        clearButton.addClickHandler(this);
         searchTable.setWidget(3, 1, clearButton);
 
     }
@@ -81,7 +82,8 @@ public class UserSearchFields implements ClickListener {
         return searchTable;
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
         if (sender == searchButton) {
             doSearch();
         } else if (sender == clearButton) {

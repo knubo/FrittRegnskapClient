@@ -8,14 +8,14 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.Widget;
 
-public class LogoutView extends Composite implements ClickListener, ServerResponse {
+public class LogoutView extends Composite implements ClickHandler, ServerResponse {
 
     private static LogoutView instance;
     private static I18NAccount messages;
@@ -37,13 +37,13 @@ public class LogoutView extends Composite implements ClickListener, ServerRespon
         DockPanel dp = new DockPanel();
 
         NamedButton logoutButton = new NamedButton("logout", elements.logout());
-        logoutButton.addClickListener(this);
+        logoutButton.addClickHandler(this);
         dp.add(logoutButton, DockPanel.NORTH);
 
         initWidget(dp);
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
         StringBuffer sb = new StringBuffer();
         sb.append("action=logout");
         AuthResponder.post(constants, messages, this, sb, "authenticate.php");

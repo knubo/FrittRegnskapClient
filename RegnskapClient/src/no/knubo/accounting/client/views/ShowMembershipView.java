@@ -10,10 +10,11 @@ import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -22,7 +23,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ShowMembershipView extends Composite implements ClickListener {
+public class ShowMembershipView extends Composite implements ClickHandler {
 
     static ShowMembershipView me;
     private FlexTable table;
@@ -66,9 +67,9 @@ public class ShowMembershipView extends Composite implements ClickListener {
         header = new HTML();
         periodeHeader = new HTML();
         previousImage = ImageFactory.previousImage("ShowMembershipView.previousImage");
-        previousImage.addClickListener(this);
+        previousImage.addClickHandler(this);
         nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
-        nextImage.addClickListener(this);
+        nextImage.addClickHandler(this);
         HorizontalPanel hp = new HorizontalPanel();
         hp.add(previousImage);
         hp.add(periodeHeader);
@@ -151,7 +152,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
                     Image editUserImage = ImageFactory
                             .editImage("ShowMembershipView.editUserImage");
-                    editUserImage.addClickListener(me);
+                    editUserImage.addClickHandler(me);
                     table.setWidget(row, 6, editUserImage);
 
                     idHolder.add(id, editUserImage);
@@ -167,7 +168,8 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
         if (sender == previousImage) {
             doNext(-1);
         } else if (sender == nextImage) {
@@ -253,7 +255,7 @@ public class ShowMembershipView extends Composite implements ClickListener {
 
                     Image editUserImage = ImageFactory
                             .editImage("ShowMembershipView.editUserImage");
-                    editUserImage.addClickListener(me);
+                    editUserImage.addClickHandler(me);
                     table.setWidget(row, 6, editUserImage);
 
                     idHolder.add(id, editUserImage);

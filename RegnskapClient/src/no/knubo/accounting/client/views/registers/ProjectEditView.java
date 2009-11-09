@@ -14,10 +14,11 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -27,7 +28,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ProjectEditView extends Composite implements ClickListener, CacheCallback {
+public class ProjectEditView extends Composite implements ClickHandler, CacheCallback {
 
     private static ProjectEditView me;
 
@@ -62,7 +63,7 @@ public class ProjectEditView extends Composite implements ClickListener, CacheCa
 
         newButton = new NamedButton("projectEditView_newButton", elements
                 .projectEditView_newButton());
-        newButton.addClickListener(this);
+        newButton.addClickHandler(this);
 
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
@@ -79,8 +80,10 @@ public class ProjectEditView extends Composite implements ClickListener, CacheCa
         return me;
     }
 
-    public void onClick(Widget sender) {
-        if (editFields == null) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+
+    	if (editFields == null) {
             editFields = new ProjectEditFields();
         }
 
@@ -126,7 +129,7 @@ public class ProjectEditView extends Composite implements ClickListener, CacheCa
         table.getCellFormatter().setStyleName(row, 0, "desc");
 
         Image editImage = ImageFactory.editImage("projectEditView_editImage");
-        editImage.addClickListener(me);
+        editImage.addClickHandler(me);
         idHolder.add(id, editImage);
 
         table.setWidget(row, 1, editImage);
@@ -135,7 +138,7 @@ public class ProjectEditView extends Composite implements ClickListener, CacheCa
         table.getRowFormatter().setStyleName(row, style);
     }
 
-    class ProjectEditFields extends DialogBox implements ClickListener {
+    class ProjectEditFields extends DialogBox implements ClickHandler {
         private TextBoxWithErrorText projectBox;
 
         private Button saveButton;
@@ -161,9 +164,9 @@ public class ProjectEditView extends Composite implements ClickListener, CacheCa
             dp.add(edittable, DockPanel.NORTH);
 
             saveButton = new NamedButton("projectEditView_saveButton", elements.save());
-            saveButton.addClickListener(this);
+            saveButton.addClickHandler(this);
             cancelButton = new NamedButton("projectEditView_cancelButton", elements.cancel());
-            cancelButton.addClickListener(this);
+            cancelButton.addClickHandler(this);
 
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
@@ -184,7 +187,8 @@ public class ProjectEditView extends Composite implements ClickListener, CacheCa
             projectBox.setText(project);
         }
 
-        public void onClick(Widget sender) {
+        public void onClick(ClickEvent event) {
+        	Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton && validateFields()) {

@@ -15,10 +15,11 @@ import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.AccountDetailLinesHelper;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -28,7 +29,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ReportAccountlines extends Composite implements ClickListener {
+public class ReportAccountlines extends Composite implements ClickHandler {
     private static ReportAccountlines reportInstance;
     private final Constants constants;
     private final I18NAccount messages;
@@ -134,10 +135,10 @@ public class ReportAccountlines extends Composite implements ClickListener {
 
         HorizontalPanel buttonBlock = new HorizontalPanel();
         searchButton = new NamedButton("search", elements.search());
-        searchButton.addClickListener(this);
+        searchButton.addClickHandler(this);
         buttonBlock.add(searchButton);
         clearButton = new NamedButton("clear", elements.clear());
-        clearButton.addClickListener(this);
+        clearButton.addClickHandler(this);
         buttonBlock.add(clearButton);
 
         table.setWidget(7, 0, buttonBlock);
@@ -149,8 +150,10 @@ public class ReportAccountlines extends Composite implements ClickListener {
         helpPanel.resize(this);
     }
 
-    public void onClick(Widget sender) {
-        if (sender == clearButton) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+
+    	if (sender == clearButton) {
             doClear();
         } else if (sender == searchButton && validateSearch()) {
             doSearch();
@@ -190,7 +193,7 @@ public class ReportAccountlines extends Composite implements ClickListener {
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
-                accountDetailLinesHelper.renderResult(array, showOnlyPosts.isChecked() ? accountId
+                accountDetailLinesHelper.renderResult(array, showOnlyPosts.getValue() ? accountId
                         : null);
                 helpPanel.resize(reportInstance);
             }
@@ -211,6 +214,6 @@ public class ReportAccountlines extends Composite implements ClickListener {
         projectNameBox.setSelectedIndex(0);
         personBox.setSelectedIndex(0);
         descBox.setText("");
-        showOnlyPosts.setChecked(false);
+        showOnlyPosts.setValue(false);
     }
 }

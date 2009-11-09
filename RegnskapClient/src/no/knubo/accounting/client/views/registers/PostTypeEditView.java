@@ -18,11 +18,12 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -32,7 +33,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PostTypeEditView extends Composite implements ClickListener {
+public class PostTypeEditView extends Composite implements ClickHandler {
 
     private static PostTypeEditView me;
     private final I18NAccount messages;
@@ -67,7 +68,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
         DockPanel dp = new DockPanel();
 
         button = new NamedButton("new_account", elements.new_account());
-        button.addClickListener(this);
+        button.addClickHandler(this);
         dp.add(button, DockPanel.NORTH);
 
         idHolderInUse = new IdHolder<String, Image>();
@@ -174,11 +175,11 @@ public class PostTypeEditView extends Composite implements ClickListener {
         } else {
             actionImage = ImageFactory.chooseImage("postTypeEditView.chooseImage");
         }
-        actionImage.addClickListener(me);
+        actionImage.addClickHandler(me);
         idHolder.add(id, actionImage);
 
         Image editImage = ImageFactory.editImage("postTypeEditView.editImage");
-        editImage.addClickListener(me);
+        editImage.addClickHandler(me);
         idHolderEdit.add(id, editImage);
 
         table.setWidget(row, 4, editImage);
@@ -188,8 +189,10 @@ public class PostTypeEditView extends Composite implements ClickListener {
         table.getRowFormatter().setStyleName(row, style);
     }
 
-    public void onClick(Widget sender) {
-        String id = null;
+	public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+
+		String id = null;
 
         if (sender == button) {
             edit(sender, "");
@@ -284,7 +287,7 @@ public class PostTypeEditView extends Composite implements ClickListener {
                 + use + "&posttype=" + id);
     }
 
-    class PostTypeEditFields extends DialogBox implements ClickListener {
+    class PostTypeEditFields extends DialogBox implements ClickHandler {
 
         private NamedButton saveButton;
         private NamedButton cancelButton;
@@ -327,9 +330,9 @@ public class PostTypeEditView extends Composite implements ClickListener {
             dp.add(edittable, DockPanel.NORTH);
 
             saveButton = new NamedButton("HappeningsView.saveButton", elements.save());
-            saveButton.addClickListener(this);
+            saveButton.addClickHandler(this);
             cancelButton = new NamedButton("HappeningsView.cancelButton", elements.cancel());
-            cancelButton.addClickListener(this);
+            cancelButton.addClickHandler(this);
 
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
@@ -369,8 +372,10 @@ public class PostTypeEditView extends Composite implements ClickListener {
             accountBox.setEnabled(false);
         }
 
-        public void onClick(Widget sender) {
-            if (sender == cancelButton) {
+        public void onClick(ClickEvent event) {
+        	Widget sender = (Widget) event.getSource();
+
+        	if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton && validateFields()) {
                 doSave();

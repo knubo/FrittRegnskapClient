@@ -15,11 +15,12 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -29,7 +30,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TrustEditView extends Composite implements ClickListener, CacheCallback {
+public class TrustEditView extends Composite implements ClickHandler, CacheCallback {
 
     private static TrustEditView me;
 
@@ -68,7 +69,7 @@ public class TrustEditView extends Composite implements ClickListener, CacheCall
         table.getFlexCellFormatter().setColSpan(0, 1, 2);
 
         newButton = new NamedButton("trustEditView_newButton", elements.trustEditView_newButton());
-        newButton.addClickListener(this);
+        newButton.addClickHandler(this);
 
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
@@ -86,7 +87,8 @@ public class TrustEditView extends Composite implements ClickListener, CacheCall
         return me;
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
         if (editFields == null) {
             editFields = new TrustEditFields();
         }
@@ -136,7 +138,7 @@ public class TrustEditView extends Composite implements ClickListener, CacheCall
         table.getCellFormatter().setStyleName(row, 1, "desc");
 
         Image editImage = ImageFactory.editImage("trustEditView_editImage");
-        editImage.addClickListener(me);
+        editImage.addClickHandler(me);
         idHolder.add(id, editImage);
 
         table.setWidget(row, 2, editImage);
@@ -145,7 +147,7 @@ public class TrustEditView extends Composite implements ClickListener, CacheCall
         table.getRowFormatter().setStyleName(row, style);
     }
 
-    class TrustEditFields extends DialogBox implements ClickListener {
+    class TrustEditFields extends DialogBox implements ClickHandler {
         private TextBoxWithErrorText trustBox;
 
         private Button saveButton;
@@ -177,9 +179,9 @@ public class TrustEditView extends Composite implements ClickListener, CacheCall
             dp.add(edittable, DockPanel.NORTH);
 
             saveButton = new NamedButton("trustEditView_saveButton", elements.save());
-            saveButton.addClickListener(this);
+            saveButton.addClickHandler(this);
             cancelButton = new NamedButton("trustEditView_cancelButton", elements.cancel());
-            cancelButton.addClickListener(this);
+            cancelButton.addClickHandler(this);
 
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
@@ -200,7 +202,8 @@ public class TrustEditView extends Composite implements ClickListener, CacheCall
             trustBox.setEnabled(false);
         }
 
-        public void onClick(Widget sender) {
+        public void onClick(ClickEvent event) {
+        	Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton && validateFields()) {

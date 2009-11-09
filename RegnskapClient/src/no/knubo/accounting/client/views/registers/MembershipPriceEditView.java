@@ -16,11 +16,12 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -30,7 +31,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MembershipPriceEditView extends Composite implements ClickListener, CacheCallback {
+public class MembershipPriceEditView extends Composite implements ClickHandler, CacheCallback {
 
     private static MembershipPriceEditView me;
     private final Constants constants;
@@ -87,8 +88,10 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
         return me;
     }
 
-    public void onClick(Widget sender) {
-        if (editFields == null) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+    	
+    	if (editFields == null) {
             editFields = new MembershipPriceEditFields();
         }
 
@@ -149,7 +152,7 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
                         }
 
                         Image editImage = ImageFactory.editImage("membershipPriceEdit");
-                        editImage.addClickListener(me);
+                        editImage.addClickHandler(me);
                         table.setWidget(row, 8, editImage);
 
                         currentYear = year;
@@ -194,7 +197,7 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
 
     }
 
-    class MembershipPriceEditFields extends DialogBox implements ClickListener {
+    class MembershipPriceEditFields extends DialogBox implements ClickHandler {
 
         private Button saveButton;
         private Button cancelButton;
@@ -244,10 +247,10 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
             dp.add(edittable, DockPanel.NORTH);
 
             saveButton = new NamedButton("membershipPriceEditView_saveButton", elements.save());
-            saveButton.addClickListener(this);
+            saveButton.addClickHandler(this);
             cancelButton = new NamedButton("membershipPriceEditView_cancelButton", elements
                     .cancel());
-            cancelButton.addClickListener(this);
+            cancelButton.addClickHandler(this);
 
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
@@ -260,8 +263,10 @@ public class MembershipPriceEditView extends Composite implements ClickListener,
             setWidget(dp);
         }
 
-        public void onClick(Widget sender) {
-            if (sender == cancelButton) {
+        public void onClick(ClickEvent event) {
+        	Widget sender = (Widget) event.getSource();
+
+        	if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton && validateFields()) {
                 doSave();

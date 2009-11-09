@@ -16,10 +16,11 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -27,7 +28,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class BudgetView extends Composite implements ClickListener {
+public class BudgetView extends Composite implements ClickHandler {
 
     private static BudgetView me;
     private I18NAccount messages;
@@ -268,7 +269,7 @@ public class BudgetView extends Composite implements ClickListener {
         /* If budget column, add a column with the edit image */
         if (obj.containsKey("budget")) {
             Image editImage = ImageFactory.editImage("edit_budget_memberships");
-            editImage.addClickListener(this);
+            editImage.addClickHandler(this);
             membershipIdHolder.addObject(obj, editImage);
 
             table.setWidget(0, column + 1, editImage);
@@ -330,12 +331,13 @@ public class BudgetView extends Composite implements ClickListener {
         return count * Double.parseDouble(price);
     }
 
-    public void onClick(Widget sender) {
-        Object obj = membershipIdHolder.findObject(sender);
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+
+    	Object obj = membershipIdHolder.findObject(sender);
 
         if (obj != null) {
             doEdit((JSONObject) obj, sender);
-
         }
     }
 

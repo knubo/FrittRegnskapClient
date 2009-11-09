@@ -11,7 +11,8 @@ public class RegistryValidator extends ValidatorBase {
         this.registry = registry;
     }
 
-    protected boolean validate(Validateable val) {
+    @Override
+	protected boolean validate(Validateable val) {
         if (val.getText().length() == 0) {
             return true;
         }

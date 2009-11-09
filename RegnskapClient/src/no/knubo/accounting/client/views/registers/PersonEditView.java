@@ -19,13 +19,14 @@ import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.ViewCallback;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -34,7 +35,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PersonEditView extends Composite implements ClickListener {
+public class PersonEditView extends Composite implements ClickHandler {
 
     String currentId;
 
@@ -143,14 +144,14 @@ public class PersonEditView extends Composite implements ClickListener {
         hiddenCheck = new CheckBox();
 
         updateButton = new NamedButton("PersonEditView.updateButton", elements.update());
-        updateButton.addClickListener(this);
+        updateButton.addClickHandler(this);
 
         saveStatus = new HTMLWithError();
 
         Hyperlink toSearch = new Hyperlink(elements.back_search(), "personSearch");
-        toSearch.addClickListener(new ClickListener() {
+        toSearch.addClickHandler(new ClickHandler() {
 
-            public void onClick(Widget sender) {
+			public void onClick(ClickEvent event) {
                 caller.searchPerson();
             }
 
@@ -185,8 +186,10 @@ public class PersonEditView extends Composite implements ClickListener {
         return me;
     }
 
-    public void onClick(Widget sender) {
-        if (sender == updateButton) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+
+    	if (sender == updateButton) {
             doSave();
             return;
         }
@@ -299,7 +302,7 @@ public class PersonEditView extends Composite implements ClickListener {
             int row = rows + i;
 
             Image deleteImage = ImageFactory.deleteImage("personeditview.deleteImage");
-            deleteImage.addClickListener(this);
+            deleteImage.addClickHandler(this);
             membershipsTable.setWidget(row, 1, deleteImage);
 
             if (obj.containsKey("Text")) {
@@ -327,9 +330,9 @@ public class PersonEditView extends Composite implements ClickListener {
         cellphoneBox.setText(Util.str(object.get("Cellphone")));
         Util.setIndexByValue(countryListBox, Util.str(object.get("Country")));
         emailBox.setText(Util.str(object.get("Email")));
-        employeeCheck.setChecked("1".equals(Util.str(object.get("IsEmployee"))));
-        newsletterCheck.setChecked("1".equals(Util.str(object.get("Newsletter"))));
-        hiddenCheck.setChecked("1".equals(Util.str(object.get("Hidden"))));
+        employeeCheck.setValue("1".equals(Util.str(object.get("IsEmployee"))));
+        newsletterCheck.setValue("1".equals(Util.str(object.get("Newsletter"))));
+        hiddenCheck.setValue("1".equals(Util.str(object.get("Hidden"))));
         Util.setIndexByValue(genderBox, Util.str(object.get("Gender")));
     }
 
@@ -352,11 +355,11 @@ public class PersonEditView extends Composite implements ClickListener {
         Util.addPostParam(sb, "country", Util.getSelected(countryListBox));
         Util.addPostParam(sb, "phone", phoneBox.getText());
         Util.addPostParam(sb, "cellphone", cellphoneBox.getText());
-        String isChecked = employeeCheck.isChecked() ? "1" : "0";
+        String isChecked = employeeCheck.getValue() ? "1" : "0";
         Util.addPostParam(sb, "employee", isChecked);
-        String newsletter = newsletterCheck.isChecked() ? "1" : "0";
+        String newsletter = newsletterCheck.getValue() ? "1" : "0";
         Util.addPostParam(sb, "newsletter", newsletter);
-        String hidden = hiddenCheck.isChecked() ? "1" : "0";
+        String hidden = hiddenCheck.getValue() ? "1" : "0";
         Util.addPostParam(sb, "hidden", hidden);
         Util.addPostParam(sb, "gender", Util.getSelected(genderBox));
 
@@ -414,8 +417,8 @@ public class PersonEditView extends Composite implements ClickListener {
             countryListBox.setSelectedIndex(0);
             phoneBox.setText("");
             cellphoneBox.setText("");
-            employeeCheck.setChecked(false);
-            newsletterCheck.setChecked(false);
+            employeeCheck.setValue(false);
+            newsletterCheck.setValue(false);
             updateButton.setHTML(elements.save());
         } else {
             doOpen();

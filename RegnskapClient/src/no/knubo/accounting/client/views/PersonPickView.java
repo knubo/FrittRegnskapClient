@@ -6,14 +6,14 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.ui.NamedButton;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.Widget;
 
-public class PersonPickView extends DialogBox implements ClickListener, PersonPickCallback {
+public class PersonPickView extends DialogBox implements ClickHandler, PersonPickCallback {
 
     private static PersonPickView me;
     private final PersonPickCallback personPick;
@@ -44,12 +44,12 @@ public class PersonPickView extends DialogBox implements ClickListener, PersonPi
         DockPanel dp = new DockPanel();
         dp.add(PersonSearchView.pick(this, messages, constants, elements), DockPanel.NORTH);
         Button hideButton = new NamedButton("person_pick_close", elements.person_pick_close());
-        hideButton.addClickListener(this);
+        hideButton.addClickHandler(this);
         dp.add(hideButton, DockPanel.NORTH);
         setWidget(dp);
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
         hide();
     }
 

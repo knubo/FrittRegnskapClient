@@ -11,7 +11,8 @@ public class RangeValidator extends ValidatorBase {
         this.maxValue = maxValue;
     }
 
-    protected boolean validate(Validateable val) {
+    @Override
+	protected boolean validate(Validateable val) {
         String sval = val.getText();
 
         try {

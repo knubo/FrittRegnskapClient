@@ -12,12 +12,13 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -26,7 +27,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class AccountTrackEditView extends Composite implements ClickListener {
+public class AccountTrackEditView extends Composite implements ClickHandler {
 
     private static AccountTrackEditView me;
     private final I18NAccount messages;
@@ -60,10 +61,10 @@ public class AccountTrackEditView extends Composite implements ClickListener {
 
         VerticalPanel vpImages = new VerticalPanel();
         nextImageBig = ImageFactory.nextImageBig("accounttrack_add");
-        nextImageBig.addClickListener(this);
+        nextImageBig.addClickHandler(this);
         vpImages.add(nextImageBig);
         previousImageBig = ImageFactory.previousImageBig("accounttrack_remove");
-        previousImageBig.addClickListener(this);
+        previousImageBig.addClickHandler(this);
         vpImages.add(previousImageBig);
         vpImages.setStyleName("accounttrack_midle");
         DockPanel dp = new DockPanel();
@@ -118,7 +119,8 @@ public class AccountTrackEditView extends Composite implements ClickListener {
                 .fillAllPosts(availableList.getListbox(), chosenList.getListbox(), false, true);
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
         if (sender == nextImageBig) {
             JSONArray change = moveElements(chosenList.getListbox(), availableList.getListbox());
             sendChange("remove", change);

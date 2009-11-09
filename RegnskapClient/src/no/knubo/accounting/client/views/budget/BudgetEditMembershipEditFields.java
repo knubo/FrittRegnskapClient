@@ -10,10 +10,11 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -21,7 +22,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class BudgetEditMembershipEditFields extends DialogBox implements ClickListener {
+public class BudgetEditMembershipEditFields extends DialogBox implements ClickHandler {
     private Button saveButton;
 
     private Button cancelButton;
@@ -82,9 +83,9 @@ public class BudgetEditMembershipEditFields extends DialogBox implements ClickLi
         dp.add(edittable, DockPanel.NORTH);
 
         saveButton = new NamedButton("budgetMembershipEditFields_saveButton", elements.save());
-        saveButton.addClickListener(this);
+        saveButton.addClickHandler(this);
         cancelButton = new NamedButton("budgetMembershipEditFields_cancelButton", elements.cancel());
-        cancelButton.addClickListener(this);
+        cancelButton.addClickHandler(this);
 
         mainErrorLabel = new HTML();
         mainErrorLabel.setStyleName("error");
@@ -97,8 +98,10 @@ public class BudgetEditMembershipEditFields extends DialogBox implements ClickLi
         setWidget(dp);
     }
 
-    public void onClick(Widget sender) {
-        if (sender == cancelButton) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+    	
+    	if (sender == cancelButton) {
             hide();
         }
         if (validateFields()) {

@@ -13,7 +13,8 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements Validateab
 
     private ListBox listbox;
 
-    public String getText() {
+    @Override
+	public String getText() {
         return Util.getSelected(listbox);
     }
 

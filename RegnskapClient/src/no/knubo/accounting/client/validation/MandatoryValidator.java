@@ -6,7 +6,8 @@ public class MandatoryValidator extends ValidatorBase {
         super(errorText);
     }
 
-    protected boolean validate(Validateable val) {
+    @Override
+	protected boolean validate(Validateable val) {
         return !(val.getText() == null || val.getText().trim().length() == 0);
     }
 }

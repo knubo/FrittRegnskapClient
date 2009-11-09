@@ -13,18 +13,19 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.views.modules.UserSearchCallback;
 import no.knubo.accounting.client.views.modules.UserSearchFields;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PersonSearchView extends Composite implements ClickListener, UserSearchCallback {
+public class PersonSearchView extends Composite implements ClickHandler, UserSearchCallback {
 
     private static PersonSearchView me;
 
@@ -101,8 +102,9 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
         initWidget(dp);
     }
 
-    public void onClick(Widget sender) {
-        if (personPick == null) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+    	if (personPick == null) {
             doEditPerson(sender);
         } else {
             pickPerson(sender);
@@ -179,7 +181,7 @@ public class PersonSearchView extends Composite implements ClickListener, UserSe
                     } else {
                         image = ImageFactory.chooseImage("personSearchView_pickImage");
                     }
-                    image.addClickListener(personSV);
+                    image.addClickHandler(personSV);
                     String id = Util.str(obj.get("id"));
                     idHolder.add(id, image);
                     idGivesObject.put(id, obj);

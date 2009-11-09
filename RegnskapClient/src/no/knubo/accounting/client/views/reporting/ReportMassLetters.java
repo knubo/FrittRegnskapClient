@@ -10,17 +10,17 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.Widget;
 
-public class ReportMassLetters extends Composite implements ClickListener {
+public class ReportMassLetters extends Composite implements ClickHandler {
     private static ReportMassLetters reportInstance;
     private final Constants constants;
     private final I18NAccount messages;
@@ -77,7 +77,7 @@ public class ReportMassLetters extends Composite implements ClickListener {
                 }
                 int row = table.getRowCount();
                 NamedButton button = new NamedButton("join_letters", elements.join_letters());
-                button.addClickListener(reportInstance);
+                button.addClickHandler(reportInstance);
                 table.setWidget(row, 0, button);
             }
         };
@@ -86,10 +86,10 @@ public class ReportMassLetters extends Composite implements ClickListener {
 
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
         for (RadioButton rb : radiobuttons) {
 
-            if (rb.isChecked()) {
+            if (rb.getValue()) {
                 doLetter(rb.getText());
             }
         }

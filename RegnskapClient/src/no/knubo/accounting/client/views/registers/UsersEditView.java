@@ -18,12 +18,13 @@ import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.PersonPickCallback;
 import no.knubo.accounting.client.views.PersonPickView;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -33,7 +34,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class UsersEditView extends Composite implements ClickListener {
+public class UsersEditView extends Composite implements ClickHandler {
 
     private static UsersEditView me;
 
@@ -79,7 +80,7 @@ public class UsersEditView extends Composite implements ClickListener {
         table.getRowFormatter().setStyleName(1, "header");
 
         newButton = new NamedButton("userEditView.newButton", elements.userEditView_newButton());
-        newButton.addClickListener(this);
+        newButton.addClickHandler(this);
 
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
@@ -98,8 +99,9 @@ public class UsersEditView extends Composite implements ClickListener {
         return me;
     }
 
-    public void onClick(Widget sender) {
-
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+  
         if (sender == newButton || idHolderEditImages.findId(sender) != null) {
             if (editFields == null) {
                 editFields = new UserEditFields();
@@ -209,11 +211,11 @@ public class UsersEditView extends Composite implements ClickListener {
         table.getCellFormatter().setStyleName(row, 1, "desc");
 
         Image editImage = ImageFactory.editImage("userEditView_editImage");
-        editImage.addClickListener(me);
+        editImage.addClickHandler(me);
         idHolderEditImages.add(username, editImage);
 
         Image deleteImage = ImageFactory.deleteImage("userEditView.deleteImage");
-        deleteImage.addClickListener(this);
+        deleteImage.addClickHandler(this);
         idHolderDeleteImages.add(username, deleteImage);
 
         table.setWidget(row, 3, editImage);
@@ -223,7 +225,7 @@ public class UsersEditView extends Composite implements ClickListener {
         table.getRowFormatter().setStyleName(row, style);
     }
 
-    class UserEditFields extends DialogBox implements ClickListener, PersonPickCallback {
+    class UserEditFields extends DialogBox implements ClickHandler, PersonPickCallback {
 
         private TextBoxWithErrorText userBox;
 
@@ -272,7 +274,7 @@ public class UsersEditView extends Composite implements ClickListener {
             edittable.setText(2, 0, elements.name());
             edittable.setWidget(2, 1, personBox);
             Image searchImage = ImageFactory.searchImage("search_person");
-            searchImage.addClickListener(this);
+            searchImage.addClickHandler(this);
             edittable.setWidget(2, 2, searchImage);
 
             edittable.setText(3, 0, elements.read_only_access());
@@ -282,9 +284,9 @@ public class UsersEditView extends Composite implements ClickListener {
             dp.add(edittable, DockPanel.NORTH);
 
             saveButton = new NamedButton("userEditView_saveButton", elements.save());
-            saveButton.addClickListener(this);
+            saveButton.addClickHandler(this);
             cancelButton = new NamedButton("usertEditView_cancelButton", elements.cancel());
-            cancelButton.addClickListener(this);
+            cancelButton.addClickHandler(this);
 
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
@@ -326,7 +328,8 @@ public class UsersEditView extends Composite implements ClickListener {
             mainErrorLabel.setText("");
         }
 
-        public void onClick(Widget sender) {
+        public void onClick(ClickEvent event) {
+        	Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton) {

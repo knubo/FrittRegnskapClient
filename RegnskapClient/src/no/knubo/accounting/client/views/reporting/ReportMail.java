@@ -17,6 +17,8 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -24,7 +26,6 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -35,7 +36,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ReportMail extends Composite implements ClickListener {
+public class ReportMail extends Composite implements ClickHandler {
     private static ReportMail reportInstance;
     private final Constants constants;
     private final Elements elements;
@@ -102,7 +103,7 @@ public class ReportMail extends Composite implements ClickListener {
         mainTable.setWidget(2, 1, bodyBox);
 
         attachButton = new NamedButton("attach_files", elements.attach_files());
-        attachButton.addClickListener(this);
+        attachButton.addClickHandler(this);
 
         attachedFiles = new FlexTable();
         attachedFiles.setStyleName("insidetable");
@@ -111,7 +112,7 @@ public class ReportMail extends Composite implements ClickListener {
         mainTable.setWidget(4, 1, attachButton);
 
         sendButton = new NamedButton("mail_send", elements.mail_send());
-        sendButton.addClickListener(this);
+        sendButton.addClickHandler(this);
         mainTable.setWidget(5, 0, sendButton);
 
         table = new FlexTable();
@@ -210,15 +211,17 @@ public class ReportMail extends Composite implements ClickListener {
 
     }
 
-    public void onClick(Widget sender) {
-        if (sender == sendButton) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+
+    	if (sender == sendButton) {
             fillReceivers();
         } else if (sender == attachButton) {
             chooseAttachments();
         }
     }
 
-    class EmailSendStatus extends DialogBox implements ClickListener {
+    class EmailSendStatus extends DialogBox implements ClickHandler {
 
         private int currentIndex;
         private boolean pause;
@@ -240,7 +243,7 @@ public class ReportMail extends Composite implements ClickListener {
             infoTable.getColumnFormatter().setStyleName(1, "emailsendname");
             infoTable.getColumnFormatter().setStyleName(2, "emailsendemail");
             NamedButton cancelButton = new NamedButton("abort", elements.abort());
-            cancelButton.addClickListener(this);
+            cancelButton.addClickHandler(this);
             infoTable.setWidget(3, 0, cancelButton);
 
             dp.add(infoTable, DockPanel.NORTH);
@@ -257,7 +260,7 @@ public class ReportMail extends Composite implements ClickListener {
             attachmentsAsJSONString = URL.encode(attachments.toString());
         }
 
-        public void onClick(Widget sender) {
+        public void onClick(ClickEvent event) {
             pause = true;
 
             boolean stopSending = Window.confirm(messages.mail_abort_confirm());
@@ -359,7 +362,7 @@ public class ReportMail extends Composite implements ClickListener {
 
     }
 
-    class PickAttachments extends DialogBox implements ClickListener {
+    class PickAttachments extends DialogBox implements ClickHandler {
 
         private FlexTable pickFilesTable;
         private NamedButton cancelButton;
@@ -382,11 +385,11 @@ public class ReportMail extends Composite implements ClickListener {
             dp.add(hp);
 
             cancelButton = new NamedButton("abort", elements.abort());
-            cancelButton.addClickListener(this);
+            cancelButton.addClickHandler(this);
             hp.add(cancelButton);
 
             pickButton = new NamedButton("choose_file", elements.choose_files());
-            pickButton.addClickListener(this);
+            pickButton.addClickHandler(this);
             hp.add(pickButton);
 
             setWidget(dp);
@@ -405,14 +408,15 @@ public class ReportMail extends Composite implements ClickListener {
 
                 CheckBox filePick = new CheckBox();
 
-                filePick.setChecked(existingFiles.contains(fileName));
+                filePick.setValue(existingFiles.contains(fileName));
 
                 pickFilesTable.setWidget(i + 1, 1, filePick);
                 pickFilesTable.getCellFormatter().setStyleName(i + 1, 1, "center");
             }
         }
 
-        public void onClick(Widget sender) {
+        public void onClick(ClickEvent event) {
+        	Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
                 hide();
             } else if (sender == pickButton) {
@@ -425,7 +429,7 @@ public class ReportMail extends Composite implements ClickListener {
             for (int row = 1; row < pickFilesTable.getRowCount(); row++) {
                 CheckBox checkbox = (CheckBox) pickFilesTable.getWidget(row, 1);
 
-                if (checkbox.isChecked()) {
+                if (checkbox.getValue()) {
                     fileNames.add(pickFilesTable.getText(row, 0));
                 }
             }

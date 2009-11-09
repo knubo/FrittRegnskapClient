@@ -4,7 +4,8 @@ import com.google.gwt.user.client.ui.HTML;
 
 public class HTMLWithError extends HTML {
 
-    public void setHTML(String html) {
+    @Override
+	public void setHTML(String html) {
         removeError();
         super.setHTML(html);
     }
@@ -18,7 +19,8 @@ public class HTMLWithError extends HTML {
         super.setText(error);
     }
 
-    public void setText(String text) {
+    @Override
+	public void setText(String text) {
         removeError();
         super.setText(text);
     }

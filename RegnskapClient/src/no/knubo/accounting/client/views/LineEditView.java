@@ -19,12 +19,13 @@ import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.CountFields;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -36,7 +37,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class LineEditView extends Composite implements ClickListener {
+public class LineEditView extends Composite implements ClickHandler {
 
     private static LineEditView me;
 
@@ -234,7 +235,7 @@ public class LineEditView extends Composite implements ClickListener {
 
         Image removeImage = ImageFactory.removeImage("LineEditView.removeImage");
         postsTable.setWidget(rowcount, 5, removeImage);
-        removeImage.addClickListener(this);
+        removeImage.addClickHandler(this);
 
         removeIdHolder.add(id, removeImage);
     }
@@ -275,7 +276,9 @@ public class LineEditView extends Composite implements ClickListener {
     }
 
     private void removeSumLine() {
-        postsTable.removeRow(postsTable.getRowCount() - 1);
+    	if(postsTable.getRowCount() > 1) {
+    		postsTable.removeRow(postsTable.getRowCount() - 1);    		
+    	}
     }
 
     private Widget newFields() {
@@ -345,7 +348,7 @@ public class LineEditView extends Composite implements ClickListener {
 
         addLineButton = new NamedButton("LineEditView.addLineButton");
         addLineButton.setText(elements.add());
-        addLineButton.addClickListener(this);
+        addLineButton.addClickHandler(this);
         table.setWidget(8, 0, addLineButton);
 
         return panel;
@@ -374,7 +377,7 @@ public class LineEditView extends Composite implements ClickListener {
 
         dateHeader = registerStandards.getDateHeader();
         dateHeader.setText("...");
-        dateHeader.addClickListener(this);
+        dateHeader.addClickHandler(this);
         vp.add(dateHeader);
 
         FlexTable table = new FlexTable();
@@ -399,7 +402,7 @@ public class LineEditView extends Composite implements ClickListener {
 
         updateButton = new NamedButton("LineEditView.updateButton");
         updateButton.setText(elements.update());
-        updateButton.addClickListener(this);
+        updateButton.addClickHandler(this);
 
         table.setWidget(4, 0, updateButton);
         updateLabel = new Label();
@@ -408,10 +411,10 @@ public class LineEditView extends Composite implements ClickListener {
         HorizontalPanel hp = new HorizontalPanel();
 
         previousImage = ImageFactory.previousImage("ShowMembershipView.previousImage");
-        previousImage.addClickListener(this);
+        previousImage.addClickHandler(this);
 
         nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
-        nextImage.addClickListener(this);
+        nextImage.addClickHandler(this);
         currentId = new Label();
         hp.add(previousImage);
         hp.add(currentId);
@@ -421,7 +424,8 @@ public class LineEditView extends Composite implements ClickListener {
         return vp;
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
         if (sender == updateButton) {
             doUpdate();
         } else if (sender == addLineButton) {

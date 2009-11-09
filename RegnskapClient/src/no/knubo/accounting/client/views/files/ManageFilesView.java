@@ -9,28 +9,30 @@ import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 
-public class ManageFilesView extends Composite implements ClickListener {
+public class ManageFilesView extends Composite implements ClickHandler {
 
     private static ManageFilesView instance;
     private final I18NAccount messages;
@@ -63,7 +65,7 @@ public class ManageFilesView extends Composite implements ClickListener {
                     table.setText(i + 1, 0, fileName);
                     Image deleteImage = ImageFactory.deleteImage("delete_file");
 
-                    deleteImage.addClickListener(instance);
+                    deleteImage.addClickHandler(instance);
 
                     idHolder.add(fileName, deleteImage);
                     table.setWidget(i + 1, 1, deleteImage);
@@ -116,8 +118,9 @@ public class ManageFilesView extends Composite implements ClickListener {
         upload.setName("uploadFormElement");
         panel.add(upload);
 
-        panel.add(new Button("Last opp fil", new ClickListener() {
-            public void onClick(Widget sender) {
+        panel.add(new Button("Last opp fil", new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
                 form.submit();
             }
         }));
@@ -126,15 +129,18 @@ public class ManageFilesView extends Composite implements ClickListener {
 
         panel.add(statusLabel);
 
-        form.addFormHandler(new FormHandler() {
-            public void onSubmit(FormSubmitEvent event) {
+        form.addSubmitHandler(new SubmitHandler() {
+			public void onSubmit(SubmitEvent event) {
                 if (tb.getText().length() == 0) {
                     Window.alert("The text box must not be empty");
-                    event.setCancelled(true);
+                    event.cancel();
                 }
             }
-
-            public void onSubmitComplete(FormSubmitCompleteEvent event) {
+        });
+        
+        form.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+        	
+			public void onSubmitComplete(SubmitCompleteEvent event) {
                 String result = event.getResults();
 
                 if (result == null) {
@@ -164,6 +170,7 @@ public class ManageFilesView extends Composite implements ClickListener {
                     Util.timedMessage(statusLabel, "", 15);
                 }
             }
+            
         });
 
         dp.add(form, DockPanel.NORTH);
@@ -171,7 +178,8 @@ public class ManageFilesView extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
         String fileName = idHolder.findId(sender);
 
         boolean result = Window.confirm(messages.delete_file_question(fileName));

@@ -9,7 +9,8 @@ public class YearSeason {
         this.season = season;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + season;
@@ -17,7 +18,8 @@ public class YearSeason {
         return result;
     }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)

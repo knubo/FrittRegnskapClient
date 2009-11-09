@@ -20,12 +20,14 @@ import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.validation.Validateable;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -33,7 +35,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class RegisterHappeningView extends Composite implements ClickListener, ChangeListener,
+public class RegisterHappeningView extends Composite implements ClickHandler, ChangeHandler,
         FocusCallback {
 
     private static RegisterHappeningView me;
@@ -84,7 +86,7 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
         VerticalPanel vp = new VerticalPanel();
 
         dateHeader = registerStandards.getDateHeader();
-        dateHeader.addClickListener(this);
+        dateHeader.addClickHandler(this);
         vp.add(dateHeader);
 
         FlexTable table = new FlexTable();
@@ -107,9 +109,8 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
         Util.setCellId(table, 2, 0, "attachment");
 
         postListBox = new ListBoxWithErrorText("register_count_post");
-        postListBox.getListbox().setMultipleSelect(false);
         postListBox.getListbox().setVisibleItemCount(1);
-        postListBox.getListbox().addChangeListener(this);
+        postListBox.getListbox().addChangeHandler(this);
         table.setWidget(3, 1, postListBox);
         table.setHTML(3, 0, elements.register_count_post());
         Util.setCellId(table, 3, 0, "post");
@@ -141,7 +142,7 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
 
         Button saveButton = new NamedButton("RegisterHappening_saveButton", elements
                 .RegisterHappening_saveButton());
-        saveButton.addClickListener(this);
+        saveButton.addClickHandler(this);
         table.setWidget(row, 0, saveButton);
 
         initWidget(vp);
@@ -161,7 +162,7 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
         happeningCache.fill(postListBox.getListbox());
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
         if (!validateSave()) {
             return;
         }
@@ -250,7 +251,8 @@ public class RegisterHappeningView extends Composite implements ClickListener, C
         return mv.validateStatus();
     }
 
-    public void onChange(Widget sender) {
+    public void onChange(ChangeEvent event) {
+    	Widget sender = (Widget) event.getSource();
         if (sender == postListBox.getListbox()) {
             String id = postListBox.getText();
 

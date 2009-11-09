@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;
@@ -11,14 +15,11 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Various nifty utilities for the project.
@@ -222,18 +223,18 @@ public class Util {
      * @param textbox
      */
     public static void syncListbox(final ListBox listbox, final TextBox textbox) {
-        ChangeListener listchange = new ChangeListener() {
+    	ChangeHandler listchange = new ChangeHandler() {
 
-            public void onChange(Widget sender) {
+    		public void onChange(ChangeEvent event) {
                 textbox.setText(listbox.getValue(listbox.getSelectedIndex()));
             }
 
         };
-        listbox.addChangeListener(listchange);
+        listbox.addChangeHandler(listchange);
 
-        ChangeListener textchange = new ChangeListener() {
+        ChangeHandler textchange = new ChangeHandler() {
 
-            public void onChange(Widget sender) {
+    		public void onChange(ChangeEvent event) {
                 String id = textbox.getText();
 
                 for (int i = 0; i < listbox.getItemCount(); i++) {
@@ -245,7 +246,7 @@ public class Util {
             }
 
         };
-        textbox.addChangeListener(textchange);
+        textbox.addChangeHandler(textchange);
     }
 
     /**
@@ -317,7 +318,8 @@ public class Util {
         }
         Timer timer = new Timer() {
 
-            public void run() {
+            @Override
+			public void run() {
                 label.setText(message);
                 timers.remove(label);
             }
@@ -412,27 +414,28 @@ public class Util {
      * @param checkTwo
      */
     public static void linkJustOne(final CheckBox checkOne, final CheckBox checkTwo) {
-        ClickListener listener = new ClickListener() {
+        ClickHandler listener = new ClickHandler() {
 
-            public void onClick(Widget sender) {
-                if (sender == checkOne) {
-                    if (checkTwo.isEnabled() && checkOne.isChecked()) {
-                        checkTwo.setChecked(false);
+        	public void onClick(ClickEvent event) {
+                CheckBox sender = (CheckBox) event.getSource();
+				if (sender  == checkOne) {
+                    if (checkTwo.isEnabled() && checkOne.getValue()) {
+                        checkTwo.setValue(false);
                     } else {
-                        checkOne.setChecked(false);
+                        checkOne.setValue(false);
                     }
                 } else if (sender == checkTwo) {
-                    if (checkOne.isEnabled() && checkTwo.isChecked()) {
-                        checkOne.setChecked(false);
+                    if (checkOne.isEnabled() && checkTwo.getValue()) {
+                        checkOne.setValue(false);
                     } else {
-                        checkTwo.setChecked(false);
+                        checkTwo.setValue(false);
                     }
                 }
             }
 
         };
-        checkOne.addClickListener(listener);
-        checkTwo.addClickListener(listener);
+        checkOne.addClickHandler(listener);
+        checkTwo.addClickHandler(listener);
     }
 
     public static boolean isNull(JSONValue value) {

@@ -11,18 +11,19 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
-public class StandardvaluesView extends Composite implements ClickListener {
+public class StandardvaluesView extends Composite implements ClickHandler {
 
     private static StandardvaluesView me;
 
@@ -108,7 +109,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         table.setWidget(7, 1, massletterDueDateBox);
 
         updateButton = new NamedButton("StandardValuesView.updateButton", elements.update());
-        updateButton.addClickListener(this);
+        updateButton.addClickHandler(this);
         statusHTML = new HTML();
 
         table.setWidget(8, 0, updateButton);
@@ -116,7 +117,7 @@ public class StandardvaluesView extends Composite implements ClickListener {
         initWidget(dp);
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
         if (!validate()) {
             return;
         }

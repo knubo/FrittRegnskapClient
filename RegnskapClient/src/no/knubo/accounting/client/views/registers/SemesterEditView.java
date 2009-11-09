@@ -12,11 +12,12 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -26,7 +27,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SemesterEditView extends Composite implements ClickListener {
+public class SemesterEditView extends Composite implements ClickHandler {
 	private static SemesterEditView me;
 	private I18NAccount messages;
 	private Constants constants;
@@ -58,7 +59,7 @@ public class SemesterEditView extends Composite implements ClickListener {
 
 		newButton = new NamedButton("semesterEditView_newButton", elements
 				.new_semester());
-		newButton.addClickListener(this);
+		newButton.addClickHandler(this);
 
 		dp.add(newButton, DockPanel.NORTH);
 		dp.add(table, DockPanel.NORTH);
@@ -108,7 +109,7 @@ public class SemesterEditView extends Composite implements ClickListener {
 				row++;
 				table.setText(row, 0, String.valueOf(year));
 				Image editImage = ImageFactory.editImage("semesterEditImage");
-				editImage.addClickListener(this);
+				editImage.addClickHandler(this);
 				table.setWidget(row, 3, editImage);
 				idHolder.add(row, editImage);
 				if (maxYear < year) {
@@ -124,7 +125,8 @@ public class SemesterEditView extends Composite implements ClickListener {
 		}
 	}
 
-	public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
 
 		if (editFields == null) {
 			editFields = new SemesterEditFields();
@@ -153,7 +155,7 @@ public class SemesterEditView extends Composite implements ClickListener {
 		editFields.show();
 	}
 
-	class SemesterEditFields extends DialogBox implements ClickListener {
+	class SemesterEditFields extends DialogBox implements ClickHandler {
 		private TextBoxWithErrorText springBox;
 		private TextBoxWithErrorText fallBox;
 		private TextBoxWithErrorText yearBox;
@@ -192,10 +194,10 @@ public class SemesterEditView extends Composite implements ClickListener {
 
 			saveButton = new NamedButton("semesterEditView_saveButton",
 					elements.save());
-			saveButton.addClickListener(this);
+			saveButton.addClickHandler(this);
 			cancelButton = new NamedButton("semesterEditView_cancelButton",
 					elements.cancel());
-			cancelButton.addClickListener(this);
+			cancelButton.addClickHandler(this);
 
 			mainErrorLabel = new HTML();
 			mainErrorLabel.setStyleName("error");
@@ -208,7 +210,8 @@ public class SemesterEditView extends Composite implements ClickListener {
 			setWidget(dp);
 		}
 
-		public void onClick(Widget sender) {
+        public void onClick(ClickEvent event) {
+        	Widget sender = (Widget) event.getSource();
 			if (sender == cancelButton) {
 				hide();
 			} else if (sender == saveButton && validateFields()) {

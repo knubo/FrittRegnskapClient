@@ -156,7 +156,4 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
         AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endmonthorsemester.php?action="+endType);
     }
 
-	public void initEndYear() {
-		
-	}
 }

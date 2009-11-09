@@ -17,13 +17,15 @@ import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -34,7 +36,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TrustStatusView extends Composite implements ClickListener {
+public class TrustStatusView extends Composite implements ClickHandler {
 
     private static TrustStatusView trustStatusInstance;
 
@@ -79,7 +81,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
         newTrustButton = new NamedButton("trustStatusView_newTrustButton", elements
                 .trustStatusView_newTrustButton());
-        newTrustButton.addClickListener(this);
+        newTrustButton.addClickHandler(this);
         dp.add(newTrustButton, DockPanel.NORTH);
 
         table = new AccountTable("tableborder");
@@ -163,7 +165,7 @@ public class TrustStatusView extends Composite implements ClickListener {
             int accountline = Util.getInt(lineObj.get("AccountLine"));
             if (accountline > 0) {
                 Image viewPostImage = ImageFactory.editImage("TrustStatusView.viewPost");
-                viewPostImage.addClickListener(this);
+                viewPostImage.addClickHandler(this);
                 table.setWidget(row, 4, viewPostImage);
                 idHolder.add(String.valueOf(accountline), viewPostImage);
             } else {
@@ -179,8 +181,10 @@ public class TrustStatusView extends Composite implements ClickListener {
         row++;
     }
 
-    public void onClick(Widget sender) {
-        if (sender == newTrustButton) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
+    	
+    	if (sender == newTrustButton) {
             if (editFields == null) {
                 editFields = new TrustEditFields();
             }
@@ -202,7 +206,7 @@ public class TrustStatusView extends Composite implements ClickListener {
 
     }
 
-    class TrustEditFields extends DialogBox implements ClickListener, ChangeListener {
+    class TrustEditFields extends DialogBox implements ClickHandler, ChangeHandler {
 
         private HTML errorLabelForDate;
         private HTML mainErrorLabel;
@@ -237,11 +241,11 @@ public class TrustStatusView extends Composite implements ClickListener {
             edittable.setHTML(7, 0, elements.amount());
 
             actionListBox = new ListBoxWithErrorText("TrustStatusView.actionList");
-            actionListBox.getListbox().addChangeListener(this);
+            actionListBox.getListbox().addClickHandler(this);
 
             trustListBox = new ListBoxWithErrorText("TrustStatusView.trustList");
             trustListBox.getListbox().setVisibleItemCount(1);
-            trustListBox.getListbox().addChangeListener(this);
+            trustListBox.getListbox().addChangeHandler(this);
 
             TrustActionCache trustActionCache = TrustActionCache.getInstance(constants, messages);
             trustActionCache.fillTrustList(trustListBox.getListbox());
@@ -279,10 +283,10 @@ public class TrustStatusView extends Composite implements ClickListener {
             dp.add(edittable, DockPanel.NORTH);
 
             saveButton = new NamedButton("TrustStatusView.saveButton", elements.save());
-            saveButton.addClickListener(this);
+            saveButton.addClickHandler(this);
             cancelButton = new NamedButton("trustStatusView.cancelButton", elements
                     .trustStatusView_cancelButton());
-            cancelButton.addClickListener(this);
+            cancelButton.addClickHandler(this);
 
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
@@ -307,8 +311,9 @@ public class TrustStatusView extends Composite implements ClickListener {
             registerStandards.fetchInitalData(false);
         }
 
-        public void onClick(Widget sender) {
-            if (sender == cancelButton) {
+        public void onClick(ClickEvent event) {
+        	Widget sender = (Widget) event.getSource();
+        	if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton && validateFields()) {
                 doSave();
@@ -371,9 +376,10 @@ public class TrustStatusView extends Composite implements ClickListener {
             return mv.validateStatus();
         }
 
-        public void onChange(Widget sender) {
+        public void onChange(ChangeEvent event) {
             TrustActionCache trustActionCache = TrustActionCache.getInstance(constants, messages);
 
+            Widget sender = (Widget) event.getSource();
             if (sender == this.trustListBox.getListbox()) {
                 ListBox listBox = (ListBox) sender;
 

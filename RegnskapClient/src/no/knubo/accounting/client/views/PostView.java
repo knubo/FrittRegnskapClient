@@ -12,17 +12,18 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.views.modules.CountFields;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PostView extends DialogBox implements ClickListener, ServerResponse {
+public class PostView extends DialogBox implements ClickHandler, ServerResponse {
 
     static PostView me = null;
 
@@ -86,9 +87,9 @@ public class PostView extends DialogBox implements ClickListener, ServerResponse
         DockPanel dp = new DockPanel();
 
         editImage = ImageFactory.editImage("PostView.editImage");
-        editImage.addClickListener(this);
+        editImage.addClickHandler(this);
         closeImage = ImageFactory.closeImage("PostView.closeImage");
-        closeImage.addClickListener(this);
+        closeImage.addClickHandler(this);
         table.setWidget(0, 5, editImage);
         table.setWidget(0, 6, closeImage);
 
@@ -112,7 +113,8 @@ public class PostView extends DialogBox implements ClickListener, ServerResponse
         table.getCellFormatter().setStyleName(row, col, "showline");
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
+    	Widget sender = (Widget) event.getSource();
         if (sender == closeImage) {
             hide();
         } else if (sender == editImage) {
