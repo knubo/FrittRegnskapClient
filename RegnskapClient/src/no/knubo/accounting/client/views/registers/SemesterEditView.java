@@ -27,229 +27,243 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SemesterEditView extends Composite implements ClickListener {
-    private static SemesterEditView me;
-    private I18NAccount messages;
-    private Constants constants;
-    private FlexTable table;
-    private NamedButton newButton;
-    private IdHolder<Integer, Image> idHolder;
-    private final Elements elements;
-    private SemesterEditView.SemesterEditFields editFields;
-    private int maxYear;
-    
-    public SemesterEditView(I18NAccount messages, Constants constants, Elements elements) {
-        this.messages = messages;
-        this.constants = constants;
-        this.elements = elements;
+	private static SemesterEditView me;
+	private I18NAccount messages;
+	private Constants constants;
+	private FlexTable table;
+	private NamedButton newButton;
+	private IdHolder<Integer, Image> idHolder;
+	private final Elements elements;
+	private SemesterEditView.SemesterEditFields editFields;
+	private int maxYear;
 
-        DockPanel dp = new DockPanel();
+	public SemesterEditView(I18NAccount messages, Constants constants,
+			Elements elements) {
+		this.messages = messages;
+		this.constants = constants;
+		this.elements = elements;
 
-        table = new FlexTable();
-        table.setStyleName("tableborder");
-        table.setText(0, 0, elements.menuitem_semesters());
-        table.getFlexCellFormatter().setColSpan(0, 0, 4);
-        table.getRowFormatter().setStyleName(0, "header");
-        table.setText(1, 0, elements.year());
-        table.setText(1, 1, elements.spring());
-        table.setText(1, 2, elements.fall());
-        table.setText(1, 3, "");
-        table.getRowFormatter().setStyleName(1, "header");
+		DockPanel dp = new DockPanel();
 
-        newButton = new NamedButton("semesterEditView_newButton",elements.new_semester());
-        newButton.addClickListener(this);
-        
-        dp.add(newButton, DockPanel.NORTH);
-        dp.add(table, DockPanel.NORTH);
-        idHolder = new IdHolder<Integer, Image>();
-        initWidget(dp);
-    }
+		table = new FlexTable();
+		table.setStyleName("tableborder");
+		table.setText(0, 0, elements.menuitem_semesters());
+		table.getFlexCellFormatter().setColSpan(0, 0, 4);
+		table.getRowFormatter().setStyleName(0, "header");
+		table.setText(1, 0, elements.year());
+		table.setText(1, 1, elements.spring());
+		table.setText(1, 2, elements.fall());
+		table.setText(1, 3, "");
+		table.getRowFormatter().setStyleName(1, "header");
 
-    public static SemesterEditView show(I18NAccount messages, Constants constants, Elements elements) {
-        if (me == null) {
-            me = new SemesterEditView(messages, constants, elements);
-        }
-        me.setVisible(true);
-        return me;
-    }
+		newButton = new NamedButton("semesterEditView_newButton", elements
+				.new_semester());
+		newButton.addClickListener(this);
 
-    public void init() {
-        idHolder.init();
-        while (table.getRowCount() > 2) {
-            table.removeRow(2);
-        }
+		dp.add(newButton, DockPanel.NORTH);
+		dp.add(table, DockPanel.NORTH);
+		idHolder = new IdHolder<Integer, Image>();
+		initWidget(dp);
+	}
 
-        ServerResponse callback = new ServerResponse() {
-            public void serverResponse(JSONValue value) {
-                showSemesters(value.isArray());
-            }
+	public static SemesterEditView show(I18NAccount messages,
+			Constants constants, Elements elements) {
+		if (me == null) {
+			me = new SemesterEditView(messages, constants, elements);
+		}
+		me.setVisible(true);
+		return me;
+	}
 
-        };
+	public void init() {
+		idHolder.init();
+		while (table.getRowCount() > 2) {
+			table.removeRow(2);
+		}
 
-        AuthResponder.get(constants, messages, callback, "registers/semesters.php?action=all");
-    }
+		ServerResponse callback = new ServerResponse() {
+			public void serverResponse(JSONValue value) {
+				showSemesters(value.isArray());
+			}
 
-    protected void showSemesters(JSONArray array) {
+		};
 
-        int row = table.getRowCount() - 1;
+		AuthResponder.get(constants, messages, callback,
+				"registers/semesters.php?action=all");
+	}
 
-        int currentYear = 0;
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject semester = array.get(i).isObject();
+	protected void showSemesters(JSONArray array) {
 
-            int year = Util.getInt(semester.get("year"));
-            String desc = Util.str(semester.get("description"));
-            boolean fall = Util.getBoolean(semester.get("fall"));
-            if (currentYear != year) {
-                currentYear = year;
-                row++;
-                table.setText(row, 0, String.valueOf(year));
-                Image editImage = ImageFactory.editImage("semesterEditImage");
-                editImage.addClickListener(this);
-                table.setWidget(row, 3, editImage);
-                idHolder.add(row, editImage);
-                if(maxYear < year) {
-                    maxYear = year;
-                }
-            }
+		int row = table.getRowCount() - 1;
 
-            table.setHTML(row, fall ? 2 : 1, desc);
-            table.getCellFormatter().setStyleName(row, fall ? 2 : 1, "desc");
-            String style = (((row + 1) % 6) < 3) ? "line2" : "line1";
-            table.getRowFormatter().setStyleName(row, style);
+		int currentYear = 0;
+		for (int i = 0; i < array.size(); i++) {
+			JSONObject semester = array.get(i).isObject();
 
-        }
-    }
+			int year = Util.getInt(semester.get("year"));
+			String desc = Util.str(semester.get("description"));
+			boolean fall = Util.getBoolean(semester.get("fall"));
+			if (currentYear != year) {
+				currentYear = year;
+				row++;
+				table.setText(row, 0, String.valueOf(year));
+				Image editImage = ImageFactory.editImage("semesterEditImage");
+				editImage.addClickListener(this);
+				table.setWidget(row, 3, editImage);
+				idHolder.add(row, editImage);
+				if (maxYear < year) {
+					maxYear = year;
+				}
+			}
 
-    public void onClick(Widget sender) {
+			table.setHTML(row, fall ? 2 : 1, desc);
+			table.getCellFormatter().setStyleName(row, fall ? 2 : 1, "desc");
+			String style = (((row + 1) % 6) < 3) ? "line2" : "line1";
+			table.getRowFormatter().setStyleName(row, style);
 
-        if (editFields == null) {
-            editFields = new SemesterEditFields();
-        }
-        
-        int left = 0;
-        if (sender == newButton) {
-            left = sender.getAbsoluteLeft() + 10;
-        } else {
-            left = sender.getAbsoluteLeft() - 150;
-        }
+		}
+	}
 
-        int top = sender.getAbsoluteTop() + 10;
-        editFields.setPopupPosition(left, top);
+	public void onClick(Widget sender) {
 
-        if (sender == newButton) {
-            editFields.init(maxYear + 1);
-        } else {
-            int row = idHolder.findId(sender);
-            String year = table.getText(row, 0);
-            String springDesc = table.getText(row, 1);
-            String fallDesc = table.getText(row, 2);
+		if (editFields == null) {
+			editFields = new SemesterEditFields();
+		}
 
-            editFields.init(year, springDesc, fallDesc);
-        }
-        editFields.show();
-    }
+		int left = 0;
+		if (sender == newButton) {
+			left = sender.getAbsoluteLeft() + 10;
+		} else {
+			left = sender.getAbsoluteLeft() - 150;
+		}
 
-    class SemesterEditFields extends DialogBox implements ClickListener {
-        private TextBoxWithErrorText springBox;
-        private TextBoxWithErrorText fallBox;
+		int top = sender.getAbsoluteTop() + 10;
+		editFields.setPopupPosition(left, top);
 
-        private Button saveButton;
-        private Button cancelButton;
-        private HTML mainErrorLabel;
-        private FlexTable edittable;
+		if (sender == newButton) {
+			editFields.init(maxYear + 1);
+		} else {
+			int row = idHolder.findId(sender);
+			String year = table.getText(row, 0);
+			String springDesc = table.getText(row, 1);
+			String fallDesc = table.getText(row, 2);
 
-        SemesterEditFields() {
-            setText(elements.menuitem_semesters());
-            edittable = new FlexTable();
-            edittable.setStyleName("edittable");
+			editFields.init(year, springDesc, fallDesc);
+		}
+		editFields.show();
+	}
 
-            edittable.setHTML(0, 0, elements.year());
-            edittable.setHTML(1, 0, elements.spring());
-            edittable.setHTML(2, 0, elements.fall());
-            springBox = new TextBoxWithErrorText("spring");
-            springBox.setMaxLength(20);
-            springBox.setVisibleLength(20);
-            edittable.setWidget(1, 1, springBox);
+	class SemesterEditFields extends DialogBox implements ClickListener {
+		private TextBoxWithErrorText springBox;
+		private TextBoxWithErrorText fallBox;
+		private TextBoxWithErrorText yearBox;
 
-            fallBox = new TextBoxWithErrorText("fall");
-            fallBox.setMaxLength(20);
-            fallBox.setVisibleLength(20);
-            edittable.setWidget(2, 1, fallBox);
+		private Button saveButton;
+		private Button cancelButton;
+		private HTML mainErrorLabel;
+		private FlexTable edittable;
 
-            DockPanel dp = new DockPanel();
-            dp.add(edittable, DockPanel.NORTH);
+		SemesterEditFields() {
+			setText(elements.menuitem_semesters());
+			edittable = new FlexTable();
+			edittable.setStyleName("edittable");
 
-            saveButton = new NamedButton("semesterEditView_saveButton", elements.save());
-            saveButton.addClickListener(this);
-            cancelButton = new NamedButton("semesterEditView_cancelButton", elements.cancel());
-            cancelButton.addClickListener(this);
+			edittable.setHTML(0, 0, elements.year());
+			edittable.setHTML(1, 0, elements.spring());
+			edittable.setHTML(2, 0, elements.fall());
 
-            mainErrorLabel = new HTML();
-            mainErrorLabel.setStyleName("error");
+			yearBox = new TextBoxWithErrorText("year");
+			yearBox.setMaxLength(4);
+			yearBox.setVisibleLength(4);
 
-            HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.add(saveButton);
-            buttonPanel.add(cancelButton);
-            buttonPanel.add(mainErrorLabel);
-            dp.add(buttonPanel, DockPanel.NORTH);
-            setWidget(dp);
-        }
+			springBox = new TextBoxWithErrorText("spring");
+			springBox.setMaxLength(20);
+			springBox.setVisibleLength(20);
+			edittable.setWidget(0, 1, yearBox);
+			edittable.setWidget(1, 1, springBox);
 
-        public void onClick(Widget sender) {
-            if (sender == cancelButton) {
-                hide();
-            } else if (sender == saveButton && validateFields()) {
-                doSave();
-            }
-        }
+			fallBox = new TextBoxWithErrorText("fall");
+			fallBox.setMaxLength(20);
+			fallBox.setVisibleLength(20);
+			edittable.setWidget(2, 1, fallBox);
 
-        private void doSave() {
-            StringBuffer sb = new StringBuffer();
-            sb.append("action=save");
-            
-            Util.addPostParam(sb, "year", edittable.getText(0, 1));
-            Util.addPostParam(sb, "spring", springBox.getText());
-            Util.addPostParam(sb, "fall", fallBox.getText());
-            
-            ServerResponse callback = new ServerResponse() {
+			DockPanel dp = new DockPanel();
+			dp.add(edittable, DockPanel.NORTH);
 
-                public void serverResponse(JSONValue value) {
-                    JSONObject object = value.isObject();
+			saveButton = new NamedButton("semesterEditView_saveButton",
+					elements.save());
+			saveButton.addClickListener(this);
+			cancelButton = new NamedButton("semesterEditView_cancelButton",
+					elements.cancel());
+			cancelButton.addClickListener(this);
 
-                    if("1".equals(Util.str(object.get("result")))) {
-                        me.init();
-                        hide();
-                    } else {
-                        mainErrorLabel.setText(messages.save_failed());
-                        Util.timedMessage(mainErrorLabel, "", 10);
-                    }
-                }
-            };
+			mainErrorLabel = new HTML();
+			mainErrorLabel.setStyleName("error");
 
-            AuthResponder.post(constants, messages, callback, sb, "registers/semesters.php");
-        }
+			HorizontalPanel buttonPanel = new HorizontalPanel();
+			buttonPanel.add(saveButton);
+			buttonPanel.add(cancelButton);
+			buttonPanel.add(mainErrorLabel);
+			dp.add(buttonPanel, DockPanel.NORTH);
+			setWidget(dp);
+		}
 
-        private void init(int year) {
-            edittable.setHTML(0, 1, String.valueOf(year));
-            springBox.setText("");
-            fallBox.setText("");
-            mainErrorLabel.setText("");
-        }
+		public void onClick(Widget sender) {
+			if (sender == cancelButton) {
+				hide();
+			} else if (sender == saveButton && validateFields()) {
+				doSave();
+			}
+		}
 
-        private void init(String year, String springDesc, String fallDesc) {
-            edittable.setHTML(0, 1, year);
-            springBox.setText(springDesc);
-            fallBox.setText(fallDesc);
-            mainErrorLabel.setText("");
-        }
+		private void doSave() {
+			StringBuffer sb = new StringBuffer();
+			sb.append("action=save");
 
-        private boolean validateFields() {
-            MasterValidator mv = new MasterValidator();
-            Widget[] widgets = new Widget[] { springBox, fallBox };
-            mv.mandatory(messages.required_field(), widgets);
-            return mv.validateStatus();
-        }
+			Util.addPostParam(sb, "year", yearBox.getText());
+			Util.addPostParam(sb, "spring", springBox.getText());
+			Util.addPostParam(sb, "fall", fallBox.getText());
 
-    }
+			ServerResponse callback = new ServerResponse() {
+
+				public void serverResponse(JSONValue value) {
+					JSONObject object = value.isObject();
+
+					if ("1".equals(Util.str(object.get("result")))) {
+						me.init();
+						hide();
+					} else {
+						mainErrorLabel.setText(messages.save_failed());
+						Util.timedMessage(mainErrorLabel, "", 10);
+					}
+				}
+			};
+
+			AuthResponder.post(constants, messages, callback, sb,
+					"registers/semesters.php");
+		}
+
+		private void init(int year) {
+			yearBox.setText(String.valueOf(year));
+			springBox.setText("");
+			fallBox.setText("");
+			mainErrorLabel.setText("");
+		}
+
+		private void init(String year, String springDesc, String fallDesc) {
+			yearBox.setText(year);
+			springBox.setText(springDesc);
+			fallBox.setText(fallDesc);
+			mainErrorLabel.setText("");
+		}
+
+		private boolean validateFields() {
+			MasterValidator mv = new MasterValidator();
+			Widget[] widgets = new Widget[] { yearBox, springBox, fallBox };
+			mv.mandatory(messages.required_field(), widgets);
+			return mv.validateStatus();
+		}
+
+	}
 
 }

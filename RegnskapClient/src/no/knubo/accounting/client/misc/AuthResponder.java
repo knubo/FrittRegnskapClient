@@ -84,6 +84,7 @@ public class AuthResponder implements RequestCallback {
             try {
                 jsonValue = JSONParser.parse(data);
             } catch (Exception e) {
+            	Window.alert(e.getMessage());
                 /* We catch this below in bad return data */
             }
 
@@ -91,8 +92,8 @@ public class AuthResponder implements RequestCallback {
                 if (callback instanceof ServerResponseWithErrorFeedback) {
                     ((ServerResponseWithErrorFeedback) callback).onError();
                 } else {
-                    logger.error("baddata", data);
-                    Window.alert("Bad return data:" + data);
+                    //logger.error("baddata", data);
+                   // Window.alert("Bad return data:" + data);
                 }
             } else {
                 callback.serverResponse(jsonValue);
