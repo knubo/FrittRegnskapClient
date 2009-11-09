@@ -5,25 +5,27 @@ import no.knubo.accounting.client.misc.ServerResponse;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class Login implements EntryPoint, ClickListener, ServerResponse {
+public class Login implements EntryPoint, ClickHandler, ServerResponse {
 
     private PasswordTextBox passBox;
 
@@ -53,27 +55,19 @@ public class Login implements EntryPoint, ClickListener, ServerResponse {
         dp.add(table, DockPanel.CENTER);
 
         Button loginButton = new Button(elements.login());
-        loginButton.addClickListener(this);
+        loginButton.addClickHandler(this);
 
         userBox = new TextBox();
         userBox.setWidth("12em");
         userBox.setMaxLength(12);
         passBox = new PasswordTextBox();
         passBox.setWidth("12em");
-        passBox.addKeyboardListener(new KeyboardListener() {
+        passBox.addKeyPressHandler(new KeyPressHandler() {
 
-            public void onKeyDown(Widget sender, char keyCode, int modifiers) {
-                /* Not used */
-            }
-
-            public void onKeyPress(Widget sender, char keyCode, int modifiers) {
-                if (keyCode == KEY_ENTER) {
+            public void onKeyPress(KeyPressEvent event) {
+                if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     doLogin();
                 }
-            }
-
-            public void onKeyUp(Widget sender, char keyCode, int modifiers) {
-                /* Not used */
             }
 
         });
@@ -93,7 +87,7 @@ public class Login implements EntryPoint, ClickListener, ServerResponse {
         userBox.setFocus(true);
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
         doLogin();
     }
 

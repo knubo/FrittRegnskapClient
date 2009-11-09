@@ -9,17 +9,17 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Widget;
 
-public class MonthAndSemesterEndView extends Composite implements ClickListener {
+public class MonthAndSemesterEndView extends Composite implements ClickHandler {
 
     private static MonthAndSemesterEndView me;
 
@@ -65,7 +65,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickListener 
         dateHeader = new HTML();
         header = new HTML(elements.end_month_explain());
         endButton = new NamedButton("MonthEndView.endButton", elements.end_month());
-        endButton.addClickListener(this);
+        endButton.addClickHandler(this);
 
         DockPanel dp = new DockPanel();
         dp.add(dateHeader, DockPanel.NORTH);
@@ -135,7 +135,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickListener 
         AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endmonthorsemester.php?action=status");
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(ClickEvent event) {
 
         boolean okContinue = Window.confirm(messages.end_month_confirm());
 
@@ -155,4 +155,8 @@ public class MonthAndSemesterEndView extends Composite implements ClickListener 
 
         AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endmonthorsemester.php?action="+endType);
     }
+
+	public void initEndYear() {
+		
+	}
 }
