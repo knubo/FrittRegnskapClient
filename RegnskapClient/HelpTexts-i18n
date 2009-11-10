@@ -1,4 +1,5 @@
 #!/bin/sh
 APPDIR=`dirname $0`;
-java -cp "$APPDIR/src:$APPDIR/bin:/Users/knuterikborgen/Documents/workspacephp/gwt-mac-0.0.2415/gwt-user.jar:/Users/knuterikborgen/Documents/workspacephp/gwt-mac-1.4.10/gwt-dev-mac.jar" com.google.gwt.i18n.tools.I18NSync -out $APPDIR/src -createConstantsWithLookup no.knubo.accounting.client.HelpTexts;
+GWT_ROOT='/Users/knuterikborgen/kode/gwt-mac-1.7.0'
+java -cp "$APPDIR/src:$APPDIR/bin:$GWT_ROOT/gwt-user.jar:$GWT_ROOT//gwt-dev-mac.jar" com.google.gwt.i18n.tools.I18NSync -out $APPDIR/src -createConstantsWithLookup no.knubo.accounting.client.HelpTexts;
 

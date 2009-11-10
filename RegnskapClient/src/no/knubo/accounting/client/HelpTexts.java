@@ -1,217 +1,242 @@
 package no.knubo.accounting.client;
 
-
 /**
- * Interface to represent the constants contained in resource  bundle:
- * 	'/Users/knuterikborgen/Documents/workspacephp/RegnskapClient/src/no/knubo/accounting/client/HelpTexts.properties'.
+ * Interface to represent the constants contained in resource bundle:
+ * 	'/Users/knuterikborgen/kode/workspace/RegnskapClient/src/no/knubo/accounting/client/HelpTexts.properties'.
  */
 public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
   /**
-   * Translated "I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r.".
+   * Translated "Lagrer posteringen.".
    * 
-   * @return translated "I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r."
-   * @gwt.key money_type
+   * @return translated "Lagrer posteringen."
    */
-  String money_type();
+  @DefaultStringValue("Lagrer posteringen.")
+  @Key("RegisterHappening_saveButton")
+  String RegisterHappening_saveButton();
 
   /**
-   * Translated "Personen er skjult fra s&oslash;k.".
+   * Translated "Bel&oslash;p for posteringen.".
    * 
-   * @return translated "Personen er skjult fra s&oslash;k."
-   * @gwt.key hidden_person
+   * @return translated "Bel&oslash;p for posteringen."
    */
-  String hidden_person();
+  @DefaultStringValue("Bel&oslash;p for posteringen.")
+  @Key("amount")
+  String amount();
 
   /**
    * Translated "Bilag er bilagsnummeret til posteringen. Bilagsnummer er p&aring;krevd, men m&aring; ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer.".
    * 
    * @return translated "Bilag er bilagsnummeret til posteringen. Bilagsnummer er p&aring;krevd, men m&aring; ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer."
-   * @gwt.key attachment
    */
+  @DefaultStringValue("Bilag er bilagsnummeret til posteringen. Bilagsnummer er p&aring;krevd, men m&aring; ikke v&aelig;re unik per postering. God regnskapsskikk tilsier at alle posteringer skal v&aelig;re underst&oslash;ttet av et bilag, hvor bilaget skal inneholde orginalkvitteringer attestert av Leder og Kasserer.")
+  @Key("attachment")
   String attachment();
-
-  /**
-   * Translated "Postnr angir sorteringen som posteringen f&aring;r i den aktive m&aring;neden. Postnummeret tildeles automatisk og det er ikke behov for &aring; endre denne med mindre rekkef&oslash;lgen p&aring; posteringen m&aring; endres.".
-   * 
-   * @return translated "Postnr angir sorteringen som posteringen f&aring;r i den aktive m&aring;neden. Postnummeret tildeles automatisk og det er ikke behov for &aring; endre denne med mindre rekkef&oslash;lgen p&aring; posteringen m&aring; endres."
-   * @gwt.key postnmb
-   */
-  String postnmb();
-
-  /**
-   * Translated "Antall tusenlapper.".
-   * 
-   * @return translated "Antall tusenlapper."
-   * @gwt.key number1000
-   */
-  String number1000();
-
-  /**
-   * Translated "Antall femtilapper.".
-   * 
-   * @return translated "Antall femtilapper."
-   * @gwt.key number50
-   */
-  String number50();
-
-  /**
-   * Translated "Antall femmere.".
-   * 
-   * @return translated "Antall femmere."
-   * @gwt.key number5
-   */
-  String number5();
 
   /**
    * Translated "Nullstiller felter".
    * 
    * @return translated "Nullstiller felter"
-   * @gwt.key clear
    */
+  @DefaultStringValue("Nullstiller felter")
+  @Key("clear")
   String clear();
 
   /**
-   * Translated "&Aring;pne vindu for registrering av fondsaktivitet.".
+   * Translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.".
    * 
-   * @return translated "&Aring;pne vindu for registrering av fondsaktivitet."
-   * @gwt.key trustStatusView_newTrustButton
+   * @return translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden."
    */
-  String trustStatusView_newTrustButton();
+  @DefaultStringValue("Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.")
+  @Key("day")
+  String day();
 
   /**
-   * Translated "Antall tiere.".
+   * Translated "Dagen posteringen skal registreres p&aring;.".
    * 
-   * @return translated "Antall tiere."
-   * @gwt.key number10
+   * @return translated "Dagen posteringen skal registreres p&aring;."
    */
-  String number10();
+  @DefaultStringValue("Dagen posteringen skal registreres p&aring;.")
+  @Key("day_single")
+  String day_single();
 
   /**
-   * Translated "Antall kronestykker.".
+   * Translated "Beskrivelse skal kortfattet oppsumere innholdet i posteringen.".
    * 
-   * @return translated "Antall kronestykker."
-   * @gwt.key number1
+   * @return translated "Beskrivelse skal kortfattet oppsumere innholdet i posteringen."
    */
-  String number1();
+  @DefaultStringValue("Beskrivelse skal kortfattet oppsumere innholdet i posteringen.")
+  @Key("description")
+  String description();
+
+  /**
+   * Translated "Personen er skjult fra s&oslash;k.".
+   * 
+   * @return translated "Personen er skjult fra s&oslash;k."
+   */
+  @DefaultStringValue("Personen er skjult fra s&oslash;k.")
+  @Key("hidden_person")
+  String hidden_person();
+
+  /**
+   * Translated "I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r.".
+   * 
+   * @return translated "I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r."
+   */
+  @DefaultStringValue("I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r.")
+  @Key("money_type")
+  String money_type();
 
   /**
    * Translated "M&aring;neden posteringen skal registreres p&aring;.".
    * 
    * @return translated "M&aring;neden posteringen skal registreres p&aring;."
-   * @gwt.key month
    */
+  @DefaultStringValue("M&aring;neden posteringen skal registreres p&aring;.")
+  @Key("month")
   String month();
 
   /**
    * Translated "Antall femti&oslash;rer.".
    * 
    * @return translated "Antall femti&oslash;rer."
-   * @gwt.key number0.5
    */
+  @DefaultStringValue("Antall femti&oslash;rer.")
+  @Key("number0.5")
   String number0_5();
+
+  /**
+   * Translated "Antall kronestykker.".
+   * 
+   * @return translated "Antall kronestykker."
+   */
+  @DefaultStringValue("Antall kronestykker.")
+  @Key("number1")
+  String number1();
+
+  /**
+   * Translated "Antall tiere.".
+   * 
+   * @return translated "Antall tiere."
+   */
+  @DefaultStringValue("Antall tiere.")
+  @Key("number10")
+  String number10();
+
+  /**
+   * Translated "Antall hundrelapper.".
+   * 
+   * @return translated "Antall hundrelapper."
+   */
+  @DefaultStringValue("Antall hundrelapper.")
+  @Key("number100")
+  String number100();
+
+  /**
+   * Translated "Antall tusenlapper.".
+   * 
+   * @return translated "Antall tusenlapper."
+   */
+  @DefaultStringValue("Antall tusenlapper.")
+  @Key("number1000")
+  String number1000();
+
+  /**
+   * Translated "Antall tyvekroner.".
+   * 
+   * @return translated "Antall tyvekroner."
+   */
+  @DefaultStringValue("Antall tyvekroner.")
+  @Key("number20")
+  String number20();
+
+  /**
+   * Translated "Antall tohundrelapper.".
+   * 
+   * @return translated "Antall tohundrelapper."
+   */
+  @DefaultStringValue("Antall tohundrelapper.")
+  @Key("number200")
+  String number200();
+
+  /**
+   * Translated "Antall femmere.".
+   * 
+   * @return translated "Antall femmere."
+   */
+  @DefaultStringValue("Antall femmere.")
+  @Key("number5")
+  String number5();
+
+  /**
+   * Translated "Antall femtilapper.".
+   * 
+   * @return translated "Antall femtilapper."
+   */
+  @DefaultStringValue("Antall femtilapper.")
+  @Key("number50")
+  String number50();
+
+  /**
+   * Translated "Antall femhundrelapper.".
+   * 
+   * @return translated "Antall femhundrelapper."
+   */
+  @DefaultStringValue("Antall femhundrelapper.")
+  @Key("number500")
+  String number500();
+
+  /**
+   * Translated "Postnr angir sorteringen som posteringen f&aring;r i den aktive m&aring;neden. Postnummeret tildeles automatisk og det er ikke behov for &aring; endre denne med mindre rekkef&oslash;lgen p&aring; posteringen m&aring; endres.".
+   * 
+   * @return translated "Postnr angir sorteringen som posteringen f&aring;r i den aktive m&aring;neden. Postnummeret tildeles automatisk og det er ikke behov for &aring; endre denne med mindre rekkef&oslash;lgen p&aring; posteringen m&aring; endres."
+   */
+  @DefaultStringValue("Postnr angir sorteringen som posteringen f&aring;r i den aktive m&aring;neden. Postnummeret tildeles automatisk og det er ikke behov for &aring; endre denne med mindre rekkef&oslash;lgen p&aring; posteringen m&aring; endres.")
+  @Key("postnmb")
+  String postnmb();
+
+  /**
+   * Translated "F&oslash;res p&aring; post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis.".
+   * 
+   * @return translated "F&oslash;res p&aring; post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis."
+   */
+  @DefaultStringValue("F&oslash;res p&aring; post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis.")
+  @Key("register_count_post")
+  String register_count_post();
 
   /**
    * Translated "Utf&oslash;rer s&oslash;k.".
    * 
    * @return translated "Utf&oslash;rer s&oslash;k."
-   * @gwt.key search
    */
+  @DefaultStringValue("Utf&oslash;rer s&oslash;k.")
+  @Key("search")
   String search();
 
   /**
    * Translated "Avbryter registreringen og lukker vinudet.".
    * 
    * @return translated "Avbryter registreringen og lukker vinudet."
-   * @gwt.key trustStatusView_cancelButton
    */
+  @DefaultStringValue("Avbryter registreringen og lukker vinudet.")
+  @Key("trustStatusView_cancelButton")
   String trustStatusView_cancelButton();
 
   /**
-   * Translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden.".
+   * Translated "&Aring;pne vindu for registrering av fondsaktivitet.".
    * 
-   * @return translated "Dagen posteringen skal registreres p&aring; i den aktive m&aring;neden."
-   * @gwt.key day
+   * @return translated "&Aring;pne vindu for registrering av fondsaktivitet."
    */
-  String day();
-
-  /**
-   * Translated "Antall femhundrelapper.".
-   * 
-   * @return translated "Antall femhundrelapper."
-   * @gwt.key number500
-   */
-  String number500();
-
-  /**
-   * Translated "Dagen posteringen skal registreres p&aring;.".
-   * 
-   * @return translated "Dagen posteringen skal registreres p&aring;."
-   * @gwt.key day_single
-   */
-  String day_single();
-
-  /**
-   * Translated "Bel&oslash;p for posteringen.".
-   * 
-   * @return translated "Bel&oslash;p for posteringen."
-   * @gwt.key amount
-   */
-  String amount();
-
-  /**
-   * Translated "F&oslash;res p&aring; post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis.".
-   * 
-   * @return translated "F&oslash;res p&aring; post angir hvilken hurtiregistrering som skal posteres. Ved lagring vil det alltid opprettes en debet post og en kredit post med bel&oslash;pet som inngis."
-   * @gwt.key register_count_post
-   */
-  String register_count_post();
+  @DefaultStringValue("&Aring;pne vindu for registrering av fondsaktivitet.")
+  @Key("trustStatusView_newTrustButton")
+  String trustStatusView_newTrustButton();
 
   /**
    * Translated "&Aring;ret posteringen skal registreres p&aring;.".
    * 
    * @return translated "&Aring;ret posteringen skal registreres p&aring;."
-   * @gwt.key year
    */
+  @DefaultStringValue("&Aring;ret posteringen skal registreres p&aring;.")
+  @Key("year")
   String year();
-
-  /**
-   * Translated "Antall tohundrelapper.".
-   * 
-   * @return translated "Antall tohundrelapper."
-   * @gwt.key number200
-   */
-  String number200();
-
-  /**
-   * Translated "Antall hundrelapper.".
-   * 
-   * @return translated "Antall hundrelapper."
-   * @gwt.key number100
-   */
-  String number100();
-
-  /**
-   * Translated "Beskrivelse skal kortfattet oppsumere innholdet i posteringen.".
-   * 
-   * @return translated "Beskrivelse skal kortfattet oppsumere innholdet i posteringen."
-   * @gwt.key description
-   */
-  String description();
-
-  /**
-   * Translated "Antall tyvekroner.".
-   * 
-   * @return translated "Antall tyvekroner."
-   * @gwt.key number20
-   */
-  String number20();
-
-  /**
-   * Translated "Lagrer posteringen.".
-   * 
-   * @return translated "Lagrer posteringen."
-   * @gwt.key RegisterHappening_saveButton
-   */
-  String RegisterHappening_saveButton();
 }

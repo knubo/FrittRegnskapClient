@@ -1,2033 +1,2312 @@
 package no.knubo.accounting.client;
 
-
 /**
- * Interface to represent the constants contained in resource  bundle:
- * 	'/Users/knuterikborgen/Documents/workspacephp/RegnskapClient/src/no/knubo/accounting/client/Elements.properties'.
+ * Interface to represent the constants contained in resource bundle:
+ * 	'/Users/knuterikborgen/kode/workspace/RegnskapClient/src/no/knubo/accounting/client/Elements.properties'.
  */
 public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
   /**
+   * Translated "no".
+   * 
+   * @return translated "no"
+   */
+  @DefaultStringValue("no")
+  @Key("HELP_ROOT")
+  String HELP_ROOT();
+
+  /**
+   * Translated "Lagre".
+   * 
+   * @return translated "Lagre"
+   */
+  @DefaultStringValue("Lagre")
+  @Key("RegisterHappening.saveButton")
+  String RegisterHappening_saveButton();
+
+  /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   */
+  @DefaultStringValue("Avbryt")
+  @Key("abort")
+  String abort();
+
+  /**
    * Translated "Tilgang".
    * 
    * @return translated "Tilgang"
-   * @gwt.key access
    */
+  @DefaultStringValue("Tilgang")
+  @Key("access")
   String access();
 
   /**
-   * Translated "Last ned forrige sikkerhetskopi".
+   * Translated "Konto".
    * 
-   * @return translated "Last ned forrige sikkerhetskopi"
-   * @gwt.key backup_download_last
+   * @return translated "Konto"
    */
-  String backup_download_last();
-
-  /**
-   * Translated "Massebrev".
-   * 
-   * @return translated "Massebrev"
-   * @gwt.key menuitem_report_letter
-   */
-  String menuitem_report_letter();
-
-  /**
-   * Translated "Avslutt år".
-   * 
-   * @return translated "Avslutt år"
-   * @gwt.key menuitem_endyear
-   */
-  String menuitem_endyear();
-
-  /**
-   * Translated "Personer".
-   * 
-   * @return translated "Personer"
-   * @gwt.key menu_people
-   */
-  String menu_people();
-
-  /**
-   * Translated "Filer".
-   * 
-   * @return translated "Filer"
-   * @gwt.key files
-   */
-  String files();
-
-  /**
-   * Translated "Utgifter".
-   * 
-   * @return translated "Utgifter"
-   * @gwt.key expences
-   */
-  String expences();
-
-  /**
-   * Translated "Avbryt	".
-   * 
-   * @return translated "Avbryt	"
-   * @gwt.key person_pick_close
-   */
-  String person_pick_close();
-
-  /**
-   * Translated "Nullstill".
-   * 
-   * @return translated "Nullstill"
-   * @gwt.key clear
-   */
-  String clear();
-
-  /**
-   * Translated "Start sikkerhetskopiering".
-   * 
-   * @return translated "Start sikkerhetskopiering"
-   * @gwt.key backup_start
-   */
-  String backup_start();
-
-  /**
-   * Translated "Abonnenter av nyhetsbrev".
-   * 
-   * @return translated "Abonnenter av nyhetsbrev"
-   * @gwt.key mail_query_newsletter
-   */
-  String mail_query_newsletter();
-
-  /**
-   * Translated "Fond".
-   * 
-   * @return translated "Fond"
-   * @gwt.key menu_trust
-   */
-  String menu_trust();
-
-  /**
-   * Translated "Epostutsendelse".
-   * 
-   * @return translated "Epostutsendelse"
-   * @gwt.key menuitem_report_email
-   */
-  String menuitem_report_email();
+  @DefaultStringValue("Konto")
+  @Key("account")
+  String account();
 
   /**
    * Translated "Samlekonto kontoplan".
    * 
    * @return translated "Samlekonto kontoplan"
-   * @gwt.key account_collection_accountplan
    */
+  @DefaultStringValue("Samlekonto kontoplan")
+  @Key("account_collection_accountplan")
   String account_collection_accountplan();
 
   /**
-   * Translated "Post".
+   * Translated "Samlekonto månedsoversikt".
    * 
-   * @return translated "Post"
-   * @gwt.key post
+   * @return translated "Samlekonto månedsoversikt"
    */
-  String post();
-
-  /**
-   * Translated "Avbryt".
-   * 
-   * @return translated "Avbryt"
-   * @gwt.key cancel
-   */
-  String cancel();
-
-  /**
-   * Translated "Medlemmer".
-   * 
-   * @return translated "Medlemmer"
-   * @gwt.key mail_query_members
-   */
-  String mail_query_members();
-
-  /**
-   * Translated "Semestre".
-   * 
-   * @return translated "Semestre"
-   * @gwt.key menuitem_semesters
-   */
-  String menuitem_semesters();
-
-  /**
-   * Translated "Registrer medlemsskap".
-   * 
-   * @return translated "Registrer medlemsskap"
-   * @gwt.key register_membership
-   */
-  String register_membership();
-
-  /**
-   * Translated "Avbryt".
-   * 
-   * @return translated "Avbryt"
-   * @gwt.key trustStatusView_cancelButton
-   */
-  String trustStatusView_cancelButton();
-
-  /**
-   * Translated "Vis alle medlemskap".
-   * 
-   * @return translated "Vis alle medlemskap"
-   * @gwt.key menuitem_showallmembers
-   */
-  String menuitem_showallmembers();
-
-  /**
-   * Translated "Avslutt måned".
-   * 
-   * @return translated "Avslutt måned"
-   * @gwt.key menuitem_endmonth
-   */
-  String menuitem_endmonth();
-
-  /**
-   * Translated "Norge".
-   * 
-   * @return translated "Norge"
-   * @gwt.key country_norway
-   */
-  String country_norway();
-
-  /**
-   * Translated "Budsjetert resultat".
-   * 
-   * @return translated "Budsjetert resultat"
-   * @gwt.key budgeted_result
-   */
-  String budgeted_result();
-
-  /**
-   * Translated "Feil".
-   * 
-   * @return translated "Feil"
-   * @gwt.key error
-   */
-  String error();
-
-  /**
-   * Translated "Starter sikkerhetskopiering".
-   * 
-   * @return translated "Starter sikkerhetskopiering"
-   * @gwt.key backup_init
-   */
-  String backup_init();
-
-  /**
-   * Translated "Progresjon".
-   * 
-   * @return translated "Progresjon"
-   * @gwt.key backup_progress
-   */
-  String backup_progress();
-
-  /**
-   * Translated "Ny konto".
-   * 
-   * @return translated "Ny konto"
-   * @gwt.key new_account
-   */
-  String new_account();
-
-  /**
-   * Translated "Eksporter til regneark".
-   * 
-   * @return translated "Eksporter til regneark"
-   * @gwt.key export_spreadsheet
-   */
-  String export_spreadsheet();
-
-  /**
-   * Translated "Oprett/Endre kontotype".
-   * 
-   * @return translated "Oprett/Endre kontotype"
-   * @gwt.key title_edit_posttype
-   */
-  String title_edit_posttype();
-
-  /**
-   * Translated "Fondskonto".
-   * 
-   * @return translated "Fondskonto"
-   * @gwt.key trust_account
-   */
-  String trust_account();
-
-  /**
-   * Translated "Danmark".
-   * 
-   * @return translated "Danmark"
-   * @gwt.key country_denmark
-   */
-  String country_denmark();
-
-  /**
-   * Translated "Oversikt over medlemmers adresser".
-   * 
-   * @return translated "Oversikt over medlemmers adresser"
-   * @gwt.key title_report_membersaddresses
-   */
-  String title_report_membersaddresses();
-
-  /**
-   * Translated "Treningsmedlemsskap".
-   * 
-   * @return translated "Treningsmedlemsskap"
-   * @gwt.key train_membership
-   */
-  String train_membership();
-
-  /**
-   * Translated "Vis kun poster med valgt konto".
-   * 
-   * @return translated "Vis kun poster med valgt konto"
-   * @gwt.key show_only_selcted_post
-   */
-  String show_only_selcted_post();
-
-  /**
-   * Translated "Lagre".
-   * 
-   * @return translated "Lagre"
-   * @gwt.key RegisterHappening.saveButton
-   */
-  String RegisterHappening_saveButton();
-
-  /**
-   * Translated "Brukere".
-   * 
-   * @return translated "Brukere"
-   * @gwt.key title_user_adm
-   */
-  String title_user_adm();
-
-  /**
-   * Translated "Sikkerhetskopi av database".
-   * 
-   * @return translated "Sikkerhetskopi av database"
-   * @gwt.key title_back
-   */
-  String title_back();
-
-  /**
-   * Translated "Ungdomsmedlemsskap".
-   * 
-   * @return translated "Ungdomsmedlemsskap"
-   * @gwt.key youth_membership
-   */
-  String youth_membership();
-
-  /**
-   * Translated "Valør:".
-   * 
-   * @return translated "Valør:"
-   * @gwt.key money_type
-   */
-  String money_type();
-
-  /**
-   * Translated "Oppdater".
-   * 
-   * @return translated "Oppdater"
-   * @gwt.key update
-   */
-  String update();
-
-  /**
-   * Translated "Person".
-   * 
-   * @return translated "Person"
-   * @gwt.key person
-   */
-  String person();
-
-  /**
-   * Translated "Info".
-   * 
-   * @return translated "Info"
-   * @gwt.key menu_info
-   */
-  String menu_info();
-
-  /**
-   * Translated "Følgende poster vil overføres til neste måned:".
-   * 
-   * @return translated "Følgende poster vil overføres til neste måned:"
-   * @gwt.key end_month_explain
-   */
-  String end_month_explain();
-
-  /**
-   * Translated "Fødselsdato".
-   * 
-   * @return translated "Fødselsdato"
-   * @gwt.key birthdate
-   */
-  String birthdate();
-
-  /**
-   * Translated "Liste over medlemmer med adresser".
-   * 
-   * @return translated "Liste over medlemmer med adresser"
-   * @gwt.key menuitem_report_addresses
-   */
-  String menuitem_report_addresses();
-
-  /**
-   * Translated "Alder".
-   * 
-   * @return translated "Alder"
-   * @gwt.key age
-   */
-  String age();
-
-  /**
-   * Translated "Juli".
-   * 
-   * @return translated "Juli"
-   * @gwt.key month_07
-   */
-  String month_07();
-
-  /**
-   * Translated "Alle inntekter".
-   * 
-   * @return translated "Alle inntekter"
-   * @gwt.key earnings_all
-   */
-  String earnings_all();
-
-  /**
-   * Translated "Budsjeterte utgifter".
-   * 
-   * @return translated "Budsjeterte utgifter"
-   * @gwt.key budgeted_expences
-   */
-  String budgeted_expences();
-
-  /**
-   * Translated "Pakker filer".
-   * 
-   * @return translated "Pakker filer"
-   * @gwt.key backup_zipping
-   */
-  String backup_zipping();
-
-  /**
-   * Translated "Innstillinger".
-   * 
-   * @return translated "Innstillinger"
-   * @gwt.key menu_settings
-   */
-  String menu_settings();
-
-  /**
-   * Translated "By".
-   * 
-   * @return translated "By"
-   * @gwt.key city
-   */
-  String city();
-
-  /**
-   * Translated "Valør".
-   * 
-   * @return translated "Valør"
-   * @gwt.key value
-   */
-  String value();
-
-  /**
-   * Translated "Brukernavn".
-   * 
-   * @return translated "Brukernavn"
-   * @gwt.key user
-   */
-  String user();
+  @DefaultStringValue("Samlekonto månedsoversikt")
+  @Key("account_collection_month")
+  String account_collection_month();
 
   /**
    * Translated "Aksjon".
    * 
    * @return translated "Aksjon"
-   * @gwt.key action
    */
+  @DefaultStringValue("Aksjon")
+  @Key("action")
   String action();
-
-  /**
-   * Translated "Avslutt semester".
-   * 
-   * @return translated "Avslutt semester"
-   * @gwt.key menuitem_endsemester
-   */
-  String menuitem_endsemester();
-
-  /**
-   * Translated "Konti ikke i bruk".
-   * 
-   * @return translated "Konti ikke i bruk"
-   * @gwt.key title_posttype_edit_not_in_use
-   */
-  String title_posttype_edit_not_in_use();
-
-  /**
-   * Translated "Debetpost".
-   * 
-   * @return translated "Debetpost"
-   * @gwt.key trust_debetpost
-   */
-  String trust_debetpost();
-
-  /**
-   * Translated "Dag".
-   * 
-   * @return translated "Dag"
-   * @gwt.key day_single
-   */
-  String day_single();
-
-  /**
-   * Translated "Land".
-   * 
-   * @return translated "Land"
-   * @gwt.key country
-   */
-  String country();
-
-  /**
-   * Translated "DEBET post".
-   * 
-   * @return translated "DEBET post"
-   * @gwt.key debet_post
-   */
-  String debet_post();
-
-  /**
-   * Translated "Januar".
-   * 
-   * @return translated "Januar"
-   * @gwt.key month_01
-   */
-  String month_01();
-
-  /**
-   * Translated "Logg".
-   * 
-   * @return translated "Logg"
-   * @gwt.key log
-   */
-  String log();
-
-  /**
-   * Translated "Alle medlemskap".
-   * 
-   * @return translated "Alle medlemskap"
-   * @gwt.key member_heading_all
-   */
-  String member_heading_all();
-
-  /**
-   * Translated "Vis kursmedlemsskap".
-   * 
-   * @return translated "Vis kursmedlemsskap"
-   * @gwt.key menuitem_showclassmembers
-   */
-  String menuitem_showclassmembers();
-
-  /**
-   * Translated "Fond".
-   * 
-   * @return translated "Fond"
-   * @gwt.key menuitem_edit_trust
-   */
-  String menuitem_edit_trust();
-
-  /**
-   * Translated "Fradato".
-   * 
-   * @return translated "Fradato"
-   * @gwt.key from_date
-   */
-  String from_date();
-
-  /**
-   * Translated "Årsmedlemskap".
-   * 
-   * @return translated "Årsmedlemskap"
-   * @gwt.key year_membership
-   */
-  String year_membership();
-
-  /**
-   * Translated "Kvinne".
-   * 
-   * @return translated "Kvinne"
-   * @gwt.key gender_female
-   */
-  String gender_female();
-
-  /**
-   * Translated "Id".
-   * 
-   * @return translated "Id"
-   * @gwt.key id
-   */
-  String id();
-
-  /**
-   * Translated "Treningsmedlemmer".
-   * 
-   * @return translated "Treningsmedlemmer"
-   * @gwt.key member_heading_train
-   */
-  String member_heading_train();
-
-  /**
-   * Translated "Hjelp".
-   * 
-   * @return translated "Hjelp"
-   * @gwt.key help
-   */
-  String help();
-
-  /**
-   * Translated "Velg person".
-   * 
-   * @return translated "Velg person"
-   * @gwt.key choose_person
-   */
-  String choose_person();
-
-  /**
-   * Translated "Standardbilag".
-   * 
-   * @return translated "Standardbilag"
-   * @gwt.key menuitem_edit_happening
-   */
-  String menuitem_edit_happening();
-
-  /**
-   * Translated "Mobil".
-   * 
-   * @return translated "Mobil"
-   * @gwt.key cellphone
-   */
-  String cellphone();
-
-  /**
-   * Translated "Ny fondaktivitet".
-   * 
-   * @return translated "Ny fondaktivitet"
-   * @gwt.key trustStatusView_newTrustButton
-   */
-  String trustStatusView_newTrustButton();
-
-  /**
-   * Translated "Konti for status for utvalgte konti".
-   * 
-   * @return translated "Konti for status for utvalgte konti"
-   * @gwt.key menuitem_accounttrack
-   */
-  String menuitem_accounttrack();
-
-  /**
-   * Translated "Oversikt over medlemmer per fødselsdato".
-   * 
-   * @return translated "Oversikt over medlemmer per fødselsdato"
-   * @gwt.key title_report_membersbirth
-   */
-  String title_report_membersbirth();
-
-  /**
-   * Translated "Måned".
-   * 
-   * @return translated "Måned"
-   * @gwt.key month
-   */
-  String month();
-
-  /**
-   * Translated "Pris for trening".
-   * 
-   * @return translated "Pris for trening"
-   * @gwt.key cost_practice
-   */
-  String cost_practice();
-
-  /**
-   * Translated "Lagre".
-   * 
-   * @return translated "Lagre"
-   * @gwt.key save
-   */
-  String save();
-
-  /**
-   * Translated "Full tilgang".
-   * 
-   * @return translated "Full tilgang"
-   * @gwt.key full_access
-   */
-  String full_access();
-
-  /**
-   * Translated "Vedlikehold filer".
-   * 
-   * @return translated "Vedlikehold filer"
-   * @gwt.key menuitem_fileManage
-   */
-  String menuitem_fileManage();
-
-  /**
-   * Translated "Valgte konti".
-   * 
-   * @return translated "Valgte konti"
-   * @gwt.key chosen_accounts
-   */
-  String chosen_accounts();
-
-  /**
-   * Translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag.".
-   * 
-   * @return translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag."
-   * @gwt.key register_membership_help
-   */
-  String register_membership_help();
-
-  /**
-   * Translated "Menn".
-   * 
-   * @return translated "Menn"
-   * @gwt.key gender_males
-   */
-  String gender_males();
-
-  /**
-   * Translated "Fornavn".
-   * 
-   * @return translated "Fornavn"
-   * @gwt.key firstname
-   */
-  String firstname();
-
-  /**
-   * Translated "no".
-   * 
-   * @return translated "no"
-   * @gwt.key HELP_ROOT
-   */
-  String HELP_ROOT();
-
-  /**
-   * Translated "Laster inn siden...".
-   * 
-   * @return translated "Laster inn siden..."
-   * @gwt.key loding_page
-   */
-  String loding_page();
-
-  /**
-   * Translated "Standardinnstillinger for regnskap".
-   * 
-   * @return translated "Standardinnstillinger for regnskap"
-   * @gwt.key standardsettings
-   */
-  String standardsettings();
-
-  /**
-   * Translated "Prosjekter".
-   * 
-   * @return translated "Prosjekter"
-   * @gwt.key menuitem_projects
-   */
-  String menuitem_projects();
-
-  /**
-   * Translated "Pris for kurs".
-   * 
-   * @return translated "Pris for kurs"
-   * @gwt.key cost_course
-   */
-  String cost_course();
-
-  /**
-   * Translated "Linjer".
-   * 
-   * @return translated "Linjer"
-   * @gwt.key lines
-   */
-  String lines();
-
-  /**
-   * Translated "Registrering av medlemsskap".
-   * 
-   * @return translated "Registrering av medlemsskap"
-   * @gwt.key register_membership_header
-   */
-  String register_membership_header();
-
-  /**
-   * Translated "Betalingsfrist".
-   * 
-   * @return translated "Betalingsfrist"
-   * @gwt.key massletter_due_date
-   */
-  String massletter_due_date();
-
-  /**
-   * Translated "Kun lesetilgang".
-   * 
-   * @return translated "Kun lesetilgang"
-   * @gwt.key read_only_access
-   */
-  String read_only_access();
-
-  /**
-   * Translated "Konti i bruk".
-   * 
-   * @return translated "Konti i bruk"
-   * @gwt.key title_posttype_edit_in_use
-   */
-  String title_posttype_edit_in_use();
-
-  /**
-   * Translated "Høst".
-   * 
-   * @return translated "Høst"
-   * @gwt.key fall
-   */
-  String fall();
-
-  /**
-   * Translated "Opprett".
-   * 
-   * @return translated "Opprett"
-   * @gwt.key create
-   */
-  String create();
-
-  /**
-   * Translated "Aksjon fondskonto".
-   * 
-   * @return translated "Aksjon fondskonto"
-   * @gwt.key trust_actiontrust
-   */
-  String trust_actiontrust();
-
-  /**
-   * Translated "Søk etter person".
-   * 
-   * @return translated "Søk etter person"
-   * @gwt.key menuitem_findperson
-   */
-  String menuitem_findperson();
-
-  /**
-   * Translated "Passord".
-   * 
-   * @return translated "Passord"
-   * @gwt.key password
-   */
-  String password();
-
-  /**
-   * Translated "Avbryt".
-   * 
-   * @return translated "Avbryt"
-   * @gwt.key abort
-   */
-  String abort();
-
-  /**
-   * Translated "Sum".
-   * 
-   * @return translated "Sum"
-   * @gwt.key sum
-   */
-  String sum();
 
   /**
    * Translated "Legg til".
    * 
    * @return translated "Legg til"
-   * @gwt.key add
    */
+  @DefaultStringValue("Legg til")
+  @Key("add")
   String add();
 
   /**
-   * Translated "Vis medlemsskap".
+   * Translated "Adresse".
    * 
-   * @return translated "Vis medlemsskap"
-   * @gwt.key menuitem_showmembers
+   * @return translated "Adresse"
    */
-  String menuitem_showmembers();
+  @DefaultStringValue("Adresse")
+  @Key("address")
+  String address();
 
   /**
-   * Translated "Ny fondsaksjon".
+   * Translated "Alder".
    * 
-   * @return translated "Ny fondsaksjon"
-   * @gwt.key new_trustaction
+   * @return translated "Alder"
    */
-  String new_trustaction();
-
-  /**
-   * Translated "Personer med Epostadresser".
-   * 
-   * @return translated "Personer med Epostadresser"
-   * @gwt.key title_report_users_email
-   */
-  String title_report_users_email();
-
-  /**
-   * Translated "Kategori".
-   * 
-   * @return translated "Kategori"
-   * @gwt.key category
-   */
-  String category();
-
-  /**
-   * Translated "Mangler".
-   * 
-   * @return translated "Mangler"
-   * @gwt.key missing
-   */
-  String missing();
-
-  /**
-   * Translated "Status".
-   * 
-   * @return translated "Status"
-   * @gwt.key status
-   */
-  String status();
-
-  /**
-   * Translated "Fondsaksjoner".
-   * 
-   * @return translated "Fondsaksjoner"
-   * @gwt.key menuitem_edit_trust_actions
-   */
-  String menuitem_edit_trust_actions();
-
-  /**
-   * Translated "Detaljer for utvalgte posteringer".
-   * 
-   * @return translated "Detaljer for utvalgte posteringer"
-   * @gwt.key title_report_accountlines
-   */
-  String title_report_accountlines();
-
-  /**
-   * Translated "Etternavn".
-   * 
-   * @return translated "Etternavn"
-   * @gwt.key lastname
-   */
-  String lastname();
+  @DefaultStringValue("Alder")
+  @Key("age")
+  String age();
 
   /**
    * Translated "Beløp".
    * 
    * @return translated "Beløp"
-   * @gwt.key amount
    */
+  @DefaultStringValue("Beløp")
+  @Key("amount")
   String amount();
 
   /**
-   * Translated "Opprett ny person".
+   * Translated "Legg ved filer".
    * 
-   * @return translated "Opprett ny person"
-   * @gwt.key menuitem_addperson
+   * @return translated "Legg ved filer"
    */
-  String menuitem_addperson();
-
-  /**
-   * Translated "Nytt standardbilag".
-   * 
-   * @return translated "Nytt standardbilag"
-   * @gwt.key new_happening
-   */
-  String new_happening();
-
-  /**
-   * Translated "År".
-   * 
-   * @return translated "År"
-   * @gwt.key year
-   */
-  String year();
-
-  /**
-   * Translated "Oversikt for år".
-   * 
-   * @return translated "Oversikt for år"
-   * @gwt.key menuitem_report_year
-   */
-  String menuitem_report_year();
-
-  /**
-   * Translated "Prosjekt".
-   * 
-   * @return translated "Prosjekt"
-   * @gwt.key project
-   */
-  String project();
-
-  /**
-   * Translated "Ny fondaktivitet".
-   * 
-   * @return translated "Ny fondaktivitet"
-   * @gwt.key new_trust
-   */
-  String new_trust();
-
-  /**
-   * Translated "Antall".
-   * 
-   * @return translated "Antall"
-   * @gwt.key count
-   */
-  String count();
-
-  /**
-   * Translated "Differanse".
-   * 
-   * @return translated "Differanse"
-   * @gwt.key budget_differance
-   */
-  String budget_differance();
-
-  /**
-   * Translated "Endre person".
-   * 
-   * @return translated "Endre person"
-   * @gwt.key title_change_person
-   */
-  String title_change_person();
-
-  /**
-   * Translated "Liste over medlemmer per aldersgruppe".
-   * 
-   * @return translated "Liste over medlemmer per aldersgruppe"
-   * @gwt.key menuitem_report_member_per_year
-   */
-  String menuitem_report_member_per_year();
-
-  /**
-   * Translated "Logg inn".
-   * 
-   * @return translated "Logg inn"
-   * @gwt.key login
-   */
-  String login();
+  @DefaultStringValue("Legg ved filer")
+  @Key("attach_files")
+  String attach_files();
 
   /**
    * Translated "Bilag".
    * 
    * @return translated "Bilag"
-   * @gwt.key attachment
    */
+  @DefaultStringValue("Bilag")
+  @Key("attachment")
   String attachment();
 
   /**
-   * Translated "Mottagere".
+   * Translated "Tilgjenglige konti".
    * 
-   * @return translated "Mottagere"
-   * @gwt.key mail_receivers
+   * @return translated "Tilgjenglige konti"
    */
-  String mail_receivers();
+  @DefaultStringValue("Tilgjenglige konti")
+  @Key("available_accounts")
+  String available_accounts();
 
   /**
-   * Translated "Vis detaljer for utvalgte posteringer".
+   * Translated "Til søk".
    * 
-   * @return translated "Vis detaljer for utvalgte posteringer"
-   * @gwt.key menuitem_report_selectedlines
+   * @return translated "Til søk"
    */
-  String menuitem_report_selectedlines();
+  @DefaultStringValue("Til søk")
+  @Key("back_search")
+  String back_search();
 
   /**
-   * Translated "Epost tittel".
+   * Translated "Last ned forrige sikkerhetskopi".
    * 
-   * @return translated "Epost tittel"
-   * @gwt.key mail_title
+   * @return translated "Last ned forrige sikkerhetskopi"
    */
-  String mail_title();
+  @DefaultStringValue("Last ned forrige sikkerhetskopi")
+  @Key("backup_download_last")
+  String backup_download_last();
 
   /**
-   * Translated "DEB/KRED".
+   * Translated "Laster ned zipfil".
    * 
-   * @return translated "DEB/KRED"
-   * @gwt.key debkred
+   * @return translated "Laster ned zipfil"
    */
-  String debkred();
+  @DefaultStringValue("Laster ned zipfil")
+  @Key("backup_downloading")
+  String backup_downloading();
 
   /**
-   * Translated "Nyhetsbrev".
+   * Translated "Klarte ikke operasjonen:".
    * 
-   * @return translated "Nyhetsbrev"
-   * @gwt.key newsletter
+   * @return translated "Klarte ikke operasjonen:"
    */
-  String newsletter();
+  @DefaultStringValue("Klarte ikke operasjonen:")
+  @Key("backup_error")
+  String backup_error();
+
+  /**
+   * Translated "Starter sikkerhetskopiering".
+   * 
+   * @return translated "Starter sikkerhetskopiering"
+   */
+  @DefaultStringValue("Starter sikkerhetskopiering")
+  @Key("backup_init")
+  String backup_init();
 
   /**
    * Translated "Siste sikkerhetskopi ".
    * 
    * @return translated "Siste sikkerhetskopi "
-   * @gwt.key backup_last
    */
+  @DefaultStringValue("Siste sikkerhetskopi ")
+  @Key("backup_last")
   String backup_last();
+
+  /**
+   * Translated "Progresjon".
+   * 
+   * @return translated "Progresjon"
+   */
+  @DefaultStringValue("Progresjon")
+  @Key("backup_progress")
+  String backup_progress();
+
+  /**
+   * Translated "Start sikkerhetskopiering".
+   * 
+   * @return translated "Start sikkerhetskopiering"
+   */
+  @DefaultStringValue("Start sikkerhetskopiering")
+  @Key("backup_start")
+  String backup_start();
+
+  /**
+   * Translated "Tabell:".
+   * 
+   * @return translated "Tabell:"
+   */
+  @DefaultStringValue("Tabell:")
+  @Key("backup_table")
+  String backup_table();
+
+  /**
+   * Translated "Antall tabeller som skal sikkerhetskopieres:".
+   * 
+   * @return translated "Antall tabeller som skal sikkerhetskopieres:"
+   */
+  @DefaultStringValue("Antall tabeller som skal sikkerhetskopieres:")
+  @Key("backup_table_count")
+  String backup_table_count();
+
+  /**
+   * Translated "Pakker filer".
+   * 
+   * @return translated "Pakker filer"
+   */
+  @DefaultStringValue("Pakker filer")
+  @Key("backup_zipping")
+  String backup_zipping();
+
+  /**
+   * Translated "Fødselsdato".
+   * 
+   * @return translated "Fødselsdato"
+   */
+  @DefaultStringValue("Fødselsdato")
+  @Key("birthdate")
+  String birthdate();
+
+  /**
+   * Translated "Differanse".
+   * 
+   * @return translated "Differanse"
+   */
+  @DefaultStringValue("Differanse")
+  @Key("budget_differance")
+  String budget_differance();
+
+  /**
+   * Translated "Resultat".
+   * 
+   * @return translated "Resultat"
+   */
+  @DefaultStringValue("Resultat")
+  @Key("budget_result")
+  String budget_result();
+
+  /**
+   * Translated "Faktisk resultat".
+   * 
+   * @return translated "Faktisk resultat"
+   */
+  @DefaultStringValue("Faktisk resultat")
+  @Key("budget_result_actual")
+  String budget_result_actual();
+
+  /**
+   * Translated "Budsjeterte inntekter".
+   * 
+   * @return translated "Budsjeterte inntekter"
+   */
+  @DefaultStringValue("Budsjeterte inntekter")
+  @Key("budgeted_earnins")
+  String budgeted_earnins();
+
+  /**
+   * Translated "Budsjeterte utgifter".
+   * 
+   * @return translated "Budsjeterte utgifter"
+   */
+  @DefaultStringValue("Budsjeterte utgifter")
+  @Key("budgeted_expences")
+  String budgeted_expences();
+
+  /**
+   * Translated "Budsjetert resultat".
+   * 
+   * @return translated "Budsjetert resultat"
+   */
+  @DefaultStringValue("Budsjetert resultat")
+  @Key("budgeted_result")
+  String budgeted_result();
+
+  /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   */
+  @DefaultStringValue("Avbryt")
+  @Key("cancel")
+  String cancel();
+
+  /**
+   * Translated "Kategori".
+   * 
+   * @return translated "Kategori"
+   */
+  @DefaultStringValue("Kategori")
+  @Key("category")
+  String category();
+
+  /**
+   * Translated "Mobil".
+   * 
+   * @return translated "Mobil"
+   */
+  @DefaultStringValue("Mobil")
+  @Key("cellphone")
+  String cellphone();
+
+  /**
+   * Translated "Velg filer som skal vedleggges eposten.".
+   * 
+   * @return translated "Velg filer som skal vedleggges eposten."
+   */
+  @DefaultStringValue("Velg filer som skal vedleggges eposten.")
+  @Key("choose_attachments")
+  String choose_attachments();
+
+  /**
+   * Translated "Velg filer".
+   * 
+   * @return translated "Velg filer"
+   */
+  @DefaultStringValue("Velg filer")
+  @Key("choose_files")
+  String choose_files();
+
+  /**
+   * Translated "Velg person".
+   * 
+   * @return translated "Velg person"
+   */
+  @DefaultStringValue("Velg person")
+  @Key("choose_person")
+  String choose_person();
+
+  /**
+   * Translated "Valgte konti".
+   * 
+   * @return translated "Valgte konti"
+   */
+  @DefaultStringValue("Valgte konti")
+  @Key("chosen_accounts")
+  String chosen_accounts();
+
+  /**
+   * Translated "By".
+   * 
+   * @return translated "By"
+   */
+  @DefaultStringValue("By")
+  @Key("city")
+  String city();
+
+  /**
+   * Translated "Nullstill".
+   * 
+   * @return translated "Nullstill"
+   */
+  @DefaultStringValue("Nullstill")
+  @Key("clear")
+  String clear();
+
+  /**
+   * Translated "Klubbkonto".
+   * 
+   * @return translated "Klubbkonto"
+   */
+  @DefaultStringValue("Klubbkonto")
+  @Key("club_account")
+  String club_account();
+
+  /**
+   * Translated "Pris for kurs".
+   * 
+   * @return translated "Pris for kurs"
+   */
+  @DefaultStringValue("Pris for kurs")
+  @Key("cost_course")
+  String cost_course();
+
+  /**
+   * Translated "Pris for meldmesskap".
+   * 
+   * @return translated "Pris for meldmesskap"
+   */
+  @DefaultStringValue("Pris for meldmesskap")
+  @Key("cost_membership")
+  String cost_membership();
+
+  /**
+   * Translated "Pris for trening".
+   * 
+   * @return translated "Pris for trening"
+   */
+  @DefaultStringValue("Pris for trening")
+  @Key("cost_practice")
+  String cost_practice();
+
+  /**
+   * Translated "Antall".
+   * 
+   * @return translated "Antall"
+   */
+  @DefaultStringValue("Antall")
+  @Key("count")
+  String count();
+
+  /**
+   * Translated "Telling".
+   * 
+   * @return translated "Telling"
+   */
+  @DefaultStringValue("Telling")
+  @Key("count_header")
+  String count_header();
+
+  /**
+   * Translated "Telling påkrevd".
+   * 
+   * @return translated "Telling påkrevd"
+   */
+  @DefaultStringValue("Telling påkrevd")
+  @Key("count_required")
+  String count_required();
+
+  /**
+   * Translated "Land".
+   * 
+   * @return translated "Land"
+   */
+  @DefaultStringValue("Land")
+  @Key("country")
+  String country();
+
+  /**
+   * Translated "Danmark".
+   * 
+   * @return translated "Danmark"
+   */
+  @DefaultStringValue("Danmark")
+  @Key("country_denmark")
+  String country_denmark();
+
+  /**
+   * Translated "Finland".
+   * 
+   * @return translated "Finland"
+   */
+  @DefaultStringValue("Finland")
+  @Key("country_finland")
+  String country_finland();
+
+  /**
+   * Translated "Norge".
+   * 
+   * @return translated "Norge"
+   */
+  @DefaultStringValue("Norge")
+  @Key("country_norway")
+  String country_norway();
+
+  /**
+   * Translated "Other".
+   * 
+   * @return translated "Other"
+   */
+  @DefaultStringValue("Other")
+  @Key("country_other")
+  String country_other();
+
+  /**
+   * Translated "Sverige".
+   * 
+   * @return translated "Sverige"
+   */
+  @DefaultStringValue("Sverige")
+  @Key("country_sweeden")
+  String country_sweeden();
+
+  /**
+   * Translated "Kursmedlemsskap".
+   * 
+   * @return translated "Kursmedlemsskap"
+   */
+  @DefaultStringValue("Kursmedlemsskap")
+  @Key("course_membership")
+  String course_membership();
+
+  /**
+   * Translated "Opprett".
+   * 
+   * @return translated "Opprett"
+   */
+  @DefaultStringValue("Opprett")
+  @Key("create")
+  String create();
+
+  /**
+   * Translated "Dato".
+   * 
+   * @return translated "Dato"
+   */
+  @DefaultStringValue("Dato")
+  @Key("date")
+  String date();
+
+  /**
+   * Translated "Dag".
+   * 
+   * @return translated "Dag"
+   */
+  @DefaultStringValue("Dag")
+  @Key("day")
+  String day();
+
+  /**
+   * Translated "Dag".
+   * 
+   * @return translated "Dag"
+   */
+  @DefaultStringValue("Dag")
+  @Key("day_single")
+  String day_single();
+
+  /**
+   * Translated "DEBET".
+   * 
+   * @return translated "DEBET"
+   */
+  @DefaultStringValue("DEBET")
+  @Key("debet")
+  String debet();
+
+  /**
+   * Translated "DEBET post".
+   * 
+   * @return translated "DEBET post"
+   */
+  @DefaultStringValue("DEBET post")
+  @Key("debet_post")
+  String debet_post();
+
+  /**
+   * Translated "DEB/KRED".
+   * 
+   * @return translated "DEB/KRED"
+   */
+  @DefaultStringValue("DEB/KRED")
+  @Key("debkred")
+  String debkred();
+
+  /**
+   * Translated "Beskrivelse".
+   * 
+   * @return translated "Beskrivelse"
+   */
+  @DefaultStringValue("Beskrivelse")
+  @Key("description")
+  String description();
+
+  /**
+   * Translated "Detaljer".
+   * 
+   * @return translated "Detaljer"
+   */
+  @DefaultStringValue("Detaljer")
+  @Key("detailsline")
+  String detailsline();
+
+  /**
+   * Translated "Kjør rapport".
+   * 
+   * @return translated "Kjør rapport"
+   */
+  @DefaultStringValue("Kjør rapport")
+  @Key("do_report")
+  String do_report();
+
+  /**
+   * Translated "Alle inntekter".
+   * 
+   * @return translated "Alle inntekter"
+   */
+  @DefaultStringValue("Alle inntekter")
+  @Key("earnings_all")
+  String earnings_all();
+
+  /**
+   * Translated "Inntekter for medlemskap".
+   * 
+   * @return translated "Inntekter for medlemskap"
+   */
+  @DefaultStringValue("Inntekter for medlemskap")
+  @Key("earnings_memberships")
+  String earnings_memberships();
+
+  /**
+   * Translated "Andre inntekter".
+   * 
+   * @return translated "Andre inntekter"
+   */
+  @DefaultStringValue("Andre inntekter")
+  @Key("earnings_other")
+  String earnings_other();
+
+  /**
+   * Translated "Epost".
+   * 
+   * @return translated "Epost"
+   */
+  @DefaultStringValue("Epost")
+  @Key("email")
+  String email();
+
+  /**
+   * Translated "Ansatt".
+   * 
+   * @return translated "Ansatt"
+   */
+  @DefaultStringValue("Ansatt")
+  @Key("employee")
+  String employee();
+
+  /**
+   * Translated "Avslutt måned".
+   * 
+   * @return translated "Avslutt måned"
+   */
+  @DefaultStringValue("Avslutt måned")
+  @Key("end_month")
+  String end_month();
+
+  /**
+   * Translated "Følgende poster vil overføres til neste måned:".
+   * 
+   * @return translated "Følgende poster vil overføres til neste måned:"
+   */
+  @DefaultStringValue("Følgende poster vil overføres til neste måned:")
+  @Key("end_month_explain")
+  String end_month_explain();
+
+  /**
+   * Translated "Avslutt semester".
+   * 
+   * @return translated "Avslutt semester"
+   */
+  @DefaultStringValue("Avslutt semester")
+  @Key("end_semester")
+  String end_semester();
+
+  /**
+   * Translated "Følgende poster vil overføres til neste semester:".
+   * 
+   * @return translated "Følgende poster vil overføres til neste semester:"
+   */
+  @DefaultStringValue("Følgende poster vil overføres til neste semester:")
+  @Key("end_semester_explain")
+  String end_semester_explain();
+
+  /**
+   * Translated "Avslutt år".
+   * 
+   * @return translated "Avslutt år"
+   */
+  @DefaultStringValue("Avslutt år")
+  @Key("end_year")
+  String end_year();
+
+  /**
+   * Translated "F�lgende posteringer vil utføres ved årsavslutningn av regnskapet:".
+   * 
+   * @return translated "F�lgende posteringer vil utføres ved årsavslutningn av regnskapet:"
+   */
+  @DefaultStringValue("F�lgende posteringer vil utføres ved årsavslutningn av regnskapet:")
+  @Key("end_year_heading")
+  String end_year_heading();
+
+  /**
+   * Translated "Avslutning av år kan kun utføres i årets siste måned.".
+   * 
+   * @return translated "Avslutning av år kan kun utføres i årets siste måned."
+   */
+  @DefaultStringValue("Avslutning av år kan kun utføres i årets siste måned.")
+  @Key("end_year_only_last_month")
+  String end_year_only_last_month();
+
+  /**
+   * Translated "Feil".
+   * 
+   * @return translated "Feil"
+   */
+  @DefaultStringValue("Feil")
+  @Key("error")
+  String error();
+
+  /**
+   * Translated "Utgifter".
+   * 
+   * @return translated "Utgifter"
+   */
+  @DefaultStringValue("Utgifter")
+  @Key("expences")
+  String expences();
+
+  /**
+   * Translated "Eksporter til regneark".
+   * 
+   * @return translated "Eksporter til regneark"
+   */
+  @DefaultStringValue("Eksporter til regneark")
+  @Key("export_spreadsheet")
+  String export_spreadsheet();
+
+  /**
+   * Translated "Høst".
+   * 
+   * @return translated "Høst"
+   */
+  @DefaultStringValue("Høst")
+  @Key("fall")
+  String fall();
+
+  /**
+   * Translated "Filer".
+   * 
+   * @return translated "Filer"
+   */
+  @DefaultStringValue("Filer")
+  @Key("files")
+  String files();
+
+  /**
+   * Translated "Fornavn".
+   * 
+   * @return translated "Fornavn"
+   */
+  @DefaultStringValue("Fornavn")
+  @Key("firstname")
+  String firstname();
+
+  /**
+   * Translated "Fradato".
+   * 
+   * @return translated "Fradato"
+   */
+  @DefaultStringValue("Fradato")
+  @Key("from_date")
+  String from_date();
+
+  /**
+   * Translated "Full tilgang".
+   * 
+   * @return translated "Full tilgang"
+   */
+  @DefaultStringValue("Full tilgang")
+  @Key("full_access")
+  String full_access();
+
+  /**
+   * Translated "Kjønn".
+   * 
+   * @return translated "Kjønn"
+   */
+  @DefaultStringValue("Kjønn")
+  @Key("gender")
+  String gender();
+
+  /**
+   * Translated "Kvinne".
+   * 
+   * @return translated "Kvinne"
+   */
+  @DefaultStringValue("Kvinne")
+  @Key("gender_female")
+  String gender_female();
+
+  /**
+   * Translated "Kvinner".
+   * 
+   * @return translated "Kvinner"
+   */
+  @DefaultStringValue("Kvinner")
+  @Key("gender_females")
+  String gender_females();
+
+  /**
+   * Translated "Mann".
+   * 
+   * @return translated "Mann"
+   */
+  @DefaultStringValue("Mann")
+  @Key("gender_male")
+  String gender_male();
+
+  /**
+   * Translated "Menn".
+   * 
+   * @return translated "Menn"
+   */
+  @DefaultStringValue("Menn")
+  @Key("gender_males")
+  String gender_males();
+
+  /**
+   * Translated "Usatt".
+   * 
+   * @return translated "Usatt"
+   */
+  @DefaultStringValue("Usatt")
+  @Key("gender_unset")
+  String gender_unset();
+
+  /**
+   * Translated "Standardbilag".
+   * 
+   * @return translated "Standardbilag"
+   */
+  @DefaultStringValue("Standardbilag")
+  @Key("happening")
+  String happening();
+
+  /**
+   * Translated "Hjelp".
+   * 
+   * @return translated "Hjelp"
+   */
+  @DefaultStringValue("Hjelp")
+  @Key("help")
+  String help();
+
+  /**
+   * Translated "Skjul".
+   * 
+   * @return translated "Skjul"
+   */
+  @DefaultStringValue("Skjul")
+  @Key("hidden_person")
+  String hidden_person();
+
+  /**
+   * Translated "Id".
+   * 
+   * @return translated "Id"
+   */
+  @DefaultStringValue("Id")
+  @Key("id")
+  String id();
+
+  /**
+   * Translated "Flett brev".
+   * 
+   * @return translated "Flett brev"
+   */
+  @DefaultStringValue("Flett brev")
+  @Key("join_letters")
+  String join_letters();
+
+  /**
+   * Translated "KREDIT".
+   * 
+   * @return translated "KREDIT"
+   */
+  @DefaultStringValue("KREDIT")
+  @Key("kredit")
+  String kredit();
+
+  /**
+   * Translated "KREDIT post".
+   * 
+   * @return translated "KREDIT post"
+   */
+  @DefaultStringValue("KREDIT post")
+  @Key("kredit_post")
+  String kredit_post();
+
+  /**
+   * Translated "Etternavn".
+   * 
+   * @return translated "Etternavn"
+   */
+  @DefaultStringValue("Etternavn")
+  @Key("lastname")
+  String lastname();
+
+  /**
+   * Translated "Brevmal".
+   * 
+   * @return translated "Brevmal"
+   */
+  @DefaultStringValue("Brevmal")
+  @Key("letter_template")
+  String letter_template();
+
+  /**
+   * Translated "Linjer".
+   * 
+   * @return translated "Linjer"
+   */
+  @DefaultStringValue("Linjer")
+  @Key("lines")
+  String lines();
+
+  /**
+   * Translated "Laster inn siden...".
+   * 
+   * @return translated "Laster inn siden..."
+   */
+  @DefaultStringValue("Laster inn siden...")
+  @Key("loding_page")
+  String loding_page();
+
+  /**
+   * Translated "Logg".
+   * 
+   * @return translated "Logg"
+   */
+  @DefaultStringValue("Logg")
+  @Key("log")
+  String log();
+
+  /**
+   * Translated "Logg inn".
+   * 
+   * @return translated "Logg inn"
+   */
+  @DefaultStringValue("Logg inn")
+  @Key("login")
+  String login();
+
+  /**
+   * Translated "Logg ut".
+   * 
+   * @return translated "Logg ut"
+   */
+  @DefaultStringValue("Logg ut")
+  @Key("logout")
+  String logout();
+
+  /**
+   * Translated "Melding".
+   * 
+   * @return translated "Melding"
+   */
+  @DefaultStringValue("Melding")
+  @Key("mail_body")
+  String mail_body();
+
+  /**
+   * Translated "Medlemmer".
+   * 
+   * @return translated "Medlemmer"
+   */
+  @DefaultStringValue("Medlemmer")
+  @Key("mail_query_members")
+  String mail_query_members();
+
+  /**
+   * Translated "Abonnenter av nyhetsbrev".
+   * 
+   * @return translated "Abonnenter av nyhetsbrev"
+   */
+  @DefaultStringValue("Abonnenter av nyhetsbrev")
+  @Key("mail_query_newsletter")
+  String mail_query_newsletter();
+
+  /**
+   * Translated "Mottagere".
+   * 
+   * @return translated "Mottagere"
+   */
+  @DefaultStringValue("Mottagere")
+  @Key("mail_receivers")
+  String mail_receivers();
+
+  /**
+   * Translated "Send epost".
+   * 
+   * @return translated "Send epost"
+   */
+  @DefaultStringValue("Send epost")
+  @Key("mail_send")
+  String mail_send();
+
+  /**
+   * Translated "Avsender for epost".
+   * 
+   * @return translated "Avsender for epost"
+   */
+  @DefaultStringValue("Avsender for epost")
+  @Key("mail_sender")
+  String mail_sender();
+
+  /**
+   * Translated "Sender epost...".
+   * 
+   * @return translated "Sender epost..."
+   */
+  @DefaultStringValue("Sender epost...")
+  @Key("mail_sending")
+  String mail_sending();
+
+  /**
+   * Translated "Simulasjon av utsendelse".
+   * 
+   * @return translated "Simulasjon av utsendelse"
+   */
+  @DefaultStringValue("Simulasjon av utsendelse")
+  @Key("mail_simulate")
+  String mail_simulate();
+
+  /**
+   * Translated "Testutsending til deg selv".
+   * 
+   * @return translated "Testutsending til deg selv"
+   */
+  @DefaultStringValue("Testutsending til deg selv")
+  @Key("mail_test")
+  String mail_test();
+
+  /**
+   * Translated "Epost tittel".
+   * 
+   * @return translated "Epost tittel"
+   */
+  @DefaultStringValue("Epost tittel")
+  @Key("mail_title")
+  String mail_title();
+
+  /**
+   * Translated "Betalingsfrist".
+   * 
+   * @return translated "Betalingsfrist"
+   */
+  @DefaultStringValue("Betalingsfrist")
+  @Key("massletter_due_date")
+  String massletter_due_date();
+
+  /**
+   * Translated "Alle medlemskap".
+   * 
+   * @return translated "Alle medlemskap"
+   */
+  @DefaultStringValue("Alle medlemskap")
+  @Key("member_heading_all")
+  String member_heading_all();
+
+  /**
+   * Translated "Kursmedlemmer".
+   * 
+   * @return translated "Kursmedlemmer"
+   */
+  @DefaultStringValue("Kursmedlemmer")
+  @Key("member_heading_course")
+  String member_heading_course();
+
+  /**
+   * Translated "Treningsmedlemmer".
+   * 
+   * @return translated "Treningsmedlemmer"
+   */
+  @DefaultStringValue("Treningsmedlemmer")
+  @Key("member_heading_train")
+  String member_heading_train();
+
+  /**
+   * Translated "Medlemmer".
+   * 
+   * @return translated "Medlemmer"
+   */
+  @DefaultStringValue("Medlemmer")
+  @Key("member_heading_year")
+  String member_heading_year();
+
+  /**
+   * Translated "Budsjett".
+   * 
+   * @return translated "Budsjett"
+   */
+  @DefaultStringValue("Budsjett")
+  @Key("menu_budget")
+  String menu_budget();
+
+  /**
+   * Translated "Info".
+   * 
+   * @return translated "Info"
+   */
+  @DefaultStringValue("Info")
+  @Key("menu_info")
+  String menu_info();
+
+  /**
+   * Translated "Logg ut".
+   * 
+   * @return translated "Logg ut"
+   */
+  @DefaultStringValue("Logg ut")
+  @Key("menu_logout")
+  String menu_logout();
+
+  /**
+   * Translated "Personer".
+   * 
+   * @return translated "Personer"
+   */
+  @DefaultStringValue("Personer")
+  @Key("menu_people")
+  String menu_people();
+
+  /**
+   * Translated "Registrer".
+   * 
+   * @return translated "Registrer"
+   */
+  @DefaultStringValue("Registrer")
+  @Key("menu_register")
+  String menu_register();
+
+  /**
+   * Translated "Rapporter".
+   * 
+   * @return translated "Rapporter"
+   */
+  @DefaultStringValue("Rapporter")
+  @Key("menu_reports")
+  String menu_reports();
+
+  /**
+   * Translated "Innstillinger".
+   * 
+   * @return translated "Innstillinger"
+   */
+  @DefaultStringValue("Innstillinger")
+  @Key("menu_settings")
+  String menu_settings();
+
+  /**
+   * Translated "Oversikt".
+   * 
+   * @return translated "Oversikt"
+   */
+  @DefaultStringValue("Oversikt")
+  @Key("menu_show")
+  String menu_show();
+
+  /**
+   * Translated "Fond".
+   * 
+   * @return translated "Fond"
+   */
+  @DefaultStringValue("Fond")
+  @Key("menu_trust")
+  String menu_trust();
+
+  /**
+   * Translated "Om regnskapssystemet".
+   * 
+   * @return translated "Om regnskapssystemet"
+   */
+  @DefaultStringValue("Om regnskapssystemet")
+  @Key("menuitem_about")
+  String menuitem_about();
+
+  /**
+   * Translated "Konti".
+   * 
+   * @return translated "Konti"
+   */
+  @DefaultStringValue("Konti")
+  @Key("menuitem_accounts")
+  String menuitem_accounts();
+
+  /**
+   * Translated "Konti for status for utvalgte konti".
+   * 
+   * @return translated "Konti for status for utvalgte konti"
+   */
+  @DefaultStringValue("Konti for status for utvalgte konti")
+  @Key("menuitem_accounttrack")
+  String menuitem_accounttrack();
+
+  /**
+   * Translated "Opprett ny person".
+   * 
+   * @return translated "Opprett ny person"
+   */
+  @DefaultStringValue("Opprett ny person")
+  @Key("menuitem_addperson")
+  String menuitem_addperson();
+
+  /**
+   * Translated "Sikkerhetskopi".
+   * 
+   * @return translated "Sikkerhetskopi"
+   */
+  @DefaultStringValue("Sikkerhetskopi")
+  @Key("menuitem_backup")
+  String menuitem_backup();
+
+  /**
+   * Translated "Budsjett".
+   * 
+   * @return translated "Budsjett"
+   */
+  @DefaultStringValue("Budsjett")
+  @Key("menuitem_budget")
+  String menuitem_budget();
+
+  /**
+   * Translated "Standardbilag".
+   * 
+   * @return translated "Standardbilag"
+   */
+  @DefaultStringValue("Standardbilag")
+  @Key("menuitem_edit_happening")
+  String menuitem_edit_happening();
+
+  /**
+   * Translated "Fond".
+   * 
+   * @return translated "Fond"
+   */
+  @DefaultStringValue("Fond")
+  @Key("menuitem_edit_trust")
+  String menuitem_edit_trust();
+
+  /**
+   * Translated "Fondsaksjoner".
+   * 
+   * @return translated "Fondsaksjoner"
+   */
+  @DefaultStringValue("Fondsaksjoner")
+  @Key("menuitem_edit_trust_actions")
+  String menuitem_edit_trust_actions();
+
+  /**
+   * Translated "Avslutt måned".
+   * 
+   * @return translated "Avslutt måned"
+   */
+  @DefaultStringValue("Avslutt måned")
+  @Key("menuitem_endmonth")
+  String menuitem_endmonth();
+
+  /**
+   * Translated "Avslutt semester".
+   * 
+   * @return translated "Avslutt semester"
+   */
+  @DefaultStringValue("Avslutt semester")
+  @Key("menuitem_endsemester")
+  String menuitem_endsemester();
+
+  /**
+   * Translated "Avslutt år".
+   * 
+   * @return translated "Avslutt år"
+   */
+  @DefaultStringValue("Avslutt år")
+  @Key("menuitem_endyear")
+  String menuitem_endyear();
+
+  /**
+   * Translated "Vedlikehold filer".
+   * 
+   * @return translated "Vedlikehold filer"
+   */
+  @DefaultStringValue("Vedlikehold filer")
+  @Key("menuitem_fileManage")
+  String menuitem_fileManage();
+
+  /**
+   * Translated "Søk etter person".
+   * 
+   * @return translated "Søk etter person"
+   */
+  @DefaultStringValue("Søk etter person")
+  @Key("menuitem_findperson")
+  String menuitem_findperson();
+
+  /**
+   * Translated "Vis logger".
+   * 
+   * @return translated "Vis logger"
+   */
+  @DefaultStringValue("Vis logger")
+  @Key("menuitem_log")
+  String menuitem_log();
+
+  /**
+   * Translated "Logg ut".
+   * 
+   * @return translated "Logg ut"
+   */
+  @DefaultStringValue("Logg ut")
+  @Key("menuitem_logout")
+  String menuitem_logout();
+
+  /**
+   * Translated "Priser for medlemskap".
+   * 
+   * @return translated "Priser for medlemskap"
+   */
+  @DefaultStringValue("Priser for medlemskap")
+  @Key("menuitem_membership_prices")
+  String menuitem_membership_prices();
+
+  /**
+   * Translated "Prosjekter".
+   * 
+   * @return translated "Prosjekter"
+   */
+  @DefaultStringValue("Prosjekter")
+  @Key("menuitem_projects")
+  String menuitem_projects();
+
+  /**
+   * Translated "Registrer medlemsskap".
+   * 
+   * @return translated "Registrer medlemsskap"
+   */
+  @DefaultStringValue("Registrer medlemsskap")
+  @Key("menuitem_registerMembership")
+  String menuitem_registerMembership();
+
+  /**
+   * Translated "Hurtigregistrering av standardbilag".
+   * 
+   * @return translated "Hurtigregistrering av standardbilag"
+   */
+  @DefaultStringValue("Hurtigregistrering av standardbilag")
+  @Key("menuitem_register_happening")
+  String menuitem_register_happening();
+
+  /**
+   * Translated "Registrer bilag".
+   * 
+   * @return translated "Registrer bilag"
+   */
+  @DefaultStringValue("Registrer bilag")
+  @Key("menuitem_regline")
+  String menuitem_regline();
+
+  /**
+   * Translated "Status for utvalgte konti".
+   * 
+   * @return translated "Status for utvalgte konti"
+   */
+  @DefaultStringValue("Status for utvalgte konti")
+  @Key("menuitem_report_accounttrack")
+  String menuitem_report_accounttrack();
+
+  /**
+   * Translated "Liste over medlemmer med adresser".
+   * 
+   * @return translated "Liste over medlemmer med adresser"
+   */
+  @DefaultStringValue("Liste over medlemmer med adresser")
+  @Key("menuitem_report_addresses")
+  String menuitem_report_addresses();
+
+  /**
+   * Translated "Epostutsendelse".
+   * 
+   * @return translated "Epostutsendelse"
+   */
+  @DefaultStringValue("Epostutsendelse")
+  @Key("menuitem_report_email")
+  String menuitem_report_email();
+
+  /**
+   * Translated "Massebrev".
+   * 
+   * @return translated "Massebrev"
+   */
+  @DefaultStringValue("Massebrev")
+  @Key("menuitem_report_letter")
+  String menuitem_report_letter();
+
+  /**
+   * Translated "Liste over medlemmer per aldersgruppe".
+   * 
+   * @return translated "Liste over medlemmer per aldersgruppe"
+   */
+  @DefaultStringValue("Liste over medlemmer per aldersgruppe")
+  @Key("menuitem_report_member_per_year")
+  String menuitem_report_member_per_year();
+
+  /**
+   * Translated "Medlemsantall per alder og kjønn".
+   * 
+   * @return translated "Medlemsantall per alder og kjønn"
+   */
+  @DefaultStringValue("Medlemsantall per alder og kjønn")
+  @Key("menuitem_report_member_per_year_gender")
+  String menuitem_report_member_per_year_gender();
+
+  /**
+   * Translated "Vis detaljer for utvalgte posteringer".
+   * 
+   * @return translated "Vis detaljer for utvalgte posteringer"
+   */
+  @DefaultStringValue("Vis detaljer for utvalgte posteringer")
+  @Key("menuitem_report_selectedlines")
+  String menuitem_report_selectedlines();
+
+  /**
+   * Translated "Personers epostadresser".
+   * 
+   * @return translated "Personers epostadresser"
+   */
+  @DefaultStringValue("Personers epostadresser")
+  @Key("menuitem_report_users_email")
+  String menuitem_report_users_email();
+
+  /**
+   * Translated "Oversikt for år".
+   * 
+   * @return translated "Oversikt for år"
+   */
+  @DefaultStringValue("Oversikt for år")
+  @Key("menuitem_report_year")
+  String menuitem_report_year();
+
+  /**
+   * Translated "Semestre".
+   * 
+   * @return translated "Semestre"
+   */
+  @DefaultStringValue("Semestre")
+  @Key("menuitem_semesters")
+  String menuitem_semesters();
+
+  /**
+   * Translated "Vis alle medlemskap".
+   * 
+   * @return translated "Vis alle medlemskap"
+   */
+  @DefaultStringValue("Vis alle medlemskap")
+  @Key("menuitem_showallmembers")
+  String menuitem_showallmembers();
+
+  /**
+   * Translated "Vis kursmedlemsskap".
+   * 
+   * @return translated "Vis kursmedlemsskap"
+   */
+  @DefaultStringValue("Vis kursmedlemsskap")
+  @Key("menuitem_showclassmembers")
+  String menuitem_showclassmembers();
+
+  /**
+   * Translated "Vis medlemsskap".
+   * 
+   * @return translated "Vis medlemsskap"
+   */
+  @DefaultStringValue("Vis medlemsskap")
+  @Key("menuitem_showmembers")
+  String menuitem_showmembers();
+
+  /**
+   * Translated "Vis måned".
+   * 
+   * @return translated "Vis måned"
+   */
+  @DefaultStringValue("Vis måned")
+  @Key("menuitem_showmonth")
+  String menuitem_showmonth();
+
+  /**
+   * Translated "Vis måned med detaljer".
+   * 
+   * @return translated "Vis måned med detaljer"
+   */
+  @DefaultStringValue("Vis måned med detaljer")
+  @Key("menuitem_showmonthdetails")
+  String menuitem_showmonthdetails();
+
+  /**
+   * Translated "Vis treningsmedlemsskap ".
+   * 
+   * @return translated "Vis treningsmedlemsskap "
+   */
+  @DefaultStringValue("Vis treningsmedlemsskap ")
+  @Key("menuitem_showtraining")
+  String menuitem_showtraining();
+
+  /**
+   * Translated "Fond status/aktivitet".
+   * 
+   * @return translated "Fond status/aktivitet"
+   */
+  @DefaultStringValue("Fond status/aktivitet")
+  @Key("menuitem_truststatus")
+  String menuitem_truststatus();
 
   /**
    * Translated "Brukere".
    * 
    * @return translated "Brukere"
-   * @gwt.key menuitem_useradm
    */
+  @DefaultStringValue("Brukere")
+  @Key("menuitem_useradm")
   String menuitem_useradm();
 
   /**
    * Translated "Standardverdier".
    * 
    * @return translated "Standardverdier"
-   * @gwt.key menuitem_values
    */
+  @DefaultStringValue("Standardverdier")
+  @Key("menuitem_values")
   String menuitem_values();
 
   /**
-   * Translated "Desember".
-   * 
-   * @return translated "Desember"
-   * @gwt.key month_12
-   */
-  String month_12();
-
-  /**
-   * Translated "Søk".
-   * 
-   * @return translated "Søk"
-   * @gwt.key search
-   */
-  String search();
-
-  /**
-   * Translated "Dag".
-   * 
-   * @return translated "Dag"
-   * @gwt.key day
-   */
-  String day();
-
-  /**
-   * Translated "Usatt".
-   * 
-   * @return translated "Usatt"
-   * @gwt.key gender_unset
-   */
-  String gender_unset();
-
-  /**
-   * Translated "Ny/endre bruker".
-   * 
-   * @return translated "Ny/endre bruker"
-   * @gwt.key title_edit_new_user
-   */
-  String title_edit_new_user();
-
-  /**
-   * Translated "Sikkerhetskopi".
-   * 
-   * @return translated "Sikkerhetskopi"
-   * @gwt.key menuitem_backup
-   */
-  String menuitem_backup();
-
-  /**
-   * Translated "Faktisk resultat".
-   * 
-   * @return translated "Faktisk resultat"
-   * @gwt.key budget_result_actual
-   */
-  String budget_result_actual();
-
-  /**
-   * Translated "Rapporter".
-   * 
-   * @return translated "Rapporter"
-   * @gwt.key menu_reports
-   */
-  String menu_reports();
-
-  /**
-   * Translated "Føres på post".
-   * 
-   * @return translated "Føres på post"
-   * @gwt.key register_count_post
-   */
-  String register_count_post();
-
-  /**
-   * Translated "Velg filer".
-   * 
-   * @return translated "Velg filer"
-   * @gwt.key choose_files
-   */
-  String choose_files();
-
-  /**
-   * Translated "Kreditpost".
-   * 
-   * @return translated "Kreditpost"
-   * @gwt.key trust_creditpost
-   */
-  String trust_creditpost();
-
-  /**
-   * Translated "Vis logger".
-   * 
-   * @return translated "Vis logger"
-   * @gwt.key menuitem_log
-   */
-  String menuitem_log();
-
-  /**
-   * Translated "Budsjeterte inntekter".
-   * 
-   * @return translated "Budsjeterte inntekter"
-   * @gwt.key budgeted_earnins
-   */
-  String budgeted_earnins();
-
-  /**
-   * Translated "Avsender for epost".
-   * 
-   * @return translated "Avsender for epost"
-   * @gwt.key mail_sender
-   */
-  String mail_sender();
-
-  /**
-   * Translated "Om regnskapssystemet".
-   * 
-   * @return translated "Om regnskapssystemet"
-   * @gwt.key menuitem_about
-   */
-  String menuitem_about();
-
-  /**
-   * Translated "Hurtigregistrering av standardbilag".
-   * 
-   * @return translated "Hurtigregistrering av standardbilag"
-   * @gwt.key menuitem_register_happening
-   */
-  String menuitem_register_happening();
-
-  /**
-   * Translated "X".
-   * 
-   * @return translated "X"
-   * @gwt.key x
-   */
-  String x();
-
-  /**
-   * Translated "Postbeskrivelse".
-   * 
-   * @return translated "Postbeskrivelse"
-   * @gwt.key post_description
-   */
-  String post_description();
-
-  /**
-   * Translated "Legg ved filer".
-   * 
-   * @return translated "Legg ved filer"
-   * @gwt.key attach_files
-   */
-  String attach_files();
-
-  /**
-   * Translated "Standardbilag".
-   * 
-   * @return translated "Standardbilag"
-   * @gwt.key happening
-   */
-  String happening();
-
-  /**
-   * Translated "Logg ut".
-   * 
-   * @return translated "Logg ut"
-   * @gwt.key menuitem_logout
-   */
-  String menuitem_logout();
-
-  /**
    * Translated "Melding".
    * 
    * @return translated "Melding"
-   * @gwt.key message
    */
+  @DefaultStringValue("Melding")
+  @Key("message")
   String message();
 
   /**
-   * Translated "Nytt prosjekt".
+   * Translated "Mangler".
    * 
-   * @return translated "Nytt prosjekt"
-   * @gwt.key projectEditView_newButton
+   * @return translated "Mangler"
    */
-  String projectEditView_newButton();
-
-  /**
-   * Translated "Medlemmer".
-   * 
-   * @return translated "Medlemmer"
-   * @gwt.key member_heading_year
-   */
-  String member_heading_year();
-
-  /**
-   * Translated "Mann".
-   * 
-   * @return translated "Mann"
-   * @gwt.key gender_male
-   */
-  String gender_male();
-
-  /**
-   * Translated "Vis måned med detaljer".
-   * 
-   * @return translated "Vis måned med detaljer"
-   * @gwt.key menuitem_showmonthdetails
-   */
-  String menuitem_showmonthdetails();
-
-  /**
-   * Translated "Telling påkrevd".
-   * 
-   * @return translated "Telling påkrevd"
-   * @gwt.key count_required
-   */
-  String count_required();
-
-  /**
-   * Translated "Spørring".
-   * 
-   * @return translated "Spørring"
-   * @gwt.key query
-   */
-  String query();
-
-  /**
-   * Translated "Velg filer som skal vedleggges eposten.".
-   * 
-   * @return translated "Velg filer som skal vedleggges eposten."
-   * @gwt.key choose_attachments
-   */
-  String choose_attachments();
-
-  /**
-   * Translated "November".
-   * 
-   * @return translated "November"
-   * @gwt.key month_11
-   */
-  String month_11();
-
-  /**
-   * Translated "Oversikt".
-   * 
-   * @return translated "Oversikt"
-   * @gwt.key menu_show
-   */
-  String menu_show();
-
-  /**
-   * Translated "Inntekter for medlemskap".
-   * 
-   * @return translated "Inntekter for medlemskap"
-   * @gwt.key earnings_memberships
-   */
-  String earnings_memberships();
-
-  /**
-   * Translated "Logg ut".
-   * 
-   * @return translated "Logg ut"
-   * @gwt.key logout
-   */
-  String logout();
-
-  /**
-   * Translated "Send epost".
-   * 
-   * @return translated "Send epost"
-   * @gwt.key mail_send
-   */
-  String mail_send();
-
-  /**
-   * Translated "Navn".
-   * 
-   * @return translated "Navn"
-   * @gwt.key name
-   */
-  String name();
-
-  /**
-   * Translated "Sender epost...".
-   * 
-   * @return translated "Sender epost..."
-   * @gwt.key mail_sending
-   */
-  String mail_sending();
-
-  /**
-   * Translated "KREDIT".
-   * 
-   * @return translated "KREDIT"
-   * @gwt.key kredit
-   */
-  String kredit();
-
-  /**
-   * Translated "Standard beskrivelse".
-   * 
-   * @return translated "Standard beskrivelse"
-   * @gwt.key trust_default_desc
-   */
-  String trust_default_desc();
-
-  /**
-   * Translated "Finland".
-   * 
-   * @return translated "Finland"
-   * @gwt.key country_finland
-   */
-  String country_finland();
-
-  /**
-   * Translated "Melding".
-   * 
-   * @return translated "Melding"
-   * @gwt.key mail_body
-   */
-  String mail_body();
-
-  /**
-   * Translated "Sverige".
-   * 
-   * @return translated "Sverige"
-   * @gwt.key country_sweeden
-   */
-  String country_sweeden();
-
-  /**
-   * Translated "Tabell:".
-   * 
-   * @return translated "Tabell:"
-   * @gwt.key backup_table
-   */
-  String backup_table();
-
-  /**
-   * Translated "Klubbkonto".
-   * 
-   * @return translated "Klubbkonto"
-   * @gwt.key club_account
-   */
-  String club_account();
-
-  /**
-   * Translated "Oktober".
-   * 
-   * @return translated "Oktober"
-   * @gwt.key month_10
-   */
-  String month_10();
-
-  /**
-   * Translated "Aksjon klubbkonto".
-   * 
-   * @return translated "Aksjon klubbkonto"
-   * @gwt.key trust_actionclub
-   */
-  String trust_actionclub();
-
-  /**
-   * Translated "Laster ned zipfil".
-   * 
-   * @return translated "Laster ned zipfil"
-   * @gwt.key backup_downloading
-   */
-  String backup_downloading();
-
-  /**
-   * Translated "Avslutt semester".
-   * 
-   * @return translated "Avslutt semester"
-   * @gwt.key end_semester
-   */
-  String end_semester();
-
-  /**
-   * Translated "Kvinner".
-   * 
-   * @return translated "Kvinner"
-   * @gwt.key gender_females
-   */
-  String gender_females();
-
-  /**
-   * Translated "Nytt semester".
-   * 
-   * @return translated "Nytt semester"
-   * @gwt.key new_semester
-   */
-  String new_semester();
-
-  /**
-   * Translated "Telefon".
-   * 
-   * @return translated "Telefon"
-   * @gwt.key phone
-   */
-  String phone();
-
-  /**
-   * Translated "September".
-   * 
-   * @return translated "September"
-   * @gwt.key month_09
-   */
-  String month_09();
-
-  /**
-   * Translated "Kursmedlemsskap".
-   * 
-   * @return translated "Kursmedlemsskap"
-   * @gwt.key course_membership
-   */
-  String course_membership();
-
-  /**
-   * Translated "Ny linje".
-   * 
-   * @return translated "Ny linje"
-   * @gwt.key newline
-   */
-  String newline();
-
-  /**
-   * Translated "Konti".
-   * 
-   * @return translated "Konti"
-   * @gwt.key menuitem_accounts
-   */
-  String menuitem_accounts();
-
-  /**
-   * Translated "Priser for medlemskap".
-   * 
-   * @return translated "Priser for medlemskap"
-   * @gwt.key menuitem_membership_prices
-   */
-  String menuitem_membership_prices();
-
-  /**
-   * Translated "Nytt fond".
-   * 
-   * @return translated "Nytt fond"
-   * @gwt.key trustEditView_newButton
-   */
-  String trustEditView_newButton();
-
-  /**
-   * Translated "ok".
-   * 
-   * @return translated "ok"
-   * @gwt.key ok
-   */
-  String ok();
-
-  /**
-   * Translated "Antall medlemmer per kjønn".
-   * 
-   * @return translated "Antall medlemmer per kjønn"
-   * @gwt.key title_report_membersbirth_gender
-   */
-  String title_report_membersbirth_gender();
-
-  /**
-   * Translated "Postnr".
-   * 
-   * @return translated "Postnr"
-   * @gwt.key postnmb
-   */
-  String postnmb();
-
-  /**
-   * Translated "Skjul".
-   * 
-   * @return translated "Skjul"
-   * @gwt.key hidden_person
-   */
-  String hidden_person();
-
-  /**
-   * Translated "Fond status/aktivitet".
-   * 
-   * @return translated "Fond status/aktivitet"
-   * @gwt.key menuitem_truststatus
-   */
-  String menuitem_truststatus();
-
-  /**
-   * Translated "August".
-   * 
-   * @return translated "August"
-   * @gwt.key month_08
-   */
-  String month_08();
-
-  /**
-   * Translated "Dato".
-   * 
-   * @return translated "Dato"
-   * @gwt.key date
-   */
-  String date();
-
-  /**
-   * Translated "Ikke ansatt".
-   * 
-   * @return translated "Ikke ansatt"
-   * @gwt.key not_employee
-   */
-  String not_employee();
-
-  /**
-   * Translated "Resultat".
-   * 
-   * @return translated "Resultat"
-   * @gwt.key budget_result
-   */
-  String budget_result();
-
-  /**
-   * Translated "Registrer bilag".
-   * 
-   * @return translated "Registrer bilag"
-   * @gwt.key menuitem_regline
-   */
-  String menuitem_regline();
-
-  /**
-   * Translated "Februar".
-   * 
-   * @return translated "Februar"
-   * @gwt.key month_02
-   */
-  String month_02();
-
-  /**
-   * Translated "DEBET".
-   * 
-   * @return translated "DEBET"
-   * @gwt.key debet
-   */
-  String debet();
-
-  /**
-   * Translated "Til søk".
-   * 
-   * @return translated "Til søk"
-   * @gwt.key back_search
-   */
-  String back_search();
-
-  /**
-   * Translated "Antall tabeller som skal sikkerhetskopieres:".
-   * 
-   * @return translated "Antall tabeller som skal sikkerhetskopieres:"
-   * @gwt.key backup_table_count
-   */
-  String backup_table_count();
-
-  /**
-   * Translated "Kjønn".
-   * 
-   * @return translated "Kjønn"
-   * @gwt.key gender
-   */
-  String gender();
-
-  /**
-   * Translated "Kursmedlemmer".
-   * 
-   * @return translated "Kursmedlemmer"
-   * @gwt.key member_heading_course
-   */
-  String member_heading_course();
-
-  /**
-   * Translated "Mai".
-   * 
-   * @return translated "Mai"
-   * @gwt.key month_05
-   */
-  String month_05();
-
-  /**
-   * Translated "Registrer medlemsskap".
-   * 
-   * @return translated "Registrer medlemsskap"
-   * @gwt.key menuitem_registerMembership
-   */
-  String menuitem_registerMembership();
-
-  /**
-   * Translated "April".
-   * 
-   * @return translated "April"
-   * @gwt.key month_04
-   */
-  String month_04();
-
-  /**
-   * Translated "Ny bruker".
-   * 
-   * @return translated "Ny bruker"
-   * @gwt.key userEditView_newButton
-   */
-  String userEditView_newButton();
-
-  /**
-   * Translated "Følgende poster vil overføres til neste semester:".
-   * 
-   * @return translated "Følgende poster vil overføres til neste semester:"
-   * @gwt.key end_semester_explain
-   */
-  String end_semester_explain();
-
-  /**
-   * Translated "Logg ut".
-   * 
-   * @return translated "Logg ut"
-   * @gwt.key menu_logout
-   */
-  String menu_logout();
-
-  /**
-   * Translated "Mars".
-   * 
-   * @return translated "Mars"
-   * @gwt.key month_03
-   */
-  String month_03();
-
-  /**
-   * Translated "Flett brev".
-   * 
-   * @return translated "Flett brev"
-   * @gwt.key join_letters
-   */
-  String join_letters();
-
-  /**
-   * Translated "Betalt dag".
-   * 
-   * @return translated "Betalt dag"
-   * @gwt.key paid_day
-   */
-  String paid_day();
-
-  /**
-   * Translated "Personers epostadresser".
-   * 
-   * @return translated "Personers epostadresser"
-   * @gwt.key menuitem_report_users_email
-   */
-  String menuitem_report_users_email();
-
-  /**
-   * Translated "Telling".
-   * 
-   * @return translated "Telling"
-   * @gwt.key count_header
-   */
-  String count_header();
-
-  /**
-   * Translated "Fond".
-   * 
-   * @return translated "Fond"
-   * @gwt.key trust
-   */
-  String trust();
-
-  /**
-   * Translated "Juni".
-   * 
-   * @return translated "Juni"
-   * @gwt.key month_06
-   */
-  String month_06();
-
-  /**
-   * Translated "Samlekonto månedsoversikt".
-   * 
-   * @return translated "Samlekonto månedsoversikt"
-   * @gwt.key account_collection_month
-   */
-  String account_collection_month();
+  @DefaultStringValue("Mangler")
+  @Key("missing")
+  String missing();
 
   /**
    * Translated "Mangler adresse".
    * 
    * @return translated "Mangler adresse"
-   * @gwt.key missing_address
    */
+  @DefaultStringValue("Mangler adresse")
+  @Key("missing_address")
   String missing_address();
 
   /**
-   * Translated "Adresse".
+   * Translated "Valør:".
    * 
-   * @return translated "Adresse"
-   * @gwt.key address
+   * @return translated "Valør:"
    */
-  String address();
+  @DefaultStringValue("Valør:")
+  @Key("money_type")
+  String money_type();
 
   /**
-   * Translated "Tilgjenglige konti".
+   * Translated "Måned".
    * 
-   * @return translated "Tilgjenglige konti"
-   * @gwt.key available_accounts
+   * @return translated "Måned"
    */
-  String available_accounts();
+  @DefaultStringValue("Måned")
+  @Key("month")
+  String month();
 
   /**
-   * Translated "Simulasjon av utsendelse".
+   * Translated "Januar".
    * 
-   * @return translated "Simulasjon av utsendelse"
-   * @gwt.key mail_simulate
+   * @return translated "Januar"
    */
-  String mail_simulate();
+  @DefaultStringValue("Januar")
+  @Key("month_01")
+  String month_01();
 
   /**
-   * Translated "Brevmal".
+   * Translated "Februar".
    * 
-   * @return translated "Brevmal"
-   * @gwt.key letter_template
+   * @return translated "Februar"
    */
-  String letter_template();
+  @DefaultStringValue("Februar")
+  @Key("month_02")
+  String month_02();
 
   /**
-   * Translated "KREDIT post".
+   * Translated "Mars".
    * 
-   * @return translated "KREDIT post"
-   * @gwt.key kredit_post
+   * @return translated "Mars"
    */
-  String kredit_post();
+  @DefaultStringValue("Mars")
+  @Key("month_03")
+  String month_03();
+
+  /**
+   * Translated "April".
+   * 
+   * @return translated "April"
+   */
+  @DefaultStringValue("April")
+  @Key("month_04")
+  String month_04();
+
+  /**
+   * Translated "Mai".
+   * 
+   * @return translated "Mai"
+   */
+  @DefaultStringValue("Mai")
+  @Key("month_05")
+  String month_05();
+
+  /**
+   * Translated "Juni".
+   * 
+   * @return translated "Juni"
+   */
+  @DefaultStringValue("Juni")
+  @Key("month_06")
+  String month_06();
+
+  /**
+   * Translated "Juli".
+   * 
+   * @return translated "Juli"
+   */
+  @DefaultStringValue("Juli")
+  @Key("month_07")
+  String month_07();
+
+  /**
+   * Translated "August".
+   * 
+   * @return translated "August"
+   */
+  @DefaultStringValue("August")
+  @Key("month_08")
+  String month_08();
+
+  /**
+   * Translated "September".
+   * 
+   * @return translated "September"
+   */
+  @DefaultStringValue("September")
+  @Key("month_09")
+  String month_09();
+
+  /**
+   * Translated "Oktober".
+   * 
+   * @return translated "Oktober"
+   */
+  @DefaultStringValue("Oktober")
+  @Key("month_10")
+  String month_10();
+
+  /**
+   * Translated "November".
+   * 
+   * @return translated "November"
+   */
+  @DefaultStringValue("November")
+  @Key("month_11")
+  String month_11();
+
+  /**
+   * Translated "Desember".
+   * 
+   * @return translated "Desember"
+   */
+  @DefaultStringValue("Desember")
+  @Key("month_12")
+  String month_12();
+
+  /**
+   * Translated "Navn".
+   * 
+   * @return translated "Navn"
+   */
+  @DefaultStringValue("Navn")
+  @Key("name")
+  String name();
+
+  /**
+   * Translated "Ny konto".
+   * 
+   * @return translated "Ny konto"
+   */
+  @DefaultStringValue("Ny konto")
+  @Key("new_account")
+  String new_account();
+
+  /**
+   * Translated "Nytt standardbilag".
+   * 
+   * @return translated "Nytt standardbilag"
+   */
+  @DefaultStringValue("Nytt standardbilag")
+  @Key("new_happening")
+  String new_happening();
+
+  /**
+   * Translated "Nytt semester".
+   * 
+   * @return translated "Nytt semester"
+   */
+  @DefaultStringValue("Nytt semester")
+  @Key("new_semester")
+  String new_semester();
+
+  /**
+   * Translated "Ny fondaktivitet".
+   * 
+   * @return translated "Ny fondaktivitet"
+   */
+  @DefaultStringValue("Ny fondaktivitet")
+  @Key("new_trust")
+  String new_trust();
+
+  /**
+   * Translated "Ny fondsaksjon".
+   * 
+   * @return translated "Ny fondsaksjon"
+   */
+  @DefaultStringValue("Ny fondsaksjon")
+  @Key("new_trustaction")
+  String new_trustaction();
+
+  /**
+   * Translated "Ny linje".
+   * 
+   * @return translated "Ny linje"
+   */
+  @DefaultStringValue("Ny linje")
+  @Key("newline")
+  String newline();
+
+  /**
+   * Translated "Nyhetsbrev".
+   * 
+   * @return translated "Nyhetsbrev"
+   */
+  @DefaultStringValue("Nyhetsbrev")
+  @Key("newsletter")
+  String newsletter();
+
+  /**
+   * Translated "Ikke ansatt".
+   * 
+   * @return translated "Ikke ansatt"
+   */
+  @DefaultStringValue("Ikke ansatt")
+  @Key("not_employee")
+  String not_employee();
 
   /**
    * Translated "Tidspunkt".
    * 
    * @return translated "Tidspunkt"
-   * @gwt.key occured
    */
+  @DefaultStringValue("Tidspunkt")
+  @Key("occured")
   String occured();
 
   /**
-   * Translated "Klarte ikke operasjonen:".
+   * Translated "ok".
    * 
-   * @return translated "Klarte ikke operasjonen:"
-   * @gwt.key backup_error
+   * @return translated "ok"
    */
-  String backup_error();
+  @DefaultStringValue("ok")
+  @Key("ok")
+  String ok();
 
   /**
-   * Translated "Semester".
+   * Translated "Betalt dag".
    * 
-   * @return translated "Semester"
-   * @gwt.key semester
+   * @return translated "Betalt dag"
    */
-  String semester();
+  @DefaultStringValue("Betalt dag")
+  @Key("paid_day")
+  String paid_day();
 
   /**
-   * Translated "Tildato".
+   * Translated "Passord".
    * 
-   * @return translated "Tildato"
-   * @gwt.key to_date
+   * @return translated "Passord"
    */
-  String to_date();
+  @DefaultStringValue("Passord")
+  @Key("password")
+  String password();
 
   /**
-   * Translated "Medlemsantall per alder og kjønn".
+   * Translated "Person".
    * 
-   * @return translated "Medlemsantall per alder og kjønn"
-   * @gwt.key menuitem_report_member_per_year_gender
+   * @return translated "Person"
    */
-  String menuitem_report_member_per_year_gender();
+  @DefaultStringValue("Person")
+  @Key("person")
+  String person();
 
   /**
-   * Translated "Avslutt måned".
+   * Translated "Avbryt\u0009".
    * 
-   * @return translated "Avslutt måned"
-   * @gwt.key end_month
+   * @return translated "Avbryt\u0009"
    */
-  String end_month();
+  @DefaultStringValue("Avbryt\u0009")
+  @Key("person_pick_close")
+  String person_pick_close();
 
   /**
-   * Translated "Budsjett".
+   * Translated "Telefon".
    * 
-   * @return translated "Budsjett"
-   * @gwt.key menuitem_budget
+   * @return translated "Telefon"
    */
-  String menuitem_budget();
+  @DefaultStringValue("Telefon")
+  @Key("phone")
+  String phone();
 
   /**
-   * Translated "Konto".
+   * Translated "Post".
    * 
-   * @return translated "Konto"
-   * @gwt.key account
+   * @return translated "Post"
    */
-  String account();
+  @DefaultStringValue("Post")
+  @Key("post")
+  String post();
 
   /**
-   * Translated "Other".
+   * Translated "Postbeskrivelse".
    * 
-   * @return translated "Other"
-   * @gwt.key country_other
+   * @return translated "Postbeskrivelse"
    */
-  String country_other();
-
-  /**
-   * Translated "Redusert skrivetilgang".
-   * 
-   * @return translated "Redusert skrivetilgang"
-   * @gwt.key reduced_write_access
-   */
-  String reduced_write_access();
-
-  /**
-   * Translated "Kjør rapport".
-   * 
-   * @return translated "Kjør rapport"
-   * @gwt.key do_report
-   */
-  String do_report();
+  @DefaultStringValue("Postbeskrivelse")
+  @Key("post_description")
+  String post_description();
 
   /**
    * Translated "Post nr. er benyttet tidligere".
    * 
    * @return translated "Post nr. er benyttet tidligere"
-   * @gwt.key post_used
    */
+  @DefaultStringValue("Post nr. er benyttet tidligere")
+  @Key("post_used")
   String post_used();
 
   /**
-   * Translated "Andre inntekter".
+   * Translated "Postnr".
    * 
-   * @return translated "Andre inntekter"
-   * @gwt.key earnings_other
+   * @return translated "Postnr"
    */
-  String earnings_other();
+  @DefaultStringValue("Postnr")
+  @Key("postnmb")
+  String postnmb();
 
   /**
-   * Translated "Status for utvalgte konti".
+   * Translated "Prosjekt".
    * 
-   * @return translated "Status for utvalgte konti"
-   * @gwt.key menuitem_report_accounttrack
+   * @return translated "Prosjekt"
    */
-  String menuitem_report_accounttrack();
+  @DefaultStringValue("Prosjekt")
+  @Key("project")
+  String project();
 
   /**
-   * Translated "Vis måned".
+   * Translated "Nytt prosjekt".
    * 
-   * @return translated "Vis måned"
-   * @gwt.key menuitem_showmonth
+   * @return translated "Nytt prosjekt"
    */
-  String menuitem_showmonth();
+  @DefaultStringValue("Nytt prosjekt")
+  @Key("projectEditView_newButton")
+  String projectEditView_newButton();
 
   /**
-   * Translated "Vis treningsmedlemsskap ".
+   * Translated "Spørring".
    * 
-   * @return translated "Vis treningsmedlemsskap "
-   * @gwt.key menuitem_showtraining
+   * @return translated "Spørring"
    */
-  String menuitem_showtraining();
+  @DefaultStringValue("Spørring")
+  @Key("query")
+  String query();
+
+  /**
+   * Translated "Kun lesetilgang".
+   * 
+   * @return translated "Kun lesetilgang"
+   */
+  @DefaultStringValue("Kun lesetilgang")
+  @Key("read_only_access")
+  String read_only_access();
+
+  /**
+   * Translated "Redusert skrivetilgang".
+   * 
+   * @return translated "Redusert skrivetilgang"
+   */
+  @DefaultStringValue("Redusert skrivetilgang")
+  @Key("reduced_write_access")
+  String reduced_write_access();
+
+  /**
+   * Translated "Føres på post".
+   * 
+   * @return translated "Føres på post"
+   */
+  @DefaultStringValue("Føres på post")
+  @Key("register_count_post")
+  String register_count_post();
+
+  /**
+   * Translated "Registrer medlemsskap".
+   * 
+   * @return translated "Registrer medlemsskap"
+   */
+  @DefaultStringValue("Registrer medlemsskap")
+  @Key("register_membership")
+  String register_membership();
+
+  /**
+   * Translated "Registrering av medlemsskap".
+   * 
+   * @return translated "Registrering av medlemsskap"
+   */
+  @DefaultStringValue("Registrering av medlemsskap")
+  @Key("register_membership_header")
+  String register_membership_header();
+
+  /**
+   * Translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag.".
+   * 
+   * @return translated "Om det kun skal registreres medlemsskap, ikke inngi betalt dag."
+   */
+  @DefaultStringValue("Om det kun skal registreres medlemsskap, ikke inngi betalt dag.")
+  @Key("register_membership_help")
+  String register_membership_help();
+
+  /**
+   * Translated "Lagre".
+   * 
+   * @return translated "Lagre"
+   */
+  @DefaultStringValue("Lagre")
+  @Key("save")
+  String save();
+
+  /**
+   * Translated "Søk".
+   * 
+   * @return translated "Søk"
+   */
+  @DefaultStringValue("Søk")
+  @Key("search")
+  String search();
+
+  /**
+   * Translated "Semester".
+   * 
+   * @return translated "Semester"
+   */
+  @DefaultStringValue("Semester")
+  @Key("semester")
+  String semester();
+
+  /**
+   * Translated "Vis kun poster med valgt konto".
+   * 
+   * @return translated "Vis kun poster med valgt konto"
+   */
+  @DefaultStringValue("Vis kun poster med valgt konto")
+  @Key("show_only_selcted_post")
+  String show_only_selcted_post();
 
   /**
    * Translated "Vår".
    * 
    * @return translated "Vår"
-   * @gwt.key spring
    */
+  @DefaultStringValue("Vår")
+  @Key("spring")
   String spring();
 
   /**
-   * Translated "Ansatt".
+   * Translated "Standardinnstillinger for regnskap".
    * 
-   * @return translated "Ansatt"
-   * @gwt.key employee
+   * @return translated "Standardinnstillinger for regnskap"
    */
-  String employee();
+  @DefaultStringValue("Standardinnstillinger for regnskap")
+  @Key("standardsettings")
+  String standardsettings();
 
   /**
-   * Translated "Beskrivelse".
+   * Translated "Status".
    * 
-   * @return translated "Beskrivelse"
-   * @gwt.key description
+   * @return translated "Status"
    */
-  String description();
+  @DefaultStringValue("Status")
+  @Key("status")
+  String status();
 
   /**
-   * Translated "Pris for meldmesskap".
+   * Translated "Sum".
    * 
-   * @return translated "Pris for meldmesskap"
-   * @gwt.key cost_membership
+   * @return translated "Sum"
    */
-  String cost_membership();
+  @DefaultStringValue("Sum")
+  @Key("sum")
+  String sum();
 
   /**
-   * Translated "Budsjett".
+   * Translated "Sikkerhetskopi av database".
    * 
-   * @return translated "Budsjett"
-   * @gwt.key menu_budget
+   * @return translated "Sikkerhetskopi av database"
    */
-  String menu_budget();
+  @DefaultStringValue("Sikkerhetskopi av database")
+  @Key("title_back")
+  String title_back();
 
   /**
-   * Translated "Epost".
+   * Translated "Endre person".
    * 
-   * @return translated "Epost"
-   * @gwt.key email
+   * @return translated "Endre person"
    */
-  String email();
+  @DefaultStringValue("Endre person")
+  @Key("title_change_person")
+  String title_change_person();
 
   /**
-   * Translated "Detaljer".
+   * Translated "Ny/endre bruker".
    * 
-   * @return translated "Detaljer"
-   * @gwt.key detailsline
+   * @return translated "Ny/endre bruker"
    */
-  String detailsline();
+  @DefaultStringValue("Ny/endre bruker")
+  @Key("title_edit_new_user")
+  String title_edit_new_user();
 
   /**
-   * Translated "Registrer".
+   * Translated "Oprett/Endre kontotype".
    * 
-   * @return translated "Registrer"
-   * @gwt.key menu_register
+   * @return translated "Oprett/Endre kontotype"
    */
-  String menu_register();
+  @DefaultStringValue("Oprett/Endre kontotype")
+  @Key("title_edit_posttype")
+  String title_edit_posttype();
 
   /**
-   * Translated "Testutsending til deg selv".
+   * Translated "Konti i bruk".
    * 
-   * @return translated "Testutsending til deg selv"
-   * @gwt.key mail_test
+   * @return translated "Konti i bruk"
    */
-  String mail_test();
+  @DefaultStringValue("Konti i bruk")
+  @Key("title_posttype_edit_in_use")
+  String title_posttype_edit_in_use();
+
+  /**
+   * Translated "Konti ikke i bruk".
+   * 
+   * @return translated "Konti ikke i bruk"
+   */
+  @DefaultStringValue("Konti ikke i bruk")
+  @Key("title_posttype_edit_not_in_use")
+  String title_posttype_edit_not_in_use();
+
+  /**
+   * Translated "Detaljer for utvalgte posteringer".
+   * 
+   * @return translated "Detaljer for utvalgte posteringer"
+   */
+  @DefaultStringValue("Detaljer for utvalgte posteringer")
+  @Key("title_report_accountlines")
+  String title_report_accountlines();
+
+  /**
+   * Translated "Oversikt over medlemmers adresser".
+   * 
+   * @return translated "Oversikt over medlemmers adresser"
+   */
+  @DefaultStringValue("Oversikt over medlemmers adresser")
+  @Key("title_report_membersaddresses")
+  String title_report_membersaddresses();
+
+  /**
+   * Translated "Oversikt over medlemmer per fødselsdato".
+   * 
+   * @return translated "Oversikt over medlemmer per fødselsdato"
+   */
+  @DefaultStringValue("Oversikt over medlemmer per fødselsdato")
+  @Key("title_report_membersbirth")
+  String title_report_membersbirth();
+
+  /**
+   * Translated "Antall medlemmer per kjønn".
+   * 
+   * @return translated "Antall medlemmer per kjønn"
+   */
+  @DefaultStringValue("Antall medlemmer per kjønn")
+  @Key("title_report_membersbirth_gender")
+  String title_report_membersbirth_gender();
+
+  /**
+   * Translated "Personer med Epostadresser".
+   * 
+   * @return translated "Personer med Epostadresser"
+   */
+  @DefaultStringValue("Personer med Epostadresser")
+  @Key("title_report_users_email")
+  String title_report_users_email();
+
+  /**
+   * Translated "Brukere".
+   * 
+   * @return translated "Brukere"
+   */
+  @DefaultStringValue("Brukere")
+  @Key("title_user_adm")
+  String title_user_adm();
+
+  /**
+   * Translated "Tildato".
+   * 
+   * @return translated "Tildato"
+   */
+  @DefaultStringValue("Tildato")
+  @Key("to_date")
+  String to_date();
+
+  /**
+   * Translated "Treningsmedlemsskap".
+   * 
+   * @return translated "Treningsmedlemsskap"
+   */
+  @DefaultStringValue("Treningsmedlemsskap")
+  @Key("train_membership")
+  String train_membership();
+
+  /**
+   * Translated "Fond".
+   * 
+   * @return translated "Fond"
+   */
+  @DefaultStringValue("Fond")
+  @Key("trust")
+  String trust();
+
+  /**
+   * Translated "Nytt fond".
+   * 
+   * @return translated "Nytt fond"
+   */
+  @DefaultStringValue("Nytt fond")
+  @Key("trustEditView_newButton")
+  String trustEditView_newButton();
+
+  /**
+   * Translated "Avbryt".
+   * 
+   * @return translated "Avbryt"
+   */
+  @DefaultStringValue("Avbryt")
+  @Key("trustStatusView_cancelButton")
+  String trustStatusView_cancelButton();
+
+  /**
+   * Translated "Ny fondaktivitet".
+   * 
+   * @return translated "Ny fondaktivitet"
+   */
+  @DefaultStringValue("Ny fondaktivitet")
+  @Key("trustStatusView_newTrustButton")
+  String trustStatusView_newTrustButton();
+
+  /**
+   * Translated "Fondskonto".
+   * 
+   * @return translated "Fondskonto"
+   */
+  @DefaultStringValue("Fondskonto")
+  @Key("trust_account")
+  String trust_account();
+
+  /**
+   * Translated "Aksjon klubbkonto".
+   * 
+   * @return translated "Aksjon klubbkonto"
+   */
+  @DefaultStringValue("Aksjon klubbkonto")
+  @Key("trust_actionclub")
+  String trust_actionclub();
+
+  /**
+   * Translated "Aksjon fondskonto".
+   * 
+   * @return translated "Aksjon fondskonto"
+   */
+  @DefaultStringValue("Aksjon fondskonto")
+  @Key("trust_actiontrust")
+  String trust_actiontrust();
+
+  /**
+   * Translated "Kreditpost".
+   * 
+   * @return translated "Kreditpost"
+   */
+  @DefaultStringValue("Kreditpost")
+  @Key("trust_creditpost")
+  String trust_creditpost();
+
+  /**
+   * Translated "Debetpost".
+   * 
+   * @return translated "Debetpost"
+   */
+  @DefaultStringValue("Debetpost")
+  @Key("trust_debetpost")
+  String trust_debetpost();
+
+  /**
+   * Translated "Standard beskrivelse".
+   * 
+   * @return translated "Standard beskrivelse"
+   */
+  @DefaultStringValue("Standard beskrivelse")
+  @Key("trust_default_desc")
+  String trust_default_desc();
+
+  /**
+   * Translated "Oppdater".
+   * 
+   * @return translated "Oppdater"
+   */
+  @DefaultStringValue("Oppdater")
+  @Key("update")
+  String update();
+
+  /**
+   * Translated "Brukernavn".
+   * 
+   * @return translated "Brukernavn"
+   */
+  @DefaultStringValue("Brukernavn")
+  @Key("user")
+  String user();
+
+  /**
+   * Translated "Ny bruker".
+   * 
+   * @return translated "Ny bruker"
+   */
+  @DefaultStringValue("Ny bruker")
+  @Key("userEditView_newButton")
+  String userEditView_newButton();
+
+  /**
+   * Translated "Valør".
+   * 
+   * @return translated "Valør"
+   */
+  @DefaultStringValue("Valør")
+  @Key("value")
+  String value();
+
+  /**
+   * Translated "X".
+   * 
+   * @return translated "X"
+   */
+  @DefaultStringValue("X")
+  @Key("x")
+  String x();
+
+  /**
+   * Translated "År".
+   * 
+   * @return translated "År"
+   */
+  @DefaultStringValue("År")
+  @Key("year")
+  String year();
+
+  /**
+   * Translated "Årsmedlemskap".
+   * 
+   * @return translated "Årsmedlemskap"
+   */
+  @DefaultStringValue("Årsmedlemskap")
+  @Key("year_membership")
+  String year_membership();
+
+  /**
+   * Translated "Ungdomsmedlemsskap".
+   * 
+   * @return translated "Ungdomsmedlemsskap"
+   */
+  @DefaultStringValue("Ungdomsmedlemsskap")
+  @Key("youth_membership")
+  String youth_membership();
 }
