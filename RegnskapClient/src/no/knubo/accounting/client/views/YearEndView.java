@@ -36,15 +36,11 @@ public class YearEndView extends Composite {
 		this.messages = messages;
 		this.callback = callback;
 		this.elements = elements;
+		
+		
+		
 	}
 	
 	public void init() {	
-		me.getClass();
-		messages.getClass();
-		elements.getClass();
-		callback.getClass();
-		table.getClass();
-		constants.getClass();
-		//TODO continue work...
 	}
 }

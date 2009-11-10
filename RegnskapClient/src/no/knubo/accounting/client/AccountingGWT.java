@@ -26,6 +26,7 @@ import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
+import no.knubo.accounting.client.views.YearEndView;
 import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
@@ -383,9 +384,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((SemesterEditView) widget).init();
                 break;
             case END_YEAR:
-                Window.alert("Not implememented");
-                return;
-
+            	widget = YearEndView.getInstance(constants, messages, callback, elements);
+            	((YearEndView)widget).init();
+            	break;
             }
 
             if (widget == null) {
