@@ -45,8 +45,8 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
 
     private final Elements elements;
 
-    public static PostView show(I18NAccount messages, Constants constants, ViewCallback caller,
-            String line, Elements elements) {
+    public static PostView show(I18NAccount messages, Constants constants, ViewCallback caller, String line,
+            Elements elements) {
         if (me == null) {
             me = new PostView(messages, constants, caller, elements);
         }
@@ -62,8 +62,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
      * @param line
      * @param caller
      */
-    private PostView(I18NAccount messages, Constants constants, ViewCallback caller,
-            Elements elements) {
+    private PostView(I18NAccount messages, Constants constants, ViewCallback caller, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.caller = caller;
@@ -114,7 +113,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
         if (sender == closeImage) {
             hide();
         } else if (sender == editImage) {
@@ -150,14 +149,14 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
             JSONObject post = postVal.isObject();
 
             table.setText(6 + i, 1, Util.debkred(elements, post.get("Debet")));
-            table.setText(6 + i, 2, postCache.getDescription(Util.str(post.get("Post_type"))));
+            table.setText(6 + i, 2, post.get("Post_type") + " - "
+                    + postCache.getDescription(Util.str(post.get("Post_type"))));
             table.setText(6 + i, 3, projectCache.getName(Util.str(post.get("Project"))));
             table.setText(6 + i, 4, emploeeCache.getName(Util.str(post.get("Person"))));
             table.setText(6 + i, 5, Util.money(post.get("Amount")));
             table.getCellFormatter().setStyleName(6 + i, 5, "right");
 
-            table.getRowFormatter().setStyleName(6 + i,
-                    (i % 2 == 0) ? "showlineposts2" : "showlineposts1");
+            table.getRowFormatter().setStyleName(6 + i, (i % 2 == 0) ? "showlineposts2" : "showlineposts1");
         }
     }
 }
