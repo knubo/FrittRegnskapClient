@@ -83,7 +83,7 @@ public class MonthView extends Composite implements ClickHandler,
 		nextImage = ImageFactory.nextImage("MonthView.nextImage");
 		nextImage.addClickHandler(this);
 
-		monthYearCombo = new ListBox(true);
+		monthYearCombo = new ListBox(false);
 		monthYearCombo.setVisibleItemCount(1);
 		monthYearCombo.addChangeHandler(this);
 

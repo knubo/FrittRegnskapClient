@@ -4,71 +4,95 @@
 </head>
 <body>
 <h1 class="helpheader">Generering av massebrev</h1>
-<p>
-Genering av massebrev lager et pdf-dokument p&aring; basis av en sp&oslash;rring mot medlemsregistret. For hver person
-i sp&oslash;rringen blir det laget en side i dokumentet. Malen for massebrevet velges ved generering, og 
-den ferdige pdf-dokumentet blir svaret.
-</p>
-<p>
-Malen for massebrevet er installert p&aring; serveren, og kan endres. 
-</p>
+<p>Genering av massebrev lager et pdf-dokument p&aring; basis av en
+sp&oslash;rring mot medlemsregistret. For hver person i
+sp&oslash;rringen blir det laget en side i dokumentet. Malen for
+massebrevet velges ved generering, og den ferdige pdf-dokumentet blir
+svaret.</p>
+<p>Malen for massebrevet er installert p&aring; serveren, og kan
+endres.</p>
 <h2 class="helpheader">Endring av mal</h2>
-<p>
-Endring av mal m&aring; gj&oslash;res p&aring; serveren. Malene ligger under <a href="services/report/templates/">services/report/templates/</a>.
-Malen som f&oslash;lger med er medlemskortmalen for B&aring;rdar Swing Club som har navn bsc.txt.
-</p>
+<p>Endring av mal m&aring; gj&oslash;res p&aring; serveren. Malene
+ligger under <a href="services/report/templates/">services/report/templates/</a>.
+Malen som f&oslash;lger med er medlemskortmalen for B&aring;rdar Swing
+Club som har navn bsc.txt.</p>
 <p>Malen m&aring; ha f&oslash;lgende form:
 
 <ul>
-<li>document=paper:A4,layout:portrait
-<li>encoding=latin-1
-<li>margins=50, 50, 50, 50
-<li>startdocument
-<li>...kommandoer, en per linje...
-<li>query=...
-<li>...kommandoer, en per linje...
+	<li>document=paper:A4,layout:portrait
+	<li>encoding=latin-1
+	<li>margins=50, 50, 50, 50
+	<li>startdocument
+	<li>...kommandoer, en per linje...
+	<li>query=...
+	<li>...kommandoer, en per linje...
 </ul>
-<p>
-Kommandoene etter <em>query</em>, blir gjenntatt for hver person i sp&oslash;rringen.
-</p>
+<p>Kommandoene etter <em>query</em>, blir gjenntatt for hver person
+i sp&oslash;rringen.</p>
 
 <h3>Utlegg</h3>
-<p>
-Utlegget av teksten gj&oslash;res fra toppen av dokumentet og nedover. Koordinatsystemet har Y-aksen oppover, og X-aksen bortover, hvor &oslash;verst p&aring;
-siden er h&oslash;y verdi, og nederst p&aring; siden er lav verdi. For hver kommando som gis som ikke er relativt plassert, flyttes aktiv Y-posisjon nedover (minsker) slik at neste tekst/tabell/... ikke overlapper. 
-Y posisjonen kan endres ved hjelp av kommandoene <em>ezSetY</em> og <em>ezSetDy</em>. 
-</p>
+<p>Utlegget av teksten gj&oslash;res fra toppen av dokumentet og
+nedover. Koordinatsystemet har Y-aksen oppover, og X-aksen bortover,
+hvor &oslash;verst p&aring; siden er h&oslash;y verdi, og nederst
+p&aring; siden er lav verdi. For hver kommando som gis som ikke er
+relativt plassert, flyttes aktiv Y-posisjon nedover (minsker) slik at
+neste tekst/tabell/... ikke overlapper. Y posisjonen kan endres ved
+hjelp av kommandoene <em>ezSetY</em> og <em>ezSetDy</em>.</p>
 <h3 class="helpheader">Enkeltkommandoer</h3>
-<p>
-Kommandoene inngis p&aring; formatet:
-<pre>
+<p>Kommandoene inngis p&aring; formatet: <pre>
 kommando=verdi
-</pre>
-Verdien for kommando er enten enkeltverdi, i listeform separert med komma, eller ved hjelp av n&oslash;kkel- og verdipar (n&oslash;kkel:verdi), separert med komma.
+</pre> Verdien for kommando er enten enkeltverdi, i listeform separert med
+komma, eller ved hjelp av n&oslash;kkel- og verdipar
+(n&oslash;kkel:verdi), separert med komma.
 <dl>
-<dt>document</dt><dd></dd>
-<dt>encoding</dt><dd></dd>
-<dt>endtable</dt><dd>Avslutter definisjonen av tabellen og tegner den opp.</dd>
-<dt>ezSetY</dt><dd>Setter aktiv Y-koordinat til gitt verdi.</dd>
-<dt>ezSetDy</dt><dd>Endrer aktiv Y-koordinat relativt. Positiv verdi flytter Y-koordinat nedover p&aring; siden, og negativ verdi flytter den oppover.</dd>
-<dt>font</dt><dd>Klargj&oslash;r en ny font til bruk i malen. Inngis p&aring; formen: navn,fontfil, hvor navn er det logiske navnet du vil bruke p&aring; fonten. Dette navnet benytter du s&aring; i setFont.<dd>
-<dt>fontsize</dt><dd></dd>
-<dt>fontselect</dt><dd></dd>
-<dt>margins</dt><dd></dd>
-<dt>relrectangle</dt><dd></dd>
-<dt>reltext</dt><dd></dd>
-<dt>row</dt><dd>En rad i en tabell. Teksten skilles i kolonner ved hjelp av tegnet | (pipe).</dd>
-<dt>setColor</dt><dd></dd>
-<dt>setLineStyle</dt><dd></dd>
-<dt>startdocument</dt><dd></dd>
-<dt>starttable</dt><dd></dd>
-<dt>text</dt><dd></dd>
-<dt>query</dt><dd></dd>
-<dt>wrapopts</dt><dd></dd>
-<dt>wraptext</dt><dd></dd>
+	<dt>document</dt>
+	<dd></dd>
+	<dt>encoding</dt>
+	<dd></dd>
+	<dt>endtable</dt>
+	<dd>Avslutter definisjonen av tabellen og tegner den opp.</dd>
+	<dt>ezSetY</dt>
+	<dd>Setter aktiv Y-koordinat til gitt verdi.</dd>
+	<dt>ezSetDy</dt>
+	<dd>Endrer aktiv Y-koordinat relativt. Positiv verdi flytter
+	Y-koordinat nedover p&aring; siden, og negativ verdi flytter den
+	oppover.</dd>
+	<dt>font</dt>
+	<dd>Klargj&oslash;r en ny font til bruk i malen. Inngis p&aring;
+	formen: navn,fontfil, hvor navn er det logiske navnet du vil bruke
+	p&aring; fonten. Dette navnet benytter du s&aring; i setFont.
+	<dd>
+	<dt>fontsize</dt>
+	<dd></dd>
+	<dt>fontselect</dt>
+	<dd></dd>
+	<dt>margins</dt>
+	<dd></dd>
+	<dt>relrectangle</dt>
+	<dd></dd>
+	<dt>reltext</dt>
+	<dd></dd>
+	<dt>row</dt>
+	<dd>En rad i en tabell. Teksten skilles i kolonner ved hjelp av
+	tegnet | (pipe).</dd>
+	<dt>setColor</dt>
+	<dd></dd>
+	<dt>setLineStyle</dt>
+	<dd></dd>
+	<dt>startdocument</dt>
+	<dd></dd>
+	<dt>starttable</dt>
+	<dd></dd>
+	<dt>text</dt>
+	<dd></dd>
+	<dt>query</dt>
+	<dd></dd>
+	<dt>wrapopts</dt>
+	<dd></dd>
+	<dt>wraptext</dt>
+	<dd></dd>
 </dl>
-<p>
-Tomme rader, samt rader som starter med #, regnes som kommentarer og ignoreres.
-</p>
+<p>Tomme rader, samt rader som starter med #, regnes som kommentarer
+og ignoreres.</p>
 </body>
 </html>

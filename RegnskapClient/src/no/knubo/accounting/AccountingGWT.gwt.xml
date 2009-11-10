@@ -1,18 +1,18 @@
 <module>
 
 	<!-- Inherit the core Web Toolkit stuff.                  -->
-	<inherits name='com.google.gwt.user.User'/>
-    <inherits name="com.google.gwt.i18n.I18N"/>
-	<inherits name='com.google.gwt.json.JSON'/>
-    <inherits name="com.google.gwt.http.HTTP"/>	
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name="com.google.gwt.i18n.I18N" />
+	<inherits name='com.google.gwt.json.JSON' />
+	<inherits name="com.google.gwt.http.HTTP" />
 
 	<!-- Specify the app entry point class.                   -->
-	<entry-point class='no.knubo.accounting.client.AccountingGWT'/>
-  	<stylesheet src='accountstyle.css'/>
+	<entry-point class='no.knubo.accounting.client.AccountingGWT' />
+	<stylesheet src='accountstyle.css' />
 
 	<!-- Norwegian language, independent of country -->
-    <extend-property name="locale" values="no"/>
+	<extend-property name="locale" values="no" />
 
 	<!-- English language, independent of country -->
-    <extend-property name="locale" values="en"/>
+	<extend-property name="locale" values="en" />
 </module>
