@@ -9,15 +9,18 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 
-public class YearEndView extends Composite {
+public class YearEndView extends Composite implements ClickHandler {
 
     private static YearEndView me;
 
@@ -68,7 +71,8 @@ public class YearEndView extends Composite {
         table.getRowFormatter().setStyleName(0, "header");
 
         endYearButton = new NamedButton("endyear", elements.end_year());
-
+        endYearButton.addClickHandler(this);
+        
         endYearHtmlText = new HTML();
 
         dockPanel.add(table, DockPanel.NORTH);
@@ -128,5 +132,24 @@ public class YearEndView extends Composite {
             table.setText(i + 1, 1, posttypeCache.getDescription(Util.str(onePost.get("post"))));
 
         }
+    }
+
+    public void onClick(ClickEvent event) {
+
+        boolean okContinue = Window.confirm(messages.end_year_confirm());
+
+        if (!okContinue) {
+            return;
+        }
+
+        
+        ServerResponse rh = new ServerResponse() {
+            
+            public void serverResponse(JSONValue responseObj) {
+                callback.viewMonth();
+            }
+        };
+        AuthResponder.get(constants, messages, rh , constants.baseurl() + "accounting/endyear.php?action=endyear");
+        
     }
 }

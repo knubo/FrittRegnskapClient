@@ -79,6 +79,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String end_month_confirm();
 
   /**
+   * Translated "Vil du virkelig utføre årsavslutning?".
+   * 
+   * @return translated "Vil du virkelig utføre årsavslutning?"
+   */
+  @DefaultMessage("Vil du virkelig utføre årsavslutning?")
+  @Key("end_year_confirm")
+  String end_year_confirm();
+
+  /**
    * Translated "Klarte ikke koble til server".
    * 
    * @return translated "Klarte ikke koble til server"
