@@ -6,13 +6,16 @@ import no.knubo.accounting.client.ui.NamedButton;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class UserSearchFields implements ClickHandler {
+public class UserSearchFields implements ClickHandler, KeyPressHandler {
     private TextBox firstnameBox;
 
     private TextBox lastnameBox;
@@ -39,11 +42,14 @@ public class UserSearchFields implements ClickHandler {
         searchTable.setStyleName("edittable");
         firstnameBox = new TextBox();
         firstnameBox.setMaxLength(50);
+        firstnameBox.addKeyPressHandler(this);
         lastnameBox = new TextBox();
         lastnameBox.setMaxLength(50);
+        lastnameBox.addKeyPressHandler(this);
         emailBox = new TextBox();
         emailBox.setMaxLength(100);
         emailBox.addStyleName("fullwidth");
+        emailBox.addKeyPressHandler(this);
         employeeList = new ListBox();
         employeeList.setVisibleItemCount(1);
         employeeList.addItem("", "");
@@ -71,6 +77,8 @@ public class UserSearchFields implements ClickHandler {
 
         searchButton = new NamedButton("search", elements.search());
         searchButton.addClickHandler(this);
+        searchButton.addKeyPressHandler(this);
+
         searchTable.setWidget(3, 0, searchButton);
         clearButton = new NamedButton("clear", elements.clear());
         clearButton.addClickHandler(this);
@@ -82,8 +90,15 @@ public class UserSearchFields implements ClickHandler {
         return searchTable;
     }
 
+    public void onKeyPress(KeyPressEvent event) {
+        if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+            doSearch();
+        }
+
+    }
+
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
         if (sender == searchButton) {
             doSearch();
         } else if (sender == clearButton) {
@@ -123,4 +138,5 @@ public class UserSearchFields implements ClickHandler {
     public void setFocus() {
         firstnameBox.setFocus(true);
     }
+
 }

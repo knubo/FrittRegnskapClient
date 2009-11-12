@@ -57,18 +57,19 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         table.setText(1, 1, "");
         table.setText(1, 2, elements.spring());
         table.setText(2, 1, elements.year_membership());
-        table.setText(2, 2, elements.course_membership());
-        table.setText(2, 3, elements.train_membership());
-        table.setText(2, 4, elements.youth_membership());
-        table.setText(1, 5, elements.fall());
-        table.setText(1, 6, "");
+        table.setText(2, 2, elements.year_membership_youth());
+        table.setText(2, 3, elements.course_membership());
+        table.setText(2, 4, elements.train_membership());
+        table.setText(2, 5, elements.youth_membership());
+        table.setText(1, 6, elements.fall());
         table.setText(1, 7, "");
         table.setText(1, 8, "");
-        table.setText(2, 5, elements.course_membership());
-        table.setText(2, 6, elements.train_membership());
-        table.setText(2, 7, elements.youth_membership());
-        table.setText(2, 8, "");
+        table.setText(1, 9, "");
+        table.setText(2, 6, elements.course_membership());
+        table.setText(2, 7, elements.train_membership());
+        table.setText(2, 8, elements.youth_membership());
         table.setText(2, 9, "");
+        table.setText(2, 10, "");
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
         table.getRowFormatter().setStyleName(2, "header");
@@ -79,8 +80,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         initWidget(dp);
     }
 
-    public static MembershipPriceEditView show(I18NAccount messages, Constants constants,
-            Elements elements) {
+    public static MembershipPriceEditView show(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new MembershipPriceEditView(messages, constants, elements);
         }
@@ -89,9 +89,9 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
-    	
-    	if (editFields == null) {
+        Widget sender = (Widget) event.getSource();
+
+        if (editFields == null) {
             editFields = new MembershipPriceEditFields();
         }
 
@@ -103,8 +103,8 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         int row = lineHolder.findId(sender);
 
         editFields.init(row, table.getText(row, 0), table.getText(row, 1), table.getText(row, 2),
-                table.getText(row, 3), table.getText(row, 4), table.getText(row, 5), table.getText(
-                        row, 6), table.getText(row, 7));
+                table.getText(row, 3), table.getText(row, 4), table.getText(row, 5), table.getText(row, 6), table
+                        .getText(row, 7), table.getText(row, 8));
 
         editFields.show();
     }
@@ -123,13 +123,11 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
                 JSONArray semesters = obj.get("semesters").isArray();
                 JSONObject prices = obj.get("price").isObject();
 
-                Map<String, String> priceYear = getPricesMap(prices.get("year").isArray(), "year");
-                Map<String, String> priceCourse = getPricesMap(prices.get("course").isArray(),
-                        "semester");
-                Map<String, String> priceTrain = getPricesMap(prices.get("train").isArray(),
-                        "semester");
-                Map<String, String> priceYouth = getPricesMap(prices.get("youth").isArray(),
-                        "semester");
+                Map<String, String> priceYear = getPricesMap(prices.get("year").isArray(), "year", "amount");
+                Map<String, String> priceYearYouth = getPricesMap(prices.get("year").isArray(), "year", "amountyouth");
+                Map<String, String> priceCourse = getPricesMap(prices.get("course").isArray(), "semester", "amount");
+                Map<String, String> priceTrain = getPricesMap(prices.get("train").isArray(), "semester", "amount");
+                Map<String, String> priceYouth = getPricesMap(prices.get("youth").isArray(), "semester", "amount");
 
                 String currentYear = null;
 
@@ -150,41 +148,44 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
                         if (priceYear.containsKey(year)) {
                             table.setText(row, 1, priceYear.get(year));
                         }
+                        if (priceYearYouth.containsKey(year)) {
+                            table.setText(row, 2, priceYearYouth.get(year));
+                        }
 
                         Image editImage = ImageFactory.editImage("membershipPriceEdit");
                         editImage.addClickHandler(me);
-                        table.setWidget(row, 8, editImage);
+                        table.setWidget(row, 9, editImage);
 
                         currentYear = year;
                         lineHolder.add(row, editImage);
 
-                        for (int j = 0; j < 8; j++) {
+                        for (int j = 0; j < 9; j++) {
                             table.getCellFormatter().setStyleName(row, j, "right");
                         }
 
                     }
 
                     if (priceCourse.containsKey(semester)) {
-                        table.setText(row, 2 + colPlus, priceCourse.get(semester));
+                        table.setText(row, 3 + colPlus, priceCourse.get(semester));
                     }
                     if (priceTrain.containsKey(semester)) {
-                        table.setText(row, 3 + colPlus, priceTrain.get(semester));
+                        table.setText(row, 4 + colPlus, priceTrain.get(semester));
                     }
                     if (priceYouth.containsKey(semester)) {
-                        table.setText(row, 4 + colPlus, priceYouth.get(semester));
+                        table.setText(row, 5 + colPlus, priceYouth.get(semester));
                     }
 
                 }
 
             }
 
-            private Map<String, String> getPricesMap(JSONArray array, String type) {
+            private Map<String, String> getPricesMap(JSONArray array, String type, String priceFieldName) {
                 HashMap<String, String> result = new HashMap<String, String>();
 
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject priceObj = array.get(i).isObject();
 
-                    result.put(Util.str(priceObj.get(type)), Util.str(priceObj.get("amount")));
+                    result.put(Util.str(priceObj.get(type)), Util.str(priceObj.get(priceFieldName)));
                 }
 
                 return result;
@@ -192,8 +193,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
 
         };
 
-        AuthResponder.get(constants, messages, callback,
-                "registers/membershipprices.php?action=all");
+        AuthResponder.get(constants, messages, callback, "registers/membershipprices.php?action=all");
 
     }
 
@@ -203,6 +203,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         private Button cancelButton;
         private HTML mainErrorLabel;
         private TextBoxWithErrorText yearPrice;
+        private TextBoxWithErrorText yearPriceYouth;
         private TextBoxWithErrorText springCoursePrice;
         private TextBoxWithErrorText springTrainPrice;
         private TextBoxWithErrorText springYouthPrice;
@@ -218,16 +219,18 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
             edittable.setStyleName("edittable");
 
             edittable.setText(1, 0, elements.year_membership());
-            edittable.setText(2, 0, elements.spring());
-            edittable.setText(3, 0, elements.course_membership());
-            edittable.setText(4, 0, elements.train_membership());
-            edittable.setText(5, 0, elements.youth_membership());
-            edittable.setText(6, 0, elements.fall());
-            edittable.setText(7, 0, elements.course_membership());
-            edittable.setText(8, 0, elements.train_membership());
-            edittable.setText(9, 0, elements.youth_membership());
+            edittable.setText(2, 0, elements.year_membership_youth());
+            edittable.setText(3, 0, elements.spring());
+            edittable.setText(4, 0, elements.course_membership());
+            edittable.setText(5, 0, elements.train_membership());
+            edittable.setText(6, 0, elements.youth_membership());
+            edittable.setText(7, 0, elements.fall());
+            edittable.setText(8, 0, elements.course_membership());
+            edittable.setText(9, 0, elements.train_membership());
+            edittable.setText(10, 0, elements.youth_membership());
 
             yearPrice = new TextBoxWithErrorText("yearPrice");
+            yearPriceYouth = new TextBoxWithErrorText("yearPriceYouth");
             springCoursePrice = new TextBoxWithErrorText("springCoursePrice");
             springTrainPrice = new TextBoxWithErrorText("springTrainPrice");
             springYouthPrice = new TextBoxWithErrorText("springYouthPrice");
@@ -236,20 +239,20 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
             fallYouthPrice = new TextBoxWithErrorText("fallYouthPrice");
 
             edittable.setWidget(1, 1, yearPrice);
-            edittable.setWidget(3, 1, springCoursePrice);
-            edittable.setWidget(4, 1, springTrainPrice);
-            edittable.setWidget(5, 1, springYouthPrice);
-            edittable.setWidget(7, 1, fallCoursePrice);
-            edittable.setWidget(8, 1, fallTrainPrice);
-            edittable.setWidget(9, 1, fallYouthPrice);
+            edittable.setWidget(2, 1, yearPriceYouth);
+            edittable.setWidget(4, 1, springCoursePrice);
+            edittable.setWidget(5, 1, springTrainPrice);
+            edittable.setWidget(6, 1, springYouthPrice);
+            edittable.setWidget(8, 1, fallCoursePrice);
+            edittable.setWidget(9, 1, fallTrainPrice);
+            edittable.setWidget(10, 1, fallYouthPrice);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
             saveButton = new NamedButton("membershipPriceEditView_saveButton", elements.save());
             saveButton.addClickHandler(this);
-            cancelButton = new NamedButton("membershipPriceEditView_cancelButton", elements
-                    .cancel());
+            cancelButton = new NamedButton("membershipPriceEditView_cancelButton", elements.cancel());
             cancelButton.addClickHandler(this);
 
             mainErrorLabel = new HTML();
@@ -264,9 +267,9 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         }
 
         public void onClick(ClickEvent event) {
-        	Widget sender = (Widget) event.getSource();
+            Widget sender = (Widget) event.getSource();
 
-        	if (sender == cancelButton) {
+            if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton && validateFields()) {
                 doSave();
@@ -278,6 +281,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
             sb.append("action=save");
             Util.addPostParam(sb, "year", year);
             Util.addPostParam(sb, "yearPrice", Util.money(yearPrice.getText()));
+            Util.addPostParam(sb, "yearPriceYouth", Util.money(yearPriceYouth.getText()));
             Util.addPostParam(sb, "springCoursePrice", Util.money(springCoursePrice.getText()));
             Util.addPostParam(sb, "springTrainPrice", Util.money(springTrainPrice.getText()));
             Util.addPostParam(sb, "springYouthPrice", Util.money(springYouthPrice.getText()));
@@ -292,12 +296,13 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
 
                     if ("1".equals(Util.str(responseObj.get("status")))) {
                         table.setText(row, 1, Util.money(yearPrice.getText()));
-                        table.setText(row, 2, Util.money(springCoursePrice.getText()));
-                        table.setText(row, 3, Util.money(springTrainPrice.getText()));
-                        table.setText(row, 4, Util.money(springYouthPrice.getText()));
-                        table.setText(row, 5, Util.money(fallCoursePrice.getText()));
-                        table.setText(row, 6, Util.money(fallTrainPrice.getText()));
-                        table.setText(row, 7, Util.money(fallYouthPrice.getText()));
+                        table.setText(row, 2, Util.money(yearPriceYouth.getText()));
+                        table.setText(row, 3, Util.money(springCoursePrice.getText()));
+                        table.setText(row, 4, Util.money(springTrainPrice.getText()));
+                        table.setText(row, 5, Util.money(springYouthPrice.getText()));
+                        table.setText(row, 6, Util.money(fallCoursePrice.getText()));
+                        table.setText(row, 7, Util.money(fallTrainPrice.getText()));
+                        table.setText(row, 8, Util.money(fallYouthPrice.getText()));
                         hide();
                     } else {
                         mainErrorLabel.setText(messages.save_failed());
@@ -310,12 +315,13 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
 
         }
 
-        private void init(int row, String year, String yearPrice, String springCoursePrice,
-                String springTrainPrice, String springYouthPrice, String fallCoursePrice,
-                String fallTrainPrice, String fallYouthPrice) {
+        private void init(int row, String year, String yearPrice, String yearPriceYouth, String springCoursePrice,
+                String springTrainPrice, String springYouthPrice, String fallCoursePrice, String fallTrainPrice,
+                String fallYouthPrice) {
             this.row = row;
             this.year = year;
             this.yearPrice.setText(yearPrice);
+            this.yearPriceYouth.setText(yearPriceYouth);
             this.springCoursePrice.setText(springCoursePrice);
             this.springTrainPrice.setText(springTrainPrice);
             this.springYouthPrice.setText(springYouthPrice);
@@ -328,7 +334,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
 
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
-            Widget[] widgets = new Widget[] { yearPrice, springCoursePrice, springTrainPrice,
+            Widget[] widgets = new Widget[] { yearPrice, yearPriceYouth, springCoursePrice, springTrainPrice,
                     fallCoursePrice, fallTrainPrice };
             mv.mandatory(messages.required_field(), widgets);
             mv.money(messages.field_money(), widgets);

@@ -33,13 +33,12 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class RegisterMembershipView extends Composite implements ClickHandler, UserSearchCallback,
-        FocusCallback {
+public class RegisterMembershipView extends Composite implements ClickHandler, UserSearchCallback, FocusCallback {
 
     private static RegisterMembershipView me;
 
-    public static RegisterMembershipView show(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public static RegisterMembershipView show(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
         if (me == null) {
             me = new RegisterMembershipView(messages, constants, helpPanel, elements);
         }
@@ -66,8 +65,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
     private final Elements elements;
 
-    private RegisterMembershipView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
-            Elements elements) {
+    private RegisterMembershipView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -97,11 +95,12 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
         resultTable.setHTML(0, 1, elements.lastname());
         resultTable.setHTML(0, 2, elements.email());
         resultTable.setHTML(0, 3, elements.year_membership());
-        resultTable.setHTML(0, 4, elements.course_membership());
-        resultTable.setHTML(0, 5, elements.train_membership());
-        resultTable.setHTML(0, 6, elements.youth_membership());
-        resultTable.setHTML(0, 7, elements.paid_day());
-        resultTable.setHTML(0, 8, elements.post());
+        resultTable.setHTML(0, 4, elements.year_membership_youth());
+        resultTable.setHTML(0, 5, elements.course_membership());
+        resultTable.setHTML(0, 6, elements.train_membership());
+        resultTable.setHTML(0, 7, elements.youth_membership());
+        resultTable.setHTML(0, 8, elements.paid_day());
+        resultTable.setHTML(0, 9, elements.post());
         dp.add(resultTable, DockPanel.NORTH);
 
         Button button = new NamedButton("RegisterMembershipView.registerMembershipButton", elements
@@ -158,18 +157,24 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                     resultTable.setWidget(row, 3, yearCheck);
                     resultTable.getCellFormatter().setStyleName(row, 3, "center");
 
+                    CheckBox yearYouthCheck = new CheckBox();
+                    resultTable.setWidget(row, 4, yearYouthCheck);
+                    resultTable.getCellFormatter().setStyleName(row, 4, "center");
+
+                    Util.linkJustOne(yearCheck, yearYouthCheck);
+                    
                     CheckBox courseCheck = new CheckBox();
-                    resultTable.setWidget(row, 4, courseCheck);
+                    resultTable.setWidget(row, 5, courseCheck);
                     resultTable.getCellFormatter().setStyleName(row, 4, "center");
 
                     CheckBox trainCheck = new CheckBox();
-                    resultTable.setWidget(row, 5, trainCheck);
+                    resultTable.setWidget(row, 6, trainCheck);
                     resultTable.getCellFormatter().setStyleName(row, 5, "center");
 
                     CheckBox youthCheck = new CheckBox();
-                    resultTable.setWidget(row, 6, youthCheck);
+                    resultTable.setWidget(row, 7, youthCheck);
                     resultTable.getCellFormatter().setStyleName(row, 6, "center");
-                    
+
                     Util.linkJustOne(courseCheck, trainCheck);
                     Util.linkJustOne(courseCheck, youthCheck);
                     Util.linkJustOne(trainCheck, youthCheck);
@@ -178,16 +183,16 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                     dayBox.setMaxLength(2);
                     dayBox.setVisibleLength(2);
                     dayBox.addFocusListener(me);
-                    resultTable.setWidget(row, 7, dayBox);
+                    resultTable.setWidget(row, 8, dayBox);
 
-                    enableDisableBoxes(obj, yearCheck, courseCheck, trainCheck, youthCheck);
+                    enableDisableBoxes(obj, yearCheck, yearYouthCheck, courseCheck, trainCheck, youthCheck);
                     idHolder.add(Util.str(obj.get("id")), dayBox);
 
                     ListBox payments = new ListBox();
                     payments.setVisibleItemCount(1);
                     PosttypeCache.getInstance(constants, messages).fillMembershipPayments(payments);
 
-                    resultTable.setWidget(row, 8, payments);
+                    resultTable.setWidget(row, 9, payments);
 
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
@@ -201,11 +206,13 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
     }
 
-    private void enableDisableBoxes(JSONObject obj, CheckBox yearCheck, CheckBox courseCheck,
+    private void enableDisableBoxes(JSONObject obj, CheckBox yearCheck, CheckBox yearYouthCheck, CheckBox courseCheck,
             CheckBox trainCheck, CheckBox youthCheck) {
         if ("1".equals(Util.str(obj.get("year")))) {
             yearCheck.setValue(true);
             yearCheck.setEnabled(false);
+            yearYouthCheck.setValue(true);
+            yearYouthCheck.setEnabled(false);
         }
 
         if ("1".equals(Util.str(obj.get("course")))) {
@@ -253,13 +260,19 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
     protected void disableAfterOK() {
         for (int i = 1; i < resultTable.getRowCount(); i++) {
             CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
-            CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
-            CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
-            CheckBox youthBox = (CheckBox) resultTable.getWidget(i, 6);
+            CheckBox yearYouthBox = (CheckBox) resultTable.getWidget(i, 4);
+            CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 5);
+            CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 6);
+            CheckBox youthBox = (CheckBox) resultTable.getWidget(i, 7);
 
+            if (yearBox.getValue() || yearYouthBox.getValue()) {
+                yearBox.setEnabled(false);
+                yearYouthBox.setEnabled(false);
+            }
             if (yearBox.getValue()) {
                 yearBox.setEnabled(false);
             }
+
             if (courseBox.getValue()) {
                 courseBox.setEnabled(false);
             }
@@ -282,19 +295,21 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
         for (int i = 1; i < resultTable.getRowCount(); i++) {
             CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
-            CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 4);
-            CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 5);
-            CheckBox youthBox = (CheckBox) resultTable.getWidget(i, 6);
-            TextBoxWithErrorText dayBox = (TextBoxWithErrorText) resultTable.getWidget(i, 7);
-            ListBox post = (ListBox) resultTable.getWidget(i, 8);
+            CheckBox yearYouthBox = (CheckBox) resultTable.getWidget(i, 4);
+            CheckBox courseBox = (CheckBox) resultTable.getWidget(i, 5);
+            CheckBox trainBox = (CheckBox) resultTable.getWidget(i, 6);
+            CheckBox youthBox = (CheckBox) resultTable.getWidget(i, 7);
+            TextBoxWithErrorText dayBox = (TextBoxWithErrorText) resultTable.getWidget(i, 8);
+            ListBox post = (ListBox) resultTable.getWidget(i, 9);
             String id = idHolder.findId(dayBox);
 
             boolean doYear = yearBox.isEnabled() && yearBox.getValue();
+            boolean doYearYouth = yearYouthBox.isEnabled() && yearYouthBox.getValue();
             boolean doCourse = courseBox.isEnabled() && courseBox.getValue();
             boolean doTrain = trainBox.isEnabled() && trainBox.getValue();
             boolean doYouth = youthBox.isEnabled() && youthBox.getValue();
 
-            if (doYear || doCourse || doTrain || doYouth) {
+            if (doYear || doYearYouth || doCourse || doTrain || doYouth) {
                 validateDay(mv, dayBox);
                 ok = ok && mv.validateStatus();
             }
@@ -302,13 +317,18 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
             /* If daybox is given, then a checkbox must be set. */
             if (dayBox.getText().length() > 0) {
                 String message = messages.add_member_day_require_action();
-                boolean shouldFail = !doYear && !doCourse && !doTrain && !doYouth;
+                boolean shouldFail = !doYear && !doYearYouth && !doCourse && !doTrain && !doYouth;
                 ok = ok && mv.fail(dayBox, shouldFail, message);
             }
 
             if (doYear) {
                 Util.addPostParam(sb, "year" + id, "1");
             }
+            
+            if(doYearYouth) {
+                Util.addPostParam(sb, "yearyouth" + id, "1");                
+            }
+            
             if (doCourse) {
                 Util.addPostParam(sb, "course" + id, "1");
             }
@@ -332,8 +352,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
     }
 
     private void validateDay(MasterValidator mv, ErrorLabelWidget dayBox) {
-        mv.day("!", messages.illegal_day(), Integer.parseInt(currentYear), currentMonth,
-                new Widget[] { dayBox });
+        mv.day("!", messages.illegal_day(), Integer.parseInt(currentYear), currentMonth, new Widget[] { dayBox });
     }
 
     private void setHeader() {
@@ -347,8 +366,8 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                 currentYear = Util.str(object.get("year"));
                 currentMonth = Util.getInt(object.get("month"));
 
-                String headerText = "<h2>" + elements.register_membership_header() + " - "
-                        + semester + "-" + Util.monthString(elements, currentMonth) + "</h2>";
+                String headerText = "<h2>" + elements.register_membership_header() + " - " + semester + "-"
+                        + Util.monthString(elements, currentMonth) + "</h2>";
                 header.setHTML(headerText);
             }
         };

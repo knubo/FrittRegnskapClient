@@ -691,11 +691,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String end_year();
 
   /**
-   * Translated "F�lgende posteringer vil utføres ved årsavslutningn av regnskapet:".
+   * Translated "Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB.".
    * 
-   * @return translated "F�lgende posteringer vil utføres ved årsavslutningn av regnskapet:"
+   * @return translated "Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB."
    */
-  @DefaultStringValue("F�lgende posteringer vil utføres ved årsavslutningn av regnskapet:")
+  @DefaultStringValue("Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB.")
   @Key("end_year_heading")
   String end_year_heading();
 
@@ -2300,6 +2300,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Årsmedlemskap")
   @Key("year_membership")
   String year_membership();
+
+  /**
+   * Translated "Årsmedlemskap ungdom".
+   * 
+   * @return translated "Årsmedlemskap ungdom"
+   */
+  @DefaultStringValue("Årsmedlemskap ungdom")
+  @Key("year_membership_youth")
+  String year_membership_youth();
 
   /**
    * Translated "Ungdomsmedlemsskap".
