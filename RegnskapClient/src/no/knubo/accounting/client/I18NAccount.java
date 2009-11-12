@@ -43,6 +43,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String confirm_delete();
 
   /**
+   * Translated "Utgifter for {0}".
+   * 
+   * @return translated "Utgifter for {0}"
+   */
+  @DefaultMessage("Utgifter for {0}")
+  @Key("cost_year")
+  String cost_year(String arg0);
+
+  /**
    * Translated "Dato inngis på formatet dd.mm.yyyy".
    * 
    * @return translated "Dato inngis på formatet dd.mm.yyyy"
@@ -149,6 +158,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Ulovlig måned")
   @Key("illegal_month")
   String illegal_month();
+
+  /**
+   * Translated "Inntekter for {0}".
+   * 
+   * @return translated "Inntekter for {0}"
+   */
+  @DefaultMessage("Inntekter for {0}")
+  @Key("income_year")
+  String income_year(String arg0);
 
   /**
    * Translated "Ulovlig epostadresse".

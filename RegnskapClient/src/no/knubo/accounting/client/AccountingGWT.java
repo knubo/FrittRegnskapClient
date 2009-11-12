@@ -17,8 +17,8 @@ import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.LogView;
 import no.knubo.accounting.client.views.LogoutView;
-import no.knubo.accounting.client.views.MonthDetailsView;
 import no.knubo.accounting.client.views.MonthAndSemesterEndView;
+import no.knubo.accounting.client.views.MonthDetailsView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonSearchView;
 import no.knubo.accounting.client.views.RegisterHappeningView;
@@ -40,6 +40,7 @@ import no.knubo.accounting.client.views.registers.StandardvaluesView;
 import no.knubo.accounting.client.views.registers.TrustActionEditView;
 import no.knubo.accounting.client.views.registers.TrustEditView;
 import no.knubo.accounting.client.views.registers.UsersEditView;
+import no.knubo.accounting.client.views.reporting.EarningsAndCostPie;
 import no.knubo.accounting.client.views.reporting.ReportAccountlines;
 import no.knubo.accounting.client.views.reporting.ReportAccounttracking;
 import no.knubo.accounting.client.views.reporting.ReportMail;
@@ -158,6 +159,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(reportsMenu, elements.menuitem_report_year(),
                 WidgetIds.REPORT_YEAR);
+        addMenuItem(reportsMenu, elements.menuitem_report_earnings_year(),
+                WidgetIds.REPORT_EARNINGS_YEAR);
 
         addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
 
@@ -354,6 +357,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case REPORT_YEAR:
                 widget = GeneralReportView.show(messages, constants, elements);
+                break;
+            case REPORT_EARNINGS_YEAR:
+                widget = EarningsAndCostPie.show(messages, constants, elements);
                 break;
             case MANAGE_FILES:
                 widget = ManageFilesView.getInstance(constants, messages, elements);

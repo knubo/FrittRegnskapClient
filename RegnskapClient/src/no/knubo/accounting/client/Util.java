@@ -392,6 +392,22 @@ public class Util {
         }
     }
 
+    public static double getDouble(JSONValue value) {
+        if (value == null || isNull(value)) {
+            return 0;
+        }
+
+        if (value.isNumber() != null) {
+            JSONNumber numb = value.isNumber();
+            double dub = numb.doubleValue();
+            return dub;
+        }
+
+        String str = str(value);
+        return Double.parseDouble(str.trim());
+        
+    }
+    
     public static int getInt(JSONValue value) {
         if (value == null || isNull(value)) {
             return 0;

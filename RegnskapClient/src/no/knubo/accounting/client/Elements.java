@@ -1384,6 +1384,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_report_addresses();
 
   /**
+   * Translated "Paigraf over inntekter og utgifter for år".
+   * 
+   * @return translated "Paigraf over inntekter og utgifter for år"
+   */
+  @DefaultStringValue("Paigraf over inntekter og utgifter for år")
+  @Key("menuitem_report_earnings_year")
+  String menuitem_report_earnings_year();
+
+  /**
    * Translated "Epostutsendelse".
    * 
    * @return translated "Epostutsendelse"
@@ -1976,6 +1985,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Semester")
   @Key("semester")
   String semester();
+
+  /**
+   * Translated "Vis utgifter".
+   * 
+   * @return translated "Vis utgifter"
+   */
+  @DefaultStringValue("Vis utgifter")
+  @Key("show_expences")
+  String show_expences();
 
   /**
    * Translated "Vis kun poster med valgt konto".
