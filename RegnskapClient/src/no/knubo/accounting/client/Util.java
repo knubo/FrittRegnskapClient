@@ -10,7 +10,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONNumber;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.DOM;
@@ -38,13 +37,9 @@ public class Util {
                                 }-*/;
 
     public static boolean getBoolean(JSONValue str) {
-        return "1".equals(str(str));
+        return "1".equals(str(str)) || "true".equals(str(str));
     }
 
-    public static boolean getBoolean(JSONObject obj) {
-        return "false".equals(str(obj));
-    }
-    
     /**
      * Converts a number into a i18n month from the property file.
      * 
