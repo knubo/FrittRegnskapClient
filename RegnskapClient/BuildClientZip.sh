@@ -1,2 +1,2 @@
 #!/bin/sh
-zip -r AccountClient.zip www/*
+cd war;zip -r ../AccountClient.zip *;cd ..

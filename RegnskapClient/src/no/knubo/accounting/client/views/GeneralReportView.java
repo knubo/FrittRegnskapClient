@@ -3,10 +3,12 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -32,6 +34,8 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
 
     private TextBoxWithErrorText yearTextBox;
 
+    private TextBoxWithErrorText monthTextBox;
+
     public GeneralReportView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
@@ -42,10 +46,13 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
         reportButton.addClickHandler(this);
 
         yearTextBox = new TextBoxWithErrorText("year");
+        monthTextBox = new TextBoxWithErrorText("month");
 
         HorizontalPanel hp = new HorizontalPanel();
         hp.add(new Label(elements.year()));
         hp.add(yearTextBox);
+        hp.add(new Label(elements.month()));
+        hp.add(monthTextBox);
         
         dp.add(hp, DockPanel.NORTH);
         dp.add(reportButton, DockPanel.NORTH);
@@ -65,9 +72,20 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
     }
 
     public void onClick(ClickEvent event) {
+        
+        MasterValidator mv = new MasterValidator();
+        mv.mandatory(messages.year_required(), yearTextBox);
+        
+        if(!mv.validateStatus()) {
+            return;
+        }
+
+        
         StringBuffer sb = new StringBuffer();
         sb.append("year=");
         sb.append(yearTextBox.getText());
+
+        Util.addPostParam(sb, "month", monthTextBox.getText());
         AuthResponder.post(constants, messages, this, sb, "reports/sum_years.php");
     
     }

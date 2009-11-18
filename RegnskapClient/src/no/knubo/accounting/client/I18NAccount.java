@@ -383,4 +383,13 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Din cachet(?) versjon av klienten er ikke på samme versjon som serverversjonen. Klientversjonen er {0} og serverversjonen er {1}. Prøv en shift reload av siden. Dette kan gjøre at deler av applikasjonen ikke fungerer som forventet.")
   @Key("version_mismatch")
   String version_mismatch(String arg0,  String arg1);
+
+  /**
+   * Translated "år er påkrevet felt.".
+   * 
+   * @return translated "år er påkrevet felt."
+   */
+  @DefaultMessage("år er påkrevet felt.")
+  @Key("year_required")
+  String year_required();
 }

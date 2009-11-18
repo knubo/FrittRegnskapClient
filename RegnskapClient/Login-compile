@@ -1,5 +1,5 @@
 #!/bin/sh
 APPDIR=`dirname $0`;
 GWT_ROOT='/Users/knuterikborgen/kode/gwt-mac-1.7.0'
-CP="$APPDIR/src:$APPDIR/bin:$GWT_ROOT/gwt-user.jar:$GWT_ROOT/gwt-dev-mac.jar"
+CP="$APPDIR/src:$APPDIR/bin:$GWT_ROOT/gwt-user.jar:$GWT_ROOT/gwt-dev-mac.jar:lib/gwt-visualization.jar"
 java -Xmx256M -XstartOnFirstThread -cp "$CP" com.google.gwt.dev.Compiler -logLevel INFO -style PRETTY "$@" no.knubo.accounting.Login

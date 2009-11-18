@@ -12,39 +12,39 @@ public class MasterValidator {
 
     List<Validateable> failedFields = new ArrayList<Validateable>();
 
-    public void mandatory(String string, Widget[] widgets) {
+    public void mandatory(String string, Widget... widgets) {
         MandatoryValidator mandatoryValidation = new MandatoryValidator(string);
 
         status &= mandatoryValidation.validate(this, widgets);
     }
 
-    public void date(String error, Widget[] widgets) {
+    public void date(String error, Widget... widgets) {
         ValidatorBase datevalidator = new DateValidator(error);
         status &= datevalidator.validate(this, widgets);
     }
 
-    public void day(String error, int year, int month, Widget[] widgets) {
+    public void day(String error, int year, int month, Widget... widgets) {
         ValidatorBase dayvalidator = new DayValidator(error, month, year);
         status &= dayvalidator.validate(this, widgets);
     }
 
-    public void money(String error, Widget[] widgets) {
+    public void money(String error, Widget... widgets) {
         MoneyValidator moneyValidator = new MoneyValidator(error);
         status &= moneyValidator.validate(this, widgets);
     }
 
-    public void email(String error, Widget[] widgets) {
+    public void email(String error, Widget... widgets) {
         EmailValidator emailValidator = new EmailValidator(error);
         status &= emailValidator.validate(this, widgets);
     }
 
-    public void range(String error, Integer minVal, Integer maxVal, Widget[] widgets) {
+    public void range(String error, Integer minVal, Integer maxVal, Widget... widgets) {
         RangeValidator rangeValidator = new RangeValidator(error, minVal, maxVal);
 
         status &= rangeValidator.validate(this, widgets);
     }
 
-    public void registry(String error, Registry registry, Widget[] widgets) {
+    public void registry(String error, Registry registry, Widget... widgets) {
         RegistryValidator registryValidator = new RegistryValidator(error, registry);
 
         status &= registryValidator.validate(this, widgets);
