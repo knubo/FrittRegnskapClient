@@ -7,6 +7,15 @@ package no.knubo.accounting.client;
 public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
   /**
+   * Translated "Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret. ".
+   * 
+   * @return translated "Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret. "
+   */
+  @DefaultStringValue("Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret. ")
+  @Key("GeneralReport.reportButton")
+  String GeneralReport_reportButton();
+
+  /**
    * Translated "Lagrer posteringen.".
    * 
    * @return translated "Lagrer posteringen."
@@ -88,11 +97,11 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String money_type();
 
   /**
-   * Translated "M&aring;neden posteringen skal registreres p&aring;.".
+   * Translated "M&aring;ned - mm, for eksempel 12.".
    * 
-   * @return translated "M&aring;neden posteringen skal registreres p&aring;."
+   * @return translated "M&aring;ned - mm, for eksempel 12."
    */
-  @DefaultStringValue("M&aring;neden posteringen skal registreres p&aring;.")
+  @DefaultStringValue("M&aring;ned - mm, for eksempel 12.")
   @Key("month")
   String month();
 
@@ -232,11 +241,11 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String trustStatusView_newTrustButton();
 
   /**
-   * Translated "&Aring;ret posteringen skal registreres p&aring;.".
+   * Translated "&Aring;r - yyyy, for eksempel 2009.".
    * 
-   * @return translated "&Aring;ret posteringen skal registreres p&aring;."
+   * @return translated "&Aring;r - yyyy, for eksempel 2009."
    */
-  @DefaultStringValue("&Aring;ret posteringen skal registreres p&aring;.")
+  @DefaultStringValue("&Aring;r - yyyy, for eksempel 2009.")
   @Key("year")
   String year();
 }
