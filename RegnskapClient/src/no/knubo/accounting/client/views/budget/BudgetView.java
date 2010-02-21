@@ -1,31 +1,29 @@
 package no.knubo.accounting.client.views.budget;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.help.HelpPanel;
-import no.knubo.accounting.client.misc.AuthResponder;
-import no.knubo.accounting.client.misc.IdHolder;
-import no.knubo.accounting.client.misc.ImageFactory;
-import no.knubo.accounting.client.misc.ServerResponse;
-import no.knubo.accounting.client.ui.AccountTable;
+import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.ui.NamedCheckBox;
+import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.views.modules.RegisterStandards;
 
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class BudgetView extends Composite implements ClickHandler {
@@ -35,131 +33,77 @@ public class BudgetView extends Composite implements ClickHandler {
     private Constants constants;
     private HelpPanel helpPanel;
     private Elements elements;
+    private PosttypeCache posttypeCache;
+    private ListBox accountsEarnings;
+    private FlexTable budgetTable;
+    private TextBoxWithErrorText accountInputEarnings;
+    private TextBoxWithErrorText accountValueEarnings;
+    private RegisterStandards registerStandards;
+    private NamedButton addEarningRowButton;
+    private int lastEarningsRow;
+    private int lastCostRow;
+    private NamedButton addCostRowButton;
+    private ListBox accountsCost;
+    private TextBoxWithErrorText accountInputCost;
+    private TextBoxWithErrorText accountValueCost;
+    private int currentEarningsEditRow;
+    private int currentCostEditRow;
 
-    private AccountTable statusTable;
-    private AccountTable springEarningsTable;
-    private AccountTable fallEarningsTable;
-    private AccountTable othersEarningsTable;
-    private AccountTable expencesTable;
-    private HashMap<String, String> coursePrices;
-    private HashMap<String, String> trainPrices;
-    private HashMap<String, String> yearPrices;
-    private HashMap<String, YearSum> yearSums;
-    private IdHolder<JSONObject, Image> membershipIdHolder;
-    private BudgetEditMembershipEditFields editFields;
-
-    public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
-            Elements elements) {
+    public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
         this.elements = elements;
 
-        statusTable = buildStatusTable();
-
         DockPanel dp = new DockPanel();
 
-        membershipIdHolder = new IdHolder<JSONObject, Image>();
+        HorizontalPanel buttonPanel = new HorizontalPanel();
 
-        TabPanel tabPanel = new TabPanel();
-        tabPanel.add(createCourseEarningsView(), elements.earnings_memberships());
-        tabPanel.add(createOtherEarningsView(), elements.earnings_other());
-        tabPanel.add(createExpencesView(), elements.expences());
-        tabPanel.add(createResultView(), elements.budget_result());
+        buttonPanel.add(new Label(elements.hide_from_other_year()));
+        buttonPanel.add(new NamedCheckBox("hide_not_in_current_year"));
 
-        tabPanel.selectTab(0);
+        dp.add(buttonPanel, DockPanel.NORTH);
 
-        dp.add(statusTable, DockPanel.NORTH);
-        dp.setSpacing(5);
-        dp.add(tabPanel, DockPanel.NORTH);
+        budgetTable = new FlexTable();
+        budgetTable.setStyleName("tableborder");
+
+        budgetTable.getFlexCellFormatter().setColSpan(0, 0, 4);
+        budgetTable.setText(0, 0, "2010 " + elements.budgeted_earnins());
+
+        budgetTable.setText(1, 1, elements.account());
+        budgetTable.setText(1, 3, elements.value());
+        budgetTable.getRowFormatter().setStyleName(0, "header");
+        budgetTable.getRowFormatter().setStyleName(1, "header");
+        budgetTable.addClickHandler(this);
+
+        dp.add(budgetTable, DockPanel.NORTH);
+
+        registerStandards = new RegisterStandards(constants, messages, elements);
+
+        accountsEarnings = new ListBox();
+        accountInputEarnings = new TextBoxWithErrorText("accountinputearnings");
+        accountValueEarnings = registerStandards.createAmountBox();
+        Util.syncListbox(accountsEarnings, accountInputEarnings.getTextBox());
+
+        accountsCost = new ListBox();
+        accountInputCost = new TextBoxWithErrorText("accountinputcost");
+        accountValueCost = registerStandards.createAmountBox();
+        Util.syncListbox(accountsCost, accountInputCost.getTextBox());
+
+        posttypeCache = PosttypeCache.getInstance(constants, messages);
+        posttypeCache.fillAllPosts(accountsEarnings);
+        posttypeCache.fillAllPosts(accountsCost);
+
+        addEarningRowButton = new NamedButton("earningbutton", elements.add());
+        addEarningRowButton.addClickHandler(this);
+
+        addCostRowButton = new NamedButton("costbutton", elements.add());
+        addCostRowButton.addClickHandler(this);
 
         initWidget(dp);
     }
 
-    private Widget createResultView() {
-        AccountTable table = new AccountTable("tablecells");
-        table.setText(0, 0, elements.year());
-        table.setText(0, 1, elements.budgeted_earnins());
-        table.setText(0, 2, elements.budgeted_expences());
-        table.setText(0, 3, elements.budgeted_result());
-        table.setText(0, 4, elements.budget_result_actual());
-        table.setText(0, 5, elements.budget_differance());
-        table.setHeaderRowStyle(0);
-        return table;
-    }
-
-    private Widget createExpencesView() {
-        VerticalPanel vp = new VerticalPanel();
-
-        expencesTable = new AccountTable("tablecells");
-        expencesTable.setText(0, 0, elements.account());
-        expencesTable.setText(0, 1, "");
-        expencesTable.setText(0, 2, elements.description());
-        expencesTable.setText(0, 3, elements.amount());
-        expencesTable.setText(0, 4, elements.count());
-        expencesTable.setText(0, 5, elements.sum());
-        expencesTable.setHeaderRowStyle(0);
-
-        vp.add(expencesTable);
-
-        return vp;
-    }
-
-    private Widget createOtherEarningsView() {
-        VerticalPanel vp = new VerticalPanel();
-
-        othersEarningsTable = new AccountTable("tablecells");
-        othersEarningsTable.setText(0, 0, elements.account());
-        othersEarningsTable.setText(0, 1, "");
-        othersEarningsTable.setText(0, 2, elements.description());
-        othersEarningsTable.setText(0, 3, elements.amount());
-        othersEarningsTable.setText(0, 4, elements.count());
-        othersEarningsTable.setText(0, 5, elements.sum());
-        othersEarningsTable.setHeaderRowStyle(0);
-
-        vp.add(othersEarningsTable);
-
-        return vp;
-    }
-
-    private Widget createCourseEarningsView() {
-        VerticalPanel vp = new VerticalPanel();
-
-        springEarningsTable = createEarningsTable();
-        fallEarningsTable = createEarningsTable();
-
-        vp.add(springEarningsTable);
-        vp.add(fallEarningsTable);
-
-        return vp;
-    }
-
-    private AccountTable createEarningsTable() {
-        AccountTable earningsTable = new AccountTable("tablecells");
-        return earningsTable;
-    }
-
-    private void initEarningsTable(AccountTable earningsTable) {
-        earningsTable.setText(0, 0, "");
-        earningsTable.setText(1, 0, elements.year_membership());
-        earningsTable.setText(2, 0, elements.course_membership());
-        earningsTable.setText(3, 0, elements.train_membership());
-        earningsTable.setText(4, 0, elements.sum());
-    }
-
-    private AccountTable buildStatusTable() {
-        AccountTable AccountTable = new AccountTable("tablecells");
-        AccountTable.setText(0, 0, elements.year());
-        AccountTable.setText(1, 0, elements.earnings_memberships());
-        AccountTable.setText(2, 0, elements.earnings_all());
-        AccountTable.setText(3, 0, elements.expences());
-        AccountTable.setHeaderRowStyle(0);
-        AccountTable.setHeaderColStyle(0);
-        return AccountTable;
-    }
-
-    public static BudgetView show(I18NAccount messages, Constants constants, HelpPanel helpPanel,
-            Elements elements) {
+    public static BudgetView show(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new BudgetView(messages, constants, helpPanel, elements);
         }
@@ -168,192 +112,249 @@ public class BudgetView extends Composite implements ClickHandler {
     }
 
     public void init() {
-        membershipIdHolder.init();
-        initEarningsTable(springEarningsTable);
-        initEarningsTable(fallEarningsTable);
-        yearSums = new HashMap<String, YearSum>();
-
-        ServerResponse callback = new ServerResponse() {
-
-            public void serverResponse(JSONValue value) {
-
-                JSONObject root = value.isObject();
-                fillPrices(root.get("price").isObject());
-                JSONObject members = root.get("members").isObject();
-                ArrayList<String> keys = new ArrayList<String>(members.keySet());
-                Collections.sort(keys);
-                fillMemberships(keys, members);
-                fillOverallView();
-                helpPanel.resize(me);
-            }
-
-        };
-
-        AuthResponder.get(constants, messages, callback, "accounting/budget.php?action=init");
+        lastEarningsRow = 1;
+        addInputEarningsRow();
+        addInitialCostRow();
     }
 
-    protected void fillOverallView() {
-        ArrayList<YearSum> sums = new ArrayList<YearSum>(yearSums.values());
-        Collections.sort(sums);
+    private void addInitialCostRow() {
+        lastCostRow = lastEarningsRow + 3;
+        budgetTable.setText(lastCostRow, 0, "2010 " + elements.budgeted_expences());
+        budgetTable.getFlexCellFormatter().setColSpan(lastCostRow, 0, 4);
+        budgetTable.getRowFormatter().setStyleName(lastCostRow, "header");
 
-        int col = 1;
-        for (YearSum yearSum : sums) {
-
-            statusTable.setInt(0, col, yearSum.getYear());
-            statusTable.setMoney(1, col, yearSum.getCourse());
-            statusTable.setMoney(2, col, yearSum.getTotal());
-            col++;
-        }
+        addInputCostRow();
     }
 
-    protected void fillPrices(JSONObject priceObj) {
-        JSONArray course = priceObj.get("course").isArray();
-        JSONArray train = priceObj.get("train").isArray();
-        JSONArray year = priceObj.get("year").isArray();
+    private void addInputCostRow() {
 
-        coursePrices = new HashMap<String, String>();
-        trainPrices = new HashMap<String, String>();
-        yearPrices = new HashMap<String, String>();
+        removeCostInputsAndSetValueInItsPlace(false);
+        budgetTable.remove(addCostRowButton);
 
-        for (int i = 0; i < course.size(); i++) {
-            JSONObject obj = course.get(i).isObject();
-            coursePrices.put(Util.str(obj.get("semester")), Util.str(obj.get("amount")));
-        }
+        lastCostRow++;
+        budgetTable.insertRow(lastCostRow);
+        budgetTable.getCellFormatter().setStyleName(lastCostRow, 3, "right");
 
-        for (int i = 0; i < train.size(); i++) {
-            JSONObject obj = train.get(i).isObject();
-            trainPrices.put(Util.str(obj.get("semester")), Util.str(obj.get("amount")));
-        }
+        String rowStyle = (((lastCostRow + 1) % 6) < 3) ? "line2" : "line1";
+        budgetTable.getRowFormatter().setStyleName(lastCostRow, rowStyle);
 
-        for (int i = 0; i < year.size(); i++) {
-            JSONObject obj = year.get(i).isObject();
-            yearPrices.put(Util.str(obj.get("year")), Util.str(obj.get("amount")));
-        }
+        addCostInputs(lastCostRow);
+        budgetTable.setWidget(lastCostRow, 0, new CheckBox());
+        budgetTable.setWidget(lastCostRow + 1, 1, addCostRowButton);
+
+        accountInputCost.setFocus(true);
+
     }
 
-    protected void fillMemberships(List<String> yearFallKeys, JSONObject members) {
-        int fallCol = 1;
-        int springCol = 1;
+    private void addInputEarningsRow() {
 
-        for (String key: yearFallKeys) {
-
-            String year = key.substring(0, 4);
-            String fall = key.substring(5).trim();
-
-            JSONObject obj = members.get(key).isObject();
-
-            if ("0".equals(fall)) {
-                String label = elements.spring() + " " + year;
-
-                springCol += fillColumn(obj, year, springCol, springEarningsTable, label);
-            } else {
-                String label = elements.fall() + " " + year;
-
-                fallCol += fillColumn(obj, year, fallCol, fallEarningsTable, label);
-            }
+        if (currentEarningsEditRow > 0) {
+            removeEarningsInputsAndSetValueInItsPlace(false);
         }
-        springEarningsTable.setHeaderColStyle(0);
-        springEarningsTable.setHeaderRowStyle(0);
-        fallEarningsTable.setHeaderColStyle(0);
-        fallEarningsTable.setHeaderRowStyle(0);
+        budgetTable.remove(addEarningRowButton);
+
+        lastEarningsRow++;
+        lastCostRow++;
+        currentCostEditRow++;
+        
+        budgetTable.insertRow(lastEarningsRow);
+        budgetTable.getCellFormatter().setStyleName(lastEarningsRow, 3, "right");
+
+        String rowStyle = (((lastEarningsRow + 1) % 6) < 3) ? "line2" : "line1";
+        budgetTable.getRowFormatter().setStyleName(lastEarningsRow, rowStyle);
+
+        addEarningsInputs(lastEarningsRow);
+
+        budgetTable.setWidget(lastEarningsRow, 0, new CheckBox());
+        budgetTable.setWidget(lastEarningsRow + 1, 1, addEarningRowButton);
+
+        accountInputEarnings.setFocus(true);
     }
 
-    private int fillColumn(JSONObject obj, String year, int column, AccountTable table, String label) {
-        int yearcount = Util.getInt(obj.get("year"));
-        int coursecount = Util.getInt(obj.get("course"));
-        int traincount = Util.getInt(obj.get("train"));
-        String semester = Util.str(obj.get("semester"));
-
-        table.setText(0, column, label);
-
-        /* If budget column, add a column with the edit image */
-        if (obj.containsKey("budget")) {
-            Image editImage = ImageFactory.editImage("edit_budget_memberships");
-            editImage.addClickHandler(this);
-            membershipIdHolder.addObject(obj, editImage);
-
-            table.setWidget(0, column + 1, editImage);
-            table.getFlexCellFormatter().setColSpan(1, column, 2);
-            table.getFlexCellFormatter().setColSpan(2, column, 2);
-            table.getFlexCellFormatter().setColSpan(3, column, 2);
-            table.getFlexCellFormatter().setColSpan(4, column, 2);
-        }
-        int addpos = (obj.containsKey("budget") ? 2 : 1);
-
-        table.setText(0, column + addpos, elements.sum());
-
-        double sumYear = calcSum(yearcount, year, yearPrices);
-        table.setInt(1, column, yearcount);
-        table.setMoney(1, column + 1, sumYear);
-        table.setTooltip(1, column + 1, elements.cost_membership() + ":" + yearPrices.get(year));
-
-        double sumCourse = calcSum(coursecount, semester, coursePrices);
-        table.setInt(2, column, coursecount);
-        table.setMoney(2, column + 1, sumCourse);
-        table.setTooltip(2, column + 1, elements.cost_course() + ":" + coursePrices.get(semester));
-
-        double sumTrain = calcSum(traincount, semester, trainPrices);
-        table.setInt(3, column, traincount);
-        table.setMoney(3, column + 1, sumTrain);
-        table.setTooltip(3, column + 1, elements.cost_practice() + ":" + trainPrices.get(semester));
-
-        double sum = sumYear + sumCourse + sumTrain;
-        addYearCourse(year, sum);
-        table.setMoney(4, column + 1, sum);
-
-        table.getCellFormatter().setStyleName(1, column, "center");
-        table.getCellFormatter().setStyleName(2, column, "center");
-        table.getCellFormatter().setStyleName(3, column, "center");
-
-        return 1 + addpos;
+    private void addEarningsInputs(int row) {
+        currentEarningsEditRow = row;
+        budgetTable.setWidget(row, 1, accountInputEarnings);
+        budgetTable.setWidget(row, 2, accountsEarnings);
+        budgetTable.setWidget(row, 3, accountValueEarnings);
     }
 
-    private void addYearCourse(String year, double sum) {
-        YearSum data = yearSums.get(year);
-
-        if (data == null) {
-            data = new YearSum(Integer.parseInt(year));
-            yearSums.put(year, data);
-        }
-
-        data.addCourse(sum);
+    private void addCostInputs(int row) {
+        currentCostEditRow = row;
+        budgetTable.setWidget(row, 1, accountInputCost);
+        budgetTable.setWidget(row, 2, accountsCost);
+        budgetTable.setWidget(row, 3, accountValueCost);
     }
 
-    private double calcSum(int count, String key, HashMap<String, String> prices) {
-        if (prices == null) {
-            return 0;
-        }
+    private void removeEarningsInputsAndSetValueInItsPlace(boolean giveDefault) {
+        budgetTable.remove(accountInputEarnings);
+        budgetTable.setText(currentEarningsEditRow, 1, giveDefaultQuestionmarks(accountInputEarnings.getText(),
+                giveDefault));
+        accountInputEarnings.setText("");
 
-        String price = prices.get(key);
-        if (price == null) {
-            return 0;
+        budgetTable.remove(accountsEarnings);
+        budgetTable.setText(currentEarningsEditRow, 2, Util.getSelectedText(accountsEarnings));
+        accountsEarnings.setSelectedIndex(0);
+
+        budgetTable.remove(accountValueEarnings);
+        budgetTable.setText(currentEarningsEditRow, 3, Util.money(accountValueEarnings.getText()));
+        accountValueEarnings.setText("");
+    }
+
+    private void removeCostInputsAndSetValueInItsPlace(boolean giveDefault) {
+        budgetTable.remove(accountInputCost);
+        budgetTable.setText(currentCostEditRow, 1, giveDefaultQuestionmarks(accountInputCost.getText(), giveDefault));
+        accountInputCost.setText("");
+
+        budgetTable.remove(accountsCost);
+        budgetTable.setText(currentCostEditRow, 2, Util.getSelectedText(accountsCost));
+        accountsCost.setSelectedIndex(0);
+
+        budgetTable.remove(accountValueCost);
+        budgetTable.setText(currentCostEditRow, 3, Util.money(accountValueCost.getText()));
+        accountValueCost.setText("");
+    }
+
+    private String giveDefaultQuestionmarks(String text, boolean giveDefault) {
+        if (giveDefault && text.isEmpty()) {
+            return "???";
         }
-        return count * Double.parseDouble(price);
+        return text;
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
-
-    	Object obj = membershipIdHolder.findObject(sender);
-
-        if (obj != null) {
-            doEdit((JSONObject) obj, sender);
+        if (event.getSource() == addEarningRowButton) {
+            addEarningClick();
+        }
+        if (event.getSource() == budgetTable) {
+            budgetTableClick(event);
+        }
+        if (event.getSource() == addCostRowButton) {
+            addCostClick();
         }
     }
 
-    private void doEdit(JSONObject obj, Widget sender) {
-        if (editFields == null) {
-            editFields = new BudgetEditMembershipEditFields(messages, constants, elements);
+    private void budgetTableClick(ClickEvent event) {
+        EventTarget eventTarget = event.getNativeEvent().getEventTarget();
+
+        Element element = Element.as(eventTarget);
+        Element parent = element.getParentElement();
+
+        if (!"tr".equalsIgnoreCase(parent.getTagName())) {
+            return;
         }
 
-        int left = sender.getAbsoluteLeft() + 10;
+        TableRowElement row = TableRowElement.as(parent);
 
-        int top = sender.getAbsoluteTop() + 10;
-        editFields.setPopupPosition(left, top);
+        int rowIndex = row.getRowIndex();
 
-        editFields.init(this, obj);
-        editFields.show();
+        /* Do not push button or header lines... */
+        if (rowIndex < 2 || (rowIndex > lastEarningsRow && rowIndex < lastEarningsRow + 3) || rowIndex > lastCostRow) {
+            return;
+        }
 
+        if (rowIndex <= lastEarningsRow) {
+            if (!accountInputEarnings.getText().isEmpty() || accountsEarnings.getSelectedIndex() > 0
+                    || !accountValueEarnings.getText().isEmpty()) {
+                if (!validateEarningsInputs()) {
+                    return;
+                }
+            }
+
+            removeEarningsInputsAndSetValueInItsPlace(true);
+
+            accountInputEarnings.setText(budgetTable.getText(rowIndex, 1));
+            Util.setIndexByItemText(accountsEarnings, budgetTable.getText(rowIndex, 2));
+            accountValueEarnings.setText(budgetTable.getText(rowIndex, 3));
+            addEarningsInputs(rowIndex);
+        } else {
+            if (!accountInputCost.getText().isEmpty() || accountsCost.getSelectedIndex() > 0
+                    || !accountValueCost.getText().isEmpty()) {
+                if (!validateCostInputs()) {
+                    return;
+                }
+            }
+
+            removeCostInputsAndSetValueInItsPlace(true);
+
+            accountInputCost.setText(budgetTable.getText(rowIndex, 1));
+            Util.setIndexByItemText(accountsCost, budgetTable.getText(rowIndex, 2));
+            accountValueCost.setText(budgetTable.getText(rowIndex, 3));
+            addCostInputs(rowIndex);
+
+        }
     }
 
+    private void addEarningClick() {
+        if (!validateEarningsInputs()) {
+            return;
+        }
+        addInputEarningsRow();
+    }
+
+    private boolean validateEarningsInputs() {
+        MasterValidator mv = new MasterValidator();
+        mv.money(messages.field_money(), accountValueEarnings);
+        mv.mandatory(messages.required_field(), accountInputEarnings);
+        mv.mandatory(messages.required_field(), accountsEarnings);
+
+        if (!mv.fail(accountInputEarnings, checkDuplicate(accountInputEarnings.getText()), messages
+                .account_already_used())) {
+            return false;
+        }
+
+        return mv.validateStatus();
+    }
+
+    private boolean validateCostInputs() {
+        MasterValidator mv = new MasterValidator();
+        mv.money(messages.field_money(), accountValueCost);
+        mv.mandatory(messages.required_field(), accountInputCost);
+        mv.mandatory(messages.required_field(), accountsCost);
+
+        if (!mv.fail(accountInputCost, checkDuplicate(accountInputCost.getText()), messages.account_already_used())) {
+            return false;
+        }
+
+        return mv.validateStatus();
+    }
+
+    private boolean checkDuplicate(String account) {
+        int match = 0;
+
+        for (int i = 2; i <= lastCostRow; i++) {
+            if (budgetTable.getCellCount(i) < 4) {
+                continue;
+            }
+
+            Widget widget = budgetTable.getWidget(i, 1);
+
+            String comp = null;
+
+            if (widget != null) {
+                if (!(widget instanceof TextBoxWithErrorText)) {
+                    continue;
+                }
+                TextBoxWithErrorText b = (TextBoxWithErrorText) widget;
+                comp = b.getText();
+
+            } else {
+                comp = budgetTable.getText(i, 1);
+            }
+
+            if (account.equals(comp)) {
+                if (match++ > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void addCostClick() {
+        if (!validateCostInputs()) {
+            return;
+        }
+        addInputCostRow();
+    }
 }

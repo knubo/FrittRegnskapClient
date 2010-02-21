@@ -2,8 +2,11 @@ package no.knubo.accounting.client.validation;
 
 public class MoneyValidator extends ValidatorBase {
 
-    public MoneyValidator(String error) {
+    private final boolean mandatory;
+
+    public MoneyValidator(String error, boolean mandatory) {
         super(error);
+        this.mandatory = mandatory;
     }
 
     @Override
@@ -11,6 +14,12 @@ public class MoneyValidator extends ValidatorBase {
         try {
             String money = val.getText();
 
+            if(!mandatory && (money == null || money.trim().length() == 0)) {
+                return true;
+            }
+
+            money = money.replaceAll(",", "");
+            
             int comma = money.indexOf('.');
 
             if (comma == -1) {

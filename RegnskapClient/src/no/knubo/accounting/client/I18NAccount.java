@@ -7,6 +7,15 @@ package no.knubo.accounting.client;
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
   /**
+   * Translated "Kontoen er allerede i bruk.".
+   * 
+   * @return translated "Kontoen er allerede i bruk."
+   */
+  @DefaultMessage("Kontoen er allerede i bruk.")
+  @Key("account_already_used")
+  String account_already_used();
+
+  /**
    * Translated "Inngis dag må også medlemsskapstype velges  ".
    * 
    * @return translated "Inngis dag må også medlemsskapstype velges  "

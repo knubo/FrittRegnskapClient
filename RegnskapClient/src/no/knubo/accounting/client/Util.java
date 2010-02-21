@@ -136,23 +136,29 @@ public class Util {
     }
 
     public static String money(String original) {
+        if(original.length() == 0) {
+            return "";
+        }
+        
         if (original.charAt(0) == '-') {
             return "-" + money(original.substring(1));
         }
 
-        int sepPos = original.indexOf('.');
+        String work = original.replaceAll(",","");
+        
+        int sepPos = work.indexOf('.');
 
         String x = null;
         if (sepPos == -1) {
-            x = original;
+            x = work;
         } else {
-            x = original.substring(0, sepPos);
+            x = work.substring(0, sepPos);
         }
         // 100000000.00
         int count = x.length() / 3;
 
         if (count == 0) {
-            return x + fixDecimal(original, sepPos);
+            return x + fixDecimal(work, sepPos);
         }
         int left = x.length() % 3;
 
@@ -173,7 +179,7 @@ public class Util {
                 res += ",";
             }
         }
-        return res + fixDecimal(original, sepPos);
+        return res + fixDecimal(work, sepPos);
     }
 
     private static String fixDecimal(String str, int sepPos) {
@@ -373,6 +379,25 @@ public class Util {
         return text;
     }
 
+    public static void setIndexByItemText(ListBox listbox, String match) {
+        if (listbox.getItemCount() == 0) {
+            Window.alert("No items in combobox");
+            return;
+        }
+
+        if (match == null) {
+            Window.alert("Can't match null.");
+            return;
+        }
+
+        for (int i = listbox.getItemCount(); i-- > 0;) {
+            if (match.equals(listbox.getItemText(i))) {
+                listbox.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
+
     public static void setIndexByValue(ListBox listbox, String match) {
         if (listbox.getItemCount() == 0) {
             Window.alert("No items in combobox");
@@ -508,4 +533,17 @@ public class Util {
         }
         return sb.toString();
     }
+
+    public static String getSelectedText(ListBox box) {
+        if (box.getItemCount() == 0) {
+            return "";
+        }
+        return box.getItemText(box.getSelectedIndex());
+    }
+
+    public static native void log(String string) /*-{
+                                                 if(window['console'])
+                                                 window['console'].log(string);
+                                                 }-*/;
+
 }

@@ -88,6 +88,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String add();
 
   /**
+   * Translated "Legg til kostnad".
+   * 
+   * @return translated "Legg til kostnad"
+   */
+  @DefaultStringValue("Legg til kostnad")
+  @Key("add_cost")
+  String add_cost();
+
+  /**
+   * Translated "Legg til inntekt".
+   * 
+   * @return translated "Legg til inntekt"
+   */
+  @DefaultStringValue("Legg til inntekt")
+  @Key("add_earning")
+  String add_earning();
+
+  /**
    * Translated "Adresse".
    * 
    * @return translated "Adresse"
@@ -860,6 +878,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Skjul")
   @Key("hidden_person")
   String hidden_person();
+
+  /**
+   * Translated "Skjul konti kun brukt i tidligere år".
+   * 
+   * @return translated "Skjul konti kun brukt i tidligere år"
+   */
+  @DefaultStringValue("Skjul konti kun brukt i tidligere år")
+  @Key("hide_from_other_year")
+  String hide_from_other_year();
 
   /**
    * Translated "Id".

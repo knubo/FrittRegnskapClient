@@ -3,6 +3,7 @@ package no.knubo.accounting.client.validation;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.Registry;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -28,8 +29,14 @@ public class MasterValidator {
         status &= dayvalidator.validate(this, widgets);
     }
 
+    public void moneyNotMandatory(String error, Widget... widgets) {
+        MoneyValidator moneyValidator = new MoneyValidator(error, false);
+        status &= moneyValidator.validate(this, widgets);
+
+    }
+
     public void money(String error, Widget... widgets) {
-        MoneyValidator moneyValidator = new MoneyValidator(error);
+        MoneyValidator moneyValidator = new MoneyValidator(error, true);
         status &= moneyValidator.validate(this, widgets);
     }
 
