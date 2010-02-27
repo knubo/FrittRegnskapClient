@@ -3,7 +3,6 @@ package no.knubo.accounting.client.validation;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.Registry;
 
 import com.google.gwt.user.client.ui.Widget;
