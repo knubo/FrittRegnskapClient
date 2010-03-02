@@ -546,4 +546,8 @@ public class Util {
                                                  window['console'].log(string);
                                                  }-*/;
 
+    public static String money(Double double1) {
+        return money(String.valueOf(double1));
+    }
+
 }

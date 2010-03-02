@@ -498,3 +498,8 @@ td.rute {
 	font-weight: bold;
 	background-color: lightgrey;
 }
+
+.buttonpanel .gwt-label {
+	padding-left:10px;
+	border-left:1px solid;	
+}

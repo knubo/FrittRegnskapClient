@@ -43,6 +43,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String bad_server_response();
 
   /**
+   * Translated "Budjsett {0}".
+   * 
+   * @return translated "Budjsett {0}"
+   */
+  @DefaultMessage("Budjsett {0}")
+  @Key("budget")
+  String budget(String arg0);
+
+  /**
    * Translated "Vil du virkelig slette forekomst?".
    * 
    * @return translated "Vil du virkelig slette forekomst?"

@@ -2005,6 +2005,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String search();
 
   /**
+   * Translated "Velg budsjettår".
+   * 
+   * @return translated "Velg budsjettår"
+   */
+  @DefaultStringValue("Velg budsjettår")
+  @Key("select_budget_year")
+  String select_budget_year();
+
+  /**
    * Translated "Semester".
    * 
    * @return translated "Semester"
@@ -2023,6 +2032,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String show_expences();
 
   /**
+   * Translated "Vis graf".
+   * 
+   * @return translated "Vis graf"
+   */
+  @DefaultStringValue("Vis graf")
+  @Key("show_graphs")
+  String show_graphs();
+
+  /**
+   * Translated "Vis medlemskalkulator".
+   * 
+   * @return translated "Vis medlemskalkulator"
+   */
+  @DefaultStringValue("Vis medlemskalkulator")
+  @Key("show_membership_calculator")
+  String show_membership_calculator();
+
+  /**
    * Translated "Vis kun poster med valgt konto".
    * 
    * @return translated "Vis kun poster med valgt konto"
@@ -2030,6 +2057,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Vis kun poster med valgt konto")
   @Key("show_only_selcted_post")
   String show_only_selcted_post();
+
+  /**
+   * Translated "Vis summer".
+   * 
+   * @return translated "Vis summer"
+   */
+  @DefaultStringValue("Vis summer")
+  @Key("show_sums")
+  String show_sums();
 
   /**
    * Translated "Vår".
@@ -2066,6 +2102,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Sum")
   @Key("sum")
   String sum();
+
+  /**
+   * Translated "Sum utgifter".
+   * 
+   * @return translated "Sum utgifter"
+   */
+  @DefaultStringValue("Sum utgifter")
+  @Key("sum_cost")
+  String sum_cost();
+
+  /**
+   * Translated "Sum inntekter".
+   * 
+   * @return translated "Sum inntekter"
+   */
+  @DefaultStringValue("Sum inntekter")
+  @Key("sum_earnings")
+  String sum_earnings();
 
   /**
    * Translated "Sikkerhetskopi av database".
