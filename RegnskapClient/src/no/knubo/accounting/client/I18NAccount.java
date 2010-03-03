@@ -178,6 +178,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String illegal_month();
 
   /**
+   * Translated "Ulovlig år".
+   * 
+   * @return translated "Ulovlig år"
+   */
+  @DefaultMessage("Ulovlig år")
+  @Key("illegal_year")
+  String illegal_year();
+
+  /**
    * Translated "Inntekter for {0}".
    * 
    * @return translated "Inntekter for {0}"

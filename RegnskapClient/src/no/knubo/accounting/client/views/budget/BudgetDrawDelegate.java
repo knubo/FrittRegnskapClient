@@ -550,4 +550,8 @@ public class BudgetDrawDelegate {
 
         return result;
     }
+
+    public void clearBudgetFields() {
+        
+    }
 }

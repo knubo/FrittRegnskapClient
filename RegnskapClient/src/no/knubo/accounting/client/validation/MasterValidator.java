@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.knubo.accounting.client.cache.Registry;
+import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -16,6 +17,11 @@ public class MasterValidator {
         MandatoryValidator mandatoryValidation = new MandatoryValidator(string);
 
         status &= mandatoryValidation.validate(this, widgets);
+    }
+
+    public void year(String error, TextBoxWithErrorText... widgets) {
+        ValidatorBase datevalidator = new YearValidator(error);
+        status &= datevalidator.validate(this, widgets);        
     }
 
     public void date(String error, Widget... widgets) {
@@ -111,5 +117,6 @@ public class MasterValidator {
         }
         range(error, minVal, maxVal, widgetList);
     }
+
 
 }

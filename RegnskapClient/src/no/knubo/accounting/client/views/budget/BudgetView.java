@@ -56,6 +56,7 @@ public class BudgetView extends Composite implements ClickHandler {
     private NamedCheckBox showSumsCheckbox;
     private NamedCheckBox showMembershipCaclulcatorCheckbox;
     private NamedButton showChartButton;
+    private String selectedBudgetYear;
 
     public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
@@ -146,6 +147,8 @@ public class BudgetView extends Composite implements ClickHandler {
         sumCostCheckBox = new CheckBox();
         sumEarningCheckBox = new CheckBox();
 
+        selectedBudgetYear = "" + Util.currentYear();
+        
         initWidget(dp);
     }
 
@@ -157,15 +160,24 @@ public class BudgetView extends Composite implements ClickHandler {
         return me;
     }
 
-    public void init() {
+    public void init(String... year) {
+        
         while (budgetTable.getRowCount() > 2) {
             budgetTable.removeRow(2);
         }
+        
+        this.accountInputCost.setText("");
+        this.accountInputEarnings.setText("");
+        this.accountsCost.setSelectedIndex(0);
+        this.accountsEarnings.setSelectedIndex(0);
+        this.accountValueCost.setText("");
+        this.accountValueEarnings.setText("");
+        
 
         budgetDrawDelegate = new BudgetDrawDelegate(this, elements, messages, constants);
         budgetDrawDelegate.init();
 
-        loadBudgetData();
+        loadBudgetData(year);
 
         helpPanel.resize(this);
     }
@@ -188,6 +200,9 @@ public class BudgetView extends Composite implements ClickHandler {
         }
         if (event.getSource() == showSumsCheckbox) {
             toggleShowSums();
+        }
+        if (event.getSource() == selectBudgetYearButton) {
+            BudgetSelectView.getInstance(elements, messages).selectBudgetYear(this);
         }
     }
 
@@ -243,7 +258,7 @@ public class BudgetView extends Composite implements ClickHandler {
                 earnings - cost);
     }
 
-    private void loadBudgetData() {
+    private void loadBudgetData(String... year) {
         ServerResponse rh = new ServerResponse() {
 
             public void serverResponse(JSONValue responseObj) {
@@ -252,17 +267,22 @@ public class BudgetView extends Composite implements ClickHandler {
 
                 budgetDrawDelegate.fillYearData(result);
                 BudgetSumView.getInstance(elements, messages).calculateSumPreviousYears(result);
+                BudgetSelectView.getInstance(elements, messages).setBudgetYears(object.get("budgetYears").isArray());
 
                 fillBudget(object.get("budget").isArray());
 
             }
         };
-        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/budget.php?action=init");
+        String params = "action=init";
+        if (year.length == 1) {
+            params = params + "&year=" + year[0];
+        }
+        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/budget.php?" + params);
     }
 
     protected void fillBudget(JSONArray array) {
         if (array.size() == 0) {
-            budgetTable.setText(0, 1, "" + Util.currentYear());
+            budgetTable.setText(0, 1, selectedBudgetYear);
             return;
         }
 
@@ -281,6 +301,11 @@ public class BudgetView extends Composite implements ClickHandler {
         }
         budgetTable.setText(0, 1, "" + year);
 
+    }
+
+    public void setBudgetYear(String selectedYear) {
+        selectedBudgetYear = selectedYear;
+        init(selectedYear);
     }
 
 }

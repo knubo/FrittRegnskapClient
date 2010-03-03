@@ -277,6 +277,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String budget_differance();
 
   /**
+   * Translated "Nytt budsjettår".
+   * 
+   * @return translated "Nytt budsjettår"
+   */
+  @DefaultStringValue("Nytt budsjettår")
+  @Key("budget_new_year")
+  String budget_new_year();
+
+  /**
    * Translated "Resultat".
    * 
    * @return translated "Resultat"
@@ -293,6 +302,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Faktisk resultat")
   @Key("budget_result_actual")
   String budget_result_actual();
+
+  /**
+   * Translated "Bruk valgt år".
+   * 
+   * @return translated "Bruk valgt år"
+   */
+  @DefaultStringValue("Bruk valgt år")
+  @Key("budget_user_year")
+  String budget_user_year();
 
   /**
    * Translated "Budsjeterte inntekter".
@@ -374,6 +392,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Velg person")
   @Key("choose_person")
   String choose_person();
+
+  /**
+   * Translated "Velg år".
+   * 
+   * @return translated "Velg år"
+   */
+  @DefaultStringValue("Velg år")
+  @Key("choose_year")
+  String choose_year();
 
   /**
    * Translated "Valgte konti".
@@ -2041,11 +2068,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String show_graphs();
 
   /**
-   * Translated "Vis medlemskalkulator".
+   * Translated "Vis medlemskapkalkulator".
    * 
-   * @return translated "Vis medlemskalkulator"
+   * @return translated "Vis medlemskapkalkulator"
    */
-  @DefaultStringValue("Vis medlemskalkulator")
+  @DefaultStringValue("Vis medlemskapkalkulator")
   @Key("show_membership_calculator")
   String show_membership_calculator();
 

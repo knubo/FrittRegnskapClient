@@ -18,12 +18,10 @@ public class BudgetSumView extends DialogBox {
     private FlexTable table;
     private int lowestYear;
     private int highestYear;
-    private final Elements elements;
     private final I18NAccount messages;
 
     private BudgetSumView(Elements elements, I18NAccount messages) {
 
-        this.elements = elements;
         this.messages = messages;
 
         setText(elements.sum());
