@@ -54,7 +54,7 @@ public class BudgetView extends Composite implements ClickHandler {
     private NamedCheckBox hideNotInCurrentYearCheckbox;
     private NamedButton selectBudgetYearButton;
     private NamedCheckBox showSumsCheckbox;
-    private NamedCheckBox showMembershipCaclulcatorCheckbox;
+    private NamedButton showMembershipCaclculctorCheckbox;
     private NamedButton showChartButton;
     private String selectedBudgetYear;
 
@@ -83,10 +83,9 @@ public class BudgetView extends Composite implements ClickHandler {
         showSumsCheckbox.addClickHandler(this);
         buttonPanel.add(showSumsCheckbox);
 
-        buttonPanel.add(new Label(elements.show_membership_calculator()));
-        showMembershipCaclulcatorCheckbox = new NamedCheckBox("membership_calculator");
-        showMembershipCaclulcatorCheckbox.addClickHandler(this);
-        buttonPanel.add(showMembershipCaclulcatorCheckbox);
+        showMembershipCaclculctorCheckbox = new NamedButton("membership_calculator", elements.show_membership_calculator());
+        showMembershipCaclculctorCheckbox.addClickHandler(this);
+        buttonPanel.add(showMembershipCaclculctorCheckbox);
 
         showChartButton = new NamedButton("show_chart", elements.show_graphs());
         showChartButton.addClickHandler(this);
@@ -204,6 +203,11 @@ public class BudgetView extends Composite implements ClickHandler {
         if (event.getSource() == selectBudgetYearButton) {
             BudgetSelectView.getInstance(elements, messages).selectBudgetYear(this);
         }
+        if(event.getSource() == showMembershipCaclculctorCheckbox) {
+            BudgetMembershipCalculatorView instance = BudgetMembershipCalculatorView.getInstance(elements, messages);
+            instance.setPopupPosition(100, 100);
+            instance.show();
+        }
     }
 
     private void toggleShowSums() {
@@ -268,7 +272,10 @@ public class BudgetView extends Composite implements ClickHandler {
                 budgetDrawDelegate.fillYearData(result);
                 BudgetSumView.getInstance(elements, messages).calculateSumPreviousYears(result);
                 BudgetSelectView.getInstance(elements, messages).setBudgetYears(object.get("budgetYears").isArray());
-
+                
+                BudgetMembershipCalculatorView calculator = BudgetMembershipCalculatorView.getInstance(elements, messages);
+                calculator.init(object.get("members").isObject(), object.get("price").isObject());
+                
                 fillBudget(object.get("budget").isArray());
 
             }

@@ -36,6 +36,14 @@
 	border-color: black;
 }
 
+.popup {
+	border-style:solid;
+	border-color:blue;
+	border-width: 3px;
+	background-color: white;	
+}
+
+
 .tablecells TD {
 	border-width: 1px;
 	border-style: solid;
@@ -56,7 +64,7 @@
 }
 
 .center {
-	text-align: Center;
+	text-align: center;
 }
 
 .showline {

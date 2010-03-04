@@ -268,6 +268,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String no_server_response();
 
   /**
+   * Translated "N/A".
+   * 
+   * @return translated "N/A"
+   */
+  @DefaultMessage("N/A")
+  @Key("not_a_number")
+  String not_a_number();
+
+  /**
    * Translated "Du er ikke innlogget - åpner innloggingsvindu".
    * 
    * @return translated "Du er ikke innlogget - åpner innloggingsvindu"

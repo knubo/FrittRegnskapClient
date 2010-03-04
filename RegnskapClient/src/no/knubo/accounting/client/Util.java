@@ -445,6 +445,9 @@ public class Util {
         }
 
         String str = str(value);
+        if(str.length() == 0) {
+            return 0;
+        }
         return Integer.parseInt(str.trim());
     }
 
@@ -488,6 +491,9 @@ public class Util {
     }
 
     public static String strSkipNull(JSONValue value) {
+        if(value == null) {
+            return "";
+        }
         String string = str(value);
         if (string.equals("null")) {
             return "";

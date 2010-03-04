@@ -8,6 +8,8 @@ import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -26,11 +28,32 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
         initWidget(textBox);
     }
 
+    public TextBoxWithErrorText(String name, boolean flow) {
+        super(new TextBox());
+        textBox = (TextBox) widget;
+        DOM.setElementAttribute(textBox.getElement(), "id", name);
+
+        if (flow) {
+            FlowPanel fp = new FlowPanel();
+
+            fp.add(textBox);
+            fp.add(label);
+
+            initWidget(fp);
+        } else {
+            createHorizontalPanel();            
+        }
+    }
+
     public TextBoxWithErrorText(String name) {
         super(new TextBox());
         textBox = (TextBox) widget;
         DOM.setElementAttribute(textBox.getElement(), "id", name);
 
+        createHorizontalPanel();
+    }
+
+    private void createHorizontalPanel() {
         HorizontalPanel hp = new HorizontalPanel();
 
         hp.add(textBox);
@@ -62,7 +85,7 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
     }
 
     @Override
-	public String getText() {
+    public String getText() {
         return textBox.getText();
     }
 
@@ -75,19 +98,18 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
         final ErrorLabelWidget me = this;
         FocusHandler focusHandler = new FocusHandler() {
 
-			public void onFocus(FocusEvent event) {
+            public void onFocus(FocusEvent event) {
                 callback.onFocus(me);
-			}
+            }
         };
 
-        
         BlurHandler blurHandler = new BlurHandler() {
-			
-			public void onBlur(BlurEvent event) {
-				callback.onLostFocus(me);
-			}
-		};
-        
+
+            public void onBlur(BlurEvent event) {
+                callback.onLostFocus(me);
+            }
+        };
+
         textBox.addFocusHandler(focusHandler);
         textBox.addBlurHandler(blurHandler);
     }

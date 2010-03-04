@@ -646,6 +646,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String do_report();
 
   /**
+   * Translated "Inntekter".
+   * 
+   * @return translated "Inntekter"
+   */
+  @DefaultStringValue("Inntekter")
+  @Key("earnings")
+  String earnings();
+
+  /**
    * Translated "Alle inntekter".
    * 
    * @return translated "Alle inntekter"
@@ -1148,6 +1157,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Medlemmer")
   @Key("member_heading_year")
   String member_heading_year();
+
+  /**
+   * Translated "Medlemstall".
+   * 
+   * @return translated "Medlemstall"
+   */
+  @DefaultStringValue("Medlemstall")
+  @Key("membership_numbers")
+  String membership_numbers();
 
   /**
    * Translated "Budsjett".
@@ -1915,11 +1933,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String post_description();
 
   /**
-   * Translated "Post nr. er benyttet tidligere".
+   * Translated "Post nr. er 4benyttet tidligere".
    * 
-   * @return translated "Post nr. er benyttet tidligere"
+   * @return translated "Post nr. er 4benyttet tidligere"
    */
-  @DefaultStringValue("Post nr. er benyttet tidligere")
+  @DefaultStringValue("Post nr. er 4benyttet tidligere")
   @Key("post_used")
   String post_used();
 
@@ -2275,6 +2293,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String train_membership();
 
   /**
+   * Translated "Overfør til budsjett".
+   * 
+   * @return translated "Overfør til budsjett"
+   */
+  @DefaultStringValue("Overfør til budsjett")
+  @Key("transfer_to_budget")
+  String transfer_to_budget();
+
+  /**
    * Translated "Fond".
    * 
    * @return translated "Fond"
@@ -2435,6 +2462,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Årsmedlemskap ungdom")
   @Key("year_membership_youth")
   String year_membership_youth();
+
+  /**
+   * Translated "Ungdom".
+   * 
+   * @return translated "Ungdom"
+   */
+  @DefaultStringValue("Ungdom")
+  @Key("youth")
+  String youth();
 
   /**
    * Translated "Ungdomsmedlemsskap".

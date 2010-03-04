@@ -120,10 +120,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar aboutMenu = addTopMenu(topMenu, elements.menu_info());
 
         addMenuItem(registerMenu, elements.menuitem_regline(), WidgetIds.LINE_EDIT_VIEW);
-        addMenuItem(registerMenu, elements.menuitem_registerMembership(),
-                WidgetIds.REGISTER_MEMBERSHIP);
-        addMenuItem(registerMenu, elements.menuitem_register_happening(),
-                WidgetIds.REGISTER_HAPPENING);
+        addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
+        addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
         addMenuItem(registerMenu, elements.menuitem_endmonth(), WidgetIds.END_MONTH);
         addMenuItem(registerMenu, elements.menuitem_endsemester(), WidgetIds.END_SEMESTER);
         addMenuItem(registerMenu, elements.menuitem_endyear(), WidgetIds.END_YEAR);
@@ -142,32 +140,25 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(budgetMenu, elements.menuitem_budget(), WidgetIds.BUDGET);
 
-        addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(),
-                WidgetIds.REPORT_MEMBER_PER_YEAR);
+        addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
         addMenuItem(reportsMenu, elements.menuitem_report_member_per_year_gender(),
                 WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
 
         addMenuItem(reportsMenu, elements.menuitem_report_addresses(), WidgetIds.REPORT_ADDRESSES);
-        addMenuItem(reportsMenu, elements.menuitem_report_selectedlines(),
-                WidgetIds.REPORT_SELECTEDLINES);
+        addMenuItem(reportsMenu, elements.menuitem_report_selectedlines(), WidgetIds.REPORT_SELECTEDLINES);
         addMenuItem(reportsMenu, elements.menuitem_report_letter(), WidgetIds.REPORT_LETTER);
         addMenuItem(reportsMenu, elements.menuitem_report_email(), WidgetIds.REPORT_EMAIL);
-        addMenuItem(reportsMenu, elements.menuitem_report_users_email(),
-                WidgetIds.REPORT_USERS_EMAIL);
-        addMenuItem(reportsMenu, elements.menuitem_report_accounttrack(),
-                WidgetIds.REPORT_ACCOUNTTRACK);
+        addMenuItem(reportsMenu, elements.menuitem_report_users_email(), WidgetIds.REPORT_USERS_EMAIL);
+        addMenuItem(reportsMenu, elements.menuitem_report_accounttrack(), WidgetIds.REPORT_ACCOUNTTRACK);
 
-        addMenuItem(reportsMenu, elements.menuitem_report_year(),
-                WidgetIds.REPORT_YEAR);
-        addMenuItem(reportsMenu, elements.menuitem_report_earnings_year(),
-                WidgetIds.REPORT_EARNINGS_YEAR);
+        addMenuItem(reportsMenu, elements.menuitem_report_year(), WidgetIds.REPORT_YEAR);
+        addMenuItem(reportsMenu, elements.menuitem_report_earnings_year(), WidgetIds.REPORT_EARNINGS_YEAR);
 
         addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
 
         addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
         addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
-        addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(),
-                WidgetIds.EDIT_TRUST_ACTIONS);
+        addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(), WidgetIds.EDIT_TRUST_ACTIONS);
         addMenuItem(settingsMenu, elements.menuitem_accounts(), WidgetIds.EDIT_ACCOUNTS);
         addMenuItem(settingsMenu, elements.menuitem_accounttrack(), WidgetIds.EDIT_ACCOUNTTRACK);
         addMenuItem(settingsMenu, elements.menuitem_membership_prices(), WidgetIds.EDIT_PRICES);
@@ -227,8 +218,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             HelpPanel helpPanel = HelpPanel.getInstance(elements, helpTexts);
             switch (action) {
             case LINE_EDIT_VIEW:
-                widget = LineEditView.show(callback, messages, constants, null, HelpPanel
-                        .getInstance(elements, helpTexts), elements);
+                widget = LineEditView.show(callback, messages, constants, null, HelpPanel.getInstance(elements,
+                        helpTexts), elements);
                 break;
             case REGISTER_MEMBERSHIP:
                 widget = RegisterMembershipView.show(messages, constants, helpPanel, elements);
@@ -299,28 +290,23 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((MonthDetailsView) widget).init();
                 break;
             case SHOW_MEMBERS:
-                widget = ShowMembershipView
-                        .show(messages, constants, callback, helpPanel, elements);
+                widget = ShowMembershipView.show(messages, constants, callback, helpPanel, elements);
                 ((ShowMembershipView) widget).initShowMembers();
                 break;
             case SHOW_ALL_MEMBERS:
-                widget = ShowMembershipView
-                        .show(messages, constants, callback, helpPanel, elements);
+                widget = ShowMembershipView.show(messages, constants, callback, helpPanel, elements);
                 ((ShowMembershipView) widget).initShowAll();
                 break;
             case SHOW_CLASS_MEMBERS:
-                widget = ShowMembershipView
-                        .show(messages, constants, callback, helpPanel, elements);
+                widget = ShowMembershipView.show(messages, constants, callback, helpPanel, elements);
                 ((ShowMembershipView) widget).initShowClassMembers();
                 break;
             case SHOW_TRAINING_MEMBERS:
-                widget = ShowMembershipView
-                        .show(messages, constants, callback, helpPanel, elements);
+                widget = ShowMembershipView.show(messages, constants, callback, helpPanel, elements);
                 ((ShowMembershipView) widget).initShowTrainingMembers();
                 break;
             case TRUST_STATUS:
-                widget = TrustStatusView.getInstance(constants, messages, helpPanel, callback,
-                        elements);
+                widget = TrustStatusView.getInstance(constants, messages, helpPanel, callback, elements);
                 ((TrustStatusView) widget).init();
                 break;
             case REPORT_ACCOUNTTRACK:
@@ -331,14 +317,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((ReportMembersBirth) widget).init();
                 break;
             case REPORT_MEMBER_PER_YEAR_GENDER:
-                widget = ReportMembersBirthGender.getInstance(constants, messages, helpPanel,
-                        elements);
+                widget = ReportMembersBirthGender.getInstance(constants, messages, helpPanel, elements);
                 ((ReportMembersBirthGender) widget).init();
                 break;
 
             case REPORT_ADDRESSES:
-                widget = ReportMembersAddresses.getInstance(constants, messages, helpPanel,
-                        elements);
+                widget = ReportMembersAddresses.getInstance(constants, messages, helpPanel, elements);
                 ((ReportMembersAddresses) widget).init();
                 break;
             case REPORT_SELECTEDLINES:
@@ -376,7 +360,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case BACKUP:
                 widget = BackupView.getInstance(constants, messages, elements);
-                ((BackupView)widget).init();
+                ((BackupView) widget).init();
                 break;
             case LOGOUT:
                 widget = LogoutView.getInstance(constants, messages, elements);
@@ -390,9 +374,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((SemesterEditView) widget).init();
                 break;
             case END_YEAR:
-            	widget = YearEndView.getInstance(constants, messages, callback, elements);
-            	((YearEndView)widget).init();
-            	break;
+                widget = YearEndView.getInstance(constants, messages, callback, elements);
+                ((YearEndView) widget).init();
+                break;
             }
 
             if (widget == null) {
@@ -418,12 +402,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     public void openDetails(String id) {
-        Widget widget = LineEditView.show(this, messages, constants, id, HelpPanel.getInstance(
-                elements, helpTexts), elements);
+        Widget widget = LineEditView.show(this, messages, constants, id, HelpPanel.getInstance(elements, helpTexts),
+                elements);
 
         setActiveWidget(widget);
-        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget,
-                WidgetIds.LINE_EDIT_VIEW);
+        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget, WidgetIds.LINE_EDIT_VIEW);
         Window.setTitle(elements.menuitem_showmonthdetails());
     }
 
@@ -455,8 +438,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     public void editPerson(String id) {
-        PersonEditView widget = PersonEditView.show(constants, messages, HelpPanel.getInstance(
-                elements, helpTexts), this, elements);
+        PersonEditView widget = PersonEditView.show(constants, messages, HelpPanel.getInstance(elements, helpTexts),
+                this, elements);
 
         widget.init(id);
         setActiveWidget(widget);

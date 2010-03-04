@@ -120,6 +120,10 @@ public class ShowMembershipView extends Composite implements ClickHandler {
         table.setHTML(0, 4, "");
         table.setHTML(0, 5, "");
 
+        if(action.equals("year")) {
+            table.setText(0, 2, elements.youth());
+        }
+        
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
@@ -144,12 +148,17 @@ public class ShowMembershipView extends Composite implements ClickHandler {
                     JSONArray names = members.get(i).isArray();
 
                     int row = i + 1;
-                    String firstname = Util.str(names.get(1));
-                    String lastname = Util.str(names.get(0));
                     String id = Util.str(names.get(2));
-                    table.setText(row, 1, lastname);
-                    table.setText(row, 0, firstname);
+                    
+                    table.setText(row, 1, Util.str(names.get(0)));
+                    table.setText(row, 0, Util.str(names.get(1)));
 
+                    if(action.equals("year")) {
+                        table.setText(row, 2, Util.str(names.get(3)).equals("1") ? "X": "");
+                        table.getCellFormatter().setStyleName(row, 2, "center");
+                    }
+                    
+                    
                     Image editUserImage = ImageFactory
                             .editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickHandler(me);
