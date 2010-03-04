@@ -7,12 +7,12 @@ package no.knubo.accounting.client;
 public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
   /**
-   * Translated "Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret. ".
+   * Translated "Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret.".
    * 
-   * @return translated "Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret. "
+   * @return translated "Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret."
    */
-  @DefaultStringValue("Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret. ")
-  @Key("GeneralReport.reportButton")
+  @DefaultStringValue("Kj&oslash;rer rapport for gitt &aring;r. Inngis ikke m&aring;ned rapporteres status for hele &aring;ret.")
+  @Key("GeneralReport_reportButton")
   String GeneralReport_reportButton();
 
   /**
@@ -68,6 +68,15 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   @DefaultStringValue("Dagen posteringen skal registreres p&aring;.")
   @Key("day_single")
   String day_single();
+
+  /**
+   * Translated "Standardprosjekt for registrering av regnskapslinjen. N&aring;r valgt velges denne for hver ny rad.".
+   * 
+   * @return translated "Standardprosjekt for registrering av regnskapslinjen. N&aring;r valgt velges denne for hver ny rad."
+   */
+  @DefaultStringValue("Standardprosjekt for registrering av regnskapslinjen. N&aring;r valgt velges denne for hver ny rad.")
+  @Key("default_project")
+  String default_project();
 
   /**
    * Translated "Beskrivelse skal kortfattet oppsumere innholdet i posteringen.".

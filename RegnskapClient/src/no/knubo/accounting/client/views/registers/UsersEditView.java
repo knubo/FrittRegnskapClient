@@ -13,6 +13,7 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.ui.NamedCheckBox;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.PersonPickCallback;
@@ -245,6 +246,8 @@ public class UsersEditView extends Composite implements ClickHandler {
 
         private ListBoxWithErrorText accessList;
 
+        private NamedCheckBox projectRequired;
+
         UserEditFields() {
             edittable = new FlexTable();
             edittable.setStyleName("edittable");
@@ -267,6 +270,8 @@ public class UsersEditView extends Composite implements ClickHandler {
             accessList.getListbox().addItem(elements.reduced_write_access());
             accessList.getListbox().addItem(elements.read_only_access());
 
+            projectRequired = new NamedCheckBox("project_required");
+            
             edittable.setText(0, 0, elements.user());
             edittable.setWidget(0, 1, userBox);
             edittable.setText(1, 0, elements.password());
@@ -280,6 +285,10 @@ public class UsersEditView extends Composite implements ClickHandler {
             edittable.setText(3, 0, elements.read_only_access());
             edittable.setWidget(3, 1, accessList);
 
+            
+            edittable.setText(4, 0, elements.project_required());
+            edittable.setWidget(4, 1, projectRequired);
+            
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
@@ -309,7 +318,8 @@ public class UsersEditView extends Composite implements ClickHandler {
             userBox.setEnabled(false);
             boolean isReadOnly = "1".equals(Util.str(object.get("readonly")));
             boolean reducedWrite = "1".equals(Util.str(object.get("reducedwrite")));
-
+            boolean projectRequired = "1".equals(Util.str(object.get("project_required")));
+            
             if (reducedWrite) {
                 Util.setIndexByValue(accessList.getListbox(), elements.reduced_write_access());
             } else if (isReadOnly) {
@@ -317,6 +327,7 @@ public class UsersEditView extends Composite implements ClickHandler {
             } else {
                 Util.setIndexByValue(accessList.getListbox(), elements.full_access());
             }
+            this.projectRequired.setValue(projectRequired);
         }
 
         public void init() {
@@ -365,6 +376,7 @@ public class UsersEditView extends Composite implements ClickHandler {
                 Util.addPostParam(sb, "readonly", "0");
                 Util.addPostParam(sb, "reducedwrite", "0");
             }
+            Util.addPostParam(sb, "project_required", projectRequired.getValue() ? "1": "0");
 
             ServerResponse callback = new ServerResponse() {
 

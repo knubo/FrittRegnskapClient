@@ -682,6 +682,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String earnings_other();
 
   /**
+   * Translated "Opprettet/Endret av".
+   * 
+   * @return translated "Opprettet/Endret av"
+   */
+  @DefaultStringValue("Opprettet/Endret av")
+  @Key("edited_by")
+  String edited_by();
+
+  /**
    * Translated "Epost".
    * 
    * @return translated "Epost"
@@ -1967,6 +1976,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Nytt prosjekt")
   @Key("projectEditView_newButton")
   String projectEditView_newButton();
+
+  /**
+   * Translated "Prosjekt påkreves".
+   * 
+   * @return translated "Prosjekt påkreves"
+   */
+  @DefaultStringValue("Prosjekt påkreves")
+  @Key("project_required")
+  String project_required();
 
   /**
    * Translated "Spørring".

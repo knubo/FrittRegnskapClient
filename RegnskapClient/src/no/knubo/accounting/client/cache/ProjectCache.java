@@ -27,6 +27,7 @@ public class ProjectCache implements Registry {
     }
 
     private HashMap<String, String> projectGivesDesc;
+    private HashMap<String, String> descGivesProject;
 
     private ArrayList<String> originalSort;
 
@@ -48,6 +49,7 @@ public class ProjectCache implements Registry {
                 JSONArray array = jsonValue.isArray();
 
                 projectGivesDesc = new HashMap<String, String>();
+                descGivesProject = new HashMap<String, String>();
                 originalSort = new ArrayList<String>();
                 allObjects = new ArrayList<JSONObject>();
 
@@ -56,7 +58,10 @@ public class ProjectCache implements Registry {
 
                     allObjects.add(obj);
                     String key = Util.str(obj.get("project"));
-                    projectGivesDesc.put(key, Util.str(obj.get("description")));
+                    String description = Util.str(obj.get("description"));
+                    
+                    projectGivesDesc.put(key, description);
+                    descGivesProject.put(description, key);
                     originalSort.add(key);
                 }
                 if (flushcallback != null) {
@@ -89,6 +94,10 @@ public class ProjectCache implements Registry {
         return projectGivesDesc.get(id);
     }
 
+    public String getId(String description) {
+        return descGivesProject.get(description);
+    }
+    
     public boolean keyExists(String key) {
         return projectGivesDesc.containsKey(key);
     }

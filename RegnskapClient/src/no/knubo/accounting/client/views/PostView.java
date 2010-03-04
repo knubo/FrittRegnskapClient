@@ -77,10 +77,10 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         header(1, 0, elements.attachment(), table);
         header(2, 0, elements.date(), table);
         header(3, 0, elements.description(), table);
-        table.insertRow(4);
-        table.getFlexCellFormatter().setColSpan(4, 0, 4);
+        header(4, 0, elements.edited_by(), table);
+        table.insertRow(5);
+        table.getFlexCellFormatter().setColSpan(5, 0, 4);
         table.getRowFormatter().setStyleName(4, "showlinebreak");
-        header(5, 0, elements.lines(), table);
 
         /* Widgets placements */
         DockPanel dp = new DockPanel();
@@ -90,7 +90,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         closeImage = ImageFactory.closeImage("PostView.closeImage");
         closeImage.addClickHandler(this);
         table.setWidget(0, 5, editImage);
-        table.setWidget(0, 6, closeImage);
+        table.setWidget(0, 7, closeImage);
 
         dp.add(table, DockPanel.NORTH);
         dp.add(countfields.getTable(), DockPanel.NORTH);
@@ -99,8 +99,8 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
     }
 
     private void init(String line) {
-        while (table.getRowCount() > 5) {
-            table.removeRow(5);
+        while (table.getRowCount() > 6) {
+            table.removeRow(6);
         }
 
         AuthResponder.get(constants, messages, this, constants.baseurl() + "accounting/showline.php?line=" + line);
@@ -133,6 +133,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         table.getFlexCellFormatter().setColSpan(2, 1, 4);
         table.setText(3, 1, Util.str(object.get("Description")));
         table.getFlexCellFormatter().setColSpan(3, 1, 4);
+        table.setText(4, 1, Util.str(object.get("EditedByPersonName")));
 
         JSONValue value = object.get("postArray");
 
@@ -148,15 +149,18 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
             JSONValue postVal = array.get(i);
             JSONObject post = postVal.isObject();
 
-            table.setText(6 + i, 1, Util.debkred(elements, post.get("Debet")));
-            table.setText(6 + i, 2, post.get("Post_type") + " - "
+            table.setText(7 + i, 1, Util.debkred(elements, post.get("Debet")));
+            table.setText(7 + i, 2, post.get("Post_type") + " - "
                     + postCache.getDescription(Util.str(post.get("Post_type"))));
-            table.setText(6 + i, 3, projectCache.getName(Util.str(post.get("Project"))));
-            table.setText(6 + i, 4, emploeeCache.getName(Util.str(post.get("Person"))));
-            table.setText(6 + i, 5, Util.money(post.get("Amount")));
-            table.getCellFormatter().setStyleName(6 + i, 5, "right");
-
-            table.getRowFormatter().setStyleName(6 + i, (i % 2 == 0) ? "showlineposts2" : "showlineposts1");
+            table.setText(7 + i, 3, projectCache.getName(Util.str(post.get("Project"))));
+            table.setText(7 + i, 4, emploeeCache.getName(Util.str(post.get("Person"))));
+            table.setText(7 + i, 5, Util.money(post.get("Amount")));
+            table.getCellFormatter().setStyleName(7 + i, 5, "right");
+            if(post.containsKey("EditedByPersonName")) {
+                table.setText(7 + i, 6, "("+Util.str(post.get("EditedByPersonName"))+")");
+            }
+            
+            table.getRowFormatter().setStyleName(7 + i, (i % 2 == 0) ? "showlineposts2" : "showlineposts1");
         }
     }
 }

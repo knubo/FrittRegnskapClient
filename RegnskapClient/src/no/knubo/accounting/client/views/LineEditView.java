@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.views;
 
+import java.util.List;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -12,13 +14,17 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithValidation;
 import no.knubo.accounting.client.ui.AccountTable;
+import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.CountFields;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -43,8 +49,8 @@ public class LineEditView extends Composite implements ClickHandler {
 
     private IdHolder<String, Image> removeIdHolder = new IdHolder<String, Image>();
 
-    public static LineEditView show(ViewCallback caller, I18NAccount messages, Constants constants,
-            String line, HelpPanel helpPanel, Elements elements) {
+    public static LineEditView show(ViewCallback caller, I18NAccount messages, Constants constants, String line,
+            HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new LineEditView(caller, messages, constants, helpPanel, elements);
         }
@@ -99,8 +105,8 @@ public class LineEditView extends Composite implements ClickHandler {
 
     private final Elements elements;
 
-    private LineEditView(ViewCallback caller, I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    private LineEditView(ViewCallback caller, I18NAccount messages, Constants constants, HelpPanel helpPanel,
+            Elements elements) {
 
         this.caller = caller;
         this.messages = messages;
@@ -164,9 +170,12 @@ public class LineEditView extends Composite implements ClickHandler {
 
     private Label currentId;
 
+    private ListBoxWithErrorText defaultProjectNameBox;
+
+    private ProjectCache projectCache;
+
     private void showLine(String line, String navigate) {
 
-        
         ServerResponse rh = new ServerResponse() {
             public void serverResponse(JSONValue responseValue) {
 
@@ -194,10 +203,10 @@ public class LineEditView extends Composite implements ClickHandler {
             }
 
         };
-        
-        AuthResponder.get(constants, messages, rh, constants.baseurl()
-                + "accounting/editaccountline.php?action=query&line=" + line
-                + (navigate != null ? "&" + navigate : ""));
+
+        AuthResponder
+                .get(constants, messages, rh, constants.baseurl() + "accounting/editaccountline.php?action=query&line="
+                        + line + (navigate != null ? "&" + navigate : ""));
     }
 
     protected void addRegnLine(JSONValue value) {
@@ -213,18 +222,15 @@ public class LineEditView extends Composite implements ClickHandler {
         addRegnLine(posttype, person, project, amount, debkred, id);
     }
 
-    private void addRegnLine(String posttype, String person, String project, String amount,
-            String debkred, String id) {
+    private void addRegnLine(String posttype, String person, String project, String amount, String debkred, String id) {
         int rowcount = postsTable.getRowCount();
 
         PosttypeCache postCache = PosttypeCache.getInstance(constants, messages);
         EmploeeCache empCache = EmploeeCache.getInstance(constants, messages);
-        ProjectCache projectCache = ProjectCache.getInstance(constants, messages);
 
         postsTable.setText(rowcount, 0, posttype + "-" + postCache.getDescription(posttype));
 
-        postsTable.getRowFormatter().setStyleName(rowcount,
-                (rowcount % 2 == 0) ? "showlineposts2" : "showlineposts1");
+        postsTable.getRowFormatter().setStyleName(rowcount, (rowcount % 2 == 0) ? "showlineposts2" : "showlineposts1");
 
         postsTable.setText(rowcount, 1, projectCache.getName(project));
         postsTable.setText(rowcount, 2, empCache.getName(person));
@@ -252,8 +258,8 @@ public class LineEditView extends Composite implements ClickHandler {
         postsTable.setText(row, 0, elements.sum());
         postsTable.setText(row, 4, Util.money(Util.fixMoney(sumAmount)));
 
-        projectNameBox.setSelectedIndex(0);
-        projectIdBox.setText("");
+        changeProjectBoxBasedOnDefault();
+        
         accountNameBox.setSelectedIndex(0);
         accountIdBox.setText("");
         personBox.setSelectedIndex(0);
@@ -276,9 +282,9 @@ public class LineEditView extends Composite implements ClickHandler {
     }
 
     private void removeSumLine() {
-    	if(postsTable.getRowCount() > 1) {
-    		postsTable.removeRow(postsTable.getRowCount() - 1);    		
-    	}
+        if (postsTable.getRowCount() > 1) {
+            postsTable.removeRow(postsTable.getRowCount() - 1);
+        }
     }
 
     private Widget newFields() {
@@ -400,13 +406,30 @@ public class LineEditView extends Composite implements ClickHandler {
         table.setWidget(3, 1, descriptionBox);
         table.setText(3, 0, elements.description());
 
+        projectCache = ProjectCache.getInstance(constants, messages);
+
+        defaultProjectNameBox = new ListBoxWithErrorText("default_project");
+        projectCache.fill(defaultProjectNameBox.getListbox());
+
+        defaultProjectNameBox.setVisibleItemCount(1);
+        defaultProjectNameBox.addChangeHandler(new ChangeHandler() {
+
+            public void onChange(ChangeEvent event) {
+                changeProjectBoxBasedOnDefault();
+            }
+        });
+
+        table.setText(4, 0, elements.project());
+        table.setWidget(4, 1, defaultProjectNameBox);
+
+
         updateButton = new NamedButton("LineEditView.updateButton");
         updateButton.setText(elements.update());
         updateButton.addClickHandler(this);
 
-        table.setWidget(4, 0, updateButton);
+        table.setWidget(5, 0, updateButton);
         updateLabel = new Label();
-        table.setWidget(4, 1, updateLabel);
+        table.setWidget(5, 1, updateLabel);
 
         HorizontalPanel hp = new HorizontalPanel();
 
@@ -425,7 +448,7 @@ public class LineEditView extends Composite implements ClickHandler {
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
         if (sender == updateButton) {
             doUpdate();
         } else if (sender == addLineButton) {
@@ -435,8 +458,7 @@ public class LineEditView extends Composite implements ClickHandler {
         } else if (sender == previousImage) {
             init(currentLine, "navigate=previous");
         } else if (sender == dateHeader) {
-            caller.viewMonth(registerStandards.getCurrentYear(), registerStandards
-                    .getCurrentMonth());
+            caller.viewMonth(registerStandards.getCurrentYear(), registerStandards.getCurrentMonth());
         } else {
             doRowRemove(sender);
         }
@@ -495,8 +517,7 @@ public class LineEditView extends Composite implements ClickHandler {
 
     private void resetPostsTableStyle() {
         for (int row = 1; row < postsTable.getRowCount(); row++) {
-            postsTable.getRowFormatter().setStyleName(row,
-                    (row % 2 == 0) ? "showlineposts2" : "showlineposts1");
+            postsTable.getRowFormatter().setStyleName(row, (row % 2 == 0) ? "showlineposts2" : "showlineposts1");
         }
     }
 
@@ -520,7 +541,7 @@ public class LineEditView extends Composite implements ClickHandler {
         Util.addPostParam(sb, "project", projectId);
         Util.addPostParam(sb, "person", personId);
 
-        ServerResponse callback = new ServerResponse() {
+        ServerResponse callback = new ServerResponseWithValidation() {
 
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
@@ -537,6 +558,14 @@ public class LineEditView extends Composite implements ClickHandler {
                     addSumLineSetDefaults(parts[1]);
                 }
                 Util.timedMessage(updateLabel, "", 5);
+            }
+
+            public void validationError(List<String> fields) {
+                MasterValidator masterValidator = new MasterValidator();
+
+                masterValidator.mandatory(messages.required_field(), projectIdBox);
+
+                masterValidator.validateStatus();
             }
         };
 
@@ -597,17 +626,21 @@ public class LineEditView extends Composite implements ClickHandler {
     private boolean validateRowInsert() {
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(),
-                new Widget[] { amountBox, accountIdBox });
+        masterValidator.mandatory(messages.required_field(), new Widget[] { amountBox, accountIdBox });
 
         masterValidator.money(messages.field_money(), new Widget[] { amountBox });
 
-        masterValidator.registry(messages.registry_invalid_key(), ProjectCache.getInstance(
-                constants, messages), new Widget[] { projectIdBox });
+        masterValidator.registry(messages.registry_invalid_key(), projectCache,
+                new Widget[] { projectIdBox });
 
-        masterValidator.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(
-                constants, messages), new Widget[] { accountIdBox });
+        masterValidator.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(constants, messages),
+                new Widget[] { accountIdBox });
 
         return masterValidator.validateStatus();
+    }
+
+    void changeProjectBoxBasedOnDefault() {
+        projectNameBox.setSelectedIndex(defaultProjectNameBox.getSelectedIndex());
+        projectIdBox.setText(projectCache.getId(Util.getSelectedText(defaultProjectNameBox.getListbox())));
     }
 }
