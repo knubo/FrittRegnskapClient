@@ -304,6 +304,7 @@ public class BudgetDrawDelegate {
     void insertEarningsRow(int column, String account, JSONValue value) {
         int row = findEarningsRow(account);
         view.budgetTable.setText(row, column, Util.money(value));
+        view.budgetTable.getCellFormatter().setStyleName(row, column, "right");
         view.budgetTable.setText(row, 1, account);
         view.budgetTable.setText(row, 2, posttypeCache.getDescription(account));
     }
@@ -311,6 +312,7 @@ public class BudgetDrawDelegate {
     void insertCostRow(int column, String account, JSONValue value) {
         int row = findCostRow(account);
         view.budgetTable.setText(row, column, Util.money(value));
+        view.budgetTable.getCellFormatter().setStyleName(row, column, "right");
         view.budgetTable.setText(row, 1, account);
         view.budgetTable.setText(row, 2, posttypeCache.getDescription(account));
     }

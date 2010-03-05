@@ -156,8 +156,10 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
             table.setText(7 + i, 4, emploeeCache.getName(Util.str(post.get("Person"))));
             table.setText(7 + i, 5, Util.money(post.get("Amount")));
             table.getCellFormatter().setStyleName(7 + i, 5, "right");
-            if(post.containsKey("EditedByPersonName")) {
-                table.setText(7 + i, 6, "("+Util.str(post.get("EditedByPersonName"))+")");
+            String personName = Util.strSkipNull(post.get("EditedByPersonName"));
+
+            if(!personName.isEmpty()) {
+                table.setText(7 + i, 6, "("+personName+")");
             }
             
             table.getRowFormatter().setStyleName(7 + i, (i % 2 == 0) ? "showlineposts2" : "showlineposts1");
