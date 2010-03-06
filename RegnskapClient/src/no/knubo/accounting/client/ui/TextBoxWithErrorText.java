@@ -7,8 +7,10 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -41,7 +43,7 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
 
             initWidget(fp);
         } else {
-            createHorizontalPanel();            
+            createHorizontalPanel();
         }
     }
 
@@ -92,6 +94,35 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
     public void setEnabled(boolean enabled) {
         UIObject.setStyleName(textBox.getElement(), "disabled", !enabled);
         textBox.setEnabled(enabled);
+    }
+
+    Timer timer;
+
+    /**
+     * The event returned is always null. It is called after 1 second of
+     * waiting.
+     * 
+     * @param handler
+     */
+    public void addDelayedKeyUpHandler(final KeyUpHandler handler) {
+        KeyUpHandler delayedHandler = new KeyUpHandler() {
+            public void onKeyUp(KeyUpEvent event) {
+                if (timer != null) {
+                    return;
+                }
+                timer = new Timer() {
+
+                    @Override
+                    public void run() {
+                        handler.onKeyUp(null);
+                        timer = null;
+                    }
+
+                };
+                timer.schedule(1000);
+            }
+        };
+        textBox.addKeyUpHandler(delayedHandler);
     }
 
     public void addFocusListener(final FocusCallback callback) {

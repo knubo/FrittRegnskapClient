@@ -83,7 +83,8 @@ public class BudgetView extends Composite implements ClickHandler {
         showSumsCheckbox.addClickHandler(this);
         buttonPanel.add(showSumsCheckbox);
 
-        showMembershipCaclculctorCheckbox = new NamedButton("membership_calculator", elements.show_membership_calculator());
+        showMembershipCaclculctorCheckbox = new NamedButton("membership_calculator", elements
+                .show_membership_calculator());
         showMembershipCaclculctorCheckbox.addClickHandler(this);
         buttonPanel.add(showMembershipCaclculctorCheckbox);
 
@@ -147,7 +148,7 @@ public class BudgetView extends Composite implements ClickHandler {
         sumEarningCheckBox = new CheckBox();
 
         selectedBudgetYear = "" + Util.currentYear();
-        
+
         initWidget(dp);
     }
 
@@ -160,18 +161,17 @@ public class BudgetView extends Composite implements ClickHandler {
     }
 
     public void init(String... year) {
-        
+
         while (budgetTable.getRowCount() > 2) {
             budgetTable.removeRow(2);
         }
-        
+
         this.accountInputCost.setText("");
         this.accountInputEarnings.setText("");
         this.accountsCost.setSelectedIndex(0);
         this.accountsEarnings.setSelectedIndex(0);
         this.accountValueCost.setText("");
         this.accountValueEarnings.setText("");
-        
 
         budgetDrawDelegate = new BudgetDrawDelegate(this, elements, messages, constants);
         budgetDrawDelegate.init();
@@ -203,7 +203,7 @@ public class BudgetView extends Composite implements ClickHandler {
         if (event.getSource() == selectBudgetYearButton) {
             BudgetSelectView.getInstance(elements, messages).selectBudgetYear(this);
         }
-        if(event.getSource() == showMembershipCaclculctorCheckbox) {
+        if (event.getSource() == showMembershipCaclculctorCheckbox) {
             BudgetMembershipCalculatorView instance = BudgetMembershipCalculatorView.getInstance(elements, messages);
             instance.setPopupPosition(100, 100);
             instance.show();
@@ -272,11 +272,14 @@ public class BudgetView extends Composite implements ClickHandler {
                 budgetDrawDelegate.fillYearData(result);
                 BudgetSumView.getInstance(elements, messages).calculateSumPreviousYears(result);
                 BudgetSelectView.getInstance(elements, messages).setBudgetYears(object.get("budgetYears").isArray());
-                
-                BudgetMembershipCalculatorView calculator = BudgetMembershipCalculatorView.getInstance(elements, messages);
-                calculator.init(object.get("members").isObject(), object.get("price").isObject());
-                
+
                 fillBudget(object.get("budget").isArray());
+
+                BudgetMembershipCalculatorView calculator = BudgetMembershipCalculatorView.getInstance(elements,
+                        messages);
+                
+                calculator.init(object.get("members").isObject(), object.get("price").isObject(), object.get("semesters").isArray(), budgetTable.getText(
+                        0, 1));
 
             }
         };

@@ -12,18 +12,21 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
-public class BudgetMembershipCalculatorView extends DialogBox implements ClickHandler {
+public class BudgetMembershipCalculatorView extends DialogBox implements ClickHandler, KeyUpHandler {
 
     private I18NAccount messages;
     private FlexTable table;
@@ -37,6 +40,9 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
     private HashMap<String, Double> priceTrain;
     private HashMap<String, Double> priceYouth;
     private final Elements elements;
+    private String budgetYear;
+    private String budgetSemesterSpring;
+    private String budgetSemesterFall;
 
     private BudgetMembershipCalculatorView(Elements elements, I18NAccount messages) {
 
@@ -67,6 +73,7 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         inputs = new ArrayList<TextBoxWithErrorText>();
         for (int i = 1; i <= 8; i++) {
             TextBoxWithErrorText text = new TextBoxWithErrorText("number_input", true);
+            text.addDelayedKeyUpHandler(this);
             table.setWidget(i, 1, text);
             text.setVisibleLength(5);
             text.setMaxLength(5);
@@ -91,9 +98,11 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
 
         transferButton = new NamedButton("transfer_budget", elements.transfer_to_budget());
         transferButton.addClickHandler(this);
+        transferButton.setAccessKey('t');
         hp.add(transferButton);
 
         cancelButton = new NamedButton("cancel", elements.cancel());
+        cancelButton.setAccessKey('c');
         cancelButton.addClickHandler(this);
         hp.add(cancelButton);
 
@@ -121,15 +130,72 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
     private void transferEarnings() {
     }
 
-    public void init(JSONObject members, JSONObject prices) {
-        fillPrices(prices);
-        fillMembers(members);
-        calculateSumsForExistingYears();
+    public void init(JSONObject members, JSONObject prices, JSONArray semesters, String budgetYear) {
+        this.budgetYear = budgetYear;
+        try {
+            fillPrices(prices);
+            fillMembers(members);
+            calculateSumsForExistingYears();
+            fillBudget(budgetYear);
+            fillSemestersForBudgetYear(semesters);
+            setStylesForBudgetColumn();
+        } catch (Exception e) {
+            Util.log(e.toString());
+        }
+    }
+
+    private void fillSemestersForBudgetYear(JSONArray semesters) {
+
+        budgetSemesterSpring = null;
+        budgetSemesterFall = null;
+
+        for (int i = 0; i < semesters.size(); i++) {
+            JSONObject semester = semesters.get(i).isObject();
+
+            if (Util.str(semester.get("year")).equals(budgetYear)) {
+                if (Util.str(semester.get("fall")).equals("1")) {
+                    budgetSemesterFall = Util.str(semester.get("semester"));
+                } else {
+                    budgetSemesterSpring = Util.str(semester.get("semester"));
+                }
+            }
+        }
+
+        if (budgetSemesterFall == null || budgetSemesterSpring == null) {
+            Window
+                    .alert("No semesters defined for budget year:" + budgetYear
+                            + ". This dialog will not work properly. (" + budgetSemesterSpring + ","
+                            + budgetSemesterFall + ")");
+        }
+    }
+
+    private void fillBudget(String budgetYear) {
+        table.setText(0, 1, budgetYear);
+        table.setText(9, 1, budgetYear);
     }
 
     private void calculateSumsForExistingYears() {
-        // TODO Auto-generated method stub
-        
+
+        int columnCount = table.getCellCount(0);
+
+        for (int col = 2; col < columnCount; col++) {
+            double sum = 0;
+            for (int row = 11; row <= 17; row++) {
+                if (table.isCellPresent(row, col)) {
+                    sum += getValue(row, col);
+                }
+            }
+            table.setText(18, col, Util.money(sum));
+            table.getCellFormatter().setStyleName(18, col, "right");
+        }
+    }
+
+    private double getValue(int row, int col) {
+        String text = table.getText(row, col);
+        if (text.isEmpty() || text.equals(messages.not_a_number())) {
+            return 0;
+        }
+        return Double.parseDouble(text.replaceAll(",", ""));
     }
 
     private void fillPrices(JSONObject prices) {
@@ -176,7 +242,7 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
 
         for (String yearSemester : yearSemesters) {
             JSONObject data = members.get(yearSemester).isObject();
-            
+
             if (data.containsKey("budget")) {
                 // TODO fix budget column.
                 continue;
@@ -186,7 +252,6 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
             boolean spring = yearSemester.endsWith("0");
 
             int col = 2 + yearColumns.get(year);
-
 
             try {
                 if (spring) {
@@ -292,6 +357,63 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         }
 
         return yearCol;
+    }
+
+    public void onKeyUp(KeyUpEvent event) {
+        MasterValidator mv = new MasterValidator();
+        for (int row = 1; row <= 8; row++) {
+            mv.range(messages.not_a_number(), 0, 99999, table.getWidget(row, 1));
+        }
+        if (!mv.validateStatus()) {
+            return;
+        }
+
+        calcBudgetPrice(1, priceYear.get(budgetYear));
+        calcBudgetPrice(2, priceYearYouth.get(budgetYear));
+        calcBudgetPrice(3, priceCourse.get(this.budgetSemesterSpring));
+        calcBudgetPrice(4, priceCourse.get(this.budgetSemesterFall));
+        calcBudgetPrice(5, priceTrain.get(this.budgetSemesterSpring));
+        calcBudgetPrice(6, priceTrain.get(this.budgetSemesterFall));
+        calcBudgetPrice(7, priceYouth.get(this.budgetSemesterSpring));
+        calcBudgetPrice(8, priceYouth.get(this.budgetSemesterFall));
+        calcNewBudgetTotal();
+    }
+
+    private void calcNewBudgetTotal() {
+        double sum = 0;
+        for (int row = 11; row <= 17; row++) {
+            if (table.isCellPresent(row, 1)) {
+                sum += getValue(row, 1);
+            }
+        }
+        table.setText(18, 1, Util.money(sum));
+    }
+
+    private void calcBudgetPrice(int row, Double price) {
+        int count = getCount(row);
+
+        if (count == 0) {
+            table.setText(row + 9, 1, "");
+        } else if (price == null) {
+            table.setText(row + 9, 1, messages.not_a_number());
+        } else {
+            table.setText(row + 9, 1, Util.money(price * count));
+        }
+    }
+
+    private void setStylesForBudgetColumn() {
+        for (int row = 10; row <= 18; row++) {
+            table.setText(row, 1, "");
+            table.getCellFormatter().setStyleName(row, 1, "right");
+        }
+    }
+
+    private int getCount(int row) {
+        TextBoxWithErrorText text = (TextBoxWithErrorText) table.getWidget(row, 1);
+        if (text.getText().isEmpty()) {
+            return 0;
+        }
+        return Integer.parseInt(text.getText());
     }
 
 }
