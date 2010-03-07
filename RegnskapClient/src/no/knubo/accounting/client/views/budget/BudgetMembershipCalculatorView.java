@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
@@ -20,6 +23,8 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -43,9 +48,11 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
     private String budgetSemesterSpring;
     private String budgetSemesterFall;
     private BudgetView budgetView;
+    private final Constants constants;
 
-    private BudgetMembershipCalculatorView(Elements elements, I18NAccount messages) {
+    private BudgetMembershipCalculatorView(Constants constants, Elements elements, I18NAccount messages) {
 
+        this.constants = constants;
         this.messages = messages;
 
         setStyleName("popup");
@@ -110,9 +117,9 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         setWidget(dp);
     }
 
-    public static BudgetMembershipCalculatorView getInstance(Elements elements, I18NAccount messages) {
+    public static BudgetMembershipCalculatorView getInstance(Constants constants, Elements elements, I18NAccount messages) {
         if (me == null) {
-            me = new BudgetMembershipCalculatorView(elements, messages);
+            me = new BudgetMembershipCalculatorView(constants, elements, messages);
         }
         return me;
     }
@@ -132,17 +139,57 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
             return;
         }
 
+        saveMembershipBudget();
+
         double sumYear = getValue(10, 1) + getValue(11, 1);
         double sumCourse = getValue(12, 1) + getValue(13, 1) + getValue(14, 1) + getValue(15, 1) + getValue(16, 1)
                 + getValue(17, 1);
 
         budgetView.sumsFromCalculator(sumYear, sumCourse);
         hide();
+
+    }
+
+    private void saveMembershipBudget() {
+        JSONObject data = new JSONObject();
+        data.put("year", new JSONString(budgetYear));
+        data.put("year_members", inputValue(1));
+        data.put("year_youth", inputValue(2));
+        data.put("spring_course", inputValue(3));
+        data.put("fall_course", inputValue(4));
+        data.put("spring_train", inputValue(5));
+        data.put("fall_train", inputValue(6));
+        data.put("spring_youth", inputValue(7));
+        data.put("fall_youth", inputValue(8));
         
+        StringBuffer params = new StringBuffer();
+        params.append("action=saveMemberships");
+        Util.addPostParam(params, "memberships", data.toString());
+
+        ServerResponse rh = new ServerResponse() {
+            
+            public void serverResponse(JSONValue responseObj) {
+                if(responseObj == null) {
+                    Window.alert("No server result from save of budget membership. They were probably not saved.");
+                }
+            }
+        };
+        AuthResponder.post(constants, messages, rh , params, constants.baseurl() + "accounting/budget.php");
+
+    }
+
+    private JSONString inputValue(int row) {
+         TextBoxWithErrorText t = (TextBoxWithErrorText) table.getWidget(row, 1);
+        
+         if(t.getText().isEmpty()) {
+             return new JSONString("0");
+         }
+        
+        return new JSONString(t.getText());
     }
 
     public void init(BudgetView budgetView, JSONObject members, JSONObject prices, JSONArray semesters,
-            String budgetYear) {
+            String budgetYear, JSONObject membersbudget) {
         this.budgetView = budgetView;
         this.budgetYear = budgetYear;
         try {
@@ -152,9 +199,29 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
             fillBudget(budgetYear);
             fillSemestersForBudgetYear(semesters);
             setStylesForBudgetColumn();
+            fillBudgetInputs(membersbudget);
         } catch (Exception e) {
             Util.log(e.toString());
         }
+    }
+
+    private void fillBudgetInputs(JSONObject membersbudget) {
+        Util.log(membersbudget.toString());
+        setInputValue(1, membersbudget, "year_members");
+        setInputValue(2, membersbudget, "year_youth");
+        setInputValue(3, membersbudget, "spring_course");
+        setInputValue(4, membersbudget, "spring_train");
+        setInputValue(5, membersbudget, "spring_youth");
+        setInputValue(6, membersbudget, "fall_course");
+        setInputValue(7, membersbudget, "fall_train");
+        setInputValue(8, membersbudget, "fall_youth");
+
+        onKeyUp(null);
+    }
+
+    private void setInputValue(int row, JSONObject membersbudget, String key) {
+        TextBoxWithErrorText t = (TextBoxWithErrorText) table.getWidget(row, 1);
+        t.setText(Util.str(membersbudget.get(key)));
     }
 
     private void fillSemestersForBudgetYear(JSONArray semesters) {
@@ -175,10 +242,9 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         }
 
         if (budgetSemesterFall == null || budgetSemesterSpring == null) {
-            Window
-                    .alert("No semesters defined for budget year:" + budgetYear
-                            + ". This dialog will not work properly. (" + budgetSemesterSpring + ","
-                            + budgetSemesterFall + ")");
+            String msg = "No semesters defined for budget year:" + budgetYear
+                    + ". This dialog will not work properly. (" + budgetSemesterSpring + "," + budgetSemesterFall + ")";
+            Window.alert(msg);
         }
     }
 
@@ -257,8 +323,6 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
             JSONObject data = members.get(yearSemester).isObject();
 
             if (data.containsKey("budget")) {
-                // TODO fix budget column. - Extract from part of this call to a
-                // field parallell.
                 continue;
             }
 

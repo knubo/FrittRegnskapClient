@@ -204,7 +204,7 @@ public class BudgetView extends Composite implements ClickHandler {
             BudgetSelectView.getInstance(elements, messages).selectBudgetYear(this);
         }
         if (event.getSource() == showMembershipCaclculctorCheckbox) {
-            BudgetMembershipCalculatorView instance = BudgetMembershipCalculatorView.getInstance(elements, messages);
+            BudgetMembershipCalculatorView instance = BudgetMembershipCalculatorView.getInstance(constants, elements, messages);
             instance.setPopupPosition(100, 100);
             instance.show();
         }
@@ -278,7 +278,7 @@ public class BudgetView extends Composite implements ClickHandler {
 
                 fillBudget(object.get("budget").isArray());
 
-                BudgetMembershipCalculatorView calculator = BudgetMembershipCalculatorView.getInstance(elements,
+                BudgetMembershipCalculatorView calculator = BudgetMembershipCalculatorView.getInstance(constants, elements,
                         messages);
 
                 JSONObject members = object.get("members").isObject();
@@ -287,7 +287,8 @@ public class BudgetView extends Composite implements ClickHandler {
                 String budgetYear = budgetTable.getText(0, 1);
                 postForYearMemberships = Util.str(object.get("year_post"));
                 postForCourseMemberships = Util.str(object.get("course_post"));
-                calculator.init(me, members, price, semesters, budgetYear);
+                JSONObject membersbudget = object.get("membersbudget").isObject();
+                calculator.init(me, members, price, semesters, budgetYear, membersbudget);
 
             }
         };
