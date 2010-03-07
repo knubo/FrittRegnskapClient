@@ -39,14 +39,13 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
     private HashMap<String, Double> priceCourse;
     private HashMap<String, Double> priceTrain;
     private HashMap<String, Double> priceYouth;
-    private final Elements elements;
     private String budgetYear;
     private String budgetSemesterSpring;
     private String budgetSemesterFall;
+    private BudgetView budgetView;
 
     private BudgetMembershipCalculatorView(Elements elements, I18NAccount messages) {
 
-        this.elements = elements;
         this.messages = messages;
 
         setStyleName("popup");
@@ -128,9 +127,23 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
     }
 
     private void transferEarnings() {
+        MasterValidator mv = validateInputs();
+        if (!mv.validateStatus()) {
+            return;
+        }
+
+        double sumYear = getValue(10, 1) + getValue(11, 1);
+        double sumCourse = getValue(12, 1) + getValue(13, 1) + getValue(14, 1) + getValue(15, 1) + getValue(16, 1)
+                + getValue(17, 1);
+
+        budgetView.sumsFromCalculator(sumYear, sumCourse);
+        hide();
+        
     }
 
-    public void init(JSONObject members, JSONObject prices, JSONArray semesters, String budgetYear) {
+    public void init(BudgetView budgetView, JSONObject members, JSONObject prices, JSONArray semesters,
+            String budgetYear) {
+        this.budgetView = budgetView;
         this.budgetYear = budgetYear;
         try {
             fillPrices(prices);
@@ -244,7 +257,8 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
             JSONObject data = members.get(yearSemester).isObject();
 
             if (data.containsKey("budget")) {
-                // TODO fix budget column.
+                // TODO fix budget column. - Extract from part of this call to a
+                // field parallell.
                 continue;
             }
 
@@ -360,10 +374,7 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
     }
 
     public void onKeyUp(KeyUpEvent event) {
-        MasterValidator mv = new MasterValidator();
-        for (int row = 1; row <= 8; row++) {
-            mv.range(messages.not_a_number(), 0, 99999, table.getWidget(row, 1));
-        }
+        MasterValidator mv = validateInputs();
         if (!mv.validateStatus()) {
             return;
         }
@@ -379,12 +390,18 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         calcNewBudgetTotal();
     }
 
+    private MasterValidator validateInputs() {
+        MasterValidator mv = new MasterValidator();
+        for (int row = 1; row <= 8; row++) {
+            mv.range(messages.not_a_number(), 0, 99999, table.getWidget(row, 1));
+        }
+        return mv;
+    }
+
     private void calcNewBudgetTotal() {
         double sum = 0;
         for (int row = 11; row <= 17; row++) {
-            if (table.isCellPresent(row, 1)) {
-                sum += getValue(row, 1);
-            }
+            sum += getValue(row, 1);
         }
         table.setText(18, 1, Util.money(sum));
     }

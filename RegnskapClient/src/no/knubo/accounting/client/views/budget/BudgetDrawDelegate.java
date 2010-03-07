@@ -481,7 +481,7 @@ public class BudgetDrawDelegate {
         return view.budgetTable.getText(row, column);
     }
 
-    public void addBudget(String account, JSONValue value, boolean earning) {
+    public void addBudget(String account, boolean earning, double value) {
         Integer row = null;
         if (!rowsForAccounts.containsKey(account)) {
             if (earning) {
@@ -553,7 +553,4 @@ public class BudgetDrawDelegate {
         return result;
     }
 
-    public void clearBudgetFields() {
-        
-    }
 }

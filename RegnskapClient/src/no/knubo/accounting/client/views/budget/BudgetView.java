@@ -262,6 +262,9 @@ public class BudgetView extends Composite implements ClickHandler {
                 earnings - cost);
     }
 
+    String postForYearMemberships;
+    String postForCourseMemberships;
+
     private void loadBudgetData(String... year) {
         ServerResponse rh = new ServerResponse() {
 
@@ -277,9 +280,14 @@ public class BudgetView extends Composite implements ClickHandler {
 
                 BudgetMembershipCalculatorView calculator = BudgetMembershipCalculatorView.getInstance(elements,
                         messages);
-                
-                calculator.init(object.get("members").isObject(), object.get("price").isObject(), object.get("semesters").isArray(), budgetTable.getText(
-                        0, 1));
+
+                JSONObject members = object.get("members").isObject();
+                JSONObject price = object.get("price").isObject();
+                JSONArray semesters = object.get("semesters").isArray();
+                String budgetYear = budgetTable.getText(0, 1);
+                postForYearMemberships = Util.str(object.get("year_post"));
+                postForCourseMemberships = Util.str(object.get("course_post"));
+                calculator.init(me, members, price, semesters, budgetYear);
 
             }
         };
@@ -307,7 +315,7 @@ public class BudgetView extends Composite implements ClickHandler {
                 year = Util.getInt(object.get("year"));
             }
 
-            budgetDrawDelegate.addBudget(account, value, Util.getBoolean(earning));
+            budgetDrawDelegate.addBudget(account, Util.getBoolean(earning), Util.getDouble(value));
         }
         budgetTable.setText(0, 1, "" + year);
 
@@ -316,6 +324,14 @@ public class BudgetView extends Composite implements ClickHandler {
     public void setBudgetYear(String selectedYear) {
         selectedBudgetYear = selectedYear;
         init(selectedYear);
+    }
+
+    public void sumsFromCalculator(double sumYear, double sumCourse) {
+        Util.log("Calculator (Y):" + postForYearMemberships + " " + sumYear);
+        Util.log("Calculator (C):" + postForCourseMemberships + " " + sumCourse);
+        budgetDrawDelegate.addBudget(postForYearMemberships, true, sumYear);
+        budgetDrawDelegate.addBudget(postForCourseMemberships, true, sumCourse);
+
     }
 
 }

@@ -11,6 +11,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -144,5 +145,9 @@ public class PosttypeCache implements Registry {
             hs.add(excludeBox.getValue(i));
         }
         return hs;
+    }
+
+    public void fillAllPosts(ListBoxWithErrorText box) {
+        fillAllPosts(box.getListbox());
     }
 }

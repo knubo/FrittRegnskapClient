@@ -4,6 +4,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
@@ -18,8 +19,10 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -27,8 +30,7 @@ public class StandardvaluesView extends Composite implements ClickHandler {
 
     private static StandardvaluesView me;
 
-    public static StandardvaluesView show(I18NAccount messages, Constants constants,
-            Elements elements) {
+    public static StandardvaluesView show(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new StandardvaluesView(messages, constants, elements);
         }
@@ -59,17 +61,66 @@ public class StandardvaluesView extends Composite implements ClickHandler {
     private TextBoxWithErrorText emailBox;
     private TextBoxWithErrorText massletterDueDateBox;
 
+    private final Elements elements;
+
+    private ListBoxWithErrorText postYear;
+
+    private ListBoxWithErrorText postCourse;
+
     public StandardvaluesView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
+        this.elements = elements;
         DockPanel dp = new DockPanel();
 
         HTML html = new HTML(elements.standardsettings());
         dp.add(html, DockPanel.NORTH);
 
+        DecoratedTabPanel tabPanel = new DecoratedTabPanel();
+        tabPanel.setAnimationEnabled(false);
+
+        dp.add(tabPanel, DockPanel.NORTH);
+
+        tabPanel.add(setupGeneralTab(), elements.setup_general());
+        tabPanel.add(setupBudgetTab(), elements.setup_budget());
+
+        tabPanel.selectTab(0);
+        
+        updateButton = new NamedButton("StandardValuesView.updateButton", elements.update());
+        updateButton.addClickHandler(this);
+        statusHTML = new HTML();
+
+        FlowPanel fp = new FlowPanel();
+        fp.add(updateButton);
+        fp.add(statusHTML);
+
+        dp.add(fp, DockPanel.NORTH);
+        initWidget(dp);
+    }
+
+    private FlexTable setupBudgetTab() {
         FlexTable table = new FlexTable();
         table.setStyleName("edittable");
-        dp.add(table, DockPanel.NORTH);
+
+        table.setHTML(0,0,elements.setup_budget_post_year());
+        table.setHTML(1,0,elements.setup_budget_post_course());
+        
+        postYear = new ListBoxWithErrorText("budget_post_year");
+        table.setWidget(0, 1, postYear);
+        postCourse = new ListBoxWithErrorText("budget_post_course");
+        table.setWidget(1, 1, postCourse);
+        
+        PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
+        
+        posttypeCache.fillAllPosts(postYear);
+        posttypeCache.fillAllPosts(postCourse);
+        
+        return table;
+    }
+
+    private FlexTable setupGeneralTab() {
+        FlexTable table = new FlexTable();
+        table.setStyleName("edittable");
 
         table.setHTML(0, 0, elements.year());
         table.setHTML(1, 0, elements.month());
@@ -107,14 +158,8 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         table.setWidget(5, 1, costMembershipBox);
         table.setWidget(6, 1, emailBox);
         table.setWidget(7, 1, massletterDueDateBox);
-
-        updateButton = new NamedButton("StandardValuesView.updateButton", elements.update());
-        updateButton.addClickHandler(this);
-        statusHTML = new HTML();
-
-        table.setWidget(8, 0, updateButton);
-        table.setWidget(8, 1, statusHTML);
-        initWidget(dp);
+        
+        return table;
     }
 
     public void onClick(ClickEvent event) {
@@ -130,7 +175,9 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         Util.addPostParam(sb, "semester", semesterBox.getText());
         Util.addPostParam(sb, "email_sender", emailBox.getText());
         Util.addPostParam(sb, "massletter_due_date", massletterDueDateBox.getText());
-
+        Util.addPostParam(sb, "year_post", Util.getSelected(postYear.getListbox()));
+        Util.addPostParam(sb, "course_post", Util.getSelected(postCourse.getListbox()));
+        
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue parse) {
@@ -152,20 +199,20 @@ public class StandardvaluesView extends Composite implements ClickHandler {
 
     public void init() {
         semesterBox.clear();
-        
+
         /* Fills first semesters, then standard values */
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue value) {
                 JSONArray arr = value.isArray();
 
-                for(int i = 0; i < arr.size(); i++) {
+                for (int i = 0; i < arr.size(); i++) {
                     JSONValue semVal = arr.get(i);
                     JSONObject obj = semVal.isObject();
-                    
+
                     semesterBox.addItem(obj.get("description"), obj.get("semester"));
                 }
-                
+
                 fillStandardValues();
             }
         };
@@ -187,6 +234,8 @@ public class StandardvaluesView extends Composite implements ClickHandler {
                 costMembershipBox.setText(Util.str(object.get("cost_membership")));
                 emailBox.setText(Util.str(object.get("email_sender")));
                 massletterDueDateBox.setText(Util.str(object.get("massletter_due_date")));
+                Util.setIndexByValue(postYear.getListbox(), Util.str(object.get("year_post")));
+                Util.setIndexByValue(postCourse.getListbox(), Util.str(object.get("course_post")));
             }
 
         };
@@ -197,11 +246,9 @@ public class StandardvaluesView extends Composite implements ClickHandler {
     private boolean validate() {
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(), new Widget[] { yearBox, monthBox,
-                semesterBox });
+        masterValidator.mandatory(messages.required_field(), new Widget[] { yearBox, monthBox, semesterBox });
 
-        masterValidator.range(messages.illegal_month(), new Integer(1), new Integer(12),
-                new Widget[] { monthBox });
+        masterValidator.range(messages.illegal_month(), new Integer(1), new Integer(12), new Widget[] { monthBox });
 
         masterValidator.date(messages.date_format(), new Widget[] { massletterDueDateBox });
 

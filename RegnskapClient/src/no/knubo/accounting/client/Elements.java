@@ -2086,6 +2086,42 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String semester();
 
   /**
+   * Translated "Budsjett".
+   * 
+   * @return translated "Budsjett"
+   */
+  @DefaultStringValue("Budsjett")
+  @Key("setup_budget")
+  String setup_budget();
+
+  /**
+   * Translated "Konto for kursmedlemsskap".
+   * 
+   * @return translated "Konto for kursmedlemsskap"
+   */
+  @DefaultStringValue("Konto for kursmedlemsskap")
+  @Key("setup_budget_post_course")
+  String setup_budget_post_course();
+
+  /**
+   * Translated "Konto for årsmedlemsskap".
+   * 
+   * @return translated "Konto for årsmedlemsskap"
+   */
+  @DefaultStringValue("Konto for årsmedlemsskap")
+  @Key("setup_budget_post_year")
+  String setup_budget_post_year();
+
+  /**
+   * Translated "Generelle innstillinger".
+   * 
+   * @return translated "Generelle innstillinger"
+   */
+  @DefaultStringValue("Generelle innstillinger")
+  @Key("setup_general")
+  String setup_general();
+
+  /**
    * Translated "Vis utgifter".
    * 
    * @return translated "Vis utgifter"
