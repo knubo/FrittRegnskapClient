@@ -619,6 +619,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String debkred();
 
   /**
+   * Translated "Slett linje ".
+   * 
+   * @return translated "Slett linje "
+   */
+  @DefaultStringValue("Slett linje ")
+  @Key("delete_line")
+  String delete_line();
+
+  /**
    * Translated "Beskrivelse".
    * 
    * @return translated "Beskrivelse"
@@ -797,6 +806,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Eksporter til regneark")
   @Key("export_spreadsheet")
   String export_spreadsheet();
+
+  /**
+   * Translated "Mislyktes".
+   * 
+   * @return translated "Mislyktes"
+   */
+  @DefaultStringValue("Mislyktes")
+  @Key("failed")
+  String failed();
 
   /**
    * Translated "Høst".
@@ -1076,6 +1094,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Send epost")
   @Key("mail_send")
   String mail_send();
+
+  /**
+   * Translated "Send epost om igjen til mislykkede".
+   * 
+   * @return translated "Send epost om igjen til mislykkede"
+   */
+  @DefaultStringValue("Send epost om igjen til mislykkede")
+  @Key("mail_send_again")
+  String mail_send_again();
 
   /**
    * Translated "Avsender for epost".

@@ -24,6 +24,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -53,9 +55,9 @@ public class ReportMail extends Composite implements ClickHandler {
     private FlexTable attachedFiles;
     private Logger logger;
     private TextBox yearBox;
+    private NamedButton reSendButton;
 
-    public static ReportMail getInstance(Constants constants, I18NAccount messages,
-            Elements elements) {
+    public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportMail(constants, messages, elements);
         }
@@ -85,11 +87,11 @@ public class ReportMail extends Composite implements ClickHandler {
         reciversListBox.getListbox().addItem(elements.mail_query_newsletter(), "newsletter");
         reciversListBox.getListbox().addItem(elements.mail_test(), "test");
         reciversListBox.getListbox().addItem(elements.mail_simulate(), "simulate");
-        
+
         hp.add(reciversListBox);
         hp.add(new Label(elements.year()));
         hp.add(yearBox);
-        
+
         mainTable.setWidget(0, 1, hp);
 
         titleBox = new TextBoxWithErrorText("mail_title");
@@ -114,6 +116,11 @@ public class ReportMail extends Composite implements ClickHandler {
         sendButton = new NamedButton("mail_send", elements.mail_send());
         sendButton.addClickHandler(this);
         mainTable.setWidget(5, 0, sendButton);
+
+        reSendButton = new NamedButton("mail_send_again", elements.mail_send_again());
+        reSendButton.addClickHandler(this);
+        reSendButton.setEnabled(false);
+        mainTable.setWidget(5, 1, reSendButton);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -182,7 +189,7 @@ public class ReportMail extends Composite implements ClickHandler {
         };
 
         AuthResponder.get(constants, messages, callback, "reports/email.php?action=list&query="
-                + reciversListBox.getText()+"&year="+yearBox.getText());
+                + reciversListBox.getText() + "&year=" + yearBox.getText());
 
     }
 
@@ -190,14 +197,22 @@ public class ReportMail extends Composite implements ClickHandler {
         boolean ok = Window.confirm(messages.mail_confirm(String.valueOf(receivers.size())));
 
         if (ok) {
+            clearSendToTable();
+            
             sendEmails();
+        }
+        
+    }
+
+    private void clearSendToTable() {
+        while(table.getRowCount() > 1) {
+            table.removeRow(1);
         }
     }
 
     private void sendEmails() {
-        logger
-                .info("email", "Email sending: " + reciversListBox.getText() + " "
-                        + receivers.size());
+        String message = "Email sending: " + reciversListBox.getText() + " " + receivers.size();
+        logger.info("email", message);
 
         if (emailSendStatusView == null) {
             emailSendStatusView = new EmailSendStatus();
@@ -208,17 +223,35 @@ public class ReportMail extends Composite implements ClickHandler {
         emailSendStatusView.show();
         emailSendStatusView.center();
         emailSendStatusView.sendEmails(reciversListBox.getText().equals("simulate"));
-
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
 
-    	if (sender == sendButton) {
+        if (sender == sendButton) {
             fillReceivers();
         } else if (sender == attachButton) {
             chooseAttachments();
+        } else if (sender == reSendButton) {
+            resendFailedEmails();
         }
+    }
+
+    private void resendFailedEmails() {
+        receivers = new JSONArray();
+        int pos = 0;
+
+        for (int row = 1; row < table.getRowCount(); row++) {
+            if (table.getText(row, 2).equals(elements.failed())) {
+
+                JSONObject failedOne = new JSONObject();
+                failedOne.put("name", new JSONString(table.getText(row, 0)));
+                failedOne.put("email", new JSONString(table.getText(row, 1)));
+
+                receivers.set(pos++, failedOne);
+            }
+        }
+        confirmSendEmail();
     }
 
     class EmailSendStatus extends DialogBox implements ClickHandler {
@@ -311,15 +344,16 @@ public class ReportMail extends Composite implements ClickHandler {
 
                     fillSentLine(name, email);
 
-                    if (!("1".equals(Util.str(object.get("status"))))) {
+                    if (!("1".equals(Util.str(object.get("status")))) || (simulate && Random.nextBoolean())) {
                         table.setStyleName("error");
-                        table.setText(1, 2, "error");
+                        table.setText(1, 2, elements.failed());
                     } else {
                         table.setText(1, 2, elements.ok());
                     }
                     if (receivers.size() > currentIndex) {
-                        sendOneEmail();
+                        sleepThenSendOneEmail();
                     } else {
+                        checkForErrors();
                         hide();
                     }
                 }
@@ -327,13 +361,25 @@ public class ReportMail extends Composite implements ClickHandler {
                 public void onError() {
                     fillSentLine(name, email);
                     table.setStyleName("error");
-                    table.setText(1, 2, "error");
+                    table.setText(1, 2, elements.failed());
 
                     if (receivers.size() > currentIndex) {
-                        sendOneEmail();
+                        sleepThenSendOneEmail();
                     } else {
+                        checkForErrors();
                         hide();
                     }
+                }
+
+                protected void sleepThenSendOneEmail() {
+                    Timer t = new Timer() {
+
+                        @Override
+                        public void run() {
+                            sendOneEmail();
+                        }
+                    };
+                    t.schedule(1000);
                 }
 
                 private void fillSentLine(final String name, final String email) {
@@ -349,6 +395,19 @@ public class ReportMail extends Composite implements ClickHandler {
             };
 
             AuthResponder.post(constants, messages, callback, mailRequest, "reports/email.php");
+        }
+
+    }
+
+    protected void checkForErrors() {
+
+        reSendButton.setEnabled(false);
+
+        for (int row = 1; row < table.getRowCount(); row++) {
+            if (table.getText(row, 2).equals(elements.failed())) {
+                reSendButton.setEnabled(true);
+                break;
+            }
         }
     }
 
@@ -416,7 +475,7 @@ public class ReportMail extends Composite implements ClickHandler {
         }
 
         public void onClick(ClickEvent event) {
-        	Widget sender = (Widget) event.getSource();
+            Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
                 hide();
             } else if (sender == pickButton) {

@@ -10,6 +10,7 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
+import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -522,16 +523,47 @@ public class BudgetDrawDelegate {
 
     }
 
+    private void nullBudget(int row) {
+
+        TextBoxWithErrorText widgetP = (TextBoxWithErrorText) view.budgetTable.getWidget(row, 3);
+
+        if (widgetP != null) {
+            widgetP.setText("");
+        } else {
+            view.budgetTable.setText(row, 3, "");
+        }
+
+    }
+
+    private boolean checkSelectedAndDeselect(int row) {
+        CheckBox box = (CheckBox) view.budgetTable.getWidget(row, 0);
+        Boolean value = box.getValue();
+        box.setValue(false);
+        return value;
+    }
+
+    private boolean noValueInPreviousYears(int row) {
+        int c = view.budgetTable.getCellCount(row);
+
+        for (int col = 4; col < c; col++) {
+            if (!view.budgetTable.getText(row, col).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public double calcBudgetCost() {
         double result = 0;
 
         for (int rowC = (lastEarningsRow + 4); rowC < lastCostRow; rowC++) {
             String value = getValue(rowC, 3);
 
-            if(value.trim().isEmpty()) {
+            if (value.trim().isEmpty()) {
                 continue;
             }
-            
+
             result += Double.parseDouble(value.trim().replaceAll(",", ""));
         }
 
@@ -544,13 +576,43 @@ public class BudgetDrawDelegate {
         for (int row = 2; row < lastEarningsRow; row++) {
             String value = getValue(row, 3);
 
-            if(value.trim().isEmpty()) {
+            if (value.trim().isEmpty()) {
                 continue;
             }
             result += Double.parseDouble(value.trim().replaceAll(",", ""));
         }
 
         return result;
+    }
+
+    public void deleteSelected() {
+        for (int rowC = (lastCostRow - 1); rowC >= (lastEarningsRow + 4); rowC--) {
+            if (checkSelectedAndDeselect(rowC)) {
+                
+                if (noValueInPreviousYears(rowC)) {
+                    view.budgetTable.removeRow(rowC);
+                    lastCostRow--;
+                    currentCostEditRow--;
+                } else {
+                    nullBudget(rowC);
+                }
+            }
+        }
+
+        for (int row = (lastEarningsRow - 1); row >= 2; row--) {
+
+            if (checkSelectedAndDeselect(row)) {
+                if (noValueInPreviousYears(row)) {
+                    view.budgetTable.removeRow(row);
+                    lastCostRow--;
+                    lastEarningsRow--;
+                    currentEarningsEditRow--;
+                    currentCostEditRow--;
+                } else {
+                    nullBudget(row);
+                }
+            }
+        }
     }
 
 }

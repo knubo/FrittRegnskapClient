@@ -57,6 +57,7 @@ public class BudgetView extends Composite implements ClickHandler {
     private NamedButton showMembershipCaclculctorCheckbox;
     private NamedButton showChartButton;
     private String selectedBudgetYear;
+    private NamedButton deleteButton;
 
     public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
@@ -112,7 +113,12 @@ public class BudgetView extends Composite implements ClickHandler {
         saveButton.addClickHandler(this);
         saveResultLabel = new Label();
 
+        deleteButton = new NamedButton("delete_line", elements.delete_line());
+        deleteButton.addClickHandler(this);
+
         HorizontalPanel hp = new HorizontalPanel();
+
+        hp.add(deleteButton);
         hp.add(saveButton);
         hp.add(saveResultLabel);
         dp.add(hp, DockPanel.NORTH);
@@ -184,30 +190,30 @@ public class BudgetView extends Composite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource() == addEarningRowButton) {
             budgetDrawDelegate.addEarningClick();
-        }
-        if (event.getSource() == budgetTable) {
+        } else if (event.getSource() == budgetTable) {
             budgetDrawDelegate.budgetTableClick(event);
-        }
-        if (event.getSource() == addCostRowButton) {
+        } else if (event.getSource() == addCostRowButton) {
             budgetDrawDelegate.addCostClick();
-        }
-        if (event.getSource() == saveButton) {
+        } else if (event.getSource() == saveButton) {
             saveBudget();
-        }
-        if (event.getSource() == hideNotInCurrentYearCheckbox) {
+        } else if (event.getSource() == hideNotInCurrentYearCheckbox) {
             toggleHideUnusedAccounts();
-        }
-        if (event.getSource() == showSumsCheckbox) {
+        } else if (event.getSource() == showSumsCheckbox) {
             toggleShowSums();
-        }
-        if (event.getSource() == selectBudgetYearButton) {
+        } else if (event.getSource() == selectBudgetYearButton) {
             BudgetSelectView.getInstance(elements, messages).selectBudgetYear(this);
-        }
-        if (event.getSource() == showMembershipCaclculctorCheckbox) {
-            BudgetMembershipCalculatorView instance = BudgetMembershipCalculatorView.getInstance(constants, elements, messages);
+        } else if (event.getSource() == showMembershipCaclculctorCheckbox) {
+            BudgetMembershipCalculatorView instance = BudgetMembershipCalculatorView.getInstance(constants, elements,
+                    messages);
             instance.setPopupPosition(100, 100);
             instance.show();
+        } else if (event.getSource() == deleteButton) {
+            deleteSelectedRows();
         }
+    }
+
+    private void deleteSelectedRows() {
+        budgetDrawDelegate.deleteSelected();
     }
 
     private void toggleShowSums() {
@@ -278,8 +284,8 @@ public class BudgetView extends Composite implements ClickHandler {
 
                 fillBudget(object.get("budget").isArray());
 
-                BudgetMembershipCalculatorView calculator = BudgetMembershipCalculatorView.getInstance(constants, elements,
-                        messages);
+                BudgetMembershipCalculatorView calculator = BudgetMembershipCalculatorView.getInstance(constants,
+                        elements, messages);
 
                 JSONObject members = object.get("members").isObject();
                 JSONObject price = object.get("price").isObject();
