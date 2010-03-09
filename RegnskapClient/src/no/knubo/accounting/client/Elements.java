@@ -268,6 +268,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String birthdate();
 
   /**
+   * Translated "Budsjettgraf".
+   * 
+   * @return translated "Budsjettgraf"
+   */
+  @DefaultStringValue("Budsjettgraf")
+  @Key("budget_chart")
+  String budget_chart();
+
+  /**
    * Translated "Differanse".
    * 
    * @return translated "Differanse"
@@ -428,6 +437,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Nullstill")
   @Key("clear")
   String clear();
+
+  /**
+   * Translated "Lukk".
+   * 
+   * @return translated "Lukk"
+   */
+  @DefaultStringValue("Lukk")
+  @Key("close")
+  String close();
 
   /**
    * Translated "Klubbkonto".
@@ -1337,6 +1355,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Budsjett")
   @Key("menuitem_budget")
   String menuitem_budget();
+
+  /**
+   * Translated "Enkel budsjettoppfolging".
+   * 
+   * @return translated "Enkel budsjettoppfolging"
+   */
+  @DefaultStringValue("Enkel budsjettoppfolging")
+  @Key("menuitem_budgetsimple")
+  String menuitem_budgetsimple();
 
   /**
    * Translated "Standardbilag".

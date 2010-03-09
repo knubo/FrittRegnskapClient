@@ -18,7 +18,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -44,10 +43,6 @@ public class BudgetView extends Composite implements ClickHandler {
     ListBox accountsCost;
     TextBoxWithErrorText accountInputCost;
     TextBoxWithErrorText accountValueCost;
-    Label costSumLabel;
-    Label earningsSumLabel;
-    CheckBox sumEarningCheckBox;
-    CheckBox sumCostCheckBox;
     BudgetDrawDelegate budgetDrawDelegate;
     private NamedButton saveButton;
     private Label saveResultLabel;
@@ -145,14 +140,6 @@ public class BudgetView extends Composite implements ClickHandler {
         addCostRowButton = new NamedButton("costbutton", elements.add());
         addCostRowButton.addClickHandler(this);
 
-        costSumLabel = new Label();
-        costSumLabel.setStyleName("right");
-        earningsSumLabel = new Label();
-        earningsSumLabel.setStyleName("right");
-
-        sumCostCheckBox = new CheckBox();
-        sumEarningCheckBox = new CheckBox();
-
         selectedBudgetYear = "" + Util.currentYear();
 
         initWidget(dp);
@@ -209,7 +196,16 @@ public class BudgetView extends Composite implements ClickHandler {
             instance.show();
         } else if (event.getSource() == deleteButton) {
             deleteSelectedRows();
+        } else if(event.getSource() == showChartButton) {
+            showChart();
         }
+    } 
+
+    private void showChart() {
+        BudgetGraphView instance = BudgetGraphView.getInstance(elements);
+        instance.init(budgetDrawDelegate);
+        instance.setPopupPosition(30, 30);
+        instance.show();
     }
 
     private void deleteSelectedRows() {

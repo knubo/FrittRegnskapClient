@@ -10,7 +10,6 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
-import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 
@@ -23,7 +22,10 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.visualization.client.DataTable;
+import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 
 public class BudgetDrawDelegate {
 
@@ -54,14 +56,10 @@ public class BudgetDrawDelegate {
         addInputEarningsRow();
 
         view.budgetTable.setWidget(lastEarningsRow + 1, 1, view.addEarningRowButton);
-        view.budgetTable.setWidget(lastEarningsRow + 1, 2, view.sumEarningCheckBox);
-        view.budgetTable.setWidget(lastEarningsRow + 1, 3, view.earningsSumLabel);
 
         addInitialCostRow();
 
         view.budgetTable.setWidget(lastCostRow + 1, 1, view.addCostRowButton);
-        view.budgetTable.setWidget(lastCostRow + 1, 2, view.sumCostCheckBox);
-        view.budgetTable.setWidget(lastCostRow + 1, 3, view.costSumLabel);
 
     }
 
@@ -77,7 +75,6 @@ public class BudgetDrawDelegate {
     void addInputCostRow() {
 
         removeCostInputsAndSetValueInItsPlace(false);
-        // view.budgetTable.remove(addCostRowButton);
 
         lastCostRow++;
         view.budgetTable.insertRow(lastCostRow);
@@ -88,7 +85,6 @@ public class BudgetDrawDelegate {
 
         addCostInputs(lastCostRow);
         view.budgetTable.setWidget(lastCostRow, 0, new CheckBox());
-        // view.budgetTable.setWidget(lastCostRow + 1, 1, addCostRowButton);
 
     }
 
@@ -180,7 +176,6 @@ public class BudgetDrawDelegate {
         } else {
             view.accountValueEarnings.setFocus(true);
         }
-
     }
 
     void addCostInputs(int row) {
@@ -474,10 +469,18 @@ public class BudgetDrawDelegate {
     }
 
     private String getValue(int row, int column) {
-        TextBoxWithErrorText widget = (TextBoxWithErrorText) view.budgetTable.getWidget(row, column);
+        Widget toTest = view.budgetTable.getWidget(row, column);
 
-        if (widget != null) {
-            return widget.getText();
+        if (toTest != null) {
+            if(toTest instanceof TextBoxWithErrorText) {
+                TextBoxWithErrorText widget = (TextBoxWithErrorText) toTest;
+                return widget.getText();
+            } else if(toTest instanceof ListBox) {
+                ListBox box = (ListBox) toTest;
+                
+                return Util.getSelectedText(box);
+            }
+            
         }
         return view.budgetTable.getText(row, column);
     }
@@ -535,6 +538,11 @@ public class BudgetDrawDelegate {
 
     }
 
+    private boolean isChecked(int row) {
+        CheckBox box = (CheckBox) view.budgetTable.getWidget(row, 0);
+        return box.getValue();
+    }
+
     private boolean checkSelectedAndDeselect(int row) {
         CheckBox box = (CheckBox) view.budgetTable.getWidget(row, 0);
         Boolean value = box.getValue();
@@ -588,7 +596,7 @@ public class BudgetDrawDelegate {
     public void deleteSelected() {
         for (int rowC = (lastCostRow - 1); rowC >= (lastEarningsRow + 4); rowC--) {
             if (checkSelectedAndDeselect(rowC)) {
-                
+
                 if (noValueInPreviousYears(rowC)) {
                     view.budgetTable.removeRow(rowC);
                     lastCostRow--;
@@ -613,6 +621,97 @@ public class BudgetDrawDelegate {
                 }
             }
         }
+    }
+
+    public void fillDatatableYearBased(DataTable data) {
+
+        data.addColumn(ColumnType.STRING, elements.year());
+
+        int columnCount = view.budgetTable.getCellCount(2);
+
+        Util.log("cellCount:"+columnCount);
+        
+        HashMap<Integer, Integer> rowInBudgetTableGivesColumn = setColumnPositions(data);
+
+        for (int column = columnCount - 1; column >= 3; column--) {
+            String year = view.budgetTable.getText(0, column - 2);
+
+            int rowIndex = columnCount - (column + 1);
+
+            Util.log("RowIndex:" + rowIndex + " year:" + year);
+            data.addRow();
+            data.setValue(rowIndex, 0, year);
+
+            for (int row = 2; row < lastEarningsRow; row++) {
+                Integer columnInDataTable = rowInBudgetTableGivesColumn.get(row);
+                
+                if (columnInDataTable == null) {
+                    continue;
+                }
+
+                double value = getDouble(column, row);
+
+                if (value == 0) {
+                    continue;
+                }
+
+
+                data.setValue(rowIndex, columnInDataTable, value);
+            }
+
+            for (int rowC = (lastEarningsRow + 4); rowC < lastCostRow; rowC++) {
+                Integer columnInDataTable = rowInBudgetTableGivesColumn.get(rowC);
+                
+                if (columnInDataTable == null) {
+                    continue;
+                }
+
+                double value = getDouble(column, rowC);
+
+                if (value == 0) {
+                    continue;
+                }
+
+
+                data.setValue(rowIndex, columnInDataTable, 0 - value);
+            }
+        }
+    }
+
+    private double getDouble(int column, int row) {
+        String strval = getValue(row, column).trim().replaceAll(",", "");
+        
+        if(strval.isEmpty()) {
+            return 0;
+        }
+        try {
+            return Double.parseDouble(strval);
+        } catch(NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private HashMap<Integer, Integer> setColumnPositions(DataTable data) {
+        int countPos = 1;
+
+        HashMap<Integer, Integer> columnPositions = new HashMap<Integer, Integer>();
+        for (int row = 2; row < lastEarningsRow; row++) {
+            if (!isChecked(row)) {
+                continue;
+            }
+            columnPositions.put(row, countPos++);
+            data.addColumn(ColumnType.NUMBER, getValue(row, 1) + " " + getValue(row, 2));
+        }
+        for (int rowC = (lastEarningsRow + 4); rowC < lastCostRow; rowC++) {
+            if (!isChecked(rowC)) {
+                continue;
+            }
+            columnPositions.put(rowC, countPos++);
+            data.addColumn(ColumnType.NUMBER, getValue(rowC, 1) + " " + getValue(rowC, 2));
+        }
+        
+        return columnPositions;
+
     }
 
 }
