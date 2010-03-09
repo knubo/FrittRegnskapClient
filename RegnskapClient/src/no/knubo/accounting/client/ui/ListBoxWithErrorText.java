@@ -15,7 +15,7 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements Validateab
     private ListBox listbox;
 
     @Override
-	public String getText() {
+    public String getText() {
         return Util.getSelected(listbox);
     }
 
@@ -82,5 +82,10 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements Validateab
 
     public int getSelectedIndex() {
         return listbox.getSelectedIndex();
+    }
+
+    public void addItem(JSONValue jsonValue) {
+        String v = Util.str(jsonValue);
+        listbox.addItem(v, v);
     }
 }

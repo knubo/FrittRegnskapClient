@@ -27,6 +27,7 @@ import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.YearEndView;
+import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
@@ -275,6 +276,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = BudgetView.show(messages, constants, helpPanel, elements);
                 ((BudgetView) widget).init();
                 break;
+            case BUDGET_SIMPLE_TRACKING:
+                widget = BudgetSimpleTracking.getInstance(messages, constants, elements);
+                ((BudgetSimpleTracking) widget).init();
+                break;
+                
             case ADD_PERSON:
                 widget = PersonEditView.show(constants, messages, helpPanel, callback, elements);
                 ((PersonEditView) widget).init(null);

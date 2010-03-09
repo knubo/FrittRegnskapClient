@@ -4,17 +4,20 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.ui.NamedButton;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.VisualizationUtils;
 import com.google.gwt.visualization.client.visualizations.LineChart;
 import com.google.gwt.visualization.client.visualizations.LineChart.Options;
 
-public class BudgetGraphView extends DialogBox implements Runnable, ClickHandler {
+public class BudgetGraphView extends DialogBox implements Runnable, ClickHandler, ChangeHandler {
 
     private static BudgetGraphView me;
 
@@ -28,6 +31,11 @@ public class BudgetGraphView extends DialogBox implements Runnable, ClickHandler
 
     private BudgetDrawDelegate budgetDrawDelegate;
 
+    private ListBox sizeListbox;
+
+    int height = 600;
+    int width = 800;
+    
     private BudgetGraphView(Elements elements) {
         dp = new DockPanel();
 
@@ -35,14 +43,23 @@ public class BudgetGraphView extends DialogBox implements Runnable, ClickHandler
         setModal(false);
 
         chartHolder = new FlowPanel();
-        dp.add(chartHolder, DockPanel.NORTH);
 
         FlowPanel buttonPanel = new FlowPanel();
         closeButton = new NamedButton("close_button", elements.close());
         closeButton.addClickHandler(this);
         buttonPanel.add(closeButton);
 
+        sizeListbox = new ListBox();
+        sizeListbox.addItem("640x400");
+        sizeListbox.addItem("800x600");
+        sizeListbox.addItem("1024x768");
+        sizeListbox.addItem("1280x960");
+        sizeListbox.addChangeHandler(this);
+        sizeListbox.setSelectedIndex(1);
+        buttonPanel.add(sizeListbox);
+        
         dp.add(buttonPanel, DockPanel.NORTH);
+        dp.add(chartHolder, DockPanel.NORTH);
 
         setWidget(dp);
     }
@@ -75,8 +92,8 @@ public class BudgetGraphView extends DialogBox implements Runnable, ClickHandler
             Util.log(e.toString());
         }
         Options opts = Options.create();
-        opts.setWidth(800);
-        opts.setHeight(600);
+        opts.setWidth(width);
+        opts.setHeight(height);
         chart.draw(data, opts);
     }
 
@@ -84,5 +101,13 @@ public class BudgetGraphView extends DialogBox implements Runnable, ClickHandler
         if (event.getSource() == closeButton) {
             hide();
         }
+    }
+
+    public void onChange(ChangeEvent event) {
+        String selectedText = Util.getSelectedText(sizeListbox);
+        int xIndex = selectedText.indexOf('x');
+        width = Integer.parseInt(selectedText.substring(0, xIndex));
+        height = Integer.parseInt(selectedText.substring(xIndex+1));
+        init(budgetDrawDelegate);
     }
 }
