@@ -33,8 +33,8 @@ public class Util {
      *            The url to forward to.
      */
     public static native void forward(String url) /*-{
-                                $wnd.location.href = url;
-                                }-*/;
+                                                  $wnd.location.href = url;
+                                                  }-*/;
 
     public static boolean getBoolean(JSONValue str) {
         return "1".equals(str(str)) || "true".equals(str(str));
@@ -98,7 +98,7 @@ public class Util {
 
         return dateparts[2] + "." + dateparts[1] + "." + dateparts[0];
     }
-    
+
     @SuppressWarnings("deprecation")
     public static int currentYear() {
         return new Date().getYear() + 1900;
@@ -136,16 +136,16 @@ public class Util {
     }
 
     public static String money(String original) {
-        if(original.length() == 0) {
+        if (original.length() == 0) {
             return "";
         }
-        
+
         if (original.charAt(0) == '-') {
             return "-" + money(original.substring(1));
         }
 
-        String work = original.replaceAll(",","");
-        
+        String work = original.replaceAll(",", "");
+
         int sepPos = work.indexOf('.');
 
         String x = null;
@@ -229,9 +229,9 @@ public class Util {
      * @param textbox
      */
     public static void syncListbox(final ListBox listbox, final TextBox textbox) {
-    	ChangeHandler listchange = new ChangeHandler() {
+        ChangeHandler listchange = new ChangeHandler() {
 
-    		public void onChange(ChangeEvent event) {
+            public void onChange(ChangeEvent event) {
                 textbox.setText(listbox.getValue(listbox.getSelectedIndex()));
             }
 
@@ -240,7 +240,7 @@ public class Util {
 
         ChangeHandler textchange = new ChangeHandler() {
 
-    		public void onChange(ChangeEvent event) {
+            public void onChange(ChangeEvent event) {
                 String id = textbox.getText();
 
                 for (int i = 0; i < listbox.getItemCount(); i++) {
@@ -325,7 +325,7 @@ public class Util {
         Timer timer = new Timer() {
 
             @Override
-			public void run() {
+            public void run() {
                 label.setText(message);
                 timers.remove(label);
             }
@@ -430,9 +430,9 @@ public class Util {
 
         String str = str(value);
         return Double.parseDouble(str.trim());
-        
+
     }
-    
+
     public static int getInt(JSONValue value) {
         if (value == null || isNull(value)) {
             return 0;
@@ -445,7 +445,7 @@ public class Util {
         }
 
         String str = str(value);
-        if(str.length() == 0) {
+        if (str.length() == 0) {
             return 0;
         }
         return Integer.parseInt(str.trim());
@@ -460,9 +460,9 @@ public class Util {
     public static void linkJustOne(final CheckBox checkOne, final CheckBox checkTwo) {
         ClickHandler listener = new ClickHandler() {
 
-        	public void onClick(ClickEvent event) {
+            public void onClick(ClickEvent event) {
                 CheckBox sender = (CheckBox) event.getSource();
-				if (sender  == checkOne) {
+                if (sender == checkOne) {
                     if (checkTwo.isEnabled() && checkOne.getValue()) {
                         checkTwo.setValue(false);
                     } else {
@@ -491,7 +491,7 @@ public class Util {
     }
 
     public static String strSkipNull(JSONValue value) {
-        if(value == null) {
+        if (value == null) {
             return "";
         }
         String string = str(value);
@@ -521,7 +521,7 @@ public class Util {
      * @param translate
      * @return The concatenated field list.
      */
-    public static String translate(List<String> fields, HashMap<String,String> translate) {
+    public static String translate(List<String> fields, HashMap<String, String> translate) {
         StringBuffer sb = new StringBuffer();
 
         for (String fieldName : fields) {
@@ -554,6 +554,17 @@ public class Util {
 
     public static String money(Double double1) {
         return money(String.valueOf(double1));
+    }
+
+    public static String numberDecimalFormat(String value) {
+        int index = value.indexOf('.');
+        if (index == -1) {
+            return value+".00";
+        }
+        if (value.length() < index + 3) {
+            return value;
+        }
+        return value.substring(0, index + 3);
     }
 
 }

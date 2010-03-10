@@ -268,6 +268,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String birthdate();
 
   /**
+   * Translated "Budsjetert".
+   * 
+   * @return translated "Budsjetert"
+   */
+  @DefaultStringValue("Budsjetert")
+  @Key("budget")
+  String budget();
+
+  /**
    * Translated "Budsjettgraf".
    * 
    * @return translated "Budsjettgraf"

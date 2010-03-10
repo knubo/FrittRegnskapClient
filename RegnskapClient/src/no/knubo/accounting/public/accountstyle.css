@@ -37,12 +37,11 @@
 }
 
 .popup {
-	border-style:solid;
-	border-color:blue;
+	border-style: solid;
+	border-color: blue;
 	border-width: 3px;
-	background-color: white;	
+	background-color: white;
 }
-
 
 .tablecells TD {
 	border-width: 1px;
@@ -508,6 +507,17 @@ td.rute {
 }
 
 .buttonpanel .gwt-label {
-	padding-left:10px;
-	border-left:1px solid;	
+	padding-left: 10px;
+	border-left: 1px solid;
+}
+
+TD.red {
+	background-color: red;
+}
+
+TD.yellow {
+	background-color:yellow;
+}
+TD.green {
+	background-color:green;
 }
