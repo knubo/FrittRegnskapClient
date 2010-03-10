@@ -64,8 +64,9 @@ public class StandardvaluesView extends Composite implements ClickHandler {
     private final Elements elements;
 
     private ListBoxWithErrorText postYear;
-
     private ListBoxWithErrorText postCourse;
+    private ListBoxWithErrorText postTrain;
+    private ListBoxWithErrorText postYouth;
 
     public StandardvaluesView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
@@ -104,16 +105,25 @@ public class StandardvaluesView extends Composite implements ClickHandler {
 
         table.setHTML(0,0,elements.setup_budget_post_year());
         table.setHTML(1,0,elements.setup_budget_post_course());
+        table.setHTML(2,0,elements.setup_budget_post_train());
+        table.setHTML(3,0,elements.setup_budget_post_youth());
         
         postYear = new ListBoxWithErrorText("budget_post_year");
         table.setWidget(0, 1, postYear);
         postCourse = new ListBoxWithErrorText("budget_post_course");
         table.setWidget(1, 1, postCourse);
+        postTrain = new ListBoxWithErrorText("budget_post_train");
+        table.setWidget(2, 1, postTrain);
+        
+        postYouth = new ListBoxWithErrorText("budget_post_youth");
+        table.setWidget(3, 1, postYouth);
         
         PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
         
         posttypeCache.fillAllPosts(postYear);
         posttypeCache.fillAllPosts(postCourse);
+        posttypeCache.fillAllPosts(postYouth);
+        posttypeCache.fillAllPosts(postTrain);
         
         return table;
     }
@@ -177,6 +187,8 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         Util.addPostParam(sb, "massletter_due_date", massletterDueDateBox.getText());
         Util.addPostParam(sb, "year_post", Util.getSelected(postYear.getListbox()));
         Util.addPostParam(sb, "course_post", Util.getSelected(postCourse.getListbox()));
+        Util.addPostParam(sb, "train_post", Util.getSelected(postTrain.getListbox()));
+        Util.addPostParam(sb, "youth_post", Util.getSelected(postYouth.getListbox()));
         
         ServerResponse callback = new ServerResponse() {
 
@@ -236,6 +248,8 @@ public class StandardvaluesView extends Composite implements ClickHandler {
                 massletterDueDateBox.setText(Util.str(object.get("massletter_due_date")));
                 Util.setIndexByValue(postYear.getListbox(), Util.str(object.get("year_post")));
                 Util.setIndexByValue(postCourse.getListbox(), Util.str(object.get("course_post")));
+                Util.setIndexByValue(postTrain.getListbox(), Util.str(object.get("train_post")));
+                Util.setIndexByValue(postYouth.getListbox(), Util.str(object.get("youth_post")));
             }
 
         };

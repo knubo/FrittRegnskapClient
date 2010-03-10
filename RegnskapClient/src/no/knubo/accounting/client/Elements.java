@@ -2167,6 +2167,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String setup_budget_post_course();
 
   /**
+   * Translated "Konto for treningsmedlemsskap ".
+   * 
+   * @return translated "Konto for treningsmedlemsskap "
+   */
+  @DefaultStringValue("Konto for treningsmedlemsskap ")
+  @Key("setup_budget_post_train")
+  String setup_budget_post_train();
+
+  /**
    * Translated "Konto for årsmedlemsskap".
    * 
    * @return translated "Konto for årsmedlemsskap"
@@ -2174,6 +2183,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Konto for årsmedlemsskap")
   @Key("setup_budget_post_year")
   String setup_budget_post_year();
+
+  /**
+   * Translated "Konto for ungdomsmedlemsskap ".
+   * 
+   * @return translated "Konto for ungdomsmedlemsskap "
+   */
+  @DefaultStringValue("Konto for ungdomsmedlemsskap ")
+  @Key("setup_budget_post_youth")
+  String setup_budget_post_youth();
 
   /**
    * Translated "Generelle innstillinger".
