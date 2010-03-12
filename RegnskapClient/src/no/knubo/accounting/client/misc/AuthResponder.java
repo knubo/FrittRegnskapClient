@@ -96,7 +96,11 @@ public class AuthResponder implements RequestCallback {
                    // Window.alert("Bad return data:" + data);
                 }
             } else {
-                callback.serverResponse(jsonValue);
+                try {
+                    callback.serverResponse(jsonValue);
+                } catch(Exception e) {
+                    Util.log(e.toString());
+                }
             }
         }
     }

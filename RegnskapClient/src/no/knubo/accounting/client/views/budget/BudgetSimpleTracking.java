@@ -68,7 +68,7 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
         table.setText(0, 5, "%");
         table.setText(0, 6, elements.status());
 
-        table.getRowFormatter().setStyleName(0, "header");
+        table.getRowFormatter().setStyleName(0, "header desc");
 
         dp.add(table, DockPanel.NORTH);
 
@@ -210,11 +210,20 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
         int row = 2;
         String rowStyle = "line1";
 
+        double sumBudget = 0;
+        double sumActual = 0;
+        double earningsBudget = 0;
+        double earningsActual = 0;
         boolean givenCostHeader = false;
 
         for (Row value : values) {
             if (!givenCostHeader && !value.earning) {
-                addCostHeader(row++);
+                row += addCostHeader(row, sumBudget, sumActual);
+
+                earningsBudget = sumBudget;
+                earningsActual = sumActual;
+                sumBudget = 0;
+                sumActual = 0;
                 givenCostHeader = true;
             }
 
@@ -229,6 +238,9 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
             table.setText(row, 5, value.getPercent());
             table.getCellFormatter().setStyleName(row, 5, "right");
 
+            sumBudget += value.budget;
+            sumActual += value.actual;
+
             table.getCellFormatter().setStyleName(row, 6, value.getColor());
 
             if ((row - 2) % 3 == 0) {
@@ -239,6 +251,18 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
 
             row++;
         }
+        addSumCostAndTotal(row, sumBudget, sumActual, earningsBudget, earningsActual);
+    }
+
+    private void addSumCostAndTotal(int row, double sumCostBudget, double sumCostActual, double sumEarningsBudget,
+            double sumEarningsActual) {
+        addSumline(row, sumCostBudget, sumCostActual, false);
+
+        table.setText(row + 1, 0, elements.budget_result());
+        table.getRowFormatter().setStyleName(row+1, "header");
+        table.getFlexCellFormatter().setColSpan(row+1, 0, 7);
+        addSumline(row + 2, sumEarningsBudget - sumCostBudget, sumEarningsActual - sumCostActual, true);
+
     }
 
     private void addEarningsHeader() {
@@ -247,10 +271,34 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
         table.getRowFormatter().setStyleName(1, "header");
     }
 
-    private void addCostHeader(int row) {
-        table.setText(row, 0, elements.budgeted_expences());
-        table.getFlexCellFormatter().setColSpan(row, 0, 7);
-        table.getRowFormatter().setStyleName(row, "header");
+    private int addCostHeader(int row, double sumBudget, double sumActual) {
+        addSumline(row, sumBudget, sumActual, true);
+
+        table.setText(row + 1, 0, elements.budgeted_expences());
+        table.getFlexCellFormatter().setColSpan(row + 1, 0, 7);
+        table.getRowFormatter().setStyleName(row + 1, "header");
+        return 2;
+    }
+
+    private void addSumline(int row, double sumBudget, double sumActual, boolean isEarnings) {
+        Row sum = new Row();
+        sum.actual = sumActual;
+        sum.budget = sumBudget;
+        sum.earning = isEarnings;
+
+        table.setText(row, 1, elements.sum());
+        table.setText(row, 2, Util.money(sumBudget));
+        table.setText(row, 3, Util.money(sumActual));
+        table.setText(row, 4, Util.money(sum.getDifference()));
+        table.setText(row, 5, sum.getPercent());
+
+        table.getCellFormatter().setStyleName(row, 2, "right");
+        table.getCellFormatter().setStyleName(row, 3, "right");
+        table.getCellFormatter().setStyleName(row, 4, "right");
+        table.getCellFormatter().setStyleName(row, 5, "right");
+        table.getCellFormatter().setStyleName(row, 6, sum.getColor());
+
+        table.getRowFormatter().setStyleName(row, "sumline");
     }
 
     static class Row implements Comparable<Row> {

@@ -117,7 +117,8 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         setWidget(dp);
     }
 
-    public static BudgetMembershipCalculatorView getInstance(Constants constants, Elements elements, I18NAccount messages) {
+    public static BudgetMembershipCalculatorView getInstance(Constants constants, Elements elements,
+            I18NAccount messages) {
         if (me == null) {
             me = new BudgetMembershipCalculatorView(constants, elements, messages);
         }
@@ -142,10 +143,11 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         saveMembershipBudget();
 
         double sumYear = getValue(10, 1) + getValue(11, 1);
-        double sumCourse = getValue(12, 1) + getValue(13, 1) + getValue(14, 1) + getValue(15, 1) + getValue(16, 1)
-                + getValue(17, 1);
+        double sumCourse = getValue(12, 1) + getValue(13, 1);
+        double sumTrain = getValue(14, 1) + getValue(15, 1);
+        double sumYouth = getValue(16, 1) + getValue(17, 1);
 
-        budgetView.sumsFromCalculator(sumYear, sumCourse);
+        budgetView.sumsFromCalculator(sumYear, sumCourse, sumTrain, sumYouth);
         hide();
 
     }
@@ -161,30 +163,30 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         data.put("fall_train", inputValue(6));
         data.put("spring_youth", inputValue(7));
         data.put("fall_youth", inputValue(8));
-        
+
         StringBuffer params = new StringBuffer();
         params.append("action=saveMemberships");
         Util.addPostParam(params, "memberships", data.toString());
 
         ServerResponse rh = new ServerResponse() {
-            
+
             public void serverResponse(JSONValue responseObj) {
-                if(responseObj == null) {
+                if (responseObj == null) {
                     Window.alert("No server result from save of budget membership. They were probably not saved.");
                 }
             }
         };
-        AuthResponder.post(constants, messages, rh , params, constants.baseurl() + "accounting/budget.php");
+        AuthResponder.post(constants, messages, rh, params, constants.baseurl() + "accounting/budget.php");
 
     }
 
     private JSONString inputValue(int row) {
-         TextBoxWithErrorText t = (TextBoxWithErrorText) table.getWidget(row, 1);
-        
-         if(t.getText().isEmpty()) {
-             return new JSONString("0");
-         }
-        
+        TextBoxWithErrorText t = (TextBoxWithErrorText) table.getWidget(row, 1);
+
+        if (t.getText().isEmpty()) {
+            return new JSONString("0");
+        }
+
         return new JSONString(t.getText());
     }
 

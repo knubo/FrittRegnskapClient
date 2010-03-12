@@ -266,6 +266,8 @@ public class BudgetView extends Composite implements ClickHandler {
 
     String postForYearMemberships;
     String postForCourseMemberships;
+    String postForTrainMemberships;
+    String postForYouthMemberships;
 
     private void loadBudgetData(String... year) {
         ServerResponse rh = new ServerResponse() {
@@ -289,6 +291,8 @@ public class BudgetView extends Composite implements ClickHandler {
                 String budgetYear = budgetTable.getText(0, 1);
                 postForYearMemberships = Util.str(object.get("year_post"));
                 postForCourseMemberships = Util.str(object.get("course_post"));
+                postForTrainMemberships = Util.str(object.get("train_post"));
+                postForYouthMemberships = Util.str(object.get("youth_post"));
                 JSONObject membersbudget = object.get("membersbudget").isObject();
                 calculator.init(me, members, price, semesters, budgetYear, membersbudget);
 
@@ -329,11 +333,13 @@ public class BudgetView extends Composite implements ClickHandler {
         init(selectedYear);
     }
 
-    public void sumsFromCalculator(double sumYear, double sumCourse) {
+    public void sumsFromCalculator(double sumYear, double sumCourse, double sumTrain, double sumYouth) {
         Util.log("Calculator (Y):" + postForYearMemberships + " " + sumYear);
         Util.log("Calculator (C):" + postForCourseMemberships + " " + sumCourse);
         budgetDrawDelegate.addBudget(postForYearMemberships, true, sumYear);
         budgetDrawDelegate.addBudget(postForCourseMemberships, true, sumCourse);
+        budgetDrawDelegate.addBudget(postForTrainMemberships, true, sumTrain);
+        budgetDrawDelegate.addBudget(postForYouthMemberships, true, sumYouth);
 
     }
 
