@@ -92,7 +92,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
         resultTable.getRowFormatter().setStyleName(0, "header");
         resultTable.setHTML(0, 0, elements.firstname());
-        resultTable.setHTML(0, 1, elements.lastname());
+        resultTable.setHTML(0, 1, elements.lastname() + " (" + elements.member_number() + ") ");
         resultTable.setHTML(0, 2, elements.email());
         resultTable.setHTML(0, 3, elements.year_membership());
         resultTable.setHTML(0, 4, elements.year_membership_youth());
@@ -145,12 +145,13 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                         return;
                     }
 
+                    String id = Util.str(obj.get("id"));
                     String firstname = Util.str(obj.get("firstname"));
                     String lastname = Util.str(obj.get("lastname"));
 
                     int row = i + 1;
                     resultTable.setHTML(row, 0, firstname);
-                    resultTable.setHTML(row, 1, lastname);
+                    resultTable.setHTML(row, 1, lastname + "(" + id + ")");
                     resultTable.setHTML(row, 2, Util.str(obj.get("email")));
 
                     CheckBox yearCheck = new CheckBox();
@@ -162,7 +163,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                     resultTable.getCellFormatter().setStyleName(row, 4, "center");
 
                     Util.linkJustOne(yearCheck, yearYouthCheck);
-                    
+
                     CheckBox courseCheck = new CheckBox();
                     resultTable.setWidget(row, 5, courseCheck);
                     resultTable.getCellFormatter().setStyleName(row, 4, "center");
@@ -324,11 +325,11 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
             if (doYear) {
                 Util.addPostParam(sb, "year" + id, "1");
             }
-            
-            if(doYearYouth) {
-                Util.addPostParam(sb, "yearyouth" + id, "1");                
+
+            if (doYearYouth) {
+                Util.addPostParam(sb, "yearyouth" + id, "1");
             }
-            
+
             if (doCourse) {
                 Util.addPostParam(sb, "course" + id, "1");
             }

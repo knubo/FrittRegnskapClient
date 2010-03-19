@@ -385,6 +385,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String cellphone();
 
   /**
+   * Translated "Bytt år".
+   * 
+   * @return translated "Bytt år"
+   */
+  @DefaultStringValue("Bytt år")
+  @Key("change_year")
+  String change_year();
+
+  /**
    * Translated "Velg filer som skal vedleggges eposten.".
    * 
    * @return translated "Velg filer som skal vedleggges eposten."
@@ -1220,6 +1229,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Medlemmer")
   @Key("member_heading_year")
   String member_heading_year();
+
+  /**
+   * Translated "Medlemsnummer".
+   * 
+   * @return translated "Medlemsnummer"
+   */
+  @DefaultStringValue("Medlemsnummer")
+  @Key("member_number")
+  String member_number();
 
   /**
    * Translated "Medlemstall".
@@ -2149,13 +2167,13 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String semester();
 
   /**
-   * Translated "Budsjett".
+   * Translated "Konti".
    * 
-   * @return translated "Budsjett"
+   * @return translated "Konti"
    */
-  @DefaultStringValue("Budsjett")
-  @Key("setup_budget")
-  String setup_budget();
+  @DefaultStringValue("Konti")
+  @Key("setup_accounts")
+  String setup_accounts();
 
   /**
    * Translated "Konto for kursmedlemsskap".
@@ -2185,13 +2203,49 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String setup_budget_post_year();
 
   /**
-   * Translated "Konto for ungdomsmedlemsskap ".
+   * Translated "Konto for ungdomsmedlemsskap".
    * 
-   * @return translated "Konto for ungdomsmedlemsskap "
+   * @return translated "Konto for ungdomsmedlemsskap"
    */
-  @DefaultStringValue("Konto for ungdomsmedlemsskap ")
+  @DefaultStringValue("Konto for ungdomsmedlemsskap")
   @Key("setup_budget_post_youth")
   String setup_budget_post_youth();
+
+  /**
+   * Translated "Konto for overføring for månedsavslutning".
+   * 
+   * @return translated "Konto for overføring for månedsavslutning"
+   */
+  @DefaultStringValue("Konto for overføring for månedsavslutning")
+  @Key("setup_end_month_post")
+  String setup_end_month_post();
+
+  /**
+   * Translated "Konti som overføres til neste måned  ".
+   * 
+   * @return translated "Konti som overføres til neste måned  "
+   */
+  @DefaultStringValue("Konti som overføres til neste måned  ")
+  @Key("setup_end_month_transfer_posts")
+  String setup_end_month_transfer_posts();
+
+  /**
+   * Translated "Konto for overføring for årsavslutning".
+   * 
+   * @return translated "Konto for overføring for årsavslutning"
+   */
+  @DefaultStringValue("Konto for overføring for årsavslutning")
+  @Key("setup_end_year_post")
+  String setup_end_year_post();
+
+  /**
+   * Translated "Konti for fordringer".
+   * 
+   * @return translated "Konti for fordringer"
+   */
+  @DefaultStringValue("Konti for fordringer")
+  @Key("setup_expected_income_or_cost_post")
+  String setup_expected_income_or_cost_post();
 
   /**
    * Translated "Generelle innstillinger".
@@ -2201,6 +2255,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Generelle innstillinger")
   @Key("setup_general")
   String setup_general();
+
+  /**
+   * Translated "Konti tilgjenglig ved medlemsregistrering".
+   * 
+   * @return translated "Konti tilgjenglig ved medlemsregistrering"
+   */
+  @DefaultStringValue("Konti tilgjenglig ved medlemsregistrering")
+  @Key("setup_register_membership_posts")
+  String setup_register_membership_posts();
 
   /**
    * Translated "Vis utgifter".
@@ -2534,6 +2597,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Oppdater")
   @Key("update")
   String update();
+
+  /**
+   * Translated "Bruk valgte".
+   * 
+   * @return translated "Bruk valgte"
+   */
+  @DefaultStringValue("Bruk valgte")
+  @Key("use_selected")
+  String use_selected();
 
   /**
    * Translated "Brukernavn".

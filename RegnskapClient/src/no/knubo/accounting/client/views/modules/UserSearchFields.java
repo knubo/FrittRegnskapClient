@@ -36,6 +36,8 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
 
     private ListBox genderBox;
 
+    private TextBox membernumberBox;
+
     public UserSearchFields(UserSearchCallback searchCallback, Elements elements) {
         this.searchCallback = searchCallback;
         searchTable = new FlexTable();
@@ -46,6 +48,10 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         lastnameBox = new TextBox();
         lastnameBox.setMaxLength(50);
         lastnameBox.addKeyPressHandler(this);
+        membernumberBox = new TextBox();
+        membernumberBox.setMaxLength(4);
+        membernumberBox.addKeyPressHandler(this);
+        
         emailBox = new TextBox();
         emailBox.setMaxLength(100);
         emailBox.addStyleName("fullwidth");
@@ -56,10 +62,12 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         employeeList.addItem(elements.not_employee(), "0");
         employeeList.addItem(elements.employee(), "1");
 
-        searchTable.setText(0, 0, elements.firstname());
-        searchTable.setWidget(0, 1, firstnameBox);
-        searchTable.setText(0, 2, elements.lastname());
-        searchTable.setWidget(0, 3, lastnameBox);
+        searchTable.setText(0, 0, elements.member_number());
+        searchTable.setWidget(0, 1, membernumberBox);
+        searchTable.setText(0, 2, elements.firstname());
+        searchTable.setWidget(0, 3, firstnameBox);
+        searchTable.setText(0, 4, elements.lastname());
+        searchTable.setWidget(0, 5, lastnameBox);
         searchTable.setText(1, 0, elements.email());
         searchTable.setWidget(1, 1, emailBox);
         searchTable.getFlexCellFormatter().setColSpan(1, 1, 3);
@@ -120,6 +128,7 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         Util.addPostParam(sb, "email", emailBox.getText());
         Util.addPostParam(sb, "getmemb", "1");
         Util.addPostParam(sb, "gender", Util.getSelected(genderBox));
+        Util.addPostParam(sb, "id", membernumberBox.getText());
 
         if (excludeHidden) {
             Util.addPostParam(sb, "hidden", "1");
@@ -133,10 +142,11 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         emailBox.setText("");
         employeeList.setSelectedIndex(0);
         searchCallback.doClear();
+        membernumberBox.setText("");
     }
 
     public void setFocus() {
-        firstnameBox.setFocus(true);
+        membernumberBox.setFocus(true);
     }
 
 }

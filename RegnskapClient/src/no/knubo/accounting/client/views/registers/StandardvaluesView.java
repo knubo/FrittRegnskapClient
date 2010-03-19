@@ -6,11 +6,14 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.views.modules.AccountSelected;
+import no.knubo.accounting.client.views.modules.AccountSelector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -24,9 +27,10 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class StandardvaluesView extends Composite implements ClickHandler {
+public class StandardvaluesView extends Composite implements ClickHandler, AccountSelected {
 
     private static StandardvaluesView me;
 
@@ -68,6 +72,18 @@ public class StandardvaluesView extends Composite implements ClickHandler {
     private ListBoxWithErrorText postTrain;
     private ListBoxWithErrorText postYouth;
 
+    private ListBoxWithErrorText endMonthPost;
+
+    private ListBoxWithErrorText endYearPost;
+
+    private Image editFordringerImage;
+
+    private FlexTable accountsTable;
+
+    private Image editMonthTransferImage;
+
+    private Image editRegisterMembershipPostsImage;
+
     public StandardvaluesView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
@@ -83,10 +99,10 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         dp.add(tabPanel, DockPanel.NORTH);
 
         tabPanel.add(setupGeneralTab(), elements.setup_general());
-        tabPanel.add(setupBudgetTab(), elements.setup_budget());
+        tabPanel.add(setupAccountsTab(), elements.setup_accounts());
 
         tabPanel.selectTab(0);
-        
+
         updateButton = new NamedButton("StandardValuesView.updateButton", elements.update());
         updateButton.addClickHandler(this);
         statusHTML = new HTML();
@@ -99,33 +115,58 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
-    private FlexTable setupBudgetTab() {
-        FlexTable table = new FlexTable();
-        table.setStyleName("edittable");
+    private FlexTable setupAccountsTab() {
+        accountsTable = new FlexTable();
+        accountsTable.setStyleName("edittable");
 
-        table.setHTML(0,0,elements.setup_budget_post_year());
-        table.setHTML(1,0,elements.setup_budget_post_course());
-        table.setHTML(2,0,elements.setup_budget_post_train());
-        table.setHTML(3,0,elements.setup_budget_post_youth());
-        
+        accountsTable.setHTML(0, 0, elements.setup_budget_post_year());
+        accountsTable.setHTML(1, 0, elements.setup_budget_post_course());
+        accountsTable.setHTML(2, 0, elements.setup_budget_post_train());
+        accountsTable.setHTML(3, 0, elements.setup_budget_post_youth());
+        accountsTable.setHTML(4, 0, elements.setup_end_month_post());
+        accountsTable.setHTML(5, 0, elements.setup_end_year_post());
+        accountsTable.setHTML(6, 0, elements.setup_expected_income_or_cost_post());
+        accountsTable.setHTML(7, 0, elements.setup_end_month_transfer_posts());
+        accountsTable.setHTML(8, 0, elements.setup_register_membership_posts());
+
         postYear = new ListBoxWithErrorText("budget_post_year");
-        table.setWidget(0, 1, postYear);
+        accountsTable.setWidget(0, 1, postYear);
         postCourse = new ListBoxWithErrorText("budget_post_course");
-        table.setWidget(1, 1, postCourse);
+        accountsTable.setWidget(1, 1, postCourse);
         postTrain = new ListBoxWithErrorText("budget_post_train");
-        table.setWidget(2, 1, postTrain);
-        
+        accountsTable.setWidget(2, 1, postTrain);
+
         postYouth = new ListBoxWithErrorText("budget_post_youth");
-        table.setWidget(3, 1, postYouth);
-        
+        accountsTable.setWidget(3, 1, postYouth);
+
+        endMonthPost = new ListBoxWithErrorText("end_month_post");
+        accountsTable.setWidget(4, 1, endMonthPost);
+
+        endYearPost = new ListBoxWithErrorText("end_year_post");
+        accountsTable.setWidget(5, 1, endYearPost);
+
+        editFordringerImage = ImageFactory.editImage("edit_fordringer");
+        editFordringerImage.addClickHandler(this);
+        accountsTable.setWidget(6, 2, editFordringerImage);
+
+        editMonthTransferImage = ImageFactory.editImage("edit_month_transfer");
+        editMonthTransferImage.addClickHandler(this);
+        accountsTable.setWidget(7, 2, editMonthTransferImage);
+
+        editRegisterMembershipPostsImage = ImageFactory.editImage("register_membership_posts");
+        editRegisterMembershipPostsImage.addClickHandler(this);
+        accountsTable.setWidget(8, 2, editRegisterMembershipPostsImage);
+
         PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
-        
-        posttypeCache.fillAllPosts(postYear);
-        posttypeCache.fillAllPosts(postCourse);
-        posttypeCache.fillAllPosts(postYouth);
-        posttypeCache.fillAllPosts(postTrain);
-        
-        return table;
+
+        posttypeCache.fillAllPosts(postYear.getListbox(), null, true, true);
+        posttypeCache.fillAllPosts(postCourse.getListbox(), null, true, true);
+        posttypeCache.fillAllPosts(postYouth.getListbox(), null, true, true);
+        posttypeCache.fillAllPosts(postTrain.getListbox(), null, true, true);
+        posttypeCache.fillAllPosts(endMonthPost.getListbox(), null, true, true);
+        posttypeCache.fillAllPosts(endYearPost.getListbox(), null, true, true);
+
+        return accountsTable;
     }
 
     private FlexTable setupGeneralTab() {
@@ -168,11 +209,56 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         table.setWidget(5, 1, costMembershipBox);
         table.setWidget(6, 1, emailBox);
         table.setWidget(7, 1, massletterDueDateBox);
-        
+
         return table;
     }
 
     public void onClick(ClickEvent event) {
+        if (event.getSource() == updateButton) {
+            save();
+        }
+        if (event.getSource() == editFordringerImage) {
+            AccountSelector instance = AccountSelector.getInstance(elements, constants, messages);
+            instance.init(elements.setup_expected_income_or_cost_post(), getFordringerPost(), this);
+            instance.center();
+        }
+        if (event.getSource() == editMonthTransferImage) {
+            AccountSelector instance = AccountSelector.getInstance(elements, constants, messages);
+            instance.init(elements.setup_end_month_transfer_posts(), getEndMonthTransferPosts(), this);
+            instance.center();
+        }
+        if (event.getSource() == editRegisterMembershipPostsImage) {
+            AccountSelector instance = AccountSelector.getInstance(elements, constants, messages);
+            instance.init(elements.setup_register_membership_posts(), getRegisterMembershipPosts(), this);
+            instance.center();
+        }
+
+    }
+
+    private String getRegisterMembershipPosts() {
+        return accountsTable.getText(8, 1);
+    }
+
+    private String getEndMonthTransferPosts() {
+        return accountsTable.getText(7, 1);
+    }
+
+    private String getFordringerPost() {
+        return accountsTable.getText(6, 1);
+    }
+
+    private void setRegisterMembershipPosts(String accounts) {
+        accountsTable.setText(8, 1, accounts);
+    }
+    
+    private void setEndMonthTransferPosts(String accounts) {
+        accountsTable.setText(7, 1, accounts);
+    }
+    private void setFordringerPosts(String accounts) {
+        accountsTable.setText(6, 1, accounts);
+    }
+
+    private void save() {
         if (!validate()) {
             return;
         }
@@ -189,7 +275,12 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         Util.addPostParam(sb, "course_post", Util.getSelected(postCourse.getListbox()));
         Util.addPostParam(sb, "train_post", Util.getSelected(postTrain.getListbox()));
         Util.addPostParam(sb, "youth_post", Util.getSelected(postYouth.getListbox()));
-        
+        Util.addPostParam(sb, "end_month_post", Util.getSelected(endMonthPost.getListbox()));
+        Util.addPostParam(sb, "end_year_post", Util.getSelected(endYearPost.getListbox()));
+        Util.addPostParam(sb, "fordringer_posts", getFordringerPost());
+        Util.addPostParam(sb, "end_month_transfer_posts", getEndMonthTransferPosts());
+        Util.addPostParam(sb, "register_membership_posts", getRegisterMembershipPosts());
+
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue parse) {
@@ -206,7 +297,6 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         };
 
         AuthResponder.post(constants, messages, callback, sb, "registers/standard.php");
-
     }
 
     public void init() {
@@ -250,6 +340,11 @@ public class StandardvaluesView extends Composite implements ClickHandler {
                 Util.setIndexByValue(postCourse.getListbox(), Util.str(object.get("course_post")));
                 Util.setIndexByValue(postTrain.getListbox(), Util.str(object.get("train_post")));
                 Util.setIndexByValue(postYouth.getListbox(), Util.str(object.get("youth_post")));
+                Util.setIndexByValue(endMonthPost.getListbox(), Util.str(object.get("end_month_post")));
+                Util.setIndexByValue(endYearPost.getListbox(), Util.str(object.get("end_year_post")));
+                setFordringerPosts(Util.strSkipNull(object.get("fordringer_posts")));
+                setEndMonthTransferPosts(Util.strSkipNull(object.get("end_month_transfer_posts")));
+                setRegisterMembershipPosts(Util.strSkipNull(object.get("register_membership_posts")));
             }
 
         };
@@ -269,4 +364,17 @@ public class StandardvaluesView extends Composite implements ClickHandler {
         return masterValidator.validateStatus();
 
     }
+
+    public void selectedAccounts(String accounts, String title) {
+        if (title.equals(elements.setup_expected_income_or_cost_post())) {
+            setFordringerPosts(accounts);
+        } 
+        if(title.equals(elements.setup_end_month_transfer_posts())) {
+            setEndMonthTransferPosts(accounts);
+        }
+        if(title.equals(elements.setup_register_membership_posts())) {
+            setRegisterMembershipPosts(accounts);
+        }
+    }
+
 }

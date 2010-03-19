@@ -150,4 +150,13 @@ public class PosttypeCache implements Registry {
     public void fillAllPosts(ListBoxWithErrorText box) {
         fillAllPosts(box.getListbox());
     }
+
+    public void addPost(ListBox box, String k, boolean includeKey) {
+        String desc = typeGivesDescription.get(k);
+
+        if (includeKey) {
+            desc = k + " " + desc;
+        }
+        box.addItem(desc, k);
+    }
 }

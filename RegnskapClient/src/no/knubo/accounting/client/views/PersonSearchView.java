@@ -33,8 +33,8 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
 
     private HashMap<String, JSONObject> idGivesObject;
 
-    public static PersonSearchView show(ViewCallback caller, I18NAccount messages,
-            Constants constants, Elements elements) {
+    public static PersonSearchView show(ViewCallback caller, I18NAccount messages, Constants constants,
+            Elements elements) {
         if (me == null) {
             me = new PersonSearchView(messages, constants, elements);
         }
@@ -43,8 +43,8 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
         return me;
     }
 
-    public static PersonSearchView pick(PersonPickCallback personPick, I18NAccount messages,
-            Constants constants, Elements elements) {
+    public static PersonSearchView pick(PersonPickCallback personPick, I18NAccount messages, Constants constants,
+            Elements elements) {
         PersonSearchView psv = new PersonSearchView(messages, constants, elements);
         psv.setPicker(personPick);
         psv.setVisible(true);
@@ -91,7 +91,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
 
         resultTable.getRowFormatter().setStyleName(0, "header");
         resultTable.setHTML(0, 0, elements.firstname());
-        resultTable.setHTML(0, 1, elements.lastname());
+        resultTable.setHTML(0, 1, elements.lastname() + " (" + elements.member_number() + ") ");
         resultTable.setHTML(0, 2, elements.email());
         resultTable.setHTML(0, 3, elements.address());
         resultTable.setHTML(0, 4, elements.phone());
@@ -103,8 +103,8 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
-    	if (personPick == null) {
+        Widget sender = (Widget) event.getSource();
+        if (personPick == null) {
             doEditPerson(sender);
         } else {
             pickPerson(sender);
@@ -150,13 +150,14 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject obj = array.get(i).isObject();
 
+                    String id = Util.str(obj.get("id"));
                     String firstname = Util.str(obj.get("firstname"));
                     String lastname = Util.str(obj.get("lastname"));
                     String cellphone = Util.str(obj.get("cellphone"));
 
                     int row = i + 1;
                     resultTable.setHTML(row, 0, firstname);
-                    resultTable.setHTML(row, 1, lastname);
+                    resultTable.setHTML(row, 1, lastname + " (" + id + ")");
                     resultTable.setHTML(row, 2, Util.str(obj.get("email")));
                     resultTable.setHTML(row, 3, Util.str(obj.get("address")));
                     resultTable.setHTML(row, 4, Util.str(obj.get("phone")));
@@ -170,7 +171,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
                     resultTable.getCellFormatter().setStyleName(row, 6, "center");
 
                     resultTable.setHTML(row, 7, Util.str(obj.get("gender")));
-                    
+
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);
 
@@ -182,7 +183,6 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
                         image = ImageFactory.chooseImage("personSearchView_pickImage");
                     }
                     image.addClickHandler(personSV);
-                    String id = Util.str(obj.get("id"));
                     idHolder.add(id, image);
                     idGivesObject.put(id, obj);
                     resultTable.setWidget(row, 8, image);

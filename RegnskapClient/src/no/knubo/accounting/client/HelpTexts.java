@@ -70,11 +70,11 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String day_single();
 
   /**
-   * Translated "Standardprosjekt for registrering av regnskapslinjen. N&aring;r valgt velges denne for hver ny rad.".
+   * Translated "Standardprosjekt for registrering av bilagslinjen. N&aring;r valgt velges denne for hver ny rad.".
    * 
-   * @return translated "Standardprosjekt for registrering av regnskapslinjen. N&aring;r valgt velges denne for hver ny rad."
+   * @return translated "Standardprosjekt for registrering av bilagslinjen. N&aring;r valgt velges denne for hver ny rad."
    */
-  @DefaultStringValue("Standardprosjekt for registrering av regnskapslinjen. N&aring;r valgt velges denne for hver ny rad.")
+  @DefaultStringValue("Standardprosjekt for registrering av bilagslinjen. N&aring;r valgt velges denne for hver ny rad.")
   @Key("default_project")
   String default_project();
 
