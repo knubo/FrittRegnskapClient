@@ -41,16 +41,16 @@ public class ShowMembershipView extends Composite implements ClickHandler {
     final HelpPanel helpPanel;
     private final Elements elements;
 
-    public static ShowMembershipView show(I18NAccount messages, Constants constants,
-            ViewCallback caller, HelpPanel helpPanel, Elements elements) {
+    public static ShowMembershipView show(I18NAccount messages, Constants constants, ViewCallback caller,
+            HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new ShowMembershipView(messages, constants, caller, helpPanel, elements);
         }
         return me;
     }
 
-    public ShowMembershipView(I18NAccount messages, Constants constants, ViewCallback caller,
-            HelpPanel helpPanel, Elements elements) {
+    public ShowMembershipView(I18NAccount messages, Constants constants, ViewCallback caller, HelpPanel helpPanel,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.caller = caller;
@@ -120,10 +120,10 @@ public class ShowMembershipView extends Composite implements ClickHandler {
         table.setHTML(0, 4, "");
         table.setHTML(0, 5, "");
 
-        if(action.equals("year")) {
+        if (action.equals("year")) {
             table.setText(0, 2, elements.youth());
         }
-        
+
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
@@ -141,26 +141,23 @@ public class ShowMembershipView extends Composite implements ClickHandler {
                 JSONArray members = root.get("members").isArray();
 
                 String count = String.valueOf(members.size());
-                periodeHeader.setHTML(messages.members_navig_heading(Util.str(root.get("text")),
-                        count));
+                periodeHeader.setHTML(messages.members_navig_heading(Util.str(root.get("text")), count));
 
                 for (int i = 0; i < members.size(); i++) {
                     JSONArray names = members.get(i).isArray();
 
                     int row = i + 1;
                     String id = Util.str(names.get(2));
-                    
+
                     table.setText(row, 1, Util.str(names.get(0)));
                     table.setText(row, 0, Util.str(names.get(1)));
 
-                    if(action.equals("year")) {
-                        table.setText(row, 2, Util.str(names.get(3)).equals("1") ? "X": "");
+                    if (action.equals("year")) {
+                        table.setText(row, 2, Util.str(names.get(3)).equals("1") ? "X" : "");
                         table.getCellFormatter().setStyleName(row, 2, "center");
                     }
-                    
-                    
-                    Image editUserImage = ImageFactory
-                            .editImage("ShowMembershipView.editUserImage");
+
+                    Image editUserImage = ImageFactory.editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickHandler(me);
                     table.setWidget(row, 6, editUserImage);
 
@@ -172,13 +169,12 @@ public class ShowMembershipView extends Composite implements ClickHandler {
             }
         };
 
-        AuthResponder.get(constants, messages, callback, "registers/members.php?" + posparam
-                + "&action=" + action);
+        AuthResponder.get(constants, messages, callback, "registers/members.php?" + posparam + "&action=" + action);
 
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
         if (sender == previousImage) {
             doNext(-1);
         } else if (sender == nextImage) {
@@ -189,13 +185,17 @@ public class ShowMembershipView extends Composite implements ClickHandler {
     }
 
     private void doNext(int diff) {
+        if (header.getHTML().equals(elements.member_heading_all())) {
+            initAll("semester=" + (currentSemester + diff));
+            return;
+        }
+
         if (currentSemester != 0) {
             init("semester=" + (currentSemester + diff));
             return;
         }
 
         init("year=" + (currentYear + diff));
-
     }
 
     private void doEditUser(Widget sender) {
@@ -225,8 +225,7 @@ public class ShowMembershipView extends Composite implements ClickHandler {
                 JSONArray members = root.get("members").isArray();
 
                 String count = String.valueOf(members.size());
-                periodeHeader.setHTML(messages.members_navig_heading(Util.str(root.get("text")),
-                        count));
+                periodeHeader.setHTML(messages.members_navig_heading(Util.str(root.get("text")), count));
 
                 for (int i = 0; i < members.size(); i++) {
                     JSONObject info = members.get(i).isObject();
@@ -262,8 +261,7 @@ public class ShowMembershipView extends Composite implements ClickHandler {
                     table.getCellFormatter().setStyleName(row, 4, "center");
                     table.getCellFormatter().setStyleName(row, 5, "center");
 
-                    Image editUserImage = ImageFactory
-                            .editImage("ShowMembershipView.editUserImage");
+                    Image editUserImage = ImageFactory.editImage("ShowMembershipView.editUserImage");
                     editUserImage.addClickHandler(me);
                     table.setWidget(row, 6, editUserImage);
 
@@ -275,8 +273,7 @@ public class ShowMembershipView extends Composite implements ClickHandler {
             }
         };
 
-        AuthResponder.get(constants, messages, callback, "registers/members.php?" + posparam
-                + "&action=all");
+        AuthResponder.get(constants, messages, callback, "registers/members.php?" + posparam + "&action=all");
 
     }
 }

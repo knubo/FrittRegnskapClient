@@ -23,142 +23,135 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MonthDetailsView extends Composite implements ClickHandler,
-		ChangeHandler, ServerResponse {
+public class MonthDetailsView extends Composite implements ClickHandler, ChangeHandler, ServerResponse {
 
-	private static MonthDetailsView me;
+    private static MonthDetailsView me;
 
-	private final Constants constants;
+    private final Constants constants;
 
-	private final I18NAccount messages;
+    private final I18NAccount messages;
 
-	private Image backImage;
+    private Image backImage;
 
-	private Image nextImage;
+    private Image nextImage;
 
-	private ListBox monthYearCombo;
+    private ListBox monthYearCombo;
 
-	private YearMonthComboHelper yearMonthComboHelper;
+    private YearMonthComboHelper yearMonthComboHelper;
 
-	private int currentMonth;
+    private int currentMonth;
 
-	private int currentYear;
+    private int currentYear;
 
-	private AccountDetailLinesHelper accountDetailLinesHelper;
+    private AccountDetailLinesHelper accountDetailLinesHelper;
 
-	public MonthDetailsView(Constants constants, I18NAccount messages,
-			Elements elements) {
-		this.constants = constants;
-		this.messages = messages;
+    public MonthDetailsView(Constants constants, I18NAccount messages, Elements elements) {
+        this.constants = constants;
+        this.messages = messages;
 
-		accountDetailLinesHelper = new AccountDetailLinesHelper(constants,
-				messages, elements);
+        accountDetailLinesHelper = new AccountDetailLinesHelper(constants, messages, elements);
 
-		DockPanel dp = new DockPanel();
+        DockPanel dp = new DockPanel();
 
-		backImage = ImageFactory.previousImage("MonthDetailsView.backImage");
-		backImage.addClickHandler(this);
+        backImage = ImageFactory.previousImage("MonthDetailsView.backImage");
+        backImage.addClickHandler(this);
 
-		nextImage = ImageFactory.nextImage("MonthDetailsView.nextImage");
-		nextImage.addClickHandler(this);
+        nextImage = ImageFactory.nextImage("MonthDetailsView.nextImage");
+        nextImage.addClickHandler(this);
 
-		monthYearCombo = new ListBox(false);
-		monthYearCombo.setVisibleItemCount(1);
-		monthYearCombo.addChangeHandler(this);
+        monthYearCombo = new ListBox(false);
+        monthYearCombo.setStyleName("monthyearcombo");
 
-		yearMonthComboHelper = new YearMonthComboHelper(constants, messages,
-				monthYearCombo, elements);
+        monthYearCombo.setVisibleItemCount(1);
+        monthYearCombo.addChangeHandler(this);
 
-		HorizontalPanel navPanel = new HorizontalPanel();
-		navPanel.add(backImage);
-		navPanel.add(monthYearCombo);
-		navPanel.add(nextImage);
+        yearMonthComboHelper = new YearMonthComboHelper(constants, messages, monthYearCombo, elements);
 
-		dp.add(navPanel, DockPanel.NORTH);
-		dp.add(accountDetailLinesHelper.getTable(), DockPanel.NORTH);
+        HorizontalPanel navPanel = new HorizontalPanel();
+        navPanel.add(backImage);
+        navPanel.add(monthYearCombo);
+        navPanel.add(nextImage);
 
-		initWidget(dp);
-	}
+        dp.add(navPanel, DockPanel.NORTH);
+        dp.add(accountDetailLinesHelper.getTable(), DockPanel.NORTH);
 
-	public static MonthDetailsView getInstance(Constants constants,
-			I18NAccount messages, Elements elements) {
-		if (me == null) {
-			me = new MonthDetailsView(constants, messages, elements);
-		}
-		return me;
-	}
+        initWidget(dp);
+    }
 
-	public void init() {
-		yearMonthComboHelper.fillYearMonthCombo();
+    public static MonthDetailsView getInstance(Constants constants, I18NAccount messages, Elements elements) {
+        if (me == null) {
+            me = new MonthDetailsView(constants, messages, elements);
+        }
+        return me;
+    }
 
-		accountDetailLinesHelper.init();
-		currentMonth = 0;
-		currentYear = 0;
+    public void init() {
+        yearMonthComboHelper.fillYearMonthCombo();
 
-		AuthResponder.get(constants, messages, me,
-				"accounting/showmonthpost.php");
-	}
+        accountDetailLinesHelper.init();
+        currentMonth = 0;
+        currentYear = 0;
 
-	public void serverResponse(JSONValue value) {
-		JSONArray array = value.isArray();
+        AuthResponder.get(constants, messages, me, "accounting/showmonthpost.php");
+    }
 
-		accountDetailLinesHelper.renderResult(array, null);
-		currentMonth = accountDetailLinesHelper.getMonthAfterRender();
-		currentYear = accountDetailLinesHelper.getYearAfterRender();
+    public void serverResponse(JSONValue value) {
+        JSONArray array = value.isArray();
 
-		if (currentMonth > 0 && currentYear > 0) {
-			yearMonthComboHelper.setIndex(currentYear, currentMonth);
-		}
-	}
+        accountDetailLinesHelper.renderResult(array, null);
+        currentMonth = accountDetailLinesHelper.getMonthAfterRender();
+        currentYear = accountDetailLinesHelper.getYearAfterRender();
 
-	public void onClick(ClickEvent event) {
+        if (currentMonth > 0 && currentYear > 0) {
+            yearMonthComboHelper.setIndex(currentYear, currentMonth);
+        }
+    }
 
-		Widget sender = (Widget) event.getSource();
-		if (sender == nextImage) {
-			int m = currentMonth + 1;
+    public void onClick(ClickEvent event) {
 
-			if (m > 12) {
-				int y = currentYear + 1;
-				load(y, m);
-			} else {
-				load(currentYear, m);
-			}
-		} else {
-			int m = currentMonth - 1;
+        Widget sender = (Widget) event.getSource();
+        if (sender == nextImage) {
+            int m = currentMonth + 1;
 
-			if (m < 1) {
-				int y = currentYear - 1;
-				load(y, 12);
-			} else {
-				load(currentYear, m);
-			}
-		}
+            if (m > 12) {
+                int y = currentYear + 1;
+                load(y, m);
+            } else {
+                load(currentYear, m);
+            }
+        } else {
+            int m = currentMonth - 1;
 
-	}
+            if (m < 1) {
+                int y = currentYear - 1;
+                load(y, 12);
+            } else {
+                load(currentYear, m);
+            }
+        }
 
-	public void onChange(ChangeEvent event) {
-		ListBox listBox = (ListBox) event.getSource();
+    }
 
-		String value = Util.getSelected(listBox);
-		String[] monthYear = value.split("/");
+    public void onChange(ChangeEvent event) {
+        ListBox listBox = (ListBox) event.getSource();
 
-		int year = Integer.parseInt(monthYear[0]);
-		int month = Integer.parseInt(monthYear[1]);
+        String value = Util.getSelected(listBox);
+        String[] monthYear = value.split("/");
 
-		load(year, month);
+        int year = Integer.parseInt(monthYear[0]);
+        int month = Integer.parseInt(monthYear[1]);
 
-	}
+        load(year, month);
 
-	private void load(int year, int month) {
-		accountDetailLinesHelper.init();
+    }
 
-		currentYear = 0;
-		currentMonth = 0;
+    private void load(int year, int month) {
+        accountDetailLinesHelper.init();
 
-		AuthResponder
-				.get(constants, messages, me,
-						"accounting/showmonthpost.php?year=" + year + "&month="
-								+ month);
-	}
+        currentYear = 0;
+        currentMonth = 0;
+
+        AuthResponder.get(constants, messages, me, "accounting/showmonthpost.php?year=" + year + "&month=" + month);
+    }
 
 }

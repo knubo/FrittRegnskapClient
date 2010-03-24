@@ -14,6 +14,7 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.AccountDetailLinesHelper;
+import no.knubo.accounting.client.views.modules.SumCostEarningsHelper;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -36,6 +37,7 @@ public class ReportAccountlines extends Composite implements ClickHandler {
     private final HelpPanel helpPanel;
     private FlexTable table;
     private AccountDetailLinesHelper accountDetailLinesHelper;
+    private SumCostEarningsHelper sumCostEarningsHelper;
     private TextBoxWithErrorText fromDateBox;
     private TextBoxWithErrorText toDateBox;
     private TextBoxWithErrorText projectIdBox;
@@ -47,17 +49,17 @@ public class ReportAccountlines extends Composite implements ClickHandler {
     private NamedButton clearButton;
     private TextBoxWithErrorText descBox;
     private CheckBox showOnlyPosts;
+    private CheckBox showEarningsAndSums;
 
-    public static ReportAccountlines getInstance(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel, Elements elements) {
+    public static ReportAccountlines getInstance(Constants constants, I18NAccount messages, HelpPanel helpPanel,
+            Elements elements) {
         if (reportInstance == null) {
             reportInstance = new ReportAccountlines(constants, messages, helpPanel, elements);
         }
         return reportInstance;
     }
 
-    public ReportAccountlines(Constants constants, I18NAccount messages, HelpPanel helpPanel,
-            Elements elements) {
+    public ReportAccountlines(Constants constants, I18NAccount messages, HelpPanel helpPanel, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
@@ -130,8 +132,13 @@ public class ReportAccountlines extends Composite implements ClickHandler {
         showOnlyPosts = new CheckBox();
         shp.add(showOnlyPosts);
         shp.add(new Label(elements.show_only_selcted_post()));
-
         table.setWidget(6, 1, shp);
+
+        HorizontalPanel eashp = new HorizontalPanel();
+        showEarningsAndSums = new CheckBox();
+        eashp.add(showEarningsAndSums);
+        eashp.add(new Label(elements.show_sum_and_costearnings()));
+        table.setWidget(7, 1, eashp);
 
         HorizontalPanel buttonBlock = new HorizontalPanel();
         searchButton = new NamedButton("search", elements.search());
@@ -141,19 +148,23 @@ public class ReportAccountlines extends Composite implements ClickHandler {
         clearButton.addClickHandler(this);
         buttonBlock.add(clearButton);
 
-        table.setWidget(7, 0, buttonBlock);
-        table.getFlexCellFormatter().setColSpan(7, 0, 2);
+        table.setWidget(8, 0, buttonBlock);
+        table.getFlexCellFormatter().setColSpan(8, 0, 2);
+
+        sumCostEarningsHelper = new SumCostEarningsHelper(elements, constants, messages);
 
         dp.add(table, DockPanel.NORTH);
+        dp.add(sumCostEarningsHelper.getEarningsAndCost(), DockPanel.NORTH);
+        dp.add(sumCostEarningsHelper.getOther(), DockPanel.NORTH);
         dp.add(accountDetailLinesHelper.getTable(), DockPanel.NORTH);
         initWidget(dp);
         helpPanel.resize(this);
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
 
-    	if (sender == clearButton) {
+        if (sender == clearButton) {
             doClear();
         } else if (sender == searchButton && validateSearch()) {
             doSearch();
@@ -169,8 +180,8 @@ public class ReportAccountlines extends Composite implements ClickHandler {
         mv.registry(messages.registry_invalid_key(), ProjectCache.getInstance(constants, messages),
                 new Widget[] { projectIdBox });
 
-        mv.registry(messages.registry_invalid_key(),
-                PosttypeCache.getInstance(constants, messages), new Widget[] { accountIdBox });
+        mv.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(constants, messages),
+                new Widget[] { accountIdBox });
 
         return mv.validateStatus();
     }
@@ -193,15 +204,14 @@ public class ReportAccountlines extends Composite implements ClickHandler {
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
-                accountDetailLinesHelper.renderResult(array, showOnlyPosts.getValue() ? accountId
-                        : null);
+                sumCostEarningsHelper.renderResult(array, showEarningsAndSums.getValue());
+                accountDetailLinesHelper.renderResult(array, showOnlyPosts.getValue() ? accountId : null);
                 helpPanel.resize(reportInstance);
             }
 
         };
 
-        AuthResponder
-                .post(constants, messages, callback, searchRequest, "reports/accountlines.php");
+        AuthResponder.post(constants, messages, callback, searchRequest, "reports/accountlines.php");
 
     }
 

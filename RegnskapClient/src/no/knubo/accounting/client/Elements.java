@@ -1960,6 +1960,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String ok();
 
   /**
+   * Translated "Andre konti".
+   * 
+   * @return translated "Andre konti"
+   */
+  @DefaultStringValue("Andre konti")
+  @Key("other_accounts")
+  String other_accounts();
+
+  /**
    * Translated "Betalt dag".
    * 
    * @return translated "Betalt dag"
@@ -2300,6 +2309,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Vis kun poster med valgt konto")
   @Key("show_only_selcted_post")
   String show_only_selcted_post();
+
+  /**
+   * Translated "Vis summer, kostnader og inntekter".
+   * 
+   * @return translated "Vis summer, kostnader og inntekter"
+   */
+  @DefaultStringValue("Vis summer, kostnader og inntekter")
+  @Key("show_sum_and_costearnings")
+  String show_sum_and_costearnings();
 
   /**
    * Translated "Vis summer".

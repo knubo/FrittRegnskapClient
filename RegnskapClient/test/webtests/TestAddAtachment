@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>TestRegisterAttachment</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">TestRegisterAttachment</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/RegnskapClient/no.knubo.accounting.AccountingGWT/AccountingGWT.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=td.Registrer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=td.Registrer_bilag</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>day</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description</td>
+	<td>Lagt til av Selenium</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>LineEditView.updateButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>amount</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>account</td>
+	<td>1920</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>LineEditView.addLineButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>DEBET</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//td[2]/select</td>
+	<td>label=Annen egenkapital</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>LineEditView.addLineButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>KREDIT</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//tr[2]/td[1]/select</td>
+	<td>label=DEBET</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>amount</td>
+	<td>22</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//td[2]/select</td>
+	<td>label=Andre kontorkostnader</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//tr[6]/td[2]/table/tbody/tr/td[1]/select</td>
+	<td>label=Andrew Sutton</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//tr[8]/td/select</td>
+	<td>label=Borgen, Knut Erik</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>LineEditView.addLineButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>6390-Andre kontorkostnader</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//td[2]/select</td>
+	<td>label=Annen kostnadsgodtgj?relse</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>LineEditView.addLineButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>5500-Annen kostnadsgodtgj</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>default_project</td>
+	<td>label=Winter Jump</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>amount</td>
+	<td>42</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//td[2]/select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//td[2]/select</td>
+	<td>label=Avstemming tap p? fordringer</td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//TD[text()='Winter Jump']</td>
+	<td><br /></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>LineEditView.addLineButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//TD[text()='Winter Jump']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//tr[6]/td[2]/table/tbody/tr/td[1]/select</td>
+	<td>label=Swing Fever 2007</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//td[2]/select</td>
+	<td>label=Treningsavgift (kurs)</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>LineEditView.addLineButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>3925-Treningsavgift (kurs)</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ShowMembershipView.previousImage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ShowMembershipView.nextImage</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

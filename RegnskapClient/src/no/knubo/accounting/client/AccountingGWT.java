@@ -180,12 +180,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     private void addMenuItem(MenuBar menu, String title, WidgetIds widgetId) {
-        menu.addItem(title, true, new Commando(this, widgetId, title));
+        MenuItem item = menu.addItem(title, true, new Commando(this, widgetId, title));
+        item.addStyleName(title.replaceAll(" ", "_"));
     }
 
     private MenuBar addTopMenu(MenuBar topMenu, String header) {
         MenuBar menu = new MenuBar(true);
-        topMenu.addItem(new MenuItem(header, menu));
+        MenuItem item = new MenuItem(header, menu);
+        item.addStyleName(header.replaceAll(" ", "_"));
+        topMenu.addItem(item);
         return menu;
     }
 
