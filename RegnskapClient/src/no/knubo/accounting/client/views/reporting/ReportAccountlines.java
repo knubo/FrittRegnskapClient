@@ -130,12 +130,14 @@ public class ReportAccountlines extends Composite implements ClickHandler {
 
         HorizontalPanel shp = new HorizontalPanel();
         showOnlyPosts = new CheckBox();
+        showOnlyPosts.addStyleName("showOnlyPosts");
         shp.add(showOnlyPosts);
         shp.add(new Label(elements.show_only_selcted_post()));
         table.setWidget(6, 1, shp);
 
         HorizontalPanel eashp = new HorizontalPanel();
         showEarningsAndSums = new CheckBox();
+        showEarningsAndSums.addStyleName("showEarningsAndSums");
         eashp.add(showEarningsAndSums);
         eashp.add(new Label(elements.show_sum_and_costearnings()));
         table.setWidget(7, 1, eashp);

@@ -33,7 +33,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>gwt-uid-53</td>
+	<td>css=span.showEarningsAndSums:first-child input</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,8 +43,13 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
+	<td>8040 Renteinntekt</td>
 	<td></td>
-	<td>Renteinntekt</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Resultat</td>
+	<td></td>
 </tr>
 
 </tbody></table>
