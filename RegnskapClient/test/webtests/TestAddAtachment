@@ -73,8 +73,8 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td></td>
 	<td>KREDIT</td>
+	<td></td>
 </tr>
 <tr>
 	<td>select</td>
@@ -108,8 +108,8 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td></td>
 	<td>6390-Andre kontorkostnader</td>
+	<td></td>
 </tr>
 <tr>
 	<td>select</td>
@@ -123,8 +123,8 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td></td>
 	<td>5500-Annen kostnadsgodtgj</td>
+	<td></td>
 </tr>
 <tr>
 	<td>select</td>
@@ -149,7 +149,7 @@
 <tr>
 	<td>assertElementNotPresent</td>
 	<td>//TD[text()='Winter Jump']</td>
-	<td><br /></td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -178,8 +178,8 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td></td>
 	<td>3925-Treningsavgift (kurs)</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
