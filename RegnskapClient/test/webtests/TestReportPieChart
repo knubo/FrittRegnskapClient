@@ -31,16 +31,6 @@
 	<td>//iframe</td>
 	<td></td>
 </tr>
-<tr>
-	<td>selectFrame</td>
-	<td>//iframe</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForElementPresent</td>
-	<td>//ellipse</td>
-	<td></td>
-</tr>
 
 </tbody></table>
 </body>

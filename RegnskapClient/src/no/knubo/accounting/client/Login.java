@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -18,6 +19,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -38,6 +40,8 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
     private TextBox userBox;
 
     private Elements elements;
+
+    private ListBox dbbox;
 
     /**
      * This is the entry point method.
@@ -71,6 +75,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
             }
 
         });
+        dbbox = new ListBox();
         infoLabel = new HTML();
 
         table.setText(0, 0, elements.login());
@@ -79,12 +84,33 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         table.setWidget(1, 1, userBox);
         table.setText(2, 0, elements.password());
         table.setWidget(2, 1, passBox);
-        table.setWidget(3, 1, loginButton);
-        table.setWidget(4, 1, infoLabel);
+        table.setText(3, 0, elements.select_database());
+        table.setWidget(3,1, dbbox);
+        table.setWidget(4, 1, loginButton);
+        table.setWidget(5, 1, infoLabel);
         table.getFlexCellFormatter().setColSpan(4, 1, 2);
         RootPanel.get().add(dp);
         Window.setTitle(elements.login());
         userBox.setFocus(true);
+        
+        fillDatabases();
+    }
+
+    private void fillDatabases() {
+        
+        ServerResponse resp = new ServerResponse() {
+            
+            public void serverResponse(JSONValue responseObj) {
+                JSONArray array = responseObj.isArray();
+                
+                for(int i=0;i < array.size();i++) {
+                    JSONObject object = array.get(i).isObject();
+                    
+                    dbbox.addItem(Util.str(object.get("description")), Util.str(object.get("id")));
+                }
+            }
+        };
+        AuthResponder.get(constants, messages, resp , "../../RegnskapServer/services/authenticate.php?action=installations");
     }
 
     public void onClick(ClickEvent event) {
@@ -96,7 +122,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         String password = this.passBox.getText();
         
         AuthResponder.get(constants, messages, this, "../../RegnskapServer/services/authenticate.php?user=" + user
-                + "&password=" + password);
+                + "&password=" + password+"&dbid="+Util.getSelected(dbbox));
     }
 
     public void serverResponse(JSONValue resonseObj) {

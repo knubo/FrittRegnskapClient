@@ -2167,6 +2167,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String select_budget_year();
 
   /**
+   * Translated "Velg database".
+   * 
+   * @return translated "Velg database"
+   */
+  @DefaultStringValue("Velg database")
+  @Key("select_database")
+  String select_database();
+
+  /**
    * Translated "Semester".
    * 
    * @return translated "Semester"
