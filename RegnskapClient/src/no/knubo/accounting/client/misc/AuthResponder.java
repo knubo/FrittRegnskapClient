@@ -23,7 +23,8 @@ public class AuthResponder implements RequestCallback {
     private final ServerResponse callback;
     private final I18NAccount messages;
     private final Logger logger;
-    
+    private static boolean noDB;
+
     private AuthResponder(Constants constants, I18NAccount messages, ServerResponse callback) {
         this.constants = constants;
         this.messages = messages;
@@ -43,7 +44,6 @@ public class AuthResponder implements RequestCallback {
     public void onResponseReceived(Request request, Response response) {
         AccountingGWT.setDoneLoading();
         if (response.getStatusCode() == 510) {
-//            Window.alert(messages.not_logged_in());
             Util.forward(constants.loginURL());
         } else if (response.getStatusCode() == 511) {
             Window.alert(messages.no_access());
@@ -65,6 +65,12 @@ public class AuthResponder implements RequestCallback {
             } else {
                 Window.alert("Validation error:" + fields);
             }
+        } else if (response.getStatusCode() == 514) {
+            String data = response.getText();
+
+            new MissingDataPopup(data).center();
+        } else if (response.getStatusCode() == 515) {
+            handleNODB();
         } else {
             String data = response.getText();
             if (data == null || data.length() == 0) {
@@ -78,13 +84,13 @@ public class AuthResponder implements RequestCallback {
                 srs.serverResponse(data);
                 return;
             }
-            
+
             JSONValue jsonValue = null;
 
             try {
                 jsonValue = JSONParser.parse(data);
             } catch (Exception e) {
-            	Window.alert(e.getMessage());
+                Window.alert(e.getMessage());
                 /* We catch this below in bad return data */
             }
 
@@ -92,21 +98,27 @@ public class AuthResponder implements RequestCallback {
                 if (callback instanceof ServerResponseWithErrorFeedback) {
                     ((ServerResponseWithErrorFeedback) callback).onError();
                 } else {
-                    //logger.error("baddata", data);
-                   // Window.alert("Bad return data:" + data);
+                    // logger.error("baddata", data);
+                    // Window.alert("Bad return data:" + data);
                 }
             } else {
                 try {
                     callback.serverResponse(jsonValue);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     Util.log(e.toString());
                 }
             }
         }
     }
 
-    public static void get(Constants constants, I18NAccount messages, ServerResponse callback,
-            String url) {
+    private void handleNODB() {
+        if(!noDB) {
+            noDB = true;
+            Window.alert(messages.no_db_connection());
+        }
+    }
+
+    public static void get(Constants constants, I18NAccount messages, ServerResponse callback, String url) {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, constants.baseurl() + url);
 
         try {
@@ -123,8 +135,7 @@ public class AuthResponder implements RequestCallback {
 
         try {
             builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-            builder.sendRequest(parameters.toString(), new AuthResponder(constants, messages,
-                    callback));
+            builder.sendRequest(parameters.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
             Window.alert("Failed to send the request: " + e.getMessage());
         }

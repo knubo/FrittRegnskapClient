@@ -250,6 +250,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String no_access();
 
   /**
+   * Translated "Klarte ikke koble til databasen. Prøv å oppfriske nettleseren og eventuelt prøv igjen senere. Dette kan være en midlertidlig problem hos hostingtjenesten. Om feilen vedvarer, meld inn feil. ".
+   * 
+   * @return translated "Klarte ikke koble til databasen. Prøv å oppfriske nettleseren og eventuelt prøv igjen senere. Dette kan være en midlertidlig problem hos hostingtjenesten. Om feilen vedvarer, meld inn feil. "
+   */
+  @DefaultMessage("Klarte ikke koble til databasen. Prøv å oppfriske nettleseren og eventuelt prøv igjen senere. Dette kan være en midlertidlig problem hos hostingtjenesten. Om feilen vedvarer, meld inn feil. ")
+  @Key("no_db_connection")
+  String no_db_connection();
+
+  /**
    * Translated "Søket ga Ingen treff".
    * 
    * @return translated "Søket ga Ingen treff"

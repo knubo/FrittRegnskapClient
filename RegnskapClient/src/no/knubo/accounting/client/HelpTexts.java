@@ -97,6 +97,51 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String hidden_person();
 
   /**
+   * Translated "<p>Det mangler pris for kursmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>".
+   * 
+   * @return translated "<p>Det mangler pris for kursmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>"
+   */
+  @DefaultStringValue("<p>Det mangler pris for kursmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>")
+  @Key("missing_course_price")
+  String missing_course_price();
+
+  /**
+   * Translated "<p>Det mangler pris for junior-&aring;rsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>".
+   * 
+   * @return translated "<p>Det mangler pris for junior-&aring;rsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>"
+   */
+  @DefaultStringValue("<p>Det mangler pris for junior-&aring;rsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>")
+  @Key("missing_member_price")
+  String missing_member_price();
+
+  /**
+   * Translated "<p>Det mangler pris for &aring;rsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>".
+   * 
+   * @return translated "<p>Det mangler pris for &aring;rsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>"
+   */
+  @DefaultStringValue("<p>Det mangler pris for &aring;rsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>")
+  @Key("missing_member_youth_price")
+  String missing_member_youth_price();
+
+  /**
+   * Translated "<p>Det mangler pris for treningsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>".
+   * 
+   * @return translated "<p>Det mangler pris for treningsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>"
+   */
+  @DefaultStringValue("<p>Det mangler pris for treningsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>")
+  @Key("missing_train_price")
+  String missing_train_price();
+
+  /**
+   * Translated "<p>Det mangler pris for ungdomsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>".
+   * 
+   * @return translated "<p>Det mangler pris for ungdomsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>"
+   */
+  @DefaultStringValue("<p>Det mangler pris for ungdomsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>")
+  @Key("missing_youth_price")
+  String missing_youth_price();
+
+  /**
    * Translated "I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r.".
    * 
    * @return translated "I feltene under kan bel&oslash;pet inngis ved &aring; gi inn antall av gitt val&oslash;r."

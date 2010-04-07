@@ -1735,6 +1735,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String missing_address();
 
   /**
+   * Translated "Feil: Data mangler".
+   * 
+   * @return translated "Feil: Data mangler"
+   */
+  @DefaultStringValue("Feil: Data mangler")
+  @Key("missing_data")
+  String missing_data();
+
+  /**
    * Translated "Valør:".
    * 
    * @return translated "Valør:"

@@ -41,8 +41,6 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
 
     private Elements elements;
 
-    private ListBox dbbox;
-
     /**
      * This is the entry point method.
      */
@@ -75,7 +73,6 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
             }
 
         });
-        dbbox = new ListBox();
         infoLabel = new HTML();
 
         table.setText(0, 0, elements.login());
@@ -84,8 +81,6 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         table.setWidget(1, 1, userBox);
         table.setText(2, 0, elements.password());
         table.setWidget(2, 1, passBox);
-        table.setText(3, 0, elements.select_database());
-        table.setWidget(3,1, dbbox);
         table.setWidget(4, 1, loginButton);
         table.setWidget(5, 1, infoLabel);
         table.getFlexCellFormatter().setColSpan(4, 1, 2);
@@ -93,24 +88,6 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         Window.setTitle(elements.login());
         userBox.setFocus(true);
         
-        fillDatabases();
-    }
-
-    private void fillDatabases() {
-        
-        ServerResponse resp = new ServerResponse() {
-            
-            public void serverResponse(JSONValue responseObj) {
-                JSONArray array = responseObj.isArray();
-                
-                for(int i=0;i < array.size();i++) {
-                    JSONObject object = array.get(i).isObject();
-                    
-                    dbbox.addItem(Util.str(object.get("description")), Util.str(object.get("id")));
-                }
-            }
-        };
-        AuthResponder.get(constants, messages, resp , "../../RegnskapServer/services/authenticate.php?action=installations");
     }
 
     public void onClick(ClickEvent event) {
@@ -122,7 +99,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         String password = this.passBox.getText();
         
         AuthResponder.get(constants, messages, this, "../../RegnskapServer/services/authenticate.php?user=" + user
-                + "&password=" + password+"&dbid="+Util.getSelected(dbbox));
+                + "&password=" + password);
     }
 
     public void serverResponse(JSONValue resonseObj) {
