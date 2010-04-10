@@ -24,6 +24,7 @@ import no.knubo.accounting.client.views.PersonSearchView;
 import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
 import no.knubo.accounting.client.views.ShowMembershipView;
+import no.knubo.accounting.client.views.SystemInfoView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.YearEndView;
@@ -170,6 +171,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(settingsMenu, elements.menuitem_values(), WidgetIds.SETTINGS);
 
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
+        addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
         addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
         addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
@@ -363,6 +365,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case ABOUT:
                 widget = AboutView.getInstance(constants, messages);
                 title = title + " - " + AboutView.CLIENT_VERSION;
+                break;
+            case SERVERINFO:
+                widget = SystemInfoView.getInstance(constants, messages);
                 break;
             case LOGGING:
                 widget = LogView.show(messages, constants, elements);

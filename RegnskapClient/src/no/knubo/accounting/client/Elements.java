@@ -1627,6 +1627,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_semesters();
 
   /**
+   * Translated "Serverinfo".
+   * 
+   * @return translated "Serverinfo"
+   */
+  @DefaultStringValue("Serverinfo")
+  @Key("menuitem_serverinfo")
+  String menuitem_serverinfo();
+
+  /**
    * Translated "Vis alle medlemskap".
    * 
    * @return translated "Vis alle medlemskap"

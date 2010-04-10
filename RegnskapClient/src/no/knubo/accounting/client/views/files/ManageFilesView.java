@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -41,8 +42,7 @@ public class ManageFilesView extends Composite implements ClickHandler {
     private FlexTable table;
     private IdHolder<String, Image> idHolder;
 
-    public static ManageFilesView getInstance(Constants constants, I18NAccount messages,
-            Elements elements) {
+    public static ManageFilesView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (instance == null) {
             instance = new ManageFilesView(messages, constants, elements);
         }
@@ -61,14 +61,18 @@ public class ManageFilesView extends Composite implements ClickHandler {
                 JSONArray files = value.isArray();
 
                 for (int i = 0; i < files.size(); i++) {
-                    String fileName = Util.str(files.get(i));
-                    table.setText(i + 1, 0, fileName);
+                    JSONObject fileinfo = files.get(i).isObject();
+                    String fileName = Util.str(fileinfo.get("name"));
+                    table.setWidget(i + 1, 0, createLinkToOpenFile(fileName));
                     Image deleteImage = ImageFactory.deleteImage("delete_file");
 
                     deleteImage.addClickHandler(instance);
 
+                    table.setText(i + 1, 1, Util.str(fileinfo.get("size")));
+                    table.getCellFormatter().setStyleName(i + 1, 1, "desc right");
+
                     idHolder.add(fileName, deleteImage);
-                    table.setWidget(i + 1, 1, deleteImage);
+                    table.setWidget(i + 1, 2, deleteImage);
                 }
             }
 
@@ -90,8 +94,10 @@ public class ManageFilesView extends Composite implements ClickHandler {
         table = new FlexTable();
         table.setStyleName("tableborder");
         table.setText(0, 0, elements.files());
-        table.getFlexCellFormatter().setColSpan(0, 0, 2);
+        table.getFlexCellFormatter().setColSpan(0, 0, 3);
         table.getRowFormatter().setStyleName(0, "header");
+        table.getColumnFormatter().setStyleName(1, "leftborder");
+        table.getColumnFormatter().setStyleName(2, "leftborder");
 
         dp.add(table, DockPanel.NORTH);
 
@@ -119,8 +125,8 @@ public class ManageFilesView extends Composite implements ClickHandler {
         panel.add(upload);
 
         panel.add(new Button("Last opp fil", new ClickHandler() {
-			
-			public void onClick(ClickEvent event) {
+
+            public void onClick(ClickEvent event) {
                 form.submit();
             }
         }));
@@ -130,17 +136,17 @@ public class ManageFilesView extends Composite implements ClickHandler {
         panel.add(statusLabel);
 
         form.addSubmitHandler(new SubmitHandler() {
-			public void onSubmit(SubmitEvent event) {
+            public void onSubmit(SubmitEvent event) {
                 if (tb.getText().length() == 0) {
                     Window.alert("The text box must not be empty");
                     event.cancel();
                 }
             }
         });
-        
+
         form.addSubmitCompleteHandler(new SubmitCompleteHandler() {
-        	
-			public void onSubmitComplete(SubmitCompleteEvent event) {
+
+            public void onSubmitComplete(SubmitCompleteEvent event) {
                 String result = event.getResults();
 
                 if (result == null) {
@@ -170,7 +176,7 @@ public class ManageFilesView extends Composite implements ClickHandler {
                     Util.timedMessage(statusLabel, "", 15);
                 }
             }
-            
+
         });
 
         dp.add(form, DockPanel.NORTH);
@@ -179,7 +185,7 @@ public class ManageFilesView extends Composite implements ClickHandler {
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
         String fileName = idHolder.findId(sender);
 
         boolean result = Window.confirm(messages.delete_file_question(fileName));
@@ -200,9 +206,13 @@ public class ManageFilesView extends Composite implements ClickHandler {
             }
         };
 
-        AuthResponder.get(constants, messages, callback, "files/files.php?action=delete&file="
-                + fileName);
+        AuthResponder.get(constants, messages, callback, "files/files.php?action=delete&file=" + fileName);
 
+    }
+
+    private HTML createLinkToOpenFile(String fileName) {
+        return new HTML("<a href=\"" + constants.baseurl() + "files/files.php?action=get&file=" + fileName + "\" target=\"_blank\">"
+                + fileName + "</a>");
     }
 
 }
