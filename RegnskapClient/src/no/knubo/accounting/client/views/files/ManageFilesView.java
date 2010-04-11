@@ -41,6 +41,7 @@ public class ManageFilesView extends Composite implements ClickHandler {
     private Label statusLabel;
     private FlexTable table;
     private IdHolder<String, Image> idHolder;
+    private final Elements elements;
 
     public static ManageFilesView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (instance == null) {
@@ -58,7 +59,9 @@ public class ManageFilesView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
             public void serverResponse(JSONValue value) {
-                JSONArray files = value.isArray();
+                JSONObject data = value.isObject();
+
+                JSONArray files = data.get("files").isArray();
 
                 for (int i = 0; i < files.size(); i++) {
                     JSONObject fileinfo = files.get(i).isObject();
@@ -74,6 +77,15 @@ public class ManageFilesView extends Composite implements ClickHandler {
                     idHolder.add(fileName, deleteImage);
                     table.setWidget(i + 1, 2, deleteImage);
                 }
+
+                int row = table.getRowCount();
+                String title = elements.total();
+                if (Util.str(data.get("used")).length() > 1) {
+                    title += " (" + Util.str(data.get("used")) + "% / " + Util.str(data.get("quota")) + ")";
+                }
+                table.setText(row, 0, title);
+                table.setText(row, 1, Util.str(data.get("totalsize")));
+                table.getCellFormatter().setStyleName(row, 1, "desc right");
             }
 
         };
@@ -82,10 +94,11 @@ public class ManageFilesView extends Composite implements ClickHandler {
 
     }
 
-    private ManageFilesView(final I18NAccount messages, Constants constants, Elements elements) {
+    private ManageFilesView(final I18NAccount messages, Constants constants, final Elements elements) {
 
         this.messages = messages;
         this.constants = constants;
+        this.elements = elements;
 
         idHolder = new IdHolder<String, Image>();
 
@@ -111,7 +124,9 @@ public class ManageFilesView extends Composite implements ClickHandler {
 
         VerticalPanel panel = new VerticalPanel();
         form.setWidget(panel);
-
+        
+        
+        
         final Label tb = new Label("Filnavn");
         panel.add(tb);
 
@@ -167,8 +182,13 @@ public class ManageFilesView extends Composite implements ClickHandler {
                     return;
                 }
 
-                if ("1".equals(Util.str(jsonObj.get("status")))) {
+                String status = Util.str(jsonObj.get("status"));
+                if ("1".equals(status)) {
                     statusLabel.setText(messages.save_ok());
+                    Util.timedMessage(statusLabel, "", 15);
+                    init();
+                } else if("-1".equals(status)){
+                    statusLabel.setText(messages.quota_exceeded());
                     Util.timedMessage(statusLabel, "", 15);
                     init();
                 } else {
@@ -211,8 +231,8 @@ public class ManageFilesView extends Composite implements ClickHandler {
     }
 
     private HTML createLinkToOpenFile(String fileName) {
-        return new HTML("<a href=\"" + constants.baseurl() + "files/files.php?action=get&file=" + fileName + "\" target=\"_blank\">"
-                + fileName + "</a>");
+        return new HTML("<a href=\"" + constants.baseurl() + "files/files.php?action=get&file=" + fileName
+                + "\" target=\"_blank\">" + fileName + "</a>");
     }
 
 }

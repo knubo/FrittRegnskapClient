@@ -295,6 +295,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String not_logged_in();
 
   /**
+   * Translated "Opplastning mislyktes i og med at den filen du opplastet gikk over din disk kvote.".
+   * 
+   * @return translated "Opplastning mislyktes i og med at den filen du opplastet gikk over din disk kvote."
+   */
+  @DefaultMessage("Opplastning mislyktes i og med at den filen du opplastet gikk over din disk kvote.")
+  @Key("quota_exceeded")
+  String quota_exceeded();
+
+  /**
    * Translated "Forekomst finnes ikke".
    * 
    * @return translated "Forekomst finnes ikke"

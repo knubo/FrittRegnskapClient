@@ -2527,6 +2527,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String to_date();
 
   /**
+   * Translated "Total".
+   * 
+   * @return translated "Total"
+   */
+  @DefaultStringValue("Total")
+  @Key("total")
+  String total();
+
+  /**
    * Translated "Treningsmedlemsskap".
    * 
    * @return translated "Treningsmedlemsskap"
