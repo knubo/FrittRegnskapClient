@@ -727,6 +727,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String earnings_other();
 
   /**
+   * Translated "Rediger massebrev".
+   * 
+   * @return translated "Rediger massebrev"
+   */
+  @DefaultStringValue("Rediger massebrev")
+  @Key("edit_massleter")
+  String edit_massleter();
+
+  /**
    * Translated "Opprettet/Endret av".
    * 
    * @return translated "Opprettet/Endret av"
@@ -1904,6 +1913,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Nytt standardbilag")
   @Key("new_happening")
   String new_happening();
+
+  /**
+   * Translated "Nytt massebrev".
+   * 
+   * @return translated "Nytt massebrev"
+   */
+  @DefaultStringValue("Nytt massebrev")
+  @Key("new_massletter")
+  String new_massletter();
+
+  /**
+   * Translated "Navn for nytt massebrev".
+   * 
+   * @return translated "Navn for nytt massebrev"
+   */
+  @DefaultStringValue("Navn for nytt massebrev")
+  @Key("new_massletter_name")
+  String new_massletter_name();
 
   /**
    * Translated "Nytt semester".
