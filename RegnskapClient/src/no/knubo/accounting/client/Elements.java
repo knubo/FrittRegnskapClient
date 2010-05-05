@@ -736,6 +736,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String edit_massleter();
 
   /**
+   * Translated "Rediger tekst".
+   * 
+   * @return translated "Rediger tekst"
+   */
+  @DefaultStringValue("Rediger tekst")
+  @Key("edit_text")
+  String edit_text();
+
+  /**
    * Translated "Opprettet/Endret av".
    * 
    * @return translated "Opprettet/Endret av"
@@ -752,6 +761,69 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Epost")
   @Key("email")
   String email();
+
+  /**
+   * Translated "Ingen".
+   * 
+   * @return translated "Ingen"
+   */
+  @DefaultStringValue("Ingen")
+  @Key("email_choice_none")
+  String email_choice_none();
+
+  /**
+   * Translated "Bunntekst".
+   * 
+   * @return translated "Bunntekst"
+   */
+  @DefaultStringValue("Bunntekst")
+  @Key("email_footer")
+  String email_footer();
+
+  /**
+   * Translated "Format".
+   * 
+   * @return translated "Format"
+   */
+  @DefaultStringValue("Format")
+  @Key("email_format")
+  String email_format();
+
+  /**
+   * Translated "HTML (Rik html editor)".
+   * 
+   * @return translated "HTML (Rik html editor)"
+   */
+  @DefaultStringValue("HTML (Rik html editor)")
+  @Key("email_format_html")
+  String email_format_html();
+
+  /**
+   * Translated "Ren tekst".
+   * 
+   * @return translated "Ren tekst"
+   */
+  @DefaultStringValue("Ren tekst")
+  @Key("email_format_plain")
+  String email_format_plain();
+
+  /**
+   * Translated "HTML (wiki formatert)".
+   * 
+   * @return translated "HTML (wiki formatert)"
+   */
+  @DefaultStringValue("HTML (wiki formatert)")
+  @Key("email_format_wiki")
+  String email_format_wiki();
+
+  /**
+   * Translated "Topptekst".
+   * 
+   * @return translated "Topptekst"
+   */
+  @DefaultStringValue("Topptekst")
+  @Key("email_header")
+  String email_header();
 
   /**
    * Translated "Ansatt".
@@ -1429,6 +1501,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_edit_trust_actions();
 
   /**
+   * Translated "E-post".
+   * 
+   * @return translated "E-post"
+   */
+  @DefaultStringValue("E-post")
+  @Key("menuitem_email_settings")
+  String menuitem_email_settings();
+
+  /**
    * Translated "Avslutt måned".
    * 
    * @return translated "Avslutt måned"
@@ -1904,6 +1985,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Ny konto")
   @Key("new_account")
   String new_account();
+
+  /**
+   * Translated "Ny bunntekst".
+   * 
+   * @return translated "Ny bunntekst"
+   */
+  @DefaultStringValue("Ny bunntekst")
+  @Key("new_email_footer")
+  String new_email_footer();
+
+  /**
+   * Translated "Ny topptekst".
+   * 
+   * @return translated "Ny topptekst"
+   */
+  @DefaultStringValue("Ny topptekst")
+  @Key("new_email_header")
+  String new_email_header();
 
   /**
    * Translated "Nytt standardbilag".
@@ -2435,6 +2534,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Sum inntekter")
   @Key("sum_earnings")
   String sum_earnings();
+
+  /**
+   * Translated "Tekst".
+   * 
+   * @return translated "Tekst"
+   */
+  @DefaultStringValue("Tekst")
+  @Key("text")
+  String text();
 
   /**
    * Translated "Sikkerhetskopi av database".

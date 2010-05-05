@@ -32,8 +32,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -56,6 +58,11 @@ public class ReportMail extends Composite implements ClickHandler {
     private Logger logger;
     private TextBox yearBox;
     private NamedButton reSendButton;
+    private ListBoxWithErrorText headerSelect;
+    private ListBoxWithErrorText footerSelect;
+    private RadioButton radioFormatPlain;
+    private RadioButton radioFormatWiki;
+    private RadioButton radioFormatHTML;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
@@ -74,53 +81,37 @@ public class ReportMail extends Composite implements ClickHandler {
         mainTable.setStyleName("edittable");
         mainTable.setText(0, 0, elements.mail_receivers());
         mainTable.setText(1, 0, elements.mail_title());
-        mainTable.setText(2, 0, elements.mail_body());
-        mainTable.setText(3, 0, elements.files());
+        mainTable.setText(2, 0, elements.email_format());
+        mainTable.setText(3, 0, elements.mail_body());
+        mainTable.setText(4, 0, elements.email_header());
+        mainTable.setText(5, 0, elements.email_footer());
+        mainTable.setText(6, 0, elements.files());
 
-        HorizontalPanel hp = new HorizontalPanel();
-        yearBox = new TextBox();
-        yearBox.setText("" + Util.currentYear());
-
-        reciversListBox = new ListBoxWithErrorText("mail_receivers");
-        reciversListBox.getListbox().addItem("", "");
-        reciversListBox.getListbox().addItem(elements.mail_query_members(), "members");
-        reciversListBox.getListbox().addItem(elements.mail_query_newsletter(), "newsletter");
-        reciversListBox.getListbox().addItem(elements.mail_test(), "test");
-        reciversListBox.getListbox().addItem(elements.mail_simulate(), "simulate");
-
-        hp.add(reciversListBox);
-        hp.add(new Label(elements.year()));
-        hp.add(yearBox);
-
-        mainTable.setWidget(0, 1, hp);
+        mainTable.setWidget(0, 1, createReceiverRow(elements));
 
         titleBox = new TextBoxWithErrorText("mail_title");
         titleBox.setMaxLength(200);
         titleBox.setVisibleLength(80);
         mainTable.setWidget(1, 1, titleBox);
 
+        addEmailFormat(mainTable, 2);
+        
         bodyBox = new NamedTextArea("mail_body");
         bodyBox.setCharacterWidth(90);
         bodyBox.setVisibleLines(30);
-        mainTable.setWidget(2, 1, bodyBox);
+        mainTable.setWidget(3, 1, bodyBox);
 
         attachButton = new NamedButton("attach_files", elements.attach_files());
         attachButton.addClickHandler(this);
 
+        addHeaderFooterSelects(mainTable, 4);
+        
         attachedFiles = new FlexTable();
         attachedFiles.setStyleName("insidetable");
-        mainTable.setWidget(3, 1, attachedFiles);
+        mainTable.setWidget(6, 1, attachedFiles);
+        mainTable.setWidget(7, 1, attachButton);
 
-        mainTable.setWidget(4, 1, attachButton);
-
-        sendButton = new NamedButton("mail_send", elements.mail_send());
-        sendButton.addClickHandler(this);
-        mainTable.setWidget(5, 0, sendButton);
-
-        reSendButton = new NamedButton("mail_send_again", elements.mail_send_again());
-        reSendButton.addClickHandler(this);
-        reSendButton.setEnabled(false);
-        mainTable.setWidget(5, 1, reSendButton);
+        addSendButtons(mainTable, 8);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -133,6 +124,64 @@ public class ReportMail extends Composite implements ClickHandler {
         dp.add(mainTable, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
         initWidget(dp);
+    }
+
+    private void addEmailFormat(FlexTable mainTable, int row) {
+        radioFormatPlain = new RadioButton("format", elements.email_format_plain());
+        radioFormatWiki = new RadioButton("format", elements.email_format_wiki());
+        radioFormatHTML = new RadioButton("format", elements.email_format_html());
+        
+        radioFormatPlain.setValue(true);
+        
+        FlowPanel fp = new FlowPanel();
+        fp.add(radioFormatPlain);
+        fp.add(radioFormatWiki);
+        fp.add(radioFormatHTML);
+        
+        mainTable.setWidget(row, 1, fp);
+    }
+
+    private void addHeaderFooterSelects(FlexTable mainTable, int row) {
+        headerSelect = new ListBoxWithErrorText("header");
+        footerSelect = new ListBoxWithErrorText("footer");
+        
+        mainTable.setWidget(row, 1, headerSelect);
+        mainTable.setWidget(row+1, 1, footerSelect);
+        
+    }
+
+    private void addSendButtons(FlexTable mainTable, int row) {
+        sendButton = new NamedButton("mail_send", elements.mail_send());
+        sendButton.addClickHandler(this);
+
+        reSendButton = new NamedButton("mail_send_again", elements.mail_send_again());
+        reSendButton.addClickHandler(this);
+        reSendButton.setEnabled(false);
+
+        FlowPanel fp = new FlowPanel();
+
+        fp.add(sendButton);
+        fp.add(reSendButton);
+        
+        mainTable.setWidget(row, 1, fp);
+    }
+
+    private HorizontalPanel createReceiverRow(Elements elements) {
+        HorizontalPanel hpReceivers = new HorizontalPanel();
+        yearBox = new TextBox();
+        yearBox.setText("" + Util.currentYear());
+
+        reciversListBox = new ListBoxWithErrorText("mail_receivers");
+        reciversListBox.getListbox().addItem("", "");
+        reciversListBox.getListbox().addItem(elements.mail_query_members(), "members");
+        reciversListBox.getListbox().addItem(elements.mail_query_newsletter(), "newsletter");
+        reciversListBox.getListbox().addItem(elements.mail_test(), "test");
+        reciversListBox.getListbox().addItem(elements.mail_simulate(), "simulate");
+
+        hpReceivers.add(reciversListBox);
+        hpReceivers.add(new Label(elements.year()));
+        hpReceivers.add(yearBox);
+        return hpReceivers;
     }
 
     protected void setAttachedFiles(List<String> fileNames) {

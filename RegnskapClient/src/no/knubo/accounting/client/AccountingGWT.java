@@ -33,6 +33,7 @@ import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
 import no.knubo.accounting.client.views.registers.AccountTrackEditView;
+import no.knubo.accounting.client.views.registers.EmailSettingsView;
 import no.knubo.accounting.client.views.registers.MembershipPriceEditView;
 import no.knubo.accounting.client.views.registers.PersonEditView;
 import no.knubo.accounting.client.views.registers.PostTypeEditView;
@@ -160,6 +161,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
 
         addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
+        addMenuItem(settingsMenu, elements.menuitem_email_settings(), WidgetIds.EDIT_EMAIL_CONTENT);
         addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
         addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(), WidgetIds.EDIT_TRUST_ACTIONS);
         addMenuItem(settingsMenu, elements.menuitem_accounts(), WidgetIds.EDIT_ACCOUNTS);
@@ -247,6 +249,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants, elements);
                 ((StandardvaluesView) widget).init();
+                break;
+            case EDIT_EMAIL_CONTENT:
+                widget = EmailSettingsView.show(messages, constants, elements);
+                ((EmailSettingsView)widget).init();
                 break;
             case EDIT_HAPPENING:
                 widget = HappeningsView.show(messages, constants, elements);
