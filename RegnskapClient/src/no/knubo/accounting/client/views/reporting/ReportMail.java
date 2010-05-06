@@ -95,7 +95,7 @@ public class ReportMail extends Composite implements ClickHandler {
         mainTable.setWidget(1, 1, titleBox);
 
         addEmailFormat(mainTable, 2);
-        
+
         bodyBox = new NamedTextArea("mail_body");
         bodyBox.setCharacterWidth(90);
         bodyBox.setVisibleLines(30);
@@ -105,7 +105,7 @@ public class ReportMail extends Composite implements ClickHandler {
         attachButton.addClickHandler(this);
 
         addHeaderFooterSelects(mainTable, 4);
-        
+
         attachedFiles = new FlexTable();
         attachedFiles.setStyleName("insidetable");
         mainTable.setWidget(6, 1, attachedFiles);
@@ -130,24 +130,24 @@ public class ReportMail extends Composite implements ClickHandler {
         radioFormatPlain = new RadioButton("format", elements.email_format_plain());
         radioFormatWiki = new RadioButton("format", elements.email_format_wiki());
         radioFormatHTML = new RadioButton("format", elements.email_format_html());
-        
+
         radioFormatPlain.setValue(true);
-        
+
         FlowPanel fp = new FlowPanel();
         fp.add(radioFormatPlain);
         fp.add(radioFormatWiki);
         fp.add(radioFormatHTML);
-        
+
         mainTable.setWidget(row, 1, fp);
     }
 
     private void addHeaderFooterSelects(FlexTable mainTable, int row) {
         headerSelect = new ListBoxWithErrorText("header");
         footerSelect = new ListBoxWithErrorText("footer");
-        
+
         mainTable.setWidget(row, 1, headerSelect);
-        mainTable.setWidget(row+1, 1, footerSelect);
-        
+        mainTable.setWidget(row + 1, 1, footerSelect);
+
     }
 
     private void addSendButtons(FlexTable mainTable, int row) {
@@ -162,7 +162,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
         fp.add(sendButton);
         fp.add(reSendButton);
-        
+
         mainTable.setWidget(row, 1, fp);
     }
 
@@ -247,14 +247,14 @@ public class ReportMail extends Composite implements ClickHandler {
 
         if (ok) {
             clearSendToTable();
-            
+
             sendEmails();
         }
-        
+
     }
 
     private void clearSendToTable() {
-        while(table.getRowCount() > 1) {
+        while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
     }
@@ -385,7 +385,10 @@ public class ReportMail extends Composite implements ClickHandler {
             Util.addPostParam(mailRequest, "email", email);
             Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
             Util.addPostParam(mailRequest, "attachments", attachmentsAsJSONString);
-
+            Util.addPostParam(mailRequest, "format", getFormat());
+            Util.addPostParam(mailRequest, "header", Util.getSelected(headerSelect));
+            Util.addPostParam(mailRequest, "footer", Util.getSelected(footerSelect));
+            
             ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
                 public void serverResponse(JSONValue value) {
@@ -458,6 +461,16 @@ public class ReportMail extends Composite implements ClickHandler {
                 break;
             }
         }
+    }
+
+    public String getFormat() {
+        if(radioFormatPlain.getValue()) {
+            return "PLAIN";
+        }
+        if(radioFormatHTML.getValue()) {
+            return "HTML";
+        }
+        return "WIKI";
     }
 
     protected void openSelectFilesForAttachment(JSONArray files, ArrayList<String> existingFiles) {
@@ -545,6 +558,39 @@ public class ReportMail extends Composite implements ClickHandler {
             hide();
         }
 
+    }
+
+    public void init() {
+        fillHeaderFooterSelects();
+    }
+
+    private void fillHeaderFooterSelects() {
+        ServerResponse callback = new ServerResponse() {
+            public void serverResponse(JSONValue value) {
+                JSONObject object = value.isObject();
+
+                fill(footerSelect, object.get("footers"));
+                fill(headerSelect, object.get("headers"));
+            }
+
+        };
+
+        AuthResponder.get(constants, messages, callback, "registers/emailcontent.php?action=report_init");
+
+    }
+
+    protected void fill(ListBoxWithErrorText listbox, JSONValue content) {
+        listbox.clear();
+        listbox.addItem(elements.email_choice_none(), "0");
+
+        JSONArray array = content.isArray();
+        if (array == null) {
+            return;
+        }
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject one = array.get(i).isObject();
+            listbox.addItem(one.get("name"), one.get("id"));
+        }
     }
 
 }

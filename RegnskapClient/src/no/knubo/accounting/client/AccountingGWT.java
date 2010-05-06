@@ -352,6 +352,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case REPORT_EMAIL:
                 widget = ReportMail.getInstance(constants, messages, elements);
+                ((ReportMail)widget).init();
                 break;
             case REPORT_USERS_EMAIL:
                 widget = ReportUsersEmail.getInstance(constants, messages, helpPanel, elements);

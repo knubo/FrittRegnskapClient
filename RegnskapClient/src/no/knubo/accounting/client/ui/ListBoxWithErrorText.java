@@ -68,6 +68,9 @@ public class ListBoxWithErrorText extends ErrorLabelWidget implements Validateab
         listbox.clear();
     }
 
+    public void addItem(String description, String value) {
+        listbox.addItem(description, value);
+    }
     public void addItem(JSONValue description, JSONValue value) {
         listbox.addItem(Util.str(description), Util.str(value));
     }
