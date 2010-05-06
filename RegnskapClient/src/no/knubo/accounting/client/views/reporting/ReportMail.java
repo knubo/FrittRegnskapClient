@@ -202,7 +202,7 @@ public class ReportMail extends Composite implements ClickHandler {
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue parse) {
-                JSONArray files = parse.isArray();
+                JSONArray files = parse.isObject().get("files").isArray();
 
                 openSelectFilesForAttachment(files, existingFiles);
             }
@@ -524,7 +524,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
             for (int i = 0; i < files.size(); i++) {
 
-                String fileName = Util.str(files.get(i));
+                String fileName = Util.str(files.get(i).isObject().get("name"));
                 pickFilesTable.setText(i + 1, 0, fileName);
 
                 CheckBox filePick = new CheckBox();
