@@ -296,6 +296,7 @@ public class ReportMail extends Composite implements ClickHandler {
                 JSONObject failedOne = new JSONObject();
                 failedOne.put("name", new JSONString(table.getText(row, 0)));
                 failedOne.put("email", new JSONString(table.getText(row, 1)));
+                failedOne.put("id", new JSONString(table.getText(row, 3)));
 
                 receivers.set(pos++, failedOne);
             }
@@ -373,14 +374,17 @@ public class ReportMail extends Composite implements ClickHandler {
             JSONObject user = receivers.get(currentIndex).isObject();
 
             final String name = Util.str(user.get("name"));
-            infoTable.setText(1, 1, name);
+            final String id = Util.str(user.get("id"));
             final String email = Util.str(user.get("email"));
+
+            infoTable.setText(1, 1, name);
             infoTable.setText(2, 1, email);
             infoTable.setText(0, 2, "(" + (receivers.size() - currentIndex) + ")");
 
             StringBuffer mailRequest = new StringBuffer();
 
             mailRequest.append("action=" + (simulate ? "simulatemail" : "email"));
+            Util.addPostParam(mailRequest, "id", id);
             Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
             Util.addPostParam(mailRequest, "email", email);
             Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
@@ -394,7 +398,7 @@ public class ReportMail extends Composite implements ClickHandler {
                 public void serverResponse(JSONValue value) {
                     JSONObject object = value.isObject();
 
-                    fillSentLine(name, email);
+                    fillSentLine(name, email, id);
 
                     if (!("1".equals(Util.str(object.get("status")))) || (simulate && Random.nextBoolean())) {
                         table.setStyleName("error");
@@ -411,7 +415,7 @@ public class ReportMail extends Composite implements ClickHandler {
                 }
 
                 public void onError() {
-                    fillSentLine(name, email);
+                    fillSentLine(name, email, id);
                     table.setStyleName("error");
                     table.setText(1, 2, elements.failed());
 
@@ -434,12 +438,14 @@ public class ReportMail extends Composite implements ClickHandler {
                     t.schedule(1000);
                 }
 
-                private void fillSentLine(final String name, final String email) {
+                private void fillSentLine(final String name, final String email, String id) {
                     currentIndex++;
                     table.insertRow(1);
                     table.setText(1, 0, name);
                     table.setText(1, 1, email);
-
+                    table.setText(1, 3, id);
+                    table.getCellFormatter().setStyleName(1, 3, "hidden");
+                    
                     String style = (currentIndex % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(1, style);
                 }

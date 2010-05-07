@@ -521,3 +521,7 @@ TD.yellow {
 TD.green {
 	background-color:green;
 }
+
+.hidden {
+	display:none;
+}
