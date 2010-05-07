@@ -41,17 +41,12 @@ public class HelpPanel extends Composite implements NativePreviewHandler {
 
     public void resize(Widget widget) {
 
-        int width = widget.getOffsetWidth();
         int height = widget.getOffsetHeight();
 
-        if ((800 - width) < 400) {
-            mainFrame.setWidth("400px");
-        } else {
-            mainFrame.setWidth((800 - width) + "px");
-        }
+        mainFrame.setWidth("100%");
 
-        if (height < 400) {
-            mainFrame.setHeight("400px");
+        if (height < 500) {
+            mainFrame.setHeight("500px");
         } else {
             mainFrame.setHeight(height + "px");
         }

@@ -1,31 +1,105 @@
 <html>
 <head>
-<link rel="stylesheet" href="../../../accountstyle.css">
+<link rel="stylesheet" href="../../accountstyle.css">
 </head>
 <body>
-<h1 class="helpheader">Utsendelse av epost</h1>
-<p>I dette skjermbildet komponeres epost for utsendelse til utvalgte
+<h1 class="helpheader">Utsendelse av e-post</h1>
+<p>I dette skjermbildet komponeres e-post for utsendelse til utvalgte
 personer fra registeret. Tilgjengelige utvalg er 'Medlemmer', 'Abonnent
-av nyhetsbrev', 'Testutsendelse til deg selv' . Medlemmer er personer
-som er registrert med &aring;rsmedlemsskap og abonnent av nyhetsbrev
-styres av innstilling p&aring; personen. Testutsendelsen g&aring;r til
-eposten som er koblet til personen som er koblet til innlogget bruker.</p>
-<p>Kun personer med registrert epostadresse vil f&aring; tilsendt
-epost.</p>
+av nyhetsbrev', 'Testutsendelse til deg selv', 'Simulasjon av
+utsendelse' . Medlemmer er personer som er registrert med
+&aring;rsmedlemsskap og abonnent av nyhetsbrev styres av innstilling
+p&aring; personen. Testutsendelsen g&aring;r til e-posten som er koblet
+til personen som er koblet til innlogget bruker. Simulasjon simulerer
+utsending av e-post uten at det faktisk sendes ut e-post.</p>
+
+<p>Kun personer med registrert e-postadresse vil f&aring; tilsendt
+e-post.</p>
 <h2>Utsendelse</h2>
 <ul>
 	<li>Velg mottakere
-	<li>Fyll inn tittel og melding
-	<li>Trykk Send epost
+	<li>Fyll inn tittel.
+	<li>Velg format (se beskrivelse under)
+	<li>Fyll inn melding
+	<li>Velg eventuell topptekst og bunntekst.
+	<li>Legg ved filer som &oslash;nskes sendt som vedlegg ved &aring;
+	klikke p&aring; 'Legg ved filer'.
+	<li>Trykk Send e-post
 </ul>
-<p>Du blir da bedt om &aring; bekrefte at epostene skal sendes ut.
+<p>Du blir da bedt om &aring; bekrefte at e-postene skal sendes ut.
 Velger du &aring; fortsette vil programmet be serveren sende en og en
-epost. Avhengig av belastning p&aring; systemet kan dette g&aring;
+e-post. Avhengig av belastning p&aring; systemet kan dette g&aring;
 veldig fort eller langsomt. I tabellen under listes opp mottagerne og
-status p&aring; utsendingen. Er ikke eposten lykkes sendt har ikke
-epost-serveren godkjent epostadressen. (Som ved all epostutsendelse er
-det ingen garanti at mottageren f&aring;r eposten som sendes - ok betyr
-at eposten er fors&oslash;kt sendt)</p>
+status p&aring; utsendingen. Er ikke e-posten lykkes sendt har ikke
+e-post-serveren godkjent e-postadressen eller s&aring; mislyktes
+e-post-serveren &aring; sende. Det kan skyldes for h&oslash;y belastning.
+For de e-postene som mislyktes kan man pr&oslash;ve &aring; sende til de
+adressatene om igjen ved &aring; klikke p&aring; 'Send e-post om igjen
+til mislykkede'.</p>
+<p>PS: Som ved all e-postutsendelse er det ingen garanti at
+mottageren f&aring;r e-posten som sendes - ok betyr at e-posten er
+fors&oslash;kt sendt</p>
+
+<h2 class="helpheader">Meldingsformater</h2>
+
+e-posten kan sendes som enten kun ren tekst eller HTML-formatert e-post.
+&oslash;nskes HTML formatert e-post s&aring; kan den lages ved hjelp av
+HTML (wiki formatert) eller HTML(rik html editor).
+
+<p>Ved &aring; klikke p&aring; HTML (rik html editor) byttes
+meldingsfeltet ut med en rik HTML editor. Rediger meldingen til
+&oslash;nsket format og fortsett med sending av e-post.</p>
+<p>Velger man HTML (wiki formatert) skriver man teksten i klartekst,
+men man benytter formateringskoder for &aring; lage HTML.
+F&oslash;lgende koder er st&oslash;ttet:</p>
+
+<dl>
+	<dt>h1.</dt>
+	<dd>P&aring; starten av en linje blir dette en overskrift.
+	Tilsvarende for h2. h3. og h4, hvor h2 er mindre enn h1, h3 mindre enn
+	h2 osv.</dd>
+	<dt>hr.</dt>
+	<dd>P&aring; starten av en linje gir den en horisontal linje</dd>
+	<dt>*tekst*</dt>
+	<dd>Tekst med * rundt seg blir skrevet med fet type</dd>
+	<dt>_tekst_</dt>
+	<dd>Tekst med _ rundt seg blir skrevet med understreking</dd>
+	<dt>|http://adresse.no|Beskrivelse|</dt>
+	<dd>Lager en link med teksten 'Beskrivelse' som peker til
+	http://adresse.no</dd>
+</dl>
+
+Doble linjeskift markerer paragrafskille.
+
+<p>Merk: Det er ingen escaping av &lt; og &gt; i denne editoren som
+betyr at det er mulig &aring; skrive ren html sammen med wiki kodene.
+Bruk HTML m&aring;te &aring; skrive spesialtegn dersom du &oslash;nsker
+&aring; benytte slike tegn.</p>
+
+<h2 class="helpheader">Topptekst og bunntekst</h2>
+<p>
+Valgte topptekster og bunntekster limes henholdsvis p&aring; toppen og bunnen
+av tekstene. Dette gj&oslash;res f&oslash;r wiki formatering som gj&oslash;r at det er mulig
+&aring; lage egne topp- og bunntekster som benytter wiki formateringen. Det er
+ogs&aring; mulig &aring; legge html i disse.
+</p>
+<p>Topptekster og bunntekster opprettes og vedlikeholdes i Innstillinger/E-post
+</p>
+
+<h2 class="helpheader">Spesialkoder</h2>
+
+Spesialkoder inngis p&aring; formatet {kode}. Disse flettes i henhold til den
+personen som det sendes e-post til. F&oslash;lgende kode er tilgjengelig:
+
+<dl>
+	<dt>{unsubscribeurl}</dt>
+	<dd>Gir http-adresse til side hvor mottaker av e-post melder seg av
+	nyhetsbrevet. Merk at dersom man sender e-post til medlemmer s&aring; er det
+	neppe &oslash;nskelig at de i den e-posten skal kunne melde seg av
+	nyhetsbrevet, s&aring; da er det neppe &oslash;nskelig &aring; benytte den linken i det
+	tilfellet.</dd>
+</dl>
+
 <h2 class="helpheader">Innstillinger</h2>
 <p>Endring av avsenderadresse gj&oslash;res i standardinnstillinger.
 </p>

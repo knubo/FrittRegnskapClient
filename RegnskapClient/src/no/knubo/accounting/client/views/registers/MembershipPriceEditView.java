@@ -52,7 +52,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         table.setStyleName("tableborder");
 
         table.setText(0, 0, elements.menuitem_membership_prices());
-        table.getFlexCellFormatter().setColSpan(0, 0, 9);
+        table.getFlexCellFormatter().setColSpan(0, 0, 11);
         table.setText(2, 0, elements.year());
         table.setText(1, 1, "");
         table.setText(1, 2, elements.spring());
@@ -65,6 +65,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         table.setText(1, 7, "");
         table.setText(1, 8, "");
         table.setText(1, 9, "");
+        table.setText(1, 10, "");
         table.setText(2, 6, elements.course_membership());
         table.setText(2, 7, elements.train_membership());
         table.setText(2, 8, elements.youth_membership());
