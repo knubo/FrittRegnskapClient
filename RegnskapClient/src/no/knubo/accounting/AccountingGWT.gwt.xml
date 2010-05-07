@@ -1,4 +1,4 @@
-<module>
+<module> <!-- rename-to='program' -->
 
 	<!-- Inherit the core Web Toolkit stuff.                  -->
 	<inherits name='com.google.gwt.user.User' />
@@ -11,6 +11,7 @@
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class='no.knubo.accounting.client.AccountingGWT' />
 	<stylesheet src='accountstyle.css' />
+	<stylesheet src='RichTextToolbar.css' />
 
 	<!-- Norwegian language, independent of country -->
 	<extend-property name="locale" values="no" />

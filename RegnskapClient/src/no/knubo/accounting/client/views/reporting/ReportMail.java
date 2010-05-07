@@ -12,6 +12,7 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.Logger;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
+import no.knubo.accounting.client.richtexttoolbar.RichTextToolbar;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedTextArea;
@@ -36,6 +37,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -48,6 +50,7 @@ public class ReportMail extends Composite implements ClickHandler {
     ListBoxWithErrorText reciversListBox;
     TextBoxWithErrorText titleBox;
     NamedTextArea bodyBox;
+    RichTextArea richBodyBox;
     protected JSONArray receivers;
     private EmailSendStatus emailSendStatusView;
     private I18NAccount messages;
@@ -63,6 +66,7 @@ public class ReportMail extends Composite implements ClickHandler {
     private RadioButton radioFormatPlain;
     private RadioButton radioFormatWiki;
     private RadioButton radioFormatHTML;
+    private VerticalPanel richEditorWithToolbar;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
@@ -97,9 +101,26 @@ public class ReportMail extends Composite implements ClickHandler {
         addEmailFormat(mainTable, 2);
 
         bodyBox = new NamedTextArea("mail_body");
-        bodyBox.setCharacterWidth(90);
+        bodyBox.setWidth("50em");
+        bodyBox.setHeight("20em");
         bodyBox.setVisibleLines(30);
-        mainTable.setWidget(3, 1, bodyBox);
+
+        richBodyBox = new RichTextArea();
+        richBodyBox.setWidth("50em");
+        richBodyBox.setHeight("20em");
+        
+        richEditorWithToolbar = new VerticalPanel();
+        RichTextToolbar toolbar = new RichTextToolbar(richBodyBox);
+        
+        richEditorWithToolbar.add(toolbar);
+        richEditorWithToolbar.add(richBodyBox);
+        
+        richEditorWithToolbar.setVisible(false);
+        
+        FlowPanel fp = new FlowPanel();
+        fp.add(bodyBox);
+        fp.add(richEditorWithToolbar);
+        mainTable.setWidget(3, 1, fp);
 
         attachButton = new NamedButton("attach_files", elements.attach_files());
         attachButton.addClickHandler(this);
@@ -138,6 +159,10 @@ public class ReportMail extends Composite implements ClickHandler {
         fp.add(radioFormatWiki);
         fp.add(radioFormatHTML);
 
+        radioFormatWiki.addClickHandler(this);
+        radioFormatPlain.addClickHandler(this);
+        radioFormatHTML.addClickHandler(this);
+        
         mainTable.setWidget(row, 1, fp);
     }
 
@@ -283,6 +308,16 @@ public class ReportMail extends Composite implements ClickHandler {
             chooseAttachments();
         } else if (sender == reSendButton) {
             resendFailedEmails();
+        } else if(sender == radioFormatHTML) {
+            if(bodyBox.isVisible()) {
+                bodyBox.setVisible(false);
+                richEditorWithToolbar.setVisible(true);
+            }
+        } else if(sender == radioFormatPlain || sender == radioFormatWiki) {
+            if(richBodyBox.isVisible()) {
+                bodyBox.setVisible(true);
+                richEditorWithToolbar.setVisible(false);
+            }
         }
     }
 
@@ -374,7 +409,7 @@ public class ReportMail extends Composite implements ClickHandler {
             JSONObject user = receivers.get(currentIndex).isObject();
 
             final String name = Util.str(user.get("name"));
-            final String id = Util.str(user.get("id"));
+            final String personId = Util.str(user.get("id"));
             final String email = Util.str(user.get("email"));
 
             infoTable.setText(1, 1, name);
@@ -384,10 +419,14 @@ public class ReportMail extends Composite implements ClickHandler {
             StringBuffer mailRequest = new StringBuffer();
 
             mailRequest.append("action=" + (simulate ? "simulatemail" : "email"));
-            Util.addPostParam(mailRequest, "id", id);
+            Util.addPostParam(mailRequest, "personid", personId);
             Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
             Util.addPostParam(mailRequest, "email", email);
-            Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
+            if(radioFormatHTML.getValue()) {
+                Util.addPostParam(mailRequest, "body", URL.encode(richBodyBox.getHTML()));                
+            } else {
+                Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
+            }
             Util.addPostParam(mailRequest, "attachments", attachmentsAsJSONString);
             Util.addPostParam(mailRequest, "format", getFormat());
             Util.addPostParam(mailRequest, "header", Util.getSelected(headerSelect));
@@ -398,7 +437,7 @@ public class ReportMail extends Composite implements ClickHandler {
                 public void serverResponse(JSONValue value) {
                     JSONObject object = value.isObject();
 
-                    fillSentLine(name, email, id);
+                    fillSentLine(name, email, personId);
 
                     if (!("1".equals(Util.str(object.get("status")))) || (simulate && Random.nextBoolean())) {
                         table.setStyleName("error");
@@ -415,7 +454,7 @@ public class ReportMail extends Composite implements ClickHandler {
                 }
 
                 public void onError() {
-                    fillSentLine(name, email, id);
+                    fillSentLine(name, email, personId);
                     table.setStyleName("error");
                     table.setText(1, 2, elements.failed());
 
