@@ -1,21 +1,23 @@
 package no.knubo.accounting.client.views;
 
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ErrorReportingWindow;
 import no.knubo.accounting.client.misc.ServerResponse;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
 
 public class AboutView extends Composite {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "2.0b1";
+    public static final String CLIENT_VERSION = "2.0b2";
 
     private static AboutView instance;
 
@@ -42,7 +44,9 @@ public class AboutView extends Composite {
                 String serverVersion = Util.str(object.get("serverversion"));
 
                 if (!(CLIENT_VERSION.equals(serverVersion))) {
-                    Window.alert(messages.version_mismatch(CLIENT_VERSION, serverVersion));
+                    Elements elements = (Elements) GWT.create(Elements.class);
+                    ErrorReportingWindow.reportError(elements.error_client_version(), messages
+                            .version_mismatch(CLIENT_VERSION, serverVersion));
                 }
 
             }

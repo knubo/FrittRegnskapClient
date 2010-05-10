@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import no.knubo.accounting.client.AccountingGWT;
 import no.knubo.accounting.client.Constants;
+import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -49,7 +51,9 @@ public class AuthResponder implements RequestCallback {
             Window.alert(messages.no_access());
         } else if (response.getStatusCode() == 512) {
             logger.error("database", response.getText());
-            Window.alert("DB error:" + response.getText());
+            Elements elements = (Elements) GWT.create(Elements.class);
+
+            ErrorReportingWindow.reportError(elements.error_database(), response.getText());
         } else if (response.getStatusCode() == 513) {
             JSONValue parse = JSONParser.parse(response.getText());
 
@@ -63,6 +67,8 @@ public class AuthResponder implements RequestCallback {
             if (callback instanceof ServerResponseWithValidation) {
                 ((ServerResponseWithValidation) callback).validationError(fields);
             } else {
+                ErrorReportingWindow.reportError("Validation error of fields:" + fields,
+                        "Uncought (bug) validation error:" + fields);
                 Window.alert("Validation error:" + fields);
             }
         } else if (response.getStatusCode() == 514) {
@@ -90,7 +96,9 @@ public class AuthResponder implements RequestCallback {
             try {
                 jsonValue = JSONParser.parse(data);
             } catch (Exception e) {
-                Window.alert(e.getMessage());
+                Elements elements = (Elements) GWT.create(Elements.class);
+                ErrorReportingWindow.reportError(elements.error_bad_return_data(), e.toString());
+
                 /* We catch this below in bad return data */
             }
 
@@ -105,6 +113,9 @@ public class AuthResponder implements RequestCallback {
                 try {
                     callback.serverResponse(jsonValue);
                 } catch (Exception e) {
+                    Elements elements = (Elements) GWT.create(Elements.class);
+                    
+                    ErrorReportingWindow.reportError(elements.error_uncought_exception()+" "+e.getMessage(), e.toString());
                     Util.log(e.toString());
                 }
             }
@@ -112,7 +123,7 @@ public class AuthResponder implements RequestCallback {
     }
 
     private void handleNODB() {
-        if(!noDB) {
+        if (!noDB) {
             noDB = true;
             Window.alert(messages.no_db_connection());
         }
@@ -124,7 +135,8 @@ public class AuthResponder implements RequestCallback {
         try {
             builder.sendRequest("", new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
+            
+            ErrorReportingWindow.reportError(e.getMessage(), e.toString());
         }
     }
 
@@ -137,7 +149,8 @@ public class AuthResponder implements RequestCallback {
             builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
             builder.sendRequest(parameters.toString(), new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
-            Window.alert("Failed to send the request: " + e.getMessage());
+
+            ErrorReportingWindow.reportError(e.getMessage(), e.toString());
         }
 
     }

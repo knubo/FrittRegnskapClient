@@ -907,6 +907,69 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String error();
 
   /**
+   * Translated "Feil i data returnert fra server".
+   * 
+   * @return translated "Feil i data returnert fra server"
+   */
+  @DefaultStringValue("Feil i data returnert fra server")
+  @Key("error_bad_return_data")
+  String error_bad_return_data();
+
+  /**
+   * Translated "Feil klientversjon".
+   * 
+   * @return translated "Feil klientversjon"
+   */
+  @DefaultStringValue("Feil klientversjon")
+  @Key("error_client_version")
+  String error_client_version();
+
+  /**
+   * Translated "Databasefeil".
+   * 
+   * @return translated "Databasefeil"
+   */
+  @DefaultStringValue("Databasefeil")
+  @Key("error_database")
+  String error_database();
+
+  /**
+   * Translated "Detaljer".
+   * 
+   * @return translated "Detaljer"
+   */
+  @DefaultStringValue("Detaljer")
+  @Key("error_details")
+  String error_details();
+
+  /**
+   * Translated "En feil har oppstått. Prøv igjen og rapporter inn som feil om den vedvarer.".
+   * 
+   * @return translated "En feil har oppstått. Prøv igjen og rapporter inn som feil om den vedvarer."
+   */
+  @DefaultStringValue("En feil har oppstått. Prøv igjen og rapporter inn som feil om den vedvarer.")
+  @Key("error_general")
+  String error_general();
+
+  /**
+   * Translated "Feilmelding".
+   * 
+   * @return translated "Feilmelding"
+   */
+  @DefaultStringValue("Feilmelding")
+  @Key("error_msg")
+  String error_msg();
+
+  /**
+   * Translated "Feil i klientkode - exception ikke fanget!".
+   * 
+   * @return translated "Feil i klientkode - exception ikke fanget!"
+   */
+  @DefaultStringValue("Feil i klientkode - exception ikke fanget!")
+  @Key("error_uncought_exception")
+  String error_uncought_exception();
+
+  /**
    * Translated "Utgifter".
    * 
    * @return translated "Utgifter"

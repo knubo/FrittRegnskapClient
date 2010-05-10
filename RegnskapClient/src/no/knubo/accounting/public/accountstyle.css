@@ -525,3 +525,9 @@ TD.green {
 .hidden {
 	display:none;
 }
+
+.errorwindow {
+	border:thick;
+	border-color: red;
+	border-style: solid;
+}
