@@ -50,7 +50,7 @@
 			<jvmarg value="-Xmx256M" />
 			<arg value="-noserver" />
 			<arg value="-startupUrl" />
-			<arg value="http://localhost/RegnskapClient/no.knubo.accounting.AccountingGWT/AccountingGWT.html" />
+			<arg value="http://localhost/prg/AccountingGWT.html" />
 			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
 			<arg line="${gwt.args}" />
 			<arg value="no.knubo.accounting.AccountingGWT" />

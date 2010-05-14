@@ -268,6 +268,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String birthdate();
 
   /**
+   * Translated "Fødselsdato påkreves".
+   * 
+   * @return translated "Fødselsdato påkreves"
+   */
+  @DefaultStringValue("Fødselsdato påkreves")
+  @Key("birthdate_required")
+  String birthdate_required();
+
+  /**
    * Translated "Budsjetert".
    * 
    * @return translated "Budsjetert"

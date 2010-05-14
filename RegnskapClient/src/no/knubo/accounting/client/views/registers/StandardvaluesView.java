@@ -10,6 +10,7 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.ui.NamedCheckBox;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.AccountSelected;
@@ -83,6 +84,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
     private Image editMonthTransferImage;
 
     private Image editRegisterMembershipPostsImage;
+
+    private NamedCheckBox birthdateRequiredBox;
 
     public StandardvaluesView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
@@ -181,6 +184,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         table.setHTML(5, 0, elements.cost_membership());
         table.setHTML(6, 0, elements.mail_sender());
         table.setHTML(7, 0, elements.massletter_due_date());
+        table.setHTML(8, 0, elements.birthdate_required());
 
         yearBox = new TextBoxWithErrorText("year");
         yearBox.setMaxLength(4);
@@ -201,6 +205,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         massletterDueDateBox = new TextBoxWithErrorText("massletter_due_date");
         massletterDueDateBox.setMaxLength(10);
 
+        birthdateRequiredBox = new NamedCheckBox("birthdate_required");
+        
         table.setWidget(0, 1, yearBox);
         table.setWidget(1, 1, monthBox);
         table.setWidget(2, 1, semesterBox);
@@ -209,7 +215,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         table.setWidget(5, 1, costMembershipBox);
         table.setWidget(6, 1, emailBox);
         table.setWidget(7, 1, massletterDueDateBox);
-
+        table.setWidget(8, 1, birthdateRequiredBox);
+        
         return table;
     }
 
@@ -280,6 +287,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         Util.addPostParam(sb, "fordringer_posts", getFordringerPost());
         Util.addPostParam(sb, "end_month_transfer_posts", getEndMonthTransferPosts());
         Util.addPostParam(sb, "register_membership_posts", getRegisterMembershipPosts());
+        Util.addPostParam(sb, "birthdate_required", birthdateRequiredBox.getValue() ? "1" : "0");
 
         ServerResponse callback = new ServerResponse() {
 
@@ -345,6 +353,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
                 setFordringerPosts(Util.strSkipNull(object.get("fordringer_posts")));
                 setEndMonthTransferPosts(Util.strSkipNull(object.get("end_month_transfer_posts")));
                 setRegisterMembershipPosts(Util.strSkipNull(object.get("register_membership_posts")));
+                birthdateRequiredBox.setValue(Util.getBoolean(object.get("birthdate_required")));
             }
 
         };

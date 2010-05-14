@@ -69,8 +69,10 @@ public class PersonEditView extends Composite implements ClickHandler {
 
     private final Elements elements;
 
-    public PersonEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
-            final ViewCallback caller, Elements elements) {
+    private boolean birthdateRequired;
+
+    public PersonEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel, final ViewCallback caller,
+            Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -133,12 +135,12 @@ public class PersonEditView extends Composite implements ClickHandler {
         phoneBox.setMaxLength(13);
         cellphoneBox = new TextBoxWithErrorText("cellphone");
         cellphoneBox.setMaxLength(13);
-        
+
         genderBox = new ListBox();
         genderBox.addItem("", "");
         genderBox.addItem(elements.gender_male(), "M");
         genderBox.addItem(elements.gender_female(), "F");
-        
+
         employeeCheck = new CheckBox();
         newsletterCheck = new CheckBox();
         hiddenCheck = new CheckBox();
@@ -151,7 +153,7 @@ public class PersonEditView extends Composite implements ClickHandler {
         Hyperlink toSearch = new Hyperlink(elements.back_search(), "personSearch");
         toSearch.addClickHandler(new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
+            public void onClick(ClickEvent event) {
                 caller.searchPerson();
             }
 
@@ -178,8 +180,8 @@ public class PersonEditView extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
-    public static PersonEditView show(Constants constants, I18NAccount messages,
-            HelpPanel helpPanel, ViewCallback caller, Elements elements) {
+    public static PersonEditView show(Constants constants, I18NAccount messages, HelpPanel helpPanel,
+            ViewCallback caller, Elements elements) {
         if (me == null) {
             me = new PersonEditView(messages, constants, helpPanel, caller, elements);
         }
@@ -187,9 +189,9 @@ public class PersonEditView extends Composite implements ClickHandler {
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
 
-    	if (sender == updateButton) {
+        if (sender == updateButton) {
             doSave();
             return;
         }
@@ -322,7 +324,7 @@ public class PersonEditView extends Composite implements ClickHandler {
     void setPersonData(JSONObject object) {
         firstnameBox.setText(Util.str(object.get("FirstName")));
         lastnameBox.setText(Util.str(object.get("LastName")));
-        birthdateBox.setText(Util.str(object.get("Birthdate")));
+        birthdateBox.setText(Util.strSkipNull(object.get("Birthdate")));
         addressBox.setText(Util.str(object.get("Address")));
         postnmbBox.setText(Util.str(object.get("PostNmb")));
         cityBox.setText(Util.str(object.get("City")));
@@ -334,6 +336,8 @@ public class PersonEditView extends Composite implements ClickHandler {
         newsletterCheck.setValue("1".equals(Util.str(object.get("Newsletter"))));
         hiddenCheck.setValue("1".equals(Util.str(object.get("Hidden"))));
         Util.setIndexByValue(genderBox, Util.str(object.get("Gender")));
+        
+        birthdateRequired = Util.getBoolean(object.get("BirthdateRequired"));
     }
 
     private void doSave() {
@@ -430,9 +434,12 @@ public class PersonEditView extends Composite implements ClickHandler {
     private boolean validateSave() {
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(), new Widget[] { lastnameBox,
-                firstnameBox, genderBox });
+        masterValidator.mandatory(messages.required_field(), new Widget[] { lastnameBox, firstnameBox, genderBox });
 
+        if(birthdateRequired) {
+            masterValidator.mandatory(messages.required_field(), new Widget[] { birthdateBox });            
+        }
+        
         masterValidator.date(messages.date_format(), new Widget[] { birthdateBox });
 
         masterValidator.email(messages.invalid_email(), new Widget[] { emailBox });
