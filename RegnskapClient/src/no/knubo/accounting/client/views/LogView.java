@@ -83,7 +83,7 @@ public class LogView extends Composite {
 
         };
 
-        AuthResponder.get(constants, messages, resphandler, "/logging.php?action=list");
+        AuthResponder.get(constants, messages, resphandler, "logging.php?action=list");
 
     }
 }

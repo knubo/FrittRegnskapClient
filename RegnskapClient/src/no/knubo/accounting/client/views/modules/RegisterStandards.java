@@ -61,21 +61,20 @@ public class RegisterStandards {
 
         };
 
-        AuthResponder.get(constants, messages, rh, constants.baseurl() + "defaults/newline.php");
+        AuthResponder.get(constants, messages, rh, "defaults/newline.php");
     }
 
     public boolean validateTop() {
 
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(), new Widget[] { descriptionBox,
-                attachmentBox, dayBox, postNmbBox });
+        masterValidator.mandatory(messages.required_field(), new Widget[] { descriptionBox, attachmentBox, dayBox,
+                postNmbBox });
 
-        masterValidator.range(messages.field_to_low_zero(), new Integer(1), null, new Widget[] {
-                attachmentBox, postNmbBox });
+        masterValidator.range(messages.field_to_low_zero(), new Integer(1), null, new Widget[] { attachmentBox,
+                postNmbBox });
 
-        masterValidator.day(messages.illegal_day(), currentYear, currentMonth,
-                new Widget[] { dayBox });
+        masterValidator.day(messages.illegal_day(), currentYear, currentMonth, new Widget[] { dayBox });
 
         return masterValidator.validateStatus();
     }

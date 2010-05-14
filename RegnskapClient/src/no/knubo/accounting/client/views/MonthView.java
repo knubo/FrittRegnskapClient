@@ -209,7 +209,7 @@ public class MonthView extends Composite implements ClickHandler,
 			debetSums.put(key, new JSONString(String.valueOf(sum)));
 		}
 
-		render_posts(row + 1, debetSums, new JSONObject(), true);
+		render_posts(row + 1, debetSums, new JSONObject(), false);
 		table.getRowFormatter().setStyleName(row + 1, "sumline");
 	}
 
@@ -252,13 +252,14 @@ public class MonthView extends Composite implements ClickHandler,
 
 			table.getCellFormatter().setStyleName(rowIndex, 3, "desc");
 
-			render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata
-					.get("groupKredMonth"), false);
+			boolean flagDebetKreditNotMatching = Util.getBoolean(rowdata.get("debetKreditMismatch"));
+            render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata
+					.get("groupKredMonth"), flagDebetKreditNotMatching);
 		}
 	}
 
 	private void render_posts(int rowIndex, JSONValue debet, JSONValue kred,
-			boolean flagNonZeroValues) {
+			boolean flagDebetKreditNotMatching) {
 		JSONObject debetObj = debet.isObject();
 		JSONObject kredObj = kred.isObject();
 
@@ -267,17 +268,17 @@ public class MonthView extends Composite implements ClickHandler,
 				.keys()) {
 
 			/* DEBET */
-			printDebKredVal(rowIndex, debetObj, col, k, flagNonZeroValues);
+			printDebKredVal(rowIndex, debetObj, col, k, flagDebetKreditNotMatching);
 			col++;
 
 			/* KREDIT */
-			printDebKredVal(rowIndex, kredObj, col, k, false);
+			printDebKredVal(rowIndex, kredObj, col, k, flagDebetKreditNotMatching);
 			col++;
 		}
 	}
 
 	private void printDebKredVal(int rowIndex, JSONObject obj, int col,
-			String k, boolean flagNonZeroValues) {
+			String k, boolean flagDebetKreditNotMatching) {
 		table.getCellFormatter().setStyleName(rowIndex, col, "right");
 
 		if (obj == null) {
@@ -288,7 +289,7 @@ public class MonthView extends Composite implements ClickHandler,
 		if (value != null) {
 			String money = Util.money(Util.fixMoney(Util.str(value)));
 
-			if (flagNonZeroValues && !"0.00".equals(money)) {
+			if (flagDebetKreditNotMatching) {
 				table.getCellFormatter().addStyleName(rowIndex, col, "flag");
 			}
 

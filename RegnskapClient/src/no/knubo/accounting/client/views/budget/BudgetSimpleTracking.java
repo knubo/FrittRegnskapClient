@@ -96,7 +96,7 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
                 }
             }
         };
-        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/budget.php?action=years");
+        AuthResponder.get(constants, messages, rh, "accounting/budget.php?action=years");
 
     }
 
@@ -122,8 +122,7 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
                 }
             }
         };
-        AuthResponder.get(constants, messages, rh, constants.baseurl()
-                + "accounting/budget.php?action=simplestatus&year=" + year);
+        AuthResponder.get(constants, messages, rh, "accounting/budget.php?action=simplestatus&year=" + year);
 
     }
 
@@ -259,8 +258,8 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
         addSumline(row, sumCostBudget, sumCostActual, false);
 
         table.setText(row + 1, 0, elements.budget_result());
-        table.getRowFormatter().setStyleName(row+1, "header");
-        table.getFlexCellFormatter().setColSpan(row+1, 0, 7);
+        table.getRowFormatter().setStyleName(row + 1, "header");
+        table.getFlexCellFormatter().setColSpan(row + 1, 0, 7);
         addSumline(row + 2, sumEarningsBudget - sumCostBudget, sumEarningsActual - sumCostActual, true);
 
     }

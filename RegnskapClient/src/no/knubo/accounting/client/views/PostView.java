@@ -103,7 +103,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
             table.removeRow(6);
         }
 
-        AuthResponder.get(constants, messages, this, constants.baseurl() + "accounting/showline.php?line=" + line);
+        AuthResponder.get(constants, messages, this, "accounting/showline.php?line=" + line);
         countfields.init(line);
     }
 
@@ -158,10 +158,10 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
             table.getCellFormatter().setStyleName(7 + i, 5, "right");
             String personName = Util.strSkipNull(post.get("EditedByPersonName"));
 
-            if(!personName.isEmpty()) {
-                table.setText(7 + i, 6, "("+personName+")");
+            if (!personName.isEmpty()) {
+                table.setText(7 + i, 6, "(" + personName + ")");
             }
-            
+
             table.getRowFormatter().setStyleName(7 + i, (i % 2 == 0) ? "showlineposts2" : "showlineposts1");
         }
     }

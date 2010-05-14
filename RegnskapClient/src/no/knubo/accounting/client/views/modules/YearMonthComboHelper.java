@@ -55,7 +55,7 @@ public class YearMonthComboHelper {
             }
 
         };
-        AuthResponder.get(constants, messages, resp, this.constants.baseurl() + "defaults/yearmonths.php");
+        AuthResponder.get(constants, messages, resp, "defaults/yearmonths.php");
     }
 
     public void setIndex(int currentYear, int currentMonth) {

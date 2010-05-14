@@ -41,16 +41,15 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
 
     private HTML header;
 
-    public static MonthAndSemesterEndView getInstance(Constants constants, I18NAccount messages,
-            ViewCallback callback, Elements elements) {
+    public static MonthAndSemesterEndView getInstance(Constants constants, I18NAccount messages, ViewCallback callback,
+            Elements elements) {
         if (me == null) {
             me = new MonthAndSemesterEndView(constants, messages, callback, elements);
         }
         return me;
     }
 
-    private MonthAndSemesterEndView(Constants constants, I18NAccount messages,
-            ViewCallback callback, Elements elements) {
+    private MonthAndSemesterEndView(Constants constants, I18NAccount messages, ViewCallback callback, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.callback = callback;
@@ -81,7 +80,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
         header.setHTML(elements.end_month_explain());
         endButton.setText(elements.end_month());
         endButton.setId("MonthEndView.endButton");
-        
+
         fetchAndDisplayTransferAmounts();
     }
 
@@ -90,7 +89,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
         endButton.setId("SemesterEndView.endButton");
         endType = "endsemester";
         header.setHTML(elements.end_semester_explain());
-        
+
         fetchAndDisplayTransferAmounts();
     }
 
@@ -108,8 +107,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
                 String year = Util.str(root.get("year"));
                 int month = Util.getInt(root.get("month"));
 
-                dateHeader.setHTML("<h2>" + Util.monthString(elements, month) + " " + year
-                        + "</h2>");
+                dateHeader.setHTML("<h2>" + Util.monthString(elements, month) + " " + year + "</h2>");
 
                 JSONValue postsValue = root.get("posts");
                 JSONObject object = postsValue.isObject();
@@ -132,7 +130,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
 
         };
 
-        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endmonthorsemester.php?action=status");
+        AuthResponder.get(constants, messages, rh, "accounting/endmonthorsemester.php?action=status");
     }
 
     public void onClick(ClickEvent event) {
@@ -153,7 +151,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
 
         };
 
-        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endmonthorsemester.php?action="+endType);
+        AuthResponder.get(constants, messages, rh, "accounting/endmonthorsemester.php?action=" + endType);
     }
 
 }

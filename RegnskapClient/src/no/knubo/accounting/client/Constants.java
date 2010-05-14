@@ -7,29 +7,29 @@ package no.knubo.accounting.client;
 public interface Constants extends com.google.gwt.i18n.client.Constants {
   
   /**
-   * Translated "../no.knubo.accounting.AccountingGWT/AccountingGWT.html".
+   * Translated "../prg/AccountingGWT.html".
    * 
-   * @return translated "../no.knubo.accounting.AccountingGWT/AccountingGWT.html"
+   * @return translated "../prg/AccountingGWT.html"
    */
-  @DefaultStringValue("../no.knubo.accounting.AccountingGWT/AccountingGWT.html")
+  @DefaultStringValue("../prg/AccountingGWT.html")
   @Key("appURL")
   String appURL();
 
   /**
-   * Translated "../../../RegnskapServer/services/".
+   * Translated "/RegnskapServer/services/".
    * 
-   * @return translated "../../../RegnskapServer/services/"
+   * @return translated "/RegnskapServer/services/"
    */
-  @DefaultStringValue("../../../RegnskapServer/services/")
+  @DefaultStringValue("/RegnskapServer/services/")
   @Key("baseurl")
   String baseurl();
 
   /**
-   * Translated "../no.knubo.accounting.Login/Login.html".
+   * Translated "../login/Login.html".
    * 
-   * @return translated "../no.knubo.accounting.Login/Login.html"
+   * @return translated "../login/Login.html"
    */
-  @DefaultStringValue("../no.knubo.accounting.Login/Login.html")
+  @DefaultStringValue("../login/Login.html")
   @Key("loginURL")
   String loginURL();
 }

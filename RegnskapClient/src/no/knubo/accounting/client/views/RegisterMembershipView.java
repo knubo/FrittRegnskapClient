@@ -372,7 +372,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                 header.setHTML(headerText);
             }
         };
-        AuthResponder.get(constants, messages, callback, this.constants.baseurl() + "defaults/semester.php");
+        AuthResponder.get(constants, messages, callback, "defaults/semester.php");
 
     }
 

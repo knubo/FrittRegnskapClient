@@ -196,10 +196,10 @@ public class BudgetView extends Composite implements ClickHandler {
             instance.show();
         } else if (event.getSource() == deleteButton) {
             deleteSelectedRows();
-        } else if(event.getSource() == showChartButton) {
+        } else if (event.getSource() == showChartButton) {
             showChart();
         }
-    } 
+    }
 
     private void showChart() {
         BudgetGraphView instance = BudgetGraphView.getInstance(elements);
@@ -302,7 +302,7 @@ public class BudgetView extends Composite implements ClickHandler {
         if (year.length == 1) {
             params = params + "&year=" + year[0];
         }
-        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/budget.php?" + params);
+        AuthResponder.get(constants, messages, rh, "accounting/budget.php?" + params);
     }
 
     protected void fillBudget(JSONArray array) {

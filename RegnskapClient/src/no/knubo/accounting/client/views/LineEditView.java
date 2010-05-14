@@ -204,9 +204,8 @@ public class LineEditView extends Composite implements ClickHandler {
 
         };
 
-        AuthResponder
-                .get(constants, messages, rh, constants.baseurl() + "accounting/editaccountline.php?action=query&line="
-                        + line + (navigate != null ? "&" + navigate : ""));
+        AuthResponder.get(constants, messages, rh, "accounting/editaccountline.php?action=query&line=" + line
+                + (navigate != null ? "&" + navigate : ""));
     }
 
     protected void addRegnLine(JSONValue value) {
@@ -259,7 +258,7 @@ public class LineEditView extends Composite implements ClickHandler {
         postsTable.setText(row, 4, Util.money(Util.fixMoney(sumAmount)));
 
         changeProjectBoxBasedOnDefault();
-        
+
         accountNameBox.setSelectedIndex(0);
         accountIdBox.setText("");
         personBox.setSelectedIndex(0);
@@ -421,7 +420,6 @@ public class LineEditView extends Composite implements ClickHandler {
 
         table.setText(4, 0, elements.project());
         table.setWidget(4, 1, defaultProjectNameBox);
-
 
         updateButton = new NamedButton("LineEditView.updateButton");
         updateButton.setText(elements.update());
@@ -630,8 +628,7 @@ public class LineEditView extends Composite implements ClickHandler {
 
         masterValidator.money(messages.field_money(), new Widget[] { amountBox });
 
-        masterValidator.registry(messages.registry_invalid_key(), projectCache,
-                new Widget[] { projectIdBox });
+        masterValidator.registry(messages.registry_invalid_key(), projectCache, new Widget[] { projectIdBox });
 
         masterValidator.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(constants, messages),
                 new Widget[] { accountIdBox });

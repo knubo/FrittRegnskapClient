@@ -72,7 +72,7 @@ public class YearEndView extends Composite implements ClickHandler {
 
         endYearButton = new NamedButton("endyear", elements.end_year());
         endYearButton.addClickHandler(this);
-        
+
         endYearHtmlText = new HTML();
 
         dockPanel.add(table, DockPanel.NORTH);
@@ -100,7 +100,7 @@ public class YearEndView extends Composite implements ClickHandler {
                 fillPosts(root.get("data").isArray());
             }
         };
-        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endyear.php?action=status");
+        AuthResponder.get(constants, messages, rh, "accounting/endyear.php?action=status");
     }
 
     protected void fillPosts(JSONArray posts) {
@@ -120,7 +120,6 @@ public class YearEndView extends Composite implements ClickHandler {
             table.getCellFormatter().setStyleName(i + 1, 1, "desc");
             table.getCellFormatter().setStyleName(i + 1, 2, "right");
             table.getCellFormatter().setStyleName(i + 1, 3, "right");
-
 
             table.setText(i + 1, 0, Util.str(onePost.get("post")));
             if ("1".equals(Util.str(onePost.get("DEBET")))) {
@@ -142,14 +141,13 @@ public class YearEndView extends Composite implements ClickHandler {
             return;
         }
 
-        
         ServerResponse rh = new ServerResponse() {
-            
+
             public void serverResponse(JSONValue responseObj) {
                 callback.viewMonth();
             }
         };
-        AuthResponder.get(constants, messages, rh , constants.baseurl() + "accounting/endyear.php?action=endyear");
-        
+        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endyear.php?action=endyear");
+
     }
 }
