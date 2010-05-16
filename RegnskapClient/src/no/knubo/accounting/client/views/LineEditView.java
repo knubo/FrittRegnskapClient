@@ -320,14 +320,43 @@ public class LineEditView extends Composite implements ClickHandler {
 
         accountNameBox = new ListBox();
         accountNameBox.setVisibleItemCount(1);
+
+        ListBox costBox = new ListBox();
+        costBox.setVisibleItemCount(1);
+        ListBox earningsBox = new ListBox();
+        earningsBox.setVisibleItemCount(1);
+        ListBox capitalBox = new ListBox();
+        capitalBox.setVisibleItemCount(1);
+        
+        table.setText(2, 1, elements.account_all());
         table.setWidget(3, 1, accountNameBox);
 
+        table.setText(2, 2, elements.account_cost());
+        table.setWidget(3, 2, costBox);
+        
+        table.setText(2, 3, elements.account_earnings());
+        table.setWidget(3, 3, earningsBox);
+        
+        table.setText(2, 4, elements.account_capital());
+        table.setWidget(3, 4, capitalBox);
+        
         /* Above remove button. */
         table.addCell(3);
 
-        PosttypeCache.getInstance(constants, messages).fillAllPosts(accountNameBox);
+        PosttypeCache postTypeCache = PosttypeCache.getInstance(constants, messages);
+        postTypeCache.fillAllPosts(accountNameBox);
+        postTypeCache.fillAllCost(costBox);
+        postTypeCache.fillAllEarnings(earningsBox);
+        postTypeCache.fillAllCapital(capitalBox);
+        
+        
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
-
+        Util.syncListbox(costBox, accountIdBox.getTextBox());
+        Util.syncListbox(earningsBox, accountIdBox.getTextBox());
+        Util.syncListbox(capitalBox, accountIdBox.getTextBox());
+        Util.syncListboxes(accountNameBox, costBox, earningsBox, capitalBox);
+        
+        
         table.setText(4, 0, elements.project());
 
         HTML projectErrorLabel = new HTML();

@@ -32,6 +32,10 @@ public class PosttypeCache implements Registry {
 
     List<String> originalSort;
 
+    List<String> earnings;
+    List<String> costs;
+    List<String> capital;
+
     List<String> memberPaymentPosts;
 
     public static PosttypeCache getInstance(Constants constants, I18NAccount messages) {
@@ -50,12 +54,25 @@ public class PosttypeCache implements Registry {
 
                 typeGivesDescription = new HashMap<String, String>();
                 originalSort = new ArrayList<String>();
-                
+                earnings = new ArrayList<String>();
+                costs = new ArrayList<String>();
+                capital = new ArrayList<String>();
+
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject obj = array.get(i).isObject();
 
                     String key = Util.str(obj.get("PostType"));
                     typeGivesDescription.put(key, Util.str(obj.get("Description")));
+
+                    if (Util.getBoolean(obj.get("Capital"))) {
+                        capital.add(key);
+                    }
+                    if (Util.getBoolean(obj.get("Earning"))) {
+                        earnings.add(key);
+                    }
+                    if (Util.getBoolean(obj.get("Cost"))) {
+                        costs.add(key);
+                    }
 
                     originalSort.add(key);
                 }
@@ -94,13 +111,41 @@ public class PosttypeCache implements Registry {
         return type + " - " + typeGivesDescription.get(type);
     }
 
+
+    private void simpleFill(ListBox box, List<String> list) {
+        box.insertItem("", 0);
+
+        int pos = 1;
+        for (String k : list) {
+
+            String desc = typeGivesDescription.get(k);
+
+            // if (includeKey) {
+            // desc = k + " " + desc;
+            // }
+            box.insertItem(desc, k, pos++);
+        }
+    }
+    public void fillAllCost(ListBox boxError) {
+        simpleFill(boxError, costs);
+        
+    }
+
+    public void fillAllEarnings(ListBox boxError) {
+        simpleFill(boxError, earnings);
+    }
+
+    public void fillAllCapital(ListBox boxError) {
+        simpleFill(boxError, capital);
+    }
+
     public void fillAllPosts(ListBox box) {
         fillAllPosts(box, null, true, false);
     }
 
     public void fillMembershipPayments(ListBox box) {
         int pos = 1;
-        for(String k: memberPaymentPosts) {
+        for (String k : memberPaymentPosts) {
 
             String desc = typeGivesDescription.get(k);
 

@@ -243,6 +243,7 @@ public class Util {
         ChangeHandler textchange = new ChangeHandler() {
 
             public void onChange(ChangeEvent event) {
+                listbox.setSelectedIndex(0);
                 String id = textbox.getText();
 
                 for (int i = 0; i < listbox.getItemCount(); i++) {
@@ -571,6 +572,35 @@ public class Util {
 
     public static String getSelected(ListBoxWithErrorText select) {
         return getSelected(select.getListbox());
+    }
+
+    public static void syncListboxes(final ListBox... boxes) {
+        for (ListBox listBox : boxes) {
+            listBox.addChangeHandler(new ChangeHandler() {
+
+                public void onChange(ChangeEvent event) {
+                    ListBox sourceBox = (ListBox) event.getSource();
+                    String id = Util.getSelected(sourceBox);
+
+                    for (ListBox listBox : boxes) {
+                        if(listBox == sourceBox) {
+                            continue;
+                        }
+                        listBox.setSelectedIndex(0);
+
+                        for (int i = 0; i < listBox.getItemCount(); i++) {
+                            if (listBox.getValue(i).equals(id)) {
+                                listBox.setSelectedIndex(i);
+                                break;
+                            }
+                        }
+
+
+                    }
+                }
+                
+            });
+        }
     }
 
 }

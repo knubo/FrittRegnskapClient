@@ -52,6 +52,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String account();
 
   /**
+   * Translated "Alle konti".
+   * 
+   * @return translated "Alle konti"
+   */
+  @DefaultStringValue("Alle konti")
+  @Key("account_all")
+  String account_all();
+
+  /**
+   * Translated "Kapitalkonti".
+   * 
+   * @return translated "Kapitalkonti"
+   */
+  @DefaultStringValue("Kapitalkonti")
+  @Key("account_capital")
+  String account_capital();
+
+  /**
    * Translated "Samlekonto kontoplan".
    * 
    * @return translated "Samlekonto kontoplan"
@@ -68,6 +86,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Samlekonto månedsoversikt")
   @Key("account_collection_month")
   String account_collection_month();
+
+  /**
+   * Translated "Kostandskonti".
+   * 
+   * @return translated "Kostandskonti"
+   */
+  @DefaultStringValue("Kostandskonti")
+  @Key("account_cost")
+  String account_cost();
+
+  /**
+   * Translated "Inntektskonti".
+   * 
+   * @return translated "Inntektskonti"
+   */
+  @DefaultStringValue("Inntektskonti")
+  @Key("account_earnings")
+  String account_earnings();
 
   /**
    * Translated "Aksjon".
