@@ -170,6 +170,7 @@ public class MonthView extends Composite implements ClickHandler,
 		JSONObject root = jsonValue.isObject();
 
 		JSONValue monthInfo = root.get("monthinfo");
+		
 		JSONObject monthObj = monthInfo.isObject();
 
 		JSONValue debetsums = monthObj.get("debetsums");
@@ -184,7 +185,9 @@ public class MonthView extends Composite implements ClickHandler,
 		JSONArray array = lines.isArray();
 
 		showLines(array);
-		showDebetCreditSums(debetsums.isObject(), creditsums.isObject());
+		if(array.size() > 0) {
+		    showDebetCreditSums(debetsums.isObject(), creditsums.isObject());
+		}
 
 	}
 

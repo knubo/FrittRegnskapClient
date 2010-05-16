@@ -174,6 +174,8 @@ public class LineEditView extends Composite implements ClickHandler {
 
     private ProjectCache projectCache;
 
+    protected boolean disableDelete = false;
+
     private void showLine(String line, String navigate) {
 
         ServerResponse rh = new ServerResponse() {
@@ -181,6 +183,7 @@ public class LineEditView extends Composite implements ClickHandler {
 
                 JSONObject root = responseValue.isObject();
 
+                disableDelete = Util.getBoolean(root.get("disableDelete"));
                 currentLine = Util.str(root.get("Id"));
                 currentId.setText(currentLine);
                 registerStandards.setCurrentMonth(Util.getMonth(root.get("date")));
@@ -238,11 +241,13 @@ public class LineEditView extends Composite implements ClickHandler {
         postsTable.setText(rowcount, 4, amount);
         postsTable.getCellFormatter().setStyleName(rowcount, 4, "right");
 
-        Image removeImage = ImageFactory.removeImage("LineEditView.removeImage");
-        postsTable.setWidget(rowcount, 5, removeImage);
-        removeImage.addClickHandler(this);
+        if (!disableDelete) {
+            Image removeImage = ImageFactory.removeImage("LineEditView.removeImage");
+            postsTable.setWidget(rowcount, 5, removeImage);
+            removeImage.addClickHandler(this);
 
-        removeIdHolder.add(id, removeImage);
+            removeIdHolder.add(id, removeImage);
+        }
     }
 
     /**

@@ -115,7 +115,7 @@ public class AuthResponder implements RequestCallback {
                 } catch (Exception e) {
                     Elements elements = (Elements) GWT.create(Elements.class);
                     
-                    ErrorReportingWindow.reportError(elements.error_uncought_exception()+" "+e.getMessage(), e.toString());
+                    ErrorReportingWindow.reportError(elements.error_uncought_exception(), e.toString());
                     Util.log(e.toString());
                 }
             }
