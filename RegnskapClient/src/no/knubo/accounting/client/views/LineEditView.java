@@ -203,12 +203,20 @@ public class LineEditView extends Composite implements ClickHandler {
                     addRegnLine(array.get(i));
                 }
                 addSumLineSetDefaults(Util.str(root.get("sum")));
+                
+                enableDisableButtonsBasedOnDeleteIsPossible();
             }
 
         };
 
         AuthResponder.get(constants, messages, rh, "accounting/editaccountline.php?action=query&line=" + line
                 + (navigate != null ? "&" + navigate : ""));
+    }
+
+    protected void enableDisableButtonsBasedOnDeleteIsPossible() {
+        addLineButton.setEnabled(!disableDelete);
+        descriptionBox.setEnabled(!disableDelete);
+        dayBox.setEnabled(!disableDelete);
     }
 
     protected void addRegnLine(JSONValue value) {
