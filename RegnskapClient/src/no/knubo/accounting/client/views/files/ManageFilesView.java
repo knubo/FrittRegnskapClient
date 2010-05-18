@@ -127,7 +127,7 @@ public class ManageFilesView extends Composite implements ClickHandler {
         
         
         
-        final Label tb = new Label("Filnavn");
+        final Label tb = new Label(elements.file());
         panel.add(tb);
 
         Hidden hidden = new Hidden();
@@ -139,7 +139,7 @@ public class ManageFilesView extends Composite implements ClickHandler {
         upload.setName("uploadFormElement");
         panel.add(upload);
 
-        panel.add(new Button("Last opp fil", new ClickHandler() {
+        panel.add(new Button(elements.upload_file(), new ClickHandler() {
 
             public void onClick(ClickEvent event) {
                 form.submit();

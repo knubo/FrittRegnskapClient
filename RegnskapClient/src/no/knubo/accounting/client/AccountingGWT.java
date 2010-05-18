@@ -30,6 +30,7 @@ import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.YearEndView;
 import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
+import no.knubo.accounting.client.views.exportimport.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
 import no.knubo.accounting.client.views.registers.AccountTrackEditView;
@@ -119,6 +120,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar trustMenu = addTopMenu(topMenu, elements.menu_trust());
         MenuBar reportsMenu = addTopMenu(topMenu, elements.menu_reports());
         MenuBar settingsMenu = addTopMenu(topMenu, elements.menu_settings());
+        MenuBar importExportMenu = addTopMenu(topMenu, elements.menu_export_import());
         MenuBar logoutMenu = addTopMenu(topMenu, elements.menu_logout());
         MenuBar aboutMenu = addTopMenu(topMenu, elements.menu_info());
 
@@ -172,6 +174,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(settingsMenu, elements.menuitem_edit_happening(), WidgetIds.EDIT_HAPPENING);
         addMenuItem(settingsMenu, elements.menuitem_values(), WidgetIds.SETTINGS);
 
+        addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
+        addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
+        
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
@@ -398,6 +403,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case END_YEAR:
                 widget = YearEndView.getInstance(constants, messages, callback, elements);
                 ((YearEndView) widget).init();
+                break;
+            case IMPORT_PERSON:
+                widget = ImportPersonView.getInstance(constants, messages, elements);
                 break;
             }
 

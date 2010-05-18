@@ -532,3 +532,10 @@ TD.green {
 	border-color: red;
 	border-style: solid;
 }
+.importtable {
+	border:thin;
+	border-style: solid;
+}
+.importtable TD {
+	white-space: nowrap;
+}

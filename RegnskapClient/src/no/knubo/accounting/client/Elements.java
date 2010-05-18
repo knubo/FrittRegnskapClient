@@ -709,6 +709,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String delete_line();
 
   /**
+   * Translated "Skilletegn".
+   * 
+   * @return translated "Skilletegn"
+   */
+  @DefaultStringValue("Skilletegn")
+  @Key("delimiter")
+  String delimiter();
+
+  /**
    * Translated "Beskrivelse".
    * 
    * @return translated "Beskrivelse"
@@ -1051,6 +1060,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String fall();
 
   /**
+   * Translated "Fil".
+   * 
+   * @return translated "Fil"
+   */
+  @DefaultStringValue("Fil")
+  @Key("file")
+  String file();
+
+  /**
    * Translated "Filer".
    * 
    * @return translated "Filer"
@@ -1058,6 +1076,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Filer")
   @Key("files")
   String files();
+
+  /**
+   * Translated "Finn felter".
+   * 
+   * @return translated "Finn felter"
+   */
+  @DefaultStringValue("Finn felter")
+  @Key("find_fields")
+  String find_fields();
 
   /**
    * Translated "Fornavn".
@@ -1447,6 +1474,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_budget();
 
   /**
+   * Translated "Eksport/Import".
+   * 
+   * @return translated "Eksport/Import"
+   */
+  @DefaultStringValue("Eksport/Import")
+  @Key("menu_export_import")
+  String menu_export_import();
+
+  /**
    * Translated "Info".
    * 
    * @return translated "Info"
@@ -1645,6 +1681,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_endyear();
 
   /**
+   * Translated "Eksport av personregister".
+   * 
+   * @return translated "Eksport av personregister"
+   */
+  @DefaultStringValue("Eksport av personregister")
+  @Key("menuitem_export_person")
+  String menuitem_export_person();
+
+  /**
    * Translated "Vedlikehold filer".
    * 
    * @return translated "Vedlikehold filer"
@@ -1661,6 +1706,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Søk etter person")
   @Key("menuitem_findperson")
   String menuitem_findperson();
+
+  /**
+   * Translated "Import av personer".
+   * 
+   * @return translated "Import av personer"
+   */
+  @DefaultStringValue("Import av personer")
+  @Key("menuitem_import_person")
+  String menuitem_import_person();
 
   /**
    * Translated "Vis logger".
@@ -2894,6 +2948,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Oppdater")
   @Key("update")
   String update();
+
+  /**
+   * Translated "Last opp fil".
+   * 
+   * @return translated "Last opp fil"
+   */
+  @DefaultStringValue("Last opp fil")
+  @Key("upload_file")
+  String upload_file();
 
   /**
    * Translated "Bruk valgte".
