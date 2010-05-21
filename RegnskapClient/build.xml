@@ -10,6 +10,7 @@
 		<pathelement location="war/WEB-INF/classes" />
 		<pathelement location="${gwt.sdk}/gwt-user.jar" />
 		<pathelement location="lib/gwt-visualization.jar" />
+		<pathelement location="lib/gwt-wizard.jar" />
 		<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar" />
 	</path>
 

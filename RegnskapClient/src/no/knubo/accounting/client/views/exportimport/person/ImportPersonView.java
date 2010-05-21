@@ -1,8 +1,9 @@
-package no.knubo.accounting.client.views.exportimport;
+package no.knubo.accounting.client.views.exportimport.person;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import net.binarymuse.gwt.client.ui.wizard.Wizard;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -13,9 +14,11 @@ import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -32,14 +35,14 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
 
     private static ImportPersonView instance;
     private Hidden hiddenAction;
-    private Button uploadButton;
-    private final I18NAccount messages;
     private final Elements elements;
     private HTMLPanel dataTable;
     private HTML errorLabel;
     private ArrayList<ListBoxWithErrorText> allBoxes;
     private VerticalPanel panel;
     private HashSet<String> excludedElements;
+    private Button insertButton;
+    private Hidden hiddenExclude;
 
     public static ImportPersonView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (instance == null) {
@@ -50,7 +53,6 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
 
     public ImportPersonView(final I18NAccount messages, Constants constants, final Elements elements) {
 
-        this.messages = messages;
         this.elements = elements;
         final FormPanel form = new FormPanel();
         form.setAction(constants.baseurl() + "exportimport/personimport.php");
@@ -78,21 +80,45 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
 
         hiddenAction = new Hidden();
         hiddenAction.setName("action");
-        hiddenAction.setValue("findfields");
         panel.add(hiddenAction);
+
+        hiddenExclude = new Hidden();
+        hiddenExclude.setName("exclude");
+        panel.add(hiddenExclude);
 
         FileUpload upload = new FileUpload();
         upload.setName("uploadFormElement");
         panel.add(upload);
 
-        uploadButton = new Button(elements.find_fields(), new ClickHandler() {
-
+        Button uploadButton = new Button(elements.find_fields(), new ClickHandler() {
             public void onClick(ClickEvent event) {
+                hiddenAction.setValue("findfields");
                 form.submit();
             }
         });
-        panel.add(uploadButton);
 
+        insertButton = new Button(elements.add(), new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                boolean result = Window.confirm(messages.confirm_import_person());
+                hiddenExclude.setValue(createExcludeList());
+                if (result) {
+                    hiddenAction.setValue("insert");
+
+                    form.submit();
+                }
+            }
+        });
+
+        insertButton.setVisible(false);
+
+        FlowPanel fp = new FlowPanel();
+        fp.add(uploadButton);
+        fp.add(insertButton);
+
+        panel.add(fp);
+
+        panel.add(createWizard());
+        
         errorLabel = new HTML();
         panel.add(errorLabel);
 
@@ -102,7 +128,29 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
         initWidget(form);
     }
 
+    private Widget createWizard() {
+        Wizard<ImportPersonContext> wizard =
+            new Wizard<ImportPersonContext>("Import persons", new ImportPersonContext());
+        wizard.addPage(new WelcomePage());
+        wizard.addPage(new SelectFilePage());
+        wizard.setSize("800px", "600px");
+        return wizard;
+    }
+
+    protected String createExcludeList() {
+        StringBuilder sb = new StringBuilder();
+
+        for (String x : excludedElements) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(x);
+        }
+        return sb.toString();
+    }
+
     public void onSubmitComplete(SubmitCompleteEvent event) {
+        insertButton.setVisible(true);
         if (hiddenAction.getValue().equals("findfields")) {
             panel.remove(dataTable);
             excludedElements = new HashSet<String>();
@@ -155,7 +203,7 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
     private Widget createAddImage(String row) {
         Image image = ImageFactory.chooseImage("add" + row);
         image.addClickHandler(this);
-        
+
         excludedElements.remove(row);
         return image;
     }
@@ -184,9 +232,10 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
         box.addItem(elements.getString("phone"), "phone");
         box.addItem(elements.getString("cellphone"), "cellphone");
         box.addItem(elements.getString("employee"), "employee");
-        box.addItem(elements.getString("birthdate"), "birthdate");
+        box.addItem(elements.getString("birthdate") + " (dd.mm.yyyy)", "birthdate");
         box.addItem(elements.getString("newsletter"), "newsletter");
-        box.addItem(elements.getString("gender"), "gender");
+        box.addItem(elements.getString("gender") + " (M/F)",
+                "gender");
 
         allBoxes.add(box);
 

@@ -61,6 +61,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String confirm_delete();
 
   /**
+   * Translated "Fortsette med import av personer?".
+   * 
+   * @return translated "Fortsette med import av personer?"
+   */
+  @DefaultMessage("Fortsette med import av personer?")
+  @Key("confirm_import_person")
+  String confirm_import_person();
+
+  /**
    * Translated "Utgifter for {0}".
    * 
    * @return translated "Utgifter for {0}"
@@ -295,11 +304,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String not_logged_in();
 
   /**
-   * Translated "Opplastning mislyktes i og med at den filen du opplastet gikk over din disk kvote.".
+   * Translated "Opplastning mislyktes i og med at den filen du opplastet gikk over din diskkvote.".
    * 
-   * @return translated "Opplastning mislyktes i og med at den filen du opplastet gikk over din disk kvote."
+   * @return translated "Opplastning mislyktes i og med at den filen du opplastet gikk over din diskkvote."
    */
-  @DefaultMessage("Opplastning mislyktes i og med at den filen du opplastet gikk over din disk kvote.")
+  @DefaultMessage("Opplastning mislyktes i og med at den filen du opplastet gikk over din diskkvote.")
   @Key("quota_exceeded")
   String quota_exceeded();
 

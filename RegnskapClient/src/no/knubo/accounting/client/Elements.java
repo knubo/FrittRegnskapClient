@@ -1078,11 +1078,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String files();
 
   /**
-   * Translated "Finn felter".
+   * Translated "Les fil og identifiser felter".
    * 
-   * @return translated "Finn felter"
+   * @return translated "Les fil og identifiser felter"
    */
-  @DefaultStringValue("Finn felter")
+  @DefaultStringValue("Les fil og identifiser felter")
   @Key("find_fields")
   String find_fields();
 
@@ -2993,6 +2993,42 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Valør")
   @Key("value")
   String value();
+
+  /**
+   * Translated "Velg felter og data".
+   * 
+   * @return translated "Velg felter og data"
+   */
+  @DefaultStringValue("Velg felter og data")
+  @Key("wizard_import_person_choose_fields")
+  String wizard_import_person_choose_fields();
+
+  /**
+   * Translated "Velg fil og felter".
+   * 
+   * @return translated "Velg fil og felter"
+   */
+  @DefaultStringValue("Velg fil og felter")
+  @Key("wizard_import_person_identify_fields")
+  String wizard_import_person_identify_fields();
+
+  /**
+   * Translated "Godkjenn før import".
+   * 
+   * @return translated "Godkjenn før import"
+   */
+  @DefaultStringValue("Godkjenn før import")
+  @Key("wizard_import_person_preview")
+  String wizard_import_person_preview();
+
+  /**
+   * Translated "Resultat av import".
+   * 
+   * @return translated "Resultat av import"
+   */
+  @DefaultStringValue("Resultat av import")
+  @Key("wizard_import_person_result")
+  String wizard_import_person_result();
 
   /**
    * Translated "X".

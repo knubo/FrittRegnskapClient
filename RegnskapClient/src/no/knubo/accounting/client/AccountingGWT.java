@@ -30,7 +30,7 @@ import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.YearEndView;
 import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
-import no.knubo.accounting.client.views.exportimport.ImportPersonView;
+import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
 import no.knubo.accounting.client.views.registers.AccountTrackEditView;
