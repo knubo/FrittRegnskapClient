@@ -7,13 +7,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
-public class SelectFilePage extends WizardPage<ImportPersonContext> {
+public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> {
 
     public static final PageID PAGEID = new PageID();
 
     private FlowPanel panel;
 
-    public SelectFilePage() {
+    public ChooseFieldsAndDataPage() {
         panel = new FlowPanel();
         panel.add(new HTML("TODO"));
     }
@@ -37,6 +37,7 @@ public class SelectFilePage extends WizardPage<ImportPersonContext> {
     public void beforeShow() {
     	getWizard().setButtonVisible(ButtonType.BUTTON_CANCEL, false);
     	getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, false);
+    	getWizard().setButtonVisible(ButtonType.BUTTON_NEXT, true);
     }
     
 

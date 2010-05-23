@@ -4,16 +4,17 @@ import net.binarymuse.gwt.client.ui.wizard.WizardContext;
 
 public class ImportPersonContext extends WizardContext {
 
-    private boolean complete;
+	private boolean complete;
 
-    @Override
-    public boolean isComplete() {
-        return complete;
-    }
+	@Override
+	public boolean isComplete() {
+		return complete;
+	}
 
-    @Override
-    public void reset() {
-        
-    }
+	@Override
+	public void reset() {
+
+	}
+	
 
 }

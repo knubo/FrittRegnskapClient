@@ -130,10 +130,15 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
 
     private Widget createWizard() {
         Wizard<ImportPersonContext> wizard =
-            new Wizard<ImportPersonContext>("Import persons", new ImportPersonContext());
+            new Wizard<ImportPersonContext>(elements.menuitem_import_person(), new ImportPersonContext());
         wizard.addPage(new WelcomePage());
         wizard.addPage(new SelectFilePage());
+        wizard.addPage(new ChooseFieldsAndDataPage());
+        wizard.addPage(new PreviewPage());
+        wizard.addPage(new ResultPage());
         wizard.setSize("800px", "600px");
+        
+        
         return wizard;
     }
 
