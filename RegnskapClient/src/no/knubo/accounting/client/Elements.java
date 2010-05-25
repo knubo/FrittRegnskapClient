@@ -3004,13 +3004,31 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String wizard_import_person_choose_fields();
 
   /**
-   * Translated "Velg fil og felter".
+   * Translated "Velg fil".
    * 
-   * @return translated "Velg fil og felter"
+   * @return translated "Velg fil"
    */
-  @DefaultStringValue("Velg fil og felter")
+  @DefaultStringValue("Velg fil")
   @Key("wizard_import_person_identify_fields")
   String wizard_import_person_identify_fields();
+
+  /**
+   * Translated "<p>I denne wizarden kan du få importert personer fra csv fil. Hver person må ligge på en rad, men det er ikke krav om at alle felter som er tilgjengelig for person fylles ut. Påkrevde felter er etternavn og fødselsdato gitt at det er satt opp til det.</p> ".
+   * 
+   * @return translated "<p>I denne wizarden kan du få importert personer fra csv fil. Hver person må ligge på en rad, men det er ikke krav om at alle felter som er tilgjengelig for person fylles ut. Påkrevde felter er etternavn og fødselsdato gitt at det er satt opp til det.</p> "
+   */
+  @DefaultStringValue("<p>I denne wizarden kan du få importert personer fra csv fil. Hver person må ligge på en rad, men det er ikke krav om at alle felter som er tilgjengelig for person fylles ut. Påkrevde felter er etternavn og fødselsdato gitt at det er satt opp til det.</p> ")
+  @Key("wizard_import_person_intro")
+  String wizard_import_person_intro();
+
+  /**
+   * Translated "Start".
+   * 
+   * @return translated "Start"
+   */
+  @DefaultStringValue("Start")
+  @Key("wizard_import_person_intro_title")
+  String wizard_import_person_intro_title();
 
   /**
    * Translated "Godkjenn før import".

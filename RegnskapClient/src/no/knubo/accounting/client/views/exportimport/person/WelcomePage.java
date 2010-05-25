@@ -1,6 +1,8 @@
 package no.knubo.accounting.client.views.exportimport.person;
 
 import net.binarymuse.gwt.client.ui.wizard.WizardPage;
+import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
+import no.knubo.accounting.client.Elements;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -12,13 +14,13 @@ public class WelcomePage extends WizardPage<ImportPersonContext> {
 
     private FlowPanel panel;
 
-    public WelcomePage() {
+    private final Elements elements;
+
+    public WelcomePage(Elements elements) {
+        this.elements = elements;
         panel = new FlowPanel();
-        panel.add(new HTML("<h1>Welcome</h1>"));
-        panel.add(new HTML("<p>This wizard will guide you through " +
-            "the process of creating a new account.</p>"));
-        panel.add(new HTML("<p>When you are ready to being, please " +
-            "click \"Next.\"</p>"));
+        panel.add(new HTML(elements.wizard_import_person_intro()));
+
     }
 
     @Override
@@ -28,7 +30,14 @@ public class WelcomePage extends WizardPage<ImportPersonContext> {
 
     @Override
     public String getTitle() {
-        return "Welcome";
+        return elements.wizard_import_person_intro_title();
+    }
+
+    @Override
+    public void beforeShow() {
+        getWizard().setButtonVisible(ButtonType.BUTTON_CANCEL, false);
+        getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, false);
+        getWizard().setButtonVisible(ButtonType.BUTTON_PREVIOUS, false);
     }
 
     @Override

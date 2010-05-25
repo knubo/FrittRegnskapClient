@@ -2,6 +2,7 @@ package no.knubo.accounting.client.views.exportimport.person;
 
 import net.binarymuse.gwt.client.ui.wizard.WizardPage;
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
+import no.knubo.accounting.client.Elements;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -13,7 +14,10 @@ public class ResultPage extends WizardPage<ImportPersonContext> {
 
     private FlowPanel panel;
 
-    public ResultPage() {
+    private final Elements elements;
+
+    public ResultPage(Elements elements) {
+        this.elements = elements;
         panel = new FlowPanel();
         panel.add(new HTML("TODO"));
     }
@@ -25,7 +29,7 @@ public class ResultPage extends WizardPage<ImportPersonContext> {
 
     @Override
     public String getTitle() {
-        return "Import summary";
+        return elements.wizard_import_person_result();
     }
 
     @Override

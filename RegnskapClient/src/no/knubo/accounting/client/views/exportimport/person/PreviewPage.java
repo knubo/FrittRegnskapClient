@@ -2,6 +2,7 @@ package no.knubo.accounting.client.views.exportimport.person;
 
 import net.binarymuse.gwt.client.ui.wizard.WizardPage;
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
+import no.knubo.accounting.client.Elements;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -13,7 +14,10 @@ public class PreviewPage extends WizardPage<ImportPersonContext> {
 
     private FlowPanel panel;
 
-    public PreviewPage() {
+    private final Elements elements;
+
+    public PreviewPage(Elements elements) {
+        this.elements = elements;
         panel = new FlowPanel();
         panel.add(new HTML("TODO"));
     }
@@ -25,7 +29,7 @@ public class PreviewPage extends WizardPage<ImportPersonContext> {
 
     @Override
     public String getTitle() {
-        return "Preview before import";
+        return elements.wizard_import_person_preview();
     }
 
     @Override
@@ -36,7 +40,8 @@ public class PreviewPage extends WizardPage<ImportPersonContext> {
     @Override
     public void beforeShow() {
     	getWizard().setButtonVisible(ButtonType.BUTTON_CANCEL, true);
-    	getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, false);
+    	getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, true);
+    	getWizard().setButtonVisible(ButtonType.BUTTON_PREVIOUS, false);
     	getWizard().setButtonVisible(ButtonType.BUTTON_NEXT, false);
     }
     
