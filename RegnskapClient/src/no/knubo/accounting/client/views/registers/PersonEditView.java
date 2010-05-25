@@ -25,12 +25,12 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -150,7 +150,7 @@ public class PersonEditView extends Composite implements ClickHandler {
 
         saveStatus = new HTMLWithError();
 
-        Hyperlink toSearch = new Hyperlink(elements.back_search(), "personSearch");
+        Anchor toSearch = new Anchor(elements.back_search(), "personSearch");
         toSearch.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
