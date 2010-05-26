@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import net.binarymuse.gwt.client.ui.wizard.WizardPage;
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
+import net.binarymuse.gwt.client.ui.wizard.event.NavigationEvent;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.ImageFactory;
@@ -14,8 +15,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,8 +36,14 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
 
     private HTML errorLabel;
 
-    public ChooseFieldsAndDataPage(Elements elements) {
+    private final Hidden hiddenAction;
+
+    private final FormPanel form;
+
+    public ChooseFieldsAndDataPage(Elements elements, Hidden hiddenAction, FormPanel form) {
         this.elements = elements;
+        this.hiddenAction = hiddenAction;
+        this.form = form;
         panel = new FlowPanel();
         dataTable = new HTMLPanel("");
         panel.add(dataTable);
@@ -86,6 +95,12 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
         getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, false);
         getWizard().setButtonVisible(ButtonType.BUTTON_NEXT, true);
         getWizard().setButtonVisible(ButtonType.BUTTON_PREVIOUS, true);
+    }
+    
+    @Override
+    public void beforeNext(NavigationEvent event) {
+        hiddenAction.setValue("preview");
+        form.submit();
     }
 
     private void addFormElements() {
@@ -147,7 +162,8 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
     }
 
     private ListBoxWithErrorText createListbox(int col) {
-        ListBoxWithErrorText box = new ListBoxWithErrorText("select" + col, errorLabel);
+        ListBoxWithErrorText box = new ListBoxWithErrorText("col" + col, errorLabel);
+        box.getListbox().setName("col"+col);
         box.addItem("", "");
         box.addItem(elements.getString("firstname"), "firstname");
         box.addItem(elements.getString("lastname"), "lastname");

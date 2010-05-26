@@ -1,7 +1,5 @@
 package no.knubo.accounting.client.views.exportimport.person;
 
-import java.util.HashSet;
-
 import net.binarymuse.gwt.client.ui.wizard.Wizard;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
@@ -9,7 +7,6 @@ import no.knubo.accounting.client.I18NAccount;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,6 +22,7 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
     private Hidden hiddenExclude;
     private FormPanel form;
     private ChooseFieldsAndDataPage chooseFieldsAndDataPage;
+    private PreviewPage previewPage;
 
     public static ImportPersonView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (instance == null) {
@@ -56,20 +54,7 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
         hiddenExclude.setName("exclude");
         panel.add(hiddenExclude);
 
-        //
-        //
-        // insertButton = new Button(elements.add(), new ClickHandler() {
-        // public void onClick(ClickEvent event) {
-        // boolean result = Window.confirm(messages.confirm_import_person());
-        // hiddenExclude.setValue(createExcludeList());
-        // if (result) {
-        // hiddenAction.setValue("insert");
-        //
-        // form.submit();
-        // }
-        // }
-        // });
-
+    
         panel.add(createWizard());
 
 
@@ -79,23 +64,28 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
     private Widget createWizard() {
         Wizard<ImportPersonContext> wizard = new Wizard<ImportPersonContext>(elements.menuitem_import_person(),
                 new ImportPersonContext());
+        chooseFieldsAndDataPage = new ChooseFieldsAndDataPage(elements, hiddenAction, form);
+        previewPage = new PreviewPage(elements);
+
         wizard.addPage(new WelcomePage(elements));
         wizard.addPage(new SelectFilePage(elements, hiddenAction, form));
-        chooseFieldsAndDataPage = new ChooseFieldsAndDataPage(elements);
         wizard.addPage(chooseFieldsAndDataPage);
-        wizard.addPage(new PreviewPage(elements));
+        wizard.addPage(previewPage);
         wizard.addPage(new ResultPage(elements));
         wizard.setSize("800px", "600px");
 
+        previewPage.addEventListeners();
+        
         return wizard;
     }
 
 
     public void onSubmitComplete(SubmitCompleteEvent event) {
         if (hiddenAction.getValue().equals("findfields")) {
-
             chooseFieldsAndDataPage.setHTMLInDataTable(event.getResults());
 
+        } else if(hiddenAction.getValue().equals("preview")) {
+            previewPage.setPreviewHTML(event.getResults());
         }
     }
 
