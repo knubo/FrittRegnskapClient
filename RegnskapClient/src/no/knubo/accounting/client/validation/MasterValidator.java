@@ -63,6 +63,7 @@ public class MasterValidator {
     }
 
     public boolean validateStatus() {
+        
         return status;
     }
 
@@ -101,10 +102,12 @@ public class MasterValidator {
         if (shouldFail) {
             failedFields.add(box);
             box.setErrorText(message);
+            status = false;
         } else {
             box.setErrorText("");
+            status = true;
         }
-
+        
         return !shouldFail;
     }
 

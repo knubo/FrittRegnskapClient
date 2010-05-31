@@ -196,6 +196,42 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String illegal_year();
 
   /**
+   * Translated "Du må velge felt for fødselsdato.".
+   * 
+   * @return translated "Du må velge felt for fødselsdato."
+   */
+  @DefaultMessage("Du må velge felt for fødselsdato.")
+  @Key("import_birthdate_required")
+  String import_birthdate_required();
+
+  /**
+   * Translated "Velg fil og skilletegn for å komme videre. ".
+   * 
+   * @return translated "Velg fil og skilletegn for å komme videre. "
+   */
+  @DefaultMessage("Velg fil og skilletegn for å komme videre. ")
+  @Key("import_choose_file_and_field")
+  String import_choose_file_and_field();
+
+  /**
+   * Translated "Du må velge felt for etternavn.".
+   * 
+   * @return translated "Du må velge felt for etternavn."
+   */
+  @DefaultMessage("Du må velge felt for etternavn.")
+  @Key("import_lastname_required")
+  String import_lastname_required();
+
+  /**
+   * Translated "Du kan kun velge et felt en gang.".
+   * 
+   * @return translated "Du kan kun velge et felt en gang."
+   */
+  @DefaultMessage("Du kan kun velge et felt en gang.")
+  @Key("import_same_field_twice")
+  String import_same_field_twice();
+
+  /**
    * Translated "Inntekter for {0}".
    * 
    * @return translated "Inntekter for {0}"

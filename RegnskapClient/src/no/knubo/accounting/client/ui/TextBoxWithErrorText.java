@@ -148,4 +148,8 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
     public boolean isEnabled() {
         return textBox.isEnabled();
     }
+
+    public void setName(String string) {
+        textBox.setName(string);
+    }
 }

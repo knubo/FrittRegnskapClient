@@ -4,13 +4,13 @@ import net.binarymuse.gwt.client.ui.wizard.WizardPage;
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
 import net.binarymuse.gwt.client.ui.wizard.event.NavigationEvent;
 import no.knubo.accounting.client.Elements;
+import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.ui.FileUploadWithErrorText;
+import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
-import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SelectFilePage extends WizardPage<ImportPersonContext> {
@@ -21,27 +21,28 @@ public class SelectFilePage extends WizardPage<ImportPersonContext> {
 
     private final Elements elements;
 
-    private final Hidden hiddenAction;
+    private TextBoxWithErrorText delimiterBox;
 
-    private final FormPanel form;
+    private final I18NAccount messages;
 
-    public SelectFilePage(Elements elements, Hidden hiddenAction, FormPanel form) {
+    private FileUploadWithErrorText upload;
+
+    public SelectFilePage(Elements elements, I18NAccount messages) {
         this.elements = elements;
-        this.hiddenAction = hiddenAction;
-        this.form = form;
+        this.messages = messages;
         panel = new FlowPanel();
 
         Label delimiter = new Label(elements.delimiter());
         panel.add(delimiter);
 
-        TextBox delimiterBox = new TextBox();
+        delimiterBox = new TextBoxWithErrorText("delimiter");
         delimiterBox.setName("delimiter");
         delimiterBox.setMaxLength(1);
         panel.add(delimiterBox);
 
         Label tb = new Label(elements.file());
         panel.add(tb);
-        FileUpload upload = new FileUpload();
+        upload = new FileUploadWithErrorText("file_upload");
         upload.setName("uploadFormElement");
         panel.add(upload);
 
@@ -63,6 +64,11 @@ public class SelectFilePage extends WizardPage<ImportPersonContext> {
     }
 
     @Override
+    public void afterShow() {
+        delimiterBox.setFocus(true);
+    }
+
+    @Override
     public void beforeShow() {
         getWizard().setButtonVisible(ButtonType.BUTTON_PREVIOUS, true);
         getWizard().setButtonVisible(ButtonType.BUTTON_CANCEL, false);
@@ -71,7 +77,14 @@ public class SelectFilePage extends WizardPage<ImportPersonContext> {
 
     @Override
     public void beforeNext(NavigationEvent event) {
-        hiddenAction.setValue("findfields");
-        form.submit();
+        MasterValidator mv = new MasterValidator();
+        mv.mandatory(messages.required_field(), delimiterBox, upload);
+       
+        if(!mv.validateStatus()) {
+            event.cancel();
+            return;
+        }
+
+        
     }
 }

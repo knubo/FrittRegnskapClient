@@ -35,6 +35,7 @@ public class WelcomePage extends WizardPage<ImportPersonContext> {
 
     @Override
     public void beforeShow() {
+        getWizard().setButtonVisible(ButtonType.BUTTON_NEXT, true);
         getWizard().setButtonVisible(ButtonType.BUTTON_CANCEL, false);
         getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, false);
         getWizard().setButtonVisible(ButtonType.BUTTON_PREVIOUS, false);

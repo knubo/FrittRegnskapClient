@@ -49,6 +49,11 @@ public class PreviewPage extends WizardPage<ImportPersonContext> implements Clic
         getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, true);
         getWizard().setButtonVisible(ButtonType.BUTTON_PREVIOUS, false);
         getWizard().setButtonVisible(ButtonType.BUTTON_NEXT, false);
+        
+        
+        getContext().hiddenAction.setValue("preview");
+        getContext().submit();
+
     }
 
     public void setPreviewHTML(String results) {
@@ -63,5 +68,6 @@ public class PreviewPage extends WizardPage<ImportPersonContext> implements Clic
         getWizard().getButton(ButtonType.BUTTON_CANCEL).addClickHandler(this);
 
     }
+
 
 }

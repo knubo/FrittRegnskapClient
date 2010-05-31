@@ -151,16 +151,16 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
                     JSONObject obj = array.get(i).isObject();
 
                     String id = Util.str(obj.get("id"));
-                    String firstname = Util.str(obj.get("firstname"));
-                    String lastname = Util.str(obj.get("lastname"));
-                    String cellphone = Util.str(obj.get("cellphone"));
+                    String firstname = Util.strSkipNull(obj.get("firstname"));
+                    String lastname = Util.strSkipNull(obj.get("lastname"));
+                    String cellphone = Util.strSkipNull(obj.get("cellphone"));
 
                     int row = i + 1;
                     resultTable.setHTML(row, 0, firstname);
                     resultTable.setHTML(row, 1, lastname + " (" + id + ")");
-                    resultTable.setHTML(row, 2, Util.str(obj.get("email")));
-                    resultTable.setHTML(row, 3, Util.str(obj.get("address")));
-                    resultTable.setHTML(row, 4, Util.str(obj.get("phone")));
+                    resultTable.setHTML(row, 2, Util.strSkipNull(obj.get("email")));
+                    resultTable.setHTML(row, 3, Util.strSkipNull(obj.get("address")));
+                    resultTable.setHTML(row, 4, Util.strSkipNull(obj.get("phone")));
                     resultTable.setHTML(row, 5, cellphone);
 
                     if ("1".equals(Util.str(obj.get("employee")))) {
@@ -170,7 +170,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
                     }
                     resultTable.getCellFormatter().setStyleName(row, 6, "center");
 
-                    resultTable.setHTML(row, 7, Util.str(obj.get("gender")));
+                    resultTable.setHTML(row, 7, Util.strSkipNull(obj.get("gender")));
 
                     String style = (row % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     resultTable.getRowFormatter().setStyleName(row, style);

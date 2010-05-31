@@ -1,7 +1,9 @@
 package no.knubo.accounting.client;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
@@ -601,6 +603,29 @@ public class Util {
                 
             });
         }
+    }
+
+    public static boolean selectionContains(List<ListBoxWithErrorText> allBoxes, String needle) {
+        for (ListBoxWithErrorText listBoxWithErrorText : allBoxes) {
+            if(needle.equals(getSelected(listBoxWithErrorText))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean uniqeSelections(ArrayList<ListBoxWithErrorText> allBoxes) {
+        HashSet<String> selectedValues = new HashSet<String>();
+
+        for (ListBoxWithErrorText listBoxWithErrorText : allBoxes) {
+            String selected = getSelected(listBoxWithErrorText);
+            if(selectedValues.contains(selected)) {
+                return false;
+            }
+            selectedValues.add(selected);
+        }
+
+        return true;
     }
 
 }

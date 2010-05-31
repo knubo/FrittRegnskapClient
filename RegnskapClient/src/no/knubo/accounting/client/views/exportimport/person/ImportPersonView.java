@@ -1,10 +1,13 @@
 package no.knubo.accounting.client.views.exportimport.person;
 
 import net.binarymuse.gwt.client.ui.wizard.Wizard;
+import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Hidden;
@@ -13,7 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 
-public class ImportPersonView extends Composite implements SubmitCompleteHandler {
+public class ImportPersonView extends Composite implements SubmitCompleteHandler, ClickHandler {
 
     private static ImportPersonView instance;
     private Hidden hiddenAction;
@@ -23,6 +26,9 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
     private FormPanel form;
     private ChooseFieldsAndDataPage chooseFieldsAndDataPage;
     private PreviewPage previewPage;
+    private Wizard<ImportPersonContext> wizard;
+    private ResultPage resultPage;
+    private final I18NAccount messages;
 
     public static ImportPersonView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (instance == null) {
@@ -33,6 +39,7 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
 
     public ImportPersonView(final I18NAccount messages, Constants constants, final Elements elements) {
 
+        this.messages = messages;
         this.elements = elements;
         form = new FormPanel();
         form.setAction(constants.baseurl() + "exportimport/personimport.php");
@@ -62,18 +69,23 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
     }
 
     private Widget createWizard() {
-        Wizard<ImportPersonContext> wizard = new Wizard<ImportPersonContext>(elements.menuitem_import_person(),
-                new ImportPersonContext());
-        chooseFieldsAndDataPage = new ChooseFieldsAndDataPage(elements, hiddenAction, form);
-        previewPage = new PreviewPage(elements);
+        wizard = new Wizard<ImportPersonContext>(elements.menuitem_import_person(),
+                new ImportPersonContext(form, hiddenAction, hiddenExclude));
 
         wizard.addPage(new WelcomePage(elements));
-        wizard.addPage(new SelectFilePage(elements, hiddenAction, form));
+        wizard.addPage(new SelectFilePage(elements, messages));
+
+        chooseFieldsAndDataPage = new ChooseFieldsAndDataPage(elements, messages);
         wizard.addPage(chooseFieldsAndDataPage);
+
+        previewPage = new PreviewPage(elements);
         wizard.addPage(previewPage);
-        wizard.addPage(new ResultPage(elements));
+        resultPage = new ResultPage(elements);
+        wizard.addPage(resultPage);
         wizard.setSize("800px", "600px");
 
+        wizard.getButton(ButtonType.BUTTON_FINISH).addClickHandler(this);
+        
         previewPage.addEventListeners();
         
         return wizard;
@@ -86,7 +98,16 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
 
         } else if(hiddenAction.getValue().equals("preview")) {
             previewPage.setPreviewHTML(event.getResults());
+        } else if(hiddenAction.getValue().equals("insert")) {
+            resultPage.setResultHTML(event.getResults());
         }
+    }
+
+    public void onClick(ClickEvent event) {
+        hiddenAction.setValue("insert");
+        form.submit();
+        
+        wizard.showNextPage();
     }
 
 }

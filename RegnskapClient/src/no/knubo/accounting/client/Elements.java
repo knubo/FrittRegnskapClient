@@ -2995,11 +2995,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String value();
 
   /**
-   * Translated "Velg felter og data".
+   * Translated "Velg felter og rader".
    * 
-   * @return translated "Velg felter og data"
+   * @return translated "Velg felter og rader"
    */
-  @DefaultStringValue("Velg felter og data")
+  @DefaultStringValue("Velg felter og rader")
   @Key("wizard_import_person_choose_fields")
   String wizard_import_person_choose_fields();
 

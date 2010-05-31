@@ -322,16 +322,16 @@ public class PersonEditView extends Composite implements ClickHandler {
     }
 
     void setPersonData(JSONObject object) {
-        firstnameBox.setText(Util.str(object.get("FirstName")));
-        lastnameBox.setText(Util.str(object.get("LastName")));
+        firstnameBox.setText(Util.strSkipNull(object.get("FirstName")));
+        lastnameBox.setText(Util.strSkipNull(object.get("LastName")));
         birthdateBox.setText(Util.strSkipNull(object.get("Birthdate")));
-        addressBox.setText(Util.str(object.get("Address")));
-        postnmbBox.setText(Util.str(object.get("PostNmb")));
-        cityBox.setText(Util.str(object.get("City")));
-        phoneBox.setText(Util.str(object.get("Phone")));
-        cellphoneBox.setText(Util.str(object.get("Cellphone")));
+        addressBox.setText(Util.strSkipNull(object.get("Address")));
+        postnmbBox.setText(Util.strSkipNull(object.get("PostNmb")));
+        cityBox.setText(Util.strSkipNull(object.get("City")));
+        phoneBox.setText(Util.strSkipNull(object.get("Phone")));
+        cellphoneBox.setText(Util.strSkipNull(object.get("Cellphone")));
         Util.setIndexByValue(countryListBox, Util.str(object.get("Country")));
-        emailBox.setText(Util.str(object.get("Email")));
+        emailBox.setText(Util.strSkipNull(object.get("Email")));
         employeeCheck.setValue("1".equals(Util.str(object.get("IsEmployee"))));
         newsletterCheck.setValue("1".equals(Util.str(object.get("Newsletter"))));
         hiddenCheck.setValue("1".equals(Util.str(object.get("Hidden"))));

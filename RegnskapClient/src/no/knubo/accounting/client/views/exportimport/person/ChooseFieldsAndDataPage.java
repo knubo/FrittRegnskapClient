@@ -7,18 +7,19 @@ import net.binarymuse.gwt.client.ui.wizard.WizardPage;
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
 import net.binarymuse.gwt.client.ui.wizard.event.NavigationEvent;
 import no.knubo.accounting.client.Elements;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -36,14 +37,13 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
 
     private HTML errorLabel;
 
-    private final Hidden hiddenAction;
+    private final I18NAccount messages;
 
-    private final FormPanel form;
+    private boolean birthDateMandatory;
 
-    public ChooseFieldsAndDataPage(Elements elements, Hidden hiddenAction, FormPanel form) {
+    public ChooseFieldsAndDataPage(Elements elements, I18NAccount messages) {
         this.elements = elements;
-        this.hiddenAction = hiddenAction;
-        this.form = form;
+        this.messages = messages;
         panel = new FlowPanel();
         dataTable = new HTMLPanel("");
         panel.add(dataTable);
@@ -58,6 +58,7 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
         excludedElements = new HashSet<String>();
 
         errorLabel = new HTML();
+        errorLabel.addStyleName("error");
         panel.add(errorLabel);
 
         panel.remove(dataTable);
@@ -68,17 +69,6 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
     }
 
 
-    protected String createExcludeList() {
-        StringBuilder sb = new StringBuilder();
-
-        for (String x : excludedElements) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append(x);
-        }
-        return sb.toString();
-    }
     @Override
     public String getTitle() {
         return elements.wizard_import_person_choose_fields();
@@ -95,12 +85,46 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
         getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, false);
         getWizard().setButtonVisible(ButtonType.BUTTON_NEXT, true);
         getWizard().setButtonVisible(ButtonType.BUTTON_PREVIOUS, true);
+        
+        getContext().hiddenAction.setValue("findfields");
+        getContext().submit();
     }
-    
+
+    @Override
+    public void afterShow() {
+        Timer t = new Timer() {
+            @Override
+            public void run() {
+                if (allBoxes.size() > 0) {
+                    allBoxes.get(0).setFocus(true);
+                }
+            }
+        };
+        t.schedule(500);
+    }
+
     @Override
     public void beforeNext(NavigationEvent event) {
-        hiddenAction.setValue("preview");
-        form.submit();
+        MasterValidator mv = new MasterValidator();
+
+        if (birthDateMandatory) {
+            mv.fail(allBoxes.get(0), !Util.selectionContains(this.allBoxes, "birthdate"), messages
+                    .import_birthdate_required());
+        }
+
+        mv.fail(allBoxes.get(0), !Util.selectionContains(this.allBoxes, "lastname"), messages
+                .import_lastname_required());
+
+        mv.fail(allBoxes.get(0), !Util.uniqeSelections(this.allBoxes), messages
+                .import_same_field_twice());
+
+        if(!mv.validateStatus()) {
+            event.cancel();
+            return;
+        }
+       
+        getContext().hiddenExclude.setValue(createExcludeList());
+
     }
 
     private void addFormElements() {
@@ -163,7 +187,7 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
 
     private ListBoxWithErrorText createListbox(int col) {
         ListBoxWithErrorText box = new ListBoxWithErrorText("col" + col, errorLabel);
-        box.getListbox().setName("col"+col);
+        box.getListbox().setName("col" + col);
         box.addItem("", "");
         box.addItem(elements.getString("firstname"), "firstname");
         box.addItem(elements.getString("lastname"), "lastname");
@@ -182,6 +206,18 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
         allBoxes.add(box);
 
         return box;
+    }
+
+    protected String createExcludeList() {
+        StringBuilder sb = new StringBuilder();
+
+        for (String x : excludedElements) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(x);
+        }
+        return sb.toString();
     }
 
 }
