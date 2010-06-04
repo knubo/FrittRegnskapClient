@@ -171,7 +171,7 @@ public class MonthView extends Composite implements ClickHandler,
 		JSONObject root = jsonValue.isObject();
 
 		JSONValue monthInfo = root.get("monthinfo");
-
+		
 		JSONObject monthObj = monthInfo.isObject();
 
 		JSONValue debetsums = monthObj.get("debetsums");
@@ -186,8 +186,8 @@ public class MonthView extends Composite implements ClickHandler,
 		JSONArray array = lines.isArray();
 
 		showLines(array);
-		if (array.size() > 0) {
-			showDebetCreditSums(debetsums.isObject(), creditsums.isObject());
+		if(array.size() > 0) {
+		    showDebetCreditSums(debetsums.isObject(), creditsums.isObject());
 		}
 
 	}
@@ -248,17 +248,16 @@ public class MonthView extends Composite implements ClickHandler,
 			table.setText(rowIndex, 2, Util.str(rowdata.get("date")));
 			table.getCellFormatter().setStyleName(rowIndex, 2, "datefor");
 
-			Anchor link = new Anchor(Util.str(rowdata.get("Description")),
-					"detail" + Util.str(rowdata.get("Id")));			
+			Anchor link = new Anchor(
+					Util.str(rowdata.get("Description")), "detail"
+							+ Util.str(rowdata.get("Id")));
 			link.addClickHandler(this);
-			
 			table.setWidget(rowIndex, 3, link);
 
 			table.getCellFormatter().setStyleName(rowIndex, 3, "desc");
 
-			boolean flagDebetKreditNotMatching = Util.getBoolean(rowdata
-					.get("debetKreditMismatch"));
-			render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata
+			boolean flagDebetKreditNotMatching = Util.getBoolean(rowdata.get("debetKreditMismatch"));
+            render_posts(rowIndex, rowdata.get("groupDebetMonth"), rowdata
 					.get("groupKredMonth"), flagDebetKreditNotMatching);
 		}
 	}
@@ -273,13 +272,11 @@ public class MonthView extends Composite implements ClickHandler,
 				.keys()) {
 
 			/* DEBET */
-			printDebKredVal(rowIndex, debetObj, col, k,
-					flagDebetKreditNotMatching);
+			printDebKredVal(rowIndex, debetObj, col, k, flagDebetKreditNotMatching);
 			col++;
 
 			/* KREDIT */
-			printDebKredVal(rowIndex, kredObj, col, k,
-					flagDebetKreditNotMatching);
+			printDebKredVal(rowIndex, kredObj, col, k, flagDebetKreditNotMatching);
 			col++;
 		}
 	}
