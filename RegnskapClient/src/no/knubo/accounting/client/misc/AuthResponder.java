@@ -36,7 +36,6 @@ public class AuthResponder implements RequestCallback {
         }
         this.logger = new Logger(this.constants);
         AccountingGWT.setLoading();
-
     }
 
     public void onError(Request request, Throwable exception) {
