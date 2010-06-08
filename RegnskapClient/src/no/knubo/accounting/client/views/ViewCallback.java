@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.views;
 
+import no.knubo.accounting.client.misc.WidgetIds;
+
 public interface ViewCallback {
 
     /**
@@ -31,4 +33,6 @@ public interface ViewCallback {
      * Request view of person search.
      */
     public void searchPerson();
+
+    public void openView(WidgetIds view, String title);
 }

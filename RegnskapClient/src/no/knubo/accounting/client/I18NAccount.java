@@ -79,6 +79,87 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String cost_year(String arg0);
 
   /**
+   * Translated "Regnskapsfødringen er i rute".
+   * 
+   * @return translated "Regnskapsfødringen er i rute"
+   */
+  @DefaultMessage("Regnskapsfødringen er i rute")
+  @Key("dashboard_accounting_ok")
+  String dashboard_accounting_ok();
+
+  /**
+   * Translated "Alle grunndata er på plass".
+   * 
+   * @return translated "Alle grunndata er på plass"
+   */
+  @DefaultMessage("Alle grunndata er på plass")
+  @Key("dashboard_all_basic_present")
+  String dashboard_all_basic_present();
+
+  /**
+   * Translated "Lenge siden siste regnskapsføring".
+   * 
+   * @return translated "Lenge siden siste regnskapsføring"
+   */
+  @DefaultMessage("Lenge siden siste regnskapsføring")
+  @Key("dashboard_long_time_no_accounting")
+  String dashboard_long_time_no_accounting();
+
+  /**
+   * Translated "Neste månedsavslutning bødr bli semesteravslutning?".
+   * 
+   * @return translated "Neste månedsavslutning bødr bli semesteravslutning?"
+   */
+  @DefaultMessage("Neste månedsavslutning bødr bli semesteravslutning?")
+  @Key("dashboard_maybe_change_fall")
+  String dashboard_maybe_change_fall();
+
+  /**
+   * Translated "Mangler definisjon av neste semester".
+   * 
+   * @return translated "Mangler definisjon av neste semester"
+   */
+  @DefaultMessage("Mangler definisjon av neste semester")
+  @Key("dashboard_missing_next_semester")
+  String dashboard_missing_next_semester();
+
+  /**
+   * Translated "Mangler priser for inneværende semester".
+   * 
+   * @return translated "Mangler priser for inneværende semester"
+   */
+  @DefaultMessage("Mangler priser for inneværende semester")
+  @Key("dashboard_missing_semester_price_current")
+  String dashboard_missing_semester_price_current();
+
+  /**
+   * Translated "Mangler priser for neste semester".
+   * 
+   * @return translated "Mangler priser for neste semester"
+   */
+  @DefaultMessage("Mangler priser for neste semester")
+  @Key("dashboard_missing_semester_price_next")
+  String dashboard_missing_semester_price_next();
+
+  /**
+   * Translated "Mangler priser for inneværende års årsmedlemskap".
+   * 
+   * @return translated "Mangler priser for inneværende års årsmedlemskap"
+   */
+  @DefaultMessage("Mangler priser for inneværende års årsmedlemskap")
+  @Key("dashboard_missing_year_price_current")
+  String dashboard_missing_year_price_current();
+
+  /**
+   * Translated "Mangler priser for neste års årsmedlemskap".
+   * 
+   * @return translated "Mangler priser for neste års årsmedlemskap"
+   */
+  @DefaultMessage("Mangler priser for neste års årsmedlemskap")
+  @Key("dashboard_missing_year_price_next")
+  String dashboard_missing_year_price_next();
+
+  /**
    * Translated "Dato inngis på formatet dd.mm.yyyy".
    * 
    * @return translated "Dato inngis på formatet dd.mm.yyyy"
@@ -203,15 +284,6 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Du må velge felt for fødselsdato.")
   @Key("import_birthdate_required")
   String import_birthdate_required();
-
-  /**
-   * Translated "Velg fil og skilletegn for å komme videre. ".
-   * 
-   * @return translated "Velg fil og skilletegn for å komme videre. "
-   */
-  @DefaultMessage("Velg fil og skilletegn for å komme videre. ")
-  @Key("import_choose_file_and_field")
-  String import_choose_file_and_field();
 
   /**
    * Translated "Du må velge felt for etternavn.".
@@ -482,6 +554,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Din cachet(?) versjon av klienten er ikke på samme versjon som serverversjonen. Klientversjonen er {0} og serverversjonen er {1}. Prøv en shift reload av siden. Dette kan gjøre at deler av applikasjonen ikke fungerer som forventet.")
   @Key("version_mismatch")
   String version_mismatch(String arg0,  String arg1);
+
+  /**
+   * Translated "Velkommen {0}, forrige innlogging var {1}.".
+   * 
+   * @return translated "Velkommen {0}, forrige innlogging var {1}."
+   */
+  @DefaultMessage("Velkommen {0}, forrige innlogging var {1}.")
+  @Key("welcome_message")
+  String welcome_message(String arg0,  String arg1);
 
   /**
    * Translated "år er påkrevet felt.".

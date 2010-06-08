@@ -106,6 +106,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String account_earnings();
 
   /**
+   * Translated "Regnskapsføring".
+   * 
+   * @return translated "Regnskapsføring"
+   */
+  @DefaultStringValue("Regnskapsføring")
+  @Key("accounting")
+  String accounting();
+
+  /**
    * Translated "Aksjon".
    * 
    * @return translated "Aksjon"
@@ -295,6 +304,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String backup_zipping();
 
   /**
+   * Translated "Grunndata".
+   * 
+   * @return translated "Grunndata"
+   */
+  @DefaultStringValue("Grunndata")
+  @Key("basic_data")
+  String basic_data();
+
+  /**
    * Translated "Fødselsdato".
    * 
    * @return translated "Fødselsdato"
@@ -428,6 +446,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Mobil")
   @Key("cellphone")
   String cellphone();
+
+  /**
+   * Translated "Engelsk".
+   * 
+   * @return translated "Engelsk"
+   */
+  @DefaultStringValue("Engelsk")
+  @Key("change_language")
+  String change_language();
+
+  /**
+   * Translated "en_UK".
+   * 
+   * @return translated "en_UK"
+   */
+  @DefaultStringValue("en_UK")
+  @Key("change_language_locale")
+  String change_language_locale();
 
   /**
    * Translated "Bytt år".
@@ -1555,11 +1591,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_trust();
 
   /**
-   * Translated "Om regnskapssystemet".
+   * Translated "Dashboard".
    * 
-   * @return translated "Om regnskapssystemet"
+   * @return translated "Dashboard"
    */
-  @DefaultStringValue("Om regnskapssystemet")
+  @DefaultStringValue("Dashboard")
   @Key("menuitem_about")
   String menuitem_about();
 

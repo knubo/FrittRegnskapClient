@@ -27,7 +27,7 @@
 	border-collapse: collapse;
 	border-style: solid;
 	border-color: #000000;
-	background-color:white;
+	background-color: white;
 }
 
 .tablecells {
@@ -517,25 +517,83 @@ TD.red {
 }
 
 TD.yellow {
-	background-color:yellow;
+	background-color: yellow;
 }
+
 TD.green {
-	background-color:green;
+	background-color: green;
 }
 
 .hidden {
-	display:none;
+	display: none;
 }
 
 .errorwindow {
-	border:thick;
+	border: thick;
 	border-color: red;
 	border-style: solid;
 }
+
 .importtable {
-	border:thin;
+	border: thin;
 	border-style: solid;
 }
+
 .importtable TD {
 	white-space: nowrap;
+}
+
+/* Dashboard */
+.dashboard {
+	font-size: smaller;
+	width:800px;
+}
+
+.dashboard h1 {
+	font-size:medium;
+}
+
+.whoami {
+	
+}
+
+.english {
+	float: right;
+}
+
+.systemstatus .gwt-Image {
+	
+}
+
+.systemstatus {
+	background: blue;
+	clear: both;
+	text-align: center;
+	margin-left: 15%;
+}
+
+.news {
+	clear: both;
+	float: left;
+	width: 50%;
+}
+
+.accountstatus {
+	float: left;
+	width: 50%;
+}
+
+.accounting {
+	float: left;
+}
+
+.basicdata {
+	float: left;
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+.dashboard .gwt-Anchor {
+	clear: both;
+	display: block;
 }

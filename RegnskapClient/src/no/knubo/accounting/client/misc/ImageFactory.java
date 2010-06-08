@@ -6,6 +6,18 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ImageFactory {
 
+    public static Image facePlainImage(String id) {
+        return withId(new Image("images/face-plain.png"), id);
+    }
+
+    public static Image faceSadImage(String id) {
+        return withId(new Image("images/face-sad.png"), id);
+    }
+
+    public static Image faceSmileImage(String id) {
+        return withId(new Image("images/face-smile.png"), id);
+    }
+
     public static Image previousImage(String id) {
         return withId(new Image("images/go-previous.png"), id);
     }

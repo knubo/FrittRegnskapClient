@@ -177,14 +177,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
         addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
-        
+
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
         addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
         addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
-        new Commando(null, WidgetIds.ABOUT, elements.menuitem_about()).execute();
+        new Commando(this, WidgetIds.ABOUT, elements.menuitem_about()).execute();
 
         RootPanel.get().add(docPanel);
     }
@@ -258,7 +258,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case EDIT_EMAIL_CONTENT:
                 widget = EmailSettingsView.show(messages, constants, elements);
-                ((EmailSettingsView)widget).init();
+                ((EmailSettingsView) widget).init();
                 break;
             case EDIT_HAPPENING:
                 widget = HappeningsView.show(messages, constants, elements);
@@ -297,7 +297,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = BudgetSimpleTracking.getInstance(messages, constants, elements);
                 ((BudgetSimpleTracking) widget).init();
                 break;
-                
+
             case ADD_PERSON:
                 widget = PersonEditView.show(constants, messages, helpPanel, callback, elements);
                 ((PersonEditView) widget).init(null);
@@ -358,7 +358,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case REPORT_EMAIL:
                 widget = ReportMail.getInstance(constants, messages, elements);
-                ((ReportMail)widget).init();
+                ((ReportMail) widget).init();
                 break;
             case REPORT_USERS_EMAIL:
                 widget = ReportUsersEmail.getInstance(constants, messages, helpPanel, elements);
@@ -376,7 +376,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
 
             case ABOUT:
-                widget = AboutView.getInstance(constants, messages);
+                widget = AboutView.getInstance(constants, messages, elements, callback);
                 title = title + " - " + AboutView.CLIENT_VERSION;
                 break;
             case SERVERINFO:
@@ -498,5 +498,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         if (blankImage != null) {
             blankImage.setVisible(true);
         }
+    }
+
+    public void openView(WidgetIds view, String title) {
+        new Commando(this, view, title).execute();
     }
 }

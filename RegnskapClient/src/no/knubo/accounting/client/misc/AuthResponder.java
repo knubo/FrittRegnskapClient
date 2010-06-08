@@ -116,6 +116,7 @@ public class AuthResponder implements RequestCallback {
                     
                     ErrorReportingWindow.reportError(elements.error_uncought_exception(), e.toString());
                     Util.log(e.toString());
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -126,6 +127,19 @@ public class AuthResponder implements RequestCallback {
             noDB = true;
             Window.alert(messages.no_db_connection());
         }
+    }
+
+    public static void getExternal(Constants constants, I18NAccount messages, ServerResponse callback, String url) {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+        builder.setHeader("Content-Type", "text/plain;charset=utf-8");  
+
+        try {
+            builder.sendRequest("", new AuthResponder(constants, messages, callback));
+        } catch (RequestException e) {
+            
+            ErrorReportingWindow.reportError(e.getMessage(), e.toString());
+        }
+        
     }
 
     public static void get(Constants constants, I18NAccount messages, ServerResponse callback, String url) {
@@ -153,4 +167,5 @@ public class AuthResponder implements RequestCallback {
         }
 
     }
+
 }
