@@ -79,11 +79,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String cost_year(String arg0);
 
   /**
-   * Translated "Regnskapsfødringen er i rute".
+   * Translated "Regnskapsføringen er i rute".
    * 
-   * @return translated "Regnskapsfødringen er i rute"
+   * @return translated "Regnskapsføringen er i rute"
    */
-  @DefaultMessage("Regnskapsfødringen er i rute")
+  @DefaultMessage("Regnskapsføringen er i rute")
   @Key("dashboard_accounting_ok")
   String dashboard_accounting_ok();
 
