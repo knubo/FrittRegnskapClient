@@ -73,7 +73,7 @@ public class AboutView extends Composite implements ClickHandler {
                 newsPanel.add(new HTML(parseNews(response)));
             }
         };
-        AuthResponder.getExternal(constants, messages, callback, "/wakka/wikka.php?wakka=Nyhetsliste/raw");
+        AuthResponder.getExternal(constants, messages, callback, "http://www.frittregnskap.no/wakka/Nyhetsliste/raw");
     }
 
     protected String parseNews(String response) {
