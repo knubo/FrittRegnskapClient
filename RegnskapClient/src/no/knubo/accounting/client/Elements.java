@@ -1501,6 +1501,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String membership_numbers();
 
   /**
+   * Translated "Admin".
+   * 
+   * @return translated "Admin"
+   */
+  @DefaultStringValue("Admin")
+  @Key("menu_admin")
+  String menu_admin();
+
+  /**
    * Translated "Budsjett".
    * 
    * @return translated "Budsjett"
@@ -1625,6 +1634,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Opprett ny person")
   @Key("menuitem_addperson")
   String menuitem_addperson();
+
+  /**
+   * Translated "Installasjoner".
+   * 
+   * @return translated "Installasjoner"
+   */
+  @DefaultStringValue("Installasjoner")
+  @Key("menuitem_admin_installs")
+  String menuitem_admin_installs();
+
+  /**
+   * Translated "SQL".
+   * 
+   * @return translated "SQL"
+   */
+  @DefaultStringValue("SQL")
+  @Key("menuitem_admin_sql")
+  String menuitem_admin_sql();
 
   /**
    * Translated "Sikkerhetskopi".

@@ -123,6 +123,10 @@ public class AboutView extends Composite implements ClickHandler {
     }
 
     protected void enrichDashboard(JSONObject info, JSONValue accounts) {
+        if(info == null) {
+            personInfo.setHTML("Ingen info mottatt. Dette er unormalt...");
+            return;
+        }
         personInfo.setHTML("<h1>"
                 + messages.welcome_message(Util.str(info.get("firstname")) + " " + Util.str(info.get("lastname")), Util
                         .str(info.get("lastlogin"))) + "</h1>");

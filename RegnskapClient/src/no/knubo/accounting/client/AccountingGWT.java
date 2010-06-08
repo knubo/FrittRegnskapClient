@@ -122,6 +122,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar reportsMenu = addTopMenu(topMenu, elements.menu_reports());
         MenuBar settingsMenu = addTopMenu(topMenu, elements.menu_settings());
         MenuBar importExportMenu = addTopMenu(topMenu, elements.menu_export_import());
+
+        MenuBar adminMenu = null;
+        if(Window.Location.getHostName().startsWith("master.")) {
+            adminMenu = addTopMenu(topMenu, elements.menu_admin());
+        }
+
         MenuBar logoutMenu = addTopMenu(topMenu, elements.menu_logout());
         MenuBar aboutMenu = addTopMenu(topMenu, elements.menu_info());
 
@@ -177,13 +183,19 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
         addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
-
+        
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
         addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
         addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
+        if(adminMenu != null) {
+            addMenuItem(adminMenu, elements.menuitem_admin_installs(), WidgetIds.ADMIN_INSTALLS);
+            addMenuItem(adminMenu, elements.menuitem_admin_sql(), WidgetIds.ADMIN_SQL);
+        }
+
+        
         new Commando(this, WidgetIds.ABOUT, elements.menuitem_about()).execute();
 
         RootPanel.get().add(docPanel);
