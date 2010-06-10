@@ -160,6 +160,60 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String address();
 
   /**
+   * Translated "Database".
+   * 
+   * @return translated "Database"
+   */
+  @DefaultStringValue("Database")
+  @Key("admin_database")
+  String admin_database();
+
+  /**
+   * Translated "DB prefiks".
+   * 
+   * @return translated "DB prefiks"
+   */
+  @DefaultStringValue("DB prefiks")
+  @Key("admin_dbprefix")
+  String admin_dbprefix();
+
+  /**
+   * Translated "Diskkvote".
+   * 
+   * @return translated "Diskkvote"
+   */
+  @DefaultStringValue("Diskkvote")
+  @Key("admin_diskqvota")
+  String admin_diskqvota();
+
+  /**
+   * Translated "Host prefix".
+   * 
+   * @return translated "Host prefix"
+   */
+  @DefaultStringValue("Host prefix")
+  @Key("admin_hostprefix")
+  String admin_hostprefix();
+
+  /**
+   * Translated "Installasjoner".
+   * 
+   * @return translated "Installasjoner"
+   */
+  @DefaultStringValue("Installasjoner")
+  @Key("admin_installs")
+  String admin_installs();
+
+  /**
+   * Translated "Wiki Bruker".
+   * 
+   * @return translated "Wiki Bruker"
+   */
+  @DefaultStringValue("Wiki Bruker")
+  @Key("admin_wikilogin")
+  String admin_wikilogin();
+
+  /**
    * Translated "Alder".
    * 
    * @return translated "Alder"
