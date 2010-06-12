@@ -1,5 +1,9 @@
 /* #FAFAFA */
 
+body {
+ 	font-size:90%;	
+}
+
 .error {
 	PADDING: 2px 2px 2px 2px;
 	color: red;
@@ -185,7 +189,7 @@
 	PADDING: 2px 2px 2px 2px;
 }
 
-.header {
+.header td {
 	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
 	font-weight: bold;
 	color: #05143f;
@@ -247,6 +251,8 @@ TD.desc {
 }
 
 .leftborder {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	font-size:100%;
 	border-style: solid;
 	border-top-width: 0px;
 	border-bottom-width: 1px;
@@ -255,6 +261,8 @@ TD.desc {
 }
 
 .rightborder {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	font-size:100%;
 	border-style: solid;
 	border-top-width: 0px;
 	border-bottom-width: 1px;

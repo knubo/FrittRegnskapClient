@@ -5,12 +5,16 @@
 	<inherits name="com.google.gwt.i18n.I18N" />
 	<inherits name='com.google.gwt.json.JSON' />
 	<inherits name="com.google.gwt.http.HTTP" />
+	<inherits name='net.binarymuse.gwt.Wizard' />
 
     <inherits name='com.google.gwt.visualization.Visualization'/>
 
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class='no.knubo.accounting.client.Login' />
-	<stylesheet src='accountstyle.css' />
+
+    <inherits name="com.google.gwt.user.theme.chrome.Chrome"/>
+
+  	<stylesheet src='accountstyleNew.css' />
 
 
 	<!-- Norwegian language, independent of country -->
