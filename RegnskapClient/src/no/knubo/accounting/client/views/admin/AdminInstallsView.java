@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views.admin;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 
@@ -60,7 +61,7 @@ public class AdminInstallsView {
     protected void fillInstalls(JSONArray array) {
         for (int i = 0; i < array.size(); i++) {
             JSONObject obj = array.get(i).isObject();
-            table.setText(i+2, 0, obj.get(""))
+            table.setText(i+2, 0, Util.str(obj.get("hostprefix")));
         }
     }
 }
