@@ -11,8 +11,13 @@
 
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class='no.knubo.accounting.client.AccountingGWT' />
-	<stylesheet src='accountstyle.css' />
+
+
+    <inherits name="com.google.gwt.user.theme.chrome.Chrome"/>
+
+  	<stylesheet src='accountstyleNew.css' />
 	<stylesheet src='RichTextToolbar.css' />
+	
 
 	<!-- Norwegian language, independent of country -->
 	<extend-property name="locale" values="no" />

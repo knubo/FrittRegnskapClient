@@ -1,0 +1,556 @@
+/* #FAFAFA */
+
+.error {
+	PADDING: 2px 2px 2px 2px;
+	color: red;
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+.flag {
+	color: red;
+}
+
+.normal {
+	PADDING: 2px 2px 2px 2px;
+	color: black;
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+.insidetable {
+	border-collapse: collapse;
+	background-color: white;
+}
+
+.tableborder {
+	border-collapse: collapse;
+	border-style: solid;
+	border-color: #000000;
+	background-color: white;
+}
+
+.tablecells {
+	border-collapse: collapse;
+	border: 1px;
+	border-style: solid;
+	border-color: black;
+}
+
+.popup {
+	border-style: solid;
+	border-color: blue;
+	border-width: 3px;
+	background-color: white;
+}
+
+.tablecells TD {
+	border-width: 1px;
+	border-style: solid;
+	margin: 0px;
+	padding: 0 3 0 3;
+}
+
+.noborder TD {
+	border: none;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+.datefor {
+	white-space: nowrap;
+}
+
+.center {
+	text-align: center;
+}
+
+.showline {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	font-weight: bold;
+	font-size: 100%;
+	vertical-align: bottom;
+	PADDING: 2px 2px 2px 2px;
+	white-space: nowrap;
+}
+
+.showlineposts1 {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	vertical-align: bottom;
+	PADDING: 2px 8px 2px 0px;
+	white-space: nowrap;
+}
+
+.smallerfont {
+	font-size: 80%;
+}
+
+.showlineposts2 {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	background-color: #FF9;
+	vertical-align: bottom;
+	PADDING: 2px 8px 2px 0px;
+	white-space: nowrap;
+}
+
+.sumline {
+	background-color: #ecf1f3;
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	border-style: solid;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 0px;
+	font-weight: bold;
+}
+
+.sumline TD {
+	font-size: 80%;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px
+}
+
+.colspace {
+	padding-left: 10px;
+}
+
+.showlinebreak {
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-left-width: 0px
+}
+
+.edittable {
+	border-style: solid;
+	border-color: #000000;
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+	font-weight: bold;
+	color: #05143f;
+	background-color: #cdcdcd;
+	font-size: 80%;
+	vertical-align: bottom;
+	PADDING: 2px 2px 2px 2px;
+	margin-bottom: 10px;
+}
+
+.gwt-Button {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+	font-weight: bold;
+	background-color: #d7e2e6;
+	font-size: 80%;
+}
+
+.gwt-TextBox {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+	font-size: 80%;
+}
+
+.gwt-PasswordTextBox {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+	font-size: 80%;
+}
+
+.gwt-Label {
+	font-size: 80%;
+	font-weight: bold;
+	vertical-align: bottom;
+	padding-right: 3px;
+	padding-top: 2px;
+}
+
+.gwt-ListBox {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+	font-size: 80%;
+}
+
+.headernobox {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+	font-weight: bold;
+	color: #05143f;
+	background-color: #cdcdcd;
+	font-size: 80%;
+	vertical-align: bottom;
+	PADDING: 2px 2px 2px 2px;
+}
+
+.header {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+	font-weight: bold;
+	color: #05143f;
+	background-color: #cdcdcd;
+	font-size: 80%;
+	vertical-align: bottom;
+	PADDING: 2px 2px 2px 2px;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-left-width: 0px
+}
+
+.debkred {
+	color: #004759;
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+	font-weight: bold;
+	background-color: #cdcdcd;
+	font-size: 60%;
+}
+
+TD.right {
+	text-align: Right;
+	white-space: nowrap;
+}
+
+TD.desc a:link,TD.desc a:visited {
+	text-decoration: none;
+	color: black;
+}
+
+TR.desc {
+	white-space: nowrap;
+}
+
+TD.desc {
+	white-space: nowrap;
+}
+
+.line1 TD {
+	background-color: #ecf1f3;
+	font-size: 80%;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-right-width: 1px;
+	border-left-width: 1px
+}
+
+.line2 TD {
+	background-color: #d7e2e6;
+	font-size: 80%;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-right-width: 1px;
+	border-left-width: 1px
+}
+
+.leftborder {
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-left-width: 1px
+}
+
+.rightborder {
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 0px
+}
+
+.showpostheader td {
+	background-color: #ECF1F3;
+	border-style: solid;
+	border-width: 1px 1px 0px 0px;
+	font-size: 80%;
+}
+
+.kontomain {
+	font-size: 140%;
+}
+
+.kontomainsum {
+	font-size: 140%;
+	border-color: black;
+	border-style: double;
+	border-top-width: 0px;
+	border-bottom-width: 3px;
+	border-right-width: 0px;
+	border-left-width: 0px
+}
+
+.kontomainsumright {
+	border-color: black;
+	border-style: double;
+	border-top-width: 0px;
+	border-bottom-width: 3px;
+	border-right-width: 0px;
+	border-left-width: 0px
+}
+
+.kontocat {
+	font-size: 120%;
+	font-style: italic;
+}
+
+.kontosub {
+	font-weight: bold;
+}
+
+.pagebreak {
+	page-break-after: always;
+}
+
+.telling {
+	white-space: nowrap;
+	border: solid 1px;
+	font-size: 140%;
+	width: 80px;
+}
+
+td.sum {
+	border-bottom: double;
+}
+
+td.inforight {
+	border-bottom: solid 1px;
+	width: 100px;
+	text-align: right;
+}
+
+th.big {
+	white-space: nowrap;
+	font-size: 140%;
+}
+
+
+td.tegn {
+	text-align: right;
+}
+
+table.rutenett {
+	border: solid 2px;
+	border-collapse: collapse;
+}
+
+th.janei {
+	border: solid 2px;
+	text-align: center;
+	width: 30px;
+}
+
+th.rutenett {
+	border: solid 2px;
+	width: 30px;
+}
+
+td.ruteskipp {
+	border-right-width: 0px;
+	border-left-width: 0px;
+	width: 350px;
+}
+
+td.rutenett {
+	border: solid 2px;
+}
+
+td.rutedesc {
+	border: solid 2px;
+	border-collapse: collapse;
+	width: 350px;
+}
+
+td.rute {
+	border: solid 2px;
+	width: 30px;
+	text-align: center;
+	font-size: 160%;
+}
+
+.collapse {
+	border-collapse: collapse;
+}
+
+.gwt-DialogBox {
+	color: black;
+	background-color: white;
+	PADDING: 3px 3px 3px 3px;
+}
+
+.gwt-DialogBox .Caption {
+	color: #05143f;
+	background-color: #cdcdcd;
+}
+
+.activeview {
+	padding: 10px 10px 10px 10px;
+}
+
+.disabled {
+	background-color: lightgrey;
+}
+
+.helpheader H1 {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	font-weight: bold;
+	white-space: nowrap;
+	font-size: 15pt;
+}
+
+.helpheader H2 {
+	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+	font-weight: bold;
+	white-space: nowrap;
+	font-size: 12pt;
+}
+
+.contexthelp {
+	background: #F6FEDA none repeat scroll 0%;
+	border: 1px solid #98BE10;
+	margin: 10px;
+	padding: 10px;
+	width: 300px;
+	min-height: 150px;
+	vertical-align: top;
+}
+
+.logline {
+	vertical-align: top;
+}
+
+.middle {
+	margin-left: 50px;
+	margin-top: 50px;
+}
+
+.emailsendname {
+	text-align: left;
+	width: 400px;
+}
+
+.emailsendemail {
+	text-align: left;
+	width: 400px;
+}
+
+.accounttrack_midle {
+	padding-top: 11em;
+}
+
+.fullwidth {
+	width: 100%;
+}
+
+.report {
+	border-collapse: collapse;
+	white-space: nowrap;
+	border: 1px solid black;
+}
+
+.report TD {
+	padding: 2px;
+}
+
+.report TR>TD+TD+TD {
+	text-align: right;
+}
+
+.report .sum {
+	font-weight: bold;
+	background-color: lightgrey;
+}
+
+.buttonpanel .gwt-label {
+	padding-left: 10px;
+	border-left: 1px solid;
+}
+
+TD.red {
+	background-color: red;
+}
+
+TD.yellow {
+	background-color: yellow;
+}
+
+TD.green {
+	background-color: green;
+}
+
+.hidden {
+	display: none;
+}
+
+.errorwindow {
+	border: thick;
+	border-color: red;
+	border-style: solid;
+}
+
+.importtable {
+	border: thin;
+	border-style: solid;
+}
+
+.importtable TD {
+	white-space: nowrap;
+}
+
+/* Dashboard */
+.dashboard {
+	font-size: smaller;
+	width:800px;
+}
+
+.dashboard h1 {
+	font-size:medium;
+}
+
+.whoami {
+	
+}
+
+.english {
+	float: right;
+}
+
+.systemstatus .gwt-Image {
+	
+}
+
+.systemstatus {
+	background: blue;
+	clear: both;
+	text-align: center;
+	margin-left: 15%;
+}
+
+.news {
+	clear: both;
+	float: left;
+	width: 50%;
+}
+
+.accountstatus {
+	float: left;
+	width: 50%;
+}
+
+.accounting {
+	float: left;
+}
+
+.basicdata {
+	float: left;
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+.dashboard .gwt-Anchor {
+	clear: both;
+	display: block;
+}
