@@ -562,3 +562,7 @@ TD.green {
 	clear: both;
 	display: block;
 }
+
+.date {
+	font-weight: bold;
+}

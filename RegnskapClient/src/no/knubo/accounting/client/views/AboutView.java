@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Label;
 public class AboutView extends Composite implements ClickHandler {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "2.0b2";
+    public static final String CLIENT_VERSION = "2.0b3";
 
     private static AboutView instance;
 
@@ -72,7 +72,7 @@ public class AboutView extends Composite implements ClickHandler {
                 newsPanel.add(new HTML(parseNews(response)));
             }
         };
-        AuthResponder.getExternal(constants, messages, callback, "http://www.frittregnskap.no/wakka/Nyhetsliste/raw");
+        AuthResponder.getExternal(constants, messages, callback, "/wakka/NyhetListe/raw");
     }
 
     protected String parseNews(String response) {
