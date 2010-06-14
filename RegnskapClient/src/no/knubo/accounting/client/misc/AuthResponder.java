@@ -17,7 +17,10 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
 
 public class AuthResponder implements RequestCallback {
 
@@ -76,6 +79,8 @@ public class AuthResponder implements RequestCallback {
             new MissingDataPopup(data).center();
         } else if (response.getStatusCode() == 515) {
             handleNODB();
+        } else if (response.getStatusCode() == 516) {
+            handleClosedSite(response.getText());
         } else {
             String data = response.getText();
             if (data == null || data.length() == 0) {
@@ -113,12 +118,24 @@ public class AuthResponder implements RequestCallback {
                     callback.serverResponse(jsonValue);
                 } catch (Exception e) {
                     Elements elements = (Elements) GWT.create(Elements.class);
-                    
+
                     ErrorReportingWindow.reportError(elements.error_uncought_exception(), e.toString());
                     Util.log(e.toString());
                     throw new RuntimeException(e);
                 }
             }
+        }
+    }
+
+    private void handleClosedSite(String string) {
+        noDB = true;
+        if (!noDB) {
+            DialogBox dialogBox = new DialogBox();
+            DOM.setElementAttribute(dialogBox.getElement(), "id", "closed_site");
+
+            HTML html = new HTML(string);
+            dialogBox.setWidget(html);
+            dialogBox.center();
         }
     }
 
@@ -131,15 +148,15 @@ public class AuthResponder implements RequestCallback {
 
     public static void getExternal(Constants constants, I18NAccount messages, ServerResponse callback, String url) {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        builder.setHeader("Content-Type", "text/plain;charset=utf-8");  
+        builder.setHeader("Content-Type", "text/plain;charset=utf-8");
 
         try {
             builder.sendRequest("", new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
-            
+
             ErrorReportingWindow.reportError(e.getMessage(), e.toString());
         }
-        
+
     }
 
     public static void get(Constants constants, I18NAccount messages, ServerResponse callback, String url) {
@@ -148,7 +165,7 @@ public class AuthResponder implements RequestCallback {
         try {
             builder.sendRequest("", new AuthResponder(constants, messages, callback));
         } catch (RequestException e) {
-            
+
             ErrorReportingWindow.reportError(e.getMessage(), e.toString());
         }
     }

@@ -1,7 +1,6 @@
 /* #FAFAFA */
-
 body {
- 	font-size:90%;	
+	font-size: 90%;
 }
 
 .error {
@@ -252,7 +251,7 @@ TD.desc {
 
 .leftborder {
 	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-size:100%;
+	font-size: 100%;
 	border-style: solid;
 	border-top-width: 0px;
 	border-bottom-width: 1px;
@@ -262,7 +261,7 @@ TD.desc {
 
 .rightborder {
 	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-size:100%;
+	font-size: 100%;
 	border-style: solid;
 	border-top-width: 0px;
 	border-bottom-width: 1px;
@@ -334,7 +333,6 @@ th.big {
 	white-space: nowrap;
 	font-size: 140%;
 }
-
 
 td.tegn {
 	text-align: right;
@@ -511,11 +509,11 @@ TD.green {
 /* Dashboard */
 .dashboard {
 	font-size: smaller;
-	width:800px;
+	width: 800px;
 }
 
 .dashboard h1 {
-	font-size:medium;
+	font-size: medium;
 }
 
 .whoami {
@@ -565,4 +563,9 @@ TD.green {
 
 .date {
 	font-weight: bold;
+}
+
+#closed_site {
+	width: auto;
+	max-width: 50%;
 }
