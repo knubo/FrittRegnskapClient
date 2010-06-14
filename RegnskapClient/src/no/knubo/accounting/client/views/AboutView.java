@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Label;
 public class AboutView extends Composite implements ClickHandler {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "2.0b3";
+    public static final String CLIENT_VERSION = "2.0b4";
 
     private static AboutView instance;
 
@@ -122,13 +122,13 @@ public class AboutView extends Composite implements ClickHandler {
     }
 
     protected void enrichDashboard(JSONObject info, JSONValue accounts) {
-        if(info == null) {
+        if (info == null) {
             personInfo.setHTML("Ingen info mottatt. Dette er unormalt...");
             return;
         }
-        personInfo.setHTML("<h1>"
-                + messages.welcome_message(Util.str(info.get("firstname")) + " " + Util.str(info.get("lastname")), Util
-                        .str(info.get("lastlogin"))) + "</h1>");
+        String name = Util.str(info.get("firstname")) + " " + Util.str(info.get("lastname"));
+        String lastlogin = Util.strSkipNull(info.get("lastlogin"));
+        personInfo.setHTML("<h1>" + messages.welcome_message(name, lastlogin) + "</h1>");
 
         fillGeneralStatus(info);
 

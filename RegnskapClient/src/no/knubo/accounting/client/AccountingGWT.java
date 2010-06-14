@@ -28,6 +28,7 @@ import no.knubo.accounting.client.views.SystemInfoView;
 import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.YearEndView;
+import no.knubo.accounting.client.views.admin.AdminInstallsView;
 import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
@@ -193,6 +194,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         if(adminMenu != null) {
             addMenuItem(adminMenu, elements.menuitem_admin_installs(), WidgetIds.ADMIN_INSTALLS);
             addMenuItem(adminMenu, elements.menuitem_admin_sql(), WidgetIds.ADMIN_SQL);
+            addMenuItem(adminMenu, elements.menuitem_admin_operations(), WidgetIds.ADMIN_SQL);
         }
 
         
@@ -423,6 +425,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case EXPORT_PERSON:
                 widget = ExportPersonView.getInstance(constants, messages, elements);
                 ((ExportPersonView) widget).init();
+                break;
+            case ADMIN_INSTALLS:
+                widget = AdminInstallsView.show(messages, constants, elements);
+                ((AdminInstallsView)widget).init();
+                break;
+            case ADMIN_SQL:
                 break;
             }
 

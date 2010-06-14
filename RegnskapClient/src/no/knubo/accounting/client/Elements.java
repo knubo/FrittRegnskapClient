@@ -160,6 +160,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String address();
 
   /**
+   * Translated "Godkjenn SQL".
+   * 
+   * @return translated "Godkjenn SQL"
+   */
+  @DefaultStringValue("Godkjenn SQL")
+  @Key("admin_approve_sql")
+  String admin_approve_sql();
+
+  /**
    * Translated "Database".
    * 
    * @return translated "Database"
@@ -176,6 +185,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("DB prefiks")
   @Key("admin_dbprefix")
   String admin_dbprefix();
+
+  /**
+   * Translated "Slett regnskapssystem".
+   * 
+   * @return translated "Slett regnskapssystem"
+   */
+  @DefaultStringValue("Slett regnskapssystem")
+  @Key("admin_delete_accounting")
+  String admin_delete_accounting();
 
   /**
    * Translated "Diskkvote".
@@ -196,6 +214,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_hostprefix();
 
   /**
+   * Translated "Installasjon".
+   * 
+   * @return translated "Installasjon"
+   */
+  @DefaultStringValue("Installasjon")
+  @Key("admin_install")
+  String admin_install();
+
+  /**
    * Translated "Installasjoner".
    * 
    * @return translated "Installasjoner"
@@ -203,6 +230,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Installasjoner")
   @Key("admin_installs")
   String admin_installs();
+
+  /**
+   * Translated "Registrer SQL".
+   * 
+   * @return translated "Registrer SQL"
+   */
+  @DefaultStringValue("Registrer SQL")
+  @Key("admin_register_sql")
+  String admin_register_sql();
+
+  /**
+   * Translated "Innlagt SQL".
+   * 
+   * @return translated "Innlagt SQL"
+   */
+  @DefaultStringValue("Innlagt SQL")
+  @Key("admin_waiting_sql")
+  String admin_waiting_sql();
 
   /**
    * Translated "Wiki Bruker".
@@ -1697,6 +1742,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Installasjoner")
   @Key("menuitem_admin_installs")
   String menuitem_admin_installs();
+
+  /**
+   * Translated "Operasjoner".
+   * 
+   * @return translated "Operasjoner"
+   */
+  @DefaultStringValue("Operasjoner")
+  @Key("menuitem_admin_operations")
+  String menuitem_admin_operations();
 
   /**
    * Translated "SQL".
