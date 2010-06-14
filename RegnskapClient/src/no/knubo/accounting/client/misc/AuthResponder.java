@@ -128,8 +128,8 @@ public class AuthResponder implements RequestCallback {
     }
 
     private void handleClosedSite(String string) {
-        noDB = true;
         if (!noDB) {
+            noDB = true;
             DialogBox dialogBox = new DialogBox();
             DOM.setElementAttribute(dialogBox.getElement(), "id", "closed_site");
 
