@@ -29,6 +29,7 @@ import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.YearEndView;
 import no.knubo.accounting.client.views.admin.AdminInstallsView;
+import no.knubo.accounting.client.views.admin.AdminOperationsView;
 import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
@@ -125,7 +126,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar importExportMenu = addTopMenu(topMenu, elements.menu_export_import());
 
         MenuBar adminMenu = null;
-        if(Window.Location.getHostName().startsWith("master.")) {
+        if (Window.Location.getHostName().startsWith("master.")) {
             adminMenu = addTopMenu(topMenu, elements.menu_admin());
         }
 
@@ -184,20 +185,19 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
         addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
-        
+
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
         addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
         addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
-        if(adminMenu != null) {
+        if (adminMenu != null) {
             addMenuItem(adminMenu, elements.menuitem_admin_installs(), WidgetIds.ADMIN_INSTALLS);
             addMenuItem(adminMenu, elements.menuitem_admin_sql(), WidgetIds.ADMIN_SQL);
-            addMenuItem(adminMenu, elements.menuitem_admin_operations(), WidgetIds.ADMIN_SQL);
+            addMenuItem(adminMenu, elements.menuitem_admin_operations(), WidgetIds.ADMIN_OPERATIONS);
         }
 
-        
         new Commando(this, WidgetIds.ABOUT, elements.menuitem_about()).execute();
 
         RootPanel.get().add(docPanel);
@@ -428,9 +428,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case ADMIN_INSTALLS:
                 widget = AdminInstallsView.show(messages, constants, elements);
-                ((AdminInstallsView)widget).init();
+                ((AdminInstallsView) widget).init();
                 break;
             case ADMIN_SQL:
+            case ADMIN_OPERATIONS:
+                widget = AdminOperationsView.show(messages, constants, elements);
+                ((AdminOperationsView) widget).init();
                 break;
             }
 

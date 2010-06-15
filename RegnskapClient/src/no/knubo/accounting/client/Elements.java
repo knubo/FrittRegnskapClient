@@ -169,6 +169,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_approve_sql();
 
   /**
+   * Translated "Steng regnskapssystemet".
+   * 
+   * @return translated "Steng regnskapssystemet"
+   */
+  @DefaultStringValue("Steng regnskapssystemet")
+  @Key("admin_close_site")
+  String admin_close_site();
+
+  /**
+   * Translated "Stengt".
+   * 
+   * @return translated "Stengt"
+   */
+  @DefaultStringValue("Stengt")
+  @Key("admin_closed")
+  String admin_closed();
+
+  /**
+   * Translated "Installer betaversjonen til alle systemene".
+   * 
+   * @return translated "Installer betaversjonen til alle systemene"
+   */
+  @DefaultStringValue("Installer betaversjonen til alle systemene")
+  @Key("admin_copy_to_main")
+  String admin_copy_to_main();
+
+  /**
    * Translated "Database".
    * 
    * @return translated "Database"
@@ -230,6 +257,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Installasjoner")
   @Key("admin_installs")
   String admin_installs();
+
+  /**
+   * Translated "åpen".
+   * 
+   * @return translated "åpen"
+   */
+  @DefaultStringValue("åpen")
+  @Key("admin_open")
+  String admin_open();
+
+  /**
+   * Translated "Gjenåpne regnskapssystemet".
+   * 
+   * @return translated "Gjenåpne regnskapssystemet"
+   */
+  @DefaultStringValue("Gjenåpne regnskapssystemet")
+  @Key("admin_open_site")
+  String admin_open_site();
 
   /**
    * Translated "Registrer SQL".
