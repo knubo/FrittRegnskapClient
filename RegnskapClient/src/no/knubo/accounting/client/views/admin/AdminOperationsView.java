@@ -5,6 +5,7 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.HTMLStreamWindow;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.richtexttoolbar.RichTextToolbar;
 import no.knubo.accounting.client.ui.NamedButton;
@@ -33,6 +34,7 @@ public class AdminOperationsView extends Composite implements ClickHandler {
     private NamedButton closeButton;
     private NamedButton saveButton;
     private Label statusLabel;
+    private NamedButton distributeButton;
 
     public static AdminOperationsView show(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
@@ -85,12 +87,17 @@ public class AdminOperationsView extends Composite implements ClickHandler {
 
         table.setWidget(3, 1, flowPanel);
 
+        distributeButton = new NamedButton("distribute_beta", elements.admin_copy_to_main());
+        distributeButton.addClickHandler(this);
+        table.setWidget(4, 1, distributeButton);
+
         initWidget(table);
     }
 
     public void init() {
         openButton.setEnabled(false);
         closeButton.setEnabled(false);
+        distributeButton.setEnabled(false);
 
         ServerResponse callback = new ServerResponse() {
 
@@ -103,10 +110,12 @@ public class AdminOperationsView extends Composite implements ClickHandler {
                     table.setText(1, 1, elements.admin_open());
                     openButton.setEnabled(false);
                     closeButton.setEnabled(true);
+                    distributeButton.setEnabled(false);
                 } else {
                     table.setText(1, 1, elements.admin_closed());
                     openButton.setEnabled(true);
                     closeButton.setEnabled(false);
+                    distributeButton.setEnabled(true);
                 }
                 richBodyBox.setHTML(Util.str(object.get("content")));
             }
@@ -124,6 +133,8 @@ public class AdminOperationsView extends Composite implements ClickHandler {
         } else if (event.getSource() == openButton) {
             doAction("open");
             delayedInit();
+        } else if (event.getSource() == distributeButton) {
+            HTMLStreamWindow.open(constants.baseurl() + "admin/siteadmin.php?action=distribute", elements);
         }
     }
 
