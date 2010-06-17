@@ -187,11 +187,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_closed();
 
   /**
-   * Translated "Installer betaversjonen til alle systemene".
+   * Translated "Installer fra betaversjonen til alle systemene".
    * 
-   * @return translated "Installer betaversjonen til alle systemene"
+   * @return translated "Installer fra betaversjonen til alle systemene"
    */
-  @DefaultStringValue("Installer betaversjonen til alle systemene")
+  @DefaultStringValue("Installer fra betaversjonen til alle systemene")
   @Key("admin_copy_to_main")
   String admin_copy_to_main();
 
@@ -232,6 +232,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_diskqvota();
 
   /**
+   * Translated "Kjør i Beta".
+   * 
+   * @return translated "Kjør i Beta"
+   */
+  @DefaultStringValue("Kjør i Beta")
+  @Key("admin_do_runinbeta")
+  String admin_do_runinbeta();
+
+  /**
+   * Translated "Kjør for alle".
+   * 
+   * @return translated "Kjør for alle"
+   */
+  @DefaultStringValue("Kjør for alle")
+  @Key("admin_do_runinmain")
+  String admin_do_runinmain();
+
+  /**
    * Translated "Host prefix".
    * 
    * @return translated "Host prefix"
@@ -257,6 +275,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Installasjoner")
   @Key("admin_installs")
   String admin_installs();
+
+  /**
+   * Translated "Ny SQL".
+   * 
+   * @return translated "Ny SQL"
+   */
+  @DefaultStringValue("Ny SQL")
+  @Key("admin_new_sql")
+  String admin_new_sql();
+
+  /**
+   * Translated "Nei".
+   * 
+   * @return translated "Nei"
+   */
+  @DefaultStringValue("Nei")
+  @Key("admin_no")
+  String admin_no();
 
   /**
    * Translated "åpen".
@@ -286,6 +322,51 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_register_sql();
 
   /**
+   * Translated "Opprettet".
+   * 
+   * @return translated "Opprettet"
+   */
+  @DefaultStringValue("Opprettet")
+  @Key("admin_registered_date")
+  String admin_registered_date();
+
+  /**
+   * Translated "Kjør".
+   * 
+   * @return translated "Kjør"
+   */
+  @DefaultStringValue("Kjør")
+  @Key("admin_run")
+  String admin_run();
+
+  /**
+   * Translated "Kjørt i Beta".
+   * 
+   * @return translated "Kjørt i Beta"
+   */
+  @DefaultStringValue("Kjørt i Beta")
+  @Key("admin_runinbeta")
+  String admin_runinbeta();
+
+  /**
+   * Translated "Kjørt for alle".
+   * 
+   * @return translated "Kjørt for alle"
+   */
+  @DefaultStringValue("Kjørt for alle")
+  @Key("admin_runinmain")
+  String admin_runinmain();
+
+  /**
+   * Translated "Verifisert".
+   * 
+   * @return translated "Verifisert"
+   */
+  @DefaultStringValue("Verifisert")
+  @Key("admin_verified")
+  String admin_verified();
+
+  /**
    * Translated "Innlagt SQL".
    * 
    * @return translated "Innlagt SQL"
@@ -302,6 +383,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Wiki Bruker")
   @Key("admin_wikilogin")
   String admin_wikilogin();
+
+  /**
+   * Translated "Ja".
+   * 
+   * @return translated "Ja"
+   */
+  @DefaultStringValue("Ja")
+  @Key("admin_yes")
+  String admin_yes();
 
   /**
    * Translated "Alder".

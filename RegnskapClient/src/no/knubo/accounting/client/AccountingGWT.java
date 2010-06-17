@@ -30,6 +30,7 @@ import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.YearEndView;
 import no.knubo.accounting.client.views.admin.AdminInstallsView;
 import no.knubo.accounting.client.views.admin.AdminOperationsView;
+import no.knubo.accounting.client.views.admin.AdminSQLView;
 import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
@@ -431,6 +432,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((AdminInstallsView) widget).init();
                 break;
             case ADMIN_SQL:
+                widget = AdminSQLView.show(messages, constants, elements);
+                ((AdminSQLView) widget).init();
+                break;
+                
             case ADMIN_OPERATIONS:
                 widget = AdminOperationsView.show(messages, constants, elements);
                 ((AdminOperationsView) widget).init();

@@ -6,6 +6,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ImageFactory {
 
+    public static Image gearsImage(String id) {
+        return withId(new Image("images/applications-system.png"), id);        
+    }
+    
     public static Image facePlainImage(String id) {
         return withId(new Image("images/face-plain.png"), id);
     }
