@@ -16,7 +16,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -70,6 +74,21 @@ public class AdminSQLView extends Composite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource() == insertButton) {
             doInsert();
+        } else if (event.getSource() instanceof Image) {
+            Image image = (Image) event.getSource();
+
+            String actionfor = DOM.getElementAttribute(image.getElement(), "id");
+
+            String id = actionfor.substring(9);
+
+            ServerResponse callback = new ServerResponse() {
+
+                public void serverResponse(JSONValue responseObj) {
+                    new SQLRunner(responseObj.isObject());
+                }
+
+            };
+            AuthResponder.get(constants, messages, callback, "admin/admin_sql.php?action=get&id=" + id);
         }
     }
 
@@ -122,15 +141,91 @@ public class AdminSQLView extends Composite implements ClickHandler {
                 }
             }
 
-            private String giveYesNo(JSONObject value, String field) {
-                boolean test = Util.getBoolean(value.get(field));
-                return giveYesNo(test);
-            }
-
-            private String giveYesNo(boolean test) {
-                return test ? elements.admin_yes() : elements.admin_no();
-            }
         };
         AuthResponder.get(constants, messages, callback, "admin/admin_sql.php?action=list");
+    }
+
+    String giveYesNo(JSONObject value, String field) {
+        boolean test = Util.getBoolean(value.get(field));
+        return giveYesNo(test);
+    }
+
+    String giveYesNo(boolean test) {
+        return test ? elements.admin_yes() : elements.admin_no();
+    }
+
+    class SQLRunner extends DialogBox implements ClickHandler {
+        private Frame frame;
+        private VerticalPanel vp;
+        private NamedButton closeButton;
+        private NamedButton betaButton;
+        private NamedButton mainButton;
+        private final int id;
+        private AccountTable table;
+
+        public SQLRunner(JSONObject value) {
+            JSONObject sql = value.get("sql").isObject();
+            JSONArray installs = value.get("installs").isArray();
+
+            boolean runinbeta = Util.getBoolean(sql.get("runinbeta"));
+
+            this.id = Util.getInt(sql.get("id"));
+            vp = new VerticalPanel();
+
+            vp.add(new Label(id+":"+Util.str(sql.get("sqltorun"))));
+
+            FlowPanel buttonPanel = new FlowPanel();
+            betaButton = new NamedButton("run_beta", elements.admin_do_runinbeta());
+            betaButton.addClickHandler(this);
+            buttonPanel.add(betaButton);
+            mainButton = new NamedButton("run_main", elements.admin_do_runinmain());
+            mainButton.addClickHandler(this);
+            buttonPanel.add(mainButton);
+            vp.add(buttonPanel);
+
+            table = new AccountTable("tableborder");
+            vp.add(table);
+
+            table.setText(0, 0, elements.admin_dbprefix());
+            table.setText(0, 1, elements.admin_database());
+            table.setText(0, 2, "BETA");
+            table.setText(0, 3, elements.status());
+            table.setHeaderRowStyle(0);
+
+            fillInstalls(installs);
+
+            if (runinbeta) {
+                mainButton.setEnabled(true);
+                betaButton.setEnabled(false);
+            } else {
+                betaButton.setEnabled(true);
+                mainButton.setEnabled(false);
+            }
+
+            closeButton = new NamedButton("close", elements.close());
+            closeButton.addClickHandler(this);
+            vp.add(closeButton);
+            setWidget(vp);
+            center();
+        }
+
+        private void fillInstalls(JSONArray installs) {
+            for (int i = 0; i < installs.size(); i++) {
+                JSONObject obj = installs.get(i).isObject();
+                table.setText(i + 1, 0, Util.str(obj.get("dbprefix")));
+                table.setText(i + 1, 1, Util.str(obj.get("db")));
+                table.setText(i + 1, 2, giveYesNo(obj, "beta"), "center");
+                table.setText(i + 1, 3, Util.strSkipNull(obj.get("sqlIdToRun")));
+                table.alternateStyle(i + 1, 2);
+            }
+        }
+
+        public void onClick(ClickEvent event) {
+            if (event.getSource() == closeButton) {
+                hide();
+            } else if (event.getSource() == betaButton) {
+            } else if (event.getSource() == mainButton) {
+            }
+        }
     }
 }
