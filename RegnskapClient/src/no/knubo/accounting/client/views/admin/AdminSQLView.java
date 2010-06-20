@@ -20,7 +20,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -65,6 +64,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
         sqlTable.setText(0, 3, elements.admin_runinmain());
         sqlTable.setText(0, 4, elements.admin_registered_date());
         sqlTable.setText(0, 5, elements.admin_run());
+        sqlTable.setText(0, 6, "");
         sqlTable.setHeaderRowStyle(0);
         vp.add(sqlTable);
 
@@ -77,18 +77,33 @@ public class AdminSQLView extends Composite implements ClickHandler {
         } else if (event.getSource() instanceof Image) {
             Image image = (Image) event.getSource();
 
-            String actionfor = DOM.getElementAttribute(image.getElement(), "id");
+            String actionAndId = DOM.getElementAttribute(image.getElement(), "id");
 
-            String id = actionfor.substring(9);
+            if (actionAndId.startsWith("actionfor")) {
 
-            ServerResponse callback = new ServerResponse() {
+                String id = actionAndId.substring(9);
 
-                public void serverResponse(JSONValue responseObj) {
-                    new SQLRunner(responseObj.isObject());
-                }
+                ServerResponse callback = new ServerResponse() {
 
-            };
-            AuthResponder.get(constants, messages, callback, "admin/admin_sql.php?action=get&id=" + id);
+                    public void serverResponse(JSONValue responseObj) {
+                        new SQLRunner(responseObj.isObject());
+                    }
+
+                };
+                AuthResponder.get(constants, messages, callback, "admin/admin_sql.php?action=get&id=" + id);
+            } else if (actionAndId.startsWith("delete")) {
+                String id = actionAndId.substring(6);
+
+                ServerResponse callback = new ServerResponse() {
+
+                    public void serverResponse(JSONValue responseObj) {
+                        init();
+                    }
+
+                };
+                AuthResponder.get(constants, messages, callback, "admin/admin_sql.php?action=delete&id=" + id);
+
+            }
         }
     }
 
@@ -137,6 +152,10 @@ public class AdminSQLView extends Composite implements ClickHandler {
                     } else {
                         sqlTable.setText(i + 1, 5, "");
                     }
+                    Image deleteImage = ImageFactory.deleteImage("delete" + Util.str(value.get("id")));
+                    deleteImage.addClickHandler(me);
+                    sqlTable.setWidget(i + 1, 6, deleteImage);
+
                     sqlTable.alternateStyle(i + 1, 0);
                 }
             }
@@ -155,13 +174,13 @@ public class AdminSQLView extends Composite implements ClickHandler {
     }
 
     class SQLRunner extends DialogBox implements ClickHandler {
-        private Frame frame;
         private VerticalPanel vp;
         private NamedButton closeButton;
         private NamedButton betaButton;
         private NamedButton mainButton;
         private final int id;
         private AccountTable table;
+        private int currentRow;
 
         public SQLRunner(JSONObject value) {
             JSONObject sql = value.get("sql").isObject();
@@ -172,7 +191,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
             this.id = Util.getInt(sql.get("id"));
             vp = new VerticalPanel();
 
-            vp.add(new Label(id+":"+Util.str(sql.get("sqltorun"))));
+            vp.add(new Label(id + ":" + Util.str(sql.get("sqltorun"))));
 
             FlowPanel buttonPanel = new FlowPanel();
             betaButton = new NamedButton("run_beta", elements.admin_do_runinbeta());
@@ -190,6 +209,8 @@ public class AdminSQLView extends Composite implements ClickHandler {
             table.setText(0, 1, elements.admin_database());
             table.setText(0, 2, "BETA");
             table.setText(0, 3, elements.status());
+            table.setText(0, 4, "Id");
+            table.setText(0, 5, "Rows affected");
             table.setHeaderRowStyle(0);
 
             fillInstalls(installs);
@@ -216,6 +237,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
                 table.setText(i + 1, 1, Util.str(obj.get("db")));
                 table.setText(i + 1, 2, giveYesNo(obj, "beta"), "center");
                 table.setText(i + 1, 3, Util.strSkipNull(obj.get("sqlIdToRun")));
+                table.setText(i + 1, 4, Util.str(obj.get("id")));
                 table.alternateStyle(i + 1, 2);
             }
         }
@@ -223,9 +245,65 @@ public class AdminSQLView extends Composite implements ClickHandler {
         public void onClick(ClickEvent event) {
             if (event.getSource() == closeButton) {
                 hide();
+                init();
             } else if (event.getSource() == betaButton) {
+                currentRow = 1;
+                betaButton.setEnabled(false);
+                doRun(true);
             } else if (event.getSource() == mainButton) {
+                doRun(false);
             }
         }
+
+        public void doRun(final boolean runBeta) {
+            if (currentRow >= table.getRowCount()) {
+                mainComplete();
+                return;
+            }
+            boolean beta = table.getText(currentRow, 2).equals(elements.admin_yes());
+            if (beta != runBeta) {
+                if (runBeta) {
+                    betaRunComplete();
+                }
+                return;
+            }
+            String sqlID = table.getText(currentRow, 3);
+            if (sqlID.length() == 0) {
+                currentRow++;
+                doRun(runBeta);
+                return;
+            }
+
+            String installId = table.getText(currentRow, 4);
+
+            ServerResponse callback = new ServerResponse() {
+
+                public void serverResponse(JSONValue responseObj) {
+                    JSONObject obj = responseObj.isObject();
+
+                    table.setText(currentRow, 5, Util.str(obj.get("rows")), "right");
+                    // TODO obj - whatever debug trace we can get out of it?
+
+                    table.setText(currentRow, 3, "");
+
+                    currentRow++;
+                    doRun(runBeta);
+                }
+            };
+            AuthResponder.get(constants, messages, callback, "admin/admin_sql?action=run&installid=" + installId
+                    + "&id=" + id);
+        }
+
+        private void mainComplete() {
+            AuthResponder.getIgnore(constants, messages, "admin/admin_sql?action=othercomplete&id=" + id);
+            mainButton.setEnabled(false);
+        }
+
+        private void betaRunComplete() {
+
+            AuthResponder.getIgnore(constants, messages, "admin/admin_sql?action=betacomplete&id=" + id);
+            mainButton.setEnabled(true);
+        }
     }
+
 }
