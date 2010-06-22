@@ -11,6 +11,7 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.misc.WidgetIds;
+import no.knubo.accounting.client.ui.AccountTable;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,7 +21,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -241,7 +241,7 @@ public class AboutView extends Composite implements ClickHandler {
         statusAccountPanel.clear();
         statusAccountPanel.add(new HTML("<h2>" + elements.menuitem_report_accounttrack() + "</h2>"));
 
-        FlexTable table = new FlexTable();
+        AccountTable table = new AccountTable("tableborder");
         statusAccountPanel.add(table);
 
         PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
@@ -252,10 +252,9 @@ public class AboutView extends Composite implements ClickHandler {
             String post = Util.str(account.get("post"));
             table.setText(i, 0, post);
             table.setText(i, 1, posttypeCache.getDescription(post));
-            table.setText(i, 2, Util.money(account.get("s")));
+            table.setText(i, 2, Util.money(account.get("s")), "right");
 
-            String style = (i % 2 == 0) ? "showlineposts2" : "showlineposts1";
-            table.getRowFormatter().setStyleName(i, style);
+            table.alternateStyle(i + 2, 0);
         }
     }
 
