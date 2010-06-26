@@ -1303,6 +1303,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String expences();
 
   /**
+   * Translated "Kjør eksport".
+   * 
+   * @return translated "Kjør eksport"
+   */
+  @DefaultStringValue("Kjør eksport")
+  @Key("export")
+  String export();
+
+  /**
+   * Translated "Eksporter formatert med årsresultat til regneark".
+   * 
+   * @return translated "Eksporter formatert med årsresultat til regneark"
+   */
+  @DefaultStringValue("Eksporter formatert med årsresultat til regneark")
+  @Key("export_formatted")
+  String export_formatted();
+
+  /**
+   * Translated "Eksporter rådata til regneark".
+   * 
+   * @return translated "Eksporter rådata til regneark"
+   */
+  @DefaultStringValue("Eksporter rådata til regneark")
+  @Key("export_raw")
+  String export_raw();
+
+  /**
    * Translated "Eksporter til regneark".
    * 
    * @return translated "Eksporter til regneark"
@@ -1985,6 +2012,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Avslutt år")
   @Key("menuitem_endyear")
   String menuitem_endyear();
+
+  /**
+   * Translated "Eksport av regnskapsdata".
+   * 
+   * @return translated "Eksport av regnskapsdata"
+   */
+  @DefaultStringValue("Eksport av regnskapsdata")
+  @Key("menuitem_export_accounting")
+  String menuitem_export_accounting();
 
   /**
    * Translated "Eksport av personregister".

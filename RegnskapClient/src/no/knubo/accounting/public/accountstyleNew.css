@@ -470,6 +470,13 @@ td.rute {
 	background-color: lightgrey;
 }
 
+.buttonrow {
+	white-space: nowrap;
+	margin-right:10px;
+	margin-top:10px;
+	
+}
+
 .buttonpanel .gwt-label {
 	padding-left: 10px;
 	border-left: 1px solid;

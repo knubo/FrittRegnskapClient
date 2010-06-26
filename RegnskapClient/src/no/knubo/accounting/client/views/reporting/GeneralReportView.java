@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.views;
+package no.knubo.accounting.client.views.reporting;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;

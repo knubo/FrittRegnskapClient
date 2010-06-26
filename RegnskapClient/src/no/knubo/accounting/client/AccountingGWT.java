@@ -12,7 +12,6 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.views.AboutView;
-import no.knubo.accounting.client.views.GeneralReportView;
 import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.LogView;
@@ -33,6 +32,7 @@ import no.knubo.accounting.client.views.admin.AdminOperationsView;
 import no.knubo.accounting.client.views.admin.AdminSQLView;
 import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
+import no.knubo.accounting.client.views.exportimport.AccountExportView;
 import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
@@ -49,6 +49,7 @@ import no.knubo.accounting.client.views.registers.TrustActionEditView;
 import no.knubo.accounting.client.views.registers.TrustEditView;
 import no.knubo.accounting.client.views.registers.UsersEditView;
 import no.knubo.accounting.client.views.reporting.EarningsAndCostPie;
+import no.knubo.accounting.client.views.reporting.GeneralReportView;
 import no.knubo.accounting.client.views.reporting.ReportAccountlines;
 import no.knubo.accounting.client.views.reporting.ReportAccounttracking;
 import no.knubo.accounting.client.views.reporting.ReportMail;
@@ -186,6 +187,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
         addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
+        addMenuItem(importExportMenu, elements.menuitem_export_accounting(), WidgetIds.EXPORT_ACCOUNTING);
 
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
@@ -439,6 +441,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case ADMIN_OPERATIONS:
                 widget = AdminOperationsView.show(messages, constants, elements);
                 ((AdminOperationsView) widget).init();
+                break;
+            case EXPORT_ACCOUNTING:
+                widget = AccountExportView.getInstance(constants, messages, elements);
                 break;
             }
 

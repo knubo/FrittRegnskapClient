@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Label;
 public class AboutView extends Composite implements ClickHandler {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "2.0b5";
+    public static final String CLIENT_VERSION = "2.0";
 
     private static AboutView instance;
 
@@ -78,7 +78,7 @@ public class AboutView extends Composite implements ClickHandler {
     protected String parseNews(String response) {
         String withoutHeader = response.replaceAll("=====Nyheter=====", "");
 
-        String withWikiLinks = withoutHeader.replaceAll("\\[\\[(\\w+)\\s(.+)\\]\\]", "<a href=\"/wakka/$1\">$2</a>");
+        String withWikiLinks = withoutHeader.replaceAll("\\[\\[(\\w+)\\s(.+)\\]\\]", "<a href=\"http://www.frittregnskap.no/wakka/$1\">$2</a>");
 
         String[] split = withWikiLinks.split("\n");
 
