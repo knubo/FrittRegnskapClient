@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class EditMassletterView extends DialogBox implements ClickHandler {
@@ -26,6 +27,9 @@ public class EditMassletterView extends DialogBox implements ClickHandler {
     private final Constants constants;
     private final I18NAccount messages;
     private String template;
+    private NamedButton previewButton;
+    private Image previewImage;
+    private int countTriggersReload;
 
     public static EditMassletterView getInstance(Constants constants, I18NAccount messages, Elements elements) {
 
@@ -44,56 +48,80 @@ public class EditMassletterView extends DialogBox implements ClickHandler {
         VerticalPanel vp = new VerticalPanel();
 
         setText(elements.edit_massleter());
-        
+
+        HorizontalPanel editPanel = new HorizontalPanel();
         source = new NamedTextArea("massletter_source");
         source.setCharacterWidth(80);
         source.setVisibleLines(40);
-        vp.add(source);
+        source.setHeight("100%");
+        editPanel.add(source);
+
+        previewImage = new Image();
+        editPanel.add(previewImage);
+        vp.add(editPanel);
 
         HorizontalPanel hp = new HorizontalPanel();
-        
+
         cancelButton = new NamedButton("cancel", elements.cancel());
         cancelButton.addClickHandler(this);
         saveButton = new NamedButton("save", elements.save());
         saveButton.addClickHandler(this);
+        previewButton = new NamedButton("preview", elements.preview());
+        previewButton.addClickHandler(this);
+
         hp.add(saveButton);
         hp.add(cancelButton);
+        hp.add(previewButton);
         vp.add(hp);
-        
+
         setWidget(vp);
     }
 
     public void init(String data, String template) {
         this.template = template;
         source.setText(data);
-        center();
+        setPopupPosition(10,10);
+        show();
     }
-    
+
     public void onClick(ClickEvent event) {
-        if(event.getSource() == cancelButton) {
+        if (event.getSource() == cancelButton) {
             hide();
         }
-        if(event.getSource() == saveButton) {
-            save();
+        if (event.getSource() == saveButton) {
+            save(true);
+        }
+        if (event.getSource() == previewButton) {
+            save(false);
         }
     }
 
-    private void save() {
+    private void preview() {
+        countTriggersReload++;
+        previewImage.setUrl(constants.baseurl() + "reports/massletter.php?action=preview&template=" + template
+                + "&reload=" + countTriggersReload);
+    }
+
+    private void save(final boolean doHide) {
         ServerResponse callback = new ServerResponse() {
-            
+
             public void serverResponse(JSONValue responseObj) {
-                if(!"1".equals(Util.str(responseObj))) {
+                if (!"1".equals(Util.str(responseObj))) {
                     Window.alert(messages.save_failed_badly());
                 }
-                hide();
+                if (doHide) {
+                    hide();
+                } else {
+                    preview();
+                }
             }
         };
-        StringBuffer parameters = new StringBuffer(); 
+        StringBuffer parameters = new StringBuffer();
         parameters.append("action=save");
         Util.addPostParam(parameters, "data", source.getText());
         Util.addPostParam(parameters, "template", template);
-        
-        AuthResponder.post(constants, messages, callback  , parameters, "reports/massletter.php");
-        
+
+        AuthResponder.post(constants, messages, callback, parameters, "reports/massletter.php");
+
     }
 }

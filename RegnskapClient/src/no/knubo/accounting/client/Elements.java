@@ -2698,6 +2698,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String postnmb();
 
   /**
+   * Translated "Forhåndsvis".
+   * 
+   * @return translated "Forhåndsvis"
+   */
+  @DefaultStringValue("Forhåndsvis")
+  @Key("preview")
+  String preview();
+
+  /**
    * Translated "Prosjekt".
    * 
    * @return translated "Prosjekt"
