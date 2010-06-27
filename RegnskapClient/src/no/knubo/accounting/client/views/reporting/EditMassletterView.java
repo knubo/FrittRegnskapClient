@@ -11,6 +11,8 @@ import no.knubo.accounting.client.ui.NamedTextArea;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -18,7 +20,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class EditMassletterView extends DialogBox implements ClickHandler {
+public class EditMassletterView extends DialogBox implements ClickHandler, LoadHandler {
 
     private static EditMassletterView me;
     private NamedTextArea source;
@@ -53,7 +55,6 @@ public class EditMassletterView extends DialogBox implements ClickHandler {
         source = new NamedTextArea("massletter_source");
         source.setCharacterWidth(80);
         source.setVisibleLines(40);
-        source.setHeight("100%");
         editPanel.add(source);
 
         previewImage = new Image();
@@ -100,6 +101,8 @@ public class EditMassletterView extends DialogBox implements ClickHandler {
         countTriggersReload++;
         previewImage.setUrl(constants.baseurl() + "reports/massletter.php?action=preview&template=" + template
                 + "&reload=" + countTriggersReload);
+        
+        previewImage.addLoadHandler(this);
     }
 
     private void save(final boolean doHide) {
@@ -123,5 +126,9 @@ public class EditMassletterView extends DialogBox implements ClickHandler {
 
         AuthResponder.post(constants, messages, callback, parameters, "reports/massletter.php");
 
+    }
+
+    public void onLoad(LoadEvent event) {
+        source.setHeight(previewImage.getHeight()+"px");
     }
 }
