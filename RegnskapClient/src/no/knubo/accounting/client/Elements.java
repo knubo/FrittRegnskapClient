@@ -394,6 +394,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_yes();
 
   /**
+   * Translated "(avansert)".
+   * 
+   * @return translated "(avansert)"
+   */
+  @DefaultStringValue("(avansert)")
+  @Key("advanced")
+  String advanced();
+
+  /**
    * Translated "Alder".
    * 
    * @return translated "Alder"
@@ -2993,6 +3002,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Vis summer")
   @Key("show_sums")
   String show_sums();
+
+  /**
+   * Translated "(forenklet)".
+   * 
+   * @return translated "(forenklet)"
+   */
+  @DefaultStringValue("(forenklet)")
+  @Key("simplified")
+  String simplified();
 
   /**
    * Translated "Vår".

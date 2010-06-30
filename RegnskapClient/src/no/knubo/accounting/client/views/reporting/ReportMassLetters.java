@@ -100,7 +100,11 @@ public class ReportMassLetters extends Composite implements ClickHandler {
                     radiobuttons.add(rb);
                     table.setWidget(1 + i, 0, rb);
                     table.getCellFormatter().setStyleName(i + 1, 0, "desc");
-                    table.setWidget(i + 1, 1, createEditImage(Util.str(value)));
+                    table.setWidget(i + 1, 1, createEditImage(Util.str(value), "advanced"));
+                    table.setText(i + 1, 2, elements.advanced());
+
+                    table.setWidget(i + 1, 3, createEditImage(Util.str(value), "simple"));
+                    table.setText(i + 1, 4, elements.simplified());
                 }
             }
         };
@@ -109,19 +113,19 @@ public class ReportMassLetters extends Composite implements ClickHandler {
 
     }
 
-    protected Widget createEditImage(final String str) {
+    protected Widget createEditImage(final String str, final String editType) {
         Image editImage = ImageFactory.editImage("edit");
         ClickHandler handler = new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                editFile(str);
+                editFile(str, editType);
             }
         };
         editImage.addClickHandler(handler);
         return editImage;
     }
 
-    protected void editFile(final String filename) {
+    protected void editFile(final String filename, final String editType) {
         ServerResponse callback = new ServerResponseString() {
 
             public void serverResponse(JSONValue responseObj) {
@@ -129,15 +133,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
             }
 
             public void serverResponse(String response) {
-                EditMassletterView editMassletterView = EditMassletterView.getInstance(constants, messages, elements);
-                editMassletterView.init(response, filename);
-                CloseHandler<PopupPanel> closehandler = new CloseHandler<PopupPanel>() {
-
-                    public void onClose(CloseEvent<PopupPanel> event) {
-                        init();
-                    }
-                };
-                editMassletterView.addCloseHandler(closehandler);
+                openEditDialogSimple(filename, response);
             }
         };
 
@@ -181,7 +177,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
                 mv.mandatory(messages.required_field(), nameBox);
 
                 if (mv.validateStatus()) {
-                    editFile(nameBox.getText() + ".txt");
+                    openEditDialogSimple(nameBox.getText() + ".txt", "");
                     db.hide();
                 }
             }
@@ -206,5 +202,17 @@ public class ReportMassLetters extends Composite implements ClickHandler {
 
     private void doLetter(String template) {
         Window.open(this.constants.baseurl() + "reports/massletter.php?action=pdf&template=" + template, "_blank", "");
+    }
+
+    private void openEditDialogSimple(final String filename, String response) {
+        EditMassletterView editMassletterView = EditMassletterView.getInstance(constants, messages, elements);
+        editMassletterView.init(response, filename);
+        CloseHandler<PopupPanel> closehandler = new CloseHandler<PopupPanel>() {
+
+            public void onClose(CloseEvent<PopupPanel> event) {
+                init();
+            }
+        };
+        editMassletterView.addCloseHandler(closehandler);
     }
 }
