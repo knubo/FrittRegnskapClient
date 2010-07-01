@@ -290,18 +290,18 @@ public class AdminSQLView extends Composite implements ClickHandler {
                     doRun(runBeta);
                 }
             };
-            AuthResponder.get(constants, messages, callback, "admin/admin_sql?action=run&installid=" + installId
+            AuthResponder.get(constants, messages, callback, "admin/admin_sql.php?action=run&installid=" + installId
                     + "&id=" + id);
         }
 
         private void mainComplete() {
-            AuthResponder.getIgnore(constants, messages, "admin/admin_sql?action=othercomplete&id=" + id);
+            AuthResponder.getIgnore(constants, messages, "admin/admin_sql.php?action=othercomplete&id=" + id);
             mainButton.setEnabled(false);
         }
 
         private void betaRunComplete() {
 
-            AuthResponder.getIgnore(constants, messages, "admin/admin_sql?action=betacomplete&id=" + id);
+            AuthResponder.getIgnore(constants, messages, "admin/admin_sql.php?action=betacomplete&id=" + id);
             mainButton.setEnabled(true);
         }
     }

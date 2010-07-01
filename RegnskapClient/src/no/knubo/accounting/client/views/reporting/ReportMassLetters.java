@@ -100,8 +100,8 @@ public class ReportMassLetters extends Composite implements ClickHandler {
                     radiobuttons.add(rb);
                     table.setWidget(1 + i, 0, rb);
                     table.getCellFormatter().setStyleName(i + 1, 0, "desc");
-                    table.setWidget(i + 1, 1, createEditImage(Util.str(value), "advanced"));
-                    table.setText(i + 1, 2, elements.advanced());
+//                    table.setWidget(i + 1, 1, createEditImage(Util.str(value), "advanced"));
+//                    table.setText(i + 1, 2, elements.advanced());
 
                     table.setWidget(i + 1, 3, createEditImage(Util.str(value), "simple"));
                     table.setText(i + 1, 4, elements.simplified());
