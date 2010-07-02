@@ -2,6 +2,7 @@ package no.knubo.accounting.client.views;
 
 import java.util.HashMap;
 
+import no.knubo.accounting.client.AccountingGWT;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -76,8 +77,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
         this.messages = messages;
         this.constants = constants;
         this.elements = elements;
-        UserSearchFields userSearchFields = new UserSearchFields(this, elements);
-        userSearchFields.includeHidden();
+        UserSearchFields userSearchFields = new UserSearchFields(this, elements, true);
 
         this.idHolder = new IdHolder<String, Image>();
 
@@ -153,15 +153,20 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
                     String id = Util.str(obj.get("id"));
                     String firstname = Util.strSkipNull(obj.get("firstname"));
                     String lastname = Util.strSkipNull(obj.get("lastname"));
-                    String cellphone = Util.strSkipNull(obj.get("cellphone"));
-
                     int row = i + 1;
                     resultTable.setHTML(row, 0, firstname);
                     resultTable.setHTML(row, 1, lastname + " (" + id + ")");
                     resultTable.setHTML(row, 2, Util.strSkipNull(obj.get("email")));
-                    resultTable.setHTML(row, 3, Util.strSkipNull(obj.get("address")));
-                    resultTable.setHTML(row, 4, Util.strSkipNull(obj.get("phone")));
-                    resultTable.setHTML(row, 5, cellphone);
+
+                    boolean secretAddress = "#SECRET#".equals(Util.strSkipNull(obj.get("address")));
+                    if (secretAddress) {
+                        resultTable.setHTML(row, 3, elements.secret_address());
+                        resultTable.getCellFormatter().addStyleName(row, 3, "secret");
+                    } else {
+                        resultTable.setHTML(row, 3, Util.strSkipNull(obj.get("address")));
+                        resultTable.setHTML(row, 4, Util.strSkipNull(obj.get("phone")));
+                        resultTable.setHTML(row, 5, Util.strSkipNull(obj.get("cellphone")));
+                    }
 
                     if ("1".equals(Util.str(obj.get("employee")))) {
                         resultTable.setHTML(row, 6, elements.x());
@@ -177,14 +182,22 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
 
                     Image image = null;
 
+                    boolean blocked = false;
                     if (personPick == null) {
-                        image = ImageFactory.editImage("personSearchView_editImage");
+                        if (secretAddress && !AccountingGWT.canSeeSecret) {
+                            image = ImageFactory.unreadableImage("personSearchView_unreadable" + row);
+                            blocked = true;
+                        } else {
+                            image = ImageFactory.editImage("personSearchView_editImage" + row);
+                        }
                     } else {
-                        image = ImageFactory.chooseImage("personSearchView_pickImage");
+                        image = ImageFactory.chooseImage("personSearchView_pickImage" + row);
                     }
-                    image.addClickHandler(personSV);
-                    idHolder.add(id, image);
-                    idGivesObject.put(id, obj);
+                    if (!blocked) {
+                        image.addClickHandler(personSV);
+                        idHolder.add(id, image);
+                        idGivesObject.put(id, obj);
+                    }
                     resultTable.setWidget(row, 8, image);
                 }
             }

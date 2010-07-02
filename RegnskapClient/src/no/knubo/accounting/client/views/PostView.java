@@ -10,6 +10,7 @@ import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.views.modules.CountFields;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -27,7 +28,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
 
     static PostView me = null;
 
-    private FlexTable table;
+    private AccountTable table;
 
     private final I18NAccount messages;
 
@@ -68,8 +69,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         this.caller = caller;
         this.elements = elements;
         setText(elements.detailsline());
-        table = new FlexTable();
-        table.setStyleName("tableborder");
+        table = new AccountTable("tableborder");
 
         countfields = new CountFields(constants, messages, elements);
 
@@ -89,7 +89,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         editImage.addClickHandler(this);
         closeImage = ImageFactory.closeImage("PostView.closeImage");
         closeImage.addClickHandler(this);
-        table.setWidget(0, 5, editImage);
+        table.setWidget(0, 6, editImage, "right");
         table.setWidget(0, 7, closeImage);
 
         dp.add(table, DockPanel.NORTH);
@@ -131,9 +131,9 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         table.getFlexCellFormatter().setColSpan(1, 1, 4);
         table.setText(2, 1, Util.str(object.get("date")));
         table.getFlexCellFormatter().setColSpan(2, 1, 4);
-        table.setText(3, 1, Util.str(object.get("Description")));
+        table.setText(3, 1, Util.str(object.get("Description")), "desc");
         table.getFlexCellFormatter().setColSpan(3, 1, 4);
-        table.setText(4, 1, Util.str(object.get("EditedByPersonName")));
+        table.setText(4, 1, Util.str(object.get("EditedByPersonName")),"desc");
 
         JSONValue value = object.get("postArray");
 

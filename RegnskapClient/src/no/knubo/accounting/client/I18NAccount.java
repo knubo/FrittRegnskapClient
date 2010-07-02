@@ -538,6 +538,24 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String search_failed();
 
   /**
+   * Translated "Minst en person må kunne lese hemmelige adresser. ".
+   * 
+   * @return translated "Minst en person må kunne lese hemmelige adresser. "
+   */
+  @DefaultMessage("Minst en person må kunne lese hemmelige adresser. ")
+  @Key("secret_at_least_one")
+  String secret_at_least_one();
+
+  /**
+   * Translated "Du må ha tilgang til å lese hemmelige adresser for å kunne endre tilgang for dem.".
+   * 
+   * @return translated "Du må ha tilgang til å lese hemmelige adresser for å kunne endre tilgang for dem."
+   */
+  @DefaultMessage("Du må ha tilgang til å lese hemmelige adresser for å kunne endre tilgang for dem.")
+  @Key("secret_no_access")
+  String secret_no_access();
+
+  /**
    * Translated "For mange treff. Viser kun {0}.".
    * 
    * @return translated "For mange treff. Viser kun {0}."

@@ -72,7 +72,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
         this.elements = elements;
 
         idHolder = new IdHolder<String, TextBoxWithErrorText>();
-        userSearchFields = new UserSearchFields(this, elements);
+        userSearchFields = new UserSearchFields(this, elements, false);
 
         DockPanel dp = new DockPanel();
 

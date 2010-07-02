@@ -799,6 +799,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String club_account();
 
   /**
+   * Translated "Kommentar".
+   * 
+   * @return translated "Kommentar"
+   */
+  @DefaultStringValue("Kommentar")
+  @Key("comment")
+  String comment();
+
+  /**
    * Translated "Pris for kurs".
    * 
    * @return translated "Pris for kurs"
@@ -1517,6 +1526,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Id")
   @Key("id")
   String id();
+
+  /**
+   * Translated "Vis skjulte".
+   * 
+   * @return translated "Vis skjulte"
+   */
+  @DefaultStringValue("Vis skjulte")
+  @Key("include_hidden")
+  String include_hidden();
 
   /**
    * Translated "Flett brev".
@@ -2761,6 +2779,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String read_only_access();
 
   /**
+   * Translated "Kan lese hemmelige adresser".
+   * 
+   * @return translated "Kan lese hemmelige adresser"
+   */
+  @DefaultStringValue("Kan lese hemmelige adresser")
+  @Key("read_secret")
+  String read_secret();
+
+  /**
    * Translated "Redusert skrivetilgang".
    * 
    * @return translated "Redusert skrivetilgang"
@@ -2822,6 +2849,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Søk")
   @Key("search")
   String search();
+
+  /**
+   * Translated "Hemmelig adresse".
+   * 
+   * @return translated "Hemmelig adresse"
+   */
+  @DefaultStringValue("Hemmelig adresse")
+  @Key("secret_address")
+  String secret_address();
 
   /**
    * Translated "Velg budsjettår".

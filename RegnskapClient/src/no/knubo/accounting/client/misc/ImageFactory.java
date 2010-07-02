@@ -85,4 +85,8 @@ public class ImageFactory {
         return image;
     }
 
+    public static Image unreadableImage(String id) {
+        return withId(new Image("images/emblem-unreadable.png"), id);
+    }
+
 }

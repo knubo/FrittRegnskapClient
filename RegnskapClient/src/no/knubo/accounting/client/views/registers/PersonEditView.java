@@ -15,6 +15,7 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithValidation;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.ViewCallback;
@@ -56,7 +57,9 @@ public class PersonEditView extends Composite implements ClickHandler {
     private TextBoxWithErrorText addressBox;
     private HTMLWithError saveStatus;
     private CheckBox newsletterCheck;
+    private CheckBox secretaddressCheck;
     private TextBoxWithErrorText birthdateBox;
+    private NamedTextArea commentBox;
     private ListBox genderBox;
     private Button updateButton;
 
@@ -102,8 +105,10 @@ public class PersonEditView extends Composite implements ClickHandler {
         table.setHTML(9, 0, elements.cellphone());
         table.setHTML(10, 0, elements.newsletter());
         table.setHTML(11, 0, elements.gender());
-        table.setHTML(12, 0, elements.employee());
-        table.setHTML(13, 0, elements.hidden_person());
+        table.setHTML(12, 0, elements.secret_address());
+        table.setHTML(13, 0, elements.comment());
+        table.setHTML(14, 0, elements.employee());
+        table.setHTML(15, 0, elements.hidden_person());
 
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
@@ -136,6 +141,10 @@ public class PersonEditView extends Composite implements ClickHandler {
         cellphoneBox = new TextBoxWithErrorText("cellphone");
         cellphoneBox.setMaxLength(13);
 
+        commentBox = new NamedTextArea("comment");
+        commentBox.setVisibleLines(5);
+        commentBox.setCharacterWidth(60);
+        
         genderBox = new ListBox();
         genderBox.addItem("", "");
         genderBox.addItem(elements.gender_male(), "M");
@@ -144,7 +153,8 @@ public class PersonEditView extends Composite implements ClickHandler {
         employeeCheck = new CheckBox();
         newsletterCheck = new CheckBox();
         hiddenCheck = new CheckBox();
-
+        secretaddressCheck = new CheckBox();
+        
         updateButton = new NamedButton("PersonEditView.updateButton", elements.update());
         updateButton.addClickHandler(this);
 
@@ -172,11 +182,13 @@ public class PersonEditView extends Composite implements ClickHandler {
         table.setWidget(9, 1, cellphoneBox);
         table.setWidget(10, 1, newsletterCheck);
         table.setWidget(11, 1, genderBox);
-        table.setWidget(12, 1, employeeCheck);
-        table.setWidget(13, 1, hiddenCheck);
-        table.setWidget(14, 0, updateButton);
-        table.setWidget(14, 1, saveStatus);
-        table.setWidget(15, 0, toSearch);
+        table.setWidget(12, 1, secretaddressCheck);
+        table.setWidget(13, 1, commentBox);
+        table.setWidget(14, 1, employeeCheck);
+        table.setWidget(15, 1, hiddenCheck);
+        table.setWidget(16, 0, updateButton);
+        table.setWidget(17, 1, saveStatus);
+        table.setWidget(18, 0, toSearch);
         initWidget(dp);
     }
 
@@ -338,6 +350,9 @@ public class PersonEditView extends Composite implements ClickHandler {
         Util.setIndexByValue(genderBox, Util.str(object.get("Gender")));
         
         birthdateRequired = Util.getBoolean(object.get("BirthdateRequired"));
+        
+        commentBox.setText(Util.strSkipNull(object.get("Comment")));
+        secretaddressCheck.setValue("1".equals(Util.str(object.get("Secretaddress"))));
     }
 
     private void doSave() {
@@ -366,6 +381,8 @@ public class PersonEditView extends Composite implements ClickHandler {
         String hidden = hiddenCheck.getValue() ? "1" : "0";
         Util.addPostParam(sb, "hidden", hidden);
         Util.addPostParam(sb, "gender", Util.getSelected(genderBox));
+        Util.addPostParam(sb, "secretaddress", secretaddressCheck.getValue() ? "1" : "0");
+        Util.addPostParam(sb, "comment", commentBox.getText());
 
         ServerResponseWithValidation callback = new ServerResponseWithValidation() {
 
@@ -423,6 +440,8 @@ public class PersonEditView extends Composite implements ClickHandler {
             cellphoneBox.setText("");
             employeeCheck.setValue(false);
             newsletterCheck.setValue(false);
+            commentBox.setText("");
+            secretaddressCheck.setValue(false);
             updateButton.setHTML(elements.save());
         } else {
             doOpen();

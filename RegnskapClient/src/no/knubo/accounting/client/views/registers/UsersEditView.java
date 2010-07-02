@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.registers;
 
 import java.util.HashMap;
+import java.util.List;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
@@ -11,6 +12,8 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithValidation;
+import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedCheckBox;
@@ -58,8 +61,7 @@ public class UsersEditView extends Composite implements ClickHandler {
 
     private Elements elements;
 
-    public UsersEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel,
-            Elements elements) {
+    public UsersEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -71,13 +73,15 @@ public class UsersEditView extends Composite implements ClickHandler {
         table.setStyleName("tableborder");
         table.setHTML(0, 0, elements.title_user_adm());
         table.getRowFormatter().setStyleName(0, "header");
-        table.getFlexCellFormatter().setColSpan(0, 0, 5);
+        table.getFlexCellFormatter().setColSpan(0, 0, 7);
 
         table.setHTML(1, 0, elements.user());
         table.setHTML(1, 1, elements.name());
         table.setHTML(1, 2, elements.access());
-        table.setHTML(1, 3, "");
-        table.setHTML(1, 4, "");
+        table.setHTML(1, 3, elements.project_required());
+        table.setHTML(1, 4, elements.read_secret());
+        table.setHTML(1, 5, "");
+        table.setHTML(1, 6, "");
         table.getRowFormatter().setStyleName(1, "header");
 
         newButton = new NamedButton("userEditView.newButton", elements.userEditView_newButton());
@@ -91,8 +95,7 @@ public class UsersEditView extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
-    public static UsersEditView show(I18NAccount messages, Constants constants,
-            HelpPanel helpPanel, Elements elements) {
+    public static UsersEditView show(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new UsersEditView(messages, constants, helpPanel, elements);
         }
@@ -101,8 +104,8 @@ public class UsersEditView extends Composite implements ClickHandler {
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
-  
+        Widget sender = (Widget) event.getSource();
+
         if (sender == newButton || idHolderEditImages.findId(sender) != null) {
             if (editFields == null) {
                 editFields = new UserEditFields();
@@ -181,12 +184,10 @@ public class UsersEditView extends Composite implements ClickHandler {
                     JSONObject object = array.get(i).isObject();
 
                     String username = Util.str(object.get("username"));
-                    String name = Util.str(object.get("name"));
-                    String readOnlyAccess = Util.str(object.get("readonly"));
-                    String reducedWriteAccess = Util.str(object.get("reducedwrite"));
+
                     objectPerUsername.put(username, object);
 
-                    addRow(row++, username, name, readOnlyAccess, reducedWriteAccess);
+                    addRow(row++, username, object);
                 }
                 helpPanel.resize(me);
             }
@@ -195,18 +196,29 @@ public class UsersEditView extends Composite implements ClickHandler {
         AuthResponder.get(constants, messages, callback, "registers/users.php?action=all");
     }
 
-    private void addRow(int row, String username, String name, String readOnlyAccess,
-            String reducedwrite) {
+    private void addRow(int row, String username, JSONObject object) {
+        String name = Util.str(object.get("name"));
+        boolean readOnlyAccess = Util.getBoolean(object.get("readonly"));
+        boolean reducedWriteAccess = Util.getBoolean(object.get("reducedwrite"));
+        boolean readSecret = Util.getBoolean(object.get("see_secret"));
+        boolean projectRequired = Util.getBoolean(object.get("project_required"));
+
         table.setHTML(row, 0, username);
         table.setHTML(row, 1, name);
 
-        if ("1".equals(reducedwrite)) {
+        if ("1".equals(reducedWriteAccess)) {
             table.setHTML(row, 2, elements.reduced_write_access());
         } else if ("1".equals(readOnlyAccess)) {
             table.setHTML(row, 2, elements.read_only_access());
         } else {
             table.setHTML(row, 2, elements.full_access());
         }
+
+        table.setHTML(row, 3, projectRequired ? "X" : "");
+        table.getCellFormatter().setStyleName(row, 3, "center");
+
+        table.setHTML(row, 4, readSecret ? "X" : "");
+        table.getCellFormatter().setStyleName(row, 4, "center");
 
         table.getCellFormatter().setStyleName(row, 2, "desc");
         table.getCellFormatter().setStyleName(row, 1, "desc");
@@ -219,8 +231,8 @@ public class UsersEditView extends Composite implements ClickHandler {
         deleteImage.addClickHandler(this);
         idHolderDeleteImages.add(username, deleteImage);
 
-        table.setWidget(row, 3, editImage);
-        table.setWidget(row, 4, deleteImage);
+        table.setWidget(row, 5, editImage);
+        table.setWidget(row, 6, deleteImage);
 
         String style = (((row + 2) % 6) < 3) ? "line2" : "line1";
         table.getRowFormatter().setStyleName(row, style);
@@ -238,7 +250,7 @@ public class UsersEditView extends Composite implements ClickHandler {
 
         private TextBoxWithErrorText passwordBox;
 
-        private FlexTable edittable;
+        private AccountTable edittable;
 
         private String personId;
 
@@ -248,9 +260,10 @@ public class UsersEditView extends Composite implements ClickHandler {
 
         private NamedCheckBox projectRequired;
 
+        private NamedCheckBox readSecretCheck;
+
         UserEditFields() {
-            edittable = new FlexTable();
-            edittable.setStyleName("edittable");
+            edittable = new AccountTable("edittable");
 
             setText(elements.title_edit_new_user());
             userBox = new TextBoxWithErrorText("user");
@@ -271,7 +284,9 @@ public class UsersEditView extends Composite implements ClickHandler {
             accessList.getListbox().addItem(elements.read_only_access());
 
             projectRequired = new NamedCheckBox("project_required");
-            
+
+            readSecretCheck = new NamedCheckBox("read_secret");
+
             edittable.setText(0, 0, elements.user());
             edittable.setWidget(0, 1, userBox);
             edittable.setText(1, 0, elements.password());
@@ -282,13 +297,15 @@ public class UsersEditView extends Composite implements ClickHandler {
             searchImage.addClickHandler(this);
             edittable.setWidget(2, 2, searchImage);
 
-            edittable.setText(3, 0, elements.read_only_access());
+            edittable.setText(3, 0, elements.read_only_access(), "desc");
             edittable.setWidget(3, 1, accessList);
 
-            
-            edittable.setText(4, 0, elements.project_required());
+            edittable.setText(4, 0, elements.project_required(), "desc");
             edittable.setWidget(4, 1, projectRequired);
-            
+
+            edittable.setText(5, 0, elements.read_secret(), "desc");
+            edittable.setWidget(5, 1, readSecretCheck);
+
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
@@ -316,10 +333,11 @@ public class UsersEditView extends Composite implements ClickHandler {
             userBox.setText(username);
             personBox.setText(Util.str(object.get("name")));
             userBox.setEnabled(false);
-            boolean isReadOnly = "1".equals(Util.str(object.get("readonly")));
-            boolean reducedWrite = "1".equals(Util.str(object.get("reducedwrite")));
-            boolean projectRequired = "1".equals(Util.str(object.get("project_required")));
-            
+            boolean isReadOnly = Util.getBoolean(object.get("readonly"));
+            boolean reducedWrite = Util.getBoolean(object.get("reducedwrite"));
+            boolean projectRequired = Util.getBoolean(object.get("project_required"));
+            boolean readSecret = Util.getBoolean(object.get("see_secret"));
+
             if (reducedWrite) {
                 Util.setIndexByValue(accessList.getListbox(), elements.reduced_write_access());
             } else if (isReadOnly) {
@@ -327,6 +345,8 @@ public class UsersEditView extends Composite implements ClickHandler {
             } else {
                 Util.setIndexByValue(accessList.getListbox(), elements.full_access());
             }
+
+            this.readSecretCheck.setValue(readSecret);
             this.projectRequired.setValue(projectRequired);
         }
 
@@ -337,10 +357,12 @@ public class UsersEditView extends Composite implements ClickHandler {
             userBox.setEnabled(true);
             personBox.setText("");
             mainErrorLabel.setText("");
+            readSecretCheck.setValue(false);
+            projectRequired.setValue(false);
         }
 
         public void onClick(ClickEvent event) {
-        	Widget sender = (Widget) event.getSource();
+            Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton) {
@@ -350,8 +372,7 @@ public class UsersEditView extends Composite implements ClickHandler {
             } else {
                 int left = sender.getAbsoluteLeft() - 100;
                 int top = sender.getAbsoluteTop() + 10;
-                PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel,
-                        elements);
+                PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel, elements);
                 view.setPopupPosition(left, top);
                 view.show();
                 view.init();
@@ -376,10 +397,10 @@ public class UsersEditView extends Composite implements ClickHandler {
                 Util.addPostParam(sb, "readonly", "0");
                 Util.addPostParam(sb, "reducedwrite", "0");
             }
-            Util.addPostParam(sb, "project_required", projectRequired.getValue() ? "1": "0");
+            Util.addPostParam(sb, "project_required", projectRequired.getValue() ? "1" : "0");
+            Util.addPostParam(sb, "see_secret", readSecretCheck.getValue() ? "1" : "0");
 
-            ServerResponse callback = new ServerResponse() {
-
+            ServerResponse callback = new ServerResponseWithValidation() {
                 public void serverResponse(JSONValue parse) {
 
                     if (parse == null || parse.isObject() == null) {
@@ -398,6 +419,16 @@ public class UsersEditView extends Composite implements ClickHandler {
                     }
 
                     Util.timedMessage(mainErrorLabel, "", 5);
+                }
+
+                public void validationError(List<String> fields) {
+                    String errorCode = fields.get(0);
+                    if (errorCode.equals("LAST_USER")) {
+                        mainErrorLabel.setText(messages.secret_at_least_one());
+                    }
+                    if (errorCode.equals("MISSING_ACCESS")) {
+                        mainErrorLabel.setText(messages.secret_no_access());
+                    }
                 }
             };
 
@@ -420,8 +451,7 @@ public class UsersEditView extends Composite implements ClickHandler {
 
         public void pickPerson(String id, JSONObject personObj) {
             personId = id;
-            personBox.setText(Util.str(personObj.get("firstname")) + " "
-                    + Util.str(personObj.get("lastname")));
+            personBox.setText(Util.str(personObj.get("firstname")) + " " + Util.str(personObj.get("lastname")));
         }
     }
 }

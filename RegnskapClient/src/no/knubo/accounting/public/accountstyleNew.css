@@ -11,6 +11,10 @@ body {
 	white-space: nowrap;
 }
 
+.secret {
+	color:red;
+}
+
 .flag {
 	color: red;
 }

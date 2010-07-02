@@ -2,7 +2,9 @@ package no.knubo.accounting.client.views.modules;
 
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.ui.NamedCheckBox;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -10,7 +12,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,7 +30,7 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
 
     private Button clearButton;
 
-    private FlexTable searchTable;
+    private AccountTable searchTable;
 
     private final UserSearchCallback searchCallback;
 
@@ -38,10 +40,9 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
 
     private TextBox membernumberBox;
 
-    public UserSearchFields(UserSearchCallback searchCallback, Elements elements) {
+    public UserSearchFields(UserSearchCallback searchCallback, Elements elements, boolean includeHidenSearchOption) {
         this.searchCallback = searchCallback;
-        searchTable = new FlexTable();
-        searchTable.setStyleName("edittable");
+        searchTable = new AccountTable("edittable");
         firstnameBox = new TextBox();
         firstnameBox.setMaxLength(50);
         firstnameBox.addKeyPressHandler(this);
@@ -51,7 +52,7 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         membernumberBox = new TextBox();
         membernumberBox.setMaxLength(4);
         membernumberBox.addKeyPressHandler(this);
-        
+
         emailBox = new TextBox();
         emailBox.setMaxLength(100);
         emailBox.addStyleName("fullwidth");
@@ -68,11 +69,11 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         searchTable.setWidget(0, 3, firstnameBox);
         searchTable.setText(0, 4, elements.lastname());
         searchTable.setWidget(0, 5, lastnameBox);
-        searchTable.setText(1, 0, elements.email());
-        searchTable.setWidget(1, 1, emailBox);
-        searchTable.getFlexCellFormatter().setColSpan(1, 1, 3);
-        searchTable.setText(2, 0, elements.employee());
-        searchTable.setWidget(2, 1, employeeList);
+        searchTable.setText(2, 0, elements.email());
+        searchTable.setWidget(2, 1, emailBox);
+        searchTable.getFlexCellFormatter().setColSpan(2, 1, 3);
+        searchTable.setText(1, 0, elements.employee());
+        searchTable.setWidget(1, 1, employeeList);
 
         genderBox = new ListBox();
         genderBox.addItem("", "");
@@ -80,18 +81,36 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         genderBox.addItem(elements.gender_female(), "F");
         genderBox.addItem(elements.gender_unset(), "U");
 
-        searchTable.setText(2, 2, elements.gender());
-        searchTable.setWidget(2, 3, genderBox);
+        searchTable.setText(1, 2, elements.gender());
+        searchTable.setWidget(1, 3, genderBox);
 
+        if (includeHidenSearchOption) {
+            searchTable.setText(1, 4, elements.include_hidden(), "desc");
+
+            final NamedCheckBox includeHiddenCheck = new NamedCheckBox("include_hidden");
+            searchTable.setWidget(1, 5, includeHiddenCheck);
+            ClickHandler handler = new ClickHandler() {
+
+                public void onClick(ClickEvent event) {
+                    excludeHidden = !includeHiddenCheck.getValue();
+                }
+            };
+            includeHiddenCheck.addClickHandler(handler);
+        }
         searchButton = new NamedButton("search", elements.search());
         searchButton.addClickHandler(this);
         searchButton.addKeyPressHandler(this);
+        searchButton.addStyleName("buttonrow");
 
-        searchTable.setWidget(3, 0, searchButton);
         clearButton = new NamedButton("clear", elements.clear());
+        clearButton.addStyleName("buttonrow");
         clearButton.addClickHandler(this);
-        searchTable.setWidget(3, 1, clearButton);
 
+        FlowPanel hp = new FlowPanel();
+        hp.add(searchButton);
+        hp.add(clearButton);
+        searchTable.setWidget(3, 0, hp);
+        searchTable.getFlexCellFormatter().setColSpan(3, 0, 4);
     }
 
     public Widget getSearchTable() {
@@ -114,8 +133,8 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         }
     }
 
-    public void includeHidden() {
-        excludeHidden = false;
+    public void setExcludeHidden(boolean hide) {
+        excludeHidden = hide;
     }
 
     private void doSearch() {

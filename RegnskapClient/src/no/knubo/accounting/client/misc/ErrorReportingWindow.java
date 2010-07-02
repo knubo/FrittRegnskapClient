@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -23,7 +24,7 @@ public class ErrorReportingWindow {
         dialogBox.setText(title);
         
 
-        Label label = new Label(error);
+        HTML label = new HTML("<pre>"+error+"</pre>");
         if(error.length() > 250) {
             Elements elements = (Elements) GWT.create(Elements.class);
 

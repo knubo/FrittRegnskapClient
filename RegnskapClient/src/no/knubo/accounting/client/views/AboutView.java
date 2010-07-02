@@ -1,5 +1,6 @@
 package no.knubo.accounting.client.views;
 
+import no.knubo.accounting.client.AccountingGWT;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -114,6 +115,8 @@ public class AboutView extends Composite implements ClickHandler {
                             CLIENT_VERSION, serverVersion));
                 }
 
+                AccountingGWT.canSeeSecret = Util.getBoolean(object.get("see_secret"));
+                
                 enrichDashboard(object.get("info").isObject(), object.get("accountstatus"));
             }
         };

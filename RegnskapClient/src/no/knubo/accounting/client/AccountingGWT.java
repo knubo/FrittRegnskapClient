@@ -85,6 +85,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     private static Image blankImage;
     private static Image loadingImage;
 
+    public static boolean canSeeSecret;
+    
     /**
      * This is the entry point method.
      */
