@@ -538,11 +538,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String search_failed();
 
   /**
-   * Translated "Minst en person må kunne lese hemmelige adresser. ".
+   * Translated "Minst en person må kunne tildele hemmelige adresser. ".
    * 
-   * @return translated "Minst en person må kunne lese hemmelige adresser. "
+   * @return translated "Minst en person må kunne tildele hemmelige adresser. "
    */
-  @DefaultMessage("Minst en person må kunne lese hemmelige adresser. ")
+  @DefaultMessage("Minst en person må kunne tildele hemmelige adresser. ")
   @Key("secret_at_least_one")
   String secret_at_least_one();
 
