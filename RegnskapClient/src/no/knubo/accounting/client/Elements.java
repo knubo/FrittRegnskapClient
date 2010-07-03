@@ -1618,6 +1618,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String login();
 
   /**
+   * Translated "Fritt Regnskap".
+   * 
+   * @return translated "Fritt Regnskap"
+   */
+  @DefaultStringValue("Fritt Regnskap")
+  @Key("login_title")
+  String login_title();
+
+  /**
    * Translated "Logg ut".
    * 
    * @return translated "Logg ut"

@@ -2,6 +2,7 @@ package no.knubo.accounting.client;
 
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.AccountTable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -16,7 +17,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -49,8 +50,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
 
         DockPanel dp = new DockPanel();
         dp.setStyleName("middle");
-        FlexTable table = new FlexTable();
-        table.setStyleName("edittable");
+        AccountTable table = new AccountTable("edittable");
 
         dp.add(table, DockPanel.CENTER);
 
@@ -58,9 +58,11 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         loginButton.addClickHandler(this);
 
         userBox = new TextBox();
+        userBox.setName("username");
         userBox.setWidth("12em");
         userBox.setMaxLength(12);
         passBox = new PasswordTextBox();
+        passBox.setName("password");
         passBox.setWidth("12em");
         passBox.addKeyPressHandler(new KeyPressHandler() {
 
@@ -73,7 +75,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         });
         infoLabel = new HTML();
 
-        table.setText(0, 0, elements.login());
+        table.setText(0, 0, elements.login_title(),"logintitle");
         table.getFlexCellFormatter().setColSpan(0, 0, 2);
         table.setText(1, 0, elements.user());
         table.setWidget(1, 1, userBox);
@@ -82,10 +84,21 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         table.setWidget(4, 1, loginButton);
         table.setWidget(5, 1, infoLabel);
         table.getFlexCellFormatter().setColSpan(4, 1, 2);
-        RootPanel.get().add(dp);
         Window.setTitle(elements.login());
-        userBox.setFocus(true);
+
+        FlowPanel loginContainer = new FlowPanel();
+        loginContainer.setStyleName("logincontainer");
+
+        FlowPanel loginposition = new FlowPanel();
+        loginposition.setStyleName("loginposition");
         
+        
+        loginContainer.add(loginposition);
+        loginposition.add(dp);
+        
+        RootPanel.get().add(loginContainer);
+        
+        userBox.setFocus(true);
     }
 
     public void onClick(ClickEvent event) {

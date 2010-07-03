@@ -58,6 +58,23 @@
 		</java>
 	</target>
 
+	<target name="devmodelogin" description="Run development mode login">
+		<java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode">
+			<classpath>
+				<pathelement location="src" />
+				<path refid="project.class.path" />
+			</classpath>
+			<jvmarg value="-Xmx256M" />
+			<arg value="-noserver" />
+			<arg value="-startupUrl" />
+			<arg value="http://localhost/login/Login.html" />
+			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+			<arg line="${gwt.args}" />
+			<arg value="no.knubo.accounting.Login" />
+		</java>
+	</target>
+
+
 	<target name="devmodemaster" description="Run development mode">
 		<java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode">
 			<classpath>
