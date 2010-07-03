@@ -34,6 +34,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment_used();
 
   /**
+   * Translated "Sikkerhetskopi kan ikke benyttes uten tilgang til hemmelige adresser.".
+   * 
+   * @return translated "Sikkerhetskopi kan ikke benyttes uten tilgang til hemmelige adresser."
+   */
+  @DefaultMessage("Sikkerhetskopi kan ikke benyttes uten tilgang til hemmelige adresser.")
+  @Key("backup_error")
+  String backup_error();
+
+  /**
    * Translated "Fikk ikke forventet svar fra server. Operasjonen er trolig ikke gjennomført.".
    * 
    * @return translated "Fikk ikke forventet svar fra server. Operasjonen er trolig ikke gjennomført."
@@ -95,6 +104,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Alle grunndata er på plass")
   @Key("dashboard_all_basic_present")
   String dashboard_all_basic_present();
+
+  /**
+   * Translated "Lenge siden siste sikkerhetskopi".
+   * 
+   * @return translated "Lenge siden siste sikkerhetskopi"
+   */
+  @DefaultMessage("Lenge siden siste sikkerhetskopi")
+  @Key("dashboard_long_since_last_backup")
+  String dashboard_long_since_last_backup();
 
   /**
    * Translated "Lenge siden siste regnskapsføring".

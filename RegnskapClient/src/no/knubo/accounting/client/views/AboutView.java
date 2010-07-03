@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.Label;
 public class AboutView extends Composite implements ClickHandler {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "2.02";
+    public static final String CLIENT_VERSION = "2.03";
 
     private static AboutView instance;
 
@@ -216,11 +216,15 @@ public class AboutView extends Composite implements ClickHandler {
         boolean warning = false;
         boolean error = false;
 
-        if (info.containsKey("long_size_last_error")) {
+        if (info.containsKey("long_since_last_error")) {
             fpAccounting.add(addAnchor(messages.dashboard_long_time_no_accounting()));
             error = true;
-        } else if (info.containsKey("long_size_last_warning")) {
+        } else if (info.containsKey("long_since_last_warning")) {
             fpAccounting.add(addAnchor(messages.dashboard_long_time_no_accounting()));
+            warning = true;
+        }
+        if(info.containsKey("long_since_backup_error")) {
+            fpAccounting.add(addAnchor(messages.dashboard_long_since_last_backup()));
             warning = true;
         }
 
@@ -320,6 +324,8 @@ public class AboutView extends Composite implements ClickHandler {
                 || text.equals(messages.dashboard_missing_year_price_current())
                 || text.equals(messages.dashboard_missing_year_price_next())) {
             callback.openView(WidgetIds.EDIT_PRICES, text);
+        } else if(text.equals(messages.dashboard_long_since_last_backup())) {
+            callback.openView(WidgetIds.BACKUP, text);
         }
 
     }

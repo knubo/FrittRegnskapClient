@@ -9,6 +9,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithValidation;
 import no.knubo.accounting.client.ui.NamedButton;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -74,8 +75,7 @@ public class BackupView extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
-    public static BackupView getInstance(Constants constants, I18NAccount messages,
-            Elements elements) {
+    public static BackupView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (instance == null) {
             instance = new BackupView(messages, constants, elements);
         }
@@ -85,18 +85,27 @@ public class BackupView extends Composite implements ClickHandler {
     public void init() {
         progress.setText("");
         actions = new ArrayList<BackupAction>();
-
+        progress.removeStyleName("error");
         getInfo();
 
     }
 
     private void getInfo() {
-        ServerResponse callback = new ServerResponse() {
+        ServerResponse callback = new ServerResponseWithValidation() {
+
             public void serverResponse(JSONValue value) {
                 JSONObject info = value.isObject();
 
                 downloadLast.setEnabled(info.containsKey("backup_file"));
-                table.setText(1, 1, Util.str(info.get("last_backup")));
+                table.setText(1, 1, Util.str(info.get("last_backup")) + " - ("
+                        + Util.strSkipNull(info.get("last_backup_by")) + ")");
+            }
+
+            public void validationError(List<String> fields) {
+                startBackup.setEnabled(false);
+                downloadLast.setEnabled(false);
+                progress.setText(messages.backup_error());
+                progress.addStyleName("error");
             }
         };
 
@@ -104,9 +113,9 @@ public class BackupView extends Composite implements ClickHandler {
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
-    	
-    	if (sender == startBackup) {
+        Widget sender = (Widget) event.getSource();
+
+        if (sender == startBackup) {
             startBackup.setEnabled(false);
             startBackup();
         } else if (sender == downloadLast) {
