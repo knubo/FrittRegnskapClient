@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -184,6 +185,17 @@ public class BackupView extends Composite implements ClickHandler {
         }
 
         public void execute() {
+            Timer timer = new Timer() {
+
+                @Override
+                public void run() {
+                    doBackup();
+                }
+            };
+            timer.schedule(2 * 1000);
+        }
+
+        private void doBackup() {
             ServerResponse callback = new ServerResponse() {
                 public void serverResponse(JSONValue value) {
                     data(value);

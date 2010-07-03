@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.Label;
 public class AboutView extends Composite implements ClickHandler {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "2.01";
+    public static final String CLIENT_VERSION = "2.02";
 
     private static AboutView instance;
 
