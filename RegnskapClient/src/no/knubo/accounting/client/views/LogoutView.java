@@ -12,41 +12,56 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 
-public class LogoutView extends Composite implements ClickHandler, ServerResponse {
+public class LogoutView extends DialogBox implements ClickHandler, ServerResponse {
 
     private static LogoutView instance;
     private static I18NAccount messages;
     private static Constants constants;
     private static Elements elements;
+    private NamedButton logoutButton;
+    private NamedButton cancelButton;
 
-    public static LogoutView getInstance(Constants constants, I18NAccount messages,
-            Elements elements) {
+    public static LogoutView show(Constants constants, I18NAccount messages, Elements elements) {
         LogoutView.messages = messages;
         LogoutView.constants = constants;
         LogoutView.elements = elements;
         if (instance == null) {
             instance = new LogoutView();
         }
+        instance.center();
         return instance;
     }
 
     private LogoutView() {
-        DockPanel dp = new DockPanel();
+        HorizontalPanel dp = new HorizontalPanel();
 
-        NamedButton logoutButton = new NamedButton("logout", elements.logout());
+        logoutButton = new NamedButton("logout", elements.logout());
         logoutButton.addClickHandler(this);
-        dp.add(logoutButton, DockPanel.NORTH);
-
-        initWidget(dp);
+        dp.add(logoutButton);
+        
+        cancelButton = new NamedButton("cancel", elements.cancel());
+        cancelButton.addClickHandler(this);
+        dp.add(cancelButton);
+        
+        setText(elements.logout_title());
+        
+        dp.addStyleName("logout");
+        
+        setWidget(dp);
     }
 
     public void onClick(ClickEvent event) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("action=logout");
-        AuthResponder.post(constants, messages, this, sb, "authenticate.php");
+        if (event.getSource() == logoutButton) {
+            StringBuffer sb = new StringBuffer();
+            sb.append("action=logout");
+            AuthResponder.post(constants, messages, this, sb, "authenticate.php");
+        }
+        if(event.getSource() == cancelButton) {
+            hide();
+        }
     }
 
     public void serverResponse(JSONValue val) {

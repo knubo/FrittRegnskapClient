@@ -410,8 +410,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((BackupView) widget).init();
                 break;
             case LOGOUT:
-                widget = LogoutView.getInstance(constants, messages, elements);
-                break;
+                widget = LogoutView.show(constants, messages, elements);
+                return;
             case EDIT_PRICES:
                 widget = MembershipPriceEditView.show(messages, constants, elements);
                 ((MembershipPriceEditView) widget).init();

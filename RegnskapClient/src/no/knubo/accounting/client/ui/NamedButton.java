@@ -18,4 +18,9 @@ public class NamedButton extends Button {
         setId(name);
         setAccessKey(Character.toLowerCase(text.charAt(0)));
     }
+
+    public NamedButton(String name, String text, String style) {
+        this(name, text);
+        addStyleName(style);
+    }
 }

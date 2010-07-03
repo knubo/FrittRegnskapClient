@@ -1627,6 +1627,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String logout();
 
   /**
+   * Translated "Logg ut av regnskapssystemet?".
+   * 
+   * @return translated "Logg ut av regnskapssystemet?"
+   */
+  @DefaultStringValue("Logg ut av regnskapssystemet?")
+  @Key("logout_title")
+  String logout_title();
+
+  /**
    * Translated "Melding".
    * 
    * @return translated "Melding"

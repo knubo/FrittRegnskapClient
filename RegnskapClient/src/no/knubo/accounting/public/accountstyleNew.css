@@ -12,7 +12,7 @@ body {
 }
 
 .secret {
-	color:red;
+	color: red;
 }
 
 .flag {
@@ -70,6 +70,15 @@ body {
 
 .datefor {
 	white-space: nowrap;
+}
+
+.logout {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.logout TD {
+	padding:5px;	
 }
 
 .center {
@@ -476,9 +485,8 @@ td.rute {
 
 .buttonrow {
 	white-space: nowrap;
-	margin-right:10px;
-	margin-top:10px;
-	
+	margin-right: 10px;
+	margin-top: 10px;
 }
 
 .buttonpanel .gwt-label {
