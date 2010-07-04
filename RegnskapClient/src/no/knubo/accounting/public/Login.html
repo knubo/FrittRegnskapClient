@@ -1,36 +1,14 @@
-
-<head>
 <html>
+<head>
 
 <!--                                           -->
 <!-- Any title is fine                         -->
 <!--                                           -->
-<title>Wrapper HTML for Login</title>
+<title>Fritt Regnskap</title>
 
 <!--                                           -->
 <!-- Use normal html, such as style            -->
 <!--                                           -->
-<style>
-body,td,a,div,.p {
-	font-family: arial, sans-serif
-}
-
-div,td {
-	color: #000000
-}
-
-a:link,.w,.w a:link {
-	color: #0000cc
-}
-
-a:visited {
-	color: #551a8b
-}
-
-a:active {
-	color: #ff0000
-}
-</style>
 
 <!--                                           -->
 <!-- The module reference below is the link    -->
@@ -53,6 +31,40 @@ a:active {
 <!--                                            -->
 <script language="javascript" src="login.nocache.js"></script>
 
-
+<form method="post" action="forward.html" id="theform">
+<div class="logincontainer">
+<div class="loginposition">
+<table class="middle">
+	<tr>
+		<td>
+		<table class="edittable">
+			<tbody>
+				<tr>
+					<td class="logintitle" colspan="2" id="logintitle"><!-- --></td>
+				</tr>
+				<tr>
+					<td id="usertitle"><!-- --></td>
+					<td><input type="text" tabindex="0" class="gwt-TextBox"
+						name="username" id="username" style="width: 12em;" maxlength="12"></td>
+				</tr>
+				<tr>
+					<td id="passwordtitle"><!-- --></td>
+					<td><input type="password" tabindex="0"
+						class="gwt-PasswordTextBox" name="password" id="password"
+						style="width: 12em;"></td>
+				</tr>
+				<tr><td></td><td colspan="2" class="error" id="info"><!--  --></td></tr>
+				<tr>
+					<td><input type="submit" value="Hidden" style="display:none" id="submitit"></input></td>
+					<td colspan="2" id="gwt-placement"></td>
+				</tr>
+			</tbody>
+		</table>
+		</td>
+	</tr>
+</table>
+</div>
+</div>
+</form>
 </body>
 </html>

@@ -2,41 +2,38 @@ package no.knubo.accounting.client;
 
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
-import no.knubo.accounting.client.ui.AccountTable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Login implements EntryPoint, ClickHandler, ServerResponse {
 
-    private PasswordTextBox passBox;
-
     private Constants constants;
 
     private HTML infoLabel;
 
     private I18NAccount messages;
-
-    private TextBox userBox;
 
     private Elements elements;
 
@@ -48,57 +45,47 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         constants = (Constants) GWT.create(Constants.class);
         elements = (Elements) GWT.create(Elements.class);
 
-        DockPanel dp = new DockPanel();
-        dp.setStyleName("middle");
-        AccountTable table = new AccountTable("edittable");
-
-        dp.add(table, DockPanel.CENTER);
-
         Button loginButton = new Button(elements.login());
         loginButton.addClickHandler(this);
 
-        userBox = new TextBox();
-        userBox.setName("username");
-        userBox.setWidth("12em");
-        userBox.setMaxLength(12);
-        passBox = new PasswordTextBox();
-        passBox.setName("password");
-        passBox.setWidth("12em");
-        passBox.addKeyPressHandler(new KeyPressHandler() {
+        RootPanel.get("gwt-placement").add(loginButton);
 
-            public void onKeyPress(KeyPressEvent event) {
-                if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+        setText("logintitle", elements.login_title());
+
+        setText("usertitle", elements.user());
+        setText("passwordtitle", elements.password());
+
+        addEnterGivesLogin();
+
+        Timer timer = new Timer() {
+
+            @Override
+            public void run() {
+                DOM.getElementById("username").focus();
+            }
+        };
+        timer.schedule(500);
+
+    }
+
+    private void addEnterGivesLogin() {
+        NativePreviewHandler handler = new NativePreviewHandler() {
+
+            public void onPreviewNativeEvent(NativePreviewEvent event) {
+                NativeEvent nativeEvent = event.getNativeEvent();
+                
+                if(nativeEvent.getKeyCode() == KeyCodes.KEY_ENTER) {
+                    event.cancel();
                     doLogin();
                 }
             }
+        };
+        Event.addNativePreviewHandler(handler);
+    }
 
-        });
-        infoLabel = new HTML();
-
-        table.setText(0, 0, elements.login_title(),"logintitle");
-        table.getFlexCellFormatter().setColSpan(0, 0, 2);
-        table.setText(1, 0, elements.user());
-        table.setWidget(1, 1, userBox);
-        table.setText(2, 0, elements.password());
-        table.setWidget(2, 1, passBox);
-        table.setWidget(4, 1, loginButton);
-        table.setWidget(5, 1, infoLabel);
-        table.getFlexCellFormatter().setColSpan(4, 1, 2);
-        Window.setTitle(elements.login());
-
-        FlowPanel loginContainer = new FlowPanel();
-        loginContainer.setStyleName("logincontainer");
-
-        FlowPanel loginposition = new FlowPanel();
-        loginposition.setStyleName("loginposition");
-        
-        
-        loginContainer.add(loginposition);
-        loginposition.add(dp);
-        
-        RootPanel.get().add(loginContainer);
-        
-        userBox.setFocus(true);
+    private void setText(String id, String text) {
+        Element elem = DOM.getElementById(id);
+        elem.setInnerHTML(text);
     }
 
     public void onClick(ClickEvent event) {
@@ -106,8 +93,12 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
     }
 
     private void doLogin() {
-        String user = this.userBox.getText();
-        String password = this.passBox.getText();
+        String user = getInput("username").getValue();
+        String password = getInput("password").getValue();
+
+        if(user.length() == 0 && password.length() == 0) {
+            return;
+        }
         
         AuthResponder.get(constants, messages, this, "../../RegnskapServer/services/authenticate.php?user=" + user
                 + "&password=" + password);
@@ -120,10 +111,21 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
 
         if (error != null) {
             JSONString string = error.isString();
-            infoLabel.setText(string.stringValue());
+            setText("info", string.stringValue());
         } else {
-            Util.forward(constants.appURL());
-        }        
+            InputElement input = getInput("submitit");
+            input.click();
+        }
+    }
+
+    private InputElement getInput(String id) {
+        Element elem = DOM.getElementById(id);
+        InputElement input = InputElement.as(elem);
+        
+        if(input == null) {
+            Window.alert("Fant ikke :"+id);
+        }
+        return input;
     }
 
 }
