@@ -13,6 +13,7 @@ import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,18 +43,20 @@ public class ReportMassLetters extends Composite implements ClickHandler {
     private final Elements elements;
     private NamedButton joinButton;
     private NamedButton newButton;
+    private final ViewCallback callback;
 
-    public static ReportMassLetters getInstance(Constants constants, I18NAccount messages, Elements elements) {
+    public static ReportMassLetters getInstance(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
         if (reportInstance == null) {
-            reportInstance = new ReportMassLetters(constants, messages, elements);
+            reportInstance = new ReportMassLetters(constants, messages, elements, callback);
         }
         return reportInstance;
     }
 
-    public ReportMassLetters(Constants constants, I18NAccount messages, Elements elements) {
+    public ReportMassLetters(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
+        this.callback = callback;
 
         table = new FlexTable();
         table.setStyleName("edittable");
@@ -100,8 +103,8 @@ public class ReportMassLetters extends Composite implements ClickHandler {
                     radiobuttons.add(rb);
                     table.setWidget(1 + i, 0, rb);
                     table.getCellFormatter().setStyleName(i + 1, 0, "desc");
-//                    table.setWidget(i + 1, 1, createEditImage(Util.str(value), "advanced"));
-//                    table.setText(i + 1, 2, elements.advanced());
+                    table.setWidget(i + 1, 1, createEditImage(Util.str(value), "advanced"));
+                    table.setText(i + 1, 2, elements.advanced());
 
                     table.setWidget(i + 1, 3, createEditImage(Util.str(value), "simple"));
                     table.setText(i + 1, 4, elements.simplified());
@@ -133,7 +136,11 @@ public class ReportMassLetters extends Composite implements ClickHandler {
             }
 
             public void serverResponse(String response) {
-                openEditDialogSimple(filename, response);
+                if (editType.equals("advanced")) {
+                    openEditDialogAdvanced(filename, response);
+                } else {
+                    openEditDialogSimple(filename, response);
+                }
             }
         };
 
@@ -204,7 +211,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
         Window.open(this.constants.baseurl() + "reports/massletter.php?action=pdf&template=" + template, "_blank", "");
     }
 
-    private void openEditDialogSimple(final String filename, String response) {
+    private void openEditDialogAdvanced(final String filename, String response) {
         EditMassletterView editMassletterView = EditMassletterView.getInstance(constants, messages, elements);
         editMassletterView.init(response, filename);
         CloseHandler<PopupPanel> closehandler = new CloseHandler<PopupPanel>() {
@@ -215,4 +222,11 @@ public class ReportMassLetters extends Composite implements ClickHandler {
         };
         editMassletterView.addCloseHandler(closehandler);
     }
+
+
+    protected void openEditDialogSimple(String filename, String response) {
+        callback.openMassletterEditSimple(filename, response);
+    }
+
+
 }

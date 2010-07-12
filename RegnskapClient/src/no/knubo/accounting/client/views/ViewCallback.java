@@ -35,4 +35,6 @@ public interface ViewCallback {
     public void searchPerson();
 
     public void openView(WidgetIds view, String title);
+
+    public void openMassletterEditSimple(String filename, String response);
 }

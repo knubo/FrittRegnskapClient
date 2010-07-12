@@ -58,6 +58,7 @@ import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
 import no.knubo.accounting.client.views.reporting.ReportMembersBirth;
 import no.knubo.accounting.client.views.reporting.ReportMembersBirthGender;
 import no.knubo.accounting.client.views.reporting.ReportUsersEmail;
+import no.knubo.accounting.client.views.reporting.SimpleMassletterEditView;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -86,7 +87,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     private static Image loadingImage;
 
     public static boolean canSeeSecret;
-    
+
     /**
      * This is the entry point method.
      */
@@ -240,10 +241,13 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         private String title;
 
-        Commando(ViewCallback callback, WidgetIds action, String title) {
+        private final String[] params;
+
+        Commando(ViewCallback callback, WidgetIds action, String title, String... params) {
             this.callback = callback;
             this.action = action;
             this.title = title;
+            this.params = params;
         }
 
         public void execute() {
@@ -372,7 +376,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = ReportAccountlines.getInstance(constants, messages, helpPanel, elements);
                 break;
             case REPORT_LETTER:
-                widget = ReportMassLetters.getInstance(constants, messages, elements);
+                widget = ReportMassLetters.getInstance(constants, messages, elements, callback);
                 ((ReportMassLetters) widget).init();
                 break;
             case REPORT_EMAIL:
@@ -439,13 +443,17 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = AdminSQLView.show(messages, constants, elements);
                 ((AdminSQLView) widget).init();
                 break;
-                
+
             case ADMIN_OPERATIONS:
                 widget = AdminOperationsView.show(messages, constants, elements);
                 ((AdminOperationsView) widget).init();
                 break;
             case EXPORT_ACCOUNTING:
                 widget = AccountExportView.getInstance(constants, messages, elements);
+                break;
+            case EDIT_MASSLETTER_SIMPLE:
+                widget = SimpleMassletterEditView.getInstance(constants, messages, elements, callback);
+                ((SimpleMassletterEditView)widget).init(params);
                 break;
             }
 
@@ -468,7 +476,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView.add(widget, DockPanel.CENTER);
         activeView.setCellHeight(widget, "100%");
         activeView.setCellVerticalAlignment(widget, HasVerticalAlignment.ALIGN_TOP);
-
+        widget.setVisible(true);
     }
 
     public void openDetails(String id) {
@@ -537,5 +545,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     public void openView(WidgetIds view, String title) {
         new Commando(this, view, title).execute();
+    }
+
+    public void openMassletterEditSimple(String filename, String response) {
+        new Commando(this, WidgetIds.EDIT_MASSLETTER_SIMPLE, elements.title_edit_massletter(), filename, response)
+                .execute();
+
     }
 }

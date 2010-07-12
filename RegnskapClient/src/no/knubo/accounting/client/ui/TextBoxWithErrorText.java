@@ -55,6 +55,24 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
         createHorizontalPanel();
     }
 
+    public TextBoxWithErrorText(String name, int length) {
+        this(name);
+        setVisibleLength(length);
+        setMaxLength(length);
+    }
+
+    public TextBoxWithErrorText(String string, HTML errorLabel, int length) {
+        this(string, errorLabel);
+        setVisibleLength(length);
+        setMaxLength(length);
+    }
+
+    public TextBoxWithErrorText(String name, int length, boolean flow) {
+        this(name, flow);
+        setVisibleLength(length);
+        setMaxLength(length);
+    }
+
     private void createHorizontalPanel() {
         HorizontalPanel hp = new HorizontalPanel();
 

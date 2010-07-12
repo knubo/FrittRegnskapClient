@@ -1744,6 +1744,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String mail_title();
 
   /**
+   * Translated "Kontonummer".
+   * 
+   * @return translated "Kontonummer"
+   */
+  @DefaultStringValue("Kontonummer")
+  @Key("massletter_accountnumber")
+  String massletter_accountnumber();
+
+  /**
+   * Translated "Dokument".
+   * 
+   * @return translated "Dokument"
+   */
+  @DefaultStringValue("Dokument")
+  @Key("massletter_document")
+  String massletter_document();
+
+  /**
    * Translated "Betalingsfrist".
    * 
    * @return translated "Betalingsfrist"
@@ -1751,6 +1769,132 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Betalingsfrist")
   @Key("massletter_due_date")
   String massletter_due_date();
+
+  /**
+   * Translated "Avsender".
+   * 
+   * @return translated "Avsender"
+   */
+  @DefaultStringValue("Avsender")
+  @Key("massletter_from")
+  String massletter_from();
+
+  /**
+   * Translated "Giro".
+   * 
+   * @return translated "Giro"
+   */
+  @DefaultStringValue("Giro")
+  @Key("massletter_giro")
+  String massletter_giro();
+
+  /**
+   * Translated "Bruk medlemskortfelter".
+   * 
+   * @return translated "Bruk medlemskortfelter"
+   */
+  @DefaultStringValue("Bruk medlemskortfelter")
+  @Key("massletter_include_card")
+  String massletter_include_card();
+
+  /**
+   * Translated "Bruk girofelter".
+   * 
+   * @return translated "Bruk girofelter"
+   */
+  @DefaultStringValue("Bruk girofelter")
+  @Key("massletter_include_giro")
+  String massletter_include_giro();
+
+  /**
+   * Translated "Liggende".
+   * 
+   * @return translated "Liggende"
+   */
+  @DefaultStringValue("Liggende")
+  @Key("massletter_landscape")
+  String massletter_landscape();
+
+  /**
+   * Translated "Logo".
+   * 
+   * @return translated "Logo"
+   */
+  @DefaultStringValue("Logo")
+  @Key("massletter_logo")
+  String massletter_logo();
+
+  /**
+   * Translated "Marginer".
+   * 
+   * @return translated "Marginer"
+   */
+  @DefaultStringValue("Marginer")
+  @Key("massletter_margins")
+  String massletter_margins();
+
+  /**
+   * Translated "Medlemskort".
+   * 
+   * @return translated "Medlemskort"
+   */
+  @DefaultStringValue("Medlemskort")
+  @Key("massletter_membercard")
+  String massletter_membercard();
+
+  /**
+   * Translated "Utskriftsretning".
+   * 
+   * @return translated "Utskriftsretning"
+   */
+  @DefaultStringValue("Utskriftsretning")
+  @Key("massletter_orientation")
+  String massletter_orientation();
+
+  /**
+   * Translated "Betalingsinfo".
+   * 
+   * @return translated "Betalingsinfo"
+   */
+  @DefaultStringValue("Betalingsinfo")
+  @Key("massletter_payment_info")
+  String massletter_payment_info();
+
+  /**
+   * Translated "Stående".
+   * 
+   * @return translated "Stående"
+   */
+  @DefaultStringValue("Stående")
+  @Key("massletter_portrait")
+  String massletter_portrait();
+
+  /**
+   * Translated "Arktype".
+   * 
+   * @return translated "Arktype"
+   */
+  @DefaultStringValue("Arktype")
+  @Key("massletter_sheet_type")
+  String massletter_sheet_type();
+
+  /**
+   * Translated "X-posisjon".
+   * 
+   * @return translated "X-posisjon"
+   */
+  @DefaultStringValue("X-posisjon")
+  @Key("massletter_start_x")
+  String massletter_start_x();
+
+  /**
+   * Translated "Y-posisjon".
+   * 
+   * @return translated "Y-posisjon"
+   */
+  @DefaultStringValue("Y-posisjon")
+  @Key("massletter_start_y")
+  String massletter_start_y();
 
   /**
    * Translated "Alle medlemskap".
@@ -2752,6 +2896,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String preview();
 
   /**
+   * Translated "Forhåndsvisning".
+   * 
+   * @return translated "Forhåndsvisning"
+   */
+  @DefaultStringValue("Forhåndsvisning")
+  @Key("preview_actual")
+  String preview_actual();
+
+  /**
    * Translated "Prosjekt".
    * 
    * @return translated "Prosjekt"
@@ -3058,11 +3211,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String show_sums();
 
   /**
-   * Translated "(forenklet)".
+   * Translated "(strukturert)".
    * 
-   * @return translated "(forenklet)"
+   * @return translated "(strukturert)"
    */
-  @DefaultStringValue("(forenklet)")
+  @DefaultStringValue("(strukturert)")
   @Key("simplified")
   String simplified();
 
@@ -3146,6 +3299,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Endre person")
   @Key("title_change_person")
   String title_change_person();
+
+  /**
+   * Translated "Rediger massebrev (strukturert)".
+   * 
+   * @return translated "Rediger massebrev (strukturert)"
+   */
+  @DefaultStringValue("Rediger massebrev (strukturert)")
+  @Key("title_edit_massletter")
+  String title_edit_massletter();
 
   /**
    * Translated "Ny/endre bruker".
