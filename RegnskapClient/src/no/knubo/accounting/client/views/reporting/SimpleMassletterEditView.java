@@ -45,6 +45,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
     private JSONArray fonts;
     protected JSONArray images;
     private HashMap<String, String> addText;
+    public int lastUsedFont = 0;
 
     public SimpleMassletterEditView(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
         this.constants = constants;
@@ -179,10 +180,12 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
     private void initAddtext() {
         addText = new HashMap<String, String>();
-        addText.put("font", Util.str(fonts.get(0)) + " 10");
+        addText.put("font", Util.str(fonts.get(lastUsedFont)) + " 10");
         addText.put("ezSetY", "0");
         addText.put("ezSetDy", "0");
         addText.put("wraptext", "Skriv inn tekst");
+        addText.put("image", "Skriv inn tekst");
+        addText.put("setColor", "0,0,0");
 
     }
 
@@ -231,6 +234,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         private boolean clean;
         private int clipLength;
         private int previousSelectedIndex = 0;
+        private boolean isFontSelect;
 
         AutoFill() {
             setText("Hjelper...");
@@ -251,9 +255,10 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             clean = false;
         }
 
-        public AutoFill(JSONArray fonts, int clipLength) {
+        public AutoFill(JSONArray fonts, int clipLength, boolean isFontSelect) {
             this();
             this.clipLength = clipLength;
+            this.isFontSelect = isFontSelect;
 
             for (int i = 0; i < fonts.size(); i++) {
                 box.addItem(Util.str(fonts.get(i)));
@@ -261,6 +266,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             box.setVisibleItemCount(box.getItemCount());
             clean = true;
             box.setSelectedIndex(previousSelectedIndex);
+            
         }
 
         void init() {
@@ -277,6 +283,10 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
             int cursorPos = editArea.getCursorPos();
 
+            if(isFontSelect) {
+                lastUsedFont  = box.getSelectedIndex();
+            }
+            
             if (clipLength > 0) {
                 allText = allText.substring(0, cursorPos) + allText.substring(cursorPos + clipLength);
             }
@@ -433,7 +443,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             }
         }
 
-        if (action.startsWith("ezSetY ")) {
+        if (action.startsWith("ezSetY ") || action.startsWith("ezSetDy ")) {
             if ((nativeKeyCode < '0' || nativeKeyCode > '9') && nativeKeyCode != KeyCodes.KEY_DELETE
                     && nativeKeyCode != KeyCodes.KEY_BACKSPACE) {
                 Util.log("Stop not number or delete");
@@ -464,7 +474,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
     }
 
     private void showFontPopup() {
-        AutoFill autoFill = new AutoFill(fonts, editArea.getSelectionLength());
+        AutoFill autoFill = new AutoFill(fonts, editArea.getSelectionLength(), true);
         showAutofill(autoFill);
 
     }
