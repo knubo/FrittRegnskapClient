@@ -213,32 +213,54 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
             AutoFill autoFill = new AutoFill("wraptext", "font", "ezSetY", "ezSetDy", "image", "wrapopts", "setColor",
                     "rectangle", "reltext");
-            autoFill.setPopupPosition(editArea.getAbsoluteLeft() + editArea.getOffsetWidth() / 2, editArea
-                    .getAbsoluteTop()
-                    + editArea.getOffsetHeight() / 2);
-            autoFill.show();
-            autoFill.init();
+            showAutofill(autoFill);
         } else {
             doAutoAssist(event);
         }
     }
 
+    private void showAutofill(AutoFill autoFill) {
+        autoFill.setPopupPosition(editArea.getAbsoluteLeft() + editArea.getOffsetWidth() / 2, editArea.getAbsoluteTop()
+                + editArea.getOffsetHeight() / 2);
+        autoFill.show();
+        autoFill.init();
+    }
+
     class AutoFill extends DialogBox implements ClickHandler, KeyDownHandler {
         private ListBox box;
+        private boolean clean;
+        private int clipLength;
+        private int previousSelectedIndex = 0;
 
-        AutoFill(String... choices) {
+        AutoFill() {
             setText("Hjelper...");
             box = new ListBox();
+            box.addClickHandler(this);
+            box.addKeyDownHandler(this);
+
+            setWidget(box);
+        }
+
+        AutoFill(String... choices) {
+            this();
 
             for (String string : choices) {
                 box.addItem(string);
             }
             box.setVisibleItemCount(box.getItemCount());
+            clean = false;
+        }
 
-            box.addClickHandler(this);
-            box.addKeyDownHandler(this);
+        public AutoFill(JSONArray fonts, int clipLength) {
+            this();
+            this.clipLength = clipLength;
 
-            setWidget(box);
+            for (int i = 0; i < fonts.size(); i++) {
+                box.addItem(Util.str(fonts.get(i)));
+            }
+            box.setVisibleItemCount(box.getItemCount());
+            clean = true;
+            box.setSelectedIndex(previousSelectedIndex);
         }
 
         void init() {
@@ -254,16 +276,26 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             }
 
             int cursorPos = editArea.getCursorPos();
+
+            if (clipLength > 0) {
+                allText = allText.substring(0, cursorPos) + allText.substring(cursorPos + clipLength);
+            }
+
             int nextCursorPos = cursorPos + text.length() + 1;
 
-            text += " " + addText.get(text);
-
+            Util.log("Setting cursor pos:"+nextCursorPos);
+            
+            if (!clean) {
+                text += " " + addText.get(text);
+            } else {
+                previousSelectedIndex = box.getSelectedIndex();
+            }
             String newText;
             if (cursorPos == allText.length()) {
                 newText = allText + text;
             } else {
 
-                if (allText.charAt(cursorPos) != '\n') {
+                if (!clean && allText.charAt(cursorPos) != '\n') {
                     text = "\n" + text;
                 }
                 newText = allText.substring(0, cursorPos) + text + allText.substring(cursorPos);
@@ -295,8 +327,13 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
         String scan = editArea.getText();
 
-        while (start > 0 && scan.charAt(start--) != '\n') {
+        while (start > 0 && scan.charAt(--start) != '\n') {
             /* Do loop */
+        }
+
+        /* It ends on the \n - we do not want that char... */
+        if (start > 0) {
+            start++;
         }
 
         int all = scan.indexOf('\n', start);
@@ -305,12 +342,22 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         }
 
         String action = scan.substring(start, all);
+
+        Util.log("Selection action:" + action + " start:" + start + " " + all);
+
         if (action.startsWith("ezSetY ")) {
             int params = start + 7;
             editArea.setSelectionRange(params, (all - params));
         } else if (action.startsWith("wraptext ")) {
             int params = start + 9;
             editArea.setSelectionRange(params, (all - params));
+        } else if (action.startsWith("font ")) {
+            int fontSeparatorStart = action.indexOf(' ', 6);
+
+            int params = start + 5;
+            Util.log("selection: " + action + " start:" + params + " length:" + (fontSeparatorStart - 5));
+            editArea.setSelectionRange(params, fontSeparatorStart - 5);
+
         }
     }
 
@@ -369,7 +416,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
                     return;
                 }
                 /* Check if delete entire line */
-                if (pos > start && pos < start + toCheck.length()) {
+                if (pos >= start && pos < start + toCheck.length()) {
                     if (nativeKeyCode == KeyCodes.KEY_DELETE || nativeKeyCode == KeyCodes.KEY_BACKSPACE) {
                         event.stopPropagation();
                         event.preventDefault();
@@ -395,6 +442,31 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
                 return;
             }
         }
+        if (action.startsWith("font ")) {
+            int fontSeparatorStart = action.indexOf(' ', 5);
+
+            if (pos > (start + 4) && (pos < (start + fontSeparatorStart) || fontSeparatorStart == -1)) {
+                calculateSelection();
+                showFontPopup();
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
+
+            if ((nativeKeyCode < '0' || nativeKeyCode > '9') && nativeKeyCode != KeyCodes.KEY_DELETE
+                    && nativeKeyCode != KeyCodes.KEY_BACKSPACE) {
+                Util.log("Stop not number or delete");
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
+        }
+    }
+
+    private void showFontPopup() {
+        AutoFill autoFill = new AutoFill(fonts, editArea.getSelectionLength());
+        showAutofill(autoFill);
+
     }
 
 }
