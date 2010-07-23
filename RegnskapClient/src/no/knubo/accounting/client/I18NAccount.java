@@ -268,6 +268,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_validation_fail(String arg0);
 
   /**
+   * Translated "Tips: Du finner hjelp til denne siden og andre ved � trykke p� hjelp (til høyre)".
+   * 
+   * @return translated "Tips: Du finner hjelp til denne siden og andre ved � trykke p� hjelp (til høyre)"
+   */
+  @DefaultMessage("Tips: Du finner hjelp til denne siden og andre ved � trykke p� hjelp (til høyre)")
+  @Key("first_time_hint")
+  String first_time_hint();
+
+  /**
    * Translated "Ulovlig dato".
    * 
    * @return translated "Ulovlig dato"

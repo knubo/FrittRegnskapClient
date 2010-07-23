@@ -629,9 +629,9 @@ public class Util {
         return true;
     }
 
-    public static void fill(ListBox fontBox, JSONArray fonts) {
-        for(int i=0; i < fonts.size(); i++) {
-            fontBox.addItem(Util.str(fonts.get(i)));
+    public static void fill(ListBox box, JSONArray elements) {
+        for(int i=0; i < elements.size(); i++) {
+            box.addItem(Util.str(elements.get(i)));
         }
     }
 

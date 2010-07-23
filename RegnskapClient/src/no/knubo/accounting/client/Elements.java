@@ -808,6 +808,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String comment();
 
   /**
+   * Translated "Fullfør".
+   * 
+   * @return translated "Fullfør"
+   */
+  @DefaultStringValue("Fullfør")
+  @Key("complete")
+  String complete();
+
+  /**
    * Translated "Pris for kurs".
    * 
    * @return translated "Pris for kurs"
@@ -1400,6 +1409,51 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Les fil og identifiser felter")
   @Key("find_fields")
   String find_fields();
+
+  /**
+   * Translated "Første måned".
+   * 
+   * @return translated "Første måned"
+   */
+  @DefaultStringValue("Første måned")
+  @Key("first_month")
+  String first_month();
+
+  /**
+   * Translated "Første semester".
+   * 
+   * @return translated "Første semester"
+   */
+  @DefaultStringValue("Første semester")
+  @Key("first_semester")
+  String first_semester();
+
+  /**
+   * Translated "Inngående balanse for kontantkonti".
+   * 
+   * @return translated "Inngående balanse for kontantkonti"
+   */
+  @DefaultStringValue("Inngående balanse for kontantkonti")
+  @Key("first_start_balance")
+  String first_start_balance();
+
+  /**
+   * Translated "Innstillinger før første registrering ".
+   * 
+   * @return translated "Innstillinger før første registrering "
+   */
+  @DefaultStringValue("Innstillinger før første registrering ")
+  @Key("first_time_register")
+  String first_time_register();
+
+  /**
+   * Translated "Første regnskapsår".
+   * 
+   * @return translated "Første regnskapsår"
+   */
+  @DefaultStringValue("Første regnskapsår")
+  @Key("first_year")
+  String first_year();
 
   /**
    * Translated "Fornavn".
@@ -2707,6 +2761,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String new_happening();
 
   /**
+   * Translated "Inngi konto og beløp".
+   * 
+   * @return translated "Inngi konto og beløp"
+   */
+  @DefaultStringValue("Inngi konto og beløp")
+  @Key("new_init_account")
+  String new_init_account();
+
+  /**
    * Translated "Nytt massebrev".
    * 
    * @return translated "Nytt massebrev"
@@ -2849,6 +2912,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Telefon")
   @Key("phone")
   String phone();
+
+  /**
+   * Translated "Bruk farge".
+   * 
+   * @return translated "Bruk farge"
+   */
+  @DefaultStringValue("Bruk farge")
+  @Key("pick_color")
+  String pick_color();
 
   /**
    * Translated "Post".
@@ -3146,6 +3218,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Generelle innstillinger")
   @Key("setup_general")
   String setup_general();
+
+  /**
+   * Translated "Konto for initiell IB".
+   * 
+   * @return translated "Konto for initiell IB"
+   */
+  @DefaultStringValue("Konto for initiell IB")
+  @Key("setup_init_ib_post")
+  String setup_init_ib_post();
 
   /**
    * Translated "Konti tilgjenglig ved medlemsregistrering".
