@@ -43,6 +43,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ReportMail extends Composite implements ClickHandler {
+    private static final String WIKI = "WIKI";
+    private static final String HTML = "HTML";
+    private static final String PLAIN = "PLAIN";
+    private static final String EMAIL_TITLE = "email_title";
+    private static final String EMAIL_FORMAT = "email_format";
+    private static final String EMAIL_FOOTER = "email_footer";
+    private static final String EMAIL_HEADER = "email_header";
     private static ReportMail reportInstance;
     private final Constants constants;
     private final Elements elements;
@@ -108,15 +115,15 @@ public class ReportMail extends Composite implements ClickHandler {
         richBodyBox = new RichTextArea();
         richBodyBox.setWidth("50em");
         richBodyBox.setHeight("20em");
-        
+
         richEditorWithToolbar = new VerticalPanel();
         RichTextToolbar toolbar = new RichTextToolbar(richBodyBox);
-        
+
         richEditorWithToolbar.add(toolbar);
         richEditorWithToolbar.add(richBodyBox);
-        
+
         richEditorWithToolbar.setVisible(false);
-        
+
         FlowPanel fp = new FlowPanel();
         fp.add(bodyBox);
         fp.add(richEditorWithToolbar);
@@ -162,7 +169,7 @@ public class ReportMail extends Composite implements ClickHandler {
         radioFormatWiki.addClickHandler(this);
         radioFormatPlain.addClickHandler(this);
         radioFormatHTML.addClickHandler(this);
-        
+
         mainTable.setWidget(row, 1, fp);
     }
 
@@ -262,9 +269,63 @@ public class ReportMail extends Composite implements ClickHandler {
             }
         };
 
-        AuthResponder.get(constants, messages, callback, "reports/email.php?action=list&query="
-                + reciversListBox.getText() + "&year=" + yearBox.getText());
+        StringBuffer sb = new StringBuffer("action=list");
+        Util.addPostParam(sb, "query", reciversListBox.getText());
+        Util.addPostParam(sb, "year", yearBox.getText());
+        Util.addPostParam(sb, "emailSettings", buildEmailSettings());
 
+        AuthResponder.post(constants, messages, callback, sb, "reports/email.php");
+
+    }
+
+    protected void setDefaultValues(JSONObject object) {
+        String footer = Util.str(object.get(EMAIL_FOOTER));
+        String header = Util.str(object.get(EMAIL_HEADER));
+        String format = Util.str(object.get(EMAIL_FORMAT));
+        String title = Util.str(object.get(EMAIL_TITLE));
+
+        if(title == null || title.length() == 0) {
+            return;
+        }
+        
+        titleBox.setText(title);
+        Util.setIndexByValue(headerSelect.getListbox(), header);
+        Util.setIndexByValue(footerSelect.getListbox(), footer);
+
+        if (PLAIN.equals(format)) {
+            onClick(new ClickEvent() {
+                @Override
+                public Object getSource() {
+                    return radioFormatPlain;
+                }
+            });
+        } else if (HTML.equals(format)) {
+            onClick(new ClickEvent() {
+                @Override
+                public Object getSource() {
+                    return radioFormatHTML;
+                }
+            });
+
+        } else if (WIKI.equals(format)) {
+            onClick(new ClickEvent() {
+                @Override
+                public Object getSource() {
+                    return radioFormatWiki;
+                }
+            });
+
+        }
+    }
+
+    private String buildEmailSettings() {
+        JSONObject obj = new JSONObject();
+        obj.put(EMAIL_HEADER, new JSONString(Util.getSelected(headerSelect)));
+        obj.put(EMAIL_FOOTER, new JSONString(Util.getSelected(footerSelect)));
+        obj.put(EMAIL_FORMAT, new JSONString(getFormat()));
+        obj.put(EMAIL_TITLE, new JSONString(titleBox.getText()));
+
+        return obj.toString();
     }
 
     protected void confirmSendEmail() {
@@ -308,13 +369,13 @@ public class ReportMail extends Composite implements ClickHandler {
             chooseAttachments();
         } else if (sender == reSendButton) {
             resendFailedEmails();
-        } else if(sender == radioFormatHTML) {
-            if(bodyBox.isVisible()) {
+        } else if (sender == radioFormatHTML) {
+            if (bodyBox.isVisible()) {
                 bodyBox.setVisible(false);
                 richEditorWithToolbar.setVisible(true);
             }
-        } else if(sender == radioFormatPlain || sender == radioFormatWiki) {
-            if(richBodyBox.isVisible()) {
+        } else if (sender == radioFormatPlain || sender == radioFormatWiki) {
+            if (richBodyBox.isVisible()) {
                 bodyBox.setVisible(true);
                 richEditorWithToolbar.setVisible(false);
             }
@@ -422,8 +483,8 @@ public class ReportMail extends Composite implements ClickHandler {
             Util.addPostParam(mailRequest, "personid", personId);
             Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
             Util.addPostParam(mailRequest, "email", email);
-            if(radioFormatHTML.getValue()) {
-                Util.addPostParam(mailRequest, "body", URL.encode(richBodyBox.getHTML()));                
+            if (radioFormatHTML.getValue()) {
+                Util.addPostParam(mailRequest, "body", URL.encode(richBodyBox.getHTML()));
             } else {
                 Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
             }
@@ -431,7 +492,7 @@ public class ReportMail extends Composite implements ClickHandler {
             Util.addPostParam(mailRequest, "format", getFormat());
             Util.addPostParam(mailRequest, "header", Util.getSelected(headerSelect));
             Util.addPostParam(mailRequest, "footer", Util.getSelected(footerSelect));
-            
+
             ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
                 public void serverResponse(JSONValue value) {
@@ -484,7 +545,7 @@ public class ReportMail extends Composite implements ClickHandler {
                     table.setText(1, 1, email);
                     table.setText(1, 3, id);
                     table.getCellFormatter().setStyleName(1, 3, "hidden");
-                    
+
                     String style = (currentIndex % 2 == 0) ? "showlineposts2" : "showlineposts1";
                     table.getRowFormatter().setStyleName(1, style);
                 }
@@ -509,13 +570,13 @@ public class ReportMail extends Composite implements ClickHandler {
     }
 
     public String getFormat() {
-        if(radioFormatPlain.getValue()) {
-            return "PLAIN";
+        if (radioFormatPlain.getValue()) {
+            return PLAIN;
         }
-        if(radioFormatHTML.getValue()) {
-            return "HTML";
+        if (radioFormatHTML.getValue()) {
+            return HTML;
         }
-        return "WIKI";
+        return WIKI;
     }
 
     protected void openSelectFilesForAttachment(JSONArray files, ArrayList<String> existingFiles) {
@@ -606,16 +667,13 @@ public class ReportMail extends Composite implements ClickHandler {
     }
 
     public void init() {
-        fillHeaderFooterSelects();
-    }
-
-    private void fillHeaderFooterSelects() {
         ServerResponse callback = new ServerResponse() {
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
                 fill(footerSelect, object.get("footers"));
                 fill(headerSelect, object.get("headers"));
+                setDefaultValues(object.get("profile").isObject());
             }
 
         };

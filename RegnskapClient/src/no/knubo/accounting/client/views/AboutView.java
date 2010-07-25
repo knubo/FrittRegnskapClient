@@ -79,7 +79,8 @@ public class AboutView extends Composite implements ClickHandler {
     protected String parseNews(String response) {
         String withoutHeader = response.replaceAll("=====Nyheter=====", "");
 
-        String withWikiLinks = withoutHeader.replaceAll("\\[\\[(\\w+)\\s(.+)\\]\\]", "<a href=\"http://www.frittregnskap.no/wakka/$1\">$2</a>");
+        String withWikiLinks = withoutHeader.replaceAll("\\[\\[(\\w+)\\s(.+)\\]\\]",
+                "<a href=\"http://www.frittregnskap.no/wakka/$1\">$2</a>");
 
         String[] split = withWikiLinks.split("\n");
 
@@ -116,7 +117,7 @@ public class AboutView extends Composite implements ClickHandler {
                 }
 
                 AccountingGWT.canSeeSecret = Util.getBoolean(object.get("see_secret"));
-                
+
                 enrichDashboard(object.get("info").isObject(), object.get("accountstatus"));
             }
         };
@@ -137,6 +138,10 @@ public class AboutView extends Composite implements ClickHandler {
 
         if (accounts != null) {
             fillStatusAccountsPanel(accounts.isArray());
+        }
+
+        if (!Util.getBoolean(info.get("first_time_complete"))) {
+            FirstTimeRegisterView.show(messages, constants, elements);
         }
 
     }
@@ -223,7 +228,7 @@ public class AboutView extends Composite implements ClickHandler {
             fpAccounting.add(addAnchor(messages.dashboard_long_time_no_accounting()));
             warning = true;
         }
-        if(info.containsKey("long_since_backup_error")) {
+        if (info.containsKey("long_since_backup_error")) {
             fpAccounting.add(addAnchor(messages.dashboard_long_since_last_backup()));
             warning = true;
         }
@@ -324,7 +329,7 @@ public class AboutView extends Composite implements ClickHandler {
                 || text.equals(messages.dashboard_missing_year_price_current())
                 || text.equals(messages.dashboard_missing_year_price_next())) {
             callback.openView(WidgetIds.EDIT_PRICES, text);
-        } else if(text.equals(messages.dashboard_long_since_last_backup())) {
+        } else if (text.equals(messages.dashboard_long_since_last_backup())) {
             callback.openView(WidgetIds.BACKUP, text);
         }
 

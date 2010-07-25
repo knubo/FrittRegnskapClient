@@ -21,7 +21,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -30,8 +29,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class Login implements EntryPoint, ClickHandler, ServerResponse {
 
     private Constants constants;
-
-    private HTML infoLabel;
 
     private I18NAccount messages;
 

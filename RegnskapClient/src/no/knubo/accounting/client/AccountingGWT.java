@@ -12,7 +12,6 @@ import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.views.AboutView;
-import no.knubo.accounting.client.views.FirstTimeRegisterView;
 import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.LogView;
@@ -456,9 +455,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = SimpleMassletterEditView.getInstance(constants, messages, elements, callback);
                 ((SimpleMassletterEditView)widget).init(params);
                 break;
-            case FIRST_TIME_SETUP:
-            	widget = FirstTimeRegisterView.show(messages, constants, elements, callback);
-            	break;
             }
 
             if (widget == null) {
