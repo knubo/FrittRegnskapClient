@@ -154,6 +154,12 @@ public class ReportMail extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
+    @Override
+    public void setVisible(boolean visible) {
+        reciversListBox.setFocus(true);
+        super.setVisible(visible);
+    }
+    
     private void addEmailFormat(FlexTable mainTable, int row) {
         radioFormatPlain = new RadioButton("format", elements.email_format_plain());
         radioFormatWiki = new RadioButton("format", elements.email_format_wiki());
@@ -279,6 +285,9 @@ public class ReportMail extends Composite implements ClickHandler {
     }
 
     protected void setDefaultValues(JSONObject object) {
+        if(object == null) {
+            return;
+        }
         String footer = Util.str(object.get(EMAIL_FOOTER));
         String header = Util.str(object.get(EMAIL_HEADER));
         String format = Util.str(object.get(EMAIL_FORMAT));
@@ -293,6 +302,7 @@ public class ReportMail extends Composite implements ClickHandler {
         Util.setIndexByValue(footerSelect.getListbox(), footer);
 
         if (PLAIN.equals(format)) {
+            radioFormatPlain.setValue(true);
             onClick(new ClickEvent() {
                 @Override
                 public Object getSource() {
@@ -300,6 +310,7 @@ public class ReportMail extends Composite implements ClickHandler {
                 }
             });
         } else if (HTML.equals(format)) {
+            radioFormatHTML.setValue(true);
             onClick(new ClickEvent() {
                 @Override
                 public Object getSource() {
@@ -308,6 +319,7 @@ public class ReportMail extends Composite implements ClickHandler {
             });
 
         } else if (WIKI.equals(format)) {
+            radioFormatWiki.setValue(true);
             onClick(new ClickEvent() {
                 @Override
                 public Object getSource() {
