@@ -184,7 +184,7 @@ body {
 	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
 	font-weight: normal;
 	font-size: 80%;
-	padding:0px;
+	padding: 0px;
 }
 
 .gwt-PasswordTextBox {
@@ -607,23 +607,28 @@ TD.green {
 
 .massedit {
 	border: 1px solid;
-	padding:0px;
+	padding: 0px;
 }
 
 .massedit tr {
-	padding:0px;
+	padding: 0px;
 }
 
 .massedit td {
 	border: 1px solid;
-	border-style:inset;
-	padding:0px;
+	border-style: inset;
+	padding: 0px;
 }
 
 .massletterline {
-	float:left;
-	margin-right:5px;
+	float: left;
+	margin-right: 5px;
 }
+
 .massletterfull {
-	width:100%;
+	width: 100%;
+}
+
+.firsttimetable {
+	border: 1px solid;
 }

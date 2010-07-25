@@ -635,5 +635,9 @@ public class Util {
         }
     }
 
+    public static String getSelectedText(ListBoxWithErrorText postTypeBox) {
+        return getSelectedText(postTypeBox.getListbox());
+    }
+
 
 }

@@ -268,11 +268,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_validation_fail(String arg0);
 
   /**
-   * Translated "Tips: Du finner hjelp til denne siden og andre ved � trykke p� hjelp (til høyre)".
+   * Translated "Tips: Senere finner du hjelp ved � klikke på <em>hjelp</em> (til høyre)".
    * 
-   * @return translated "Tips: Du finner hjelp til denne siden og andre ved � trykke p� hjelp (til høyre)"
+   * @return translated "Tips: Senere finner du hjelp ved � klikke på <em>hjelp</em> (til høyre)"
    */
-  @DefaultMessage("Tips: Du finner hjelp til denne siden og andre ved � trykke p� hjelp (til høyre)")
+  @DefaultMessage("Tips: Senere finner du hjelp ved � klikke på <em>hjelp</em> (til høyre)")
   @Key("first_time_hint")
   String first_time_hint();
 
@@ -383,6 +383,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("{0} - {1} medlemmer")
   @Key("members_navig_heading")
   String members_navig_heading(String arg0,  String arg1);
+
+  /**
+   * Translated "Du må sette intielle verdier før du kan registrere medlemsskap. Konfigureringen åpnes nå.   ".
+   * 
+   * @return translated "Du må sette intielle verdier før du kan registrere medlemsskap. Konfigureringen åpnes nå.   "
+   */
+  @DefaultMessage("Du må sette intielle verdier før du kan registrere medlemsskap. Konfigureringen åpnes nå.   ")
+  @Key("need_first_time_setup")
+  String need_first_time_setup();
 
   /**
    * Translated "Du har ikke tilgang til operasjonen".

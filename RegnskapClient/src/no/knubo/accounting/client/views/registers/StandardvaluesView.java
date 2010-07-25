@@ -343,8 +343,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
                 costCourseBox.setText(Util.str(object.get("cost_course")));
                 costPracticeBox.setText(Util.str(object.get("cost_practice")));
                 costMembershipBox.setText(Util.str(object.get("cost_membership")));
-                emailBox.setText(Util.str(object.get("email_sender")));
-                massletterDueDateBox.setText(Util.str(object.get("massletter_due_date")));
+                emailBox.setText(Util.strSkipNull(object.get("email_sender")));
+                massletterDueDateBox.setText(Util.strSkipNull(object.get("massletter_due_date")));
                 Util.setIndexByValue(postYear.getListbox(), Util.str(object.get("year_post")));
                 Util.setIndexByValue(postCourse.getListbox(), Util.str(object.get("course_post")));
                 Util.setIndexByValue(postTrain.getListbox(), Util.str(object.get("train_post")));
