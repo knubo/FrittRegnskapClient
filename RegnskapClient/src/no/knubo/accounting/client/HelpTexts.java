@@ -88,6 +88,15 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String description();
 
   /**
+   * Translated "Det kan oppgis flere epostadresser ved &aring; skille dem med komma.".
+   * 
+   * @return translated "Det kan oppgis flere epostadresser ved &aring; skille dem med komma."
+   */
+  @DefaultStringValue("Det kan oppgis flere epostadresser ved &aring; skille dem med komma.")
+  @Key("email")
+  String email();
+
+  /**
    * Translated "Personen er skjult fra s&oslash;k.".
    * 
    * @return translated "Personen er skjult fra s&oslash;k."

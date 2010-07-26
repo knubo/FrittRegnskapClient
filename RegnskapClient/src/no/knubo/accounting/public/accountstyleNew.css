@@ -632,3 +632,7 @@ TD.green {
 .firsttimetable {
 	border: 1px solid;
 }
+
+.shrinked {
+	max-width: 150px;
+}

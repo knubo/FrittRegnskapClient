@@ -8,12 +8,17 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
+import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.ViewCallback;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodeEvent;
@@ -30,6 +35,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -184,7 +190,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         addText.put("ezSetY", "0");
         addText.put("ezSetDy", "0");
         addText.put("wraptext", "Skriv inn tekst");
-        addText.put("image", "Skriv inn tekst");
+        addText.put("image", "...");
         addText.put("setColor", "0,0,0");
 
     }
@@ -367,7 +373,8 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             int params = start + 5;
             Util.log("selection: " + action + " start:" + params + " length:" + (fontSeparatorStart - 5));
             editArea.setSelectionRange(params, fontSeparatorStart - 5);
-
+        } else if (action.startsWith("image ")) {
+            showImagePopup(action.substring(6).split(","));
         }
     }
 
@@ -470,8 +477,140 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
                 return;
             }
         } else if (action.startsWith("image")) {
-
+            calculateSelection();
         }
+    }
+
+    private void showImagePopup(String... params) {
+        final DialogBox popup = new DialogBox();
+        popup.setText("Bilde");
+        AccountTable imagetable = new AccountTable("tableborder");
+
+        final ListBoxWithErrorText imageListbox = new ListBoxWithErrorText("image");
+        final TextBoxWithErrorText padding = new TextBoxWithErrorText("padding", 4);
+        final TextBoxWithErrorText width = new TextBoxWithErrorText("padding", 4);
+        final ListBoxWithErrorText just = new ListBoxWithErrorText("just");
+        just.addItem("hoyre", "right");
+        just.addItem("venstre", "left");
+        just.addItem("midtjustert", "center");
+        final Image imagePreview = new Image();
+        imagePreview.addStyleName("shrinked");
+
+        ChangeHandler imageSelect = new ChangeHandler() {
+
+            public void onChange(ChangeEvent event) {
+                String file = Util.getSelected(imageListbox);
+                imagePreview.setUrl(constants.baseurl() + "files/files.php?action=image&file=" + file);
+            }
+        };
+        imageListbox.addChangeHandler(imageSelect);
+
+        imageListbox.addItem("", "");
+        for (int i = 0; i < images.size(); i++) {
+            String file = Util.str(images.get(i));
+            imageListbox.addItem(file, file);
+        }
+
+        imagetable.setText(0, 0, "Bilde");
+        imagetable.setWidget(0, 1, imageListbox);
+        imagetable.setText(1, 0, "Padding");
+        imagetable.setWidget(1, 1, padding);
+        imagetable.setText(2, 0, "Width");
+        imagetable.setWidget(2, 1, width);
+        imagetable.setText(3, 0, "Just");
+        imagetable.setWidget(3, 1, just);
+        imagetable.setWidget(0, 2, imagePreview);
+        imagetable.getFlexCellFormatter().setRowSpan(0, 2, 5);
+
+        final NamedButton useButton = new NamedButton("use", "Bruk");
+        final NamedButton cancelButton = new NamedButton("cancel", elements.cancel());
+        ClickHandler clickHandler = new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                if (event.getSource() == useButton) {
+                    MasterValidator mv = new MasterValidator();
+                    mv.mandatory(messages.required_field(), imageListbox, width);
+                    mv.range(messages.field_positive(), 0, null, padding);
+                    mv.range(messages.field_to_low_zero(), 1, null, width);
+                    if (!mv.validateStatus()) {
+                        return;
+                    }
+                    useImage(imageListbox.getText(), padding.getText(), width.getText(), just.getText());
+                }
+                popup.hide();
+                editArea.setFocus(true);
+            }
+
+        };
+
+        HorizontalPanel fp = new HorizontalPanel();
+        useButton.addClickHandler(clickHandler);
+        useButton.addStyleName("buttonrow");
+        fp.add(useButton);
+        cancelButton.addClickHandler(clickHandler);
+        cancelButton.addStyleName("buttonrow");
+        fp.add(cancelButton);
+
+        imagetable.setWidget(4, 0, fp);
+
+        popup.setWidget(imagetable);
+        popup.center();
+        imageListbox.setFocus(true);
+
+        for (String one : params) {
+            if (one.startsWith("file:")) {
+                String file = params[0].substring(5);
+                Util.setIndexByValue(imageListbox.getListbox(), file);
+                imagePreview.setUrl(constants.baseurl() + "files/files.php?action=image&file=" + file);
+            } else if (one.startsWith("padding:")) {
+                padding.setText(params[1].substring(8));
+            } else if (one.startsWith("width:")) {
+                width.setText(one.substring(6));
+            } else if (one.startsWith("just:")) {
+                Util.setIndexByValue(just.getListbox(), one.substring(5));
+            }
+        }
+    }
+
+    protected void useImage(String image, String padding, String width, String just) {
+        int pos = editArea.getCursorPos();
+        int start = pos;
+
+        String scan = editArea.getText();
+
+        while (start > 0 && scan.charAt(--start) != '\n') {
+            /* Do loop */
+        }
+        /* It ends on the \n - we do not want that char... */
+        if (start > 0) {
+            start++;
+        }
+
+        int all = scan.indexOf('\n', start);
+
+        if (all == -1) {
+            all = scan.length();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(scan.substring(0, start));
+        sb.append("image file:");
+        sb.append(image);
+        sb.append(",padding:");
+        if (padding.length() > 0) {
+            sb.append(padding);
+        } else {
+            sb.append("0");
+        }
+        sb.append(",width:");
+        sb.append(width);
+        sb.append(",just:");
+        sb.append(just);
+        sb.append('\n');
+        String newString = scan.substring(0, start) + sb.toString() + scan.substring(all);
+
+        editArea.setText(newString);
+        editArea.setCursorPos(start + sb.length());
     }
 
     private void showFontPopup() {
