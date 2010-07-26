@@ -193,7 +193,11 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         addText.put("ezSetDy", "0");
         addText.put("wraptext", "Skriv inn tekst");
         addText.put("image", "...");
-        addText.put("setColor", "0,0,0");
+        addText.put("setColor", "0.0,0.0,0.0");
+        addText.put("wrapopts", "right:0,left:0");
+        addText.put("reltext", "0,0,Skriv inn tekst");
+        addText.put("setLineStyle", "1");
+        addText.put("query", "memberships");
 
     }
 
@@ -223,7 +227,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             }
 
             AutoFill autoFill = new AutoFill(false, "wraptext", "font", "ezSetY", "ezSetDy", "image", "wrapopts",
-                    "setColor", "rectangle", "reltext");
+                    "setColor", "rectangle", "reltext", "query");
             showAutofill(autoFill);
         } else {
             doAutoAssist(event);
@@ -363,7 +367,10 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
         Util.log("Selection action:" + action + " start:" + start + " " + all);
 
-        if (action.startsWith("ezSetY ")) {
+        if (action.startsWith("setLineStyle ")) {
+            int params = start + 13;
+            editArea.setSelectionRange(params, (all - params));
+        } else if (action.startsWith("ezSetY ")) {
             int params = start + 7;
             editArea.setSelectionRange(params, (all - params));
         } else if (action.startsWith("wraptext ")) {
@@ -452,7 +459,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             }
         }
 
-        if (action.startsWith("ezSetY ") || action.startsWith("ezSetDy ")) {
+        if (action.startsWith("ezSetY ") || action.startsWith("ezSetDy ") || action.startsWith("setLineStyle ")) {
             if ((nativeKeyCode < '0' || nativeKeyCode > '9') && nativeKeyCode != KeyCodes.KEY_DELETE
                     && nativeKeyCode != KeyCodes.KEY_BACKSPACE) {
                 Util.log("Stop not number or delete");
@@ -480,6 +487,9 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             }
         } else if (action.startsWith("image")) {
             calculateSelection();
+        } else if (action.startsWith("query")) {
+            event.preventDefault();
+            event.stopPropagation();
         }
     }
 
@@ -622,10 +632,27 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
     public void onKeyPress(KeyPressEvent event) {
         if (event.getCharCode() == '#') {
-            AutoFill autofill = new AutoFill(true, "firstname", "lastname", "address", "memberid", "zip",
-                    "city", "year", "email", "birthdate", "courseprice", "yearprice", "trainprice", "duedate");
+            AutoFill autofill = null;
+            if (isBeforeQuery()) {
+                autofill = new AutoFill(true, "year", "courseprice", "yearprice", "trainprice", "duedate");
+            } else {
+                autofill = new AutoFill(true, "firstname", "lastname", "address", "memberid", "zip", "city", "year",
+                        "email", "birthdate", "courseprice", "yearprice", "trainprice", "duedate");
+            }
             showAutofill(autofill);
         }
+    }
+
+    private boolean isBeforeQuery() {
+        String text = editArea.getText();
+
+        int index = text.indexOf("query");
+
+        if (index == -1) {
+            return true;
+        }
+
+        return editArea.getCursorPos() < text.indexOf("query");
     }
 
 }
