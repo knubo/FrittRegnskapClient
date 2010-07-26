@@ -8,7 +8,6 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
-import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
@@ -25,6 +24,8 @@ import com.google.gwt.event.dom.client.KeyCodeEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
@@ -40,7 +41,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class SimpleMassletterEditView extends Composite implements KeyDownHandler {
+public class SimpleMassletterEditView extends Composite implements KeyDownHandler, KeyPressHandler {
 
     private static SimpleMassletterEditView instance;
     private final Constants constants;
@@ -66,6 +67,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         editArea.setWidth("50em");
         editArea.setHeight("20em");
         editArea.addKeyDownHandler(this);
+        editArea.addKeyPressHandler(this);
 
         hp.add(editArea);
 
@@ -220,8 +222,8 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
                 return;
             }
 
-            AutoFill autoFill = new AutoFill("wraptext", "font", "ezSetY", "ezSetDy", "image", "wrapopts", "setColor",
-                    "rectangle", "reltext");
+            AutoFill autoFill = new AutoFill(false, "wraptext", "font", "ezSetY", "ezSetDy", "image", "wrapopts",
+                    "setColor", "rectangle", "reltext");
             showAutofill(autoFill);
         } else {
             doAutoAssist(event);
@@ -251,14 +253,14 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             setWidget(box);
         }
 
-        AutoFill(String... choices) {
+        AutoFill(boolean clean, String... choices) {
             this();
 
             for (String string : choices) {
                 box.addItem(string);
             }
             box.setVisibleItemCount(box.getItemCount());
-            clean = false;
+            this.clean = clean;
         }
 
         public AutoFill(JSONArray fonts, int clipLength, boolean isFontSelect) {
@@ -326,9 +328,9 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         public void onKeyDown(KeyDownEvent event) {
 
             if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-                onClick(null);
                 event.stopPropagation();
                 event.preventDefault();
+                onClick(null);
             } else if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE) {
                 hide();
                 editArea.setFocus(true);
@@ -616,6 +618,14 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
     private void showFontPopup() {
         AutoFill autoFill = new AutoFill(fonts, editArea.getSelectionLength(), true);
         showAutofill(autoFill);
+    }
+
+    public void onKeyPress(KeyPressEvent event) {
+        if (event.getCharCode() == '#') {
+            AutoFill autofill = new AutoFill(true, "firstname", "lastname", "address", "memberid", "zip",
+                    "city", "year", "email", "birthdate", "courseprice", "yearprice", "trainprice", "duedate");
+            showAutofill(autofill);
+        }
     }
 
 }
