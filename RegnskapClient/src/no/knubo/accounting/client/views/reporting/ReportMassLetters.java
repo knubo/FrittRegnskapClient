@@ -106,8 +106,8 @@ public class ReportMassLetters extends Composite implements ClickHandler {
                     table.setWidget(i + 1, 1, createEditImage(Util.str(value), "advanced"));
                     table.setText(i + 1, 2, elements.advanced());
 
-                    table.setWidget(i + 1, 3, createEditImage(Util.str(value), "simple"));
-                    table.setText(i + 1, 4, elements.simplified());
+//                    table.setWidget(i + 1, 3, createEditImage(Util.str(value), "simple"));
+//                    table.setText(i + 1, 4, elements.simplified());
                 }
             }
         };

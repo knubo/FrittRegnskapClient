@@ -86,6 +86,7 @@ public class FirstTimeRegisterView extends DialogBox implements ClickHandler {
 
         table.setWidget(7, 0, newButton);
         completeButton = new NamedButton("complete_button", elements.complete());
+        completeButton.addStyleName("buttonrow");
         completeButton.addClickHandler(this);
         vp.add(completeButton);
 
