@@ -215,6 +215,10 @@ public class FirstTimeRegisterView extends DialogBox implements ClickHandler {
         }
 
         obj.put("IB", ib);
+
+        obj.put("fall", new JSONString(elements.fall()));
+        obj.put("spring", new JSONString(elements.spring()));
+
         return obj;
     }
 
