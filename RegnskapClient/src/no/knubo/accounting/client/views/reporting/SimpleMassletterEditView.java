@@ -65,7 +65,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
         editArea = new TextArea();
         editArea.setWidth("50em");
-        editArea.setHeight("20em");
+        editArea.setHeight("40em");
         editArea.addKeyDownHandler(this);
         editArea.addKeyPressHandler(this);
 
@@ -149,7 +149,14 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
     private AccountTable createDocumentTab() {
         AccountTable table = new AccountTable("");
         table.setText(0, 0, elements.massletter_sheet_type());
-        table.setWidget(0, 1, new TextBoxWithErrorText("sheet_type"));
+        ListBoxWithErrorText paper = new ListBoxWithErrorText("sheet_type");
+
+        Util.fill(paper.getListbox(), "4A0", "2A0", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
+                "B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "C0", "C1", "C2", "C3", "C4", "C5",
+                "C6", "C7", "C8", "C9", "C10", "RA0", "RA1", "RA2", "RA3", "RA4", "SRA0", "SRA1", "SRA2", "SRA3",
+                "SRA4", "LETTER", "LEGAL", "EXECUTIVE", "FOLIO");
+        Util.setIndexByValue(paper.getListbox(), "A4");
+        table.setWidget(0, 1, paper);
 
         table.setText(1, 0, elements.massletter_orientation(), "nowrap");
         ListBox sheetTypeListBox = new ListBox();
@@ -198,7 +205,8 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         addText.put("reltext", "0,0,Skriv inn tekst");
         addText.put("setLineStyle", "1");
         addText.put("query", "memberships");
-
+        addText.put("starttable", "...");
+        addText.put("relrectangle", "100,10,110,20");
     }
 
     @Override
@@ -227,7 +235,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             }
 
             AutoFill autoFill = new AutoFill(false, "wraptext", "font", "ezSetY", "ezSetDy", "image", "wrapopts",
-                    "setColor", "rectangle", "reltext", "query");
+                    "setColor", "relrectangle", "reltext", "starttable", "query");
             showAutofill(autoFill);
         } else {
             doAutoAssist(event);
@@ -308,7 +316,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             Util.log("Setting cursor pos:" + nextCursorPos);
 
             if (!clean) {
-                text += " " + addText.get(text);
+                text += "=" + addText.get(text);
             } else {
                 previousSelectedIndex = box.getSelectedIndex();
             }
@@ -367,23 +375,25 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
         Util.log("Selection action:" + action + " start:" + start + " " + all);
 
-        if (action.startsWith("setLineStyle ")) {
+        if (action.startsWith("setLineStyle=")) {
             int params = start + 13;
             editArea.setSelectionRange(params, (all - params));
-        } else if (action.startsWith("ezSetY ")) {
+        } else if (action.startsWith("ezSetY=")) {
             int params = start + 7;
             editArea.setSelectionRange(params, (all - params));
-        } else if (action.startsWith("wraptext ")) {
+        } else if (action.startsWith("wraptext=")) {
             int params = start + 9;
             editArea.setSelectionRange(params, (all - params));
-        } else if (action.startsWith("font ")) {
+        } else if (action.startsWith("font=")) {
             int fontSeparatorStart = action.indexOf(' ', 6);
 
             int params = start + 5;
             Util.log("selection: " + action + " start:" + params + " length:" + (fontSeparatorStart - 5));
             editArea.setSelectionRange(params, fontSeparatorStart - 5);
-        } else if (action.startsWith("image ")) {
+        } else if (action.startsWith("image=")) {
             showImagePopup(action.substring(6).split(","));
+        } else if (action.startsWith("starttable=")) {
+            showStartTablePopup();
         }
     }
 
@@ -459,7 +469,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             }
         }
 
-        if (action.startsWith("ezSetY ") || action.startsWith("ezSetDy ") || action.startsWith("setLineStyle ")) {
+        if (action.startsWith("ezSetY=") || action.startsWith("ezSetDy=") || action.startsWith("setLineStyle=")) {
             if ((nativeKeyCode < '0' || nativeKeyCode > '9') && nativeKeyCode != KeyCodes.KEY_DELETE
                     && nativeKeyCode != KeyCodes.KEY_BACKSPACE) {
                 Util.log("Stop not number or delete");
@@ -467,7 +477,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
                 event.stopPropagation();
                 return;
             }
-        } else if (action.startsWith("font ")) {
+        } else if (action.startsWith("font=")) {
             int fontSeparatorStart = action.indexOf(' ', 5);
 
             if (pos > (start + 4) && (pos < (start + fontSeparatorStart) || fontSeparatorStart == -1)) {
@@ -485,9 +495,9 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
                 event.stopPropagation();
                 return;
             }
-        } else if (action.startsWith("image")) {
+        } else if (action.startsWith("image=")) {
             calculateSelection();
-        } else if (action.startsWith("query")) {
+        } else if (action.startsWith("query=")) {
             event.preventDefault();
             event.stopPropagation();
         }
@@ -653,6 +663,10 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         }
 
         return editArea.getCursorPos() < text.indexOf("query");
+    }
+
+    private void showStartTablePopup() {
+        new StructuralTableEditDialogBox().center();
     }
 
 }

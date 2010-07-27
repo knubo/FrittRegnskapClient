@@ -639,5 +639,11 @@ public class Util {
         return getSelectedText(postTypeBox.getListbox());
     }
 
+    public static void fill(ListBox listbox, String ...items) {
+        for (String elem : items) {
+            listbox.addItem(elem);
+        }
+    }
+
 
 }
