@@ -666,7 +666,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
     }
 
     private void showStartTablePopup() {
-        new StructuralTableEditDialogBox().center();
+        new StructuralTableEditDialogBox(editArea, elements).center();
     }
 
 }

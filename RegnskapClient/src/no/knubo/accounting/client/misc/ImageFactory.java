@@ -7,9 +7,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class ImageFactory {
 
     public static Image gearsImage(String id) {
-        return withId(new Image("images/applications-system.png"), id);        
+        return withId(new Image("images/applications-system.png"), id);
     }
-    
+
     public static Image facePlainImage(String id) {
         return withId(new Image("images/face-plain.png"), id);
     }
@@ -28,6 +28,14 @@ public class ImageFactory {
 
     public static Image nextImage(String id) {
         return withId(new Image("images/go-next.png"), id);
+    }
+
+    public static Image downImage(String id) {
+        return withId(new Image("images/go-down.png"), id);
+    }
+
+    public static Image upImage(String id) {
+        return withId(new Image("images/go-up.png"), id);
     }
 
     public static Image previousImageBig(String id) {
