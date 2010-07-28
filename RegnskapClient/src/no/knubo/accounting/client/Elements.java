@@ -2194,6 +2194,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_budgetsimple();
 
   /**
+   * Translated "Kalkulator".
+   * 
+   * @return translated "Kalkulator"
+   */
+  @DefaultStringValue("Kalkulator")
+  @Key("menuitem_calculator")
+  String menuitem_calculator();
+
+  /**
    * Translated "Standardbilag".
    * 
    * @return translated "Standardbilag"

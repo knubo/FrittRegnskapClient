@@ -11,6 +11,7 @@
 		<pathelement location="${gwt.sdk}/gwt-user.jar" />
 		<pathelement location="lib/gwt-visualization.jar" />
 		<pathelement location="lib/gwt-wizard.jar" />
+		<pathelement location="lib/gwt-widgets-0.2.0.jar" />
 		<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar" />
 	</path>
 
@@ -48,7 +49,7 @@
 				<pathelement location="src" />
 				<path refid="project.class.path" />
 			</classpath>
-			<jvmarg value="-Xmx256M" />
+			<jvmarg value="-Xmx512M" />
 			<arg value="-noserver" />
 			<arg value="-startupUrl" />
 			<arg value="http://localhost/prg/AccountingGWT.html" />
@@ -81,7 +82,7 @@
 				<pathelement location="src" />
 				<path refid="project.class.path" />
 			</classpath>
-			<jvmarg value="-Xmx256M" />
+			<jvmarg value="-Xmx512M" />
 			<arg value="-noserver" />
 			<arg value="-startupUrl" />
 			<arg value="http://master.local.no/prg/AccountingGWT.html" />

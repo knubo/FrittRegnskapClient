@@ -60,16 +60,23 @@ import no.knubo.accounting.client.views.reporting.ReportMembersBirthGender;
 import no.knubo.accounting.client.views.reporting.ReportUsersEmail;
 import no.knubo.accounting.client.views.reporting.SimpleMassletterEditView;
 
+import org.gwtwidgets.client.ui.SimpleCalcPanel;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -193,6 +200,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(importExportMenu, elements.menuitem_export_accounting(), WidgetIds.EXPORT_ACCOUNTING);
 
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
+        addMenuItem(aboutMenu, elements.menuitem_calculator(), WidgetIds.CALCULATOR);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
         addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
@@ -453,8 +461,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case EDIT_MASSLETTER_SIMPLE:
                 widget = SimpleMassletterEditView.getInstance(constants, messages, elements, callback);
-                ((SimpleMassletterEditView)widget).init(params);
+                ((SimpleMassletterEditView) widget).init(params);
                 break;
+            case CALCULATOR:
+                createCalculatorPopup();
+                return;
+
             }
 
             if (widget == null) {
@@ -477,6 +489,30 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView.setCellHeight(widget, "100%");
         activeView.setCellVerticalAlignment(widget, HasVerticalAlignment.ALIGN_TOP);
         widget.setVisible(true);
+    }
+
+    public void createCalculatorPopup() {
+
+        final DialogBox db = new DialogBox();
+        db.addStyleName("calculator");
+        db.setModal(false);
+        
+        VerticalPanel vp = new VerticalPanel();
+        SimpleCalcPanel simpleCalcPanel = new SimpleCalcPanel();
+        vp.add(simpleCalcPanel);
+
+        Button okButton = new Button(elements.ok());
+        okButton.addStyleName("buttonrow");
+        okButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                db.hide();
+            }
+        });
+        vp.add(okButton);
+
+        db.setWidget(vp);
+        db.center();
     }
 
     public void openDetails(String id) {
@@ -552,4 +588,5 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 .execute();
 
     }
+
 }

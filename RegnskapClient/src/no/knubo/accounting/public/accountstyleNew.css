@@ -645,6 +645,7 @@ table.spred {
 	border-collapse: collapse;
 	background-color: white;
 }
+
 table.spred th {
 	border-width: 1px;
 	padding: 3px;
@@ -653,6 +654,7 @@ table.spred th {
 	background-color: white;
 	-moz-border-radius: 0px 0px 0px 0px;
 }
+
 table.spred td {
 	border-width: 1px;
 	padding: 3px;
@@ -662,3 +664,149 @@ table.spred td {
 	-moz-border-radius: 0px 0px 0px 0px;
 }
 
+/* Calculator */
+.popupCalc-panel {
+	background: #ddd;
+	border: 1px solid #666;
+	padding: 3px;
+}
+
+.popupCalc-actionButtons {
+	
+}
+
+.popupCalc-doneButton {
+	width: 52px;
+	height: 20px;
+	font-family: arial;
+	font-size: 8px;
+	background: #0c0;
+	color: #fff;
+}
+
+.popupCalc-cancelButton {
+	width: 52px;
+	height: 20px;
+	font-family: arial;
+	font-size: 8px;
+	background: #c00;
+	color: #fff;
+}
+
+.simpleCalcPanel {
+	width: 140px;
+}
+
+.simpleCalcDisplay {
+	width: 140px;
+	text-align: right;
+	margin-bottom:4px;
+}
+
+.calcButton {
+	width: 25px;
+	height: 25px;
+	font-family: arial;
+	font-size: 10px;
+}
+
+.calcButton-equals {
+}
+
+.calcButton-negate {
+	
+}
+
+.calcButton-decimal {
+	
+}
+
+.calcButton-plus {
+	
+}
+
+.calcButton-minus {
+	
+}
+
+.calcButton-multiply {
+	
+}
+
+.calcButton-divide {
+	
+}
+
+.calcButton-clear {
+	width:35px;		
+}
+
+.calcButton-erase {
+	width:35px;	
+}
+
+.calcButton-equals {
+	font-size: 14px;
+	width:35px;		
+}
+
+.calcButton-0 {
+	
+}
+
+.calcButton-1 {
+	
+}
+
+.calcButton-2 {
+	
+}
+
+.calcButton-3 {
+	
+}
+
+.calcButton-4 {
+	
+}
+
+.calcButton-5 {
+	
+}
+
+.calcButton-6 {
+	
+}
+
+.calcButton-7 {
+	
+}
+
+.calcButton-8 {
+	
+}
+
+.calcButton-9 {
+	
+}
+
+.numPad {
+	float: left;
+}
+
+.opPad {
+	float: left;
+}
+
+.funcPad {
+	float: left;
+}
+
+.spacerPad {
+	float: left;
+}
+
+.calculator .dialogContent {
+	background-color:#cdcdcd;
+	padding:8px;
+}  

@@ -14,17 +14,23 @@ import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.ui.AccountTable;
 
+import org.gwtwidgets.client.ui.canvas.Canvas;
+import org.gwtwidgets.client.ui.canvas.Font;
+import org.gwtwidgets.client.ui.canvas.FontLoadListener;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 public class AboutView extends Composite implements ClickHandler {
 
@@ -302,12 +308,34 @@ public class AboutView extends Composite implements ClickHandler {
         newsPanel.addStyleName("news");
         dashboard.add(newsPanel);
 
+        //dashboard.add(createScroller());
+        
         statusAccountPanel = new FlowPanel();
         statusAccountPanel.addStyleName("accountstatus");
 
         dashboard.add(statusAccountPanel);
 
         initWidget(dashboard);
+    }
+
+    private Widget createScroller() {
+        final Canvas canvas = Canvas.create(800, 30);
+        
+        FontLoadListener listener = new FontLoadListener() {
+            
+            public void onLoad(Font font) {
+                canvas.setFont(font);
+                canvas.drawText("Dette er en test", 0, 0);                
+            }
+            
+            public void onFail(Throwable exception) {
+                Window.alert("AU");
+            }
+        };
+        Canvas.createBitmapFont("fonts/bitmap.png", "fonts/descriptor.txt", listener );
+        
+        
+        return canvas;
     }
 
     public void onClick(ClickEvent event) {

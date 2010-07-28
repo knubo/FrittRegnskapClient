@@ -106,6 +106,105 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String hidden_person();
 
   /**
+   * Translated "En person kan ha flere epostadresser, separert med komma.".
+   * 
+   * @return translated "En person kan ha flere epostadresser, separert med komma."
+   */
+  @DefaultStringValue("En person kan ha flere epostadresser, separert med komma.")
+  @Key("hint1")
+  String hint1();
+
+  /**
+   * Translated "Se detaljer p� en postering ved � klikke p� bilagsbeskrivelsen i m�nedsoversikten".
+   * 
+   * @return translated "Se detaljer p� en postering ved � klikke p� bilagsbeskrivelsen i m�nedsoversikten"
+   */
+  @DefaultStringValue("Se detaljer p� en postering ved � klikke p� bilagsbeskrivelsen i m�nedsoversikten")
+  @Key("hint10")
+  String hint10();
+
+  /**
+   * Translated "F�rste bokstav p� knapper er alltid akselerator (ctrl+tegn)".
+   * 
+   * @return translated "F�rste bokstav p� knapper er alltid akselerator (ctrl+tegn)"
+   */
+  @DefaultStringValue("F�rste bokstav p� knapper er alltid akselerator (ctrl+tegn)")
+  @Key("hint11")
+  String hint11();
+
+  /**
+   * Translated "Du kan endre bilagsnummer under registrering og p� den m�ten registrere flere rader p� samme bilag.".
+   * 
+   * @return translated "Du kan endre bilagsnummer under registrering og p� den m�ten registrere flere rader p� samme bilag."
+   */
+  @DefaultStringValue("Du kan endre bilagsnummer under registrering og p� den m�ten registrere flere rader p� samme bilag.")
+  @Key("hint2")
+  String hint2();
+
+  /**
+   * Translated "Du kan sette profilinnstillling p� bruker slik at de m� f�re p� prosjekt. Kjekk m�te � delegere f�ring av et arrangement til andre.".
+   * 
+   * @return translated "Du kan sette profilinnstillling p� bruker slik at de m� f�re p� prosjekt. Kjekk m�te � delegere f�ring av et arrangement til andre."
+   */
+  @DefaultStringValue("Du kan sette profilinnstillling p� bruker slik at de m� f�re p� prosjekt. Kjekk m�te � delegere f�ring av et arrangement til andre.")
+  @Key("hint3")
+  String hint3();
+
+  /**
+   * Translated "Personer har fritekstfelt hvor man kan legge inn kommentarer".
+   * 
+   * @return translated "Personer har fritekstfelt hvor man kan legge inn kommentarer"
+   */
+  @DefaultStringValue("Personer har fritekstfelt hvor man kan legge inn kommentarer")
+  @Key("hint4")
+  String hint4();
+
+  /**
+   * Translated "Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til � lese denne se dem.".
+   * 
+   * @return translated "Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til � lese denne se dem."
+   */
+  @DefaultStringValue("Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til � lese denne se dem.")
+  @Key("hint5")
+  String hint5();
+
+  /**
+   * Translated "Registrer du samme enkle bilag hver m�ned? Pr�v Registrer standardbilag.".
+   * 
+   * @return translated "Registrer du samme enkle bilag hver m�ned? Pr�v Registrer standardbilag."
+   */
+  @DefaultStringValue("Registrer du samme enkle bilag hver m�ned? Pr�v Registrer standardbilag.")
+  @Key("hint6")
+  String hint6();
+
+  /**
+   * Translated "Vis detaljer for utvalgte posteringer kan s�ke per prosjekt og kan summere resultat per konti.".
+   * 
+   * @return translated "Vis detaljer for utvalgte posteringer kan s�ke per prosjekt og kan summere resultat per konti."
+   */
+  @DefaultStringValue("Vis detaljer for utvalgte posteringer kan s�ke per prosjekt og kan summere resultat per konti.")
+  @Key("hint7")
+  String hint7();
+
+  /**
+   * Translated "Systemet har ferdig rapport til NIF for kj�nn og aldersfordeling".
+   * 
+   * @return translated "Systemet har ferdig rapport til NIF for kj�nn og aldersfordeling"
+   */
+  @DefaultStringValue("Systemet har ferdig rapport til NIF for kj�nn og aldersfordeling")
+  @Key("hint8")
+  String hint8();
+
+  /**
+   * Translated "Benytt budsjett til � holde oversikten over �konomien".
+   * 
+   * @return translated "Benytt budsjett til � holde oversikten over �konomien"
+   */
+  @DefaultStringValue("Benytt budsjett til � holde oversikten over �konomien")
+  @Key("hint9")
+  String hint9();
+
+  /**
    * Translated "<p>Det mangler pris for kursmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>".
    * 
    * @return translated "<p>Det mangler pris for kursmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>"
