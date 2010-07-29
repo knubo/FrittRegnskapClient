@@ -547,6 +547,13 @@ TD.green {
 	width: 800px;
 }
 
+.dashboardhint {
+	clear: both;
+	font-size:medium;
+	background-color:#FFFF99;
+	text-align: center;
+}
+
 .dashboard h1 {
 	font-size: medium;
 }
@@ -700,7 +707,7 @@ table.spred td {
 .simpleCalcDisplay {
 	width: 140px;
 	text-align: right;
-	margin-bottom:4px;
+	margin-bottom: 4px;
 }
 
 .calcButton {
@@ -711,6 +718,7 @@ table.spred td {
 }
 
 .calcButton-equals {
+	
 }
 
 .calcButton-negate {
@@ -738,16 +746,16 @@ table.spred td {
 }
 
 .calcButton-clear {
-	width:35px;		
+	width: 35px;
 }
 
 .calcButton-erase {
-	width:35px;	
+	width: 35px;
 }
 
 .calcButton-equals {
 	font-size: 14px;
-	width:35px;		
+	width: 35px;
 }
 
 .calcButton-0 {
@@ -807,6 +815,6 @@ table.spred td {
 }
 
 .calculator .dialogContent {
-	background-color:#cdcdcd;
-	padding:8px;
-}  
+	background-color: #cdcdcd;
+	padding: 8px;
+}

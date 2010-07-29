@@ -407,7 +407,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
 
             case ABOUT:
-                widget = AboutView.getInstance(constants, messages, elements, callback);
+                widget = AboutView.getInstance(constants, messages, elements, callback, helpTexts);
                 title = title + " - " + AboutView.CLIENT_VERSION;
                 break;
             case SERVERINFO:
@@ -496,7 +496,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         final DialogBox db = new DialogBox();
         db.addStyleName("calculator");
         db.setModal(false);
-        
+        db.setText(elements.menuitem_calculator());
+
         VerticalPanel vp = new VerticalPanel();
         SimpleCalcPanel simpleCalcPanel = new SimpleCalcPanel();
         vp.add(simpleCalcPanel);

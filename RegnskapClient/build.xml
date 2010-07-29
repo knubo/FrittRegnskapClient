@@ -12,6 +12,7 @@
 		<pathelement location="lib/gwt-visualization.jar" />
 		<pathelement location="lib/gwt-wizard.jar" />
 		<pathelement location="lib/gwt-widgets-0.2.0.jar" />
+		<pathelement location="lib/GWT FX v0.5.0 MS 1.jar" />
 		<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar" />
 	</path>
 

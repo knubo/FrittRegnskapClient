@@ -3,6 +3,7 @@ package no.knubo.accounting.client.views;
 import no.knubo.accounting.client.AccountingGWT;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
+import no.knubo.accounting.client.HelpTexts;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
@@ -14,9 +15,8 @@ import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.ui.AccountTable;
 
-import org.gwtwidgets.client.ui.canvas.Canvas;
-import org.gwtwidgets.client.ui.canvas.Font;
-import org.gwtwidgets.client.ui.canvas.FontLoadListener;
+import org.adamtacy.client.ui.effects.impl.Fade;
+import org.adamtacy.client.ui.effects.impl.NShow;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -24,7 +24,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -55,10 +56,18 @@ public class AboutView extends Composite implements ClickHandler {
 
     private final ViewCallback callback;
 
+    private HTML hintLabel;
+
+    private final HelpTexts helpTexts;
+
+    private Timer fadeout;
+
+    private Timer fadeIn;
+
     public static AboutView getInstance(Constants constants, I18NAccount messages, Elements elements,
-            ViewCallback callback) {
+            ViewCallback callback, HelpTexts helpTexts) {
         if (instance == null) {
-            instance = new AboutView(constants, messages, elements, callback);
+            instance = new AboutView(constants, messages, elements, callback, helpTexts);
         }
 
         instance.checkServerVersion();
@@ -276,11 +285,13 @@ public class AboutView extends Composite implements ClickHandler {
         }
     }
 
-    private AboutView(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
+    private AboutView(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback,
+            HelpTexts helpTexts) {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
         this.callback = callback;
+        this.helpTexts = helpTexts;
 
         FlowPanel dashboard = new FlowPanel();
         dashboard.addStyleName("dashboard");
@@ -304,12 +315,12 @@ public class AboutView extends Composite implements ClickHandler {
         statusPanel.addStyleName("systemstatus");
         dashboard.add(statusPanel);
 
+        dashboard.add(createHintLine());
+
         newsPanel = new FlowPanel();
         newsPanel.addStyleName("news");
         dashboard.add(newsPanel);
 
-        //dashboard.add(createScroller());
-        
         statusAccountPanel = new FlowPanel();
         statusAccountPanel.addStyleName("accountstatus");
 
@@ -318,24 +329,48 @@ public class AboutView extends Composite implements ClickHandler {
         initWidget(dashboard);
     }
 
-    private Widget createScroller() {
-        final Canvas canvas = Canvas.create(800, 30);
+    private Widget createHintLine() {
+        FlowPanel fp = new FlowPanel();
+        fp.addStyleName("dashboardhint");
         
-        FontLoadListener listener = new FontLoadListener() {
-            
-            public void onLoad(Font font) {
-                canvas.setFont(font);
-                canvas.drawText("Dette er en test", 0, 0);                
+        hintLabel = new HTML();
+        hintLabel.addStyleName("dashboardhint");
+        Fade theFade = new Fade(hintLabel.getElement());
+        theFade.play();
+
+        setupTimedChangeOfHintLabel();
+
+        fp.add(hintLabel);
+        return fp;
+    }
+
+    private void setupTimedChangeOfHintLabel() {
+        fadeout = new Timer() {
+
+            @Override
+            public void run() {
+                Fade theFade = new Fade(hintLabel.getElement());
+                theFade.play();
+                fadeIn.schedule(2000);
             }
             
-            public void onFail(Throwable exception) {
-                Window.alert("AU");
+        };
+        fadeIn = new Timer() {
+
+            @Override
+            public void run() {
+                setNewHint();
+                NShow nshow = new NShow(hintLabel.getElement());
+                nshow.play();
+                fadeout.schedule(20000);
             }
         };
-        Canvas.createBitmapFont("fonts/bitmap.png", "fonts/descriptor.txt", listener );
-        
-        
-        return canvas;
+        fadeIn.schedule(3000);
+    }
+
+    protected void setNewHint() {
+        int r = Random.nextInt(13);
+        hintLabel.setHTML(helpTexts.getString("hint" + r));
     }
 
     public void onClick(ClickEvent event) {
