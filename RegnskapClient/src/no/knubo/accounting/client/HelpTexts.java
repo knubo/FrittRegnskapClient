@@ -106,6 +106,15 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String hidden_person();
 
   /**
+   * Translated "En bruker kan settes til &aring; alltid m&aring;tte registrere regnskap p&aring; et prosjekt.".
+   * 
+   * @return translated "En bruker kan settes til &aring; alltid m&aring;tte registrere regnskap p&aring; et prosjekt."
+   */
+  @DefaultStringValue("En bruker kan settes til &aring; alltid m&aring;tte registrere regnskap p&aring; et prosjekt.")
+  @Key("hint0")
+  String hint0();
+
+  /**
    * Translated "En person kan ha flere epostadresser, separert med komma.".
    * 
    * @return translated "En person kan ha flere epostadresser, separert med komma."
@@ -115,38 +124,47 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String hint1();
 
   /**
-   * Translated "Se detaljer p� en postering ved � klikke p� bilagsbeskrivelsen i m�nedsoversikten".
+   * Translated "Se detaljer p&aring; en postering ved &aring; klikke p&aring; bilagsbeskrivelsen i m&aring;nedsoversikten".
    * 
-   * @return translated "Se detaljer p� en postering ved � klikke p� bilagsbeskrivelsen i m�nedsoversikten"
+   * @return translated "Se detaljer p&aring; en postering ved &aring; klikke p&aring; bilagsbeskrivelsen i m&aring;nedsoversikten"
    */
-  @DefaultStringValue("Se detaljer p� en postering ved � klikke p� bilagsbeskrivelsen i m�nedsoversikten")
+  @DefaultStringValue("Se detaljer p&aring; en postering ved &aring; klikke p&aring; bilagsbeskrivelsen i m&aring;nedsoversikten")
   @Key("hint10")
   String hint10();
 
   /**
-   * Translated "F�rste bokstav p� knapper er alltid akselerator (ctrl+tegn)".
+   * Translated "F&oslash;rste bokstav p&aring; knapper er alltid akselerator (ctrl+tegn)".
    * 
-   * @return translated "F�rste bokstav p� knapper er alltid akselerator (ctrl+tegn)"
+   * @return translated "F&oslash;rste bokstav p&aring; knapper er alltid akselerator (ctrl+tegn)"
    */
-  @DefaultStringValue("F�rste bokstav p� knapper er alltid akselerator (ctrl+tegn)")
+  @DefaultStringValue("F&oslash;rste bokstav p&aring; knapper er alltid akselerator (ctrl+tegn)")
   @Key("hint11")
   String hint11();
 
   /**
-   * Translated "Du kan endre bilagsnummer under registrering og p� den m�ten registrere flere rader p� samme bilag.".
+   * Translated "I Info menyen finner du kalkulator. ".
    * 
-   * @return translated "Du kan endre bilagsnummer under registrering og p� den m�ten registrere flere rader p� samme bilag."
+   * @return translated "I Info menyen finner du kalkulator. "
    */
-  @DefaultStringValue("Du kan endre bilagsnummer under registrering og p� den m�ten registrere flere rader p� samme bilag.")
+  @DefaultStringValue("I Info menyen finner du kalkulator. ")
+  @Key("hint12")
+  String hint12();
+
+  /**
+   * Translated "Du kan endre bilagsnummer under registrering og p&aring; den m&aring;ten registrere flere rader p&aring; samme bilag.".
+   * 
+   * @return translated "Du kan endre bilagsnummer under registrering og p&aring; den m&aring;ten registrere flere rader p&aring; samme bilag."
+   */
+  @DefaultStringValue("Du kan endre bilagsnummer under registrering og p&aring; den m&aring;ten registrere flere rader p&aring; samme bilag.")
   @Key("hint2")
   String hint2();
 
   /**
-   * Translated "Du kan sette profilinnstillling p� bruker slik at de m� f�re p� prosjekt. Kjekk m�te � delegere f�ring av et arrangement til andre.".
+   * Translated "Du kan sette profilinnstillling p&aring; bruker slik at de m&aring; f&oslash;re p&aring; prosjekt. Kjekk m&aring;te &aring; delegere f&oslash;ring av et arrangement til andre.".
    * 
-   * @return translated "Du kan sette profilinnstillling p� bruker slik at de m� f�re p� prosjekt. Kjekk m�te � delegere f�ring av et arrangement til andre."
+   * @return translated "Du kan sette profilinnstillling p&aring; bruker slik at de m&aring; f&oslash;re p&aring; prosjekt. Kjekk m&aring;te &aring; delegere f&oslash;ring av et arrangement til andre."
    */
-  @DefaultStringValue("Du kan sette profilinnstillling p� bruker slik at de m� f�re p� prosjekt. Kjekk m�te � delegere f�ring av et arrangement til andre.")
+  @DefaultStringValue("Du kan sette profilinnstillling p&aring; bruker slik at de m&aring; f&oslash;re p&aring; prosjekt. Kjekk m&aring;te &aring; delegere f&oslash;ring av et arrangement til andre.")
   @Key("hint3")
   String hint3();
 
@@ -160,47 +178,47 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String hint4();
 
   /**
-   * Translated "Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til � lese denne se dem.".
+   * Translated "Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til &aring; lese denne se dem.".
    * 
-   * @return translated "Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til � lese denne se dem."
+   * @return translated "Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til &aring; lese denne se dem."
    */
-  @DefaultStringValue("Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til � lese denne se dem.")
+  @DefaultStringValue("Personer kan ha hemmelig adresse og da kan kun de brukere som har tilgang til &aring; lese denne se dem.")
   @Key("hint5")
   String hint5();
 
   /**
-   * Translated "Registrer du samme enkle bilag hver m�ned? Pr�v Registrer standardbilag.".
+   * Translated "Registrer du samme enkle bilag hver m&aring;ned? Pr&oslash;v Hurtiregistrering av standardbilag.".
    * 
-   * @return translated "Registrer du samme enkle bilag hver m�ned? Pr�v Registrer standardbilag."
+   * @return translated "Registrer du samme enkle bilag hver m&aring;ned? Pr&oslash;v Hurtiregistrering av standardbilag."
    */
-  @DefaultStringValue("Registrer du samme enkle bilag hver m�ned? Pr�v Registrer standardbilag.")
+  @DefaultStringValue("Registrer du samme enkle bilag hver m&aring;ned? Pr&oslash;v Hurtiregistrering av standardbilag.")
   @Key("hint6")
   String hint6();
 
   /**
-   * Translated "Vis detaljer for utvalgte posteringer kan s�ke per prosjekt og kan summere resultat per konti.".
+   * Translated "Vis detaljer for utvalgte posteringer kan s&oslash;ke per prosjekt og kan summere resultat per konti.".
    * 
-   * @return translated "Vis detaljer for utvalgte posteringer kan s�ke per prosjekt og kan summere resultat per konti."
+   * @return translated "Vis detaljer for utvalgte posteringer kan s&oslash;ke per prosjekt og kan summere resultat per konti."
    */
-  @DefaultStringValue("Vis detaljer for utvalgte posteringer kan s�ke per prosjekt og kan summere resultat per konti.")
+  @DefaultStringValue("Vis detaljer for utvalgte posteringer kan s&oslash;ke per prosjekt og kan summere resultat per konti.")
   @Key("hint7")
   String hint7();
 
   /**
-   * Translated "Systemet har ferdig rapport til NIF for kj�nn og aldersfordeling".
+   * Translated "Systemet har ferdig rapport til NIF for kj&oslash;nn og aldersfordeling".
    * 
-   * @return translated "Systemet har ferdig rapport til NIF for kj�nn og aldersfordeling"
+   * @return translated "Systemet har ferdig rapport til NIF for kj&oslash;nn og aldersfordeling"
    */
-  @DefaultStringValue("Systemet har ferdig rapport til NIF for kj�nn og aldersfordeling")
+  @DefaultStringValue("Systemet har ferdig rapport til NIF for kj&oslash;nn og aldersfordeling")
   @Key("hint8")
   String hint8();
 
   /**
-   * Translated "Benytt budsjett til � holde oversikten over �konomien".
+   * Translated "Benytt budsjett til &aring; holde kontroll p&aring; &oslash;konomien".
    * 
-   * @return translated "Benytt budsjett til � holde oversikten over �konomien"
+   * @return translated "Benytt budsjett til &aring; holde kontroll p&aring; &oslash;konomien"
    */
-  @DefaultStringValue("Benytt budsjett til � holde oversikten over �konomien")
+  @DefaultStringValue("Benytt budsjett til &aring; holde kontroll p&aring; &oslash;konomien")
   @Key("hint9")
   String hint9();
 
