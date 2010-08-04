@@ -149,6 +149,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private NamedButton deleteButton;
 
+        private TextBoxWithErrorText wikiLogin;
+
         AdminInstallEditFields() {
             setText(elements.project());
             edittable = new FlexTable();
@@ -171,11 +173,13 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             diskQvotaBox = new TextBoxWithErrorText("qvota");
             diskQvotaBox.setMaxLength(4);
             diskQvotaBox.setVisibleLength(4);
+            wikiLogin = new TextBoxWithErrorText("wikilogin");
 
             betaBox = new NamedCheckBox("beta");
 
             edittable.setWidget(0, 1, hostprefixBox);
             edittable.setWidget(3, 1, descriptionBox);
+            edittable.setWidget(4, 1, wikiLogin);
             edittable.setWidget(5, 1, diskQvotaBox);
             edittable.setWidget(6, 1, betaBox);
             DockPanel dp = new DockPanel();
@@ -205,7 +209,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             edittable.setText(1, 1, Util.str(obj.get("dbprefix")));
             edittable.setText(2, 1, Util.str(obj.get("db")));
             descriptionBox.setText(Util.str(obj.get("description")));
-            edittable.setText(4, 1, Util.str(obj.get("wikilogin")));
+            wikiLogin.setText(Util.str(obj.get("wikilogin")));
             diskQvotaBox.setText(Util.str(obj.get("diskquota")));
             betaBox.setValue(Util.getBoolean(obj.get("beta")));
 
@@ -226,17 +230,18 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private void doDelete() {
             boolean choice = Window.confirm(messages.confirm_delete());
-            
-            if(choice) {
+
+            if (choice) {
                 ServerResponse callback = new ServerResponse() {
-                    
+
                     public void serverResponse(JSONValue responseObj) {
                         hide();
                     }
                 };
-                AuthResponder.get(constants, messages, callback , "admin/installs.php?action=deleterequest&id=" + this.currentId);
+                AuthResponder.get(constants, messages, callback, "admin/installs.php?action=deleterequest&id="
+                        + this.currentId);
             }
-            
+
         }
 
         private void doSave() {
@@ -249,6 +254,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             Util.addPostParam(sb, "quota", diskQvotaBox.getText());
             Util.addPostParam(sb, "beta", betaBox.getValue() ? "1" : "0");
             Util.addPostParam(sb, "hostprefix", hostprefixBox.getText());
+            Util.addPostParam(sb, "wikilogin", wikiLogin.getText());
 
             ServerResponse callback = new ServerResponse() {
 
@@ -270,13 +276,11 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
-            Widget[] widgets = new Widget[] { descriptionBox, hostprefixBox, diskQvotaBox };
-            mv.mandatory(messages.required_field(), widgets);
+            mv.mandatory(messages.required_field(), descriptionBox, hostprefixBox, diskQvotaBox, wikiLogin);
             mv.range(messages.field_positive(), 0, Integer.MAX_VALUE, diskQvotaBox);
             return mv.validateStatus();
         }
 
     }
-
 
 }

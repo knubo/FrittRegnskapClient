@@ -63,10 +63,10 @@ public class StructuralTableEditDialogBox extends DialogBox implements ClickHand
         downImage.addClickHandler(this);
 
         dp.add(data, DockPanel.CENTER);
-        dp.add(nextImage, DockPanel.EAST);
-        dp.add(previousImage, DockPanel.EAST);
-        dp.add(downImage, DockPanel.SOUTH);
-        dp.add(upImage, DockPanel.SOUTH);
+        dp.add(previousImage, DockPanel.WEST);
+        dp.add(nextImage, DockPanel.WEST);
+        dp.add(upImage, DockPanel.EAST);
+        dp.add(downImage, DockPanel.EAST);
 
         VerticalPanel vp = new VerticalPanel();
         vp.add(meta);
@@ -137,16 +137,35 @@ public class StructuralTableEditDialogBox extends DialogBox implements ClickHand
             int y = cell.getRowIndex();
 
             editCellAt(y, x);
+        } else if (event.getSource() == upImage) {
+            if (editRow < 1) {
+                return;
+            }
+            data.remove(editBox);
+            data.removeRow(editRow);
+            editRow = -1;
+        } else if (event.getSource() == previousImage) {
+            if (editCol < 1) {
+                return;
+            }
+            data.remove(editBox);
+            for (int row = 0; row < data.getRowCount(); row++) {
+                data.removeCell(row, editCol);
+            }
+            editCol = -1;
+
         }
     }
 
     private void editCellAt(int y, int x) {
         String editValue = editBox.getText().trim();
         data.remove(editBox);
-        if (editValue.isEmpty()) {
-            data.setWidget(editRow, editCol, ImageFactory.blankImage(15, 15));
-        } else {
-            data.setText(editRow, editCol, editValue, "desc");
+        if (editRow >= 0 && editCol >= 0) {
+            if (editValue.isEmpty()) {
+                data.setWidget(editRow, editCol, ImageFactory.blankImage(15, 15));
+            } else {
+                data.setText(editRow, editCol, editValue, "desc");
+            }
         }
         String nextValue = data.getText(y, x);
         editBox.setText(nextValue);
