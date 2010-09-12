@@ -58,7 +58,7 @@
       },
       "copy-files":
       {
-	 "files": ["login.html"]
+		 "files": ["login.html"]
       }
     }
   }
