@@ -620,6 +620,11 @@ public class Util {
 
         for (ListBoxWithErrorText listBoxWithErrorText : allBoxes) {
             String selected = getSelected(listBoxWithErrorText);
+            
+            if(selected.trim().length() == 0) {
+                continue;
+            }
+            
             if(selectedValues.contains(selected)) {
                 return false;
             }

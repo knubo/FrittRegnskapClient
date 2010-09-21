@@ -23,9 +23,28 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
 		__container : null,
 		__loginButton : null,
 		__newUserButton: null,
+		__loginName:null,
+		__password:null,
 
 		doLogin : function() {
-			this.__effect.start();
+			var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_authenticate.php?action=login", "POST",
+				"application/json");
+			req.setParameter("user", this.__loginName.getValue(), true);
+			req.setParameter("password", this.__password.getValue() , true);
+			
+			var owner = this;
+			
+			req.addListener("completed", function(data) {
+				var json = data.getContent();
+
+				if(json["error"]) {
+					owner.__effect.start();
+				} else if(json["result"] == "ok") {
+					window.alert("Login OK");
+				}
+			});
+			
+			req.send();
 		},
 		
 		newPassword : function() {
@@ -33,63 +52,11 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
 
 		__prepareEffect : function() {
 			this.__effect = new qx.fx.effect.combination.Shake(this.__container.getContainerElement().getDomElement());
+
+			this.__loginName.focus();
 		},
 
 		setupLoginWindow : function(desktop) {
-
-			var layout = new qx.ui.layout.Grid(9, 5);
-			layout.setColumnAlign(0, "right", "top");
-			layout.setColumnAlign(2, "right", "top");
-
-			/* Container widget */
-			this.__container = new qx.ui.groupbox.GroupBox().set( {
-				contentPadding : [ 16, 16, 16, 16 ]
-			});
-
-			this.__container.setLayout(layout);
-
-			this.__container.addListener("resize", function(e) {
-				var bounds = this.__container.getBounds();
-				this.__container.set( {
-					marginTop : Math.round(-bounds.height / 2),
-					marginLeft : Math.round(-bounds.width / 2)
-				});
-			}, this);
-
-			desktop.add(this.__container, {
-				left : "50%",
-				top : "30%"
-			});
-
-			var labels = [ "Navn", "Passord" ];
-			for ( var i = 0; i < labels.length; i++) {
-				this.__container.add(new qx.ui.basic.Label(labels[i]).set( {
-					allowShrinkX : false,
-					paddingTop : 3
-				}), {
-					row : i,
-					column : 0
-				});
-			}
-
-			var field1 = new qx.ui.form.TextField();
-			var field2 = new qx.ui.form.PasswordField();
-
-			this.__container.add(field1.set( {
-				allowShrinkX : false,
-				paddingTop : 3
-			}), {
-				row : 0,
-				column : 1
-			});
-
-			this.__container.add(field2.set( {
-				allowShrinkX : false,
-				paddingTop : 3
-			}), {
-				row : 1,
-				column : 1
-			});
 
 			this.__loginButton = new qx.ui.form.Button("Logg inn");
 			this.__loginButton.setAllowStretchX(false);
@@ -120,7 +87,7 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
 		}
 	},
 	destruct : function() {
-		this._disposeObjects("__container", "__loginButton", "__effect", "__newUserButton");
+		this._disposeObjects("__container", "__loginButton", "__effect", "__newUserButton", "__loginName", "__password");
 	}
 
 });

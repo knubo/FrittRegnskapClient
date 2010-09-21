@@ -55,11 +55,11 @@
         {
           "format" : true
         }
-      },
+      } /*,
       "copy-files":
       {
 		 "files": ["login.html"]
-      }
+      } */
     }
   }
 
