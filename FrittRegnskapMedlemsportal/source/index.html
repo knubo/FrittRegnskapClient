@@ -12,6 +12,11 @@
         </script>
     </head>
     <style>
+        #loginbuttons {
+            height:40px;
+            width:auto;
+            background:white;
+        }
         #isle {
             height: 800px;
             width: 100%;
@@ -34,10 +39,15 @@
                 <div class="content" id="isle">
                 </div>
                 <div id="login">
-                    <form>
-                        <input name="user"/>
-                        <input name="password"/>
-                        <div id="loginbuttons"/>
+                    <h1>Logg inn</h1>
+                    <form method="post" action="/RegnskapServer/services/portal/portal_authenticate.php?action=forward" id="loginform">
+                        <ul>
+                        <li>Brukernavn</li>
+                        <li><input name="user" id="userfield"/></li>
+                        <li>Passord</li>
+                        <li><input type="password" name="password" id="passwordfield"/></li>
+                        <ul></ul>
+                        <div id="loginbuttons"> <!-- --> </div>
                     </form>
                 </div>
                 <div class="clearer">
