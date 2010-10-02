@@ -41,6 +41,7 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
 				if(json["error"]) {
                     window.alert("Error");
 				} else if(json["result"] == "ok") {
+                    
                     document.getElementById("loginform").submit();
 				}
 			});
@@ -57,15 +58,16 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
             userField.focus();
 		},
 
-		setupLoginWindow : function(desktop) {
+		setupLoginWindow : function() {
             
             var htmlElement = document.getElementById("loginbuttons");
-            var inlineIsle = new qx.ui.root.Inline(htmlElement, true, true);
+            var inlineIsle = new qx.ui.root.Inline(htmlElement, false, false);
             inlineIsle.setLayout(new qx.ui.layout.Flow());
             
-            
 			this.__loginButton = new qx.ui.form.Button("Logg inn");
+            this.__loginButton.id = "login_button_id";
 			this.__loginButton.setAllowStretchX(false);
+            this.__loginButton.setMarginRight(10);
 
 			inlineIsle.add(this.__loginButton);
 

@@ -12,11 +12,7 @@
         </script>
     </head>
     <style>
-        #loginbuttons {
-            height:40px;
-            width:auto;
-            background:white;
-        }
+        
         #isle {
             height: 800px;
             width: 100%;
@@ -24,7 +20,55 @@
         }
     </style>
     <body>
-        <div class="container">
+        <div id="allLoginStuff">
+            <form method="post" action="/RegnskapServer/services/portal/portal_authenticate.php?action=forward" id="loginform">
+                <div class="header">
+                    <div class="title">
+                        <h1>Fritt Regnskap Medlemsportal</h1>
+                    </div>
+                    <div class="navigation">
+                        <div class="clearer">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="logincontainer" id="loginbox">
+                    <div class="loginposition">
+                        <table class="middle">
+                            <tr>
+                                <td colspan="2">
+                                    <h1>Logg inn</h1>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Brukernavn
+                                </td>
+                                <td>
+                                    <input name="user" id="userfield"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Passord
+                                </td>
+                                <td>
+                                    <input type="password" name="password" id="passwordfield"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding-top:5px;padding-bottom:10px;">
+                                    <div id="loginbuttons">
+                                        <!-- -->
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="container" id="applicationStuff">
             <div class="header">
                 <div class="title">
                     <h1>Fritt Regnskap Medlemsportal</h1>
@@ -37,18 +81,6 @@
             </div>
             <div class="main">
                 <div class="content" id="isle">
-                </div>
-                <div id="login">
-                    <h1>Logg inn</h1>
-                    <form method="post" action="/RegnskapServer/services/portal/portal_authenticate.php?action=forward" id="loginform">
-                        <ul>
-                        <li>Brukernavn</li>
-                        <li><input name="user" id="userfield"/></li>
-                        <li>Passord</li>
-                        <li><input type="password" name="password" id="passwordfield"/></li>
-                        <ul></ul>
-                        <div id="loginbuttons"> <!-- --> </div>
-                    </form>
                 </div>
                 <div class="clearer">
                     &nbsp;

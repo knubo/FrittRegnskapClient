@@ -48,30 +48,34 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
              USE AN EXISTING NODE TO ADD WIDGETS INTO THE PAGE LAYOUT FLOW
              -------------------------------------------------------------------------
              */
-            // Hint: the second and the third parameter control if the dimensions
-            // of the element should be respected or not.
-            var htmlElement = document.getElementById("isle");
-            var inlineIsle = new qx.ui.root.Inline(htmlElement, true, true);
-            
-            
-            // use VBox layout instead of basic
-            inlineIsle.setLayout(new qx.ui.layout.Grow());
-            
-            var windowManager = new qx.ui.window.Manager();
-            var desktop = new qx.ui.window.Desktop(windowManager);
-            desktop.set({
-                decorator: "main",
-                backgroundColor: "background-pane"
-            });
-            
-            inlineIsle.add(desktop);
-            
             var login = new frittregnskapmedlemsportal.Login();
             
             if (!login.setupLoginIfNeeded()) {
+                document.getElementById("allLoginStuff").style.display = "none";
+                document.getElementById("applicationStuff").style.display = "block";
+
+                // Hint: the second and the third parameter control if the dimensions
+                // of the element should be respected or not.
+                var htmlElement = document.getElementById("isle");
+                var inlineIsle = new qx.ui.root.Inline(htmlElement, true, true);
+                
+                
+                // use VBox layout instead of basic
+                inlineIsle.setLayout(new qx.ui.layout.Grow());
+                
+                var windowManager = new qx.ui.window.Manager();
+                var desktop = new qx.ui.window.Desktop(windowManager);
+                desktop.set({
+                    decorator: "main",
+                    backgroundColor: "background-pane"
+                });
+                
+                inlineIsle.add(desktop);
                 new frittregnskapmedlemsportal.Profile().createWindowProfile(desktop);
-            } else {
-                login.setupLoginWindow(desktop);
+            }
+            else {
+
+                login.setupLoginWindow();
             }
             
         }
