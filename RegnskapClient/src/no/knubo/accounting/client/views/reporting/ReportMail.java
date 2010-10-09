@@ -159,7 +159,7 @@ public class ReportMail extends Composite implements ClickHandler {
         reciversListBox.setFocus(true);
         super.setVisible(visible);
     }
-    
+
     private void addEmailFormat(FlexTable mainTable, int row) {
         radioFormatPlain = new RadioButton("format", elements.email_format_plain());
         radioFormatWiki = new RadioButton("format", elements.email_format_wiki());
@@ -285,7 +285,7 @@ public class ReportMail extends Composite implements ClickHandler {
     }
 
     protected void setDefaultValues(JSONObject object) {
-        if(object == null) {
+        if (object == null) {
             return;
         }
         String footer = Util.str(object.get(EMAIL_FOOTER));
@@ -293,10 +293,10 @@ public class ReportMail extends Composite implements ClickHandler {
         String format = Util.str(object.get(EMAIL_FORMAT));
         String title = Util.str(object.get(EMAIL_TITLE));
 
-        if(title == null || title.length() == 0) {
+        if (title == null || title.length() == 0) {
             return;
         }
-        
+
         titleBox.setText(title);
         Util.setIndexByValue(headerSelect.getListbox(), header);
         Util.setIndexByValue(footerSelect.getListbox(), footer);
@@ -419,6 +419,7 @@ public class ReportMail extends Composite implements ClickHandler {
         private FlexTable infoTable;
         private String attachmentsAsJSONString;
         private boolean simulate;
+        private String emailText;
 
         EmailSendStatus() {
             DockPanel dp = new DockPanel();
@@ -472,7 +473,22 @@ public class ReportMail extends Composite implements ClickHandler {
             infoTable.getFlexCellFormatter().setColSpan(1, 1, 2);
             infoTable.getFlexCellFormatter().setColSpan(2, 1, 2);
 
+            emailText = getFixedEmailText();
+
             sendOneEmail();
+        }
+
+        private String getFixedEmailText() {
+            if (radioFormatHTML.getValue()) {
+                String html = richBodyBox.getHTML();
+                
+                html = html.replace("\n", "");
+                html = html.replace("<br", "\n<br");
+                html = html.replace("</p", "\n</p");
+                
+                return URL.encode(html);
+            }
+            return URL.encode(bodyBox.getText());
         }
 
         private void sendOneEmail() {
@@ -495,11 +511,7 @@ public class ReportMail extends Composite implements ClickHandler {
             Util.addPostParam(mailRequest, "personid", personId);
             Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
             Util.addPostParam(mailRequest, "email", email);
-            if (radioFormatHTML.getValue()) {
-                Util.addPostParam(mailRequest, "body", URL.encode(richBodyBox.getHTML()));
-            } else {
-                Util.addPostParam(mailRequest, "body", URL.encode(bodyBox.getText()));
-            }
+            Util.addPostParam(mailRequest, "body", emailText);
             Util.addPostParam(mailRequest, "attachments", attachmentsAsJSONString);
             Util.addPostParam(mailRequest, "format", getFormat());
             Util.addPostParam(mailRequest, "header", Util.getSelected(headerSelect));
