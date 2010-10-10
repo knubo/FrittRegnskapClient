@@ -81,6 +81,11 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                     this.__country.setModelSelection([this.__countryModel.getItem(i)]);
                 }
             }
+            
+            if(json.has_profile_image) {
+                this.__image.setSource("/RegnskapServer/services/portal/portal_persons.php?action=myimage");
+            }
+            
         },
         fillShareProfile: function(data){
             this.__showFirstname.setValue(data.show_firstname == 1);
@@ -143,6 +148,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         __showImage: null,
         __win: null,
         __manager: null,
+        __image: null,
         
         createWindowProfile: function(desktop){
             // Create the Window
@@ -225,15 +231,15 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             
             this.__email = new qx.ui.form.TextField("");
             
-            this.__manager.add(this.__email, function(value) {
+            this.__manager.add(this.__email, function(value){
                 var multiple = value.split(",");
                 
-                if(multiple.length == 0) {
-                    qx.util.Validate.checkEmail(value,"Epostadressen er ikke gyldig");
+                if (multiple.length == 0) {
+                    qx.util.Validate.checkEmail(value, "Epostadressen er ikke gyldig");
                 }
-
-                for(var i=0; i < multiple.length; i++) {
-                    qx.util.Validate.checkEmail(multiple[i],"Epostadressene er ikke gyldig");
+                
+                for (var i = 0; i < multiple.length; i++) {
+                    qx.util.Validate.checkEmail(multiple[i], "Epostadressene er ikke gyldig");
                 }
                 
                 return true;
@@ -357,7 +363,12 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             
             var bildebox = new qx.ui.groupbox.GroupBox("Bilde");
             bildebox.setLayout(new qx.ui.layout.VBox(10));
-            bildebox.add(new qx.ui.basic.Image("frittregnskapmedlemsportal/knuterikLiten.jpg"));
+            
+            this.__image = new qx.ui.basic.Image();
+            this.__image.setScale(true);
+            this.__image.setMaxWidth(100);
+            this.__image.setMaxHeight(130);
+            bildebox.add(this.__image);
             
             win.add(bildebox, {
                 row: 0,
@@ -506,7 +517,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         destruct: function(){
             this._disposeObjects("__firstName", "__lastName", "__email", "__address", "__cellphone", "__phone", "__gender", "__genderModel", "__newsletter", "__birthdate", "__country", "__countryModel", //
  "__city", "__postnmb", "__showLastname", "__showFirstname", "__showGender", "__showAddress", "__showBirthdate", "__showCellphone", "__showPhone", "__showCountry", "__showCity", "__showPostnmb", //
- "__showEmail", "__showImage", "__win", "__manager");
+ "__showEmail", "__showImage", "__win", "__manager", "__image");
         }
         
     }
