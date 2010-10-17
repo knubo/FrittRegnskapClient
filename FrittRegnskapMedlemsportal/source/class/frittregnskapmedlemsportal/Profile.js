@@ -1,3 +1,4 @@
+
 qx.Class.define("frittregnskapmedlemsportal.Profile", {
     extend: qx.core.Object,
     
@@ -82,7 +83,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 }
             }
             
-            if(json.has_profile_image) {
+            if (json.has_profile_image) {
                 this.__image.setSource("/RegnskapServer/services/portal/portal_persons.php?action=myimage");
             }
             
@@ -499,7 +500,10 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             updateButton.addListener("execute", this.save, this);
             
             buttoncontainer.add(updateButton);
-            buttoncontainer.add(new qx.ui.form.Button("Last opp profilbilde"));
+            
+            var profilePicture = new frittregnskapmedlemsportal.ProfilePicture();
+            buttoncontainer.add(profilePicture.createUploadButton(this.__image));
+            
             
             win.add(container, {
                 row: 2,
