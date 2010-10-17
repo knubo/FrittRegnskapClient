@@ -1,4 +1,3 @@
-
 qx.Class.define("frittregnskapmedlemsportal.Profile", {
     extend: qx.core.Object,
     
@@ -504,6 +503,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             var profilePicture = new frittregnskapmedlemsportal.ProfilePicture();
             buttoncontainer.add(profilePicture.createUploadButton(this.__image));
             
+            profilePicture.addMouseOverFullImage(this.__image);
             
             win.add(container, {
                 row: 2,
