@@ -160,6 +160,8 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             win.setShowClose(false);
             win.setShowMinimize(false);
             win.setShowMaximize(false);
+            win.setResizable(false);
+            win.setAllowMaximize(false);
             
             desktop.add(win);
             win.open();
@@ -224,7 +226,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 column: 5
             });
             
-            personbox.add(new qx.ui.basic.Label("Epostadresse"), {
+            personbox.add(new qx.ui.basic.Label("Epostadresse(r)"), {
                 row: 1,
                 column: 0
             });
@@ -495,13 +497,15 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             buttoncontainer.setMarginTop(10);
             buttoncontainer.setLayout(new qx.ui.layout.HBox(10));
             
-            var updateButton = new qx.ui.form.Button("Oppdater");
+            var updateButton = new qx.ui.form.Button("Oppdater personalia");
             updateButton.addListener("execute", this.save, this);
             
             buttoncontainer.add(updateButton);
             
             var profilePicture = new frittregnskapmedlemsportal.ProfilePicture();
             buttoncontainer.add(profilePicture.createUploadButton(this.__image));
+            
+            buttoncontainer.add(new qx.ui.form.Button("Endre passord"));
             
             profilePicture.addMouseOverFullImage(this.__image);
             

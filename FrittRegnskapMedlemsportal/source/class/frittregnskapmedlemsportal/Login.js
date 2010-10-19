@@ -51,6 +51,60 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
         },
         
         newPassword: function(){
+            var popup = new qx.ui.popup.Popup(new qx.ui.layout.Grow());
+            
+            var box = new qx.ui.groupbox.GroupBox("Nytt passord");
+            popup.add(box);
+            
+            
+            var gridLayout = new qx.ui.layout.Grid(2,3);
+            gridLayout.setSpacingY(10);
+            box.setLayout(gridLayout);
+           
+            
+            var label = new qx.ui.basic.Label();
+            label.setRich(true);
+            label.setValue("Gi inn epostadressen som du er registrert med og en engangslink blir sendt til epostadressen. Etter innlogging kan du bytte passord.<br/>");
+            
+            box.add(label, {
+                row: 0,
+                column: 0,
+                colSpan:2
+            });
+            
+            box.add(new qx.ui.basic.Label("Epostadresse:"), {
+                row: 1,
+                column: 0
+            });
+            
+            var email = new qx.ui.form.TextField("");
+            email.setWidth(200);
+            box.add(email, {
+                row: 1,
+                column: 1
+            });
+            
+            var sendButton = new qx.ui.form.Button("Send engangslink");
+            box.add(sendButton, {
+                row: 2,
+                column: 0
+            });
+            
+            var cancelButton = new qx.ui.form.Button("Avbryt");
+            cancelButton.setAllowStretchX(false);
+            
+            cancelButton.addListener("execute", function(){
+                popup.hide();
+            }, this);
+            
+            box.add(cancelButton, {
+                row: 2,
+                column: 1
+            })
+            
+            popup.placeToWidget(this.__newUserButton);
+            popup.show();
+            
         },
         
         __prepareEffect: function(){
