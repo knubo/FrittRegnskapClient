@@ -50,6 +50,33 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
             req.send();
         },
         
+        sendOneTimeLink: function(email, infoLabel){
+            var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_authenticate.php?action=connect&email=" + email.getValue(), "GET", "application/json");
+            
+            req.addListener("completed", function(data){
+                var json = data.getContent();
+                
+                if (json["error"]) {
+                    infoLabel.setTextColor("red");
+                    infoLabel.setValue(json["error"]);
+                }
+                else 
+                    if (json["status"] == "ok") {
+                        infoLabel.setTextColor("green");
+                        infoLabel.setValue("Epost med engagslink er sendt til inngitt epostadresse.");
+                    }
+                    else {
+                        infoLabel.setTextColor("red");
+                        infoLabel.setValue("Klarte ikke sende engangslink.");
+                    }
+            });
+            
+            req.send();
+            
+            
+        },
+        
+        
         newPassword: function(){
             var popup = new qx.ui.popup.Popup(new qx.ui.layout.Grow());
             
@@ -57,10 +84,10 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
             popup.add(box);
             
             
-            var gridLayout = new qx.ui.layout.Grid(2,3);
+            var gridLayout = new qx.ui.layout.Grid(2, 3);
             gridLayout.setSpacingY(10);
             box.setLayout(gridLayout);
-           
+            
             
             var label = new qx.ui.basic.Label();
             label.setRich(true);
@@ -69,7 +96,7 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
             box.add(label, {
                 row: 0,
                 column: 0,
-                colSpan:2
+                colSpan: 2
             });
             
             box.add(new qx.ui.basic.Label("Epostadresse:"), {
@@ -84,13 +111,28 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
                 column: 1
             });
             
+            var infoLabel = new qx.ui.basic.Label();
+            infoLabel.setAllowStretchY(true);
+            infoLabel.setRich(true);
+            
+            box.add(infoLabel, {
+                row: 2,
+                column: 0,
+                colSpan: 2
+            });
+            
             var sendButton = new qx.ui.form.Button("Send engangslink");
             box.add(sendButton, {
-                row: 2,
+                row: 3,
                 column: 0
             });
             
-            var cancelButton = new qx.ui.form.Button("Avbryt");
+            sendButton.addListener("execute", function(){
+                this.sendOneTimeLink(email, infoLabel);
+            }, this);
+            
+            
+            var cancelButton = new qx.ui.form.Button("Lukk");
             cancelButton.setAllowStretchX(false);
             
             cancelButton.addListener("execute", function(){
@@ -98,12 +140,13 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
             }, this);
             
             box.add(cancelButton, {
-                row: 2,
+                row: 3,
                 column: 1
             })
             
             popup.placeToWidget(this.__newUserButton);
             popup.show();
+            email.focus();
             
         },
         
