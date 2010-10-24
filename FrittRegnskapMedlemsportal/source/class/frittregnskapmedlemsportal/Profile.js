@@ -2,6 +2,117 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
     extend: qx.core.Object,
     
     members: {
+        changePassword: function(){
+            var popup = new qx.ui.popup.Popup(new qx.ui.layout.Grow());
+            
+            var box = new qx.ui.groupbox.GroupBox("Nytt passord");
+            popup.add(box);
+            
+            var gridLayout = new qx.ui.layout.Grid(2, 3);
+            gridLayout.setSpacingY(10);
+            box.setLayout(gridLayout);
+            
+            
+            box.add(new qx.ui.basic.Label("Passord"), {
+                column: 0,
+                row: 0
+            });
+            
+            box.add(new qx.ui.basic.Label("Gjennta passord"), {
+                column: 0,
+                row: 1
+            });
+            
+            var password1 = new qx.ui.form.PasswordField("");
+            password1.setRequired(true);
+            
+            box.add(password1, {
+                column: 1,
+                row: 0
+            });
+            
+            var password2 = new qx.ui.form.PasswordField("");
+            password2.setRequired(true);
+            
+            box.add(password2, {
+                column: 1,
+                row: 1
+            });
+            
+            var infoLabel = new qx.ui.basic.Label();
+            infoLabel.setAllowStretchY(true);
+            infoLabel.setRich(true);
+            
+            box.add(infoLabel, {
+                row: 2,
+                column: 0,
+                colSpan: 2
+            });
+            
+            
+            var updateButton = new qx.ui.form.Button("Bytt passord");
+            updateButton.addListener("execute", function(){
+            
+                if(password1.getValue().length < 7) {
+                    infoLabel.setTextColor("red");
+                    infoLabel.setValue("Passord m&aring; minst v&aelig;re 7 tegn.");
+                    return;
+                }
+            
+                if (password1.getValue() != password2.getValue()) {
+                    infoLabel.setTextColor("red");
+                    infoLabel.setValue("Inngitte passord er ikke like.");
+                    return;
+                }
+                
+                var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_authenticate.php?action=password", "POST", "application/json");
+                
+                req.setParameter("password", password1.getValue(), true);
+                
+                req.addListener("completed", function(data){
+                    var json = data.getContent();
+                    
+                    if (json["error"]) {
+                        infoLabel.setTextColor("red");
+                        infoLabel.setValue(json["error"]);
+                    }
+                    else 
+                        if (json["status"] == "ok") {
+                            infoLabel.setTextColor("green");
+                            infoLabel.setValue("Passord byttet.");
+                        }
+                        else {
+                            infoLabel.setTextColor("red");
+                            infoLabel.setValue("Klarte ikke bytte passord.");
+                        }
+                });
+                
+                req.send();
+                
+            }, this);
+            
+            box.add(updateButton, {
+                column: 0,
+                row: 3
+            })
+            
+            var cancelButton = new qx.ui.form.Button("Avbryt");
+            cancelButton.addListener("execute", function(){
+                popup.hide();
+            }, this);
+            box.add(cancelButton, {
+                column: 1,
+                row: 3
+            })
+            
+            
+            
+            popup.placeToWidget(this.__changePasswordButton);
+            popup.show();
+            password1.focus();
+            
+        },
+        
         save: function(){
         
             if (!this.__manager.validate()) {
@@ -149,7 +260,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         __win: null,
         __manager: null,
         __image: null,
-        
+        __changePasswordButton: null,
         createWindowProfile: function(desktop){
             // Create the Window
             this.__win = new qx.ui.window.Window("Min info", "frittregnskapmedlemsportal/system-users.png");
@@ -505,7 +616,9 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             var profilePicture = new frittregnskapmedlemsportal.ProfilePicture();
             buttoncontainer.add(profilePicture.createUploadButton(this.__image));
             
-            buttoncontainer.add(new qx.ui.form.Button("Endre passord"));
+            this.__changePasswordButton = new qx.ui.form.Button("Endre passord");
+            this.__changePasswordButton.addListener("execute", this.changePassword, this);
+            buttoncontainer.add(this.__changePasswordButton);
             
             profilePicture.addMouseOverFullImage(this.__image);
             
@@ -525,7 +638,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         destruct: function(){
             this._disposeObjects("__firstName", "__lastName", "__email", "__address", "__cellphone", "__phone", "__gender", "__genderModel", "__newsletter", "__birthdate", "__country", "__countryModel", //
  "__city", "__postnmb", "__showLastname", "__showFirstname", "__showGender", "__showAddress", "__showBirthdate", "__showCellphone", "__showPhone", "__showCountry", "__showCity", "__showPostnmb", //
- "__showEmail", "__showImage", "__win", "__manager", "__image");
+ "__showEmail", "__showImage", "__win", "__manager", "__image", "__changePasswordButton");
         }
         
     }
