@@ -2,6 +2,18 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
     extend: qx.core.Object,
     
     members: {
+        logout: function(){
+            var ok = confirm("Vil du logge ut?");
+            
+            if (ok) {
+                var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_authenticate.php?action=logout", "GET", "application/json");
+                req.send();
+                req.addListener("completed", function(data){
+                    window.location = ".";
+                });
+            }
+        },
+        
         changePassword: function(){
             var popup = new qx.ui.popup.Popup(new qx.ui.layout.Grow());
             
@@ -53,12 +65,12 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             var updateButton = new qx.ui.form.Button("Bytt passord");
             updateButton.addListener("execute", function(){
             
-                if(password1.getValue().length < 7) {
+                if (password1.getValue().length < 7) {
                     infoLabel.setTextColor("red");
                     infoLabel.setValue("Passord m&aring; minst v&aelig;re 7 tegn.");
                     return;
                 }
-            
+                
                 if (password1.getValue() != password2.getValue()) {
                     infoLabel.setTextColor("red");
                     infoLabel.setValue("Inngitte passord er ikke like.");
@@ -160,7 +172,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 var json = data.getContent();
                 
                 if (json["error"]) {
-                    window.alert("Error");
+                    owner.__win.setStatus("Klarte ikke oppdatere profil");
                 }
                 else 
                     if (json["result"] == "ok") {
@@ -261,10 +273,12 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         __manager: null,
         __image: null,
         __changePasswordButton: null,
+        __logoutButton: null,
         createWindowProfile: function(desktop){
             // Create the Window
             this.__win = new qx.ui.window.Window("Min info", "frittregnskapmedlemsportal/system-users.png");
             var win = this.__win;
+            
             win.setLayout(new qx.ui.layout.Grid());
             win.setShowStatusbar(true);
             win.setStatus("Henter data...");
@@ -620,6 +634,12 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             this.__changePasswordButton.addListener("execute", this.changePassword, this);
             buttoncontainer.add(this.__changePasswordButton);
             
+            
+            this.__logoutButton = new qx.ui.form.Button("Logg ut");
+            this.__logoutButton.addListener("execute", this.logout, this);
+            buttoncontainer.add(this.__logoutButton);
+            
+            
             profilePicture.addMouseOverFullImage(this.__image);
             
             win.add(container, {
@@ -638,7 +658,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         destruct: function(){
             this._disposeObjects("__firstName", "__lastName", "__email", "__address", "__cellphone", "__phone", "__gender", "__genderModel", "__newsletter", "__birthdate", "__country", "__countryModel", //
  "__city", "__postnmb", "__showLastname", "__showFirstname", "__showGender", "__showAddress", "__showBirthdate", "__showCellphone", "__showPhone", "__showCountry", "__showCity", "__showPostnmb", //
- "__showEmail", "__showImage", "__win", "__manager", "__image", "__changePasswordButton");
+ "__showEmail", "__showImage", "__win", "__manager", "__image", "__changePasswordButton", "__logoutButton");
         }
         
     }
