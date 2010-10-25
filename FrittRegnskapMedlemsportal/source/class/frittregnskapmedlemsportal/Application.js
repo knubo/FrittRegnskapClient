@@ -72,6 +72,7 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
                 
                 inlineIsle.add(desktop);
                 new frittregnskapmedlemsportal.Profile().createWindowProfile(desktop);
+                new frittregnskapmedlemsportal.Membersearch().setupView(desktop);
             }
             else {
 

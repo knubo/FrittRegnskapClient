@@ -96,7 +96,7 @@
 
 	<target name="hosted" depends="devmode" description="Run development mode (NOTE: the 'hosted' target is deprecated)" />
 
-	<target name="build" depends="gwtc" description="Build this project" />
+	<target name="build" depends="clean,login,gwtc" description="Build this project" />
 
 	<target name="clean" description="Cleans this project">
 		<delete dir="war/WEB-INF/classes" failonerror="false" />
