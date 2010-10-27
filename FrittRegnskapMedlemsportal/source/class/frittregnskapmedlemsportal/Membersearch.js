@@ -7,6 +7,18 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
         __userList: null,
         __eventKeyUpRunning: false,
         __searchTextField: null,
+        __desktop: null,
+        openProfileForUser: function(obj) {
+    		var win = new qx.ui.window.Window(obj.f+ " "+obj.l, "frittregnskapmedlemsportal/system-users.png");
+
+    		this.__desktop.add(win);
+            win.setShowMinimize(false);
+            win.setShowMaximize(false);
+            win.setAllowMaximize(false);
+
+            win.open();
+
+		},
         
         filterUsers: function(){
             this.__eventKeyUpRunning = false;
@@ -49,7 +61,7 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
                     if(includeImages) {
                     	var itemWithImage = new qx.ui.form.ListItem(user.f + " " + user.l, "/RegnskapServer/services/portal/portal_persons.php?action=image&personId="+user.p);
                     	itemWithImage.setIconPosition("right");
-
+                    	itemWithImage.setModel(user);
                     	itemWithImage.getChildControl("icon").setMaxWidth(50); 
                     	itemWithImage.getChildControl("icon").setMaxHeight(50); 
                     	itemWithImage.getChildControl("icon").setScale(true); 
@@ -57,7 +69,9 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
                     	
                     	this.__userList.add(itemWithImage);
                     } else {
-                    	this.__userList.add(new qx.ui.form.ListItem(user.f + " " + user.l));
+                    	var item = new qx.ui.form.ListItem(user.f + " " + user.l);
+                    	item.setModel(user);
+                    	this.__userList.add(item);
                     }
                     
                     if(i > 400) {
@@ -84,6 +98,7 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
             
         },
         setupView: function(desktop){
+        	this.__desktop = desktop;
             // Create the Window
             this.__win = new qx.ui.window.Window("Medlemmer", "frittregnskapmedlemsportal/system-search.png");
             var win = this.__win;
@@ -136,6 +151,10 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
             userList.setWidth(200);
             this.__userList = userList;
             
+            userList.addListener("dblclick", function(e) {
+            	var selection = userList.getSelection();
+            	me.openProfileForUser(selection[0].getModel());            	
+            });
             
             
             searchBox.add(userList, {
@@ -153,7 +172,7 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
             
         },
         destruct: function(){
-            this._disposeObjects("__win,", "__users", "__userList", "__eventKeyUpRunning", "__searchTextField");
+            this._disposeObjects("__win,", "__users", "__userList", "__eventKeyUpRunning", "__searchTextField","__desktop");
         }
         
     }
