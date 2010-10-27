@@ -8,14 +8,257 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
         __eventKeyUpRunning: false,
         __searchTextField: null,
         __desktop: null,
+        
+        createLabel: function(txt) {
+			var lbl = new qx.ui.basic.Label(txt);
+			lbl.setPadding(4);
+			lbl.set({
+		        decorator: "main"
+		      });
+
+			lbl.setAllowStretchX(true);
+			lbl.setSelectable(true);
+			return lbl;
+		}, 
+		
+		addImagePopup: function(image) {
+
+			var popup= new qx.ui.popup.Popup(new qx.ui.layout.Grow());
+			var imagePopup = new qx.ui.basic.Image();
+			imagePopup.addListener("mouseout", function() {
+				popup.hide();
+			}, this);
+
+			popup.add(imagePopup);
+			
+			imagePopup.setSource(image.getSource());
+			popup.placeToPoint(image.getContainerLocation());
+			popup.show();
+		},
+        
         openProfileForUser: function(obj) {
     		var win = new qx.ui.window.Window(obj.f+ " "+obj.l, "frittregnskapmedlemsportal/system-users.png");
+    		var layout = new qx.ui.layout.Grid();
+            layout.setColumnFlex(0, 1);
 
+    		win.setLayout(layout);
     		this.__desktop.add(win);
             win.setShowMinimize(false);
             win.setShowMaximize(false);
             win.setAllowMaximize(false);
+            win.setResizable(false);
+            
+            var personbox = new qx.ui.groupbox.GroupBox("Info");
+            personbox.setAllowStretchX(true);
 
+            var personLayout = new qx.ui.layout.Grid(10, 5);
+            	
+           	personLayout.setColumnFlex(1, 1);
+            personLayout.setColumnFlex(3, 1);
+            personLayout.setColumnFlex(5, 1);
+
+            personbox.setLayout(personLayout);
+            
+            personbox.add(new qx.ui.basic.Label("Fornavn"), {
+                row: 0,
+                column: 0
+            });
+
+            personbox.add(this.createLabel(obj.f), {
+            	row: 0,
+            	column: 1
+            });
+            
+            if(obj.l && obj.l.length > 0) {
+	            personbox.add(new qx.ui.basic.Label("Etternavn"), {
+	                row: 0,
+	                column: 2
+	            });
+	            personbox.add(this.createLabel(obj.l), {
+	            	row: 0,
+	            	column: 3
+	            });
+            }
+
+            if(obj.g && obj.g.length > 0) {
+	            personbox.add(new qx.ui.basic.Label("Kj\u00f8nn"), {
+	                row: 0,
+	                column: 4
+	            });
+	            
+	            var gender="";
+	            if(obj.g == "K") {
+	            	gender = "Kvinne";
+	            }
+	            if(obj.g == "M") {
+	            	gender = "Mann";
+	            }
+	            personbox.add(this.createLabel(gender), {
+	            	row: 0,
+	            	column: 5
+	            });
+	            
+            }
+            
+            if(obj.e && obj.e.length > 0) {
+	            personbox.add(new qx.ui.basic.Label("Epostadresse(r)"), {
+	                row: 1,
+	                column: 0
+	            });
+	            
+	            var emailLabel = this.createLabel(obj.e);
+	            personbox.add(emailLabel, {
+	            	row: 1,
+	            	column: 1,
+	            	colSpan:2
+	            });
+            }
+            
+            if(obj.q && obj.q.length > 0) {
+	            personbox.add(new qx.ui.basic.Label("Telefon"), {
+	                row: 1,
+	                column: 4
+	            });
+	            personbox.add(this.createLabel(obj.q), {
+	                row: 1,
+	                column: 5
+	            });
+            }
+            
+            if(obj.z && obj.z.length > 0) {
+            	personbox.add(new qx.ui.basic.Label("Adresse"), {
+            		row: 2,
+            		column: 0
+            	});
+            	personbox.add(this.createLabel(obj.z), {
+            		row: 2,
+            		column: 1,
+            		colSpan:2
+            	});
+            }
+            
+            if(obj.c && obj.c.length > 0) {
+	            personbox.add(new qx.ui.basic.Label("Mobil"), {
+	                row: 2,
+	                column: 4
+	            });
+	            personbox.add(this.createLabel(obj.c), {
+	                row: 2,
+	                column: 5
+	            });
+            }
+            
+            if(obj.v && obj.v.length > 0) {
+	            personbox.add(new qx.ui.basic.Label("Postnr"), {
+	                row: 3,
+	                column: 0
+	            });
+	            personbox.add(this.createLabel(obj.v), {
+	                row: 3,
+	                column: 1
+	            });
+            }
+            
+            if(obj.x && obj.x.length > 0) {
+	
+	            personbox.add(new qx.ui.basic.Label("Sted"), {
+	                row: 3,
+	                column: 2
+	            });
+	            personbox.add(this.createLabel(obj.x), {
+	                row: 3,
+	                column: 3
+	            });
+            }
+            
+            if(obj.b && obj.b.length > 0) {
+	            personbox.add(new qx.ui.basic.Label("Land"), {
+	                row: 3,
+	                column: 4
+	            });
+	            
+	            
+	            var country = "";
+	            
+	            if(obj.b == "NO") {
+	            	country = "Norge";
+	            }
+	            if(obj.b == "SE") {
+	            	country = "Sverige";
+	            }
+	            if(obj.b == "DK") {
+	            	country = "Danmark";
+	            }
+	            if(obj.b == "FI") {
+	            	country = "Finland";
+	            }
+	            if(obj.b == "??") {
+	            	country = "Annet";
+	            }
+	            personbox.add(this.createLabel(country), {
+	                row: 3,
+	                column: 5
+	            });
+            }
+            
+            
+            if(obj.n && obj.n.length > 0) {
+            	var birthdate = "";
+            	var bdObj = new qx.util.format.DateFormat("yyyy-MM-dd", "no").parse(obj.n);
+            	birthdate = new qx.util.format.DateFormat("dd.MM.yyyy", "no").format(bdObj);
+            	
+            	personbox.add(new qx.ui.basic.Label("F\u00f8dselsdato"), {
+            		row: 4,
+            		column: 0
+            	});
+            	personbox.add(this.createLabel(birthdate), {
+            		row: 4,
+            		column: 1
+            	});
+            }
+            
+            personbox.add(new qx.ui.basic.Label("F\u00f8rste medlems\u00E5r"), {
+            	row: 4,
+        		column: 2
+            });
+
+            personbox.add(this.createLabel(obj.y), {
+            	row: 4,
+            	column: 3
+            });
+            
+            
+            
+            win.add(personbox, {
+                row: 0,
+                column: 0
+            });
+            
+            if(obj.s) {
+	            var bildebox = new qx.ui.groupbox.GroupBox("Bilde");
+	            bildebox.setAllowStretchX(false);
+	            bildebox.setLayout(new qx.ui.layout.VBox(10));
+	            
+	            var image = new qx.ui.basic.Image();
+	            image.setScale(true);
+	            image.setMaxWidth(100);
+	            image.setMaxHeight(130);
+	            image.setSource("/RegnskapServer/services/portal/portal_persons.php?action=image&personId="+obj.p);
+	
+	            var me = this;
+	            image.addListener('mouseover', function() {
+	            	me.addImagePopup(image);
+	            });
+	            
+	            bildebox.add(image);
+	
+	            
+	            win.add(bildebox, {
+	                row: 0,
+	                column: 1
+	            });
+            }
+            
             win.open();
 
 		},
@@ -153,7 +396,13 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
             
             userList.addListener("dblclick", function(e) {
             	var selection = userList.getSelection();
-            	me.openProfileForUser(selection[0].getModel());            	
+            	try {
+            	me.openProfileForUser(selection[0].getModel());
+            	} catch(error) {
+            		if(console) {
+            			console.log("openProfile:"+error);
+            		}
+            	}
             });
             
             
