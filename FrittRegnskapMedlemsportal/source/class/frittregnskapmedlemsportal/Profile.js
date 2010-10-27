@@ -287,6 +287,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             win.setShowMaximize(false);
             win.setResizable(false);
             win.setAllowMaximize(false);
+            win.moveTo(40,40);
             
             desktop.add(win);
             win.open();
