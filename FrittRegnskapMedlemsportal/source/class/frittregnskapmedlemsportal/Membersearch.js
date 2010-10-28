@@ -259,9 +259,41 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
 	            });
             }
             
+            var buttoncontainer = new qx.ui.container.Composite(new qx.ui.layout.HBox(24));
+            buttoncontainer.setMarginTop(10);
+            buttoncontainer.setLayout(new qx.ui.layout.HBox(10));
+
+            var sendEmailButton = new qx.ui.form.Button("Send epost til "+obj.f);
+            sendEmailButton.addListener("execute", function() {
+            	this.sendEmail(obj.e);
+            }, this);
+            buttoncontainer.add(sendEmailButton);
+
+            
+            win.add(buttoncontainer, { 
+            	row: 1,
+                column: 0,
+                colSpan:2
+            });
+            
             win.open();
 
 		},
+		sendEmail: function(email) {
+			if(email && email.length > 0) {
+				var emails = email.split(",");
+				
+				if(emails.length > 0) {
+					email = emails[0];
+				}
+				
+				var mailto_link = 'mailto:'+email;
+
+				win = window.open(mailto_link,'emailWindow');
+				win.close();
+				return;
+			}
+		}, 
         
         filterUsers: function(){
             this.__eventKeyUpRunning = false;
