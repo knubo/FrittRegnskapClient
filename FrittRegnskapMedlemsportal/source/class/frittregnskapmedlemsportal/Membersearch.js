@@ -406,7 +406,7 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch",{
 					this.__eventKeyUpRunning = true;
 					qx.event.Timer.once(function(e) {
 						this.filterUsers();
-					}, window, 1000);
+					}, this, 1000);
 
 				}
 

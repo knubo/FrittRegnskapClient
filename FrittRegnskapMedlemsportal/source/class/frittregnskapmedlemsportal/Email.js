@@ -9,7 +9,31 @@ qx.Class.define("frittregnskapmedlemsportal.Email", {
 			sendEmail : function(personId) {
 				this.__sendButton.setEnabled(false);
 
-				this.__infoLabel.setValue("Eposten er sendt.");
+	            var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_email.php?action=email", "POST", "application/json");
+	            
+	            req.setParameter("body", this.__textarea.getValue(), true);
+	            req.setParameter("personId", personId, true);
+	            
+	            req.addListener("failed", function(t) {
+                	this.__infoLabel.setValue("Eposten ble ikke sendt. Pr&oslash;v igjen senere.");
+    				this.__sendButton.setEnabled(true);
+	            });
+	            
+	            
+	            req.addListener("completed", function(data){
+	                var json = data.getContent();
+	                
+	                if(json.status == 1) {
+	                	this.__infoLabel.setValue("Eposten er sendt.");
+	                } else {
+	                	this.__infoLabel.setValue("Eposten ble ikke vellykket sendt. Trolig har vedkommende en ikke gyldig epostadresse.");
+	                }
+	                
+	            },this);
+	            
+	            req.send();
+
+				
 
 			},
 			setupEmailWindow : function(desktop, personId, firstname) {
@@ -68,6 +92,7 @@ qx.Class.define("frittregnskapmedlemsportal.Email", {
 
 				this.__infoLabel = new qx.ui.basic.Label("");
 				this.__infoLabel.setAllowStretchX(true);
+				this.__infoLabel.setRich(true);
 				buttoncontainer.add(this.__infoLabel);
 
 				
