@@ -166,19 +166,17 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_persons.php?action=save", "POST", "application/json");
             req.setParameter("data", qx.lang.Json.stringify(data), true);
             
-            var owner = this;
-            
             req.addListener("completed", function(data){
                 var json = data.getContent();
                 
                 if (json["error"]) {
-                    owner.__win.setStatus("Klarte ikke oppdatere profil");
+                    this.__win.setStatus("Klarte ikke oppdatere profil");
                 }
                 else 
                     if (json["result"] == "ok") {
-                        owner.__win.setStatus("Oppdatert.");
+                        this.__win.setStatus("Oppdatert.");
                     }
-            });
+            },this);
             
             req.send();
             
@@ -230,15 +228,14 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         loadProfileData: function(){
             var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_persons.php?action=me", "GET", "application/json");
             
-            var owner = this;
             
             req.addListener("completed", function(data){
                 var json = data.getContent();
                 
-                owner.fillProfile(json);
-                owner.fillShareProfile(json);
-                owner.__win.setStatus("");
-            });
+                this.fillProfile(json);
+                this.fillShareProfile(json);
+                this.__win.setStatus("");
+            },this);
             
             req.send();
         },

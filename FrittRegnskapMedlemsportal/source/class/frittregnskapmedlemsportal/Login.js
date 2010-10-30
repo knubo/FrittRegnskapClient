@@ -32,20 +32,19 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
             req.setParameter("user", userField.value, true);
             req.setParameter("password", passwordField.value, true);
             
-            var owner = this;
             
             req.addListener("completed", function(data){
                 var json = data.getContent();
                 
                 if (json["error"]) {
-                    owner.__errorLabel.setValue("Feil brukernavn(epost) eller passord.");
+                    this.__errorLabel.setValue("Feil brukernavn(epost) eller passord.");
                 }
                 else 
                     if (json["result"] == "ok") {
                     
                         document.getElementById("loginform").submit();
                     }
-            });
+            },this);
             
             req.send();
         },
@@ -206,7 +205,6 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
             var passwordField = document.getElementById("passwordfield");
             
             var me = this;
-            
             
             var catchEnter = function(e){
                 var charCode;
