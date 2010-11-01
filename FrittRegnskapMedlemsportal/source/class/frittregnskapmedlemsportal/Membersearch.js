@@ -458,6 +458,12 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
             buttoncontainer.setLayout(new qx.ui.layout.HBox(10));
             
             var openGalleryButton = new qx.ui.form.Button("Vis alle profilbilder");
+            openGalleryButton.addListener("execute", function() {
+            	if(this.__users) {
+            		new frittregnskapmedlemsportal.ProfileGallery().showProfileGallery(desktop, this.__users);
+            	} else {
+            	}
+            }, this);
             buttoncontainer.add(openGalleryButton);
             
             searchBox.add(buttoncontainer, {
