@@ -271,6 +271,11 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         __image: null,
         __changePasswordButton: null,
         __logoutButton: null,
+        __homepage : null,
+        __twitter : null,
+        __facebook : null,
+        __linkedin : null,
+        
         createWindowProfile: function(desktop){
             // Create the Window
             this.__win = new qx.ui.window.Window("Min info", "frittregnskapmedlemsportal/system-users.png");
@@ -491,6 +496,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             
             this.__image = new qx.ui.basic.Image();
             this.__image.setScale(true);
+            this.__image.setWidth(100);
             this.__image.setMaxWidth(100);
             this.__image.setMaxHeight(130);
             bildebox.add(this.__image);
@@ -573,32 +579,45 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 row: 3,
                 column: 2
             });
+
+            var sitebox = new qx.ui.groupbox.GroupBox("Mine eksterne lenker (vises alltid for andre)");
+            sitebox.setAllowStretchX(true);
             
-            var sitebox = new qx.ui.groupbox.GroupBox("Eksterne nettsteder");
-            sitebox.setLayout(new qx.ui.layout.Grid(10, 5));
+            var gridSitelayout = new qx.ui.layout.Grid(4, 2);
+            gridSitelayout.setColumnFlex(1, 1);
+            gridSitelayout.setColumnFlex(3, 1);
+            sitebox.setLayout(gridSitelayout);
             sitebox.add(new qx.ui.basic.Label("Hjemmeside"), {
                 row: 0,
                 column: 0
             });
-            sitebox.add(new qx.ui.form.TextField(""), {
+            this.__homepage = new qx.ui.form.TextField("");
+            this.__homepage.setAllowStretchX(true);
+            sitebox.add(this.__homepage, {
                 row: 0,
                 column: 1
             });
             
-            sitebox.add(new qx.ui.basic.Label("Twitter ID"), {
+            sitebox.add(new qx.ui.basic.Label("Twitter"), {
                 row: 1,
                 column: 0
             });
-            sitebox.add(new qx.ui.form.TextField(""), {
+            
+            this.__twitter = new qx.ui.form.TextField(""); 
+            this.__twitter.setAllowStretchX(true);
+            sitebox.add(this.__twitter, {
                 row: 1,
                 column: 1
             });
             
-            sitebox.add(new qx.ui.basic.Label("Facebook ID"), {
+            sitebox.add(new qx.ui.basic.Label("Facebook"), {
                 row: 0,
                 column: 2
             });
-            sitebox.add(new qx.ui.form.TextField(""), {
+
+            this.__facebook = new qx.ui.form.TextField("");
+            this.__facebook.setAllowStretchX(true);
+            sitebox.add(this.__facebook, {
                 row: 0,
                 column: 3
             });
@@ -607,12 +626,17 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 row: 1,
                 column: 2
             });
-            sitebox.add(new qx.ui.form.TextField(""), {
+            
+            this.__linkedin = new qx.ui.form.TextField("");
+            this.__linkedin.setAllowStretchX(true);
+            
+            sitebox.add(this.__linkedin, {
                 row: 1,
                 column: 3
             });
             
             var container = new qx.ui.container.Composite(new qx.ui.layout.HBox(24));
+            container.setAllowStretchX(true);
             container.add(sharingbox);
             container.add(sitebox);
             
@@ -656,7 +680,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         destruct: function(){
             this._disposeObjects("__firstName", "__lastName", "__email", "__address", "__cellphone", "__phone", "__gender", "__genderModel", "__newsletter", "__birthdate", "__country", "__countryModel", //
  "__city", "__postnmb", "__showLastname", "__showFirstname", "__showGender", "__showAddress", "__showBirthdate", "__showCellphone", "__showPhone", "__showCountry", "__showCity", "__showPostnmb", //
- "__showEmail", "__showImage", "__win", "__manager", "__image", "__changePasswordButton", "__logoutButton");
+ "__showEmail", "__showImage", "__win", "__manager", "__image", "__changePasswordButton", "__logoutButton", "__homepage", "__linkedin", "__facebook", "__twitter");
         }
         
     }
