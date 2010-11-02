@@ -160,7 +160,11 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 "show_city": me.__showCity.getValue(),
                 "show_postnmb": me.__showPostnmb.getValue(),
                 "show_email": me.__showEmail.getValue(),
-                "show_image": me.__showImage.getValue()
+                "show_image": me.__showImage.getValue(),
+                "homepage": me.__homepage.getValue(),
+                "linkedin": me.__linkedin.getValue(),
+                "facebook": me.__facebook.getValue(),
+                "twitter": me.__twitter.getValue()
             };
             
             var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_persons.php?action=save", "POST", "application/json");
@@ -176,7 +180,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                     if (json["result"] == "ok") {
                         this.__win.setStatus("Oppdatert.");
                     }
-            },this);
+            }, this);
             
             req.send();
             
@@ -191,6 +195,11 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             this.__postnmb.setValue(json.postnmb);
             this.__city.setValue(json.city);
             this.__birthdate.setValue(this.fixBirthdate(json.birthdate));
+            
+            this.__facebook.setValue(json.facebook ? json.facebook : "");
+            this.__twitter.setValue(json.twitter ? json.twitter : "");
+            this.__linkedin.setValue(json.linkedin ? json.linkedin : "");
+            this.__homepage.setValue(json.homepage ? json.homepage : "");
             
             for (var i = 0; i < this.__genderModel.getLength(); i++) {
                 if (this.__genderModel.getItem(i).getId() == json.gender) {
@@ -232,10 +241,15 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             req.addListener("completed", function(data){
                 var json = data.getContent();
                 
-                this.fillProfile(json);
-                this.fillShareProfile(json);
-                this.__win.setStatus("");
-            },this);
+                try {
+                    this.fillProfile(json);
+                    this.fillShareProfile(json);
+                    this.__win.setStatus("");
+                } 
+                catch (error) {
+                    console.log(error);
+                }
+            }, this);
             
             req.send();
         },
@@ -271,10 +285,10 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         __image: null,
         __changePasswordButton: null,
         __logoutButton: null,
-        __homepage : null,
-        __twitter : null,
-        __facebook : null,
-        __linkedin : null,
+        __homepage: null,
+        __twitter: null,
+        __facebook: null,
+        __linkedin: null,
         
         createWindowProfile: function(desktop){
             // Create the Window
@@ -289,7 +303,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             win.setShowMaximize(false);
             win.setResizable(false);
             win.setAllowMaximize(false);
-            win.moveTo(40,40);
+            win.moveTo(40, 40);
             
             desktop.add(win);
             win.open();
@@ -579,7 +593,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 row: 3,
                 column: 2
             });
-
+            
             var sitebox = new qx.ui.groupbox.GroupBox("Mine eksterne lenker (vises alltid for andre)");
             sitebox.setAllowStretchX(true);
             sitebox.setAllowGrowX(true);
@@ -606,7 +620,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 column: 0
             });
             
-            this.__twitter = new qx.ui.form.TextField(""); 
+            this.__twitter = new qx.ui.form.TextField("");
             this.__twitter.setAllowStretchX(true);
             this.__twitter.setAllowGrowX(true);
             sitebox.add(this.__twitter, {
@@ -618,7 +632,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 row: 0,
                 column: 2
             });
-
+            
             this.__facebook = new qx.ui.form.TextField("");
             this.__facebook.setAllowStretchX(true);
             this.__facebook.setAllowGrowX(true);
