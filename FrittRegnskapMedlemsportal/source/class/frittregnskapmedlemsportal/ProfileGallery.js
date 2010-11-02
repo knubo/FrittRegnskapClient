@@ -3,6 +3,7 @@ qx.Class.define("frittregnskapmedlemsportal.ProfileGallery", {
 
 	members : {
 		__index : 0,
+		__desktop : 0,
 		__imagesAndLabels : 0,
 		__users : 0,
 		__nextButton : 0,
@@ -24,6 +25,19 @@ qx.Class.define("frittregnskapmedlemsportal.ProfileGallery", {
 					image.setScale(true);
 					image.setMaxWidth(100);
 					image.setMaxHeight(130);
+					
+					image.imageIndex = count;
+					var me = this;
+					
+					image.addListener("dblclick", function() {
+						var index = me.__imagesAndLabels["slot" + this.imageIndex + "index"];
+						
+						console.log("Index is:"+index+" for count:"+count);
+						
+						if(index >= 0) {
+							new frittregnskapmedlemsportal.Membersearch().openProfileForUser(me.__users[index], me.__desktop);
+						}
+					}, image);
 
 					this.__imagesAndLabels["slot" + count + "groupbox"] = groupBox;
 					this.__imagesAndLabels["slot" + count + "image"] = image;
@@ -40,11 +54,7 @@ qx.Class.define("frittregnskapmedlemsportal.ProfileGallery", {
 		loadImages : function() {
 			var count = 0;
 
-			if(console) {
-				console.log("Index now is:"+this.__index);
-			}
-			
-			this.__previousButton.setEnabled( (this.__index - 24 >= 0) ? true : false );
+			this.__previousButton.setEnabled((this.__index - 24 >= 0) ? true : false);
 
 			while (count < 24 && this.__index < this.__users.length) {
 				var user = this.__users[this.__index];
@@ -54,14 +64,13 @@ qx.Class.define("frittregnskapmedlemsportal.ProfileGallery", {
 							.setSource("/RegnskapServer/services/portal/portal_persons.php?action=image&personId=" + user.p);
 
 					var name = user.f + " " + user.l;
-					
+
 					this.__imagesAndLabels["slot" + count + "image"].setToolTipText(name);
-					
+					this.__imagesAndLabels["slot" + count + "index"] = this.__index;
 					if (name.length > 20) {
-						name = user.f+ " ...";
+						name = user.f + " ...";
 					}
-					
-					
+
 					this.__imagesAndLabels["slot" + count + "groupbox"].setLegend(name);
 
 					count++;
@@ -74,18 +83,16 @@ qx.Class.define("frittregnskapmedlemsportal.ProfileGallery", {
 					this.__imagesAndLabels["slot" + i + "image"].setSource("frittregnskapmedlemsportal/camera-photo.png");
 					this.__imagesAndLabels["slot" + i + "image"].setToolTipText("");
 					this.__imagesAndLabels["slot" + i + "groupbox"].setLegend(" ");
-					
-					if(console) {
-						console.log("Defaulting:"+i);
-					}
+					this.__imagesAndLabels["slot" + i + "index"] = -1;
+
 				}
-				console.log("Done");
 			}
 
 			this.__nextButton.setEnabled((this.__index < this.__users.length) ? true : false);
 		},
 		showProfileGallery : function(desktop, users) {
 			this.__win = new qx.ui.window.Window("Profilbilder", "frittregnskapmedlemsportal/camera-photo.png");
+			this.__desktop = desktop;
 			this.__users = users;
 			var win = this.__win;
 			win.setLayout(new qx.ui.layout.Grid());
@@ -103,17 +110,17 @@ qx.Class.define("frittregnskapmedlemsportal.ProfileGallery", {
 
 			this.__previousButton = new qx.ui.form.Button("Forrige");
 			this.__previousButton.addListener("execute", function() {
-				
+
 				var count = 0;
-				while(count < (24 * 2) && this.__index > 0) {
+				while (count < (24 * 2) && this.__index > 0) {
 					var user = this.__users[this.__index];
-					
-					if(user && (user.s == 1)) {
+
+					if (user && (user.s == 1)) {
 						count++;
 					}
 					this.__index--;
 				}
-					
+
 				this.loadImages();
 			}, this);
 

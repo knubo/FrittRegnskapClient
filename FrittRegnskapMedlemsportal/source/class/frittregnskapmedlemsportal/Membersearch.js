@@ -36,13 +36,18 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
             popup.show();
         },
         
-        openProfileForUser: function(obj){
+        openProfileForUser: function(obj, altDesktop) {
             var win = new qx.ui.window.Window(obj.f + " " + obj.l, "frittregnskapmedlemsportal/system-users.png");
             var layout = new qx.ui.layout.Grid();
             layout.setColumnFlex(0, 1);
             
             win.setLayout(layout);
-            this.__desktop.add(win);
+            
+            if(altDesktop) {
+            	altDesktop.add(win);
+            } else {
+            	this.__desktop.add(win);
+            }
             win.setShowMinimize(false);
             win.setShowMaximize(false);
             win.setAllowMaximize(false);
