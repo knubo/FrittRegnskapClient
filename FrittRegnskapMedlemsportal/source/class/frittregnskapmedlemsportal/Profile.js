@@ -582,6 +582,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
 
             var sitebox = new qx.ui.groupbox.GroupBox("Mine eksterne lenker (vises alltid for andre)");
             sitebox.setAllowStretchX(true);
+            sitebox.setAllowGrowX(true);
             
             var gridSitelayout = new qx.ui.layout.Grid(4, 2);
             gridSitelayout.setColumnFlex(1, 1);
@@ -593,6 +594,8 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             });
             this.__homepage = new qx.ui.form.TextField("");
             this.__homepage.setAllowStretchX(true);
+            this.__homepage.setAllowGrowX(true);
+            this.__homepage.setWidth(130);
             sitebox.add(this.__homepage, {
                 row: 0,
                 column: 1
@@ -605,6 +608,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             
             this.__twitter = new qx.ui.form.TextField(""); 
             this.__twitter.setAllowStretchX(true);
+            this.__twitter.setAllowGrowX(true);
             sitebox.add(this.__twitter, {
                 row: 1,
                 column: 1
@@ -617,6 +621,8 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
 
             this.__facebook = new qx.ui.form.TextField("");
             this.__facebook.setAllowStretchX(true);
+            this.__facebook.setAllowGrowX(true);
+            this.__facebook.setWidth(130);
             sitebox.add(this.__facebook, {
                 row: 0,
                 column: 3
@@ -629,6 +635,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             
             this.__linkedin = new qx.ui.form.TextField("");
             this.__linkedin.setAllowStretchX(true);
+            this.__linkedin.setAllowGrowX(true);
             
             sitebox.add(this.__linkedin, {
                 row: 1,
@@ -636,7 +643,9 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             });
             
             var container = new qx.ui.container.Composite(new qx.ui.layout.HBox(24));
+            container.setWidth("100%");
             container.setAllowStretchX(true);
+            container.setAllowGrowX(true);
             container.add(sharingbox);
             container.add(sitebox);
             
