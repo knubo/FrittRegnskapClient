@@ -95,7 +95,12 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                         }
                         else {
                             infoLabel.setTextColor("red");
-                            infoLabel.setValue("Klarte ikke bytte passord.");
+                            
+                            if(json["error"]) {
+                                infoLabel.setValue(json["error"]);
+                            } else {
+                                infoLabel.setValue("Klarte ikke bytte passord.");
+                            }
                         }
                 });
                 
@@ -174,11 +179,14 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 var json = data.getContent();
                 
                 if (json["error"]) {
-                    this.__win.setStatus("Klarte ikke oppdatere profil");
+                    this.__win.setStatus(json["error"]);
                 }
                 else 
                     if (json["result"] == "ok") {
                         this.__win.setStatus("Oppdatert.");
+                    } else {
+                        this.__win.setStatus("Klarte ikke oppdatere profil");
+                        
                     }
             }, this);
             

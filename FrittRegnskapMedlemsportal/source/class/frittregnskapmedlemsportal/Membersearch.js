@@ -15,7 +15,7 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
             lbl.set({
                 decorator: "main"
             });
-            
+            lbl.setRich(true);
             lbl.setAllowStretchX(true);
             lbl.setSelectable(true);
             return lbl;
@@ -115,7 +115,7 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
                 personbox.add(emailLabel, {
                     row: 1,
                     column: 1,
-                    colSpan: 2
+                    colSpan: 3
                 });
             }
             
@@ -138,7 +138,7 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
                 personbox.add(this.createLabel(obj.z), {
                     row: 2,
                     column: 1,
-                    colSpan: 2
+                    colSpan: 3
                 });
             }
             
@@ -224,11 +224,64 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
                 row: 4,
                 column: 2
             });
-            
+
             personbox.add(this.createLabel(obj.y), {
                 row: 4,
                 column: 3
             });
+
+            var linkfunc = function(l) {
+            	return l ? ("<a href=\"http://"+l+">"+l+"</a>") : ""
+            };
+
+            personbox.add(new qx.ui.basic.Label("Hjemmeside"), {
+                row: 5,
+                column: 0
+            });
+            
+            
+            personbox.add(this.createLabel(linkfunc(obj.h)), {
+                row: 5,
+                column: 1,
+                colSpan:2
+            });
+
+            personbox.add(new qx.ui.basic.Label("LinkedIn"), {
+            	row: 5,
+            	column: 3
+            });
+            
+            
+            personbox.add(this.createLabel(linkfunc(obj.k)), {
+            	row: 5,
+            	column: 4,
+            	colSpan:2
+            });
+
+            personbox.add(new qx.ui.basic.Label("Facebook"), {
+            	row: 6,
+            	column: 0
+            });
+            
+            
+            personbox.add(this.createLabel(linkfunc(obj.j)), {
+            	row: 6,
+            	column: 1,
+            	colSpan:2
+            });
+
+            personbox.add(new qx.ui.basic.Label("Twitter"), {
+            	row: 6,
+            	column: 3
+            });
+            
+            
+            personbox.add(this.createLabel(linkfunc(obj.j)), {
+            	row: 6,
+            	column: 4,
+            	colSpan:2
+            });
+
             
             win.add(personbox, {
                 row: 0,
