@@ -1618,6 +1618,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String kredit_post();
 
   /**
+   * Translated "Siste innlogging".
+   * 
+   * @return translated "Siste innlogging"
+   */
+  @DefaultStringValue("Siste innlogging")
+  @Key("last_login")
+  String last_login();
+
+  /**
    * Translated "Etternavn".
    * 
    * @return translated "Etternavn"
@@ -2059,6 +2068,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menu_people();
 
   /**
+   * Translated "Portal".
+   * 
+   * @return translated "Portal"
+   */
+  @DefaultStringValue("Portal")
+  @Key("menu_portal")
+  String menu_portal();
+
+  /**
    * Translated "Registrer".
    * 
    * @return translated "Registrer"
@@ -2336,6 +2354,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Priser for medlemskap")
   @Key("menuitem_membership_prices")
   String menuitem_membership_prices();
+
+  /**
+   * Translated "Portalmedlemmer".
+   * 
+   * @return translated "Portalmedlemmer"
+   */
+  @DefaultStringValue("Portalmedlemmer")
+  @Key("menuitem_portal_members")
+  String menuitem_portal_members();
+
+  /**
+   * Translated "Profilgalleri".
+   * 
+   * @return translated "Profilgalleri"
+   */
+  @DefaultStringValue("Profilgalleri")
+  @Key("menuitem_portal_profilegallery")
+  String menuitem_portal_profilegallery();
+
+  /**
+   * Translated "Innstillinger".
+   * 
+   * @return translated "Innstillinger"
+   */
+  @DefaultStringValue("Innstillinger")
+  @Key("menuitem_portal_settings")
+  String menuitem_portal_settings();
 
   /**
    * Translated "Prosjekter".
@@ -2930,6 +2975,96 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Bruk farge")
   @Key("pick_color")
   String pick_color();
+
+  /**
+   * Translated "Medlemsportal".
+   * 
+   * @return translated "Medlemsportal"
+   */
+  @DefaultStringValue("Medlemsportal")
+  @Key("portal")
+  String portal();
+
+  /**
+   * Translated "Aktiver portal".
+   * 
+   * @return translated "Aktiver portal"
+   */
+  @DefaultStringValue("Aktiver portal")
+  @Key("portal_action_activate")
+  String portal_action_activate();
+
+  /**
+   * Translated "Sperr portal".
+   * 
+   * @return translated "Sperr portal"
+   */
+  @DefaultStringValue("Sperr portal")
+  @Key("portal_action_decativate")
+  String portal_action_decativate();
+
+  /**
+   * Translated "Be om aktivering av portal".
+   * 
+   * @return translated "Be om aktivering av portal"
+   */
+  @DefaultStringValue("Be om aktivering av portal")
+  @Key("portal_action_request")
+  String portal_action_request();
+
+  /**
+   * Translated "Portalen er aktiv".
+   * 
+   * @return translated "Portalen er aktiv"
+   */
+  @DefaultStringValue("Portalen er aktiv")
+  @Key("portal_active")
+  String portal_active();
+
+  /**
+   * Translated "Portalen er sperret grunnet manglende betaling".
+   * 
+   * @return translated "Portalen er sperret grunnet manglende betaling"
+   */
+  @DefaultStringValue("Portalen er sperret grunnet manglende betaling")
+  @Key("portal_blocked")
+  String portal_blocked();
+
+  /**
+   * Translated "Portalen er deaktivert".
+   * 
+   * @return translated "Portalen er deaktivert"
+   */
+  @DefaultStringValue("Portalen er deaktivert")
+  @Key("portal_deactive")
+  String portal_deactive();
+
+  /**
+   * Translated "Registrerte personer i portalen".
+   * 
+   * @return translated "Registrerte personer i portalen"
+   */
+  @DefaultStringValue("Registrerte personer i portalen")
+  @Key("portal_members")
+  String portal_members();
+
+  /**
+   * Translated "Søknad for portal behandles".
+   * 
+   * @return translated "Søknad for portal behandles"
+   */
+  @DefaultStringValue("Søknad for portal behandles")
+  @Key("portal_requested")
+  String portal_requested();
+
+  /**
+   * Translated "Tittel for portalen".
+   * 
+   * @return translated "Tittel for portalen"
+   */
+  @DefaultStringValue("Tittel for portalen")
+  @Key("portal_title")
+  String portal_title();
 
   /**
    * Translated "Post".

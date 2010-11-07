@@ -37,6 +37,8 @@ import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
+import no.knubo.accounting.client.views.portal.PortalMemberlist;
+import no.knubo.accounting.client.views.portal.PortalSettings;
 import no.knubo.accounting.client.views.registers.AccountTrackEditView;
 import no.knubo.accounting.client.views.registers.EmailSettingsView;
 import no.knubo.accounting.client.views.registers.MembershipPriceEditView;
@@ -136,6 +138,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar reportsMenu = addTopMenu(topMenu, elements.menu_reports());
         MenuBar settingsMenu = addTopMenu(topMenu, elements.menu_settings());
         MenuBar importExportMenu = addTopMenu(topMenu, elements.menu_export_import());
+        MenuBar portalMenu = addTopMenu(topMenu, elements.menu_export_import());
 
         MenuBar adminMenu = null;
         if (Window.Location.getHostName().startsWith("master.")) {
@@ -199,6 +202,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
         addMenuItem(importExportMenu, elements.menuitem_export_accounting(), WidgetIds.EXPORT_ACCOUNTING);
 
+        addMenuItem(portalMenu, elements.menuitem_portal_settings(), WidgetIds.PORTAL_SETTINGS);
+        addMenuItem(portalMenu, elements.menuitem_portal_members(), WidgetIds.PORTAL_MEMBERLIST);
+        addMenuItem(portalMenu, elements.menuitem_portal_profilegallery(), WidgetIds.PORTAL_PROFILE_GALLERY);
+        
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_calculator(), WidgetIds.CALCULATOR);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
@@ -466,6 +473,16 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case CALCULATOR:
                 createCalculatorPopup();
                 return;
+            case PORTAL_MEMBERLIST:
+                widget = PortalMemberlist.getInstance(constants, messages, elements);
+                ((PortalMemberlist)widget).init();
+                break;
+            case PORTAL_PROFILE_GALLERY:
+                break;
+            case PORTAL_SETTINGS:
+                widget = PortalSettings.getInstance(constants, messages, elements);
+                ((PortalSettings)widget).init();
+                break;
 
             }
 
