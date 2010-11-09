@@ -20,6 +20,38 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
      *****************************************************************************
      */
     members: {
+    
+        checkPortalStatus: function(){
+            var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_authenticate.php?action=status", "GET", "application/json");
+            req.setAsynchronous(false);
+            
+            var loginNeeded = false;
+            
+            req.addListener("completed", function(data){
+                var json = data.getContent();
+                
+                if (json["portal_status"] == 0) {
+                    document.getElementById("allLoginStuff").style.display = "none";
+                    document.getElementById("applicationStuff").style.display = "block";
+                    document.getElementById("isle").innerHTML = "Portalen for dette domenet er ikke aktivert"; 
+                }
+                else 
+                    if (json["portal_status"] == 2) {
+                        document.getElementById("applicationStuff").style.display = "block";
+                        document.getElementById("allLoginStuff").style.display = "none";
+                        document.getElementById("isle").innerHTML = "Portalen er stengt grunnet manglende betaling."; 
+                    }
+                    else 
+                        if (json["portal_status"] == 1) {
+                            document.getElementById("maintitle1").innerHTML = json["portal_title"]; 
+                            document.getElementById("maintitle2").innerHTML = json["portal_title"]; 
+                            this.setupApplication();
+                        }
+            }, this);
+            
+            req.send();
+        },
+        
         /**
          * This method contains the initial application code and gets called
          * during startup of the application
@@ -48,12 +80,15 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
              USE AN EXISTING NODE TO ADD WIDGETS INTO THE PAGE LAYOUT FLOW
              -------------------------------------------------------------------------
              */
+            this.checkPortalStatus();
+        },
+        setupApplication: function(){
             var login = new frittregnskapmedlemsportal.Login();
             
             if (!login.setupLoginIfNeeded()) {
                 document.getElementById("allLoginStuff").style.display = "none";
                 document.getElementById("applicationStuff").style.display = "block";
-
+                
                 // Hint: the second and the third parameter control if the dimensions
                 // of the element should be respected or not.
                 var htmlElement = document.getElementById("isle");
@@ -75,7 +110,7 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
                 new frittregnskapmedlemsportal.Profile().createWindowProfile(desktop);
             }
             else {
-
+            
                 login.setupLoginWindow();
             }
             
