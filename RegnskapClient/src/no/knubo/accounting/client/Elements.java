@@ -2950,11 +2950,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String person();
 
   /**
-   * Translated "Avbryt\u0009".
+   * Translated "Avbryt".
    * 
-   * @return translated "Avbryt\u0009"
+   * @return translated "Avbryt"
    */
-  @DefaultStringValue("Avbryt\u0009")
+  @DefaultStringValue("Avbryt")
   @Key("person_pick_close")
   String person_pick_close();
 
@@ -3040,6 +3040,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String portal_deactive();
 
   /**
+   * Translated "Facebook".
+   * 
+   * @return translated "Facebook"
+   */
+  @DefaultStringValue("Facebook")
+  @Key("portal_facebook")
+  String portal_facebook();
+
+  /**
+   * Translated "Hjemmeside".
+   * 
+   * @return translated "Hjemmeside"
+   */
+  @DefaultStringValue("Hjemmeside")
+  @Key("portal_homepage")
+  String portal_homepage();
+
+  /**
+   * Translated "Linkedin".
+   * 
+   * @return translated "Linkedin"
+   */
+  @DefaultStringValue("Linkedin")
+  @Key("portal_linkedin")
+  String portal_linkedin();
+
+  /**
    * Translated "Registrerte personer i portalen".
    * 
    * @return translated "Registrerte personer i portalen"
@@ -3058,6 +3085,159 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String portal_requested();
 
   /**
+   * Translated "Viser adresse".
+   * 
+   * @return translated "Viser adresse"
+   */
+  @DefaultStringValue("Viser adresse")
+  @Key("portal_show_address")
+  String portal_show_address();
+
+  /**
+   * Translated "Viser fødselsdato".
+   * 
+   * @return translated "Viser fødselsdato"
+   */
+  @DefaultStringValue("Viser fødselsdato")
+  @Key("portal_show_birthdate")
+  String portal_show_birthdate();
+
+  /**
+   * Translated "Viser mobiltelefon".
+   * 
+   * @return translated "Viser mobiltelefon"
+   */
+  @DefaultStringValue("Viser mobiltelefon")
+  @Key("portal_show_cellphone")
+  String portal_show_cellphone();
+
+  /**
+   * Translated "Viser by".
+   * 
+   * @return translated "Viser by"
+   */
+  @DefaultStringValue("Viser by")
+  @Key("portal_show_city")
+  String portal_show_city();
+
+  /**
+   * Translated "Viser land".
+   * 
+   * @return translated "Viser land"
+   */
+  @DefaultStringValue("Viser land")
+  @Key("portal_show_country")
+  String portal_show_country();
+
+  /**
+   * Translated "Viser epost".
+   * 
+   * @return translated "Viser epost"
+   */
+  @DefaultStringValue("Viser epost")
+  @Key("portal_show_email")
+  String portal_show_email();
+
+  /**
+   * Translated "Viser etternavn".
+   * 
+   * @return translated "Viser etternavn"
+   */
+  @DefaultStringValue("Viser etternavn")
+  @Key("portal_show_firstname")
+  String portal_show_firstname();
+
+  /**
+   * Translated "Viser kjønn".
+   * 
+   * @return translated "Viser kjønn"
+   */
+  @DefaultStringValue("Viser kjønn")
+  @Key("portal_show_gender")
+  String portal_show_gender();
+
+  /**
+   * Translated "Viser profilbilde".
+   * 
+   * @return translated "Viser profilbilde"
+   */
+  @DefaultStringValue("Viser profilbilde")
+  @Key("portal_show_image")
+  String portal_show_image();
+
+  /**
+   * Translated "Viser fornavn".
+   * 
+   * @return translated "Viser fornavn"
+   */
+  @DefaultStringValue("Viser fornavn")
+  @Key("portal_show_lastname")
+  String portal_show_lastname();
+
+  /**
+   * Translated "Viser telefon".
+   * 
+   * @return translated "Viser telefon"
+   */
+  @DefaultStringValue("Viser telefon")
+  @Key("portal_show_phone")
+  String portal_show_phone();
+
+  /**
+   * Translated "Viser postnummer".
+   * 
+   * @return translated "Viser postnummer"
+   */
+  @DefaultStringValue("Viser postnummer")
+  @Key("portal_show_postnmb")
+  String portal_show_postnmb();
+
+  /**
+   * Translated "Aktiv".
+   * 
+   * @return translated "Aktiv"
+   */
+  @DefaultStringValue("Aktiv")
+  @Key("portal_status_active_1")
+  String portal_status_active_1();
+
+  /**
+   * Translated "Stengt grunnet manglende betaling".
+   * 
+   * @return translated "Stengt grunnet manglende betaling"
+   */
+  @DefaultStringValue("Stengt grunnet manglende betaling")
+  @Key("portal_status_blocked_2")
+  String portal_status_blocked_2();
+
+  /**
+   * Translated "Stengt av administrator".
+   * 
+   * @return translated "Stengt av administrator"
+   */
+  @DefaultStringValue("Stengt av administrator")
+  @Key("portal_status_closed_3")
+  String portal_status_closed_3();
+
+  /**
+   * Translated "Søk om aktivering".
+   * 
+   * @return translated "Søk om aktivering"
+   */
+  @DefaultStringValue("Søk om aktivering")
+  @Key("portal_status_inactive_0")
+  String portal_status_inactive_0();
+
+  /**
+   * Translated "Søknad om aktivering behandles".
+   * 
+   * @return translated "Søknad om aktivering behandles"
+   */
+  @DefaultStringValue("Søknad om aktivering behandles")
+  @Key("portal_status_pending_4")
+  String portal_status_pending_4();
+
+  /**
    * Translated "Tittel for portalen".
    * 
    * @return translated "Tittel for portalen"
@@ -3065,6 +3245,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Tittel for portalen")
   @Key("portal_title")
   String portal_title();
+
+  /**
+   * Translated "Twitter".
+   * 
+   * @return translated "Twitter"
+   */
+  @DefaultStringValue("Twitter")
+  @Key("portal_twitter")
+  String portal_twitter();
 
   /**
    * Translated "Post".

@@ -138,7 +138,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar reportsMenu = addTopMenu(topMenu, elements.menu_reports());
         MenuBar settingsMenu = addTopMenu(topMenu, elements.menu_settings());
         MenuBar importExportMenu = addTopMenu(topMenu, elements.menu_export_import());
-        MenuBar portalMenu = addTopMenu(topMenu, elements.menu_export_import());
+        MenuBar portalMenu = addTopMenu(topMenu, elements.menu_portal());
 
         MenuBar adminMenu = null;
         if (Window.Location.getHostName().startsWith("master.")) {

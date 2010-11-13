@@ -499,6 +499,13 @@ td.rute {
 	background-color: lightgrey;
 }
 
+.buttonrownarrow {
+	white-space: nowrap;
+	margin-right: 10px;
+	margin-top: 2px;
+}
+
+
 .buttonrow {
 	white-space: nowrap;
 	margin-right: 10px;

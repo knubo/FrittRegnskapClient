@@ -30,23 +30,29 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
             req.addListener("completed", function(data){
                 var json = data.getContent();
                 
-                if (json["portal_status"] == 0) {
+                if (json["portal_status"] == 0 || json["portal_status"] == 4) {
                     document.getElementById("allLoginStuff").style.display = "none";
                     document.getElementById("applicationStuff").style.display = "block";
-                    document.getElementById("isle").innerHTML = "Portalen for dette domenet er ikke aktivert"; 
+                    document.getElementById("isle").innerHTML = "Portalen for dette domenet er ikke aktivert";
                 }
                 else 
                     if (json["portal_status"] == 2) {
                         document.getElementById("applicationStuff").style.display = "block";
                         document.getElementById("allLoginStuff").style.display = "none";
-                        document.getElementById("isle").innerHTML = "Portalen er stengt grunnet manglende betaling."; 
+                        document.getElementById("isle").innerHTML = "Portalen er stengt grunnet manglende betaling.";
                     }
                     else 
-                        if (json["portal_status"] == 1) {
-                            document.getElementById("maintitle1").innerHTML = json["portal_title"]; 
-                            document.getElementById("maintitle2").innerHTML = json["portal_title"]; 
-                            this.setupApplication();
+                        if (json["portal_status"] == 3) {
+                            document.getElementById("applicationStuff").style.display = "block";
+                            document.getElementById("allLoginStuff").style.display = "none";
+                            document.getElementById("isle").innerHTML = "Portalen er stengt av klubbens administrator.";
                         }
+                        else 
+                            if (json["portal_status"] == 1) {
+                                document.getElementById("maintitle1").innerHTML = json["portal_title"];
+                                document.getElementById("maintitle2").innerHTML = json["portal_title"];
+                                this.setupApplication();
+                            }
             }, this);
             
             req.send();
