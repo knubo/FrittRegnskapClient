@@ -17,6 +17,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Image;
 
 public class PortalMemberlist extends Composite implements ClickHandler {
 
@@ -42,16 +44,9 @@ public class PortalMemberlist extends Composite implements ClickHandler {
         table.setText(1, col++, elements.lastname());
         table.setText(1, col++, elements.last_login());
 
-        table.getFlexCellFormatter().setColSpan(1, col, 2);
         table.setText(1, col++, elements.portal_homepage());
-
-        table.getFlexCellFormatter().setColSpan(1, col, 2);
         table.setText(1, col++, elements.portal_twitter());
-        
-        table.getFlexCellFormatter().setColSpan(1, col, 2);
         table.setText(1, col++, elements.portal_facebook());
-
-        table.getFlexCellFormatter().setColSpan(1, col, 2);
         table.setText(1, col++, elements.portal_linkedin());
 
         table.setText(1, col++, elements.firstname());
@@ -65,17 +60,18 @@ public class PortalMemberlist extends Composite implements ClickHandler {
         table.setText(1, col++, elements.city());
         table.setText(1, col++, elements.country());
 
-        table.getFlexCellFormatter().setColSpan(1, col, 2);
+        table.getFlexCellFormatter().setColSpan(1, col, 3);
         table.setText(1, col++, elements.portal_image());
 
-        table.getFlexCellFormatter().setColSpan(0, 0, col+5);
+        table.getFlexCellFormatter().setColSpan(0, 0, col + 4);
 
         table.getRowFormatter().setStyleName(1, "header");
 
         initWidget(table);
     }
 
-    public static PortalMemberlist getInstance(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
+    public static PortalMemberlist getInstance(Constants constants, I18NAccount messages, Elements elements,
+            ViewCallback callback) {
         if (me == null) {
             me = new PortalMemberlist(constants, messages, elements, callback);
         }
@@ -109,17 +105,13 @@ public class PortalMemberlist extends Composite implements ClickHandler {
                     table.setText(i + 2, col++, Util.formatDate(split[0]) + " " + split[1], "desc");
 
                     table.setWidget(i + 2, col++, createAnchor(object, "homepage"), "desc");
-                    table.setWidget(i + 2, col++, ImageFactory.deleteImage("delhome"+id));
-                    
+
                     table.setWidget(i + 2, col++, createAnchor(object, "twitter"), "desc");
-                    table.setWidget(i + 2, col++, ImageFactory.deleteImage("deltwit"+id));
 
                     table.setWidget(i + 2, col++, createAnchor(object, "facebook"), "desc");
-                    table.setWidget(i + 2, col++, ImageFactory.deleteImage("delface"+id));
-                    
+
                     table.setWidget(i + 2, col++, createAnchor(object, "linkedin"), "desc");
-                    table.setWidget(i + 2, col++, ImageFactory.deleteImage("dellink"+id));
-                    
+
                     setShow(i, object, "show_firstname", col++);
                     setShow(i, object, "show_lastname", col++);
                     setShow(i, object, "show_birthdate", col++);
@@ -131,7 +123,13 @@ public class PortalMemberlist extends Composite implements ClickHandler {
                     setShow(i, object, "show_city", col++);
                     setShow(i, object, "show_country", col++);
                     setShow(i, object, "show_image", col++);
-                    table.setWidget(i + 2, col++, ImageFactory.deleteImage("delimag"+id));
+                    Image showImage = ImageFactory.searchImage("searchm" + id);
+                    showImage.addClickHandler(me);
+                    table.setWidget(i + 2, col++, showImage);
+
+                    Image delImage = ImageFactory.editImage("editimg" + id);
+                    delImage.addClickHandler(me);
+                    table.setWidget(i + 2, col++, delImage);
                 }
 
             }
@@ -151,10 +149,30 @@ public class PortalMemberlist extends Composite implements ClickHandler {
     }
 
     public void onClick(ClickEvent event) {
-        Anchor anchor = (Anchor) event.getSource();
-        String extractedId = anchor.getName().substring(2);
+        if (event.getSource() instanceof Anchor) {
+            Anchor anchor = (Anchor) event.getSource();
+            String extractedId = anchor.getName().substring(2);
 
-        callback.editPerson(extractedId);
+            callback.editPerson(extractedId);
+        } else if (event.getSource() instanceof Image) {
+            Image im = (Image) event.getSource();
+            String id = im.getElement().getId();
+            
+            if(id.startsWith("searchm")) {
+                showImagePopup(id.substring(7));
+             }
+
+        }
+    }
+
+    private void showImagePopup(String id) {
+        DialogBox db = new DialogBox();
+        db.setModal(true);
+        db.setText("Profilbilde");
+        db.setAnimationEnabled(true);
+        db.setAutoHideEnabled(true);
+        db.add(new Image("/RegnskapServer/services/portal/portal_admin.php?action=image&image="+id));
+        db.center();
     }
 
 }
