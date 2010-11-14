@@ -25,7 +25,7 @@ public class AccountTable extends FlexTable {
     
     public void setText(int row, int column, String text, String style) {
         super.setText(row, column, text);
-        getCellFormatter().setStyleName(row, column, style);
+        getCellFormatter().addStyleName(row, column, style);
 
     }
     
@@ -82,7 +82,7 @@ public class AccountTable extends FlexTable {
 
     public void setWidget(int row, int col, Widget widget, String style) {
         super.setWidget(row, col, widget);
-        getCellFormatter().setStyleName(row, col, style);
+        getCellFormatter().addStyleName(row, col, style);
     }
 
     public void setColSpanAndRowStyle(int row, int col, int span, String rowstyle) {

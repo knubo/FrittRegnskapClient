@@ -99,7 +99,11 @@ public class Util {
         if (string == null) {
             return value.toString();
         }
-        String[] dateparts = string.stringValue().split("-");
+        return formatDate(string.stringValue());
+    }
+
+    public static String formatDate(String string) {
+        String[] dateparts = string.split("-");
 
         return dateparts[2] + "." + dateparts[1] + "." + dateparts[0];
     }

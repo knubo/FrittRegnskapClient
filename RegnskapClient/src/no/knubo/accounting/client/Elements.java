@@ -3049,6 +3049,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String portal_facebook();
 
   /**
+   * Translated "skjult".
+   * 
+   * @return translated "skjult"
+   */
+  @DefaultStringValue("skjult")
+  @Key("portal_hide")
+  String portal_hide();
+
+  /**
    * Translated "Hjemmeside".
    * 
    * @return translated "Hjemmeside"
@@ -3056,6 +3065,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Hjemmeside")
   @Key("portal_homepage")
   String portal_homepage();
+
+  /**
+   * Translated "Profilbilde".
+   * 
+   * @return translated "Profilbilde"
+   */
+  @DefaultStringValue("Profilbilde")
+  @Key("portal_image")
+  String portal_image();
 
   /**
    * Translated "Linkedin".
@@ -3085,112 +3103,13 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String portal_requested();
 
   /**
-   * Translated "Viser adresse".
+   * Translated "vist".
    * 
-   * @return translated "Viser adresse"
+   * @return translated "vist"
    */
-  @DefaultStringValue("Viser adresse")
-  @Key("portal_show_address")
-  String portal_show_address();
-
-  /**
-   * Translated "Viser fødselsdato".
-   * 
-   * @return translated "Viser fødselsdato"
-   */
-  @DefaultStringValue("Viser fødselsdato")
-  @Key("portal_show_birthdate")
-  String portal_show_birthdate();
-
-  /**
-   * Translated "Viser mobiltelefon".
-   * 
-   * @return translated "Viser mobiltelefon"
-   */
-  @DefaultStringValue("Viser mobiltelefon")
-  @Key("portal_show_cellphone")
-  String portal_show_cellphone();
-
-  /**
-   * Translated "Viser by".
-   * 
-   * @return translated "Viser by"
-   */
-  @DefaultStringValue("Viser by")
-  @Key("portal_show_city")
-  String portal_show_city();
-
-  /**
-   * Translated "Viser land".
-   * 
-   * @return translated "Viser land"
-   */
-  @DefaultStringValue("Viser land")
-  @Key("portal_show_country")
-  String portal_show_country();
-
-  /**
-   * Translated "Viser epost".
-   * 
-   * @return translated "Viser epost"
-   */
-  @DefaultStringValue("Viser epost")
-  @Key("portal_show_email")
-  String portal_show_email();
-
-  /**
-   * Translated "Viser etternavn".
-   * 
-   * @return translated "Viser etternavn"
-   */
-  @DefaultStringValue("Viser etternavn")
-  @Key("portal_show_firstname")
-  String portal_show_firstname();
-
-  /**
-   * Translated "Viser kjønn".
-   * 
-   * @return translated "Viser kjønn"
-   */
-  @DefaultStringValue("Viser kjønn")
-  @Key("portal_show_gender")
-  String portal_show_gender();
-
-  /**
-   * Translated "Viser profilbilde".
-   * 
-   * @return translated "Viser profilbilde"
-   */
-  @DefaultStringValue("Viser profilbilde")
-  @Key("portal_show_image")
-  String portal_show_image();
-
-  /**
-   * Translated "Viser fornavn".
-   * 
-   * @return translated "Viser fornavn"
-   */
-  @DefaultStringValue("Viser fornavn")
-  @Key("portal_show_lastname")
-  String portal_show_lastname();
-
-  /**
-   * Translated "Viser telefon".
-   * 
-   * @return translated "Viser telefon"
-   */
-  @DefaultStringValue("Viser telefon")
-  @Key("portal_show_phone")
-  String portal_show_phone();
-
-  /**
-   * Translated "Viser postnummer".
-   * 
-   * @return translated "Viser postnummer"
-   */
-  @DefaultStringValue("Viser postnummer")
-  @Key("portal_show_postnmb")
-  String portal_show_postnmb();
+  @DefaultStringValue("vist")
+  @Key("portal_show")
+  String portal_show();
 
   /**
    * Translated "Aktiv".

@@ -1,828 +1,827 @@
 /* #FAFAFA */
 body {
-	font-size: 90%;
+    font-size: 90%;
 }
 
 .error {
-	PADDING: 2px 2px 2px 2px;
-	color: red;
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-weight: normal;
-	white-space: nowrap;
+    PADDING: 2px 2px 2px 2px;
+    color: red;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    font-weight: normal;
+    white-space: nowrap;
 }
 
 .secret {
-	color: red;
+    color: red;
 }
 
 .flag {
-	color: red;
+    color: red;
 }
 
 .normal {
-	PADDING: 2px 2px 2px 2px;
-	color: black;
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-weight: normal;
-	white-space: nowrap;
+    PADDING: 2px 2px 2px 2px;
+    color: black;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    font-weight: normal;
+    white-space: nowrap;
 }
 
 .insidetable {
-	border-collapse: collapse;
-	background-color: white;
+    border-collapse: collapse;
+    background-color: white;
 }
 
 .tableborder {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: #000000;
+    background-color: white;
+}
+
+table.dotted {
+	border-width: 1px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
 	border-collapse: collapse;
-	border-style: solid;
-	border-color: #000000;
-	background-color: white;
+}
+
+table.dotted td {
+	border-width: 1px;
+	padding: 1px;
+	border-style: dotted;
+	border-color: gray;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+
+.center {
+    text-align:center;    
 }
 
 .tablecells {
-	border-collapse: collapse;
-	border: 1px;
-	border-style: solid;
-	border-color: black;
+    border-collapse: collapse;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
 }
 
 .popup {
-	border-style: solid;
-	border-color: blue;
-	border-width: 3px;
-	background-color: white;
+    border-style: solid;
+    border-color: blue;
+    border-width: 3px;
+    background-color: white;
 }
 
 .tablecells TD {
-	border-width: 1px;
-	border-style: solid;
-	margin: 0px;
-	padding: 0 3 0 3;
+    border-width: 1px;
+    border-style: solid;
+    margin: 0px;
+    padding: 0 3 0 3;
 }
 
 .noborder TD {
-	border: none;
+    border: none;
 }
 
 .nowrap {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 .datefor {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 .logout {
-	margin-left: auto;
-	margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .logout TD {
-	padding: 5px;
+    padding: 5px;
 }
 
 .logincontainer {
-	width: 100%;
-	height: 100%;
-	display: table;
+    width: 100%;
+    height: 100%;
+    display: table;
 }
 
 .loginposition {
-	display: table-cell;
-	vertical-align: middle;
-	width: 100%;
-	text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    text-align: center;
 }
 
 .logintitle {
-	text-align: center;
-	font-size: large;
-	color: #0094D6;
+    text-align: center;
+    font-size: large;
+    color: #0094D6;
 }
 
 .showline {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-weight: bold;
-	font-size: 100%;
-	vertical-align: bottom;
-	PADDING: 2px 2px 2px 2px;
-	white-space: nowrap;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    font-weight: bold;
+    font-size: 100%;
+    vertical-align: bottom;
+    PADDING: 2px 2px 2px 2px;
+    white-space: nowrap;
 }
 
 .showlineposts1 {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	vertical-align: bottom;
-	PADDING: 2px 8px 2px 0px;
-	white-space: nowrap;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    vertical-align: bottom;
+    PADDING: 2px 8px 2px 0px;
+    white-space: nowrap;
 }
 
 .smallerfont {
-	font-size: 80%;
+    font-size: 80%;
 }
 
 .showlineposts2 {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	background-color: #FF9;
-	vertical-align: bottom;
-	PADDING: 2px 8px 2px 0px;
-	white-space: nowrap;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    background-color: #FF9;
+    vertical-align: bottom;
+    PADDING: 2px 8px 2px 0px;
+    white-space: nowrap;
 }
 
 .sumline {
-	background-color: #ecf1f3;
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	border-style: solid;
-	border-top-width: 1px;
-	border-bottom-width: 1px;
-	border-right-width: 1px;
-	border-left-width: 0px;
-	font-weight: bold;
+    background-color: #ecf1f3;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    border-style: solid;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 0px;
+    font-weight: bold;
 }
 
 .sumline TD {
-	font-size: 80%;
-	border-style: solid;
-	border-top-width: 0px;
-	border-bottom-width: 1px;
-	border-right-width: 1px;
-	border-left-width: 1px
+    font-size: 80%;
+    border-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 1px
 }
 
 .colspace {
-	padding-left: 10px;
+    padding-left: 10px;
 }
 
 .showlinebreak {
-	border-style: solid;
-	border-top-width: 0px;
-	border-bottom-width: 1px;
-	border-right-width: 0px;
-	border-left-width: 0px
+    border-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    border-right-width: 0px;
+    border-left-width: 0px
 }
 
 .edittable {
-	border-style: solid;
-	border-color: #000000;
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
-	font-weight: bold;
-	color: #05143f;
-	background-color: #cdcdcd;
-	font-size: 80%;
-	vertical-align: bottom;
-	PADDING: 2px 2px 2px 2px;
-	margin-bottom: 10px;
+    border-style: solid;
+    border-color: #000000;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    color: #05143f;
+    background-color: #cdcdcd;
+    font-size: 80%;
+    vertical-align: bottom;
+    PADDING: 2px 2px 2px 2px;
+    margin-bottom: 10px;
 }
 
 .gwt-Button {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
-	font-weight: bold;
-	background-color: #d7e2e6;
-	font-size: 80%;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    background-color: #d7e2e6;
+    font-size: 80%;
 }
 
 .gwt-TextBox {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
-	font-weight: normal;
-	font-size: 80%;
-	padding: 0px;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+    font-weight: normal;
+    font-size: 80%;
+    padding: 0px;
 }
 
 .gwt-PasswordTextBox {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
-	font-weight: normal;
-	font-size: 80%;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+    font-weight: normal;
+    font-size: 80%;
 }
 
 .gwt-Label {
-	font-size: 80%;
-	font-weight: bold;
-	vertical-align: bottom;
-	padding-right: 3px;
-	padding-top: 2px;
+    font-size: 80%;
+    font-weight: bold;
+    vertical-align: bottom;
+    padding-right: 3px;
+    padding-top: 2px;
 }
 
 .gwt-ListBox {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
-	font-weight: normal;
-	font-size: 80%;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+    font-weight: normal;
+    font-size: 80%;
 }
 
 .headernobox {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
-	font-weight: bold;
-	color: #05143f;
-	background-color: #cdcdcd;
-	font-size: 80%;
-	vertical-align: bottom;
-	PADDING: 2px 2px 2px 2px;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    color: #05143f;
+    background-color: #cdcdcd;
+    font-size: 80%;
+    vertical-align: bottom;
+    PADDING: 2px 2px 2px 2px;
 }
 
 .header td {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
-	font-weight: bold;
-	color: #05143f;
-	background-color: #cdcdcd;
-	font-size: 80%;
-	vertical-align: bottom;
-	PADDING: 2px 2px 2px 2px;
-	border-style: solid;
-	border-top-width: 0px;
-	border-bottom-width: 1px;
-	border-right-width: 0px;
-	border-left-width: 0px
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    color: #05143f;
+    background-color: #cdcdcd;
+    font-size: 80%;
+    vertical-align: bottom;
+    PADDING: 2px 2px 2px 2px;
+    border-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    border-right-width: 0px;
+    border-left-width: 0px
 }
 
 .debkred {
-	color: #004759;
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
-	font-weight: bold;
-	background-color: #cdcdcd;
-	font-size: 60%;
+    color: #004759;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    background-color: #cdcdcd;
+    font-size: 60%;
 }
 
 TD.right {
-	text-align: Right;
-	white-space: nowrap;
+    text-align: Right;
+    white-space: nowrap;
 }
 
-TD.desc a:link,TD.desc a:visited {
-	text-decoration: none;
-	color: black;
+TD.desc a:link, TD.desc a:visited {
+    text-decoration: none;
+    color: black;
 }
 
 TR.desc {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 TD.desc {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 .line1 TD {
-	background-color: #ecf1f3;
-	font-size: 80%;
-	border-style: solid;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 1px;
-	border-left-width: 1px
+    background-color: #ecf1f3;
+    font-size: 80%;
+    border-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-right-width: 1px;
+    border-left-width: 1px
 }
 
 .line2 TD {
-	background-color: #d7e2e6;
-	font-size: 80%;
-	border-style: solid;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 1px;
-	border-left-width: 1px
+    background-color: #d7e2e6;
+    font-size: 80%;
+    border-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-right-width: 1px;
+    border-left-width: 1px
 }
 
 .leftborder {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-size: 100%;
-	border-style: solid;
-	border-top-width: 0px;
-	border-bottom-width: 1px;
-	border-right-width: 0px;
-	border-left-width: 1px
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    font-size: 100%;
+    border-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    border-right-width: 0px;
+    border-left-width: 1px
 }
 
 .rightborder {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-size: 100%;
-	border-style: solid;
-	border-top-width: 0px;
-	border-bottom-width: 1px;
-	border-right-width: 1px;
-	border-left-width: 0px
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    font-size: 100%;
+    border-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 0px
 }
 
 .showpostheader td {
-	background-color: #ECF1F3;
-	border-style: solid;
-	border-width: 1px 1px 0px 0px;
-	font-size: 80%;
+    background-color: #ECF1F3;
+    border-style: solid;
+    border-width: 1px 1px 0px 0px;
+    font-size: 80%;
 }
 
 .kontomain {
-	font-size: 140%;
+    font-size: 140%;
 }
 
 .kontomainsum {
-	font-size: 140%;
-	border-color: black;
-	border-style: double;
-	border-top-width: 0px;
-	border-bottom-width: 3px;
-	border-right-width: 0px;
-	border-left-width: 0px
+    font-size: 140%;
+    border-color: black;
+    border-style: double;
+    border-top-width: 0px;
+    border-bottom-width: 3px;
+    border-right-width: 0px;
+    border-left-width: 0px
 }
 
 .kontomainsumright {
-	border-color: black;
-	border-style: double;
-	border-top-width: 0px;
-	border-bottom-width: 3px;
-	border-right-width: 0px;
-	border-left-width: 0px
+    border-color: black;
+    border-style: double;
+    border-top-width: 0px;
+    border-bottom-width: 3px;
+    border-right-width: 0px;
+    border-left-width: 0px
 }
 
 .kontocat {
-	font-size: 120%;
-	font-style: italic;
+    font-size: 120%;
+    font-style: italic;
 }
 
 .kontosub {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .pagebreak {
-	page-break-after: always;
+    page-break-after: always;
 }
 
 .telling {
-	white-space: nowrap;
-	border: solid 1px;
-	font-size: 140%;
-	width: 80px;
+    white-space: nowrap;
+    border: solid 1px;
+    font-size: 140%;
+    width: 80px;
 }
 
 td.sum {
-	border-bottom: double;
+    border-bottom: double;
 }
 
 td.inforight {
-	border-bottom: solid 1px;
-	width: 100px;
-	text-align: right;
+    border-bottom: solid 1px;
+    width: 100px;
+    text-align: right;
 }
 
 th.big {
-	white-space: nowrap;
-	font-size: 140%;
+    white-space: nowrap;
+    font-size: 140%;
 }
 
 td.tegn {
-	text-align: right;
+    text-align: right;
 }
 
 table.rutenett {
-	border: solid 2px;
-	border-collapse: collapse;
+    border: solid 2px;
+    border-collapse: collapse;
 }
 
 th.janei {
-	border: solid 2px;
-	text-align: center;
-	width: 30px;
+    border: solid 2px;
+    text-align: center;
+    width: 30px;
 }
 
 th.rutenett {
-	border: solid 2px;
-	width: 30px;
+    border: solid 2px;
+    width: 30px;
 }
 
 td.ruteskipp {
-	border-right-width: 0px;
-	border-left-width: 0px;
-	width: 350px;
+    border-right-width: 0px;
+    border-left-width: 0px;
+    width: 350px;
 }
 
 td.rutenett {
-	border: solid 2px;
+    border: solid 2px;
 }
 
 td.rutedesc {
-	border: solid 2px;
-	border-collapse: collapse;
-	width: 350px;
+    border: solid 2px;
+    border-collapse: collapse;
+    width: 350px;
 }
 
 td.rute {
-	border: solid 2px;
-	width: 30px;
-	text-align: center;
-	font-size: 160%;
+    border: solid 2px;
+    width: 30px;
+    text-align: center;
+    font-size: 160%;
 }
 
 .collapse {
-	border-collapse: collapse;
+    border-collapse: collapse;
 }
 
 .gwt-DialogBox {
-	color: black;
-	background-color: white;
-	PADDING: 3px 3px 3px 3px;
+    color: black;
+    background-color: white;
+    PADDING: 3px 3px 3px 3px;
 }
 
 .gwt-DialogBox .Caption {
-	color: #05143f;
-	background-color: #cdcdcd;
+    color: #05143f;
+    background-color: #cdcdcd;
 }
 
 .activeview {
-	padding: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
 }
 
 .disabled {
-	background-color: lightgrey;
+    background-color: lightgrey;
 }
 
 .helpheader H1 {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-weight: bold;
-	white-space: nowrap;
-	font-size: 15pt;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 15pt;
 }
 
 .helpheader H2 {
-	font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-	font-weight: bold;
-	white-space: nowrap;
-	font-size: 12pt;
+    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 12pt;
 }
 
 .contexthelp {
-	background: #F6FEDA none repeat scroll 0%;
-	border: 1px solid #98BE10;
-	margin: 10px;
-	padding: 10px;
-	width: 300px;
-	min-height: 150px;
-	vertical-align: top;
+    background: #F6FEDA none repeat scroll 0%;
+    border: 1px solid #98BE10;
+    margin: 10px;
+    padding: 10px;
+    width: 300px;
+    min-height: 150px;
+    vertical-align: top;
 }
 
 .logline {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .middle {
-	margin-left: auto;
-	margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .emailsendname {
-	text-align: left;
-	width: 400px;
+    text-align: left;
+    width: 400px;
 }
 
 .emailsendemail {
-	text-align: left;
-	width: 400px;
+    text-align: left;
+    width: 400px;
 }
 
 .accounttrack_midle {
-	padding-top: 11em;
+    padding-top: 11em;
 }
 
 .fullwidth {
-	width: 100%;
+    width: 100%;
 }
 
 .report {
-	border-collapse: collapse;
-	white-space: nowrap;
-	border: 1px solid black;
+    border-collapse: collapse;
+    white-space: nowrap;
+    border: 1px solid black;
 }
 
 .report TD {
-	padding: 2px;
+    padding: 2px;
 }
 
-.report TR>TD+TD+TD {
-	text-align: right;
+.report TR > TD + TD + TD {
+    text-align: right;
 }
 
 .report .sum {
-	font-weight: bold;
-	background-color: lightgrey;
+    font-weight: bold;
+    background-color: lightgrey;
 }
 
 .buttonrownarrow {
-	white-space: nowrap;
-	margin-right: 10px;
-	margin-top: 2px;
+    white-space: nowrap;
+    margin-right: 10px;
+    margin-top: 2px;
 }
 
-
 .buttonrow {
-	white-space: nowrap;
-	margin-right: 10px;
-	margin-top: 10px;
+    white-space: nowrap;
+    margin-right: 10px;
+    margin-top: 10px;
 }
 
 .buttonpanel .gwt-label {
-	padding-left: 10px;
-	border-left: 1px solid;
+    padding-left: 10px;
+    border-left: 1px solid;
 }
 
 TD.red {
-	background-color: red;
+    background-color: red;
 }
 
 TD.yellow {
-	background-color: yellow;
+    background-color: yellow;
 }
 
 TD.green {
-	background-color: green;
+    background-color: green;
 }
 
 .hidden {
-	display: none;
+    display: none;
 }
 
 .errorwindow {
-	border: thick;
-	border-color: red;
-	border-style: solid;
+    border: thick;
+    border-color: red;
+    border-style: solid;
 }
 
 .importtable {
-	border: thin;
-	border-style: solid;
+    border: thin;
+    border-style: solid;
 }
 
 .importtable TD {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 /* Dashboard */
 .dashboard {
-	font-size: smaller;
-	width: 800px;
+    font-size: smaller;
+    width: 800px;
 }
 
 .dashboardhint {
-	clear: both;
-	font-size:medium;
-	background-color:#FFFF99;
-	text-align: center;
-	margin-top:3px;
+    clear: both;
+    font-size: medium;
+    background-color: #FFFF99;
+    text-align: center;
+    margin-top: 3px;
 }
 
 .dashboard h1 {
-	font-size: medium;
+    font-size: medium;
 }
 
 .whoami {
-	
 }
 
 .english {
-	float: right;
+    float: right;
 }
 
 .systemstatus .gwt-Image {
-	
 }
 
 .systemstatus {
-	background: blue;
-	clear: both;
-	text-align: center;
-	margin-left: 15%;
+    background: blue;
+    clear: both;
+    text-align: center;
+    margin-left: 15%;
 }
 
 .news {
-	clear: both;
-	float: left;
-	width: 50%;
+    clear: both;
+    float: left;
+    width: 50%;
 }
 
 .accountstatus {
-	float: left;
-	width: 50%;
+    float: left;
+    width: 50%;
 }
 
 .accounting {
-	float: left;
+    float: left;
 }
 
 .basicdata {
-	float: left;
-	margin-left: 20px;
-	margin-bottom: 10px;
+    float: left;
+    margin-left: 20px;
+    margin-bottom: 10px;
 }
 
 .dashboard .gwt-Anchor {
-	clear: both;
-	display: block;
+    clear: both;
+    display: block;
 }
 
 .date {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 #closed_site {
-	width: auto;
-	max-width: 50%;
+    width: auto;
+    max-width: 50%;
 }
 
 .massedit {
-	border: 1px solid;
-	padding: 0px;
+    border: 1px solid;
+    padding: 0px;
 }
 
 .massedit tr {
-	padding: 0px;
+    padding: 0px;
 }
 
 .massedit td {
-	border: 1px solid;
-	border-style: inset;
-	padding: 0px;
+    border: 1px solid;
+    border-style: inset;
+    padding: 0px;
 }
 
 .massletterline {
-	float: left;
-	margin-right: 5px;
+    float: left;
+    margin-right: 5px;
 }
 
 .massletterfull {
-	width: 100%;
+    width: 100%;
 }
 
 .firsttimetable {
-	border: 1px solid;
+    border: 1px solid;
 }
 
 .shrinked {
-	max-width: 150px;
+    max-width: 150px;
 }
 
 table.spred {
-	border-width: 1px;
-	border-spacing: 0px;
-	border-style: outset;
-	border-color: gray;
-	border-collapse: collapse;
-	background-color: white;
+    border-width: 1px;
+    border-spacing: 0px;
+    border-style: outset;
+    border-color: gray;
+    border-collapse: collapse;
+    background-color: white;
 }
 
 table.spred th {
-	border-width: 1px;
-	padding: 3px;
-	border-style: inset;
-	border-color: gray;
-	background-color: white;
-	-moz-border-radius: 0px 0px 0px 0px;
+    border-width: 1px;
+    padding: 3px;
+    border-style: inset;
+    border-color: gray;
+    background-color: white;
+    -moz-border-radius: 0px 0px 0px 0px;
 }
 
 table.spred td {
-	border-width: 1px;
-	padding: 3px;
-	border-style: inset;
-	border-color: gray;
-	background-color: white;
-	-moz-border-radius: 0px 0px 0px 0px;
+    border-width: 1px;
+    padding: 3px;
+    border-style: inset;
+    border-color: gray;
+    background-color: white;
+    -moz-border-radius: 0px 0px 0px 0px;
 }
 
 /* Calculator */
 .popupCalc-panel {
-	background: #ddd;
-	border: 1px solid #666;
-	padding: 3px;
+    background: #ddd;
+    border: 1px solid #666;
+    padding: 3px;
 }
 
 .popupCalc-actionButtons {
-	
 }
 
 .popupCalc-doneButton {
-	width: 52px;
-	height: 20px;
-	font-family: arial;
-	font-size: 8px;
-	background: #0c0;
-	color: #fff;
+    width: 52px;
+    height: 20px;
+    font-family: arial;
+    font-size: 8px;
+    background: #0c0;
+    color: #fff;
 }
 
 .popupCalc-cancelButton {
-	width: 52px;
-	height: 20px;
-	font-family: arial;
-	font-size: 8px;
-	background: #c00;
-	color: #fff;
+    width: 52px;
+    height: 20px;
+    font-family: arial;
+    font-size: 8px;
+    background: #c00;
+    color: #fff;
 }
 
 .simpleCalcPanel {
-	width: 140px;
+    width: 140px;
 }
 
 .simpleCalcDisplay {
-	width: 140px;
-	text-align: right;
-	margin-bottom: 4px;
+    width: 140px;
+    text-align: right;
+    margin-bottom: 4px;
 }
 
 .calcButton {
-	width: 25px;
-	height: 25px;
-	font-family: arial;
-	font-size: 10px;
+    width: 25px;
+    height: 25px;
+    font-family: arial;
+    font-size: 10px;
 }
 
 .calcButton-equals {
-	
 }
 
 .calcButton-negate {
-	
 }
 
 .calcButton-decimal {
-	
 }
 
 .calcButton-plus {
-	
 }
 
 .calcButton-minus {
-	
 }
 
 .calcButton-multiply {
-	
 }
 
 .calcButton-divide {
-	
 }
 
 .calcButton-clear {
-	width: 35px;
+    width: 35px;
 }
 
 .calcButton-erase {
-	width: 35px;
+    width: 35px;
 }
 
 .calcButton-equals {
-	font-size: 14px;
-	width: 35px;
+    font-size: 14px;
+    width: 35px;
 }
 
 .calcButton-0 {
-	
 }
 
 .calcButton-1 {
-	
 }
 
 .calcButton-2 {
-	
 }
 
 .calcButton-3 {
-	
 }
 
 .calcButton-4 {
-	
 }
 
 .calcButton-5 {
-	
 }
 
 .calcButton-6 {
-	
 }
 
 .calcButton-7 {
-	
 }
 
 .calcButton-8 {
-	
 }
 
 .calcButton-9 {
-	
 }
 
 .numPad {
-	float: left;
+    float: left;
 }
 
 .opPad {
-	float: left;
+    float: left;
 }
 
 .funcPad {
-	float: left;
+    float: left;
 }
 
 .spacerPad {
-	float: left;
+    float: left;
 }
 
 .calculator .dialogContent {
-	background-color: #cdcdcd;
-	padding: 8px;
+    background-color: #cdcdcd;
+    padding: 8px;
 }

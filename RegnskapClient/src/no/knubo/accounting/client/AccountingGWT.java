@@ -205,7 +205,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(portalMenu, elements.menuitem_portal_settings(), WidgetIds.PORTAL_SETTINGS);
         addMenuItem(portalMenu, elements.menuitem_portal_members(), WidgetIds.PORTAL_MEMBERLIST);
         addMenuItem(portalMenu, elements.menuitem_portal_profilegallery(), WidgetIds.PORTAL_PROFILE_GALLERY);
-        
+
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_calculator(), WidgetIds.CALCULATOR);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
@@ -474,14 +474,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 createCalculatorPopup();
                 return;
             case PORTAL_MEMBERLIST:
-                widget = PortalMemberlist.getInstance(constants, messages, elements);
-                ((PortalMemberlist)widget).init();
+                widget = PortalMemberlist.getInstance(constants, messages, elements, callback);
+                ((PortalMemberlist) widget).init();
                 break;
             case PORTAL_PROFILE_GALLERY:
                 break;
             case PORTAL_SETTINGS:
                 widget = PortalSettings.getInstance(constants, messages, elements);
-                ((PortalSettings)widget).init();
+                ((PortalSettings) widget).init();
                 break;
 
             }
