@@ -2986,6 +2986,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String portal();
 
   /**
+   * Translated "Tilgang".
+   * 
+   * @return translated "Tilgang"
+   */
+  @DefaultStringValue("Tilgang")
+  @Key("portal_access")
+  String portal_access();
+
+  /**
+   * Translated "Er blokkert fra portalen".
+   * 
+   * @return translated "Er blokkert fra portalen"
+   */
+  @DefaultStringValue("Er blokkert fra portalen")
+  @Key("portal_access_blocked")
+  String portal_access_blocked();
+
+  /**
+   * Translated "Har tilgang til portalen".
+   * 
+   * @return translated "Har tilgang til portalen"
+   */
+  @DefaultStringValue("Har tilgang til portalen")
+  @Key("portal_access_granted")
+  String portal_access_granted();
+
+  /**
    * Translated "Aktiver portal".
    * 
    * @return translated "Aktiver portal"
@@ -3038,6 +3065,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Portalen er deaktivert")
   @Key("portal_deactive")
   String portal_deactive();
+
+  /**
+   * Translated "Rediger detaljer for".
+   * 
+   * @return translated "Rediger detaljer for"
+   */
+  @DefaultStringValue("Rediger detaljer for")
+  @Key("portal_edit_details")
+  String portal_edit_details();
 
   /**
    * Translated "Facebook".

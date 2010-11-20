@@ -37,7 +37,7 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
                 var json = data.getContent();
                 
                 if (json["error"]) {
-                    this.__errorLabel.setValue("Feil brukernavn(epost) eller passord.");
+                    this.__errorLabel.setValue(json["error"]);
                 }
                 else 
                     if (json["result"] == "ok") {

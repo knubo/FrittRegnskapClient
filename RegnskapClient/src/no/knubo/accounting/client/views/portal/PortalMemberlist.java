@@ -8,6 +8,7 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
+import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,6 +19,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 
 public class PortalMemberlist extends Composite implements ClickHandler {
@@ -157,21 +159,39 @@ public class PortalMemberlist extends Composite implements ClickHandler {
         } else if (event.getSource() instanceof Image) {
             Image im = (Image) event.getSource();
             String id = im.getElement().getId();
-            
-            if(id.startsWith("searchm")) {
+
+            if (id.startsWith("searchm")) {
                 showImagePopup(id.substring(7));
-             }
+            } else if (id.startsWith("editimg")) {
+                showDeletePopup(id.substring(7));
+            }
 
         }
+    }
+
+    private void showDeletePopup(final String id) {
+        ServerResponse resp = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject object = responseObj.isObject();
+                createDeleteDialog(object, id);
+            }
+        };
+        AuthResponder.get(constants, messages, resp, "portal/portal_admin.php?action=one&id=" + id);
+
+    }
+
+    private void createDeleteDialog(JSONObject object, String id) {
+        new EditPortalUserPopup(elements, constants, messages, object, id).center();
     }
 
     private void showImagePopup(String id) {
         DialogBox db = new DialogBox();
         db.setModal(true);
-        db.setText("Profilbilde");
+        db.setText(elements.portal_image());
         db.setAnimationEnabled(true);
         db.setAutoHideEnabled(true);
-        db.add(new Image("/RegnskapServer/services/portal/portal_admin.php?action=image&image="+id));
+        db.add(new Image("/RegnskapServer/services/portal/portal_admin.php?action=image&image=" + id));
         db.center();
     }
 

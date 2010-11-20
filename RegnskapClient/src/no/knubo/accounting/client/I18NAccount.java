@@ -448,6 +448,51 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String not_logged_in();
 
   /**
+   * Translated "Vil du slette brukers link til facebook? Dette kan ikke angres.".
+   * 
+   * @return translated "Vil du slette brukers link til facebook? Dette kan ikke angres."
+   */
+  @DefaultMessage("Vil du slette brukers link til facebook? Dette kan ikke angres.")
+  @Key("portal_confirm_delete_facebook")
+  String portal_confirm_delete_facebook();
+
+  /**
+   * Translated "Vil du slette brukers link til hjemmeside? Dette kan ikke angres.".
+   * 
+   * @return translated "Vil du slette brukers link til hjemmeside? Dette kan ikke angres."
+   */
+  @DefaultMessage("Vil du slette brukers link til hjemmeside? Dette kan ikke angres.")
+  @Key("portal_confirm_delete_hompeage")
+  String portal_confirm_delete_hompeage();
+
+  /**
+   * Translated "Vil du slette profilbildet til brukeren? Dette kan ikke angres.".
+   * 
+   * @return translated "Vil du slette profilbildet til brukeren? Dette kan ikke angres."
+   */
+  @DefaultMessage("Vil du slette profilbildet til brukeren? Dette kan ikke angres.")
+  @Key("portal_confirm_delete_image")
+  String portal_confirm_delete_image();
+
+  /**
+   * Translated "Vil du slette brukers link til linkedin? Dette kan ikke angres.".
+   * 
+   * @return translated "Vil du slette brukers link til linkedin? Dette kan ikke angres."
+   */
+  @DefaultMessage("Vil du slette brukers link til linkedin? Dette kan ikke angres.")
+  @Key("portal_confirm_delete_linkedin")
+  String portal_confirm_delete_linkedin();
+
+  /**
+   * Translated "Vil du slette brukers link til twitter? Dette kan ikke angres.".
+   * 
+   * @return translated "Vil du slette brukers link til twitter? Dette kan ikke angres."
+   */
+  @DefaultMessage("Vil du slette brukers link til twitter? Dette kan ikke angres.")
+  @Key("portal_confirm_delete_twitter")
+  String portal_confirm_delete_twitter();
+
+  /**
    * Translated "Opplastning mislyktes i og med at den filen du opplastet gikk over din diskkvote.".
    * 
    * @return translated "Opplastning mislyktes i og med at den filen du opplastet gikk over din diskkvote."
