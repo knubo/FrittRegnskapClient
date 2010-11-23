@@ -37,6 +37,7 @@ import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
+import no.knubo.accounting.client.views.portal.PortalGallery;
 import no.knubo.accounting.client.views.portal.PortalMemberlist;
 import no.knubo.accounting.client.views.portal.PortalSettings;
 import no.knubo.accounting.client.views.registers.AccountTrackEditView;
@@ -478,6 +479,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((PortalMemberlist) widget).init();
                 break;
             case PORTAL_PROFILE_GALLERY:
+                widget = PortalGallery.getInstance(constants, messages, elements);
+                ((PortalGallery)widget).init();
                 break;
             case PORTAL_SETTINGS:
                 widget = PortalSettings.getInstance(constants, messages, elements);

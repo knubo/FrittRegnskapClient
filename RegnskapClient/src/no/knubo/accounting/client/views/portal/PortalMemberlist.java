@@ -8,7 +8,6 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
-import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,7 +18,6 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 
 public class PortalMemberlist extends Composite implements ClickHandler {

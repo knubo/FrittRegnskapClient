@@ -96,9 +96,10 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                         else {
                             infoLabel.setTextColor("red");
                             
-                            if(json["error"]) {
+                            if (json["error"]) {
                                 infoLabel.setValue(json["error"]);
-                            } else {
+                            }
+                            else {
                                 infoLabel.setValue("Klarte ikke bytte passord.");
                             }
                         }
@@ -169,7 +170,8 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 "homepage": me.__homepage.getValue(),
                 "linkedin": me.__linkedin.getValue(),
                 "facebook": me.__facebook.getValue(),
-                "twitter": me.__twitter.getValue()
+                "twitter": me.__twitter.getValue(),
+                "newsletter": me.__newsletter.getValue()
             };
             
             var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_persons.php?action=save", "POST", "application/json");
@@ -184,7 +186,8 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 else 
                     if (json["result"] == "ok") {
                         this.__win.setStatus("Oppdatert.");
-                    } else {
+                    }
+                    else {
                         this.__win.setStatus("Klarte ikke oppdatere profil");
                         
                     }
@@ -223,6 +226,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             if (json.has_profile_image) {
                 this.__image.setSource("/RegnskapServer/services/portal/portal_persons.php?action=myimage");
             }
+            this.__newsletter.setValue(json.newsletter == 1);
             
         },
         fillShareProfile: function(data){
@@ -297,6 +301,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         __twitter: null,
         __facebook: null,
         __linkedin: null,
+        __newsletter: null,
         
         createWindowProfile: function(desktop){
             // Create the Window
@@ -508,6 +513,13 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
                 column: 1
             });
             
+            this.__newsletter = new qx.ui.form.CheckBox("Abonner p\u00E5 nyhetsbrev");
+            personbox.add(this.__newsletter, {
+                row: 4,
+                column: 2,
+                colSpan: 2
+            });
+            
             win.add(personbox, {
                 row: 0,
                 column: 0
@@ -711,7 +723,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
         destruct: function(){
             this._disposeObjects("__firstName", "__lastName", "__email", "__address", "__cellphone", "__phone", "__gender", "__genderModel", "__newsletter", "__birthdate", "__country", "__countryModel", //
  "__city", "__postnmb", "__showLastname", "__showFirstname", "__showGender", "__showAddress", "__showBirthdate", "__showCellphone", "__showPhone", "__showCountry", "__showCity", "__showPostnmb", //
- "__showEmail", "__showImage", "__win", "__manager", "__image", "__changePasswordButton", "__logoutButton", "__homepage", "__linkedin", "__facebook", "__twitter");
+ "__showEmail", "__showImage", "__win", "__manager", "__image", "__changePasswordButton", "__logoutButton", "__homepage", "__linkedin", "__facebook", "__twitter", "__newsletter");
         }
         
     }

@@ -144,7 +144,7 @@ public class PersonEditView extends Composite implements ClickHandler {
         commentBox = new NamedTextArea("comment");
         commentBox.setVisibleLines(5);
         commentBox.setCharacterWidth(60);
-        
+
         genderBox = new ListBox();
         genderBox.addItem("", "");
         genderBox.addItem(elements.gender_male(), "M");
@@ -154,7 +154,7 @@ public class PersonEditView extends Composite implements ClickHandler {
         newsletterCheck = new CheckBox();
         hiddenCheck = new CheckBox();
         secretaddressCheck = new CheckBox();
-        
+
         updateButton = new NamedButton("PersonEditView.updateButton", elements.update());
         updateButton.addClickHandler(this);
 
@@ -348,9 +348,9 @@ public class PersonEditView extends Composite implements ClickHandler {
         newsletterCheck.setValue("1".equals(Util.str(object.get("Newsletter"))));
         hiddenCheck.setValue("1".equals(Util.str(object.get("Hidden"))));
         Util.setIndexByValue(genderBox, Util.str(object.get("Gender")));
-        
+
         birthdateRequired = Util.getBoolean(object.get("BirthdateRequired"));
-        
+
         commentBox.setText(Util.strSkipNull(object.get("Comment")));
         secretaddressCheck.setValue("1".equals(Util.str(object.get("Secretaddress"))));
     }
@@ -453,15 +453,15 @@ public class PersonEditView extends Composite implements ClickHandler {
     private boolean validateSave() {
         MasterValidator masterValidator = new MasterValidator();
 
-        masterValidator.mandatory(messages.required_field(), new Widget[] { lastnameBox, firstnameBox, genderBox });
+        masterValidator.mandatory(messages.required_field(), lastnameBox, firstnameBox, genderBox);
 
-        if(birthdateRequired) {
-            masterValidator.mandatory(messages.required_field(), new Widget[] { birthdateBox });            
+        if (birthdateRequired) {
+            masterValidator.mandatory(messages.required_field(), birthdateBox);
         }
-        
-        masterValidator.date(messages.date_format(), new Widget[] { birthdateBox });
 
-        masterValidator.email(messages.invalid_email(), new Widget[] { emailBox });
+        masterValidator.date(messages.date_format(), birthdateBox);
+
+        masterValidator.email(messages.invalid_email(), emailBox);
 
         return masterValidator.validateStatus();
     }
