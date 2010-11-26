@@ -630,6 +630,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             this.__homepage.setAllowStretchX(true);
             this.__homepage.setAllowGrowX(true);
             this.__homepage.setWidth(130);
+            this.__homepage.setToolTipText("Hjemmesiden skal v\u00e6re en gyldig webadresse til din hjemmeside - http://frittregnskap.no eller frittregnskap.no er gyldig form.");
             sitebox.add(this.__homepage, {
                 row: 0,
                 column: 1
@@ -643,6 +644,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             this.__twitter = new qx.ui.form.TextField("");
             this.__twitter.setAllowStretchX(true);
             this.__twitter.setAllowGrowX(true);
+            this.__twitter.setToolTipText("Twitter skal v\u00e6re din side hos Twitter for eksempel http://twitter.com/#!/knubo");
             sitebox.add(this.__twitter, {
                 row: 1,
                 column: 1
@@ -657,6 +659,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             this.__facebook.setAllowStretchX(true);
             this.__facebook.setAllowGrowX(true);
             this.__facebook.setWidth(130);
+            this.__facebook.setToolTipText("Facebook skal v\u00e6re din side hos Facebook for eksempel http://www.facebook.com/madonna");
             sitebox.add(this.__facebook, {
                 row: 0,
                 column: 3
@@ -670,6 +673,8 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             this.__linkedin = new qx.ui.form.TextField("");
             this.__linkedin.setAllowStretchX(true);
             this.__linkedin.setAllowGrowX(true);
+            this.__linkedin.setToolTipText("LinkedIn skal v\u00e6re din side hos LinkedIn for eksempel http://no.linkedin.com/in/knubo");
+
             
             sitebox.add(this.__linkedin, {
                 row: 1,
