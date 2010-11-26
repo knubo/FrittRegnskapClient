@@ -66,16 +66,20 @@ public class ManageFilesView extends Composite implements ClickHandler {
                 for (int i = 0; i < files.size(); i++) {
                     JSONObject fileinfo = files.get(i).isObject();
                     String fileName = Util.str(fileinfo.get("name"));
-                    table.setWidget(i + 1, 0, createLinkToOpenFile(fileName));
-                    Image deleteImage = ImageFactory.deleteImage("delete_file");
 
-                    deleteImage.addClickHandler(instance);
+                    if(Util.getBoolean(fileinfo.get("link"))) {
+                        table.setWidget(i + 1, 0, createLinkToOpenFile(fileName));
+                        Image deleteImage = ImageFactory.deleteImage("delete_file");
+                        deleteImage.addClickHandler(instance);
+                        idHolder.add(fileName, deleteImage);
+                        table.setWidget(i + 1, 2, deleteImage);
+                    } else {
+                        table.setText(i+1, 0, fileName);
+                    }
 
                     table.setText(i + 1, 1, Util.str(fileinfo.get("size")));
                     table.getCellFormatter().setStyleName(i + 1, 1, "desc right");
 
-                    idHolder.add(fileName, deleteImage);
-                    table.setWidget(i + 1, 2, deleteImage);
                 }
 
                 int row = table.getRowCount();

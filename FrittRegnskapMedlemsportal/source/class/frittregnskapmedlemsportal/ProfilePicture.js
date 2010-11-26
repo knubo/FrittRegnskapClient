@@ -3,7 +3,7 @@ qx.Class.define("frittregnskapmedlemsportal.ProfilePicture", {
 	__popup : null,
 	__image : null,
 	members : {
-		createUploadButton : function(profileImage) {
+		createUploadButton : function(profileImage, win) {
 
 			this.__popup = new qx.ui.popup.Popup(new qx.ui.layout.Grow());
 			this.__image = new qx.ui.basic.Image();
@@ -27,10 +27,16 @@ qx.Class.define("frittregnskapmedlemsportal.ProfilePicture", {
 			form.addListener('completed', function(e) {
 				var response = this.getIframeHtmlContent();
 
+				if(response.length > 0) {
+					win.setStatus(response);
+				}
+				
 				profileImage.setSource("/RegnskapServer/services/portal/portal_persons.php?action=myimage&foolcache="
 						+ new Date().getTime());
 			});
 
+			
+			
 			form.addListener('sending', function(e) {
 				this.debug('sending');
 			});

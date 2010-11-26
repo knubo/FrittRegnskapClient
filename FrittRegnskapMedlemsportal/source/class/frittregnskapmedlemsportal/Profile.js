@@ -693,7 +693,7 @@ qx.Class.define("frittregnskapmedlemsportal.Profile", {
             buttoncontainer.add(updateButton);
             
             var profilePicture = new frittregnskapmedlemsportal.ProfilePicture();
-            buttoncontainer.add(profilePicture.createUploadButton(this.__image));
+            buttoncontainer.add(profilePicture.createUploadButton(this.__image,this.__win));
             
             this.__changePasswordButton = new qx.ui.form.Button("Endre passord");
             this.__changePasswordButton.addListener("execute", this.changePassword, this);
