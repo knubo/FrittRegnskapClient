@@ -7,6 +7,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedCheckBox;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
@@ -52,7 +53,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table = new FlexTable();
         table.setStyleName("tableborder");
         table.setHTML(0, 0, elements.admin_installs());
-        table.getFlexCellFormatter().setColSpan(0, 0, 8);
+        table.getFlexCellFormatter().setColSpan(0, 0, 10);
 
         table.setHTML(1, 0, elements.admin_hostprefix());
         table.setHTML(1, 1, elements.admin_dbprefix());
@@ -61,7 +62,9 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table.setHTML(1, 4, elements.admin_wikilogin());
         table.setHTML(1, 5, elements.admin_diskqvota());
         table.setHTML(1, 6, "Beta");
-        table.setHTML(1, 7, "");
+        table.setHTML(1, 7, elements.status());
+        table.setHTML(1, 8, elements.portal_title());
+        table.setHTML(1, 9, "");
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
         initWidget(table);
@@ -92,15 +95,33 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             table.setText(i + 2, 4, Util.str(obj.get("wikilogin")));
             table.setText(i + 2, 5, Util.str(obj.get("diskquota")) + " MB");
             table.setText(i + 2, 6, "" + Util.getBoolean(obj.get("beta")));
+            table.setText(i + 2, 7, statusAsString(Util.getInt(obj.get("portal_status"))));
+            table.setText(i + 2, 8, Util.str(obj.get("portal_title")));
             Image image = ImageFactory.editImage("edit" + Util.str(obj.get("id")));
             image.addClickHandler(this);
-            table.setWidget(i + 2, 7, image);
+            table.setWidget(i + 2, 9, image);
 
             table.getCellFormatter().addStyleName(i + 2, 5, "right");
 
             String style = (((i + 2) % 6) < 3) ? "line2" : "line1";
             table.getRowFormatter().setStyleName(i + 2, style + " desc");
         }
+    }
+
+    private String statusAsString(int status) {
+        switch (status) {
+        case 0:
+            return elements.portal_status_inactive_0();
+        case 1:
+            return elements.portal_status_active_1();
+        case 2:
+            return elements.portal_status_blocked_2();
+        case 3:
+            return elements.portal_status_closed_3();
+        case 4:
+            return elements.portal_status_pending_4();
+        }
+        return "???";
     }
 
     public void onClick(ClickEvent event) {
@@ -151,6 +172,10 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private TextBoxWithErrorText wikiLogin;
 
+        private ListBoxWithErrorText statusListbox;
+
+        private TextBoxWithErrorText portalTitle;
+
         AdminInstallEditFields() {
             setText(elements.project());
             edittable = new FlexTable();
@@ -163,6 +188,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             edittable.setHTML(4, 0, elements.admin_wikilogin());
             edittable.setHTML(5, 0, elements.admin_diskqvota());
             edittable.setHTML(6, 0, "Beta");
+            edittable.setHTML(7, 0, elements.status());
+            edittable.setHTML(8, 0, elements.portal_title());
 
             hostprefixBox = new TextBoxWithErrorText("hostprefix");
             hostprefixBox.setMaxLength(40);
@@ -177,11 +204,22 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             betaBox = new NamedCheckBox("beta");
 
+            statusListbox = new ListBoxWithErrorText("portal_status");
+            statusListbox.addItem(elements.portal_status_inactive_0(), "0");
+            statusListbox.addItem(elements.portal_status_active_1(), "1");
+            statusListbox.addItem(elements.portal_status_closed_3(), "3");
+            statusListbox.addItem(elements.portal_status_pending_4(), "4");
+            statusListbox.addItem(elements.portal_status_blocked_2(), "2");
+
+            portalTitle = new TextBoxWithErrorText("portal_title");
+            
             edittable.setWidget(0, 1, hostprefixBox);
             edittable.setWidget(3, 1, descriptionBox);
             edittable.setWidget(4, 1, wikiLogin);
             edittable.setWidget(5, 1, diskQvotaBox);
             edittable.setWidget(6, 1, betaBox);
+            edittable.setWidget(7, 1, statusListbox);
+            edittable.setWidget(8, 1, portalTitle);
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
@@ -212,6 +250,9 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             wikiLogin.setText(Util.str(obj.get("wikilogin")));
             diskQvotaBox.setText(Util.str(obj.get("diskquota")));
             betaBox.setValue(Util.getBoolean(obj.get("beta")));
+
+            Util.setIndexByValue(statusListbox.getListbox(), Util.str(obj.get("portal_status")));
+            portalTitle.setText(Util.str(obj.get("portal_title")));
 
             currentId = Util.str(obj.get("id"));
 
@@ -255,6 +296,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             Util.addPostParam(sb, "beta", betaBox.getValue() ? "1" : "0");
             Util.addPostParam(sb, "hostprefix", hostprefixBox.getText());
             Util.addPostParam(sb, "wikilogin", wikiLogin.getText());
+            Util.addPostParam(sb, "portal_status", statusListbox.getText());
+            Util.addPostParam(sb, "portal_title", portalTitle.getText());
 
             ServerResponse callback = new ServerResponse() {
 
