@@ -176,6 +176,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private TextBoxWithErrorText portalTitle;
 
+        private NamedButton sendWelcomeLetter;
+
         AdminInstallEditFields() {
             setText(elements.project());
             edittable = new FlexTable();
@@ -230,6 +232,10 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             deleteButton = new NamedButton("adminInstall_deleteButton", elements.admin_delete_accounting());
             deleteButton.addClickHandler(this);
+
+            sendWelcomeLetter = new NamedButton("admin_send_welcome_letter", elements.admin_send_welcome_letter());
+            sendWelcomeLetter.addClickHandler(this);
+            
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
 
@@ -237,6 +243,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             buttonPanel.add(saveButton);
             buttonPanel.add(cancelButton);
             buttonPanel.add(deleteButton);
+            buttonPanel.add(sendWelcomeLetter);
             buttonPanel.add(mainErrorLabel);
             dp.add(buttonPanel, DockPanel.NORTH);
             setWidget(dp);
@@ -266,7 +273,26 @@ public class AdminInstallsView extends Composite implements ClickHandler {
                 doSave();
             } else if (sender == deleteButton) {
                 doDelete();
+            } else if(sender == sendWelcomeLetter) {
+                doSendWelcomeLetter();
             }
+        }
+
+        private void doSendWelcomeLetter() {
+            boolean choice = Window.confirm(messages.confirm_send_welcome_letter());
+
+            if (choice) {
+                ServerResponse callback = new ServerResponse() {
+
+                    public void serverResponse(JSONValue responseObj) {
+                        mainErrorLabel.setText(messages.sendt_welcome_letter());
+                    }
+                };
+                AuthResponder.get(constants, messages, callback, "admin/installs.php?action=sendWelcomeLetter&id="
+                        + this.currentId);
+                
+            }
+            
         }
 
         private void doDelete() {

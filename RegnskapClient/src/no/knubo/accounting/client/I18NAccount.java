@@ -79,6 +79,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String confirm_import_person();
 
   /**
+   * Translated "Vil du sende ut velkomstbrev?".
+   * 
+   * @return translated "Vil du sende ut velkomstbrev?"
+   */
+  @DefaultMessage("Vil du sende ut velkomstbrev?")
+  @Key("confirm_send_welcome_letter")
+  String confirm_send_welcome_letter();
+
+  /**
    * Translated "Utgifter for {0}".
    * 
    * @return translated "Utgifter for {0}"
@@ -635,6 +644,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Du må ha tilgang til å lese hemmelige adresser for å kunne endre tilgang for dem.")
   @Key("secret_no_access")
   String secret_no_access();
+
+  /**
+   * Translated "Velkomstbrev sendt.".
+   * 
+   * @return translated "Velkomstbrev sendt."
+   */
+  @DefaultMessage("Velkomstbrev sendt.")
+  @Key("sendt_welcome_letter")
+  String sendt_welcome_letter();
 
   /**
    * Translated "For mange treff. Viser kun {0}.".

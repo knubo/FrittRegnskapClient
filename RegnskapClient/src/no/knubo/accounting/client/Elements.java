@@ -358,6 +358,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_runinmain();
 
   /**
+   * Translated "Send velkomstbrev".
+   * 
+   * @return translated "Send velkomstbrev"
+   */
+  @DefaultStringValue("Send velkomstbrev")
+  @Key("admin_send_welcome_letter")
+  String admin_send_welcome_letter();
+
+  /**
    * Translated "Verifisert".
    * 
    * @return translated "Verifisert"
