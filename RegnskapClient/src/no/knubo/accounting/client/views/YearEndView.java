@@ -147,7 +147,7 @@ public class YearEndView extends Composite implements ClickHandler {
                 callback.viewMonth();
             }
         };
-        AuthResponder.get(constants, messages, rh, constants.baseurl() + "accounting/endyear.php?action=endyear");
+        AuthResponder.get(constants, messages, rh, "accounting/endyear.php?action=endyear");
 
     }
 }
