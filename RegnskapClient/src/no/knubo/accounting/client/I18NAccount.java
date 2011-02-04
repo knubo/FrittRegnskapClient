@@ -61,6 +61,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String budget(String arg0);
 
   /**
+   * Translated "Nullstill felter?".
+   * 
+   * @return translated "Nullstill felter?"
+   */
+  @DefaultMessage("Nullstill felter?")
+  @Key("confirm_clear")
+  String confirm_clear();
+
+  /**
    * Translated "Vil du virkelig slette forekomst?".
    * 
    * @return translated "Vil du virkelig slette forekomst?"
@@ -212,6 +221,33 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Slett bruker?")
   @Key("delete_user_question")
   String delete_user_question();
+
+  /**
+   * Translated "Kladd lagret {0}.".
+   * 
+   * @return translated "Kladd lagret {0}."
+   */
+  @DefaultMessage("Kladd lagret {0}.")
+  @Key("draft_saved")
+  String draft_saved(String arg0);
+
+  /**
+   * Translated "Vil du slette valgt epost fra arkivet?".
+   * 
+   * @return translated "Vil du slette valgt epost fra arkivet?"
+   */
+  @DefaultMessage("Vil du slette valgt epost fra arkivet?")
+  @Key("email_delete_confirm")
+  String email_delete_confirm();
+
+  /**
+   * Translated "Vil du åpne valgt epost for redigering?".
+   * 
+   * @return translated "Vil du åpne valgt epost for redigering?"
+   */
+  @DefaultMessage("Vil du åpne valgt epost for redigering?")
+  @Key("email_edit_confirm")
+  String email_edit_confirm();
 
   /**
    * Translated "Vil du avslutte måned?".

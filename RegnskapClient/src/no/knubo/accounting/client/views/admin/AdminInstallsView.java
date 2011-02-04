@@ -53,7 +53,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table = new FlexTable();
         table.setStyleName("tableborder");
         table.setHTML(0, 0, elements.admin_installs());
-        table.getFlexCellFormatter().setColSpan(0, 0, 10);
+        table.getFlexCellFormatter().setColSpan(0, 0, 11);
 
         table.setHTML(1, 0, elements.admin_hostprefix());
         table.setHTML(1, 1, elements.admin_dbprefix());
@@ -64,7 +64,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table.setHTML(1, 6, "Beta");
         table.setHTML(1, 7, elements.status());
         table.setHTML(1, 8, elements.portal_title());
-        table.setHTML(1, 9, "");
+        table.setHTML(1, 9, elements.admin_archive_limit());
+        table.setHTML(1, 10, "");
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
         initWidget(table);
@@ -97,9 +98,10 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             table.setText(i + 2, 6, "" + Util.getBoolean(obj.get("beta")));
             table.setText(i + 2, 7, statusAsString(Util.getInt(obj.get("portal_status"))));
             table.setText(i + 2, 8, Util.str(obj.get("portal_title")));
+            table.setText(i + 2, 9, Util.strSkipNull(obj.get("archive_limit")));
             Image image = ImageFactory.editImage("edit" + Util.str(obj.get("id")));
             image.addClickHandler(this);
-            table.setWidget(i + 2, 9, image);
+            table.setWidget(i + 2, 10, image);
 
             table.getCellFormatter().addStyleName(i + 2, 5, "right");
 
@@ -178,6 +180,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private NamedButton sendWelcomeLetter;
 
+        private TextBoxWithErrorText archiveLimit;
+
         AdminInstallEditFields() {
             setText(elements.project());
             edittable = new FlexTable();
@@ -192,6 +196,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             edittable.setHTML(6, 0, "Beta");
             edittable.setHTML(7, 0, elements.status());
             edittable.setHTML(8, 0, elements.portal_title());
+            edittable.setHTML(9, 0, elements.admin_archive_limit());
 
             hostprefixBox = new TextBoxWithErrorText("hostprefix");
             hostprefixBox.setMaxLength(40);
@@ -214,6 +219,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             statusListbox.addItem(elements.portal_status_blocked_2(), "2");
 
             portalTitle = new TextBoxWithErrorText("portal_title");
+            archiveLimit = new TextBoxWithErrorText("archive_limit");
             
             edittable.setWidget(0, 1, hostprefixBox);
             edittable.setWidget(3, 1, descriptionBox);
@@ -222,6 +228,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             edittable.setWidget(6, 1, betaBox);
             edittable.setWidget(7, 1, statusListbox);
             edittable.setWidget(8, 1, portalTitle);
+            edittable.setWidget(9, 1, archiveLimit);
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
@@ -260,7 +267,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             Util.setIndexByValue(statusListbox.getListbox(), Util.str(obj.get("portal_status")));
             portalTitle.setText(Util.str(obj.get("portal_title")));
-
+            archiveLimit.setText(Util.strSkipNull(obj.get("archive_limit")));
+            
             currentId = Util.str(obj.get("id"));
 
         }
@@ -324,6 +332,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             Util.addPostParam(sb, "wikilogin", wikiLogin.getText());
             Util.addPostParam(sb, "portal_status", statusListbox.getText());
             Util.addPostParam(sb, "portal_title", portalTitle.getText());
+            Util.addPostParam(sb, "archive_limit", archiveLimit.getText());
 
             ServerResponse callback = new ServerResponse() {
 
@@ -346,7 +355,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
             mv.mandatory(messages.required_field(), descriptionBox, hostprefixBox, diskQvotaBox, wikiLogin);
-            mv.range(messages.field_positive(), 0, Integer.MAX_VALUE, diskQvotaBox);
+            mv.range(messages.field_positive(), 0, Integer.MAX_VALUE, diskQvotaBox, archiveLimit);
+            mv.mandatory(messages.required_field(), diskQvotaBox, archiveLimit);
             return mv.validateStatus();
         }
 

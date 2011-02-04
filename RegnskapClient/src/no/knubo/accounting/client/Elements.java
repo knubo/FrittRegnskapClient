@@ -169,6 +169,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_approve_sql();
 
   /**
+   * Translated "Maks eposter i arkiv".
+   * 
+   * @return translated "Maks eposter i arkiv"
+   */
+  @DefaultStringValue("Maks eposter i arkiv")
+  @Key("admin_archive_limit")
+  String admin_archive_limit();
+
+  /**
    * Translated "Steng regnskapssystemet".
    * 
    * @return translated "Steng regnskapssystemet"
@@ -1123,6 +1132,42 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String email();
 
   /**
+   * Translated "Arkiv".
+   * 
+   * @return translated "Arkiv"
+   */
+  @DefaultStringValue("Arkiv")
+  @Key("email_archive")
+  String email_archive();
+
+  /**
+   * Translated "Lukk".
+   * 
+   * @return translated "Lukk"
+   */
+  @DefaultStringValue("Lukk")
+  @Key("email_archive_close")
+  String email_archive_close();
+
+  /**
+   * Translated "Slett".
+   * 
+   * @return translated "Slett"
+   */
+  @DefaultStringValue("Slett")
+  @Key("email_archive_delete")
+  String email_archive_delete();
+
+  /**
+   * Translated "Bruk epost".
+   * 
+   * @return translated "Bruk epost"
+   */
+  @DefaultStringValue("Bruk epost")
+  @Key("email_archive_edit")
+  String email_archive_edit();
+
+  /**
    * Translated "Ingen".
    * 
    * @return translated "Ingen"
@@ -1184,6 +1229,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Topptekst")
   @Key("email_header")
   String email_header();
+
+  /**
+   * Translated "Velg en av radioknappene".
+   * 
+   * @return translated "Velg en av radioknappene"
+   */
+  @DefaultStringValue("Velg en av radioknappene")
+  @Key("email_select")
+  String email_select();
 
   /**
    * Translated "Ansatt".
@@ -1789,6 +1843,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String mail_sending();
 
   /**
+   * Translated "Sent".
+   * 
+   * @return translated "Sent"
+   */
+  @DefaultStringValue("Sent")
+  @Key("mail_sendt")
+  String mail_sendt();
+
+  /**
    * Translated "Simulasjon av utsendelse".
    * 
    * @return translated "Simulasjon av utsendelse"
@@ -1807,11 +1870,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String mail_test();
 
   /**
-   * Translated "Epost tittel".
+   * Translated "Tittel".
    * 
-   * @return translated "Epost tittel"
+   * @return translated "Tittel"
    */
-  @DefaultStringValue("Epost tittel")
+  @DefaultStringValue("Tittel")
   @Key("mail_title")
   String mail_title();
 

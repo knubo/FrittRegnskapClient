@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.reporting;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import no.knubo.accounting.client.Constants;
@@ -74,6 +75,13 @@ public class ReportMail extends Composite implements ClickHandler {
     private RadioButton radioFormatWiki;
     private RadioButton radioFormatHTML;
     private VerticalPanel richEditorWithToolbar;
+    private NamedButton archiveButton;
+    private Timer timer;
+    private int savedHash;
+    protected Integer archiveId;
+    private NamedButton clearButton;
+    private Label infoLabel;
+    private boolean emailSent;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
@@ -128,11 +136,15 @@ public class ReportMail extends Composite implements ClickHandler {
         fp.add(bodyBox);
         fp.add(richEditorWithToolbar);
         mainTable.setWidget(3, 1, fp);
+        mainTable.getFlexCellFormatter().setColSpan(3, 1, 2);
 
         attachButton = new NamedButton("attach_files", elements.attach_files());
         attachButton.addClickHandler(this);
 
         addHeaderFooterSelects(mainTable, 4);
+        infoLabel = new Label();
+        infoLabel.addStyleName("nowrap");
+        mainTable.setWidget(4, 2, infoLabel);
 
         attachedFiles = new FlexTable();
         attachedFiles.setStyleName("insidetable");
@@ -196,10 +208,18 @@ public class ReportMail extends Composite implements ClickHandler {
         reSendButton.addClickHandler(this);
         reSendButton.setEnabled(false);
 
+        archiveButton = new NamedButton("mail_archive", elements.email_archive());
+        archiveButton.addClickHandler(this);
+
+        clearButton = new NamedButton("mail_clear", elements.clear());
+        clearButton.addClickHandler(this);
+
         FlowPanel fp = new FlowPanel();
 
         fp.add(sendButton);
         fp.add(reSendButton);
+        fp.add(archiveButton);
+        fp.add(clearButton);
 
         mainTable.setWidget(row, 1, fp);
     }
@@ -345,6 +365,8 @@ public class ReportMail extends Composite implements ClickHandler {
 
         if (ok) {
             clearSendToTable();
+            emailSent = true;
+            saveDraftIfNeeded();
 
             sendEmails();
         }
@@ -391,7 +413,38 @@ public class ReportMail extends Composite implements ClickHandler {
                 bodyBox.setVisible(true);
                 richEditorWithToolbar.setVisible(false);
             }
+        } else if (sender == archiveButton) {
+            openArchiveDialog();
+        } else if (sender == clearButton) {
+            clearEmail();
         }
+    }
+
+    private void clearEmail() {
+
+        boolean ok = Window.confirm(messages.confirm_clear());
+
+        if (!ok) {
+            return;
+        }
+
+        doClearEmail();
+    }
+
+    private void doClearEmail() {
+        emailSent = false;
+        archiveId = null;
+        bodyBox.setText("");
+        richBodyBox.setText("");
+        titleBox.setText("");
+        infoLabel.setText("");
+        savedHash = 0;
+    }
+
+    private void openArchiveDialog() {
+        timer.cancel();
+        EmailArchivePopup archivePopup = new EmailArchivePopup(this, elements, constants, messages);
+        archivePopup.init();
     }
 
     private void resendFailedEmails() {
@@ -478,19 +531,6 @@ public class ReportMail extends Composite implements ClickHandler {
             sendOneEmail();
         }
 
-        private String getFixedEmailText() {
-            if (radioFormatHTML.getValue()) {
-                String html = richBodyBox.getHTML();
-                
-                html = html.replace("\n", "");
-                html = html.replace("<br", "\n<br");
-                html = html.replace("</p", "\n</p");
-                
-                return URL.encode(html);
-            }
-            return URL.encode(bodyBox.getText());
-        }
-
         private void sendOneEmail() {
             if (pause) {
                 return;
@@ -509,13 +549,9 @@ public class ReportMail extends Composite implements ClickHandler {
 
             mailRequest.append("action=" + (simulate ? "simulatemail" : "email"));
             Util.addPostParam(mailRequest, "personid", personId);
-            Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
             Util.addPostParam(mailRequest, "email", email);
-            Util.addPostParam(mailRequest, "body", emailText);
+            fillEmailText(mailRequest, emailText);
             Util.addPostParam(mailRequest, "attachments", attachmentsAsJSONString);
-            Util.addPostParam(mailRequest, "format", getFormat());
-            Util.addPostParam(mailRequest, "header", Util.getSelected(headerSelect));
-            Util.addPostParam(mailRequest, "footer", Util.getSelected(footerSelect));
 
             ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
@@ -704,6 +740,68 @@ public class ReportMail extends Composite implements ClickHandler {
 
         AuthResponder.get(constants, messages, callback, "registers/emailcontent.php?action=report_init");
 
+        setupTimer();
+
+    }
+
+    private void setupTimer() {
+        timer = new Timer() {
+
+            @Override
+            public void run() {
+                if (!reportInstance.isVisible()) {
+                    timer.cancel();
+                    return;
+                }
+                try {
+                    saveDraftIfNeeded();
+                } catch (Exception e) {
+                    Util.log(e.toString());
+                }
+            }
+
+        };
+        timer.scheduleRepeating(60 * 1000);
+    }
+
+    protected void saveDraftIfNeeded() {
+        String stringToHash = radioFormatHTML.getValue() ? richBodyBox.getText() : bodyBox.getText();
+
+        if (stringToHash.trim().length() == 0) {
+            return;
+        }
+        int newHash = stringToHash.hashCode();
+
+        Util.log("Hash is:" + newHash);
+        if (savedHash == newHash) {
+            return;
+        }
+
+        savedHash = newHash;
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject object = responseObj.isObject();
+                archiveId = Util.getInt(object.get("insert_id"));
+
+                infoLabel.setText(messages.draft_saved(new Date().toString()));
+
+            }
+        };
+
+        StringBuffer params = new StringBuffer();
+        params.append("action=archive_save");
+
+        fillEmailText(params, getFixedEmailText());
+        Util.addPostParam(params, "sent", emailSent ? "1" : "0");
+        
+        if (archiveId != null) {
+            Util.addPostParam(params, "id", String.valueOf(archiveId));
+        }
+
+        AuthResponder.post(constants, messages, callback, params, "reports/email.php");
+
     }
 
     protected void fill(ListBoxWithErrorText listbox, JSONValue content) {
@@ -718,6 +816,63 @@ public class ReportMail extends Composite implements ClickHandler {
             JSONObject one = array.get(i).isObject();
             listbox.addItem(one.get("name"), one.get("id"));
         }
+    }
+
+    private void fillEmailText(StringBuffer mailRequest, String emailText) {
+        Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
+        Util.addPostParam(mailRequest, "body", emailText);
+        Util.addPostParam(mailRequest, "format", getFormat());
+        Util.addPostParam(mailRequest, "header", Util.getSelected(headerSelect));
+        Util.addPostParam(mailRequest, "footer", Util.getSelected(footerSelect));
+    }
+
+    private String getFixedEmailText() {
+        if (radioFormatHTML.getValue()) {
+            String html = richBodyBox.getHTML();
+
+            html = html.replace("\n", "");
+            html = html.replace("<br", "\n<br");
+            html = html.replace("</p", "\n</p");
+
+            return URL.encode(html);
+        }
+        return URL.encode(bodyBox.getText());
+    }
+
+    public void editEmail(JSONObject object) {
+        doClearEmail();
+
+        archiveId = Util.getInt(object.get("id"));
+        titleBox.setText(Util.str(object.get("subject")));
+
+        String format = Util.str(object.get("format"));
+
+        if (format.equals(PLAIN)) {
+            bodyBox.setVisible(true);
+            richEditorWithToolbar.setVisible(false);
+            radioFormatPlain.setValue(true);
+        } else if (format.equals(HTML)) {
+            bodyBox.setVisible(false);
+            richEditorWithToolbar.setVisible(true);
+            radioFormatHTML.setValue(true);
+        } else if (format.equals(WIKI)) {
+            radioFormatWiki.setValue(true);
+            richEditorWithToolbar.setVisible(false);
+            radioFormatPlain.setValue(true);
+        }
+
+        if (radioFormatHTML.getValue()) {
+            richBodyBox.setHTML(Util.str(object.get("body")));
+        } else {
+            bodyBox.setText(Util.str(object.get("body")));
+        }
+
+        String header = Util.str(object.get("header"));
+        String footer = Util.str(object.get("footer"));
+
+        Util.setIndexByValue(headerSelect.getListbox(), header);
+        Util.setIndexByValue(footerSelect.getListbox(), footer);
+        setupTimer();
     }
 
 }
