@@ -20,11 +20,13 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -89,7 +91,10 @@ public class AdminInstallsView extends Composite implements ClickHandler {
     protected void fillInstalls(JSONArray array) {
         for (int i = 0; i < array.size(); i++) {
             JSONObject obj = array.get(i).isObject();
-            table.setText(i + 2, 0, Util.str(obj.get("hostprefix")));
+
+            String hostprefix = Util.str(obj.get("hostprefix"));
+            table.setWidget(i + 2, 0, new Anchor(hostprefix, "http://" + hostprefix
+                    + ".frittregnskap.no/prg/AccountingGWT.html", "_blank"));
             table.setText(i + 2, 1, Util.str(obj.get("dbprefix")));
             table.setText(i + 2, 2, Util.str(obj.get("db")));
             table.setText(i + 2, 3, Util.str(obj.get("description")));
@@ -182,6 +187,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private TextBoxWithErrorText archiveLimit;
 
+        private FocusWidget sendPortalActivationLetter;
+
         AdminInstallEditFields() {
             setText(elements.project());
             edittable = new FlexTable();
@@ -220,7 +227,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             portalTitle = new TextBoxWithErrorText("portal_title");
             archiveLimit = new TextBoxWithErrorText("archive_limit");
-            
+
             edittable.setWidget(0, 1, hostprefixBox);
             edittable.setWidget(3, 1, descriptionBox);
             edittable.setWidget(4, 1, wikiLogin);
@@ -242,7 +249,11 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             sendWelcomeLetter = new NamedButton("admin_send_welcome_letter", elements.admin_send_welcome_letter());
             sendWelcomeLetter.addClickHandler(this);
-            
+
+            sendPortalActivationLetter = new NamedButton("admin_send_portal_activation_letter", elements
+                    .admin_send_portal_letter());
+            sendPortalActivationLetter.addClickHandler(this);
+
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
 
@@ -251,8 +262,9 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             buttonPanel.add(cancelButton);
             buttonPanel.add(deleteButton);
             buttonPanel.add(sendWelcomeLetter);
-            buttonPanel.add(mainErrorLabel);
+            buttonPanel.add(sendPortalActivationLetter);
             dp.add(buttonPanel, DockPanel.NORTH);
+            dp.add(mainErrorLabel, DockPanel.NORTH);
             setWidget(dp);
         }
 
@@ -268,7 +280,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             Util.setIndexByValue(statusListbox.getListbox(), Util.str(obj.get("portal_status")));
             portalTitle.setText(Util.str(obj.get("portal_title")));
             archiveLimit.setText(Util.strSkipNull(obj.get("archive_limit")));
-            
+
             currentId = Util.str(obj.get("id"));
 
         }
@@ -281,11 +293,28 @@ public class AdminInstallsView extends Composite implements ClickHandler {
                 doSave();
             } else if (sender == deleteButton) {
                 doDelete();
-            } else if(sender == sendWelcomeLetter) {
+            } else if (sender == sendWelcomeLetter) {
                 doSendWelcomeLetter();
+            } else if (sender == sendPortalActivationLetter) {
+                doSendPortalLetter();
             }
         }
 
+        private void doSendPortalLetter() {
+            boolean choice = Window.confirm(messages.confirm_send_portal_letter());
+            
+            if (choice) {
+                ServerResponse callback = new ServerResponse() {
+                    
+                    public void serverResponse(JSONValue responseObj) {
+                        mainErrorLabel.setText(messages.sendt_portal_letter());
+                    }
+                };
+                AuthResponder.get(constants, messages, callback, "admin/installs.php?action=sendPortalLetter&id="
+                        + this.currentId);
+                
+            }
+        }
         private void doSendWelcomeLetter() {
             boolean choice = Window.confirm(messages.confirm_send_welcome_letter());
 
@@ -298,9 +327,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
                 };
                 AuthResponder.get(constants, messages, callback, "admin/installs.php?action=sendWelcomeLetter&id="
                         + this.currentId);
-                
+
             }
-            
         }
 
         private void doDelete() {

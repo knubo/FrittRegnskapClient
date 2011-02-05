@@ -88,6 +88,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String confirm_import_person();
 
   /**
+   * Translated "Vil du sende ut portalaktiveringsbrev?".
+   * 
+   * @return translated "Vil du sende ut portalaktiveringsbrev?"
+   */
+  @DefaultMessage("Vil du sende ut portalaktiveringsbrev?")
+  @Key("confirm_send_portal_letter")
+  String confirm_send_portal_letter();
+
+  /**
    * Translated "Vil du sende ut velkomstbrev?".
    * 
    * @return translated "Vil du sende ut velkomstbrev?"
@@ -680,6 +689,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Du må ha tilgang til å lese hemmelige adresser for å kunne endre tilgang for dem.")
   @Key("secret_no_access")
   String secret_no_access();
+
+  /**
+   * Translated "Portalaktiveringsbrev sendt.".
+   * 
+   * @return translated "Portalaktiveringsbrev sendt."
+   */
+  @DefaultMessage("Portalaktiveringsbrev sendt.")
+  @Key("sendt_portal_letter")
+  String sendt_portal_letter();
 
   /**
    * Translated "Velkomstbrev sendt.".
