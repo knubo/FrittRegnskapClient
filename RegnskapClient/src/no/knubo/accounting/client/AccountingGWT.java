@@ -30,6 +30,7 @@ import no.knubo.accounting.client.views.YearEndView;
 import no.knubo.accounting.client.views.admin.AdminInstallsView;
 import no.knubo.accounting.client.views.admin.AdminOperationsView;
 import no.knubo.accounting.client.views.admin.AdminSQLView;
+import no.knubo.accounting.client.views.admin.AdminStatsView;
 import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.exportimport.AccountExportView;
@@ -218,6 +219,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(adminMenu, elements.menuitem_admin_installs(), WidgetIds.ADMIN_INSTALLS);
             addMenuItem(adminMenu, elements.menuitem_admin_sql(), WidgetIds.ADMIN_SQL);
             addMenuItem(adminMenu, elements.menuitem_admin_operations(), WidgetIds.ADMIN_OPERATIONS);
+            addMenuItem(adminMenu, elements.menuitem_admin_stats(), WidgetIds.ADMIN_STATS);
         }
 
         new Commando(this, WidgetIds.ABOUT, elements.menuitem_about()).execute();
@@ -454,6 +456,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case ADMIN_INSTALLS:
                 widget = AdminInstallsView.show(messages, constants, elements);
                 ((AdminInstallsView) widget).init();
+                break;
+            case ADMIN_STATS:
+                widget = AdminStatsView.show(messages, constants, elements);
+                ((AdminStatsView) widget).init();
                 break;
             case ADMIN_SQL:
                 widget = AdminSQLView.show(messages, constants, elements);

@@ -2266,6 +2266,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_admin_sql();
 
   /**
+   * Translated "Statistikk".
+   * 
+   * @return translated "Statistikk"
+   */
+  @DefaultStringValue("Statistikk")
+  @Key("menuitem_admin_stats")
+  String menuitem_admin_stats();
+
+  /**
    * Translated "Sikkerhetskopi".
    * 
    * @return translated "Sikkerhetskopi"
@@ -4100,6 +4109,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("År")
   @Key("year")
   String year();
+
+  /**
+   * Translated "Antall år".
+   * 
+   * @return translated "Antall år"
+   */
+  @DefaultStringValue("Antall år")
+  @Key("year_count")
+  String year_count();
 
   /**
    * Translated "Årsmedlemskap".
