@@ -37,4 +37,6 @@ public interface ViewCallback {
     public void openView(WidgetIds view, String title);
 
     public void openMassletterEditSimple(String filename, String response);
+
+    public void setReducedMode(int mode);
 }

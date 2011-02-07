@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class AboutView extends Composite implements ClickHandler {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "2.13";
+    public static final String CLIENT_VERSION = "2.14";
 
     private static AboutView instance;
 
@@ -54,7 +54,7 @@ public class AboutView extends Composite implements ClickHandler {
 
     private final Elements elements;
 
-    private final ViewCallback callback;
+    private final ViewCallback caller;
 
     private HTML hintLabel;
 
@@ -132,7 +132,8 @@ public class AboutView extends Composite implements ClickHandler {
                 }
 
                 AccountingGWT.canSeeSecret = Util.getBoolean(object.get("see_secret"));
-
+                caller.setReducedMode(Util.getInt(object.get("reduced_mode")));
+                
                 enrichDashboard(object.get("info").isObject(), object.get("accountstatus"));
             }
         };
@@ -290,7 +291,7 @@ public class AboutView extends Composite implements ClickHandler {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
-        this.callback = callback;
+        this.caller = callback;
         this.helpTexts = helpTexts;
 
         FlowPanel dashboard = new FlowPanel();
@@ -384,16 +385,16 @@ public class AboutView extends Composite implements ClickHandler {
 
     private void switchTo(String text) {
         if (text.equals(messages.dashboard_long_time_no_accounting())) {
-            callback.openView(WidgetIds.SHOW_MONTH, text);
+            caller.openView(WidgetIds.SHOW_MONTH, text);
         } else if (text.equals(messages.dashboard_missing_next_semester())) {
-            callback.openView(WidgetIds.EDIT_SEMESTER, text);
+            caller.openView(WidgetIds.EDIT_SEMESTER, text);
         } else if (text.equals(messages.dashboard_missing_semester_price_current())
                 || text.equals(messages.dashboard_missing_semester_price_next())
                 || text.equals(messages.dashboard_missing_year_price_current())
                 || text.equals(messages.dashboard_missing_year_price_next())) {
-            callback.openView(WidgetIds.EDIT_PRICES, text);
+            caller.openView(WidgetIds.EDIT_PRICES, text);
         } else if (text.equals(messages.dashboard_long_since_last_backup())) {
-            callback.openView(WidgetIds.BACKUP, text);
+            caller.openView(WidgetIds.BACKUP, text);
         }
 
     }

@@ -98,6 +98,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     private static Image loadingImage;
 
     public static boolean canSeeSecret;
+    protected int reducedMode;
+
+    private MenuBar showMenu;
+    private MenuBar peopleMenu;
+    private MenuBar trustMenu;
+    private MenuBar reportsMenu;
+    private MenuBar settingsMenu;
+    private MenuBar topMenu;
 
     /**
      * This is the entry point method.
@@ -114,7 +122,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         docPanel.setWidth("100%");
         docPanel.setHeight("100%");
 
-        MenuBar topMenu = new MenuBar();
+        topMenu = new MenuBar();
         topMenu.setWidth("100%");
         blankImage = ImageFactory.blankImage(16, 16);
         blankImage.setVisible(true);
@@ -132,15 +140,28 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         docPanel.add(helpPanel, DockPanel.EAST);
         docPanel.setCellWidth(helpPanel, "100%");
 
+        new Commando(this, WidgetIds.ABOUT, elements.menuitem_about()).execute();
+
+        RootPanel.get().add(docPanel);
+    }
+
+    private void setupMenu(MenuBar topMenu) {
         MenuBar registerMenu = addTopMenu(topMenu, elements.menu_register());
-        MenuBar showMenu = addTopMenu(topMenu, elements.menu_show());
-        MenuBar peopleMenu = addTopMenu(topMenu, elements.menu_people());
+        showMenu = addTopMenu(topMenu, elements.menu_show());
+        peopleMenu = addTopMenu(topMenu, elements.menu_people());
         MenuBar budgetMenu = addTopMenu(topMenu, elements.menu_budget());
-        MenuBar trustMenu = addTopMenu(topMenu, elements.menu_trust());
-        MenuBar reportsMenu = addTopMenu(topMenu, elements.menu_reports());
-        MenuBar settingsMenu = addTopMenu(topMenu, elements.menu_settings());
+
+        if (reducedMode == 0) {
+            trustMenu = addTopMenu(topMenu, elements.menu_trust());
+        }
+        reportsMenu = addTopMenu(topMenu, elements.menu_reports());
+        settingsMenu = addTopMenu(topMenu, elements.menu_settings());
         MenuBar importExportMenu = addTopMenu(topMenu, elements.menu_export_import());
-        MenuBar portalMenu = addTopMenu(topMenu, elements.menu_portal());
+        MenuBar portalMenu = null;
+
+        if (reducedMode == 0) {
+            portalMenu = addTopMenu(topMenu, elements.menu_portal());
+        }
 
         MenuBar adminMenu = null;
         if (Window.Location.getHostName().startsWith("master.")) {
@@ -151,7 +172,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar aboutMenu = addTopMenu(topMenu, elements.menu_info());
 
         addMenuItem(registerMenu, elements.menuitem_regline(), WidgetIds.LINE_EDIT_VIEW);
-        addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
+
+        if (reducedMode == 0) {
+            addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
+        }
+
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
         addMenuItem(registerMenu, elements.menuitem_endmonth(), WidgetIds.END_MONTH);
         addMenuItem(registerMenu, elements.menuitem_endsemester(), WidgetIds.END_SEMESTER);
@@ -159,54 +184,74 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(showMenu, elements.menuitem_showmonth(), WidgetIds.SHOW_MONTH);
         addMenuItem(showMenu, elements.menuitem_showmonthdetails(), WidgetIds.SHOW_MONTH_DETAILS);
-        addMenuItem(showMenu, elements.menuitem_showallmembers(), WidgetIds.SHOW_ALL_MEMBERS);
-        addMenuItem(showMenu, elements.menuitem_showmembers(), WidgetIds.SHOW_MEMBERS);
-        addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
-        addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
+        if (reducedMode == 0) {
+            addMenuItem(showMenu, elements.menuitem_showallmembers(), WidgetIds.SHOW_ALL_MEMBERS);
+            addMenuItem(showMenu, elements.menuitem_showmembers(), WidgetIds.SHOW_MEMBERS);
+            addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
+            addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
+        }
 
         addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
         addMenuItem(peopleMenu, elements.menuitem_findperson(), WidgetIds.FIND_PERSON);
 
-        addMenuItem(trustMenu, elements.menuitem_truststatus(), WidgetIds.TRUST_STATUS);
+        if (reducedMode == 0) {
+            addMenuItem(trustMenu, elements.menuitem_truststatus(), WidgetIds.TRUST_STATUS);
+        }
 
         addMenuItem(budgetMenu, elements.menuitem_budget(), WidgetIds.BUDGET);
         addMenuItem(budgetMenu, elements.menuitem_budgetsimple(), WidgetIds.BUDGET_SIMPLE_TRACKING);
 
-        addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
-        addMenuItem(reportsMenu, elements.menuitem_report_member_per_year_gender(),
-                WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
-
-        addMenuItem(reportsMenu, elements.menuitem_report_addresses(), WidgetIds.REPORT_ADDRESSES);
+        if (reducedMode == 0) {
+            addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
+            addMenuItem(reportsMenu, elements.menuitem_report_member_per_year_gender(),
+                    WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
+            addMenuItem(reportsMenu, elements.menuitem_report_addresses(), WidgetIds.REPORT_ADDRESSES);
+        }
         addMenuItem(reportsMenu, elements.menuitem_report_selectedlines(), WidgetIds.REPORT_SELECTEDLINES);
-        addMenuItem(reportsMenu, elements.menuitem_report_letter(), WidgetIds.REPORT_LETTER);
-        addMenuItem(reportsMenu, elements.menuitem_report_email(), WidgetIds.REPORT_EMAIL);
-        addMenuItem(reportsMenu, elements.menuitem_report_users_email(), WidgetIds.REPORT_USERS_EMAIL);
+
+        if (reducedMode == 0) {
+            addMenuItem(reportsMenu, elements.menuitem_report_letter(), WidgetIds.REPORT_LETTER);
+            addMenuItem(reportsMenu, elements.menuitem_report_email(), WidgetIds.REPORT_EMAIL);
+            addMenuItem(reportsMenu, elements.menuitem_report_users_email(), WidgetIds.REPORT_USERS_EMAIL);
+        }
         addMenuItem(reportsMenu, elements.menuitem_report_accounttrack(), WidgetIds.REPORT_ACCOUNTTRACK);
 
         addMenuItem(reportsMenu, elements.menuitem_report_year(), WidgetIds.REPORT_YEAR);
         addMenuItem(reportsMenu, elements.menuitem_report_earnings_year(), WidgetIds.REPORT_EARNINGS_YEAR);
 
-        addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
-
-        addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
+        if (reducedMode == 0) {
+            addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
+            addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
+        }
         addMenuItem(settingsMenu, elements.menuitem_email_settings(), WidgetIds.EDIT_EMAIL_CONTENT);
-        addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
-        addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(), WidgetIds.EDIT_TRUST_ACTIONS);
+        if (reducedMode == 0) {
+            addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
+        }
+        if (reducedMode == 0) {
+            addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(), WidgetIds.EDIT_TRUST_ACTIONS);
+        }
         addMenuItem(settingsMenu, elements.menuitem_accounts(), WidgetIds.EDIT_ACCOUNTS);
         addMenuItem(settingsMenu, elements.menuitem_accounttrack(), WidgetIds.EDIT_ACCOUNTTRACK);
-        addMenuItem(settingsMenu, elements.menuitem_membership_prices(), WidgetIds.EDIT_PRICES);
+        if (reducedMode == 0) {
+            addMenuItem(settingsMenu, elements.menuitem_membership_prices(), WidgetIds.EDIT_PRICES);
+        }
         addMenuItem(settingsMenu, elements.menuitem_projects(), WidgetIds.EDIT_PROJECTS);
         addMenuItem(settingsMenu, elements.menuitem_semesters(), WidgetIds.EDIT_SEMESTER);
         addMenuItem(settingsMenu, elements.menuitem_edit_happening(), WidgetIds.EDIT_HAPPENING);
         addMenuItem(settingsMenu, elements.menuitem_values(), WidgetIds.SETTINGS);
 
-        addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
-        addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
+        if (reducedMode == 0) {
+            addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
+            addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
+        }
+
         addMenuItem(importExportMenu, elements.menuitem_export_accounting(), WidgetIds.EXPORT_ACCOUNTING);
 
-        addMenuItem(portalMenu, elements.menuitem_portal_settings(), WidgetIds.PORTAL_SETTINGS);
-        addMenuItem(portalMenu, elements.menuitem_portal_members(), WidgetIds.PORTAL_MEMBERLIST);
-        addMenuItem(portalMenu, elements.menuitem_portal_profilegallery(), WidgetIds.PORTAL_PROFILE_GALLERY);
+        if (reducedMode == 0) {
+            addMenuItem(portalMenu, elements.menuitem_portal_settings(), WidgetIds.PORTAL_SETTINGS);
+            addMenuItem(portalMenu, elements.menuitem_portal_members(), WidgetIds.PORTAL_MEMBERLIST);
+            addMenuItem(portalMenu, elements.menuitem_portal_profilegallery(), WidgetIds.PORTAL_PROFILE_GALLERY);
+        }
 
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_calculator(), WidgetIds.CALCULATOR);
@@ -221,10 +266,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(adminMenu, elements.menuitem_admin_operations(), WidgetIds.ADMIN_OPERATIONS);
             addMenuItem(adminMenu, elements.menuitem_admin_stats(), WidgetIds.ADMIN_STATS);
         }
-
-        new Commando(this, WidgetIds.ABOUT, elements.menuitem_about()).execute();
-
-        RootPanel.get().add(docPanel);
     }
 
     private void addMenuItem(MenuBar menu, String title, WidgetIds widgetId) {
@@ -486,7 +527,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case PORTAL_PROFILE_GALLERY:
                 widget = PortalGallery.getInstance(constants, messages, elements);
-                ((PortalGallery)widget).init();
+                ((PortalGallery) widget).init();
                 break;
             case PORTAL_SETTINGS:
                 widget = PortalSettings.getInstance(constants, messages, elements);
@@ -616,4 +657,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     }
 
+    public void setReducedMode(int v) {
+        reducedMode = v;
+        Util.log("Reduced mode:" + v);
+
+        setupMenu(topMenu);
+    }
 }
