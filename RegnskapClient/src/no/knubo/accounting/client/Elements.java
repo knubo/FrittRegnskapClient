@@ -322,6 +322,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_open_site();
 
   /**
+   * Translated "Forelder".
+   * 
+   * @return translated "Forelder"
+   */
+  @DefaultStringValue("Forelder")
+  @Key("admin_parentdbprefix")
+  String admin_parentdbprefix();
+
+  /**
+   * Translated "Redusert".
+   * 
+   * @return translated "Redusert"
+   */
+  @DefaultStringValue("Redusert")
+  @Key("admin_reduced_mode")
+  String admin_reduced_mode();
+
+  /**
    * Translated "Registrer SQL".
    * 
    * @return translated "Registrer SQL"

@@ -55,7 +55,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table = new FlexTable();
         table.setStyleName("tableborder");
         table.setHTML(0, 0, elements.admin_installs());
-        table.getFlexCellFormatter().setColSpan(0, 0, 11);
+        table.getFlexCellFormatter().setColSpan(0, 0, 13);
 
         table.setHTML(1, 0, elements.admin_hostprefix());
         table.setHTML(1, 1, elements.admin_dbprefix());
@@ -67,7 +67,9 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table.setHTML(1, 7, elements.status());
         table.setHTML(1, 8, elements.portal_title());
         table.setHTML(1, 9, elements.admin_archive_limit());
-        table.setHTML(1, 10, "");
+        table.setHTML(1, 10, elements.admin_reduced_mode());
+        table.setHTML(1, 11, elements.admin_parentdbprefix());
+        table.setHTML(1, 12, "");
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
         initWidget(table);
@@ -104,9 +106,11 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             table.setText(i + 2, 7, statusAsString(Util.getInt(obj.get("portal_status"))));
             table.setText(i + 2, 8, Util.str(obj.get("portal_title")));
             table.setText(i + 2, 9, Util.strSkipNull(obj.get("archive_limit")));
+            table.setText(i + 2, 10, Util.strSkipNull(obj.get("reduced_mode")));
+            table.setText(i + 2, 11, Util.strSkipNull(obj.get("parentdbprefix")));
             Image image = ImageFactory.editImage("edit" + Util.str(obj.get("id")));
             image.addClickHandler(this);
-            table.setWidget(i + 2, 10, image);
+            table.setWidget(i + 2, 12, image);
 
             table.getCellFormatter().addStyleName(i + 2, 5, "right");
 
@@ -189,6 +193,10 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private FocusWidget sendPortalActivationLetter;
 
+        private TextBoxWithErrorText parentdbprefix;
+
+        private TextBoxWithErrorText reducedMode;
+
         AdminInstallEditFields() {
             setText(elements.project());
             edittable = new FlexTable();
@@ -204,6 +212,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             edittable.setHTML(7, 0, elements.status());
             edittable.setHTML(8, 0, elements.portal_title());
             edittable.setHTML(9, 0, elements.admin_archive_limit());
+            edittable.setHTML(10, 0, elements.admin_reduced_mode());
+            edittable.setHTML(11, 0, elements.admin_parentdbprefix());
 
             hostprefixBox = new TextBoxWithErrorText("hostprefix");
             hostprefixBox.setMaxLength(40);
@@ -228,6 +238,9 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             portalTitle = new TextBoxWithErrorText("portal_title");
             archiveLimit = new TextBoxWithErrorText("archive_limit");
 
+            reducedMode = new TextBoxWithErrorText("reducedmode");
+            parentdbprefix = new TextBoxWithErrorText("parentdbprefix");
+
             edittable.setWidget(0, 1, hostprefixBox);
             edittable.setWidget(3, 1, descriptionBox);
             edittable.setWidget(4, 1, wikiLogin);
@@ -236,6 +249,9 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             edittable.setWidget(7, 1, statusListbox);
             edittable.setWidget(8, 1, portalTitle);
             edittable.setWidget(9, 1, archiveLimit);
+            edittable.setWidget(10, 1, reducedMode);
+            edittable.setWidget(11, 1, parentdbprefix);
+
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
@@ -281,6 +297,9 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             portalTitle.setText(Util.str(obj.get("portal_title")));
             archiveLimit.setText(Util.strSkipNull(obj.get("archive_limit")));
 
+            reducedMode.setText(Util.strSkipNull(obj.get("reduced_mode")));
+            parentdbprefix.setText(Util.strSkipNull(obj.get("parentdbprefix")));
+
             currentId = Util.str(obj.get("id"));
 
         }
@@ -302,19 +321,20 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private void doSendPortalLetter() {
             boolean choice = Window.confirm(messages.confirm_send_portal_letter());
-            
+
             if (choice) {
                 ServerResponse callback = new ServerResponse() {
-                    
+
                     public void serverResponse(JSONValue responseObj) {
                         mainErrorLabel.setText(messages.sendt_portal_letter());
                     }
                 };
                 AuthResponder.get(constants, messages, callback, "admin/installs.php?action=sendPortalLetter&id="
                         + this.currentId);
-                
+
             }
         }
+
         private void doSendWelcomeLetter() {
             boolean choice = Window.confirm(messages.confirm_send_welcome_letter());
 
@@ -361,6 +381,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             Util.addPostParam(sb, "portal_status", statusListbox.getText());
             Util.addPostParam(sb, "portal_title", portalTitle.getText());
             Util.addPostParam(sb, "archive_limit", archiveLimit.getText());
+            Util.addPostParam(sb, "parentdbprefix", parentdbprefix.getText());
+            Util.addPostParam(sb, "reduced_mode", reducedMode.getText());
 
             ServerResponse callback = new ServerResponse() {
 
