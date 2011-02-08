@@ -196,6 +196,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_closed();
 
   /**
+   * Translated "Klubbnavn".
+   * 
+   * @return translated "Klubbnavn"
+   */
+  @DefaultStringValue("Klubbnavn")
+  @Key("admin_clubname")
+  String admin_clubname();
+
+  /**
+   * Translated "Kontaktperson".
+   * 
+   * @return translated "Kontaktperson"
+   */
+  @DefaultStringValue("Kontaktperson")
+  @Key("admin_contact")
+  String admin_contact();
+
+  /**
    * Translated "Installer fra betaversjonen til alle systemene".
    * 
    * @return translated "Installer fra betaversjonen til alle systemene"
@@ -257,6 +275,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Kjør for alle")
   @Key("admin_do_runinmain")
   String admin_do_runinmain();
+
+  /**
+   * Translated "Domenenavn".
+   * 
+   * @return translated "Domenenavn"
+   */
+  @DefaultStringValue("Domenenavn")
+  @Key("admin_domain")
+  String admin_domain();
 
   /**
    * Translated "Host prefix".
@@ -401,6 +428,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Send velkomstbrev")
   @Key("admin_send_welcome_letter")
   String admin_send_welcome_letter();
+
+  /**
+   * Translated "Superbruker".
+   * 
+   * @return translated "Superbruker"
+   */
+  @DefaultStringValue("Superbruker")
+  @Key("admin_superuser")
+  String admin_superuser();
 
   /**
    * Translated "Verifisert".
@@ -2930,6 +2966,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Inngi konto og beløp")
   @Key("new_init_account")
   String new_init_account();
+
+  /**
+   * Translated "Nytt regnskapssystem".
+   * 
+   * @return translated "Nytt regnskapssystem"
+   */
+  @DefaultStringValue("Nytt regnskapssystem")
+  @Key("new_install")
+  String new_install();
 
   /**
    * Translated "Nytt massebrev".

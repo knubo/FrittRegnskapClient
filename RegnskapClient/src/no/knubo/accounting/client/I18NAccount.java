@@ -25,6 +25,24 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String add_member_day_require_action();
 
   /**
+   * Translated "Domenet er allerede tatt".
+   * 
+   * @return translated "Domenet er allerede tatt"
+   */
+  @DefaultMessage("Domenet er allerede tatt")
+  @Key("admin_error_domain")
+  String admin_error_domain();
+
+  /**
+   * Translated "Ukjent wikilogin".
+   * 
+   * @return translated "Ukjent wikilogin"
+   */
+  @DefaultMessage("Ukjent wikilogin")
+  @Key("admin_error_wikilogin")
+  String admin_error_wikilogin();
+
+  /**
    * Translated "Bilaget er benyttet tidligere.".
    * 
    * @return translated "Bilaget er benyttet tidligere."

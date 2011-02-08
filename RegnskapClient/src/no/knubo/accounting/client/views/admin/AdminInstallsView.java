@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AdminInstallsView extends Composite implements ClickHandler {
@@ -39,6 +40,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
     private FlexTable table;
     private final Elements elements;
     private AdminInstallEditFields editFields;
+    private NamedButton newButton;
 
     public static AdminInstallsView show(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
@@ -72,7 +74,13 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table.setHTML(1, 12, "");
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
-        initWidget(table);
+        
+        VerticalPanel vp = new VerticalPanel();
+        newButton = new NamedButton("new_install", elements.new_install());
+        newButton.addClickHandler(this);
+        vp.add(newButton);
+        vp.add(table);
+        initWidget(vp);
     }
 
     public void init() {
@@ -136,6 +144,11 @@ public class AdminInstallsView extends Composite implements ClickHandler {
     }
 
     public void onClick(ClickEvent event) {
+        if(event.getSource() == newButton) {
+            new NewInstallPopup(this, messages, elements, constants);
+            return;
+        }
+        
         Image image = (Image) event.getSource();
 
         String idWithEdit = DOM.getElementAttribute(image.getElement(), "id");
@@ -411,5 +424,6 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         }
 
     }
+
 
 }
