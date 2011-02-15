@@ -3,7 +3,6 @@ package no.knubo.accounting.client.views.portal;
 import java.util.HashSet;
 
 import no.knubo.accounting.client.Constants;
-import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
@@ -26,7 +25,7 @@ public class PortalGallery extends Composite {
     protected JSONArray objectsWithIds;
     private VerticalPanel panel;
 
-    public PortalGallery(Constants constants, I18NAccount messages, Elements elements) {
+    public PortalGallery(Constants constants, I18NAccount messages) {
         this.constants = constants;
         this.messages = messages;
         
@@ -35,9 +34,9 @@ public class PortalGallery extends Composite {
         initWidget(panel);
     }
 
-    public static PortalGallery getInstance(Constants constants, I18NAccount messages, Elements elements) {
+    public static PortalGallery getInstance(Constants constants, I18NAccount messages) {
         if (me == null) {
-            me = new PortalGallery(constants, messages, elements);
+            me = new PortalGallery(constants, messages);
         }
         return me;
     }

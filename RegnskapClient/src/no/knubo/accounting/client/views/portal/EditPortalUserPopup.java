@@ -30,7 +30,6 @@ public class EditPortalUserPopup extends DialogBox implements ClickHandler {
     private NamedButton blockAccessButton;
     private NamedButton grantAccessButton;
     private NamedButton delPortalImage;
-    private final JSONObject object;
     private final String id;
     private Image profileImage;
     private final I18NAccount messages;
@@ -41,7 +40,6 @@ public class EditPortalUserPopup extends DialogBox implements ClickHandler {
         this.elements = elements;
         this.constants = constants;
         this.messages = messages;
-        this.object = object;
         this.id = id;
 
         setModal(true);

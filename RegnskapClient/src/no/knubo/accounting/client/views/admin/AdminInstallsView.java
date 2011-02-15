@@ -7,6 +7,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedCheckBox;
@@ -74,7 +75,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table.setHTML(1, 12, "");
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
-        
+
         VerticalPanel vp = new VerticalPanel();
         newButton = new NamedButton("new_install", elements.new_install());
         newButton.addClickHandler(this);
@@ -144,11 +145,11 @@ public class AdminInstallsView extends Composite implements ClickHandler {
     }
 
     public void onClick(ClickEvent event) {
-        if(event.getSource() == newButton) {
+        if (event.getSource() == newButton) {
             new NewInstallPopup(this, messages, elements, constants);
             return;
         }
-        
+
         Image image = (Image) event.getSource();
 
         String idWithEdit = DOM.getElementAttribute(image.getElement(), "id");
@@ -171,6 +172,14 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         };
         AuthResponder.get(constants, messages, callback, "admin/installs.php?action=get&id=" + idWithEdit.substring(4));
 
+    }
+
+    private void doTheLogin(String secret, String domain) {
+        Util.log("Doing login...");
+        String url = "http://" + domain
+                + "/RegnskapServer/services/authenticate.php?action=adminlogin&secret=" + secret;
+
+        Window.Location.assign(url);
     }
 
     class AdminInstallEditFields extends DialogBox implements ClickHandler {
@@ -209,6 +218,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         private TextBoxWithErrorText parentdbprefix;
 
         private TextBoxWithErrorText reducedMode;
+
+        private NamedButton sulogin;
 
         AdminInstallEditFields() {
             setText(elements.project());
@@ -283,10 +294,14 @@ public class AdminInstallsView extends Composite implements ClickHandler {
                     .admin_send_portal_letter());
             sendPortalActivationLetter.addClickHandler(this);
 
+            sulogin = new NamedButton("admin_login", elements.login());
+            sulogin.addClickHandler(this);
+
             mainErrorLabel = new HTML();
             mainErrorLabel.setStyleName("error");
 
             HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.add(sulogin);
             buttonPanel.add(saveButton);
             buttonPanel.add(cancelButton);
             buttonPanel.add(deleteButton);
@@ -329,6 +344,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
                 doSendWelcomeLetter();
             } else if (sender == sendPortalActivationLetter) {
                 doSendPortalLetter();
+            } else if (sender == sulogin) {
+                doSuLogin();
             }
         }
 
@@ -380,6 +397,21 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         }
 
+        public void doSuLogin() {
+            ServerResponse callback = new ServerResponse() {
+
+                public void serverResponse(JSONValue responseObj) {
+                    JSONObject object = responseObj.isObject();
+                    String secret = Util.str(object.get("secret"));
+                    String domain = Util.str(object.get("domain"));
+
+                    doTheLogin(secret, domain);
+                }
+            };
+            AuthResponder.get(constants, messages, callback, "admin/installs.php?action=adminlogin&id="
+                    + this.currentId);
+        }
+
         private void doSave() {
             StringBuffer sb = new StringBuffer();
             sb.append("action=save");
@@ -424,6 +456,5 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         }
 
     }
-
 
 }

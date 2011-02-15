@@ -2491,6 +2491,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_logout();
 
   /**
+   * Translated "Masseregistrer bilag".
+   * 
+   * @return translated "Masseregistrer bilag"
+   */
+  @DefaultStringValue("Masseregistrer bilag")
+  @Key("menuitem_massregister")
+  String menuitem_massregister();
+
+  /**
    * Translated "Priser for medlemskap".
    * 
    * @return translated "Priser for medlemskap"
@@ -2669,6 +2678,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Serverinfo")
   @Key("menuitem_serverinfo")
   String menuitem_serverinfo();
+
+  /**
+   * Translated "Sesjoner".
+   * 
+   * @return translated "Sesjoner"
+   */
+  @DefaultStringValue("Sesjoner")
+  @Key("menuitem_sessioninfo")
+  String menuitem_sessioninfo();
 
   /**
    * Translated "Vis alle medlemskap".

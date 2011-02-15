@@ -16,12 +16,14 @@ import no.knubo.accounting.client.views.HappeningsView;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.LogView;
 import no.knubo.accounting.client.views.LogoutView;
+import no.knubo.accounting.client.views.MassRegisterView;
 import no.knubo.accounting.client.views.MonthAndSemesterEndView;
 import no.knubo.accounting.client.views.MonthDetailsView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonSearchView;
 import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
+import no.knubo.accounting.client.views.SessionsView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.SystemInfoView;
 import no.knubo.accounting.client.views.TrustStatusView;
@@ -172,6 +174,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar aboutMenu = addTopMenu(topMenu, elements.menu_info());
 
         addMenuItem(registerMenu, elements.menuitem_regline(), WidgetIds.LINE_EDIT_VIEW);
+        addMenuItem(registerMenu, elements.menuitem_massregister(), WidgetIds.MASSREGISTER_VIEW);
 
         if (reducedMode == 0) {
             addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
@@ -256,6 +259,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
         addMenuItem(aboutMenu, elements.menuitem_calculator(), WidgetIds.CALCULATOR);
         addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
+        addMenuItem(aboutMenu, elements.menuitem_sessioninfo(), WidgetIds.SESSIONINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
         addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
         addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
@@ -317,6 +321,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case LINE_EDIT_VIEW:
                 widget = LineEditView.show(callback, messages, constants, null, HelpPanel.getInstance(elements,
                         helpTexts), elements);
+                break;
+            case MASSREGISTER_VIEW:
+                widget = MassRegisterView.show(messages, constants, elements);
+                ((MassRegisterView)widget).init();
                 break;
             case REGISTER_MEMBERSHIP:
                 widget = RegisterMembershipView.show(messages, constants, helpPanel, elements);
@@ -464,6 +472,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case SERVERINFO:
                 widget = SystemInfoView.getInstance(constants, messages);
                 break;
+            case SESSIONINFO:
+                widget = SessionsView.getInstance(constants, elements, messages);
+                break;
             case LOGGING:
                 widget = LogView.show(messages, constants, elements);
                 ((LogView) widget).init();
@@ -526,7 +537,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((PortalMemberlist) widget).init();
                 break;
             case PORTAL_PROFILE_GALLERY:
-                widget = PortalGallery.getInstance(constants, messages, elements);
+                widget = PortalGallery.getInstance(constants, messages);
                 ((PortalGallery) widget).init();
                 break;
             case PORTAL_SETTINGS:

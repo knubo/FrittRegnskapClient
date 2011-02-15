@@ -51,7 +51,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
 
         vp.add(new Label(elements.admin_new_sql()));
         insertSQLText = new NamedTextArea("newsql");
-        insertSQLText.setSize("40em", "3em");
+        insertSQLText.setSize("40em", "10em");
         vp.add(insertSQLText);
         insertButton = new NamedButton("sql_insert", elements.add());
         insertButton.addClickHandler(this);

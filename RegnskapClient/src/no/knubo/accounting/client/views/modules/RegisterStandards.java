@@ -53,9 +53,7 @@ public class RegisterStandards {
                 currentMonth = Util.getInt(root.get("month"));
 
                 if (fillFields) {
-                    setDateHeader();
-                    attachmentBox.setText(Util.str(root.get("attachment")));
-                    postNmbBox.setText(Util.str(root.get("postnmb")));
+                    fillFields(root);
                 }
             }
 
@@ -154,6 +152,12 @@ public class RegisterStandards {
         yearBox.setMaxLength(4);
         yearBox.setVisibleLength(4);
         return yearBox;
+    }
+
+    public void fillFields(JSONObject root) {
+        setDateHeader();
+        attachmentBox.setText(Util.str(root.get("attachment")));
+        postNmbBox.setText(Util.str(root.get("postnmb")));
     }
 }
 //
