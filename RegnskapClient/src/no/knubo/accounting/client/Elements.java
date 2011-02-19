@@ -349,13 +349,22 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_open_site();
 
   /**
-   * Translated "Forelder".
+   * Translated "Forelder DB prefix".
    * 
-   * @return translated "Forelder"
+   * @return translated "Forelder DB prefix"
    */
-  @DefaultStringValue("Forelder")
+  @DefaultStringValue("Forelder DB prefix")
   @Key("admin_parentdbprefix")
   String admin_parentdbprefix();
+
+  /**
+   * Translated "Forelder domene".
+   * 
+   * @return translated "Forelder domene"
+   */
+  @DefaultStringValue("Forelder domene")
+  @Key("admin_parentdomainprefix")
+  String admin_parentdomainprefix();
 
   /**
    * Translated "Redusert".
@@ -1589,6 +1598,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Fornavn")
   @Key("firstname")
   String firstname();
+
+  /**
+   * Translated "Glemt passord".
+   * 
+   * @return translated "Glemt passord"
+   */
+  @DefaultStringValue("Glemt passord")
+  @Key("forgotten_password")
+  String forgotten_password();
 
   /**
    * Translated "Fradato".

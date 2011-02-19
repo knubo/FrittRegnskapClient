@@ -7,7 +7,6 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
-import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedCheckBox;
@@ -176,8 +175,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
     private void doTheLogin(String secret, String domain) {
         Util.log("Doing login...");
-        String url = "http://" + domain
-                + "/RegnskapServer/services/authenticate.php?action=adminlogin&secret=" + secret;
+        String url = "http://" + domain + "/RegnskapServer/services/authenticate.php?action=adminlogin&secret="
+                + secret;
 
         Window.Location.assign(url);
     }
@@ -217,6 +216,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private TextBoxWithErrorText parentdbprefix;
 
+        private TextBoxWithErrorText parenthostprefix;
+
         private TextBoxWithErrorText reducedMode;
 
         private NamedButton sulogin;
@@ -238,6 +239,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             edittable.setHTML(9, 0, elements.admin_archive_limit());
             edittable.setHTML(10, 0, elements.admin_reduced_mode());
             edittable.setHTML(11, 0, elements.admin_parentdbprefix());
+            edittable.setHTML(12, 0, elements.admin_parentdomainprefix());
 
             hostprefixBox = new TextBoxWithErrorText("hostprefix");
             hostprefixBox.setMaxLength(40);
@@ -264,7 +266,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             reducedMode = new TextBoxWithErrorText("reducedmode");
             parentdbprefix = new TextBoxWithErrorText("parentdbprefix");
-
+            parenthostprefix = new TextBoxWithErrorText("parentdomain");
+            
             edittable.setWidget(0, 1, hostprefixBox);
             edittable.setWidget(3, 1, descriptionBox);
             edittable.setWidget(4, 1, wikiLogin);
@@ -275,6 +278,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             edittable.setWidget(9, 1, archiveLimit);
             edittable.setWidget(10, 1, reducedMode);
             edittable.setWidget(11, 1, parentdbprefix);
+            edittable.setWidget(12, 1, parenthostprefix);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
@@ -327,7 +331,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             reducedMode.setText(Util.strSkipNull(obj.get("reduced_mode")));
             parentdbprefix.setText(Util.strSkipNull(obj.get("parentdbprefix")));
-
+            parenthostprefix.setText(Util.strSkipNull(obj.get("parenthostprefix")));
             currentId = Util.str(obj.get("id"));
 
         }
@@ -428,6 +432,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             Util.addPostParam(sb, "archive_limit", archiveLimit.getText());
             Util.addPostParam(sb, "parentdbprefix", parentdbprefix.getText());
             Util.addPostParam(sb, "reduced_mode", reducedMode.getText());
+            Util.addPostParam(sb, "parenthostprefix", parenthostprefix.getText());
 
             ServerResponse callback = new ServerResponse() {
 

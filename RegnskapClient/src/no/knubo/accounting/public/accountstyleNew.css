@@ -519,6 +519,11 @@ td.rute {
     background-color: lightgrey;
 }
 
+.buttonlogin {
+    margin-right:5px;
+    white-space:nowrap;
+}
+
 .buttonrownarrow {
     white-space: nowrap;
     margin-right: 10px;

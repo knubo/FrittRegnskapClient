@@ -277,6 +277,24 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String email_edit_confirm();
 
   /**
+   * Translated "Ugyldig epostadresse inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig epostadresse.".
+   * 
+   * @return translated "Ugyldig epostadresse inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig epostadresse."
+   */
+  @DefaultMessage("Ugyldig epostadresse inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig epostadresse.")
+  @Key("email_forgotten_error")
+  String email_forgotten_error();
+
+  /**
+   * Translated "Epost med glemt passord er sendt.".
+   * 
+   * @return translated "Epost med glemt passord er sendt."
+   */
+  @DefaultMessage("Epost med glemt passord er sendt.")
+  @Key("email_forgotten_sent")
+  String email_forgotten_sent();
+
+  /**
    * Translated "Vil du avslutte måned?".
    * 
    * @return translated "Vil du avslutte måned?"
@@ -347,6 +365,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Tips: Senere finner du hjelp ved � klikke på <em>hjelp</em> (til høyre)")
   @Key("first_time_hint")
   String first_time_hint();
+
+  /**
+   * Translated "Gi inn epostadressen du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet.".
+   * 
+   * @return translated "Gi inn epostadressen du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet."
+   */
+  @DefaultMessage("Gi inn epostadressen du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet.")
+  @Key("forgottenPasswordIntro")
+  String forgottenPasswordIntro();
 
   /**
    * Translated "Ulovlig dato".

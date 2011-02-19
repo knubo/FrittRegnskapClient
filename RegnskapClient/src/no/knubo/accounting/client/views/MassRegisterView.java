@@ -32,7 +32,6 @@ public class MassRegisterView extends Composite implements ClickHandler {
     private static MassRegisterView me;
     private final I18NAccount messages;
     private final Constants constants;
-    private final Elements elements;
     private AccountTable table;
     private Label infoLabel;
     private ListBoxWithErrorText projectListBox;
@@ -65,7 +64,6 @@ public class MassRegisterView extends Composite implements ClickHandler {
     public MassRegisterView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
-        this.elements = elements;
 
         table = new AccountTable("edittable");
 
@@ -186,16 +184,16 @@ public class MassRegisterView extends Composite implements ClickHandler {
         Util.addPostParam(parameters, "project", projectIdBox.getText());
         final String postnmb = postnmbbox.getText();
         Util.addPostParam(parameters, "postnmb", postnmb);
-        
+
         ServerResponse callback = new ServerResponseWithValidation() {
-            
+
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
-              
+
                 dayBox.setText("");
                 descriptionBox.setText("");
                 dayBox.setFocus(true);
-                
+
                 int row = linetable.getRowCount();
                 linetable.insertRow(row);
                 linetable.alternateStyle(row, 0);
@@ -203,10 +201,10 @@ public class MassRegisterView extends Composite implements ClickHandler {
                 linetable.setText(row, 1, attachnment);
                 linetable.setText(row, 2, day);
                 linetable.setText(row, 3, desc);
-                
+
                 standards.fillFields(object);
             }
-            
+
             public void validationError(List<String> fields) {
                 MasterValidator masterValidator = new MasterValidator();
 
@@ -215,7 +213,7 @@ public class MassRegisterView extends Composite implements ClickHandler {
                 masterValidator.validateStatus();
             }
         };
-        
+
         AuthResponder.post(constants, messages, callback, parameters, "accounting/addMassregister.php");
     }
 
@@ -225,7 +223,8 @@ public class MassRegisterView extends Composite implements ClickHandler {
         }
         MasterValidator mv = new MasterValidator();
 
-        mv.mandatory(messages.required_field(), amountBox, postnmbbox, attachmentBox, dayBox, descriptionBox);
+        mv.mandatory(messages.required_field(), amountBox, postnmbbox, attachmentBox, dayBox, descriptionBox, debetBox,
+                creditBox);
         mv.range(messages.field_to_low_zero(), 0, Integer.MAX_VALUE, postnmbbox, attachmentBox);
         mv.day(messages.illegal_day(), standards.getCurrentYear(), standards.getCurrentMonth(), dayBox);
         mv.money(messages.field_money(), amountBox);
