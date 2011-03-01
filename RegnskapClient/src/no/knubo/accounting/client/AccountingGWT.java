@@ -59,6 +59,7 @@ import no.knubo.accounting.client.views.reporting.GeneralReportView;
 import no.knubo.accounting.client.views.reporting.ReportAccountlines;
 import no.knubo.accounting.client.views.reporting.ReportAccounttracking;
 import no.knubo.accounting.client.views.reporting.ReportMail;
+import no.knubo.accounting.client.views.reporting.ReportMassLetterODF;
 import no.knubo.accounting.client.views.reporting.ReportMassLetters;
 import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
 import no.knubo.accounting.client.views.reporting.ReportMembersBirth;
@@ -214,6 +215,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         if (reducedMode == 0) {
             addMenuItem(reportsMenu, elements.menuitem_report_letter(), WidgetIds.REPORT_LETTER);
+            addMenuItem(reportsMenu, elements.menuitem_report_massletter_odf(), WidgetIds.REPORT_ODF_LETTER);
             addMenuItem(reportsMenu, elements.menuitem_report_email(), WidgetIds.REPORT_EMAIL);
             addMenuItem(reportsMenu, elements.menuitem_report_users_email(), WidgetIds.REPORT_USERS_EMAIL);
         }
@@ -446,6 +448,12 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = ReportMassLetters.getInstance(constants, messages, elements, callback);
                 ((ReportMassLetters) widget).init();
                 break;
+            case REPORT_ODF_LETTER:
+                widget = ReportMassLetterODF.getInstance(constants, messages, elements, callback);
+                ((ReportMassLetterODF) widget).init();
+                break;
+                
+                
             case REPORT_EMAIL:
                 widget = ReportMail.getInstance(constants, messages, elements);
                 ((ReportMail) widget).init();

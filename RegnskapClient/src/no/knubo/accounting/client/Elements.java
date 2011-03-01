@@ -2626,13 +2626,22 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_report_email();
 
   /**
-   * Translated "Massebrev".
+   * Translated "Massebrev PDF".
    * 
-   * @return translated "Massebrev"
+   * @return translated "Massebrev PDF"
    */
-  @DefaultStringValue("Massebrev")
+  @DefaultStringValue("Massebrev PDF")
   @Key("menuitem_report_letter")
   String menuitem_report_letter();
+
+  /**
+   * Translated "Massebrev Open Document Format".
+   * 
+   * @return translated "Massebrev Open Document Format"
+   */
+  @DefaultStringValue("Massebrev Open Document Format")
+  @Key("menuitem_report_massletter_odf")
+  String menuitem_report_massletter_odf();
 
   /**
    * Translated "Liste over medlemmer per aldersgruppe".
@@ -4093,13 +4102,22 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String update();
 
   /**
-   * Translated "Last opp fil".
+   * Translated "Last opp fi".
    * 
-   * @return translated "Last opp fil"
+   * @return translated "Last opp fi"
    */
-  @DefaultStringValue("Last opp fil")
+  @DefaultStringValue("Last opp fi")
   @Key("upload_file")
   String upload_file();
+
+  /**
+   * Translated "Opplasting av mal".
+   * 
+   * @return translated "Opplasting av mal"
+   */
+  @DefaultStringValue("Opplasting av mal")
+  @Key("upload_template")
+  String upload_template();
 
   /**
    * Translated "Bruk valgte".

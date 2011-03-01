@@ -530,6 +530,10 @@ td.rute {
     margin-top: 2px;
 }
 
+.airTop {
+    margin-top:15px;
+}
+
 .buttonrow {
     white-space: nowrap;
     margin-right: 10px;
