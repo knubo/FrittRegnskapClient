@@ -8,6 +8,7 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -76,6 +77,8 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
     }
 
     public void initEndMonth() {
+        new RegisterStandards(constants, messages, elements, callback).fetchInitalData(false);
+        
         endType = "endmonth";
         header.setHTML(elements.end_month_explain());
         endButton.setText(elements.end_month());
@@ -85,6 +88,8 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
     }
 
     public void initEndSemester() {
+        new RegisterStandards(constants, messages, elements, callback).fetchInitalData(false);
+
         endButton.setText(elements.end_semester());
         endButton.setId("SemesterEndView.endButton");
         endType = "endsemester";

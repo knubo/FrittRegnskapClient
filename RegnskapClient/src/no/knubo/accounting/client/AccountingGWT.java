@@ -40,6 +40,8 @@ import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
+import no.knubo.accounting.client.views.ownings.OwningsListView;
+import no.knubo.accounting.client.views.ownings.RegisterOwningsView;
 import no.knubo.accounting.client.views.portal.PortalGallery;
 import no.knubo.accounting.client.views.portal.PortalMemberlist;
 import no.knubo.accounting.client.views.portal.PortalSettings;
@@ -182,6 +184,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         }
 
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
+        addMenuItem(registerMenu, elements.menuitem_owning_register(), WidgetIds.OWNINGS_REGISTER);
         addMenuItem(registerMenu, elements.menuitem_endmonth(), WidgetIds.END_MONTH);
         addMenuItem(registerMenu, elements.menuitem_endsemester(), WidgetIds.END_SEMESTER);
         addMenuItem(registerMenu, elements.menuitem_endyear(), WidgetIds.END_YEAR);
@@ -194,6 +197,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
         }
+
+        addMenuItem(showMenu, elements.menuitem_owning_show(), WidgetIds.OWNINGS_LIST);
 
         addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
         addMenuItem(peopleMenu, elements.menuitem_findperson(), WidgetIds.FIND_PERSON);
@@ -325,15 +330,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                         helpTexts), elements);
                 break;
             case MASSREGISTER_VIEW:
-                widget = MassRegisterView.show(messages, constants, elements);
-                ((MassRegisterView)widget).init();
+                widget = MassRegisterView.show(messages, constants, elements, callback);
+                ((MassRegisterView) widget).init();
                 break;
             case REGISTER_MEMBERSHIP:
                 widget = RegisterMembershipView.show(messages, constants, helpPanel, elements);
                 ((RegisterMembershipView) widget).init();
                 break;
             case REGISTER_HAPPENING:
-                widget = RegisterHappeningView.show(messages, constants, callback, elements);
+                widget = RegisterHappeningView.show(messages, constants, callback, elements, callback);
                 ((RegisterHappeningView) widget).init();
                 break;
             case END_MONTH:
@@ -382,7 +387,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
 
             case BUDGET:
-                widget = BudgetView.show(messages, constants, helpPanel, elements);
+                widget = BudgetView.show(messages, constants, helpPanel, elements, callback);
                 ((BudgetView) widget).init();
                 break;
             case BUDGET_SIMPLE_TRACKING:
@@ -452,8 +457,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = ReportMassLetterODF.getInstance(constants, messages, elements, callback);
                 ((ReportMassLetterODF) widget).init();
                 break;
-                
-                
+
             case REPORT_EMAIL:
                 widget = ReportMail.getInstance(constants, messages, elements);
                 ((ReportMail) widget).init();
@@ -551,6 +555,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case PORTAL_SETTINGS:
                 widget = PortalSettings.getInstance(constants, messages, elements);
                 ((PortalSettings) widget).init();
+                break;
+            case OWNINGS_LIST:
+                widget = OwningsListView.getInstance(constants, messages, elements);
+                ((OwningsListView) widget).init();
+                break;
+            case OWNINGS_REGISTER:
+                widget = RegisterOwningsView.getInstance(constants, messages, elements);
+                ((RegisterOwningsView) widget).init();
                 break;
 
             }

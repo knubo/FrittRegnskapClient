@@ -8,9 +8,11 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
+import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -32,11 +34,13 @@ public class RegisterStandards {
     private TextBoxWithErrorText monthBox;
     private TextBoxWithErrorText yearBox;
     private final Elements elements;
+    private final ViewCallback callback;
 
-    public RegisterStandards(Constants constants, I18NAccount messages, Elements elements) {
+    public RegisterStandards(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
+        this.callback = callback;
         dateHeader = new HTML();
         attachmentBox = new TextBoxWithErrorText("attachment");
         postNmbBox = new TextBoxWithErrorText("postnmb");
@@ -49,6 +53,14 @@ public class RegisterStandards {
 
                 JSONObject root = jsonValue.isObject();
 
+                String debet = Util.strSkipNull(root.get("debet"));
+                String kredit = Util.strSkipNull(root.get("kredit"));
+                
+                if(!debet.equals(kredit)) {
+                    sendToEditLine(Util.str(root.get("line")));
+                    return;
+                }
+                
                 currentYear = Util.getInt(root.get("year"));
                 currentMonth = Util.getInt(root.get("month"));
 
@@ -60,6 +72,12 @@ public class RegisterStandards {
         };
 
         AuthResponder.get(constants, messages, rh, "defaults/newline.php");
+    }
+
+    protected void sendToEditLine(String str) {
+        Window.alert(messages.line_debet_kredit_mismatch());
+        callback.openDetails(str);
+        
     }
 
     public boolean validateTop() {

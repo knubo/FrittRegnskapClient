@@ -226,7 +226,7 @@ public class TrustStatusView extends Composite implements ClickHandler {
         private RegisterStandards registerStandards;
 
         TrustEditFields() {
-            registerStandards = new RegisterStandards(constants, messages, elements);
+            registerStandards = new RegisterStandards(constants, messages, elements, callback);
 
             setText(elements.new_trust());
             FlexTable edittable = new FlexTable();

@@ -206,9 +206,9 @@ public class UsersEditView extends Composite implements ClickHandler {
         table.setHTML(row, 0, username);
         table.setHTML(row, 1, name);
 
-        if ("1".equals(reducedWriteAccess)) {
+        if (reducedWriteAccess) {
             table.setHTML(row, 2, elements.reduced_write_access());
-        } else if ("1".equals(readOnlyAccess)) {
+        } else if (readOnlyAccess) {
             table.setHTML(row, 2, elements.read_only_access());
         } else {
             table.setHTML(row, 2, elements.full_access());

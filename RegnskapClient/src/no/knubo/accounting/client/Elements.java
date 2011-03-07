@@ -1726,6 +1726,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String id();
 
   /**
+   * Translated "Serienr".
+   * 
+   * @return translated "Serienr"
+   */
+  @DefaultStringValue("Serienr")
+  @Key("identifier")
+  String identifier();
+
+  /**
    * Translated "Vis skjulte".
    * 
    * @return translated "Vis skjulte"
@@ -2527,6 +2536,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_membership_prices();
 
   /**
+   * Translated "Registrer eiendel".
+   * 
+   * @return translated "Registrer eiendel"
+   */
+  @DefaultStringValue("Registrer eiendel")
+  @Key("menuitem_owning_register")
+  String menuitem_owning_register();
+
+  /**
+   * Translated "Eiendeler".
+   * 
+   * @return translated "Eiendeler"
+   */
+  @DefaultStringValue("Eiendeler")
+  @Key("menuitem_owning_show")
+  String menuitem_owning_show();
+
+  /**
    * Translated "Portalmedlemmer".
    * 
    * @return translated "Portalmedlemmer"
@@ -3119,6 +3146,78 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Andre konti")
   @Key("other_accounts")
   String other_accounts();
+
+  /**
+   * Translated "Eiendel".
+   * 
+   * @return translated "Eiendel"
+   */
+  @DefaultStringValue("Eiendel")
+  @Key("owning")
+  String owning();
+
+  /**
+   * Translated "Eiendelskonto".
+   * 
+   * @return translated "Eiendelskonto"
+   */
+  @DefaultStringValue("Eiendelskonto")
+  @Key("owning_account")
+  String owning_account();
+
+  /**
+   * Translated "Anskaffelsesdato".
+   * 
+   * @return translated "Anskaffelsesdato"
+   */
+  @DefaultStringValue("Anskaffelsesdato")
+  @Key("owning_buy_date")
+  String owning_buy_date();
+
+  /**
+   * Translated "Avskrivningskonto".
+   * 
+   * @return translated "Avskrivningskonto"
+   */
+  @DefaultStringValue("Avskrivningskonto")
+  @Key("owning_deprecation")
+  String owning_deprecation();
+
+  /**
+   * Translated "Innkjøpspris".
+   * 
+   * @return translated "Innkjøpspris"
+   */
+  @DefaultStringValue("Innkjøpspris")
+  @Key("owning_purchase_price")
+  String owning_purchase_price();
+
+  /**
+   * Translated "Registrer eiendel".
+   * 
+   * @return translated "Registrer eiendel"
+   */
+  @DefaultStringValue("Registrer eiendel")
+  @Key("owning_register")
+  String owning_register();
+
+  /**
+   * Translated "Garantidato".
+   * 
+   * @return translated "Garantidato"
+   */
+  @DefaultStringValue("Garantidato")
+  @Key("owning_warrenty_date")
+  String owning_warrenty_date();
+
+  /**
+   * Translated "Antall år for avskrivning".
+   * 
+   * @return translated "Antall år for avskrivning"
+   */
+  @DefaultStringValue("Antall år for avskrivning")
+  @Key("owning_year_to_deprecation")
+  String owning_year_to_deprecation();
 
   /**
    * Translated "Betalt dag".

@@ -8,6 +8,7 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -82,6 +83,7 @@ public class YearEndView extends Composite implements ClickHandler {
     }
 
     public void init() {
+        new RegisterStandards(constants, messages, elements, callback).fetchInitalData(false);
 
         ServerResponse rh = new ServerResponse() {
 
@@ -98,6 +100,7 @@ public class YearEndView extends Composite implements ClickHandler {
                     endYearButton.setEnabled(true);
                 }
                 fillPosts(root.get("data").isArray());
+
             }
         };
         AuthResponder.get(constants, messages, rh, "accounting/endyear.php?action=status");

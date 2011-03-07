@@ -54,14 +54,14 @@ public class MassRegisterView extends Composite implements ClickHandler {
     private TextBoxWithErrorText postnmbbox;
     private PosttypeCache postTypeCache;
 
-    public static MassRegisterView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static MassRegisterView show(I18NAccount messages, Constants constants, Elements elements, ViewCallback callback) {
         if (me == null) {
-            me = new MassRegisterView(messages, constants, elements);
+            me = new MassRegisterView(messages, constants, elements, callback);
         }
         return me;
     }
 
-    public MassRegisterView(I18NAccount messages, Constants constants, Elements elements) {
+    public MassRegisterView(I18NAccount messages, Constants constants, Elements elements, ViewCallback callback) {
         this.messages = messages;
         this.constants = constants;
 
@@ -89,7 +89,7 @@ public class MassRegisterView extends Composite implements ClickHandler {
         table.setWidget(1, 2, debetListBox);
         table.setWidget(1, 3, debetErrorLabel);
 
-        standards = new RegisterStandards(constants, messages, elements);
+        standards = new RegisterStandards(constants, messages, elements, callback);
         amountBox = standards.createAmountBox();
 
         table.setWidget(3, 1, amountBox);

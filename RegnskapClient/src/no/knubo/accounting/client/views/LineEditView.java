@@ -114,7 +114,7 @@ public class LineEditView extends Composite implements ClickHandler {
         this.helpPanel = helpPanel;
         this.elements = elements;
 
-        registerStandards = new RegisterStandards(constants, messages, elements);
+        registerStandards = new RegisterStandards(constants, messages, elements, caller);
 
         DockPanel dp = new DockPanel();
         dp.add(mainFields(), DockPanel.NORTH);

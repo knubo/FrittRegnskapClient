@@ -43,10 +43,10 @@ public class RegisterHappeningView extends Composite implements ClickHandler, Ch
     private static ViewCallback caller;
 
     public static RegisterHappeningView show(I18NAccount messages, Constants constants,
-            ViewCallback caller, Elements elements) {
+            ViewCallback caller, Elements elements, ViewCallback callback) {
         RegisterHappeningView.caller = caller;
         if (me == null) {
-            me = new RegisterHappeningView(messages, constants, elements);
+            me = new RegisterHappeningView(messages, constants, elements, callback);
         }
         return me;
     }
@@ -75,11 +75,11 @@ public class RegisterHappeningView extends Composite implements ClickHandler, Ch
 
     HappeningCache happeningCache;
 
-    protected RegisterHappeningView(I18NAccount messages, Constants constants, Elements elements) {
+    protected RegisterHappeningView(I18NAccount messages, Constants constants, Elements elements, ViewCallback callback) {
         this.messages = messages;
         this.constants = constants;
 
-        registerStandards = new RegisterStandards(constants, messages, elements);
+        registerStandards = new RegisterStandards(constants, messages, elements, callback);
 
         widgetGivesValue = new IdHolder<String, TextBox>();
 

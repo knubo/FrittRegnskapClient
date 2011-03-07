@@ -35,6 +35,8 @@ public class PosttypeCache implements Registry {
     List<String> earnings;
     List<String> costs;
     List<String> capital;
+    List<String> ownings;
+    List<String> deprecations;
 
     List<String> memberPaymentPosts;
 
@@ -57,6 +59,8 @@ public class PosttypeCache implements Registry {
                 earnings = new ArrayList<String>();
                 costs = new ArrayList<String>();
                 capital = new ArrayList<String>();
+                ownings = new ArrayList<String>();
+                deprecations = new ArrayList<String>();
 
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject obj = array.get(i).isObject();
@@ -72,6 +76,13 @@ public class PosttypeCache implements Registry {
                     }
                     if (Util.getBoolean(obj.get("Cost"))) {
                         costs.add(key);
+                    }
+                    if (Util.getBoolean(obj.get("Owning"))) {
+                        ownings.add(key);
+                    }
+
+                    if (Util.getBoolean(obj.get("Deprecation"))) {
+                        deprecations.add(key);
                     }
 
                     originalSort.add(key);
@@ -111,7 +122,6 @@ public class PosttypeCache implements Registry {
         return type + " - " + typeGivesDescription.get(type);
     }
 
-
     private void simpleFill(ListBox box, List<String> list) {
         box.insertItem("", 0);
 
@@ -126,9 +136,17 @@ public class PosttypeCache implements Registry {
             box.insertItem(desc, k, pos++);
         }
     }
+
     public void fillAllCost(ListBox boxError) {
         simpleFill(boxError, costs);
-        
+    }
+
+    public void fillAllOwnings(ListBox box) {
+        simpleFill(box, ownings);
+    }
+
+    public void fillAllDeprecations(ListBox box) {
+        simpleFill(box, deprecations);
     }
 
     public void fillAllEarnings(ListBox boxError) {

@@ -39,4 +39,5 @@ public interface ViewCallback {
     public void openMassletterEditSimple(String filename, String response);
 
     public void setReducedMode(int mode);
+
 }

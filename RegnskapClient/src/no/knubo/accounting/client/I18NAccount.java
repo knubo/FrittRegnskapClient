@@ -286,11 +286,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String email_forgotten_error();
 
   /**
-   * Translated "Epost med glemt passord er sendt.".
+   * Translated "Epost for glemt passord er sendt.".
    * 
-   * @return translated "Epost med glemt passord er sendt."
+   * @return translated "Epost for glemt passord er sendt."
    */
-  @DefaultMessage("Epost med glemt passord er sendt.")
+  @DefaultMessage("Epost for glemt passord er sendt.")
   @Key("email_forgotten_sent")
   String email_forgotten_sent();
 
@@ -446,6 +446,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Ulovlig epostadresse")
   @Key("invalid_email")
   String invalid_email();
+
+  /**
+   * Translated "Din siste registrering er ikke balansert. Denne åpnes nå slik at du kan balansere den.".
+   * 
+   * @return translated "Din siste registrering er ikke balansert. Denne åpnes nå slik at du kan balansere den."
+   */
+  @DefaultMessage("Din siste registrering er ikke balansert. Denne åpnes nå slik at du kan balansere den.")
+  @Key("line_debet_kredit_mismatch")
+  String line_debet_kredit_mismatch();
 
   /**
    * Translated "Avbryte utsendelse av mail?".

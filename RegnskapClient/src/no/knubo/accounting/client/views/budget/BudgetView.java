@@ -11,6 +11,7 @@ import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedCheckBox;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -54,7 +55,7 @@ public class BudgetView extends Composite implements ClickHandler {
     private String selectedBudgetYear;
     private NamedButton deleteButton;
 
-    public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
+    public BudgetView(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements, ViewCallback callback) {
         this.messages = messages;
         this.constants = constants;
         this.helpPanel = helpPanel;
@@ -118,7 +119,7 @@ public class BudgetView extends Composite implements ClickHandler {
         hp.add(saveResultLabel);
         dp.add(hp, DockPanel.NORTH);
 
-        registerStandards = new RegisterStandards(constants, messages, elements);
+        registerStandards = new RegisterStandards(constants, messages, elements, callback);
 
         accountsEarnings = new ListBox();
         accountInputEarnings = new TextBoxWithErrorText("accountinputearnings");
@@ -145,9 +146,9 @@ public class BudgetView extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
-    public static BudgetView show(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
+    public static BudgetView show(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements, ViewCallback callback) {
         if (me == null) {
-            me = new BudgetView(messages, constants, helpPanel, elements);
+            me = new BudgetView(messages, constants, helpPanel, elements, callback);
         }
         me.setVisible(true);
         return me;
