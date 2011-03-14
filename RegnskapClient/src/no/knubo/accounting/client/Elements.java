@@ -1096,6 +1096,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String delete_line();
 
   /**
+   * Translated "Slettet".
+   * 
+   * @return translated "Slettet"
+   */
+  @DefaultStringValue("Slettet")
+  @Key("deleted")
+  String deleted();
+
+  /**
    * Translated "Skilletegn".
    * 
    * @return translated "Skilletegn"
