@@ -250,6 +250,33 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String delete_user_question();
 
   /**
+   * Translated "Eiendelen er allerede ferdig avskrevet så det blir ikke utført avskrivning på denne.".
+   * 
+   * @return translated "Eiendelen er allerede ferdig avskrevet så det blir ikke utført avskrivning på denne."
+   */
+  @DefaultMessage("Eiendelen er allerede ferdig avskrevet så det blir ikke utført avskrivning på denne.")
+  @Key("deprecation_nothing_left")
+  String deprecation_nothing_left();
+
+  /**
+   * Translated "Ved oppretting av eiendel blir nå gjennstående beløp overført til eiendelskonti og månedlige avskrivninger vil bilagføres automatisk til eiendelen er avskrevet.".
+   * 
+   * @return translated "Ved oppretting av eiendel blir nå gjennstående beløp overført til eiendelskonti og månedlige avskrivninger vil bilagføres automatisk til eiendelen er avskrevet."
+   */
+  @DefaultMessage("Ved oppretting av eiendel blir nå gjennstående beløp overført til eiendelskonti og månedlige avskrivninger vil bilagføres automatisk til eiendelen er avskrevet.")
+  @Key("deprecation_with_account")
+  String deprecation_with_account();
+
+  /**
+   * Translated "Hvis du ikke inngir antall år for avskrivning, med påf�lgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. ".
+   * 
+   * @return translated "Hvis du ikke inngir antall år for avskrivning, med påf�lgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. "
+   */
+  @DefaultMessage("Hvis du ikke inngir antall år for avskrivning, med påf�lgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. ")
+  @Key("deprecation_without_account")
+  String deprecation_without_account();
+
+  /**
    * Translated "Kladd lagret {0}.".
    * 
    * @return translated "Kladd lagret {0}."

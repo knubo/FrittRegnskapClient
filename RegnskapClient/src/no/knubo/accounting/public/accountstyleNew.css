@@ -11,6 +11,15 @@ body {
     white-space: nowrap;
 }
 
+.full INPUT {
+    width:95%;
+}
+
+.full TEXTAREA {
+     width:95%;
+     height:5em;
+}
+
 .secret {
     color: red;
 }

@@ -35,14 +35,23 @@ public class RegisterStandards {
     private TextBoxWithErrorText yearBox;
     private final Elements elements;
     private final ViewCallback callback;
+    private HTML attachmentLabel;
 
-    public RegisterStandards(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
+    public RegisterStandards(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback,
+            boolean... separateLables) {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
         this.callback = callback;
         dateHeader = new HTML();
-        attachmentBox = new TextBoxWithErrorText("attachment");
+
+        if (separateLables != null && separateLables.length == 1 && separateLables[0]) {
+            attachmentLabel = new HTML();
+            attachmentBox = new TextBoxWithErrorText("attachment", attachmentLabel);
+        } else {
+            attachmentBox = new TextBoxWithErrorText("attachment");
+
+        }
         postNmbBox = new TextBoxWithErrorText("postnmb");
     }
 
@@ -55,12 +64,12 @@ public class RegisterStandards {
 
                 String debet = Util.strSkipNull(root.get("debet"));
                 String kredit = Util.strSkipNull(root.get("kredit"));
-                
-                if(!debet.equals(kredit)) {
+
+                if (!debet.equals(kredit)) {
                     sendToEditLine(Util.str(root.get("line")));
                     return;
                 }
-                
+
                 currentYear = Util.getInt(root.get("year"));
                 currentMonth = Util.getInt(root.get("month"));
 
@@ -77,7 +86,7 @@ public class RegisterStandards {
     protected void sendToEditLine(String str) {
         Window.alert(messages.line_debet_kredit_mismatch());
         callback.openDetails(str);
-        
+
     }
 
     public boolean validateTop() {
@@ -148,6 +157,19 @@ public class RegisterStandards {
         return descriptionBox;
     }
 
+    public TextBoxWithErrorText createDescriptionBox(HTML errorLabel) {
+        descriptionBox = new TextBoxWithErrorText("description", errorLabel);
+        descriptionBox.setMaxLength(40);
+        descriptionBox.setVisibleLength(40);
+        return descriptionBox;
+    }
+
+    public TextBoxWithErrorText createAmountBox(HTML errorLabel) {
+        amountBox = new TextBoxWithErrorText("amount", errorLabel);
+        amountBox.setVisibleLength(10);
+        return amountBox;
+    }
+
     public TextBoxWithErrorText createAmountBox() {
         amountBox = new TextBoxWithErrorText("amount");
         amountBox.setVisibleLength(10);
@@ -177,5 +199,8 @@ public class RegisterStandards {
         attachmentBox.setText(Util.str(root.get("attachment")));
         postNmbBox.setText(Util.str(root.get("postnmb")));
     }
+
+    public HTML getAttachmentLabel() {
+        return attachmentLabel;
+    }
 }
-//

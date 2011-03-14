@@ -1105,6 +1105,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String delimiter();
 
   /**
+   * Translated "Avskrivning".
+   * 
+   * @return translated "Avskrivning"
+   */
+  @DefaultStringValue("Avskrivning")
+  @Key("deprecation")
+  String deprecation();
+
+  /**
    * Translated "Beskrivelse".
    * 
    * @return translated "Beskrivelse"
@@ -3184,6 +3193,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String owning_deprecation();
 
   /**
+   * Translated "Månedlig avskrivning".
+   * 
+   * @return translated "Månedlig avskrivning"
+   */
+  @DefaultStringValue("Månedlig avskrivning")
+  @Key("owning_month_deprecation")
+  String owning_month_deprecation();
+
+  /**
    * Translated "Innkjøpspris".
    * 
    * @return translated "Innkjøpspris"
@@ -3200,6 +3218,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Registrer eiendel")
   @Key("owning_register")
   String owning_register();
+
+  /**
+   * Translated "Gjennstående beløp".
+   * 
+   * @return translated "Gjennstående beløp"
+   */
+  @DefaultStringValue("Gjennstående beløp")
+  @Key("owning_remaining")
+  String owning_remaining();
 
   /**
    * Translated "Garantidato".
