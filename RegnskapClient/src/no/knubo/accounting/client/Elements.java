@@ -151,6 +151,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String add_earning();
 
   /**
+   * Translated "Lagt til av".
+   * 
+   * @return translated "Lagt til av"
+   */
+  @DefaultStringValue("Lagt til av")
+  @Key("added_by")
+  String added_by();
+
+  /**
    * Translated "Adresse".
    * 
    * @return translated "Adresse"
