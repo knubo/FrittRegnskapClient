@@ -19,9 +19,10 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TextBox;
 
-public class OwningsListView extends Composite implements KeyUpHandler {
+public class OwningsListView extends Composite implements KeyUpHandler, ClickHandler {
 
     private static OwningsListView instance;
     private Constants constants;
@@ -54,20 +55,19 @@ public class OwningsListView extends Composite implements KeyUpHandler {
         table.setText(1, 4, elements.owning_buy_date());
         table.setText(1, 5, elements.owning_warrenty_date());
         table.setText(1, 6, elements.owning_purchase_price());
-        table.setText(1, 7, elements.owning_year_to_deprecation());
-        table.setText(1, 8, elements.owning_remaining(), "desc");
-        table.setText(1, 9, elements.owning_month_deprecation(), "desc");
-        table.setText(1, 11, elements.owning_account());
-        table.setText(1, 11, elements.owning_deprecation());
-        table.setText(1, 12, elements.deleted());
+        table.setText(1, 7, elements.owning_remaining(), "desc");
+        table.setText(1, 8, elements.owning_month_deprecation(), "desc");
+        table.setText(1, 9, elements.owning_account());
+        table.setText(1, 10, elements.owning_deprecation());
+        table.setText(1, 11, elements.deleted());
         table.setHeaderRowStyle(1);
 
         belonging = new TextBox();
-        table.setWidget(0, 1, belonging, "smallinput");
+        table.setWidget(0, 1, belonging);
         serial = new TextBox();
-        table.setWidget(0, 2, serial, "smallinput");
+        table.setWidget(0, 2, serial);
         description = new TextBox();
-        table.setWidget(0, 3, description, "smallinput");
+        table.setWidget(0, 3, description);
         deletedCheckbox = new CheckBox();
         table.setWidget(0, 12, deletedCheckbox, "center");
 
@@ -176,7 +176,9 @@ public class OwningsListView extends Composite implements KeyUpHandler {
         for (int i = 0; i < array.size(); i++) {
             JSONObject object = array.get(i).isObject();
 
-            table.setWidget(i + 2, 0, ImageFactory.editImage("id" + Util.str(object.get("id"))));
+            Image editImage = ImageFactory.editImage("id" + Util.str(object.get("id")));
+            editImage.addClickHandler(this);
+            table.setWidget(i + 2, 0, editImage);
             table.setText(i + 2, 1, Util.str(object.get("belonging")));
             table.setText(i + 2, 2, Util.str(object.get("serial")));
 
@@ -185,18 +187,17 @@ public class OwningsListView extends Composite implements KeyUpHandler {
                 desc = desc.substring(0, 15) + "...";
             }
             table.setText(i + 2, 3, desc);
-            table.setText(i + 2, 4, Util.strSkipNull(object.get("purchase_date")), "right");
-            table.setText(i + 2, 5, Util.strSkipNull(object.get("warrenty_date")), "right");
+            table.setText(i + 2, 4, Util.formatDate(Util.strSkipNull(object.get("purchase_date"))), "right");
+            table.setText(i + 2, 5, Util.formatDate(Util.strSkipNull(object.get("warrenty_date"))), "right");
             table.setText(i + 2, 6, Util.money(Util.strSkipNull(object.get("purchase_price"))), "right");
-            table.setText(i + 2, 7, Util.strSkipNull(object.get("year_deprecation")), "right");
-            table.setText(i + 2, 8, Util.money(Util.strSkipNull(object.get("current_price"))), "right");
-            table.setText(i + 2, 9, Util.money(Util.strSkipNull(object.get("deprecation_amount"))), "right");
-            table.setText(i + 2, 10, Util.strSkipNull(object.get("owning_account")), "right");
-            table.setText(i + 2, 11, Util.strSkipNull(object.get("deprecation_account")), "right");
+            table.setText(i + 2, 7, Util.money(Util.strSkipNull(object.get("current_price"))), "right");
+            table.setText(i + 2, 8, Util.money(Util.strSkipNull(object.get("deprecation_amount"))), "right");
+            table.setText(i + 2, 9, Util.strSkipNull(object.get("owning_account")), "right");
+            table.setText(i + 2, 10, Util.strSkipNull(object.get("deprecation_account")), "right");
 
             String deletedText = Util.strSkipNull(object.get("deleted")).equals("0") ? elements.admin_yes() : elements
                     .admin_no();
-            table.setText(i + 2, 12, deletedText, "center");
+            table.setText(i + 2, 11, deletedText, "center");
 
             table.alternateStyle(i + 2, (i % 6) > 2);
         }
@@ -204,5 +205,14 @@ public class OwningsListView extends Composite implements KeyUpHandler {
 
     public void onKeyUp(KeyUpEvent event) {
         filter();
+    }
+
+    public void onClick(ClickEvent event) {
+        Image editImage = (Image) event.getSource();
+
+        String withId = editImage.getElement().getId();
+        
+        int id = Integer.parseInt(withId.substring(3));
+
     }
 }

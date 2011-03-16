@@ -103,6 +103,9 @@ public class Util {
     }
 
     public static String formatDate(String string) {
+        if(string.length() == 0) {
+            return "";
+        }
         String[] dateparts = string.split("-");
 
         return dateparts[2] + "." + dateparts[1] + "." + dateparts[0];

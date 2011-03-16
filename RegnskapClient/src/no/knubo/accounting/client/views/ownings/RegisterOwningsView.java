@@ -266,12 +266,12 @@ public class RegisterOwningsView extends Composite implements ClickHandler, KeyU
 
                 if (ok) {
                     addedBelongings.insertRow(1);
-                    addedBelongings.setText(1, 0, owningValue);
-                    addedBelongings.setText(1, 1, serialValue);
+                    addedBelongings.setText(1, 0, owningValue, "desc");
+                    addedBelongings.setText(1, 1, serialValue, "desc");
                     addedBelongings.setText(1, 2, purchaseDateValue);
                     addedBelongings.setText(1, 3, warrentyDateValue);
-                    addedBelongings.setText(1, 4, purchasePriceValue);
-                    addedBelongings.setText(1, 5, yearsDeprecationValue);
+                    addedBelongings.setText(1, 4, Util.money(purchasePriceValue), "right");
+                    addedBelongings.setText(1, 5, yearsDeprecationValue, "right");
                 } else {
                     infoLabel.setText(messages.save_failed());
                 }
