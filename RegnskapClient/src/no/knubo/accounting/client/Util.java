@@ -94,12 +94,9 @@ public class Util {
      * @return The value, or toString if it isn't a jsonString.
      */
     public static String formatDate(JSONValue value) {
-        JSONString string = value.isString();
+        String f = strSkipNull(value);
 
-        if (string == null) {
-            return value.toString();
-        }
-        return formatDate(string.stringValue());
+        return formatDate(f);
     }
 
     public static String formatDate(String string) {
@@ -253,21 +250,25 @@ public class Util {
         ChangeHandler textchange = new ChangeHandler() {
 
             public void onChange(ChangeEvent event) {
-                listbox.setSelectedIndex(0);
-                String id = textbox.getText();
-
-                for (int i = 0; i < listbox.getItemCount(); i++) {
-                    if (listbox.getValue(i).equals(id)) {
-                        listbox.setSelectedIndex(i);
-                        return;
-                    }
-                }
+                syncOnce(listbox, textbox);
             }
+
 
         };
         textbox.addChangeHandler(textchange);
     }
 
+    public static void syncOnce(final ListBox listbox, final TextBox textbox) {
+        listbox.setSelectedIndex(0);
+        String id = textbox.getText();
+        
+        for (int i = 0; i < listbox.getItemCount(); i++) {
+            if (listbox.getValue(i).equals(id)) {
+                listbox.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
     /**
      * Get month part of string on format dd.mm.yyyy
      * 

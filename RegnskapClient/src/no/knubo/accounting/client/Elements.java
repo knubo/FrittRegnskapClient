@@ -3211,6 +3211,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String owning_deprecation();
 
   /**
+   * Translated "Rediger eiendel".
+   * 
+   * @return translated "Rediger eiendel"
+   */
+  @DefaultStringValue("Rediger eiendel")
+  @Key("owning_edit")
+  String owning_edit();
+
+  /**
    * Translated "Månedlig avskrivning".
    * 
    * @return translated "Månedlig avskrivning"
@@ -3704,6 +3713,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Om det kun skal registreres medlemsskap, ikke inngi betalt dag.")
   @Key("register_membership_help")
   String register_membership_help();
+
+  /**
+   * Translated "Ansvarlig".
+   * 
+   * @return translated "Ansvarlig"
+   */
+  @DefaultStringValue("Ansvarlig")
+  @Key("responsible")
+  String responsible();
 
   /**
    * Translated "Lagre".

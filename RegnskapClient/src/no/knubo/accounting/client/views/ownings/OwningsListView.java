@@ -4,6 +4,7 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -34,18 +35,20 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
     private TextBox description;
     private CheckBox deletedCheckbox;
     private OwningsListView me;
+    private final HelpPanel helpPanel;
 
-    public static OwningsListView getInstance(Constants constants, I18NAccount messages, Elements elements) {
+    public static OwningsListView getInstance(Constants constants, I18NAccount messages, Elements elements, HelpPanel helpPanel) {
         if (instance == null) {
-            instance = new OwningsListView(constants, messages, elements);
+            instance = new OwningsListView(constants, messages, elements, helpPanel);
         }
         return instance;
     }
 
-    public OwningsListView(Constants constants, I18NAccount messages, Elements elements) {
+    public OwningsListView(Constants constants, I18NAccount messages, Elements elements, HelpPanel helpPanel) {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
+        this.helpPanel = helpPanel;
 
         table = new AccountTable("tableborder");
 
@@ -212,7 +215,8 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
 
         String withId = editImage.getElement().getId();
         
-        int id = Integer.parseInt(withId.substring(3));
+        int id = Integer.parseInt(withId.substring(2));
 
+        new OwningsPopup(id, elements, constants, messages, helpPanel);
     }
 }
