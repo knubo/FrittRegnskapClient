@@ -557,7 +557,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((PortalSettings) widget).init();
                 break;
             case OWNINGS_LIST:
-                widget = OwningsListView.getInstance(constants, messages, elements, helpPanel);
+                widget = OwningsListView.getInstance(constants, messages, elements, helpPanel, callback);
                 ((OwningsListView) widget).init();
                 break;
             case OWNINGS_REGISTER:

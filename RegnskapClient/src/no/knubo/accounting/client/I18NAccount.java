@@ -97,6 +97,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String confirm_delete();
 
   /**
+   * Translated "Vil du virkelig slette forekomst? Dette vil avskrive eiendelen i regnskapet?".
+   * 
+   * @return translated "Vil du virkelig slette forekomst? Dette vil avskrive eiendelen i regnskapet?"
+   */
+  @DefaultMessage("Vil du virkelig slette forekomst? Dette vil avskrive eiendelen i regnskapet?")
+  @Key("confirm_delete_deprecate")
+  String confirm_delete_deprecate();
+
+  /**
    * Translated "Fortsette med import av personer?".
    * 
    * @return translated "Fortsette med import av personer?"
@@ -268,11 +277,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String deprecation_with_account();
 
   /**
-   * Translated "Hvis du ikke inngir antall år for avskrivning, med påf�lgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. ".
+   * Translated "Hvis du ikke inngir antall år for avskrivning, med påfølgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. ".
    * 
-   * @return translated "Hvis du ikke inngir antall år for avskrivning, med påf�lgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. "
+   * @return translated "Hvis du ikke inngir antall år for avskrivning, med påfølgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. "
    */
-  @DefaultMessage("Hvis du ikke inngir antall år for avskrivning, med påf�lgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. ")
+  @DefaultMessage("Hvis du ikke inngir antall år for avskrivning, med påfølgende konti, vil eiendelen kun registreres i eiendelsregisteret og avskrivning blir ikke utført. ")
   @Key("deprecation_without_account")
   String deprecation_without_account();
 

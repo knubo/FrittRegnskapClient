@@ -9,6 +9,7 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
+import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -36,19 +37,23 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
     private CheckBox deletedCheckbox;
     private OwningsListView me;
     private final HelpPanel helpPanel;
+    private final ViewCallback callback;
 
-    public static OwningsListView getInstance(Constants constants, I18NAccount messages, Elements elements, HelpPanel helpPanel) {
+    public static OwningsListView getInstance(Constants constants, I18NAccount messages, Elements elements,
+            HelpPanel helpPanel, ViewCallback callback) {
         if (instance == null) {
-            instance = new OwningsListView(constants, messages, elements, helpPanel);
+            instance = new OwningsListView(constants, messages, elements, helpPanel, callback);
         }
         return instance;
     }
 
-    public OwningsListView(Constants constants, I18NAccount messages, Elements elements, HelpPanel helpPanel) {
+    public OwningsListView(Constants constants, I18NAccount messages, Elements elements, HelpPanel helpPanel,
+            ViewCallback callback) {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
         this.helpPanel = helpPanel;
+        this.callback = callback;
 
         table = new AccountTable("tableborder");
 
@@ -72,7 +77,7 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
         description = new TextBox();
         table.setWidget(0, 3, description);
         deletedCheckbox = new CheckBox();
-        table.setWidget(0, 12, deletedCheckbox, "center");
+        table.setWidget(0, 11, deletedCheckbox, "center");
 
         initWidget(table);
         me = this;
@@ -214,9 +219,9 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
         Image editImage = (Image) event.getSource();
 
         String withId = editImage.getElement().getId();
-        
+
         int id = Integer.parseInt(withId.substring(2));
 
-        new OwningsPopup(id, elements, constants, messages, helpPanel);
+        new OwningsPopup(id, elements, constants, messages, helpPanel, callback);
     }
 }

@@ -538,6 +538,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String attachment();
 
   /**
+   * Translated "Bilag for endring av eienedel".
+   * 
+   * @return translated "Bilag for endring av eienedel"
+   */
+  @DefaultStringValue("Bilag for endring av eienedel")
+  @Key("attachment_change_belonging")
+  String attachment_change_belonging();
+
+  /**
    * Translated "Tilgjenglige konti".
    * 
    * @return translated "Tilgjenglige konti"
@@ -1096,6 +1105,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String debkred();
 
   /**
+   * Translated "Slett".
+   * 
+   * @return translated "Slett"
+   */
+  @DefaultStringValue("Slett")
+  @Key("delete")
+  String delete();
+
+  /**
    * Translated "Slett linje ".
    * 
    * @return translated "Slett linje "
@@ -1481,6 +1499,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Feil i klientkode - exception ikke fanget!")
   @Key("error_uncought_exception")
   String error_uncought_exception();
+
+  /**
+   * Translated "Utfør endring".
+   * 
+   * @return translated "Utfør endring"
+   */
+  @DefaultStringValue("Utfør endring")
+  @Key("execute_change")
+  String execute_change();
 
   /**
    * Translated "Utgifter".

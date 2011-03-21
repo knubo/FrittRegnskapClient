@@ -16,13 +16,14 @@ import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.views.PersonPickCallback;
 import no.knubo.accounting.client.views.PersonPickView;
+import no.knubo.accounting.client.views.ViewCallback;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -30,7 +31,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickCallback {
+public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickCallback, OwningChange {
 
     AccountTable table = new AccountTable("edittable");
     private TextBoxWithErrorText owning;
@@ -55,16 +56,22 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
     private Label responsibleLabel;
     private final Elements elements;
     private final HelpPanel helpPanel;
+    private NamedButton deleteButton;
+    private final int id;
+    private final ViewCallback callback;
 
-    public OwningsPopup(int id, Elements elements, Constants constants, I18NAccount messages, HelpPanel helpPanel) {
+    public OwningsPopup(int id, Elements elements, Constants constants, I18NAccount messages, HelpPanel helpPanel,
+            ViewCallback callback) {
+        this.id = id;
         this.elements = elements;
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
+        this.callback = callback;
         setModal(true);
 
         setText(elements.owning_edit());
-        
+
         table = new AccountTable("tableborder full");
 
         HTML errorOwning = new HTML();
@@ -172,6 +179,10 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         updateButton.addClickHandler(this);
         buttonPanel.add(updateButton);
 
+        deleteButton = new NamedButton("delete", elements.delete());
+        deleteButton.addClickHandler(this);
+        buttonPanel.add(deleteButton);
+
         closeButton = new NamedButton("close", elements.close());
         closeButton.addClickHandler(this);
         buttonPanel.add(closeButton);
@@ -205,6 +216,9 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
 
                 Util.syncOnce(owningListbox.getListbox(), accountOwning.getTextBox());
                 Util.syncOnce(deprecationListbox.getListbox(), accountDeprecation.getTextBox());
+
+                responsibleLabel.setText(Util.strSkipNull(current.get("firstname")) + " "
+                        + Util.strSkipNull(current.get("lastname")));
             }
         };
         AuthResponder.get(constants, messages, callback, "accounting/belongings.php?action=get&id=" + id);
@@ -216,15 +230,83 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
             return;
         }
 
+        if (event.getSource() == deleteButton) {
+            doDelete();
+            return;
+        }
+
         if (event.getSource() == addImage) {
             PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel, elements);
             view.center();
         }
     }
 
+    private void doDelete() {
+        if (deleteRequiresAccountingActions()) {
+
+            boolean okDelete = Window.confirm(messages.confirm_delete_deprecate());
+            if (!okDelete) {
+                return;
+            }
+
+            OwningChangeReasonPopup reasonPopup = new OwningChangeReasonPopup(elements, constants, messages, callback,
+                    current, this);
+            reasonPopup.delete();
+            return;
+        }
+
+        boolean okDelete = Window.confirm(messages.confirm_delete());
+        if (!okDelete) {
+            return;
+        }
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject object = responseObj.isObject();
+
+                if (!Util.getBoolean(object.get("status"))) {
+                    Window.alert(messages.save_failed_badly());
+                }
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "accounting/belongings.php?action=delete&id=" + id);
+
+    }
+
+    private boolean deleteRequiresAccountingActions() {
+        if (Util.getDouble(current.get("current_price")) > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public void pickPerson(String id, JSONObject personObj) {
         responsibleLabel.setText(Util.str(personObj.get("firstname")) + " " + Util.str(personObj.get("lastname")));
         current.put("person", new JSONString(id));
+    }
+
+    public void deleteExecuted(JSONObject data) {
+        StringBuffer parameters = new StringBuffer();
+        parameters.append("action=delete");
+
+        Util.addPostParam(parameters, "id", String.valueOf(id));
+        Util.addPostParam(parameters, "change", data.toString());
+
+        ServerResponse call = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject object = responseObj.isObject();
+                if (Util.getBoolean(object.get("status"))) {
+                    hide();
+                }
+            }
+        };
+        AuthResponder.post(constants, messages, call, parameters, "accounting/belongings.php");
+    }
+
+    public void changeExecuted(JSONObject data) {
+
     }
 
 }
