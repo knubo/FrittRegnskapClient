@@ -14,12 +14,15 @@ import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.PersonPickCallback;
 import no.knubo.accounting.client.views.PersonPickView;
 import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -31,7 +34,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickCallback, OwningChange {
+public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickCallback, OwningChange, KeyUpHandler {
 
     AccountTable table = new AccountTable("edittable");
     private TextBoxWithErrorText owning;
@@ -45,7 +48,6 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
     private ListBoxWithErrorText owningListbox;
     private ListBoxWithErrorText deprecationListbox;
     private TextBoxWithErrorText remaining;
-    private TextBoxWithErrorText eachMonth;
     private HTML eachMonthLabel;
     private HTML remainingLabel;
     private NamedButton updateButton;
@@ -59,15 +61,17 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
     private NamedButton deleteButton;
     private final int id;
     private final ViewCallback callback;
+    private final OwningsListReload owningsListView;
 
     public OwningsPopup(int id, Elements elements, Constants constants, I18NAccount messages, HelpPanel helpPanel,
-            ViewCallback callback) {
+            ViewCallback callback, OwningsListReload owningsListView) {
         this.id = id;
         this.elements = elements;
         this.constants = constants;
         this.messages = messages;
         this.helpPanel = helpPanel;
         this.callback = callback;
+        this.owningsListView = owningsListView;
         setModal(true);
 
         setText(elements.owning_edit());
@@ -106,7 +110,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         remainingLabel = new HTML();
         eachMonthLabel = new HTML();
         remaining = new TextBoxWithErrorText("remaining", remainingLabel);
-        eachMonth = new TextBoxWithErrorText("each_month", eachMonthLabel);
+        remaining.addDelayedKeyUpHandler(this);
 
         HorizontalPanel owningPanel = new HorizontalPanel();
         owningPanel.add(accountOwning);
@@ -132,6 +136,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         table.setWidget(8, 0, purchaseDate);
         table.setWidget(8, 1, warrentyDate);
         table.setText(9, 0, elements.owning_purchase_price());
+        table.setText(9, 1, elements.owning_remaining_months());
         table.setWidget(10, 0, errorPurchasePrice);
         table.setWidget(11, 0, purchasePrice);
         table.setText(12, 0, elements.owning_remaining(), "desc");
@@ -139,7 +144,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         table.setWidget(13, 0, remainingLabel);
         table.setWidget(13, 1, eachMonthLabel);
         table.setWidget(14, 0, remaining);
-        table.setWidget(14, 1, eachMonth);
+
         table.setText(15, 0, elements.owning_account());
         table.setWidget(17, 0, errorOwningAccount);
         table.setWidget(18, 0, owningPanel);
@@ -210,7 +215,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
                 warrentyDate.setText(Util.formatDate(current.get("warrenty_date")));
                 purchasePrice.setText(Util.money(Util.strSkipNull(current.get("purchase_price"))));
                 remaining.setText(Util.money(Util.strSkipNull(current.get("current_price"))));
-                eachMonth.setText(Util.money(Util.strSkipNull(current.get("deprecation_amount"))));
+                table.setText(14, 1, Util.money(Util.strSkipNull(current.get("deprecation_amount"))));
                 accountDeprecation.setText(Util.strSkipNull(current.get("deprecation_account")));
                 accountOwning.setText(Util.strSkipNull(current.get("owning_account")));
 
@@ -219,6 +224,15 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
 
                 responsibleLabel.setText(Util.strSkipNull(current.get("firstname")) + " "
                         + Util.strSkipNull(current.get("lastname")));
+
+                boolean enabled = remaining.getText().length() > 0;
+
+                remaining.setEnabled(enabled);
+                accountDeprecation.setEnabled(enabled);
+                accountOwning.setEnabled(enabled);
+                owningListbox.getListbox().setEnabled(enabled);
+                deprecationListbox.getListbox().setEnabled(enabled);
+                calcMonthLeft();
             }
         };
         AuthResponder.get(constants, messages, callback, "accounting/belongings.php?action=get&id=" + id);
@@ -235,10 +249,69 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
             return;
         }
 
+        if (event.getSource() == updateButton) {
+            doUpdate();
+            return;
+        }
+
         if (event.getSource() == addImage) {
             PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel, elements);
             view.center();
         }
+    }
+
+    private void doUpdate() {
+
+        if (!validate()) {
+            return;
+        }
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("action=updatePreview");
+
+        Util.addPostParam(sb, "owning", owning.getText());
+        Util.addPostParam(sb, "description", description.getText());
+        Util.addPostParam(sb, "serial", serial.getText());
+
+        // Util.addPostParam(sb, "eachMonth", String.valueOf(eachMonth));
+
+        Util.addPostParam(sb, "purchaseDate", purchaseDate.getText());
+        Util.addPostParam(sb, "warrentyDate", warrentyDate.getText());
+        Util.addPostParam(sb, "purchasePrice", purchasePrice.getText());
+        Util.addPostParam(sb, "accountDeprecation", accountDeprecation.getText());
+        Util.addPostParam(sb, "accountOwning", accountOwning.getText());
+        Util.addPostParam(sb, "currentAmount", remaining.getText());
+
+        ServerResponse cb = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+
+            }
+        };
+        AuthResponder.post(constants, messages, cb, sb, "accounting/belongings.php");
+    }
+
+    private boolean validate() {
+        MasterValidator mv = new MasterValidator();
+
+        mv.mandatory(messages.required_field(), owning, serial, purchaseDate, purchasePrice);
+        mv.money(messages.field_money(), purchasePrice);
+        mv.date(messages.date_format(), purchaseDate, warrentyDate);
+
+        if (accountDeprecation.isEnabled()) {
+            mv.mandatory(messages.required_field(), accountDeprecation, accountOwning);
+
+        }
+        mv.registry(messages.registry_invalid_key(), posttypeCache, accountDeprecation, accountOwning);
+
+        String valueRemaining = remaining.getText().replace(",", "");
+        String valuePurchase = purchasePrice.getText().replace(",", "");
+
+        if (Double.parseDouble(valueRemaining) > Double.parseDouble(valuePurchase)) {
+            mv.fail(purchasePrice, true, messages.deprecation_purchase_price_too_low());
+        }
+
+        return mv.validateStatus();
     }
 
     private void doDelete() {
@@ -299,6 +372,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
                 JSONObject object = responseObj.isObject();
                 if (Util.getBoolean(object.get("status"))) {
                     hide();
+                    owningsListView.reload();
                 }
             }
         };
@@ -307,6 +381,30 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
 
     public void changeExecuted(JSONObject data) {
 
+    }
+
+    public void onKeyUp(KeyUpEvent event) {
+        String value = remaining.getText().replace(",", "");
+
+        try {
+            double amount = Double.parseDouble(value);
+            int monthsLeft = calcMonthLeft();
+
+            table.setText(14, 1, Util.money(amount / monthsLeft));
+
+        } catch (Exception e) {
+            Util.log("Error:" + e);
+        }
+
+    }
+
+    private int calcMonthLeft() {
+        int monthsLeft = (int) (Util.getDouble(current.get("current_price")) / Util.getDouble(current
+                .get("deprecation_amount")));
+
+        table.setText(10, 1, String.valueOf(monthsLeft));
+
+        return monthsLeft;
     }
 
 }

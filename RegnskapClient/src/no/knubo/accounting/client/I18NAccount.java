@@ -259,6 +259,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String delete_user_question();
 
   /**
+   * Translated "Innkjøpsdatoen kan ikke være i fremtiden.".
+   * 
+   * @return translated "Innkjøpsdatoen kan ikke være i fremtiden."
+   */
+  @DefaultMessage("Innkjøpsdatoen kan ikke være i fremtiden.")
+  @Key("deprecation_future")
+  String deprecation_future();
+
+  /**
    * Translated "Eiendelen er allerede ferdig avskrevet så det blir ikke utført avskrivning på denne.".
    * 
    * @return translated "Eiendelen er allerede ferdig avskrevet så det blir ikke utført avskrivning på denne."
@@ -266,6 +275,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Eiendelen er allerede ferdig avskrevet så det blir ikke utført avskrivning på denne.")
   @Key("deprecation_nothing_left")
   String deprecation_nothing_left();
+
+  /**
+   * Translated "Innkjøpspris kan ikke være lavere enn gjennstående beløp.".
+   * 
+   * @return translated "Innkjøpspris kan ikke være lavere enn gjennstående beløp."
+   */
+  @DefaultMessage("Innkjøpspris kan ikke være lavere enn gjennstående beløp.")
+  @Key("deprecation_purchase_price_too_low")
+  String deprecation_purchase_price_too_low();
 
   /**
    * Translated "Ved oppretting av eiendel blir nå gjennstående beløp overført til eiendelskonti og månedlige avskrivninger vil bilagføres automatisk til eiendelen er avskrevet.".

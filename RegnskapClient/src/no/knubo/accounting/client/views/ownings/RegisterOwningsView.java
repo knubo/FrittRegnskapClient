@@ -297,6 +297,8 @@ public class RegisterOwningsView extends Composite implements ClickHandler, KeyU
 
         int monthsUsed = getMonthSincePurchase(pd);
 
+//        Util.log("Month used:" + monthsUsed);
+
         int monthToDeprecate = years * 12;
 
         eachMonth = purchase / monthToDeprecate;
@@ -309,6 +311,12 @@ public class RegisterOwningsView extends Composite implements ClickHandler, KeyU
             infoLabel.setText(messages.deprecation_nothing_left());
             return;
         }
+        if (currentAmount > purchase) {
+            table.setText(13, 0, "N/A");
+            table.setText(13, 1, "N/A");
+            infoLabel.setText(messages.deprecation_future());
+            return;
+        }
 
         infoLabel.setText(messages.deprecation_with_account());
 
@@ -318,15 +326,17 @@ public class RegisterOwningsView extends Composite implements ClickHandler, KeyU
 
     @SuppressWarnings("deprecation")
     private int getMonthSincePurchase(Date purchaseDate) {
-        Date now = new Date();
 
-        int month = now.getMonth();
-        int year = now.getYear();
+        int month = registerStandards.getCurrentMonth();
+        int year = registerStandards.getCurrentYear();
 
         int purchaseMonth = purchaseDate.getMonth();
-        int purcahseYear = purchaseDate.getYear();
+        int purcahseYear = purchaseDate.getYear() + 1900;
 
-        return (year - purcahseYear) * 12 + (month - purchaseMonth);
+//        Util.log("year:" + year + " purchaseYear:" + purcahseYear + " month:" + month + " purchaseMonth:"
+//                + purchaseMonth);
+
+        return ((year - purcahseYear) * 12) + (month - purchaseMonth) - 1;
     }
 
     private Date getPurchaseDate() {

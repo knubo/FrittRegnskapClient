@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TextBox;
 
-public class OwningsListView extends Composite implements KeyUpHandler, ClickHandler {
+public class OwningsListView extends Composite implements KeyUpHandler, ClickHandler, OwningsListReload {
 
     private static OwningsListView instance;
     private Constants constants;
@@ -203,7 +203,7 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
             table.setText(i + 2, 9, Util.strSkipNull(object.get("owning_account")), "right");
             table.setText(i + 2, 10, Util.strSkipNull(object.get("deprecation_account")), "right");
 
-            String deletedText = Util.strSkipNull(object.get("deleted")).equals("0") ? elements.admin_yes() : elements
+            String deletedText = Util.strSkipNull(object.get("deleted")).equals("1") ? elements.admin_yes() : elements
                     .admin_no();
             table.setText(i + 2, 11, deletedText, "center");
 
@@ -222,6 +222,10 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
 
         int id = Integer.parseInt(withId.substring(2));
 
-        new OwningsPopup(id, elements, constants, messages, helpPanel, callback);
+        new OwningsPopup(id, elements, constants, messages, helpPanel, callback, this);
+    }
+
+    public void reload() {
+        init();
     }
 }

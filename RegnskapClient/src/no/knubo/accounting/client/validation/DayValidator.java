@@ -46,6 +46,7 @@ public class DayValidator extends ValidatorBase {
         return date.getDate() == testDay && date.getMonth() == testMonth && date.getYear() == testYear;
     }
 
+    @SuppressWarnings("deprecation")
     public static Date getDate(String text) {
         if (text == null || text.length() != 10) {
             Util.log("Bad text:" + text);

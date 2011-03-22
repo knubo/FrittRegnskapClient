@@ -3283,6 +3283,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String owning_remaining();
 
   /**
+   * Translated "Gjennstående måneder".
+   * 
+   * @return translated "Gjennstående måneder"
+   */
+  @DefaultStringValue("Gjennstående måneder")
+  @Key("owning_remaining_months")
+  String owning_remaining_months();
+
+  /**
    * Translated "Garantidato".
    * 
    * @return translated "Garantidato"
