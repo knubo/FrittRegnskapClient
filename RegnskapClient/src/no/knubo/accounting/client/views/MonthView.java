@@ -170,6 +170,7 @@ public class MonthView extends Composite implements ClickHandler, ChangeHandler,
 
         JSONValue debetsums = monthObj.get("debetsums");
         JSONValue creditsums = monthObj.get("creditsums");
+
         JSONValue lines = monthObj.get("lines");
 
         currentYear = Util.getInt(root.get("year"));
@@ -193,17 +194,20 @@ public class MonthView extends Composite implements ClickHandler, ChangeHandler,
         render_posts(row, debetSums, creditSums, false);
 
         /* Subtract credit sum from debet sum to show sum for total */
-        for (String key : creditSums.keySet()) {
-            String toSubtract = Util.str(creditSums.get(key));
+        if (creditSums != null) {
 
-            String oldValue = "0";
-            if (debetSums.containsKey(key)) {
-                oldValue = Util.str(debetSums.get(key));
+            for (String key : creditSums.keySet()) {
+                String toSubtract = Util.str(creditSums.get(key));
+
+                String oldValue = "0";
+                if (debetSums.containsKey(key)) {
+                    oldValue = Util.str(debetSums.get(key));
+                }
+
+                double sum = Double.parseDouble(oldValue) - Double.parseDouble(toSubtract);
+
+                debetSums.put(key, new JSONString(String.valueOf(sum)));
             }
-
-            double sum = Double.parseDouble(oldValue) - Double.parseDouble(toSubtract);
-
-            debetSums.put(key, new JSONString(String.valueOf(sum)));
         }
 
         render_posts(row + 1, debetSums, new JSONObject(), false);
@@ -254,7 +258,18 @@ public class MonthView extends Composite implements ClickHandler, ChangeHandler,
         }
     }
 
-    private void render_posts(int rowIndex, JSONValue debet, JSONValue kred, boolean flagDebetKreditNotMatching) {
+    private void render_posts(int rowIndex, JSONValue debetIn, JSONValue kredIn, boolean flagDebetKreditNotMatching) {
+
+        JSONValue debet = debetIn;
+        if (debetIn == null) {
+            debet = new JSONObject();
+        }
+
+        JSONValue kred = kredIn;
+        if (kredIn == null) {
+            kred = new JSONObject();
+        }
+
         JSONObject debetObj = debet.isObject();
         JSONObject kredObj = kred.isObject();
 

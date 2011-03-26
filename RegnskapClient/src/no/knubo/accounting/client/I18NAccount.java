@@ -70,6 +70,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String bad_server_response();
 
   /**
+   * Translated "Endring av eiendelen gir endring i bokføringen av den. Under er posteringene som vil bli utført i regnskapet ved endring.".
+   * 
+   * @return translated "Endring av eiendelen gir endring i bokføringen av den. Under er posteringene som vil bli utført i regnskapet ved endring."
+   */
+  @DefaultMessage("Endring av eiendelen gir endring i bokføringen av den. Under er posteringene som vil bli utført i regnskapet ved endring.")
+  @Key("beloning_change_accounting")
+  String beloning_change_accounting();
+
+  /**
    * Translated "Budjsett {0}".
    * 
    * @return translated "Budjsett {0}"

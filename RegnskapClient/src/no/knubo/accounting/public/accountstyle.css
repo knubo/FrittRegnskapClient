@@ -465,6 +465,10 @@ td.rute {
 	vertical-align: top;
 }
 
+.airTop {
+    margin-top: 8px;
+}
+
 .middle {
 	margin-left: 50px;
 	margin-top: 50px;

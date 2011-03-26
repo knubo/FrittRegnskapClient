@@ -388,11 +388,9 @@ public class UsersEditView extends Composite implements ClickHandler {
             Util.addPostParam(sb, "person", personId);
 
             if (accessList.getText().equals(elements.reduced_write_access())) {
-                Util.addPostParam(sb, "readonly", "1");
                 Util.addPostParam(sb, "reducedwrite", "1");
             } else if (accessList.getText().equals(elements.read_only_access())) {
                 Util.addPostParam(sb, "readonly", "1");
-                Util.addPostParam(sb, "reducedwrite", "0");
             } else {
                 Util.addPostParam(sb, "readonly", "0");
                 Util.addPostParam(sb, "reducedwrite", "0");

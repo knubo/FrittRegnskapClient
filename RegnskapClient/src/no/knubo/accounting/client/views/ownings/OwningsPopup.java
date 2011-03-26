@@ -62,6 +62,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
     private final int id;
     private final ViewCallback callback;
     private final OwningsListReload owningsListView;
+    private Image removeImage;
 
     public OwningsPopup(int id, Elements elements, Constants constants, I18NAccount messages, HelpPanel helpPanel,
             ViewCallback callback, OwningsListReload owningsListView) {
@@ -158,10 +159,14 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         addImage = ImageFactory.chooseImage("choose");
         addImage.addClickHandler(this);
 
+        removeImage = ImageFactory.removeImage("remove");
+        removeImage.addClickHandler(this);
+        
         HorizontalPanel fp = new HorizontalPanel();
         responsibleLabel = new Label();
         fp.add(responsibleLabel);
         fp.add(addImage);
+        fp.add(removeImage);
         table.setWidget(23, 0, fp);
         table.setColSpanAndRowStyle(23, 0, 2, "");
 
@@ -199,7 +204,6 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
     }
 
     private JSONObject current;
-    private String responsibleId;
     private PosttypeCache posttypeCache;
 
     private void loadData(int id) {
@@ -254,9 +258,16 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
             return;
         }
 
+        if(event.getSource() == removeImage) {
+            current.put("person", null);
+            responsibleLabel.setText("");
+            return;
+        }
+        
         if (event.getSource() == addImage) {
             PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel, elements);
             view.center();
+            return;
         }
     }
 
@@ -269,26 +280,46 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         StringBuffer sb = new StringBuffer();
         sb.append("action=updatePreview");
 
+        Util.addPostParam(sb, "id", String.valueOf(id));
         Util.addPostParam(sb, "owning", owning.getText());
         Util.addPostParam(sb, "description", description.getText());
         Util.addPostParam(sb, "serial", serial.getText());
 
-        // Util.addPostParam(sb, "eachMonth", String.valueOf(eachMonth));
+        Util.addPostParam(sb, "eachMonth", stripComma(table.getText(14, 1)));
 
         Util.addPostParam(sb, "purchaseDate", purchaseDate.getText());
         Util.addPostParam(sb, "warrentyDate", warrentyDate.getText());
-        Util.addPostParam(sb, "purchasePrice", purchasePrice.getText());
+        Util.addPostParam(sb, "purchasePrice", stripComma(purchasePrice.getText()));
         Util.addPostParam(sb, "accountDeprecation", accountDeprecation.getText());
         Util.addPostParam(sb, "accountOwning", accountOwning.getText());
-        Util.addPostParam(sb, "currentAmount", remaining.getText());
-
+        Util.addPostParam(sb, "currentAmount", stripComma(remaining.getText()));
+        String person = Util.strSkipNull(current.get("person"));
+        
+        if(person.length() > 0) {
+            Util.addPostParam(sb, "person", person);
+        }
+        
+        final OwningsPopup me = this;
         ServerResponse cb = new ServerResponse() {
 
             public void serverResponse(JSONValue responseObj) {
+                JSONObject object = responseObj.isObject();
 
+                if(object.keySet().size() == 1 && Util.strSkipNull(object.get("updated")).equals("1")) {
+                    hide();
+                    return;
+                }
+                
+                OwningChangeReasonPopup reasonPopup = new OwningChangeReasonPopup(elements, constants, messages,
+                        callback, current, me);
+                reasonPopup.modify(responseObj);
             }
         };
         AuthResponder.post(constants, messages, cb, sb, "accounting/belongings.php");
+    }
+
+    private String stripComma(String text) {
+        return text.replace(",", "");
     }
 
     private boolean validate() {

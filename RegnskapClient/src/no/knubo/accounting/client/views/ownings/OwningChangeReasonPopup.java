@@ -1,9 +1,12 @@
 package no.knubo.accounting.client.views.ownings;
 
+import java.util.Set;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
@@ -15,14 +18,17 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class OwningChangeReasonPopup extends DialogBox implements ClickHandler {
 
     private final JSONObject owning;
     private AccountTable table;
+    private AccountTable change;
     private TextBoxWithErrorText postNmbBox;
     private TextBoxWithErrorText dayBox;
     private TextBoxWithErrorText attachmentBox;
@@ -33,10 +39,16 @@ public class OwningChangeReasonPopup extends DialogBox implements ClickHandler {
     private NamedButton closeButton;
     private final OwningChange caller;
     private RegisterStandards registerStandard;
+    private final Constants constants;
+    private final I18NAccount messages;
+    private Label changeLabel;
 
     public OwningChangeReasonPopup(Elements elements, Constants constants, I18NAccount messages, ViewCallback callback,
             JSONObject current, OwningChange caller) {
         this.elements = elements;
+        this.constants = constants;
+        this.messages = messages;
+
         this.owning = current;
         this.caller = caller;
 
@@ -45,7 +57,7 @@ public class OwningChangeReasonPopup extends DialogBox implements ClickHandler {
         table = new AccountTable("tableborder");
 
         registerStandard = new RegisterStandards(constants, messages, elements, callback);
-        
+
         postNmbBox = registerStandard.getPostNmbBox();
         dayBox = registerStandard.createDayBox();
         attachmentBox = registerStandard.getAttachmentBox();
@@ -68,7 +80,18 @@ public class OwningChangeReasonPopup extends DialogBox implements ClickHandler {
         VerticalPanel vp = new VerticalPanel();
         vp.add(table);
 
+        changeLabel = new Label();
+        changeLabel.setVisible(false);
+        changeLabel.addStyleName("airTop");
+        vp.add(changeLabel);
+        
+        change = new AccountTable("tableborder");
+        change.setVisible(false);
+        change.addStyleName("airTop");
+        vp.add(change);
+
         HorizontalPanel buttonPanel = new HorizontalPanel();
+        buttonPanel.addStyleName("airTop");
 
         executeButton = new NamedButton("execute", elements.update());
         executeButton.addClickHandler(this);
@@ -80,7 +103,7 @@ public class OwningChangeReasonPopup extends DialogBox implements ClickHandler {
 
         vp.add(buttonPanel);
         add(vp);
-        
+
         registerStandard.fetchInitalData(true);
     }
 
@@ -122,6 +145,41 @@ public class OwningChangeReasonPopup extends DialogBox implements ClickHandler {
         } else {
             caller.changeExecuted(data);
         }
+    }
+
+    public void modify(JSONValue responseObj) {
+        change.setVisible(true);
+        changeLabel.setVisible(true);
+        change.setText(0, 0, elements.post());
+        change.setText(0, 1, "");
+        change.setText(0, 2, elements.debet());
+        change.setText(0, 3, elements.kredit());
+        change.setHeaderRowStyle(0);
+
+        changeLabel.setText(messages.beloning_change_accounting());
+        
+        PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
+
+        JSONObject object = responseObj.isObject();
+
+        Set<String> keys = object.keySet();
+
+        int row = 1;
+        for (String k : keys) {
+            Double d = Util.getDouble(object.get(k));
+
+            change.setText(row, 0, k);
+            change.setText(row, 1, posttypeCache.getDescription(k));
+            if (d > 0) {
+                change.setText(row, 2, Util.money(d));
+            } else {
+                change.setText(row, 3, Util.money(0 - d));
+            }
+            row++;
+        }
+
+        descriptionBox.setText("Changed " + Util.str(owning.get("belonging")));
+        center();
     }
 
 }
