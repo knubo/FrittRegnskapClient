@@ -8,6 +8,7 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.views.modules.DeprecationRenderer;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -42,6 +43,8 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
 
     private HTML header;
 
+    private DeprecationRenderer deprecationRenderer;
+
     public static MonthAndSemesterEndView getInstance(Constants constants, I18NAccount messages, ViewCallback callback,
             Elements elements) {
         if (me == null) {
@@ -71,6 +74,10 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
         dp.add(dateHeader, DockPanel.NORTH);
         dp.add(header, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
+
+        deprecationRenderer = new DeprecationRenderer();
+        dp.add(deprecationRenderer.getTable(), DockPanel.NORTH);
+
         dp.add(endButton, DockPanel.NORTH);
 
         initWidget(dp);
@@ -78,7 +85,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
 
     public void initEndMonth() {
         new RegisterStandards(constants, messages, elements, callback).fetchInitalData(false);
-        
+
         endType = "endmonth";
         header.setHTML(elements.end_month_explain());
         endButton.setText(elements.end_month());
@@ -131,6 +138,8 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
 
                     row++;
                 }
+
+                deprecationRenderer.display(root.get("deprecation").isArray(), constants, messages, elements);
             }
 
         };

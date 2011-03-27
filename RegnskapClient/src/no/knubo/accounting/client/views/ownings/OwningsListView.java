@@ -68,6 +68,7 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
         table.setText(1, 9, elements.owning_account());
         table.setText(1, 10, elements.owning_deprecation());
         table.setText(1, 11, elements.deleted());
+        table.setText(1, 12, elements.responsible());
         table.setHeaderRowStyle(1);
 
         belonging = new TextBox();
@@ -206,6 +207,9 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
             String deletedText = Util.strSkipNull(object.get("deleted")).equals("1") ? elements.admin_yes() : elements
                     .admin_no();
             table.setText(i + 2, 11, deletedText, "center");
+
+            table.setText(i + 2, 12, Util.strSkipNull(object.get("firstname")) + " "
+                    + Util.strSkipNull(object.get("lastname")), "desc");
 
             table.alternateStyle(i + 2, (i % 6) > 2);
         }

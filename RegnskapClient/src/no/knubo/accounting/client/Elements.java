@@ -799,6 +799,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String cellphone();
 
   /**
+   * Translated "Endre".
+   * 
+   * @return translated "Endre"
+   */
+  @DefaultStringValue("Endre")
+  @Key("change")
+  String change();
+
+  /**
    * Translated "Engelsk".
    * 
    * @return translated "Engelsk"

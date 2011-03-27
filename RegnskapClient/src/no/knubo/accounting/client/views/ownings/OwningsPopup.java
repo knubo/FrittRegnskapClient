@@ -161,7 +161,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
 
         removeImage = ImageFactory.removeImage("remove");
         removeImage.addClickHandler(this);
-        
+
         HorizontalPanel fp = new HorizontalPanel();
         responsibleLabel = new Label();
         fp.add(responsibleLabel);
@@ -258,12 +258,12 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
             return;
         }
 
-        if(event.getSource() == removeImage) {
+        if (event.getSource() == removeImage) {
             current.put("person", null);
             responsibleLabel.setText("");
             return;
         }
-        
+
         if (event.getSource() == addImage) {
             PersonPickView view = PersonPickView.show(messages, constants, this, helpPanel, elements);
             view.center();
@@ -277,8 +277,30 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
             return;
         }
 
+        StringBuffer sb = updateParams("updatePreview");
+
+        final OwningsPopup me = this;
+        ServerResponse cb = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject object = responseObj.isObject();
+
+                if (object.keySet().size() == 1 && Util.strSkipNull(object.get("updated")).equals("1")) {
+                    hide();
+                    return;
+                }
+
+                OwningChangeReasonPopup reasonPopup = new OwningChangeReasonPopup(elements, constants, messages,
+                        callback, current, me);
+                reasonPopup.modify(responseObj);
+            }
+        };
+        AuthResponder.post(constants, messages, cb, sb, "accounting/belongings.php");
+    }
+
+    private StringBuffer updateParams(String action) {
         StringBuffer sb = new StringBuffer();
-        sb.append("action=updatePreview");
+        sb.append("action=" + action);
 
         Util.addPostParam(sb, "id", String.valueOf(id));
         Util.addPostParam(sb, "owning", owning.getText());
@@ -294,28 +316,11 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         Util.addPostParam(sb, "accountOwning", accountOwning.getText());
         Util.addPostParam(sb, "currentAmount", stripComma(remaining.getText()));
         String person = Util.strSkipNull(current.get("person"));
-        
-        if(person.length() > 0) {
+
+        if (person.length() > 0) {
             Util.addPostParam(sb, "person", person);
         }
-        
-        final OwningsPopup me = this;
-        ServerResponse cb = new ServerResponse() {
-
-            public void serverResponse(JSONValue responseObj) {
-                JSONObject object = responseObj.isObject();
-
-                if(object.keySet().size() == 1 && Util.strSkipNull(object.get("updated")).equals("1")) {
-                    hide();
-                    return;
-                }
-                
-                OwningChangeReasonPopup reasonPopup = new OwningChangeReasonPopup(elements, constants, messages,
-                        callback, current, me);
-                reasonPopup.modify(responseObj);
-            }
-        };
-        AuthResponder.post(constants, messages, cb, sb, "accounting/belongings.php");
+        return sb;
     }
 
     private String stripComma(String text) {
@@ -411,7 +416,20 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
     }
 
     public void changeExecuted(JSONObject data) {
+        StringBuffer sb = updateParams("update");
+        Util.addPostParam(sb, "change", data.toString());
 
+        ServerResponse call = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject object = responseObj.isObject();
+                if (Util.getBoolean(object.get("updated"))) {
+                    hide();
+                    owningsListView.reload();
+                }
+            }
+        };
+        AuthResponder.post(constants, messages, call, sb, "accounting/belongings.php");
     }
 
     public void onKeyUp(KeyUpEvent event) {

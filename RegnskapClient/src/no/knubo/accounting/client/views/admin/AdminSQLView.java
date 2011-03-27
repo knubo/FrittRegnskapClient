@@ -17,6 +17,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -270,7 +271,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
             String sqlID = table.getText(currentRow, 3);
             if (sqlID.length() == 0) {
                 currentRow++;
-                doRun(runBeta);
+                doRunSleep(runBeta);
                 return;
             }
 
@@ -292,6 +293,18 @@ public class AdminSQLView extends Composite implements ClickHandler {
             };
             AuthResponder.get(constants, messages, callback, "admin/admin_sql.php?action=run&installid=" + installId
                     + "&id=" + id);
+        }
+
+        private void doRunSleep(final boolean runBeta) {
+            Timer t = new Timer() {
+
+                @Override
+                public void run() {
+                    doRun(runBeta);
+                }
+            };
+            t.schedule(2000);
+            
         }
 
         private void mainComplete() {
