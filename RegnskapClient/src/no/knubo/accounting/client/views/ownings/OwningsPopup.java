@@ -170,6 +170,12 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         table.setWidget(23, 0, fp);
         table.setColSpanAndRowStyle(23, 0, 2, "");
 
+        table.setText(24, 0, elements.created_by());
+        table.setText(24, 1, elements.created_time());
+
+        table.setText(26, 0, elements.changed_by());
+        table.setText(26, 1, elements.changed_time());
+
         posttypeCache = PosttypeCache.getInstance(constants, messages);
 
         posttypeCache.fillAllDeprecations(deprecationListbox.getListbox());
@@ -229,6 +235,14 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
                 responsibleLabel.setText(Util.strSkipNull(current.get("firstname")) + " "
                         + Util.strSkipNull(current.get("lastname")));
 
+                table.setText(25, 0, Util.strSkipNull(current.get("addedFirstName")) + " "
+                        + Util.strSkipNull(current.get("addedLastName")), "desc");
+                table.setText(25, 1, Util.formatDate(current.get("added_date")));
+
+                table.setText(27, 0, Util.strSkipNull(current.get("changedFirstName")) + " "
+                        + Util.strSkipNull(current.get("changedLastName")), "desc");
+                table.setText(27, 1, Util.formatDate(current.get("changed_date")));
+                
                 boolean enabled = remaining.getText().length() > 0;
 
                 remaining.setEnabled(enabled);

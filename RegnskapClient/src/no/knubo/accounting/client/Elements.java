@@ -664,6 +664,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String basic_data();
 
   /**
+   * Translated "Beskrivelse".
+   * 
+   * @return translated "Beskrivelse"
+   */
+  @DefaultStringValue("Beskrivelse")
+  @Key("belonging_description")
+  String belonging_description();
+
+  /**
    * Translated "Fødselsdato".
    * 
    * @return translated "Fødselsdato"
@@ -833,6 +842,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Bytt år")
   @Key("change_year")
   String change_year();
+
+  /**
+   * Translated "Endret av".
+   * 
+   * @return translated "Endret av"
+   */
+  @DefaultStringValue("Endret av")
+  @Key("changed_by")
+  String changed_by();
+
+  /**
+   * Translated "Endret tidspunkt".
+   * 
+   * @return translated "Endret tidspunkt"
+   */
+  @DefaultStringValue("Endret tidspunkt")
+  @Key("changed_time")
+  String changed_time();
 
   /**
    * Translated "Velg filer som skal vedleggges eposten.".
@@ -1058,6 +1085,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Opprett")
   @Key("create")
   String create();
+
+  /**
+   * Translated "Opprettet av".
+   * 
+   * @return translated "Opprettet av"
+   */
+  @DefaultStringValue("Opprettet av")
+  @Key("created_by")
+  String created_by();
+
+  /**
+   * Translated "Opprettet tidspunkt".
+   * 
+   * @return translated "Opprettet tidspunkt"
+   */
+  @DefaultStringValue("Opprettet tidspunkt")
+  @Key("created_time")
+  String created_time();
 
   /**
    * Translated "Dato".
@@ -1420,11 +1465,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String end_year();
 
   /**
-   * Translated "Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB.".
+   * Translated "Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB. Avskrivninger gjøres som nest siste post for året.".
    * 
-   * @return translated "Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB."
+   * @return translated "Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB. Avskrivninger gjøres som nest siste post for året."
    */
-  @DefaultStringValue("Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB.")
+  @DefaultStringValue("Følgende posteringer (UB) vil utføres ved årsavslutningn av regnskapet i inneværende år. Tilsvarende reverspostering blir lagt til neste års IB. Avskrivninger gjøres som nest siste post for året.")
   @Key("end_year_heading")
   String end_year_heading();
 
@@ -2696,6 +2741,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Liste over medlemmer med adresser")
   @Key("menuitem_report_addresses")
   String menuitem_report_addresses();
+
+  /**
+   * Translated "Liste over eiendeler sortert per ansvarlig".
+   * 
+   * @return translated "Liste over eiendeler sortert per ansvarlig"
+   */
+  @DefaultStringValue("Liste over eiendeler sortert per ansvarlig")
+  @Key("menuitem_report_belonging_responsible")
+  String menuitem_report_belonging_responsible();
 
   /**
    * Translated "Paidiagram over inntekter og utgifter for år".

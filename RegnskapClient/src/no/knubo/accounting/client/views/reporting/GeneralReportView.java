@@ -36,6 +36,8 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
 
     private TextBoxWithErrorText monthTextBox;
 
+    private HorizontalPanel hp;
+
     public GeneralReportView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
@@ -48,7 +50,7 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
         yearTextBox = new TextBoxWithErrorText("year");
         monthTextBox = new TextBoxWithErrorText("month");
 
-        HorizontalPanel hp = new HorizontalPanel();
+        hp = new HorizontalPanel();
         hp.add(new Label(elements.year()));
         hp.add(yearTextBox);
         hp.add(new Label(elements.month()));
@@ -61,6 +63,20 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
         dp.add(result, DockPanel.NORTH);
         
         initWidget(dp);
+    }
+    
+    public void initSumYears() {
+        hp.setVisible(true);
+        reportButton.setVisible(true);
+        result.setHTML("");
+    }
+    
+    public void initBelongings() {
+        hp.setVisible(false);
+        reportButton.setVisible(false);
+        result.setHTML("");
+        AuthResponder.get(constants, messages, this, "reports/belongings_responsible.php");
+
     }
 
     public static GeneralReportView show(I18NAccount messages, Constants constants, Elements elements) {

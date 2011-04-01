@@ -89,8 +89,8 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         editImage.addClickHandler(this);
         closeImage = ImageFactory.closeImage("PostView.closeImage");
         closeImage.addClickHandler(this);
-        table.setWidget(0, 6, editImage, "right");
-        table.setWidget(0, 7, closeImage);
+        table.setWidget(0, 8, editImage, "right");
+        table.setWidget(0, 9, closeImage);
 
         dp.add(table, DockPanel.NORTH);
         dp.add(countfields.getTable(), DockPanel.NORTH);
@@ -133,7 +133,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         table.getFlexCellFormatter().setColSpan(2, 1, 4);
         table.setText(3, 1, Util.str(object.get("Description")), "desc");
         table.getFlexCellFormatter().setColSpan(3, 1, 4);
-        table.setText(4, 1, Util.str(object.get("EditedByPersonName")),"desc");
+        table.setText(4, 1, Util.str(object.get("EditedByPersonName")), "desc");
 
         JSONValue value = object.get("postArray");
 
@@ -160,6 +160,12 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
 
             if (!personName.isEmpty()) {
                 table.setText(7 + i, 6, "(" + personName + ")");
+            }
+
+            String belonging = Util.strSkipNull(post.get("BelongingDesc"));
+
+            if (!belonging.isEmpty()) {
+                table.setText(7 + i, 7, belonging);
             }
 
             table.getRowFormatter().setStyleName(7 + i, (i % 2 == 0) ? "showlineposts2" : "showlineposts1");

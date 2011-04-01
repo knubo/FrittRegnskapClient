@@ -184,7 +184,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         }
 
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
-        addMenuItem(registerMenu, elements.menuitem_owning_register(), WidgetIds.OWNINGS_REGISTER);
+        if (reducedMode == 0) {
+            addMenuItem(registerMenu, elements.menuitem_owning_register(), WidgetIds.OWNINGS_REGISTER);
+        }
         addMenuItem(registerMenu, elements.menuitem_endmonth(), WidgetIds.END_MONTH);
         addMenuItem(registerMenu, elements.menuitem_endsemester(), WidgetIds.END_SEMESTER);
         addMenuItem(registerMenu, elements.menuitem_endyear(), WidgetIds.END_YEAR);
@@ -196,9 +198,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(showMenu, elements.menuitem_showmembers(), WidgetIds.SHOW_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
+            addMenuItem(showMenu, elements.menuitem_owning_show(), WidgetIds.OWNINGS_LIST);
         }
-
-        addMenuItem(showMenu, elements.menuitem_owning_show(), WidgetIds.OWNINGS_LIST);
 
         addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
         addMenuItem(peopleMenu, elements.menuitem_findperson(), WidgetIds.FIND_PERSON);
@@ -231,6 +232,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         if (reducedMode == 0) {
             addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
+            addMenuItem(reportsMenu, elements.menuitem_report_belonging_responsible(), WidgetIds.REPORT_BELONGINGS_RESPONSIBLE);
+            
+            
             addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
         }
         addMenuItem(settingsMenu, elements.menuitem_email_settings(), WidgetIds.EDIT_EMAIL_CONTENT);
@@ -468,7 +472,13 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case REPORT_YEAR:
                 widget = GeneralReportView.show(messages, constants, elements);
+                ((GeneralReportView)widget).initSumYears();
                 break;
+            case REPORT_BELONGINGS_RESPONSIBLE:
+                widget = GeneralReportView.show(messages, constants, elements);
+                ((GeneralReportView)widget).initBelongings();
+                break;
+            
             case REPORT_EARNINGS_YEAR:
                 widget = EarningsAndCostPie.show(messages, constants, elements);
                 break;

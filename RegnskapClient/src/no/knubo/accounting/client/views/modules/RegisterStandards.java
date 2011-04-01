@@ -55,7 +55,7 @@ public class RegisterStandards {
         postNmbBox = new TextBoxWithErrorText("postnmb");
     }
 
-    public void fetchInitalData(final boolean fillFields) {
+    public void fetchInitalData(final boolean fillFields, final RegisterStandardsLoaded... registerStandardsLoaded) {
 
         ServerResponse rh = new ServerResponse() {
             public void serverResponse(JSONValue jsonValue) {
@@ -75,6 +75,10 @@ public class RegisterStandards {
 
                 if (fillFields) {
                     fillFields(root);
+                }
+
+                if (registerStandardsLoaded != null && registerStandardsLoaded.length > 0) {
+                    registerStandardsLoaded[0].standardsLoaded();
                 }
             }
 

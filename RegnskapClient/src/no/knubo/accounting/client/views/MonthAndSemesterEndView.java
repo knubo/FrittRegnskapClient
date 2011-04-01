@@ -7,9 +7,11 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.views.modules.DeprecationRenderer;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
+import no.knubo.accounting.client.views.modules.RegisterStandardsLoaded;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,8 +22,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 
-public class MonthAndSemesterEndView extends Composite implements ClickHandler {
+public class MonthAndSemesterEndView extends Composite implements ClickHandler, RegisterStandardsLoaded {
 
     private static MonthAndSemesterEndView me;
 
@@ -44,6 +47,12 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
     private HTML header;
 
     private DeprecationRenderer deprecationRenderer;
+
+    private AccountTable deprecationTable;
+
+    private Label errorLabel;
+
+    private RegisterStandards registerStandards;
 
     public static MonthAndSemesterEndView getInstance(Constants constants, I18NAccount messages, ViewCallback callback,
             Elements elements) {
@@ -76,15 +85,18 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
         dp.add(table, DockPanel.NORTH);
 
         deprecationRenderer = new DeprecationRenderer();
-        dp.add(deprecationRenderer.getTable(), DockPanel.NORTH);
-
+        deprecationTable = deprecationRenderer.getTable();
+        dp.add(deprecationTable, DockPanel.NORTH);
         dp.add(endButton, DockPanel.NORTH);
+        errorLabel = new Label();
+        dp.add(errorLabel, DockPanel.NORTH);
 
         initWidget(dp);
     }
 
     public void initEndMonth() {
-        new RegisterStandards(constants, messages, elements, callback).fetchInitalData(false);
+        registerStandards = new RegisterStandards(constants, messages, elements, callback);
+        registerStandards.fetchInitalData(false, this);
 
         endType = "endmonth";
         header.setHTML(elements.end_month_explain());
@@ -95,7 +107,8 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
     }
 
     public void initEndSemester() {
-        new RegisterStandards(constants, messages, elements, callback).fetchInitalData(false);
+        registerStandards = new RegisterStandards(constants, messages, elements, callback);
+        registerStandards.fetchInitalData(false, this);
 
         endButton.setText(elements.end_semester());
         endButton.setId("SemesterEndView.endButton");
@@ -106,6 +119,11 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
     }
 
     private void fetchAndDisplayTransferAmounts() {
+
+        while (deprecationTable.getRowCount() > 2) {
+            deprecationTable.removeRow(2);
+        }
+
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
@@ -165,7 +183,18 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler {
 
         };
 
-        AuthResponder.get(constants, messages, rh, "accounting/endmonthorsemester.php?action=" + endType);
+        AuthResponder.get(constants, messages, rh, "accounting/endmonthorsemester.php?action=" + endType
+                + "&deprecate=" + ((deprecationTable.getRowCount() > 2) ? "1" : "0") + "&deprdesc="
+                + elements.deprecation());
+    }
+
+    public void standardsLoaded() {
+        boolean enabled = registerStandards.getCurrentMonth() != 12;
+        endButton.setEnabled(enabled);
+        
+        if(!enabled) {
+            endButton.setTitle(messages.end_month_not_in_last_month());
+        }
     }
 
 }

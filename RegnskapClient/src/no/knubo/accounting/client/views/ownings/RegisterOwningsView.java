@@ -24,6 +24,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -81,10 +82,10 @@ public class RegisterOwningsView extends Composite implements ClickHandler, KeyU
         HTML errorOwning = new HTML();
         owning = registerStandards.createDescriptionBox(errorOwning);
 
-        description = new NamedTextArea("description");
+        description = new NamedTextArea("belonging_description");
 
         HTML errorSerial = new HTML();
-        serial = new TextBoxWithErrorText("serial", errorSerial);
+        serial = new TextBoxWithErrorText("identifier", errorSerial);
 
         HTML errorPurchaseDate = new HTML();
         purchaseDate = new TextBoxWithErrorText("purchase_date", errorPurchaseDate);

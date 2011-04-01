@@ -367,6 +367,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String end_month_confirm();
 
   /**
+   * Translated "I årets siste måned må årsavslutning benyttes.".
+   * 
+   * @return translated "I årets siste måned må årsavslutning benyttes."
+   */
+  @DefaultMessage("I årets siste måned må årsavslutning benyttes.")
+  @Key("end_month_not_in_last_month")
+  String end_month_not_in_last_month();
+
+  /**
    * Translated "Vil du virkelig utføre årsavslutning?".
    * 
    * @return translated "Vil du virkelig utføre årsavslutning?"
@@ -421,11 +430,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String field_validation_fail(String arg0);
 
   /**
-   * Translated "Tips: Senere finner du hjelp ved � klikke på <em>hjelp</em> (til høyre)".
+   * Translated "Tips: Senere finner du hjelp ved å klikke på <em>hjelp</em> (til høyre)".
    * 
-   * @return translated "Tips: Senere finner du hjelp ved � klikke på <em>hjelp</em> (til høyre)"
+   * @return translated "Tips: Senere finner du hjelp ved å klikke på <em>hjelp</em> (til høyre)"
    */
-  @DefaultMessage("Tips: Senere finner du hjelp ved � klikke på <em>hjelp</em> (til høyre)")
+  @DefaultMessage("Tips: Senere finner du hjelp ved å klikke på <em>hjelp</em> (til høyre)")
   @Key("first_time_hint")
   String first_time_hint();
 

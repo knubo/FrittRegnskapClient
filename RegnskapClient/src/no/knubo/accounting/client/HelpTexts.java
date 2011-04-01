@@ -43,6 +43,15 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String attachment();
 
   /**
+   * Translated "Beskrivelse av eiendelen.".
+   * 
+   * @return translated "Beskrivelse av eiendelen."
+   */
+  @DefaultStringValue("Beskrivelse av eiendelen.")
+  @Key("belonging_description")
+  String belonging_description();
+
+  /**
    * Translated "Nullstiller felter".
    * 
    * @return translated "Nullstiller felter"
@@ -221,6 +230,15 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   @DefaultStringValue("Benytt budsjett til &aring; holde kontroll p&aring; &oslash;konomien")
   @Key("hint9")
   String hint9();
+
+  /**
+   * Translated "Serienummeret skal unikt identifisere eiendelen slik at det blir enklere &aring; holde oversikt over eiendeler av samme type.".
+   * 
+   * @return translated "Serienummeret skal unikt identifisere eiendelen slik at det blir enklere &aring; holde oversikt over eiendeler av samme type."
+   */
+  @DefaultStringValue("Serienummeret skal unikt identifisere eiendelen slik at det blir enklere &aring; holde oversikt over eiendeler av samme type.")
+  @Key("identifier")
+  String identifier();
 
   /**
    * Translated "<p>Det mangler pris for kursmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>".

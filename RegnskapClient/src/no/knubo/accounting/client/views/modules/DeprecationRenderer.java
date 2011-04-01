@@ -44,6 +44,7 @@ public class DeprecationRenderer {
             table.setText(row, 1, account,"desc");
             table.setText(row, 2, posttypeCache.getDescription(account),"desc");
             table.setText(row, 3, Util.money(obj.get("deprecation_amount")),"right desc");
+            table.alternateStyle(row, (row+1) % 2 == 0);
         }
     }
 
