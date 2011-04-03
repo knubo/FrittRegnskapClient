@@ -1861,6 +1861,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String integration_disable();
 
   /**
+   * Translated "Epost for varsling".
+   * 
+   * @return translated "Epost for varsling"
+   */
+  @DefaultStringValue("Epost for varsling")
+  @Key("integration_email")
+  String integration_email();
+
+  /**
    * Translated "Skru på integrasjon".
    * 
    * @return translated "Skru på integrasjon"
