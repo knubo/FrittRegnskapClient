@@ -13,6 +13,7 @@ import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.HappeningsView;
+import no.knubo.accounting.client.views.IntegrationView;
 import no.knubo.accounting.client.views.LineEditView;
 import no.knubo.accounting.client.views.LogView;
 import no.knubo.accounting.client.views.LogoutView;
@@ -253,7 +254,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(settingsMenu, elements.menuitem_semesters(), WidgetIds.EDIT_SEMESTER);
         addMenuItem(settingsMenu, elements.menuitem_edit_happening(), WidgetIds.EDIT_HAPPENING);
         addMenuItem(settingsMenu, elements.menuitem_values(), WidgetIds.SETTINGS);
-
+        addMenuItem(settingsMenu, elements.menuitem_integration(), WidgetIds.INTEGRATION);
+        
         if (reducedMode == 0) {
             addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
             addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
@@ -352,6 +354,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case END_SEMESTER:
                 widget = MonthAndSemesterEndView.getInstance(constants, messages, callback, elements);
                 ((MonthAndSemesterEndView) widget).initEndSemester();
+                break;
+            case INTEGRATION:
+                widget = IntegrationView.show(messages, constants, elements);
+                ((IntegrationView) widget).init();
                 break;
             case SETTINGS:
                 widget = StandardvaluesView.show(messages, constants, elements);

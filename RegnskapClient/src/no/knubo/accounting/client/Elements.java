@@ -1852,6 +1852,51 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String include_hidden();
 
   /**
+   * Translated "Skru av integrasjon".
+   * 
+   * @return translated "Skru av integrasjon"
+   */
+  @DefaultStringValue("Skru av integrasjon")
+  @Key("integration_disable")
+  String integration_disable();
+
+  /**
+   * Translated "Skru på integrasjon".
+   * 
+   * @return translated "Skru på integrasjon"
+   */
+  @DefaultStringValue("Skru på integrasjon")
+  @Key("integration_enable")
+  String integration_enable();
+
+  /**
+   * Translated "Integratsjon er ikke aktivert".
+   * 
+   * @return translated "Integratsjon er ikke aktivert"
+   */
+  @DefaultStringValue("Integratsjon er ikke aktivert")
+  @Key("integration_off")
+  String integration_off();
+
+  /**
+   * Translated "Integrasjon er aktivert".
+   * 
+   * @return translated "Integrasjon er aktivert"
+   */
+  @DefaultStringValue("Integrasjon er aktivert")
+  @Key("integration_on")
+  String integration_on();
+
+  /**
+   * Translated "Integrasjons token".
+   * 
+   * @return translated "Integrasjons token"
+   */
+  @DefaultStringValue("Integrasjons token")
+  @Key("integration_secret")
+  String integration_secret();
+
+  /**
    * Translated "Flett brev".
    * 
    * @return translated "Flett brev"
@@ -2606,6 +2651,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Import av personer")
   @Key("menuitem_import_person")
   String menuitem_import_person();
+
+  /**
+   * Translated "Integrasjon".
+   * 
+   * @return translated "Integrasjon"
+   */
+  @DefaultStringValue("Integrasjon")
+  @Key("menuitem_integration")
+  String menuitem_integration();
 
   /**
    * Translated "Vis logger".
