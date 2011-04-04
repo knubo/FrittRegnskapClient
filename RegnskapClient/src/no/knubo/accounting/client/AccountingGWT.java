@@ -112,6 +112,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     private MenuBar reportsMenu;
     private MenuBar settingsMenu;
     private MenuBar topMenu;
+    private boolean menuSetUp;
 
     /**
      * This is the entry point method.
@@ -708,6 +709,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         reducedMode = v;
         Util.log("Reduced mode:" + v);
 
-        setupMenu(topMenu);
+        if(!menuSetUp) {
+            menuSetUp = true;
+            setupMenu(topMenu);
+        }
     }
 }
