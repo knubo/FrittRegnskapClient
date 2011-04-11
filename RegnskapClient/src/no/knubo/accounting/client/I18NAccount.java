@@ -520,6 +520,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String invalid_email();
 
   /**
+   * Translated "Ukjent beløp".
+   * 
+   * @return translated "Ukjent beløp"
+   */
+  @DefaultMessage("Ukjent beløp")
+  @Key("kid_bad_payment")
+  String kid_bad_payment();
+
+  /**
    * Translated "Din siste registrering er ikke balansert. Denne åpnes nå slik at du kan balansere den.".
    * 
    * @return translated "Din siste registrering er ikke balansert. Denne åpnes nå slik at du kan balansere den."

@@ -1915,6 +1915,69 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String join_letters();
 
   /**
+   * Translated "Blankettnummer".
+   * 
+   * @return translated "Blankettnummer"
+   */
+  @DefaultStringValue("Blankettnummer")
+  @Key("kid_form_number")
+  String kid_form_number();
+
+  /**
+   * Translated "Innkommende KID transaksjoner".
+   * 
+   * @return translated "Innkommende KID transaksjoner"
+   */
+  @DefaultStringValue("Innkommende KID transaksjoner")
+  @Key("kid_incoming_transactions")
+  String kid_incoming_transactions();
+
+  /**
+   * Translated "Medlemskap".
+   * 
+   * @return translated "Medlemskap"
+   */
+  @DefaultStringValue("Medlemskap")
+  @Key("kid_lesson_membership")
+  String kid_lesson_membership();
+
+  /**
+   * Translated "Innbetalinger".
+   * 
+   * @return translated "Innbetalinger"
+   */
+  @DefaultStringValue("Innbetalinger")
+  @Key("kid_payments")
+  String kid_payments();
+
+  /**
+   * Translated "Oppgjørsdato".
+   * 
+   * @return translated "Oppgjørsdato"
+   */
+  @DefaultStringValue("Oppgjørsdato")
+  @Key("kid_settlement_date")
+  String kid_settlement_date();
+
+  /**
+   * Translated "Oppdragsnummer".
+   * 
+   * @return translated "Oppdragsnummer"
+   */
+  @DefaultStringValue("Oppdragsnummer")
+  @Key("kid_shipment_number")
+  String kid_shipment_number();
+
+  /**
+   * Translated "Transaksjonsnummer".
+   * 
+   * @return translated "Transaksjonsnummer"
+   */
+  @DefaultStringValue("Transaksjonsnummer")
+  @Key("kid_transaction_number")
+  String kid_transaction_number();
+
+  /**
    * Translated "KREDIT".
    * 
    * @return translated "KREDIT"
@@ -2671,6 +2734,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_integration();
 
   /**
+   * Translated "Vis KID transaksjoner".
+   * 
+   * @return translated "Vis KID transaksjoner"
+   */
+  @DefaultStringValue("Vis KID transaksjoner")
+  @Key("menuitem_kid_list_transactions")
+  String menuitem_kid_list_transactions();
+
+  /**
    * Translated "Vis logger".
    * 
    * @return translated "Vis logger"
@@ -2777,6 +2849,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Hurtigregistrering av standardbilag")
   @Key("menuitem_register_happening")
   String menuitem_register_happening();
+
+  /**
+   * Translated "KID innbetaling av medlemskap".
+   * 
+   * @return translated "KID innbetaling av medlemskap"
+   */
+  @DefaultStringValue("KID innbetaling av medlemskap")
+  @Key("menuitem_register_kid_membership")
+  String menuitem_register_kid_membership();
 
   /**
    * Translated "Registrer bilag".

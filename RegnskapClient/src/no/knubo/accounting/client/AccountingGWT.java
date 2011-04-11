@@ -41,6 +41,7 @@ import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
+import no.knubo.accounting.client.views.kid.RegisterMembershipKIDView;
 import no.knubo.accounting.client.views.ownings.OwningsListView;
 import no.knubo.accounting.client.views.ownings.RegisterOwningsView;
 import no.knubo.accounting.client.views.portal.PortalGallery;
@@ -183,6 +184,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         if (reducedMode == 0) {
             addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
+            addMenuItem(registerMenu, elements.menuitem_register_kid_membership(), WidgetIds.REGISTER_KID_MEMBERSHIP);
         }
 
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
@@ -343,6 +345,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case REGISTER_MEMBERSHIP:
                 widget = RegisterMembershipView.show(messages, constants, helpPanel, elements);
                 ((RegisterMembershipView) widget).init();
+                break;
+            case REGISTER_KID_MEMBERSHIP:
+                widget = RegisterMembershipKIDView.show(messages, constants, elements);
+                ((RegisterMembershipKIDView)widget).init();
                 break;
             case REGISTER_HAPPENING:
                 widget = RegisterHappeningView.show(messages, constants, callback, elements, callback);
