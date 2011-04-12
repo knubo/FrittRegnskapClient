@@ -294,6 +294,8 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
         MasterValidator mv = new MasterValidator();
 
+        boolean requireDayConfirmation = false;
+        boolean somethingChecked = false;
         for (int i = 1; i < resultTable.getRowCount(); i++) {
             CheckBox yearBox = (CheckBox) resultTable.getWidget(i, 3);
             CheckBox yearYouthBox = (CheckBox) resultTable.getWidget(i, 4);
@@ -313,6 +315,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
             if (doYear || doYearYouth || doCourse || doTrain || doYouth) {
                 validateDay(mv, dayBox);
                 ok = ok && mv.validateStatus();
+                somethingChecked = true;
             }
 
             /* If daybox is given, then a checkbox must be set. */
@@ -322,6 +325,10 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                 ok = ok && mv.fail(dayBox, shouldFail, message);
             }
 
+            if(dayBox.getText().length() == 0) {
+                requireDayConfirmation = true;
+            }
+            
             if (doYear) {
                 Util.addPostParam(sb, "year" + id, "1");
             }
@@ -344,9 +351,18 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                 Util.addPostParam(sb, "post" + id, Util.getSelected(post));
             }
         }
+        
 
-        if (!ok) {
+        if (!ok || !somethingChecked) {
             return null;
+        }
+
+        if(requireDayConfirmation) {
+            boolean cont = Window.confirm(messages.confirm_register_membership());
+            
+            if(!cont) {
+                return null;
+            }
         }
 
         return sb;

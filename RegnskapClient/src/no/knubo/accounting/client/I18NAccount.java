@@ -124,6 +124,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String confirm_import_person();
 
   /**
+   * Translated "Vil du registrere medlemskap uten bilagspostering?".
+   * 
+   * @return translated "Vil du registrere medlemskap uten bilagspostering?"
+   */
+  @DefaultMessage("Vil du registrere medlemskap uten bilagspostering?")
+  @Key("confirm_register_membership")
+  String confirm_register_membership();
+
+  /**
    * Translated "Vil du sende ut portalaktiveringsbrev?".
    * 
    * @return translated "Vil du sende ut portalaktiveringsbrev?"
