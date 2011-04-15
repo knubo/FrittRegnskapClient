@@ -15,8 +15,7 @@ class PriceMatcher {
 
     }
 
-    String[] matchPrices(double amount, boolean skipYear) {
-
+    String[] matchPrices(double amount, boolean skipYear, boolean skipMemberships) {
 
         if (!skipYear) {
             double amountLeft = amount - Util.getDouble(prices.get("year"));
@@ -25,9 +24,11 @@ class PriceMatcher {
                 return new String[] { "year" };
             }
 
-            for (int i = 0; i < keys.length; i++) {
-                if (Util.getDouble(prices.get(keys[i])) == amountLeft) {
-                    return new String[] { "year", keys[i] };
+            if (!skipMemberships) {
+                for (int i = 0; i < keys.length; i++) {
+                    if (Util.getDouble(prices.get(keys[i])) == amountLeft) {
+                        return new String[] { "year", keys[i] };
+                    }
                 }
             }
 
@@ -36,19 +37,22 @@ class PriceMatcher {
                 return new String[] { "yearyouth" };
             }
 
-            for (int i = 0; i < keys.length; i++) {
-                if (Util.getDouble(prices.get(keys[i])) == amountLeft) {
-                    return new String[] { "yearyouth", keys[i] };
+            if (!skipMemberships) {
+                for (int i = 0; i < keys.length; i++) {
+                    if (Util.getDouble(prices.get(keys[i])) == amountLeft) {
+                        return new String[] { "yearyouth", keys[i] };
+                    }
                 }
-            }        
-        }
-        
-        for (int i = 0; i < keys.length; i++) {
-            if (Util.getDouble(prices.get(keys[i])) == amount) {
-                return new String[] { keys[i] };
             }
         }
-        
+
+        if (!skipMemberships) {
+            for (int i = 0; i < keys.length; i++) {
+                if (Util.getDouble(prices.get(keys[i])) == amount) {
+                    return new String[] { keys[i] };
+                }
+            }
+        }
 
         return new String[] {};
     }

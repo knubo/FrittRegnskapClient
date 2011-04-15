@@ -347,7 +347,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((RegisterMembershipView) widget).init();
                 break;
             case REGISTER_KID_MEMBERSHIP:
-                widget = RegisterMembershipKIDView.show(messages, constants, elements);
+                widget = RegisterMembershipKIDView.show(messages, constants, elements, callback);
                 ((RegisterMembershipKIDView)widget).init();
                 break;
             case REGISTER_HAPPENING:

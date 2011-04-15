@@ -97,4 +97,12 @@ public class ImageFactory {
         return withId(new Image("images/emblem-unreadable.png"), id);
     }
 
+    public static Widget okImage(String id) {
+        return withId(new Image("images/accept.png"), id);
+    }
+
+    public static Widget alertImage(String id) {
+        return withId(new Image("images/exclamation.png"), id);
+    }
+
 }

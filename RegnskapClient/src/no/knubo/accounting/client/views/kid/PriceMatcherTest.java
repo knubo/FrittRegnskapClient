@@ -41,14 +41,14 @@ public class PriceMatcherTest extends TestCase {
     }
 
     public void test_matches_one_price_year_first() {
-        String[] prices = priceMatcher.matchPrices(300, false);
+        String[] prices = priceMatcher.matchPrices(300, false, false);
 
         Assert.assertEquals(1, prices.length);
         Assert.assertEquals("year", prices[0]);
     }
 
     public void test_matches_two_with_year_pri() {
-        String[] prices = priceMatcher.matchPrices(700, false);
+        String[] prices = priceMatcher.matchPrices(700, false, false);
 
         Assert.assertEquals(2, prices.length);
         Assert.assertEquals("year", prices[0]);
@@ -56,33 +56,33 @@ public class PriceMatcherTest extends TestCase {
     }
 
     public void test_if_skipYear_no_match_year() {
-        String[] prices = priceMatcher.matchPrices(700, true);
+        String[] prices = priceMatcher.matchPrices(700, true, false);
 
         Assert.assertEquals(1, prices.length);
         Assert.assertEquals("course", prices[0]);
     }
 
     public void test_if_skipYear_no_match_year_exact_year_sum() {
-        String[] prices = priceMatcher.matchPrices(300, true);
+        String[] prices = priceMatcher.matchPrices(300, true, false);
         
         Assert.assertEquals(0, prices.length);
     }
 
     public void test_cannot_match_more_than_2_if_so_match_none() {
-        String[] prices = priceMatcher.matchPrices(1400, false);
+        String[] prices = priceMatcher.matchPrices(1400, false, false);
 
         Assert.assertEquals(0, prices.length);
     }
 
     public void test_cannot_match_two_of_type_year() {
-        String[] prices = priceMatcher.matchPrices(450, false);
+        String[] prices = priceMatcher.matchPrices(450, false, false);
 
         Assert.assertEquals(0, prices.length);
 
     }
 
     public void test_cannot_match_two_of_type_membership() {
-        String[] prices = priceMatcher.matchPrices(1100, false);
+        String[] prices = priceMatcher.matchPrices(1100, false, false);
 
         Assert.assertEquals(0, prices.length);
 

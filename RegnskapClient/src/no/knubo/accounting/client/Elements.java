@@ -1933,6 +1933,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String kid_incoming_transactions();
 
   /**
+   * Translated "Kreditkonteringer".
+   * 
+   * @return translated "Kreditkonteringer"
+   */
+  @DefaultStringValue("Kreditkonteringer")
+  @Key("kid_kredit_posts")
+  String kid_kredit_posts();
+
+  /**
    * Translated "Medlemskap".
    * 
    * @return translated "Medlemskap"
@@ -1942,6 +1951,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String kid_lesson_membership();
 
   /**
+   * Translated "Poster KID innbetaling".
+   * 
+   * @return translated "Poster KID innbetaling"
+   */
+  @DefaultStringValue("Poster KID innbetaling")
+  @Key("kid_payement_edit")
+  String kid_payement_edit();
+
+  /**
    * Translated "Innbetalinger".
    * 
    * @return translated "Innbetalinger"
@@ -1949,6 +1967,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Innbetalinger")
   @Key("kid_payments")
   String kid_payments();
+
+  /**
+   * Translated "Medlemskap som registreres".
+   * 
+   * @return translated "Medlemskap som registreres"
+   */
+  @DefaultStringValue("Medlemskap som registreres")
+  @Key("kid_register_membership")
+  String kid_register_membership();
 
   /**
    * Translated "Oppgjørsdato".

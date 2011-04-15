@@ -658,5 +658,18 @@ public class Util {
         }
     }
 
+    public static String join(String[] match) {
+        StringBuffer sb = new StringBuffer();
+        
+        for (String string : match) {
+            if(sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(string);
+        }
+        
+        return sb.toString();
+    }
+
 
 }
