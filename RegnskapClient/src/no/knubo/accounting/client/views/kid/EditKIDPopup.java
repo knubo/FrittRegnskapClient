@@ -12,6 +12,7 @@ import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
@@ -31,6 +32,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
     private Constants constants;
     private I18NAccount messages;
     private NamedButton addButton;
+    private PosttypeCache postTypeCache;
 
     public EditKIDPopup(JSONObject kid, JSONObject prices, RegisterMembershipKIDView registerMembershipKIDView) {
         this.kid = kid;
@@ -85,7 +87,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         accountNameBox.setVisibleItemCount(1);
         aTable.setWidget(4, 0, accountIdBox);
 
-        PosttypeCache postTypeCache = PosttypeCache.getInstance(constants, messages);
+        postTypeCache = PosttypeCache.getInstance(constants, messages);
         postTypeCache.fillAllEarnings(accountNameBox);
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
         aTable.setWidget(4, 1, accountNameBox);
@@ -112,7 +114,30 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
         add(vp);
         center();
+        fillInitialData();
+    }
 
+    private void fillInitialData() {
+        if(kid.containsKey("accounting")) {
+            fillAccounting();
+            return;
+        }
+        
+        if(!kid.containsKey("payment")) {
+            return;
+        }
+        
+        JSONArray payments = kid.get("payments").isArray();
+
+        for(int i=0; i < payments.size(); i++) {
+            String paymentKey = Util.str(payments.get(i));
+        }
+        
+    }
+
+    private void fillAccounting() {
+        // TODO Auto-generated method stub
+        
     }
 
     public void onClick(ClickEvent event) {

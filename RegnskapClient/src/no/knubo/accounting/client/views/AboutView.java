@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class AboutView extends Composite implements ClickHandler {
 
     /** This must match Version.php's version */
-    public static final String CLIENT_VERSION = "2.22";
+    public static final String CLIENT_VERSION = "2.23";
 
     private static AboutView instance;
 

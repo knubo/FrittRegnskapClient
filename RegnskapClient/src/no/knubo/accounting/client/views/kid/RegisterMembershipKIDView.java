@@ -118,7 +118,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
             table.setText(row, 4, messages.kid_bad_payment(), "desc");
             table.setWidget(row, 5, ImageFactory.alertImage("fail" + id), "center");
         } else {
-            object.put("payments", new JSONString(Util.join(match)));
+            object.put("payments", Util.toJsonArray(match));
 
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < match.length; i++) {

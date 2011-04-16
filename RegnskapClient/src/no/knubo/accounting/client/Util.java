@@ -671,5 +671,17 @@ public class Util {
         return sb.toString();
     }
 
+    public static JSONValue toJsonArray(String[] match) {
+        JSONArray array = new JSONArray();
+
+        for (int i = 0; i < match.length; i++) {
+            String string = match[i];
+            array.set(i, new JSONString(string));
+        }
+
+        
+        return array;
+    }
+
 
 }
