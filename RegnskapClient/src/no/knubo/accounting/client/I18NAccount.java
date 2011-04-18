@@ -529,6 +529,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String invalid_email();
 
   /**
+   * Translated "Konto er allerede valgt.".
+   * 
+   * @return translated "Konto er allerede valgt."
+   */
+  @DefaultMessage("Konto er allerede valgt.")
+  @Key("kid_account_used")
+  String kid_account_used();
+
+  /**
    * Translated "Ukjent beløp".
    * 
    * @return translated "Ukjent beløp"

@@ -7,7 +7,6 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.CacheCallback;
 import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.misc.AuthResponder;
-import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.NamedButton;
@@ -38,8 +37,6 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
 
     private FlexTable table;
 
-    private IdHolder<String, Image> idHolder;
-
     private Button newButton;
 
     private ProjectEditFields editFields;
@@ -61,14 +58,12 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
         table.getRowFormatter().setStyleName(0, "header");
         table.getFlexCellFormatter().setColSpan(0, 0, 2);
 
-        newButton = new NamedButton("projectEditView_newButton", elements
-                .projectEditView_newButton());
+        newButton = new NamedButton("projectEditView_newButton", elements.projectEditView_newButton());
         newButton.addClickHandler(this);
 
         dp.add(newButton, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
 
-        idHolder = new IdHolder<String, Image>();
         initWidget(dp);
     }
 
@@ -81,9 +76,9 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
     }
 
     public void onClick(ClickEvent event) {
-    	Widget sender = (Widget) event.getSource();
+        Widget sender = (Widget) event.getSource();
 
-    	if (editFields == null) {
+        if (editFields == null) {
             editFields = new ProjectEditFields();
         }
 
@@ -91,7 +86,7 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
         if (sender == newButton) {
             left = sender.getAbsoluteLeft() + 10;
         } else {
-            left = sender.getAbsoluteLeft() - 250;
+            left = sender.getAbsoluteLeft();
         }
 
         int top = sender.getAbsoluteTop() + 10;
@@ -100,21 +95,25 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
         if (sender == newButton) {
             editFields.init();
         } else {
-            editFields.init(idHolder.findId(sender));
+            editFields.init(findId(sender));
         }
         editFields.show();
     }
 
+    private String findId(Widget sender) {
+        String id = sender.getElement().getId();
+        return id.substring(4);
+    }
+
     public void init() {
         projectCache = ProjectCache.getInstance(constants, messages);
-        idHolder.init();
 
         while (table.getRowCount() > 1) {
             table.removeRow(1);
         }
 
         int row = 1;
-        for(JSONObject object : projectCache.getAll()) {
+        for (JSONObject object : projectCache.getAll()) {
 
             String project = Util.str(object.get("description"));
             String id = Util.str(object.get("project"));
@@ -128,9 +127,8 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
         table.setHTML(row, 0, project);
         table.getCellFormatter().setStyleName(row, 0, "desc");
 
-        Image editImage = ImageFactory.editImage("projectEditView_editImage");
+        Image editImage = ImageFactory.editImage("edit" + id);
         editImage.addClickHandler(me);
-        idHolder.add(id, editImage);
 
         table.setWidget(row, 1, editImage);
 
@@ -188,7 +186,7 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
         }
 
         public void onClick(ClickEvent event) {
-        	Widget sender = (Widget) event.getSource();
+            Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
                 hide();
             } else if (sender == saveButton && validateFields()) {
@@ -216,12 +214,11 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
                     } else {
                         if (sendId == null) {
                             int row = table.getRowCount();
-
-                            addRow(row, description, sendId);
-                        } else {
-                            /* Could probably be more effective but why bother? */
-                            ProjectCache.getInstance(constants, messages).flush(me);
+                            Util.log("Adding for:" + Util.str(object.get("Project")));
+                            addRow(row, description, Util.str(object.get("Project")));
                         }
+                        /* Could probably be more effective but why bother? */
+                        ProjectCache.getInstance(constants, messages).flush(me);
                         hide();
                     }
                 }

@@ -15,7 +15,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
@@ -63,6 +62,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
     private PriceMatcher priceMatcher;
     private JSONObject prices;
     private JSONArray kidData;
+    private JSONObject posts;
     private ViewCallback viewcallback;
     RegisterStandards registerStandards;
 
@@ -72,6 +72,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         }
 
         ServerResponse callback = new ServerResponse() {
+
 
             public void serverResponse(JSONValue responseObj) {
                 JSONObject data = responseObj.isObject();
@@ -87,6 +88,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
                 priceMatcher = new PriceMatcher(prices);
 
                 kidData = data.get("data").isArray();
+                posts = data.get("posts").isObject();
                 for (int i = 0; i < kidData.size(); i++) {
                     JSONObject object = kidData.get(i).isObject();
 
@@ -114,6 +116,8 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         String[] match = priceMatcher.matchPrices(Util.getDouble(object.get("amount")), !Util.isNull(object
                 .get("memberid")), !Util.isNull(object.get("youth")) || !Util.isNull(object.get("train"))
                 || !Util.isNull(object.get("course")));
+        
+        
         if (match.length == 0) {
             table.setText(row, 4, messages.kid_bad_payment(), "desc");
             table.setWidget(row, 5, ImageFactory.alertImage("fail" + id), "center");
@@ -151,7 +155,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
             JSONObject kid = kidData.get(i).isObject();
 
             if (("edit" + Util.str(kid.get("id"))).equals(id)) {
-                new EditKIDPopup(kid, prices, this);
+                new EditKIDPopup(kid, prices, posts, this);
                 return;
             }
         }

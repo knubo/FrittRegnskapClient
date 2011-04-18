@@ -144,7 +144,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         activeView = new DockPanel();
         activeView.setStyleName("activeview");
         docPanel.add(activeView, DockPanel.CENTER);
-        HelpPanel helpPanel = HelpPanel.getInstance(elements, helpTexts);
+        HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
         docPanel.add(helpPanel, DockPanel.EAST);
         docPanel.setCellWidth(helpPanel, "100%");
 
@@ -236,9 +236,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         if (reducedMode == 0) {
             addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
-            addMenuItem(reportsMenu, elements.menuitem_report_belonging_responsible(), WidgetIds.REPORT_BELONGINGS_RESPONSIBLE);
-            
-            
+            addMenuItem(reportsMenu, elements.menuitem_report_belonging_responsible(),
+                    WidgetIds.REPORT_BELONGINGS_RESPONSIBLE);
+
             addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
         }
         addMenuItem(settingsMenu, elements.menuitem_email_settings(), WidgetIds.EDIT_EMAIL_CONTENT);
@@ -258,7 +258,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(settingsMenu, elements.menuitem_edit_happening(), WidgetIds.EDIT_HAPPENING);
         addMenuItem(settingsMenu, elements.menuitem_values(), WidgetIds.SETTINGS);
         addMenuItem(settingsMenu, elements.menuitem_integration(), WidgetIds.INTEGRATION);
-        
+
         if (reducedMode == 0) {
             addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
             addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
@@ -332,11 +332,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         public void execute() {
             Widget widget = null;
 
-            HelpPanel helpPanel = HelpPanel.getInstance(elements, helpTexts);
+            HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
             switch (action) {
             case LINE_EDIT_VIEW:
-                widget = LineEditView.show(callback, messages, constants, null, HelpPanel.getInstance(elements,
-                        helpTexts), elements);
+                widget = LineEditView.show(callback, messages, constants, null, helpPanel, elements);
                 break;
             case MASSREGISTER_VIEW:
                 widget = MassRegisterView.show(messages, constants, elements, callback);
@@ -348,7 +347,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case REGISTER_KID_MEMBERSHIP:
                 widget = RegisterMembershipKIDView.show(messages, constants, elements, callback);
-                ((RegisterMembershipKIDView)widget).init();
+                ((RegisterMembershipKIDView) widget).init();
                 break;
             case REGISTER_HAPPENING:
                 widget = RegisterHappeningView.show(messages, constants, callback, elements, callback);
@@ -485,13 +484,13 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case REPORT_YEAR:
                 widget = GeneralReportView.show(messages, constants, elements);
-                ((GeneralReportView)widget).initSumYears();
+                ((GeneralReportView) widget).initSumYears();
                 break;
             case REPORT_BELONGINGS_RESPONSIBLE:
                 widget = GeneralReportView.show(messages, constants, elements);
-                ((GeneralReportView)widget).initBelongings();
+                ((GeneralReportView) widget).initBelongings();
                 break;
-            
+
             case REPORT_EARNINGS_YEAR:
                 widget = EarningsAndCostPie.show(messages, constants, elements);
                 break;
@@ -638,11 +637,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     public void openDetails(String id) {
-        Widget widget = LineEditView.show(this, messages, constants, id, HelpPanel.getInstance(elements, helpTexts),
-                elements);
+        HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
+        Widget widget = LineEditView.show(this, messages, constants, id, helpPanel, elements);
 
         setActiveWidget(widget);
-        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget, WidgetIds.LINE_EDIT_VIEW);
+        helpPanel.setCurrentWidget(widget, WidgetIds.LINE_EDIT_VIEW);
         Window.setTitle(elements.menuitem_showmonthdetails());
     }
 
@@ -652,14 +651,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         instance.init(year, month);
 
         setActiveWidget(instance);
-        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(instance, WidgetIds.SHOW_MONTH);
+        HelpPanel.getInstance(constants, messages, elements, helpTexts)
+                .setCurrentWidget(instance, WidgetIds.SHOW_MONTH);
         Window.setTitle(elements.menuitem_showmonth());
     }
 
     public void searchPerson() {
         PersonSearchView widget = PersonSearchView.show(this, messages, constants, elements);
         setActiveWidget(widget);
-        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget, WidgetIds.FIND_PERSON);
+        HelpPanel.getInstance(constants, messages, elements, helpTexts).setCurrentWidget(widget, WidgetIds.FIND_PERSON);
         Window.setTitle(elements.menuitem_showmonth());
     }
 
@@ -669,17 +669,20 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         instance.init();
 
         setActiveWidget(instance);
-        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(instance, WidgetIds.SHOW_MONTH);
+        HelpPanel.getInstance(constants, messages, elements, helpTexts)
+                .setCurrentWidget(instance, WidgetIds.SHOW_MONTH);
         Window.setTitle(elements.menuitem_showmonth());
     }
 
     public void editPerson(String id) {
-        PersonEditView widget = PersonEditView.show(constants, messages, HelpPanel.getInstance(elements, helpTexts),
+        HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
+        
+        PersonEditView widget = PersonEditView.show(constants, messages, helpPanel,
                 this, elements);
 
         widget.init(id);
         setActiveWidget(widget);
-        HelpPanel.getInstance(elements, helpTexts).setCurrentWidget(widget, WidgetIds.ADD_PERSON);
+        helpPanel.setCurrentWidget(widget, WidgetIds.ADD_PERSON);
         Window.setTitle(elements.title_change_person());
     }
 
@@ -715,7 +718,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         reducedMode = v;
         Util.log("Reduced mode:" + v);
 
-        if(!menuSetUp) {
+        if (!menuSetUp) {
             menuSetUp = true;
             setupMenu(topMenu);
         }

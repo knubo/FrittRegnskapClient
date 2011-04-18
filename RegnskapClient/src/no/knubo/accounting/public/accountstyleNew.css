@@ -458,20 +458,9 @@ td.rute {
     background-color: lightgrey;
 }
 
-.helpheader H1 {
-    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-    font-weight: bold;
-    white-space: nowrap;
-    font-size: 15pt;
+.help {
+    margin-right:20px;
 }
-
-.helpheader H2 {
-    font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
-    font-weight: bold;
-    white-space: nowrap;
-    font-size: 12pt;
-}
-
 .contexthelp {
     background: #F6FEDA none repeat scroll 0%;
     border: 1px solid #98BE10;

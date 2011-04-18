@@ -84,6 +84,10 @@ public class ReportMembersBirthGender extends Composite implements ClickHandler 
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
+                if(object == null) {
+                    return;
+                }
+                
                 Set<String> keys = object.keySet();
 
                 for (String ageGenderKey : keys) {
