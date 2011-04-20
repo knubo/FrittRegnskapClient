@@ -2,6 +2,7 @@ package no.knubo.accounting.client.views.budget;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -265,6 +266,8 @@ public class BudgetDrawDelegate {
 
         int lastYear = findYearFromKey(keySet.get(keySet.size() - 1));
 
+        Collections.sort(keySet, new PostComp());
+
         for (String yearAndAccount : keySet) {
             JSONValue value = costs.get(yearAndAccount);
             int year2 = findYearFromKey(yearAndAccount);
@@ -275,6 +278,15 @@ public class BudgetDrawDelegate {
 
     }
 
+    class PostComp implements Comparator<String>{
+
+        public int compare(String o1, String o2) {
+            
+            return Integer.parseInt(findAccountFromKey(o1)) - Integer.parseInt(findAccountFromKey(o2));
+        }
+        
+    }
+    
     int fillEarningsAndYearHeaders(JSONObject earnings) {
         List<String> keySet = new ArrayList<String>(earnings.keySet());
         Collections.sort(keySet);
@@ -286,6 +298,8 @@ public class BudgetDrawDelegate {
             view.budgetTable.setText(0, 2 + (lastYear - year), "" + year);
         }
 
+        Collections.sort(keySet, new PostComp());
+        
         for (String yearAndAccount : keySet) {
             JSONValue value = earnings.get(yearAndAccount);
             int year2 = findYearFromKey(yearAndAccount);

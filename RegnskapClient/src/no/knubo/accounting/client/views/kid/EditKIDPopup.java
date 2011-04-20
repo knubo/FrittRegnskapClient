@@ -17,6 +17,7 @@ import no.knubo.accounting.client.validation.MasterValidator;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -46,6 +47,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
     private final HashMap<String, String> postGiveBDG = new HashMap<String, String>();
     private double sum;
     private TextBoxWithErrorText amountBox;
+    private JSONObject kidPosts;
 
     public EditKIDPopup(JSONObject kid, JSONObject prices, JSONObject posts,
             RegisterMembershipKIDView registerMembershipKIDView) {
@@ -136,6 +138,21 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         add(vp);
         center();
         fillInitialData();
+        lockPaidMemberships();
+    }
+
+    private void lockPaidMemberships() {
+        if(!Util.isNull(kid.get("memberid"))) {
+            checkboxes.get("year").setEnabled(false);
+            checkboxes.get("year_youth").setEnabled(false);
+        }
+        
+        if(!Util.isNull(kid.get("youth")) || !Util.isNull(kid.get("train"))
+            || !Util.isNull(kid.get("course"))) {
+            checkboxes.get("course").setEnabled(false);
+            checkboxes.get("train").setEnabled(false);
+            checkboxes.get("youth").setEnabled(false);
+        }
     }
 
     private Widget checkbox(String id, String field) {
@@ -146,9 +163,13 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
     private void fillInitialData() {
         if (kid.containsKey("accounting")) {
+            kidPosts = kid.get("accounting").isObject();
             fillAccounting();
             return;
         }
+
+        kidPosts = new JSONObject();
+        kid.put("accounting", kidPosts);
 
         if (!kid.containsKey("payments")) {
             return;
@@ -165,7 +186,18 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
             addPayment(paymentKey);
         }
 
-        aTable.setText(aTable.getRowCount() - 3, 2, Util.money(sum), "right");
+        setSum();
+    }
+
+    private void setSum() {
+        int row = aTable.getRowCount() - 3;
+        aTable.setText(row, 2, Util.money(sum), "right");
+
+        if (Util.getDouble(kid.get("amount")) != sum) {
+            aTable.getCellFormatter().addStyleName(row, 2, "error");
+        } else {
+            aTable.getCellFormatter().removeStyleName(row, 2, "error");
+        }
     }
 
     private void addPayment(String paymentKey) {
@@ -182,7 +214,12 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         Image deleteImage = ImageFactory.deleteImage("del_post");
         deleteImage.addClickHandler(this);
         aTable.setWidget(2, 3, deleteImage);
-        sum += Util.getDouble(price);
+
+        double amount = Util.getDouble(price);
+        sum += amount;
+
+        kidPosts.put(post, new JSONNumber(amount));
+
     }
 
     private void fillAccounting() {
@@ -196,6 +233,28 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         if (event.getSource() == addButton) {
             addLine();
         }
+
+        if (event.getSource() instanceof Image) {
+            delRowWithImage(event.getSource());
+        }
+    }
+
+    private void delRowWithImage(Object source) {
+        int maxRow = aTable.getRowCount() - 4;
+        for (int row = 2; row < maxRow; row++) {
+            if (aTable.getWidget(row, 3) == source) {
+                String post = aTable.getText(row, 0);
+
+                JSONNumber val = kidPosts.get(post).isNumber();
+                sum -= val.doubleValue();
+
+                aTable.removeRow(row);
+                kidPosts.put(post, null);
+                setSum();
+                return;
+            }
+
+        }
     }
 
     private void addLine() {
@@ -204,16 +263,30 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         mv.money(messages.field_money(), amountBox);
         mv.registry(messages.registry_invalid_key(), postTypeCache, accountIdBox);
 
+        int maxRow = aTable.getRowCount() - 4;
+        for (int row = 2; row < maxRow; row++) {
+            if (accountIdBox.getText().equals(aTable.getText(row, 0))) {
+                mv.fail(accountIdBox, true, messages.kid_account_used());
+            }
+        }
+
         if (!mv.validateStatus()) {
             return;
         }
 
-        int maxRow = aTable.getRowCount() - 3;
-        for (int row = 2; row < maxRow; row++) {
-            if(accountIdBox.getText().equals(aTable.getText(row, 0))) {
-                mv.fail(accountIdBox, true, messages.kid_account_used());
-            }
-        }
+        aTable.insertRow(2);
+
+        double amount = Double.parseDouble(amountBox.getText());
+        kidPosts.put(accountIdBox.getText(), new JSONNumber(amount));
+        aTable.setText(2, 0, accountIdBox.getText());
+        aTable.setText(2, 1, postTypeCache.getDescription(accountIdBox.getText()));
+        aTable.setText(2, 2, Util.money(amountBox.getText()), "right");
+        Image deleteImage = ImageFactory.deleteImage("del_post");
+        deleteImage.addClickHandler(this);
+        aTable.setWidget(2, 3, deleteImage);
+        sum += amount;
+
+        setSum();
 
     }
 }

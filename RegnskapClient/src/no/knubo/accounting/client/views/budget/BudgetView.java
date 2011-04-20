@@ -252,7 +252,7 @@ public class BudgetView extends Composite implements ClickHandler {
         Util.addPostParam(params, "budget", data.toString());
         Util.addPostParam(params, "year", budgetTable.getText(0, 1));
 
-        AuthResponder.post(constants, messages, rh, params, constants.baseurl() + "accounting/budget.php");
+        AuthResponder.post(constants, messages, rh, params, "accounting/budget.php");
 
         calculateBudgetSumToSumView();
     }
@@ -297,6 +297,9 @@ public class BudgetView extends Composite implements ClickHandler {
                 JSONObject membersbudget = object.get("membersbudget").isObject();
                 calculator.init(me, members, price, semesters, budgetYear, membersbudget);
 
+                if (hideNotInCurrentYearCheckbox.getValue()) {
+                    budgetDrawDelegate.removeAllRowsWithNoBudgetData();
+                }
             }
         };
         String params = "action=init";
