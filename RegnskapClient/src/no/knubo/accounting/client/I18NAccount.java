@@ -547,6 +547,60 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kid_bad_payment();
 
   /**
+   * Translated "Det er allerede registrert kursmedlemskap.".
+   * 
+   * @return translated "Det er allerede registrert kursmedlemskap."
+   */
+  @DefaultMessage("Det er allerede registrert kursmedlemskap.")
+  @Key("kid_course_already")
+  String kid_course_already();
+
+  /**
+   * Translated "Det er allerede registrert årsmedlemskap.".
+   * 
+   * @return translated "Det er allerede registrert årsmedlemskap."
+   */
+  @DefaultMessage("Det er allerede registrert årsmedlemskap.")
+  @Key("kid_membership_already")
+  String kid_membership_already();
+
+  /**
+   * Translated "Du har ikke registerert noe medlemskap. Vil du fortsette?".
+   * 
+   * @return translated "Du har ikke registerert noe medlemskap. Vil du fortsette?"
+   */
+  @DefaultMessage("Du har ikke registerert noe medlemskap. Vil du fortsette?")
+  @Key("kid_no_membership")
+  String kid_no_membership();
+
+  /**
+   * Translated "{0} av KID innbetalingene blir ikke registert da de ikke er komplette. Vil du fortsette?".
+   * 
+   * @return translated "{0} av KID innbetalingene blir ikke registert da de ikke er komplette. Vil du fortsette?"
+   */
+  @DefaultMessage("{0} av KID innbetalingene blir ikke registert da de ikke er komplette. Vil du fortsette?")
+  @Key("kid_not_all_transactions")
+  String kid_not_all_transactions(String arg0);
+
+  /**
+   * Translated "Det er allerede registrert treningsmedlemskap.".
+   * 
+   * @return translated "Det er allerede registrert treningsmedlemskap."
+   */
+  @DefaultMessage("Det er allerede registrert treningsmedlemskap.")
+  @Key("kid_train_already")
+  String kid_train_already();
+
+  /**
+   * Translated "Det er allerede registrert ungdomsmedlemskap.".
+   * 
+   * @return translated "Det er allerede registrert ungdomsmedlemskap."
+   */
+  @DefaultMessage("Det er allerede registrert ungdomsmedlemskap.")
+  @Key("kid_youth_already")
+  String kid_youth_already();
+
+  /**
    * Translated "Din siste registrering er ikke balansert. Denne åpnes nå slik at du kan balansere den.".
    * 
    * @return translated "Din siste registrering er ikke balansert. Denne åpnes nå slik at du kan balansere den."

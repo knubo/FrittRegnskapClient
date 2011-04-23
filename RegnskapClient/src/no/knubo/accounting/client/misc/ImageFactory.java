@@ -105,4 +105,8 @@ public class ImageFactory {
         return withId(new Image("images/exclamation.png"), id);
     }
 
+    public static Widget errorAddImage(String id) {
+        return withId(new Image("images/error_add.png"), id);
+    }
+
 }

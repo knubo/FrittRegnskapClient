@@ -8,6 +8,7 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
+import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
@@ -15,10 +16,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class RegisterMembershipKIDView extends Composite implements ClickHandler {
 
@@ -56,7 +59,14 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         table.setText(1, 6, "");
         table.setHeaderRowStyle(1);
         this.viewcallback = viewcallback;
-        initWidget(table);
+
+        VerticalPanel vp = new VerticalPanel();
+        vp.add(table);
+
+        register = new NamedButton("kid_register", elements.kid_register());
+        vp.add(register);
+        register.addClickHandler(this);
+        initWidget(vp);
     }
 
     private PriceMatcher priceMatcher;
@@ -65,6 +75,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
     private JSONObject posts;
     private ViewCallback viewcallback;
     RegisterStandards registerStandards;
+    private NamedButton register;
 
     public void init() {
         while (table.getRowCount() > 2) {
@@ -72,7 +83,6 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         }
 
         ServerResponse callback = new ServerResponse() {
-
 
             public void serverResponse(JSONValue responseObj) {
                 JSONObject data = responseObj.isObject();
@@ -116,11 +126,11 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         String[] match = priceMatcher.matchPrices(Util.getDouble(object.get("amount")), !Util.isNull(object
                 .get("memberid")), !Util.isNull(object.get("youth")) || !Util.isNull(object.get("train"))
                 || !Util.isNull(object.get("course")));
-        
-        
+
         if (match.length == 0) {
             table.setText(row, 4, messages.kid_bad_payment(), "desc");
             table.setWidget(row, 5, ImageFactory.alertImage("fail" + id), "center");
+            object.put("fix", new JSONString("1"));
         } else {
             object.put("payments", Util.toJsonArray(match));
 
@@ -135,6 +145,8 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
             table.setWidget(row, 5, ImageFactory.okImage("ok" + id), "center");
         }
 
+        object.put("row", new JSONString(String.valueOf(row)));
+
         Image editImage = ImageFactory.editImage("edit" + Util.str(object.get("id")));
         editImage.addClickHandler(this);
         table.setWidget(row, 6, editImage, "center");
@@ -148,6 +160,34 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
 
             editKID(id);
         }
+        if (event.getSource() == register) {
+            doRegister();
+        }
+    }
+
+    private void doRegister() {
+        int unprocessed = unprocessedCount();
+        if (unprocessed > 0) {
+            boolean cont = Window.confirm(messages.kid_not_all_transactions(String.valueOf(unprocessed)));
+            if(!cont) {
+                return;
+            }
+        }
+    }
+
+    private int unprocessedCount() {
+
+        int unprocessed = 0;
+        
+        for(int i=0; i < kidData.size(); i++) {
+            JSONObject kid = kidData.get(i).isObject();
+            
+            if(kid.containsKey("fix") && "1".equals(Util.str(kid.get("fix")))) {
+                unprocessed++;
+            }
+            
+        }
+        return unprocessed;
     }
 
     private void editKID(String id) {
@@ -160,5 +200,23 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
             }
         }
         Util.log("Did not find:" + id);
+    }
+
+    public void kidEdited(JSONObject kid) {
+        int row = Util.getInt(kid.get("row"));
+        int id = Util.getInt(kid.get("id"));
+
+        table.setWidget(row, 5, ImageFactory.errorAddImage("changed" + id));
+
+        StringBuffer sb = new StringBuffer();
+        JSONArray payments = kid.get("payments").isArray();
+        for (int i = 0; i < payments.size(); i++) {
+            if (i != 0) {
+                sb.append(", ");
+            }
+            sb.append(elements.getString(Util.str(payments.get(i)) + "_membership"));
+        }
+        table.setText(row, 4, sb.toString(), "desc");
+
     }
 }

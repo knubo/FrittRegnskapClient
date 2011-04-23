@@ -1969,6 +1969,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String kid_payments();
 
   /**
+   * Translated "Bokfør innkommende KID transaksjoner".
+   * 
+   * @return translated "Bokfør innkommende KID transaksjoner"
+   */
+  @DefaultStringValue("Bokfør innkommende KID transaksjoner")
+  @Key("kid_register")
+  String kid_register();
+
+  /**
    * Translated "Medlemskap som registreres".
    * 
    * @return translated "Medlemskap som registreres"
@@ -4685,6 +4694,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Årsmedlemskap ungdom")
   @Key("year_membership_youth")
   String year_membership_youth();
+
+  /**
+   * Translated "Årsmedlemskap ungdom".
+   * 
+   * @return translated "Årsmedlemskap ungdom"
+   */
+  @DefaultStringValue("Årsmedlemskap ungdom")
+  @Key("year_youth_membership")
+  String year_youth_membership();
 
   /**
    * Translated "Ungdom".
