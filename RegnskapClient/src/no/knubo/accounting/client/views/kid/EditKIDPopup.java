@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.views.kid;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
@@ -48,6 +49,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
     private double sum;
     private TextBoxWithErrorText amountBox;
     private JSONObject kidPosts;
+    private NamedButton okButton;
 
     public EditKIDPopup(JSONObject kid, JSONObject prices, JSONObject posts,
             RegisterMembershipKIDView registerMembershipKIDView) {
@@ -131,6 +133,12 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         abortButton = new NamedButton("abort", elements.abort());
         abortButton.addClickHandler(this);
         abortButton.addStyleName("buttonrow");
+
+        okButton = new NamedButton("ok", elements.ok());
+        okButton.addClickHandler(this);
+        okButton.addStyleName("buttonrow");
+
+        hp.add(okButton);
         hp.add(abortButton);
 
         vp.add(hp);
@@ -142,13 +150,12 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
     }
 
     private void lockPaidMemberships() {
-        if(!Util.isNull(kid.get("memberid"))) {
+        if (!Util.isNull(kid.get("memberid"))) {
             checkboxes.get("year").setEnabled(false);
             checkboxes.get("year_youth").setEnabled(false);
         }
-        
-        if(!Util.isNull(kid.get("youth")) || !Util.isNull(kid.get("train"))
-            || !Util.isNull(kid.get("course"))) {
+
+        if (!Util.isNull(kid.get("youth")) || !Util.isNull(kid.get("train")) || !Util.isNull(kid.get("course"))) {
             checkboxes.get("course").setEnabled(false);
             checkboxes.get("train").setEnabled(false);
             checkboxes.get("youth").setEnabled(false);
@@ -158,6 +165,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
     private Widget checkbox(String id, String field) {
         NamedCheckBox namedCheckBox = new NamedCheckBox(id);
         checkboxes.put(field, namedCheckBox);
+        namedCheckBox.addClickHandler(this);
         return namedCheckBox;
     }
 
@@ -169,7 +177,6 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         }
 
         kidPosts = new JSONObject();
-        kid.put("accounting", kidPosts);
 
         if (!kid.containsKey("payments")) {
             return;
@@ -195,8 +202,10 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
         if (Util.getDouble(kid.get("amount")) != sum) {
             aTable.getCellFormatter().addStyleName(row, 2, "error");
+            okButton.setEnabled(false);
         } else {
             aTable.getCellFormatter().removeStyleName(row, 2, "error");
+            okButton.setEnabled(true);
         }
     }
 
@@ -223,7 +232,20 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
     }
 
     private void fillAccounting() {
+        Set<String> posts = kidPosts.keySet();
 
+        for (String post : posts) {
+            JSONNumber amountJ = kidPosts.get(post).isNumber();
+
+            aTable.insertRow(2);
+            aTable.setText(2, 0, post);
+            aTable.setText(2, 1, postTypeCache.getDescription(post));
+            aTable.setText(2, 2, Util.money(amountJ), "right");
+            Image deleteImage = ImageFactory.deleteImage("del_post");
+            deleteImage.addClickHandler(this);
+            aTable.setWidget(2, 3, deleteImage);
+            sum += amountJ.doubleValue();
+        }
     }
 
     public void onClick(ClickEvent event) {
@@ -237,6 +259,38 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         if (event.getSource() instanceof Image) {
             delRowWithImage(event.getSource());
         }
+
+        if (event.getSource() == okButton) {
+            checkAndOK();
+        }
+        if (event.getSource() instanceof NamedCheckBox) {
+            checkBoxClick((NamedCheckBox) event.getSource());
+        }
+    }
+
+    private void checkBoxClick(NamedCheckBox namedCheckBox) {
+        if (!namedCheckBox.getValue()) {
+            return;
+        }
+        if (namedCheckBox == checkboxes.get("year")) {
+            checkboxes.get("year_youth").setValue(false);
+        } else if (namedCheckBox == checkboxes.get("year_youth")) {
+            checkboxes.get("year").setValue(false);
+        } else if (namedCheckBox == checkboxes.get("course")) {
+            checkboxes.get("youth").setValue(false);
+            checkboxes.get("train").setValue(false);
+        } else if (namedCheckBox == checkboxes.get("train")) {
+            checkboxes.get("youth").setValue(false);
+            checkboxes.get("course").setValue(false);
+        } else if (namedCheckBox == checkboxes.get("youth")) {
+            checkboxes.get("train").setValue(false);
+            checkboxes.get("course").setValue(false);
+        }
+    }
+
+    private void checkAndOK() {
+        kid.put("accounting", kidPosts);
+
     }
 
     private void delRowWithImage(Object source) {
