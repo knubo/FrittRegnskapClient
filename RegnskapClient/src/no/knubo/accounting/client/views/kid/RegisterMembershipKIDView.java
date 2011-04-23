@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.views.kid;
 
+import java.util.HashMap;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -15,6 +17,7 @@ import no.knubo.accounting.client.views.modules.RegisterStandards;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -39,11 +42,20 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         return me;
     }
 
+    final HashMap<String, String> postGiveBDG = new HashMap<String, String>();
+
     public RegisterMembershipKIDView(I18NAccount messages, Constants constants, Elements elements,
             ViewCallback viewcallback) {
+
         this.messages = messages;
         this.constants = constants;
         this.elements = elements;
+
+        postGiveBDG.put("course", "BDG_COURSE_POST");
+        postGiveBDG.put("train", "BDG_TRAIN_POST");
+        postGiveBDG.put("year", "BDG_YEAR_POST");
+        postGiveBDG.put("year_youth", "BDG_YEAR_POST");
+        postGiveBDG.put("youth", "BDG_YOUTH_POST");
 
         table = new AccountTable("tableborder");
         table.setText(0, 0, elements.kid_incoming_transactions());
@@ -169,8 +181,41 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         int unprocessed = unprocessedCount();
         if (unprocessed > 0) {
             boolean cont = Window.confirm(messages.kid_not_all_transactions(String.valueOf(unprocessed)));
-            if(!cont) {
+            if (!cont) {
                 return;
+            }
+        }
+
+        calcAllAccounting();
+        Util.log("Ready to go:" + kidData);
+    }
+
+    private void calcAllAccounting() {
+        for (int i = 0; i < kidData.size(); i++) {
+            JSONObject kid = kidData.get(i).isObject();
+
+            if (kid.containsKey("accounting")) {
+                continue;
+            }
+
+            if (kid.containsKey("fix") && "1".equals(Util.str(kid.get("fix")))) {
+                continue;
+            }
+
+            JSONObject kidPosts = new JSONObject();
+            kid.put("accounting", kidPosts);
+
+            JSONArray payments = kid.get("payments").isArray();
+
+            for (int p = 0; p < payments.size(); p++) {
+                String paymentKey = Util.str(payments.get(p));
+
+                JSONValue price = prices.get(paymentKey);
+                String bdgKey = postGiveBDG.get(paymentKey);
+
+                String post = Util.str(posts.get(bdgKey));
+
+                kidPosts.put(post, price);
             }
         }
     }
@@ -178,14 +223,14 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
     private int unprocessedCount() {
 
         int unprocessed = 0;
-        
-        for(int i=0; i < kidData.size(); i++) {
+
+        for (int i = 0; i < kidData.size(); i++) {
             JSONObject kid = kidData.get(i).isObject();
-            
-            if(kid.containsKey("fix") && "1".equals(Util.str(kid.get("fix")))) {
+
+            if (kid.containsKey("fix") && "1".equals(Util.str(kid.get("fix")))) {
                 unprocessed++;
             }
-            
+
         }
         return unprocessed;
     }

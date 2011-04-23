@@ -48,7 +48,6 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
     private final JSONObject posts;
     private HashMap<String, NamedCheckBox> checkboxes = new HashMap<String, NamedCheckBox>();
 
-    private final HashMap<String, String> postGiveBDG = new HashMap<String, String>();
     private double sum;
     private TextBoxWithErrorText amountBox;
     private JSONObject kidPosts;
@@ -57,11 +56,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
     public EditKIDPopup(JSONObject kid, JSONObject prices, JSONObject posts,
             RegisterMembershipKIDView registerMembershipKIDView) {
-        postGiveBDG.put("course", "BDG_COURSE_POST");
-        postGiveBDG.put("train", "BDG_TRAIN_POST");
-        postGiveBDG.put("year", "BDG_YEAR_POST");
-        postGiveBDG.put("year_youth", "BDG_YEAR_POST");
-        postGiveBDG.put("youth", "BDG_YOUTH_POST");
+       
 
         this.kid = kid;
         this.prices = prices;
@@ -75,14 +70,14 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         setModal(true);
         String personName = Util.strSkipNull(kid.get("firstname")) + " " + Util.strSkipNull(kid.get("lastname"));
 
-        setText(caller.elements.kid_payement_edit() + " " + personName);
+        setText(caller.elements.kid_payement_edit() + " " + personName + " " + Util.money(kid.get("amount")));
 
         AccountTable topTable = new AccountTable("tableborder");
 
         descriptionBox = registerMembershipKIDView.registerStandards.createDescriptionBox();
-        
-        if(kid.containsKey("description")) {
-            descriptionBox.setText(Util.str(kid.get("description")));            
+
+        if (kid.containsKey("description")) {
+            descriptionBox.setText(Util.str(kid.get("description")));
         } else {
             descriptionBox.setText("M:" + personName);
         }
@@ -140,22 +135,22 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         VerticalPanel vp = new VerticalPanel();
 
         vp.add(topTable);
-        
-        if(!Util.isNull(kid.get("memberid"))) {
+
+        if (!Util.isNull(kid.get("memberid"))) {
             vp.add(new Label(messages.kid_membership_already()));
         }
-        if(!Util.isNull(kid.get("youth"))) {
+        if (!Util.isNull(kid.get("youth"))) {
             vp.add(new Label(messages.kid_youth_already()));
         }
-        if(!Util.isNull(kid.get("course"))) {
+        if (!Util.isNull(kid.get("course"))) {
             vp.add(new Label(messages.kid_course_already()));
         }
-        if(!Util.isNull(kid.get("train"))) {
+        if (!Util.isNull(kid.get("train"))) {
             vp.add(new Label(messages.kid_train_already()));
         }
 
         vp.add(aTable);
-        
+
         vp.add(new Label(elements.description()));
         vp.add(descriptionBox);
 
@@ -242,7 +237,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
     private void addPayment(String paymentKey) {
         JSONValue price = prices.get(paymentKey);
-        String bdgKey = postGiveBDG.get(paymentKey);
+        String bdgKey = caller.postGiveBDG.get(paymentKey);
 
         String post = Util.str(posts.get(bdgKey));
 
@@ -343,23 +338,28 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
             return;
         }
 
-        String[] fields = {"year", "year_youth", "youth", "train", "course"};
-        
+        String[] fields = { "year", "year_youth", "youth", "train", "course" };
+
         JSONArray payments = new JSONArray();
 
-        for(String field : fields) {
-            if(checkboxes.get(field).getValue()) {
+        for (String field : fields) {
+            if (checkboxes.get(field).getValue()) {
                 payments.set(payments.size(), new JSONString(field));
             }
         }
-        
-        if(payments.size() == 0) {
-            boolean cont = Window.confirm(messages.kid_no_membership());
-            if(!cont) {
+
+        if (payments.size() == 0) {
+            if (!Window.confirm(messages.kid_no_membership())) {
                 return;
             }
         }
-        
+
+        if (doesNotMatchPayments(payments)) {
+            if (!Window.confirm(messages.kid_does_not_match())) {
+                return;
+            }
+        }
+
         kid.put("payments", payments);
         kid.put("accounting", kidPosts);
         kid.put("description", new JSONString(descriptionBox.getText()));
@@ -367,6 +367,47 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         hide();
 
         caller.kidEdited(kid);
+    }
+
+    private boolean doesNotMatchPayments(JSONArray payments) {
+
+        HashMap<String, Double> amounts = new HashMap<String, Double>();
+
+        for (int i = 0; i < payments.size(); i++) {
+            String paymentKey = Util.str(payments.get(i));
+            JSONValue price = prices.get(paymentKey);
+
+            String bdgKey = caller.postGiveBDG.get(paymentKey);
+            String post = Util.str(posts.get(bdgKey));
+
+            if (!amounts.containsKey(post)) {
+                amounts.put(post, Util.getDouble(price));
+            } else {
+                amounts.put(post, Util.getDouble(price) + amounts.get("post"));
+            }
+        }
+
+        Util.log("Amounts:" + amounts + " KidPosts:" + kidPosts);
+
+        Set<String> requiredPosts = amounts.keySet();
+
+        for (String post : requiredPosts) {
+            Double val = amounts.get(post);
+
+            JSONValue posted = kidPosts.get(post);
+
+            if (posted == null) {
+                return true;
+            }
+
+            double postedVal = posted.isNumber().doubleValue();
+
+            if (postedVal != val) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void delRowWithImage(Object source) {
