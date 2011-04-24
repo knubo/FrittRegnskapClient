@@ -556,11 +556,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kid_course_already();
 
   /**
-   * Translated "Posteringene har ikke bel�p som dekker kostnadene for medlemskap. Vil du fortsette?".
+   * Translated "Posteringene har ikke beløp som ikke stemmer overens med kostnadene for medlemskap. Vil du fortsette?".
    * 
-   * @return translated "Posteringene har ikke bel�p som dekker kostnadene for medlemskap. Vil du fortsette?"
+   * @return translated "Posteringene har ikke beløp som ikke stemmer overens med kostnadene for medlemskap. Vil du fortsette?"
    */
-  @DefaultMessage("Posteringene har ikke bel�p som dekker kostnadene for medlemskap. Vil du fortsette?")
+  @DefaultMessage("Posteringene har ikke beløp som ikke stemmer overens med kostnadene for medlemskap. Vil du fortsette?")
   @Key("kid_does_not_match")
   String kid_does_not_match();
 

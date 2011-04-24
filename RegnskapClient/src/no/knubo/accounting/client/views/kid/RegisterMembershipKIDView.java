@@ -17,7 +17,6 @@ import no.knubo.accounting.client.views.modules.RegisterStandards;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -187,7 +186,21 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         }
 
         calcAllAccounting();
-        Util.log("Ready to go:" + kidData);
+
+        StringBuffer params = new StringBuffer();
+        params.append("action=register");
+        Util.addPostParam(params, "data", kidData.toString());
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                if(!Util.getBoolean(responseObj.isObject().get("status"))) {
+                    Window.alert(messages.save_failed_badly());
+                }
+            }
+        };
+        AuthResponder.post(constants, messages, callback, params, "accounting/register_by_kid.php");
+
     }
 
     private void calcAllAccounting() {

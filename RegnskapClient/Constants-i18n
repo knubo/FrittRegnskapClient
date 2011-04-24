@@ -1,6 +1,6 @@
 #!/bin/sh
 APPDIR=`dirname $0`;
-GWT_ROOT='/Users/knuterikborgen/kode/gwt-mac-1.7.0'
-CP="$APPDIR/src:$APPDIR/bin:$GWT_ROOT/gwt-user.jar:$GWT_ROOT/gwt-dev-mac.jar"
+GWT_ROOT='/Users/knuterikborgen/kode/gwt'
+CP="$APPDIR/src:$APPDIR/bin:$GWT_ROOT/gwt-user.jar:$GWT_ROOT/gwt-dev.jar"
 java -cp "$CP" com.google.gwt.i18n.tools.I18NSync -out $APPDIR/src no.knubo.accounting.client.Constants
 
