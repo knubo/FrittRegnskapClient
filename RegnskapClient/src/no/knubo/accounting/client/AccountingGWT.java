@@ -184,7 +184,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         if (reducedMode == 0) {
             addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
-//            addMenuItem(registerMenu, elements.menuitem_register_kid_membership(), WidgetIds.REGISTER_KID_MEMBERSHIP);
+            addMenuItem(registerMenu, elements.menuitem_register_kid_membership(), WidgetIds.REGISTER_KID_MEMBERSHIP);
         }
 
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);

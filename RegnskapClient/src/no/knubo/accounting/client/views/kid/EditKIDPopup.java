@@ -56,7 +56,6 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
     public EditKIDPopup(JSONObject kid, JSONObject prices, JSONObject posts,
             RegisterMembershipKIDView registerMembershipKIDView) {
-       
 
         this.kid = kid;
         this.prices = prices;
@@ -98,6 +97,8 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
         topTable.setWidget(3, 2, checkbox("youth_membership", "youth"));
         topTable.setText(3, 3, elements.youth_membership());
+
+        createCheckboxTooltips();
 
         aTable = new AccountTable("tableborder");
         aTable.setText(0, 0, elements.kid_kredit_posts());
@@ -173,6 +174,22 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         center();
         fillInitialData();
         lockPaidMemberships();
+    }
+
+    private void createCheckboxTooltips() {
+        Set<String> priceKeys = prices.keySet();
+
+        for (String key : priceKeys) {
+
+            String elemKey = key.equals("yearyouth") ? "year_youth" : key;
+
+            String costTitle = elements.getString(elemKey + "_membership");
+
+            JSONValue price = prices.get(key);
+            String tooltip = messages.kid_membership_cost(costTitle, Util.money(price));
+
+            checkboxes.get(elemKey).setTitle(tooltip);
+        }
     }
 
     private void lockPaidMemberships() {
