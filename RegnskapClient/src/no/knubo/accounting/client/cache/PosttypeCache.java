@@ -37,6 +37,7 @@ public class PosttypeCache implements Registry {
     List<String> capital;
     List<String> ownings;
     List<String> deprecations;
+    List<String> bank;
 
     List<String> memberPaymentPosts;
 
@@ -61,6 +62,7 @@ public class PosttypeCache implements Registry {
                 capital = new ArrayList<String>();
                 ownings = new ArrayList<String>();
                 deprecations = new ArrayList<String>();
+                bank = new ArrayList<String>();
 
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject obj = array.get(i).isObject();
@@ -83,6 +85,10 @@ public class PosttypeCache implements Registry {
 
                     if (Util.getBoolean(obj.get("Deprecation"))) {
                         deprecations.add(key);
+                    }
+                    
+                    if(Util.getBoolean(obj.get("Bank"))) {
+                        bank.add(key);
                     }
 
                     originalSort.add(key);
@@ -122,17 +128,21 @@ public class PosttypeCache implements Registry {
         return type + " - " + typeGivesDescription.get(type);
     }
 
-    private void simpleFill(ListBox box, List<String> list) {
-        box.insertItem("", 0);
+    private void simpleFill(ListBox box, List<String> list, boolean ...includeKeySkipBlank) {
+        if (includeKeySkipBlank != null && includeKeySkipBlank.length > 1 && includeKeySkipBlank[1]) {
+            /* Nothing */
+        } else {
+            box.insertItem("", 0);
+        }
 
         int pos = 1;
         for (String k : list) {
 
             String desc = typeGivesDescription.get(k);
 
-            // if (includeKey) {
-            // desc = k + " " + desc;
-            // }
+            if (includeKeySkipBlank != null && includeKeySkipBlank.length > 0 && includeKeySkipBlank[0]) {
+                desc = k + " " + desc;
+            }
             box.insertItem(desc, k, pos++);
         }
     }
@@ -145,6 +155,10 @@ public class PosttypeCache implements Registry {
         simpleFill(box, ownings);
     }
 
+    public void fillBank(ListBox box) {
+        simpleFill(box, bank, true, true);
+    }
+    
     public void fillAllDeprecations(ListBox box) {
         simpleFill(box, deprecations);
     }

@@ -583,6 +583,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kid_membership_cost(String arg0,  String arg1);
 
   /**
+   * Translated "Opprettet for {0}".
+   * 
+   * @return translated "Opprettet for {0}"
+   */
+  @DefaultMessage("Opprettet for {0}")
+  @Key("kid_membership_creation")
+  String kid_membership_creation(String arg0);
+
+  /**
    * Translated "Du har ikke registerert noe medlemskap. Vil du fortsette?".
    * 
    * @return translated "Du har ikke registerert noe medlemskap. Vil du fortsette?"

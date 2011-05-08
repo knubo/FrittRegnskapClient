@@ -109,7 +109,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         aTable.setText(1, 3, "");
         aTable.setHeaderRowStyle(1);
 
-        aTable.setText(3, 0, elements.sum());
+        aTable.setText(3, 1, elements.sum());
         aTable.getRowFormatter().addStyleName(3, "sumline");
 
         HTML errorAccountHtml = new HTML();
@@ -267,10 +267,16 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         deleteImage.addClickHandler(this);
         aTable.setWidget(2, 3, deleteImage);
 
+        String elemKey = paymentKey.equals("yearyouth") ? "year_youth" : paymentKey;
+        String elemText = elements.getString(elemKey + "_membership");
+        String tooltip = messages.kid_membership_creation(elemText);
+        deleteImage.setTitle(tooltip);
+
         double amount = Util.getDouble(price);
         sum += amount;
 
         kidPosts.put(post, new JSONNumber(amount));
+        kidPosts.put(post + "_tip", new JSONString(tooltip));
 
     }
 
@@ -280,6 +286,10 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         Set<String> posts = sourceKidPosts.keySet();
 
         for (String post : posts) {
+            if(post.endsWith("_tip")) {
+                continue;
+            }
+            
             JSONNumber amountJ = sourceKidPosts.get(post).isNumber();
 
             kidPosts.put(post, amountJ);
@@ -292,6 +302,11 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
             deleteImage.addClickHandler(this);
             aTable.setWidget(2, 3, deleteImage);
             sum += amountJ.doubleValue();
+
+            if (sourceKidPosts.containsKey(post + "_tip")) {
+                deleteImage.setTitle(Util.str(sourceKidPosts.get(post + "_tip")));
+            }
+
         }
 
         JSONArray payments = kid.get("payments").isArray();
@@ -466,7 +481,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
         aTable.insertRow(2);
 
-        double amount = Double.parseDouble(amountBox.getText());
+        double amount = Double.parseDouble(amountBox.getText().replaceAll(",", ""));
         kidPosts.put(accountIdBox.getText(), new JSONNumber(amount));
         aTable.setText(2, 0, accountIdBox.getText());
         aTable.setText(2, 1, postTypeCache.getDescription(accountIdBox.getText()));

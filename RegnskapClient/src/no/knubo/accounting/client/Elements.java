@@ -4156,6 +4156,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String setup_init_ib_post();
 
   /**
+   * Translated "Debetkonto (bank) for KID innbetalinger.".
+   * 
+   * @return translated "Debetkonto (bank) for KID innbetalinger."
+   */
+  @DefaultStringValue("Debetkonto (bank) for KID innbetalinger.")
+  @Key("setup_kid_bank_post")
+  String setup_kid_bank_post();
+
+  /**
    * Translated "Konti tilgjenglig ved medlemsregistrering".
    * 
    * @return translated "Konti tilgjenglig ved medlemsregistrering"

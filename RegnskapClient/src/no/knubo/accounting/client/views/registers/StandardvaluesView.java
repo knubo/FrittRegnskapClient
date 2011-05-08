@@ -87,6 +87,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
 
     private NamedCheckBox birthdateRequiredBox;
 
+    private ListBoxWithErrorText bankKidPost;
+
     public StandardvaluesView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
@@ -131,7 +133,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         accountsTable.setHTML(6, 0, elements.setup_expected_income_or_cost_post());
         accountsTable.setHTML(7, 0, elements.setup_end_month_transfer_posts());
         accountsTable.setHTML(8, 0, elements.setup_register_membership_posts());
-
+        accountsTable.setHTML(9, 0, elements.setup_kid_bank_post());
+        
         postYear = new ListBoxWithErrorText("budget_post_year");
         accountsTable.setWidget(0, 1, postYear);
         postCourse = new ListBoxWithErrorText("budget_post_course");
@@ -160,6 +163,10 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         editRegisterMembershipPostsImage.addClickHandler(this);
         accountsTable.setWidget(8, 2, editRegisterMembershipPostsImage);
 
+        bankKidPost = new ListBoxWithErrorText("setup_kid_bank_post");
+        
+        accountsTable.setWidget(9, 1, bankKidPost);
+        
         PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
         posttypeCache.fillAllPosts(postYear.getListbox(), null, true, true);
@@ -168,7 +175,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         posttypeCache.fillAllPosts(postTrain.getListbox(), null, true, true);
         posttypeCache.fillAllPosts(endMonthPost.getListbox(), null, true, true);
         posttypeCache.fillAllPosts(endYearPost.getListbox(), null, true, true);
-
+        posttypeCache.fillBank(bankKidPost.getListbox());
+        
         return accountsTable;
     }
 
@@ -289,6 +297,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         Util.addPostParam(sb, "end_month_transfer_posts", getEndMonthTransferPosts());
         Util.addPostParam(sb, "register_membership_posts", getRegisterMembershipPosts());
         Util.addPostParam(sb, "birthdate_required", birthdateRequiredBox.getValue() ? "1" : "0");
+        Util.addPostParam(sb, "bank_kid_post", Util.getSelected(bankKidPost.getListbox()));
 
         ServerResponse callback = new ServerResponse() {
 
@@ -351,6 +360,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
                 Util.setIndexByValue(postYouth.getListbox(), Util.str(object.get("youth_post")));
                 Util.setIndexByValue(endMonthPost.getListbox(), Util.str(object.get("end_month_post")));
                 Util.setIndexByValue(endYearPost.getListbox(), Util.str(object.get("end_year_post")));
+                Util.setIndexByValue(bankKidPost.getListbox(), Util.str(object.get("bank_kid_post")));
+
                 setFordringerPosts(Util.strSkipNull(object.get("fordringer_posts")));
                 setEndMonthTransferPosts(Util.strSkipNull(object.get("end_month_transfer_posts")));
                 setRegisterMembershipPosts(Util.strSkipNull(object.get("register_membership_posts")));

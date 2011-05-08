@@ -194,8 +194,10 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         ServerResponse callback = new ServerResponse() {
 
             public void serverResponse(JSONValue responseObj) {
-                if(!Util.getBoolean(responseObj.isObject().get("status"))) {
+                if (!Util.getBoolean(responseObj.isObject().get("status"))) {
                     Window.alert(messages.save_failed_badly());
+                } else {
+                    init();
                 }
             }
         };
@@ -206,6 +208,11 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
     private void calcAllAccounting() {
         for (int i = 0; i < kidData.size(); i++) {
             JSONObject kid = kidData.get(i).isObject();
+
+            if (!kid.containsKey("description")) {
+                kid.put("description", new JSONString("M:" + Util.strSkipNull(kid.get("firstname")) + " "
+                        + Util.strSkipNull(kid.get("lastname"))));
+            }
 
             if (kid.containsKey("accounting")) {
                 continue;
