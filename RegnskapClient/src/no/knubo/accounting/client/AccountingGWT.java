@@ -353,7 +353,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 break;
             case LIST_KID_TRANSACTIONS:
                 widget = ListKIDView.show(messages, constants, elements, helpPanel);
-                ((ListKIDView)widget).init();
                 break;
                 
             case REGISTER_HAPPENING:
