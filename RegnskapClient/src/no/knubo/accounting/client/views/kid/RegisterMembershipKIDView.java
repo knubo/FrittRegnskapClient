@@ -32,6 +32,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
     final I18NAccount messages;
     final Constants constants;
     private AccountTable table;
+    final HashMap<String, String> postGiveBDG = new HashMap<String, String>();
 
     public static RegisterMembershipKIDView show(I18NAccount messages, Constants constants, Elements elements,
             ViewCallback vc) {
@@ -40,8 +41,6 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         }
         return me;
     }
-
-    final HashMap<String, String> postGiveBDG = new HashMap<String, String>();
 
     public RegisterMembershipKIDView(I18NAccount messages, Constants constants, Elements elements,
             ViewCallback viewcallback) {

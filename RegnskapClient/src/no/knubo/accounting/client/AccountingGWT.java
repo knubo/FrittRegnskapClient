@@ -41,6 +41,7 @@ import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
 import no.knubo.accounting.client.views.files.ManageFilesView;
+import no.knubo.accounting.client.views.kid.ListKIDView;
 import no.knubo.accounting.client.views.kid.RegisterMembershipKIDView;
 import no.knubo.accounting.client.views.ownings.OwningsListView;
 import no.knubo.accounting.client.views.ownings.RegisterOwningsView;
@@ -203,6 +204,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_owning_show(), WidgetIds.OWNINGS_LIST);
+            addMenuItem(showMenu, elements.menuitem_kid_list_transactions(), WidgetIds.LIST_KID_TRANSACTIONS);
         }
 
         addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
@@ -349,6 +351,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = RegisterMembershipKIDView.show(messages, constants, elements, callback);
                 ((RegisterMembershipKIDView) widget).init();
                 break;
+            case LIST_KID_TRANSACTIONS:
+                widget = ListKIDView.show(messages, constants, elements, helpPanel);
+                ((ListKIDView)widget).init();
+                break;
+                
             case REGISTER_HAPPENING:
                 widget = RegisterHappeningView.show(messages, constants, callback, elements, callback);
                 ((RegisterHappeningView) widget).init();

@@ -286,10 +286,10 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         Set<String> posts = sourceKidPosts.keySet();
 
         for (String post : posts) {
-            if(post.endsWith("_tip")) {
+            if (post.endsWith("_tip")) {
                 continue;
             }
-            
+
             JSONNumber amountJ = sourceKidPosts.get(post).isNumber();
 
             kidPosts.put(post, amountJ);
@@ -396,6 +396,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         kid.put("accounting", kidPosts);
         kid.put("description", new JSONString(descriptionBox.getText()));
         kid.put("fix", new JSONString("0"));
+        kid.put("edited", new JSONString("1"));
         hide();
 
         caller.kidEdited(kid);

@@ -2005,6 +2005,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String kid_shipment_number();
 
   /**
+   * Translated "Behandlet".
+   * 
+   * @return translated "Behandlet"
+   */
+  @DefaultStringValue("Behandlet")
+  @Key("kid_status_handled")
+  String kid_status_handled();
+
+  /**
+   * Translated "Behandlet med endringer".
+   * 
+   * @return translated "Behandlet med endringer"
+   */
+  @DefaultStringValue("Behandlet med endringer")
+  @Key("kid_status_handled_exception")
+  String kid_status_handled_exception();
+
+  /**
+   * Translated "Ubehandlet".
+   * 
+   * @return translated "Ubehandlet"
+   */
+  @DefaultStringValue("Ubehandlet")
+  @Key("kid_status_unhandled")
+  String kid_status_unhandled();
+
+  /**
    * Translated "Transaksjonsnummer".
    * 
    * @return translated "Transaksjonsnummer"
