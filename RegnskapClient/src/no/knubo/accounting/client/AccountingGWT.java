@@ -185,7 +185,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         if (reducedMode == 0) {
             addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
-            addMenuItem(registerMenu, elements.menuitem_register_kid_membership(), WidgetIds.REGISTER_KID_MEMBERSHIP);
+            //addMenuItem(registerMenu, elements.menuitem_register_kid_membership(), WidgetIds.REGISTER_KID_MEMBERSHIP);
         }
 
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
@@ -204,7 +204,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_owning_show(), WidgetIds.OWNINGS_LIST);
-            addMenuItem(showMenu, elements.menuitem_kid_list_transactions(), WidgetIds.LIST_KID_TRANSACTIONS);
+            //addMenuItem(showMenu, elements.menuitem_kid_list_transactions(), WidgetIds.LIST_KID_TRANSACTIONS);
         }
 
         addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
