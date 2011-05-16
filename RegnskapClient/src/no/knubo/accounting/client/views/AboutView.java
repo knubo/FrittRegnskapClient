@@ -237,6 +237,10 @@ public class AboutView extends Composite implements ClickHandler {
         boolean warning = false;
         boolean error = false;
 
+        if(Util.getInt(info.get("kids")) > 0) {
+            fpAccounting.add(addAnchor(messages.kid_unhandled_notice()));
+        }
+        
         if (info.containsKey("long_since_last_error")) {
             fpAccounting.add(addAnchor(messages.dashboard_long_time_no_accounting()));
             error = true;
@@ -395,6 +399,8 @@ public class AboutView extends Composite implements ClickHandler {
             caller.openView(WidgetIds.EDIT_PRICES, text);
         } else if (text.equals(messages.dashboard_long_since_last_backup())) {
             caller.openView(WidgetIds.BACKUP, text);
+        } else if(text.equals(messages.kid_unhandled_notice())) {
+            caller.openView(WidgetIds.REGISTER_KID_MEMBERSHIP, elements.menuitem_register_kid_membership());
         }
 
     }

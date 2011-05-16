@@ -619,6 +619,24 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kid_train_already();
 
   /**
+   * Translated "Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles f�r måneden kan avsluttes.".
+   * 
+   * @return translated "Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles f�r måneden kan avsluttes."
+   */
+  @DefaultMessage("Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles f�r måneden kan avsluttes.")
+  @Key("kid_unhandled")
+  String kid_unhandled();
+
+  /**
+   * Translated "Det er innkommet KID betalinger.".
+   * 
+   * @return translated "Det er innkommet KID betalinger."
+   */
+  @DefaultMessage("Det er innkommet KID betalinger.")
+  @Key("kid_unhandled_notice")
+  String kid_unhandled_notice();
+
+  /**
    * Translated "Det er allerede registrert ungdomsmedlemskap.".
    * 
    * @return translated "Det er allerede registrert ungdomsmedlemskap."

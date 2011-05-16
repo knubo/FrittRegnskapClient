@@ -54,6 +54,10 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
 
     private RegisterStandards registerStandards;
 
+    private boolean unhandledKids;
+
+    private Label endInfo;
+
     public static MonthAndSemesterEndView getInstance(Constants constants, I18NAccount messages, ViewCallback callback,
             Elements elements) {
         if (me == null) {
@@ -79,6 +83,8 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
         endButton = new NamedButton("MonthEndView.endButton", elements.end_month());
         endButton.addClickHandler(this);
 
+        endInfo = new Label();
+        
         DockPanel dp = new DockPanel();
         dp.add(dateHeader, DockPanel.NORTH);
         dp.add(header, DockPanel.NORTH);
@@ -87,6 +93,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
         deprecationRenderer = new DeprecationRenderer();
         deprecationTable = deprecationRenderer.getTable();
         dp.add(deprecationTable, DockPanel.NORTH);
+        dp.add(endInfo, DockPanel.NORTH);
         dp.add(endButton, DockPanel.NORTH);
         errorLabel = new Label();
         dp.add(errorLabel, DockPanel.NORTH);
@@ -95,6 +102,8 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
     }
 
     public void initEndMonth() {
+        unhandledKids = false;
+
         registerStandards = new RegisterStandards(constants, messages, elements, callback);
         registerStandards.fetchInitalData(false, this);
 
@@ -102,7 +111,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
         header.setHTML(elements.end_month_explain());
         endButton.setText(elements.end_month());
         endButton.setId("MonthEndView.endButton");
-
+        endInfo.setText("");
         fetchAndDisplayTransferAmounts();
     }
 
@@ -128,12 +137,21 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
             table.removeRow(1);
         }
 
+        
         ServerResponse rh = new ServerResponse() {
             public void serverResponse(JSONValue jsonValue) {
                 PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
                 JSONObject root = jsonValue.isObject();
 
+                JSONObject kids = root.get("kids").isObject();
+                if(Util.getInt(kids.get("kids")) > 0) {
+                    endInfo.setText(messages.kid_unhandled());
+                    endButton.setEnabled(false);
+                    unhandledKids = true;
+                }
+
+                
                 String year = Util.str(root.get("year"));
                 int month = Util.getInt(root.get("month"));
 
@@ -189,11 +207,16 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
     }
 
     public void standardsLoaded() {
+        
+        if(unhandledKids) {
+            return;
+        }
+        
         boolean enabled = registerStandards.getCurrentMonth() != 12;
         endButton.setEnabled(enabled);
         
         if(!enabled) {
-            endButton.setTitle(messages.end_month_not_in_last_month());
+            endInfo.setText(messages.end_month_not_in_last_month());
         }
     }
 

@@ -42,7 +42,7 @@ public class YearEndView extends Composite implements ClickHandler {
     private HTML endYearHtmlText;
     private DeprecationRenderer deprecationRenderer;
     private AccountTable deprecationTable;
-    
+
     public static YearEndView getInstance(Constants constants, I18NAccount messages, ViewCallback callback,
             Elements elements) {
         if (me == null) {
@@ -83,11 +83,11 @@ public class YearEndView extends Composite implements ClickHandler {
         dockPanel.add(table, DockPanel.NORTH);
         dockPanel.add(endYearButton, DockPanel.NORTH);
         dockPanel.add(endYearHtmlText, DockPanel.NORTH);
-        
+
         deprecationRenderer = new DeprecationRenderer();
         deprecationTable = deprecationRenderer.getTable();
         dockPanel.add(deprecationTable, DockPanel.NORTH);
-        
+
         initWidget(dockPanel);
     }
 
@@ -105,8 +105,14 @@ public class YearEndView extends Composite implements ClickHandler {
                     endYearHtmlText.setText(elements.end_year_only_last_month());
                     endYearButton.setEnabled(false);
                 } else {
-                    endYearHtmlText.setText("");
-                    endYearButton.setEnabled(true);
+                    JSONObject kids = root.get("kids").isObject();
+                    if (Util.getInt(kids.get("kids")) > 0) {
+                        endYearHtmlText.setText(messages.kid_unhandled());
+                        endYearButton.setEnabled(false);
+                    } else {
+                        endYearHtmlText.setText("");
+                        endYearButton.setEnabled(true);
+                    }
                 }
                 fillPosts(root.get("data").isArray());
 
@@ -160,7 +166,8 @@ public class YearEndView extends Composite implements ClickHandler {
                 callback.viewMonth();
             }
         };
-        AuthResponder.get(constants, messages, rh, "accounting/endyear.php?action=endyear&deprecate=" + ((deprecationTable.getRowCount() > 2) ? "1" : "0")+"&deprdesc="+elements.deprecation());
+        AuthResponder.get(constants, messages, rh, "accounting/endyear.php?action=endyear&deprecate="
+                + ((deprecationTable.getRowCount() > 2) ? "1" : "0") + "&deprdesc=" + elements.deprecation());
 
     }
 }
