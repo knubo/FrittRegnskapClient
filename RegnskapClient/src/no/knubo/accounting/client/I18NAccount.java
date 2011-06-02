@@ -349,11 +349,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String email_edit_confirm();
 
   /**
-   * Translated "Ugyldig epostadresse inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig epostadresse.".
+   * Translated "Ugyldig epostadresse eller brukernavn er inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig data.".
    * 
-   * @return translated "Ugyldig epostadresse inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig epostadresse."
+   * @return translated "Ugyldig epostadresse eller brukernavn er inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig data."
    */
-  @DefaultMessage("Ugyldig epostadresse inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig epostadresse.")
+  @DefaultMessage("Ugyldig epostadresse eller brukernavn er inngitt. Ta kontakt med admin@frittregnskap.no om du mener du har inngitt riktig data.")
   @Key("email_forgotten_error")
   String email_forgotten_error();
 
@@ -448,11 +448,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String first_time_hint();
 
   /**
-   * Translated "Gi inn epostadressen du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet.".
+   * Translated "Gi inn epostadressen eller brukeren du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet.".
    * 
-   * @return translated "Gi inn epostadressen du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet."
+   * @return translated "Gi inn epostadressen eller brukeren du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet."
    */
-  @DefaultMessage("Gi inn epostadressen du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet.")
+  @DefaultMessage("Gi inn epostadressen eller brukeren du er registrert med i systemet og du vil motta en epost med informasjon for å logge inn slik at du kan endre passordet.")
   @Key("forgottenPasswordIntro")
   String forgottenPasswordIntro();
 
@@ -619,11 +619,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String kid_train_already();
 
   /**
-   * Translated "Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles f�r måneden kan avsluttes.".
+   * Translated "Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles før måneden kan avsluttes.".
    * 
-   * @return translated "Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles f�r måneden kan avsluttes."
+   * @return translated "Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles før måneden kan avsluttes."
    */
-  @DefaultMessage("Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles f�r måneden kan avsluttes.")
+  @DefaultMessage("Det er ubehandlede KID transaksjoner i denne måneden. Disse må behandles før måneden kan avsluttes.")
   @Key("kid_unhandled")
   String kid_unhandled();
 

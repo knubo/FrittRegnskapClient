@@ -9,15 +9,15 @@ import no.knubo.accounting.client.ui.NamedCheckBox;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class UserSearchFields implements ClickHandler, KeyPressHandler {
+public class UserSearchFields implements ClickHandler, KeyDownHandler {
     private TextBox firstnameBox;
 
     private TextBox lastnameBox;
@@ -34,7 +34,7 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
 
     private final UserSearchCallback searchCallback;
 
-    private boolean excludeHidden = true;
+    private boolean showHidden = false;
 
     private ListBox genderBox;
 
@@ -45,18 +45,18 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         searchTable = new AccountTable("edittable");
         firstnameBox = new TextBox();
         firstnameBox.setMaxLength(50);
-        firstnameBox.addKeyPressHandler(this);
+        firstnameBox.addKeyDownHandler(this);
         lastnameBox = new TextBox();
         lastnameBox.setMaxLength(50);
-        lastnameBox.addKeyPressHandler(this);
+        lastnameBox.addKeyDownHandler(this);
         membernumberBox = new TextBox();
         membernumberBox.setMaxLength(4);
-        membernumberBox.addKeyPressHandler(this);
+        membernumberBox.addKeyDownHandler(this);
 
         emailBox = new TextBox();
         emailBox.setMaxLength(100);
         emailBox.addStyleName("fullwidth");
-        emailBox.addKeyPressHandler(this);
+        emailBox.addKeyDownHandler(this);
         employeeList = new ListBox();
         employeeList.setVisibleItemCount(1);
         employeeList.addItem("", "");
@@ -92,14 +92,13 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
             ClickHandler handler = new ClickHandler() {
 
                 public void onClick(ClickEvent event) {
-                    excludeHidden = !includeHiddenCheck.getValue();
+                    showHidden = includeHiddenCheck.getValue();
                 }
             };
             includeHiddenCheck.addClickHandler(handler);
         }
         searchButton = new NamedButton("search", elements.search());
         searchButton.addClickHandler(this);
-        searchButton.addKeyPressHandler(this);
         searchButton.addStyleName("buttonrow");
 
         clearButton = new NamedButton("clear", elements.clear());
@@ -117,8 +116,8 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         return searchTable;
     }
 
-    public void onKeyPress(KeyPressEvent event) {
-        if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+    public void onKeyDown(KeyDownEvent event) {
+        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
             doSearch();
         }
 
@@ -134,7 +133,7 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
     }
 
     public void setExcludeHidden(boolean hide) {
-        excludeHidden = hide;
+        showHidden = hide;
     }
 
     private void doSearch() {
@@ -149,7 +148,7 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
         Util.addPostParam(sb, "gender", Util.getSelected(genderBox));
         Util.addPostParam(sb, "id", membernumberBox.getText());
 
-        if (excludeHidden) {
+        if (showHidden) {
             Util.addPostParam(sb, "hidden", "1");
         }
         searchCallback.doSearch(sb);
@@ -167,5 +166,6 @@ public class UserSearchFields implements ClickHandler, KeyPressHandler {
     public void setFocus() {
         membernumberBox.setFocus(true);
     }
+
 
 }

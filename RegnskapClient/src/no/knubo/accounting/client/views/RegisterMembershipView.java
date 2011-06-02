@@ -212,7 +212,10 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
         if ("1".equals(Util.str(obj.get("year")))) {
             yearCheck.setValue(true);
             yearCheck.setEnabled(false);
+            yearYouthCheck.setEnabled(false);
+        } else if("2".equals(Util.str(obj.get("year")))) {
             yearYouthCheck.setValue(true);
+            yearCheck.setEnabled(false);
             yearYouthCheck.setEnabled(false);
         }
 

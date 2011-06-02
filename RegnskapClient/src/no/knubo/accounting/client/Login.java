@@ -128,7 +128,10 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
     private void sendEmail() {
         MasterValidator mv = new MasterValidator();
         mv.mandatory(messages.required_field(), emailField);
-        mv.email(messages.invalid_email(), emailField);
+        
+        if(emailField.getText().contains("@")) {
+            mv.email(messages.invalid_email(), emailField);
+        }
         
         if(!mv.validateStatus()) {
             return;
@@ -163,7 +166,8 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         AccountTable table = new AccountTable("edittable");
         table.setHTML(0, 0, "<h2>" + elements.forgotten_password() + "</h2>");
         table.setText(1, 0, messages.forgottenPasswordIntro());
-
+        table.getCellFormatter().setWidth(1, 0, "400px");
+        
         emailField = new TextBoxWithErrorText("email");
         emailField.getTextBox().setWidth("30em");
         table.setWidget(2, 0, emailField);
