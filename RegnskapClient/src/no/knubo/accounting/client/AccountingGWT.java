@@ -31,6 +31,7 @@ import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.YearEndView;
 import no.knubo.accounting.client.views.admin.AdminInstallsView;
+import no.knubo.accounting.client.views.admin.AdminNorwegianCityImportView;
 import no.knubo.accounting.client.views.admin.AdminOperationsView;
 import no.knubo.accounting.client.views.admin.AdminSQLView;
 import no.knubo.accounting.client.views.admin.AdminStatsView;
@@ -287,6 +288,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(adminMenu, elements.menuitem_admin_sql(), WidgetIds.ADMIN_SQL);
             addMenuItem(adminMenu, elements.menuitem_admin_operations(), WidgetIds.ADMIN_OPERATIONS);
             addMenuItem(adminMenu, elements.menuitem_admin_stats(), WidgetIds.ADMIN_STATS);
+            addMenuItem(adminMenu, elements.menuitem_admin_poststed(), WidgetIds.ADMIN_NORWEGIAN_CITIES);
         }
     }
 
@@ -557,11 +559,14 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = AdminSQLView.show(messages, constants, elements);
                 ((AdminSQLView) widget).init();
                 break;
-
             case ADMIN_OPERATIONS:
                 widget = AdminOperationsView.show(messages, constants, elements);
                 ((AdminOperationsView) widget).init();
                 break;
+            case ADMIN_NORWEGIAN_CITIES:
+                widget = AdminNorwegianCityImportView.getInstance(messages, constants, elements);
+                break;
+                
             case EXPORT_ACCOUNTING:
                 widget = AccountExportView.getInstance(constants, messages, elements);
                 break;

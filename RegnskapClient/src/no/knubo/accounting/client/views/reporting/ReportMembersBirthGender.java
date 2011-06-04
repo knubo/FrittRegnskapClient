@@ -195,7 +195,7 @@ public class ReportMembersBirthGender extends Composite implements ClickHandler 
     }
 
     private int findRow(int age) {
-        if (age == -1) {
+        if (age < 0) {
             return 11;
         }
         if (age <= 5) {

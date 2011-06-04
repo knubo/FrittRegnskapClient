@@ -93,7 +93,7 @@ public class ManageFilesView extends Composite implements ClickHandler, UploadDe
         this.constants = constants;
         this.elements = elements;
 
-        uploadDelegate = new UploadDelegate(this, constants, messages, elements);
+        uploadDelegate = new UploadDelegate("files/files.php", this, constants, messages, elements);
 
         idHolder = new IdHolder<String, Image>();
 

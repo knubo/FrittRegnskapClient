@@ -2626,6 +2626,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_admin_operations();
 
   /**
+   * Translated "Import av norske poststed".
+   * 
+   * @return translated "Import av norske poststed"
+   */
+  @DefaultStringValue("Import av norske poststed")
+  @Key("menuitem_admin_poststed")
+  String menuitem_admin_poststed();
+
+  /**
    * Translated "SQL".
    * 
    * @return translated "SQL"

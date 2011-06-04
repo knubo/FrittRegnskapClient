@@ -86,7 +86,7 @@ public class ReportMassLetterODF extends Composite implements ClickHandler, Uplo
         hp.add(previewButton);
         dp.add(hp, DockPanel.NORTH);
 
-        uploadDelegate = new UploadDelegate(this, constants, messages, elements);
+        uploadDelegate = new UploadDelegate("files/files.php", this, constants, messages, elements);
 
         AccountTable at = new AccountTable("tableborder airTop");
         at.setText(0, 0, elements.upload_template());

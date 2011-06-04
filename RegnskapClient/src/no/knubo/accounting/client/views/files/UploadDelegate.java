@@ -25,10 +25,10 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 public class UploadDelegate {
     private FormPanel form;
     
-    public UploadDelegate(final UploadDelegateCallback callback, final Constants constants, final I18NAccount messages, final Elements elements) {
+    public UploadDelegate(String action, final UploadDelegateCallback callback, final Constants constants, final I18NAccount messages, final Elements elements) {
 
         form = new FormPanel();
-        form.setAction(constants.baseurl() + "files/files.php");
+        form.setAction(constants.baseurl() + action);
 
         // Because we're going to add a FileUpload widget, we'll need to set the
         // form to use the POST method, and multi-part MIME encoding.
