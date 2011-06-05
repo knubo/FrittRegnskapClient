@@ -9,6 +9,7 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.BlinkImage;
 import no.knubo.accounting.client.misc.HTMLWithError;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
@@ -22,6 +23,9 @@ import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -32,11 +36,12 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PersonEditView extends Composite implements ClickHandler {
+public class PersonEditView extends Composite implements ClickHandler, KeyUpHandler {
 
     String currentId;
 
@@ -73,6 +78,10 @@ public class PersonEditView extends Composite implements ClickHandler {
     private final Elements elements;
 
     private boolean birthdateRequired;
+
+    private Image addressSearch;
+
+    private BlinkImage addressInfo;
 
     public PersonEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel, final ViewCallback caller,
             Elements elements) {
@@ -125,6 +134,8 @@ public class PersonEditView extends Composite implements ClickHandler {
         addressBox = new TextBoxWithErrorText("address");
         addressBox.setMaxLength(80);
         addressBox.setVisibleLength(80);
+        addressBox.getTextBox().addKeyUpHandler(this);
+
         postnmbBox = new TextBoxWithErrorText("postalnumber");
         postnmbBox.setMaxLength(4);
         cityBox = new TextBoxWithErrorText("city");
@@ -160,6 +171,9 @@ public class PersonEditView extends Composite implements ClickHandler {
 
         saveStatus = new HTMLWithError();
 
+        addressSearch = ImageFactory.searchImage("findAddress");
+        addressSearch.addClickHandler(this);
+
         Anchor toSearch = new Anchor(elements.back_search());
         toSearch.addClickHandler(new ClickHandler() {
 
@@ -174,7 +188,16 @@ public class PersonEditView extends Composite implements ClickHandler {
         table.setWidget(2, 1, birthdateBox);
         table.setWidget(1, 1, lastnameBox);
         table.setWidget(3, 1, emailBox);
-        table.setWidget(4, 1, addressBox);
+
+        addressInfo = ImageFactory.lighbulb("addressStatus");
+        addressInfo.setVisible(false);
+        addressInfo.addClickHandler(this);
+
+        HorizontalPanel fp = new HorizontalPanel();
+        fp.add(addressBox);
+        fp.add(addressSearch);
+        fp.add(addressInfo);
+        table.setWidget(4, 1, fp);
         table.setWidget(5, 1, postnmbBox);
         table.setWidget(6, 1, cityBox);
         table.setWidget(7, 1, countryListBox);
@@ -207,11 +230,71 @@ public class PersonEditView extends Composite implements ClickHandler {
             doSave();
             return;
         }
+
+        if (sender == addressInfo) {
+            copyStreetFromTitle();
+            return;
+        }
+
+        if (sender == addressSearch) {
+            searchAddressDisplayPopupIfMultile();
+            return;
+        }
+
         String deleteId = deleteIdHolder.findId(sender);
 
         if (deleteId != null) {
             doDeleteMembership(deleteId);
         }
+    }
+
+    private void copyStreetFromTitle() {
+        if (addressInfo.getTitle().startsWith(elements.selected())) {
+            addressBox.setText(addressInfo.getTitle().substring(elements.selected().length() + 2));
+        }
+    }
+
+    private void searchAddressDisplayPopupIfMultile() {
+        String address = addressBox.getText();
+
+        if (address.length() == 0) {
+            return;
+        }
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                pickOrDisplay(responseObj.isArray());
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "registers/cities.php?street=" + address);
+    }
+
+    protected void pickOrDisplay(JSONArray array) {
+        addressInfo.setVisible(true);
+
+        String title = null;
+        if (array.size() == 1) {
+
+            JSONObject cityRow = array.get(0).isObject();
+
+            cityBox.setText(Util.str(cityRow.get("city")));
+            postnmbBox.setText(Util.str(cityRow.get("zipcode")));
+            title = elements.search() + ":" + Util.str(cityRow.get("street"));
+
+            addressInfo.blinkTwo();
+
+        } else if (array.size() == 0) {
+            title = messages.no_result();
+
+            addressInfo.blinkOne();
+        } else {
+            title = "";
+            new PickCityPopup(this, array, addressInfo);
+            addressInfo.blinkTwo();
+        }
+        addressInfo.setTitle(title);
+        addressBox.setTitle(title);
     }
 
     private void doDeleteMembership(String deleteId) {
@@ -464,5 +547,22 @@ public class PersonEditView extends Composite implements ClickHandler {
         masterValidator.email(messages.invalid_email(), emailBox);
 
         return masterValidator.validateStatus();
+    }
+
+    public void onKeyUp(KeyUpEvent event) {
+        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+            searchAddressDisplayPopupIfMultile();
+        }
+    }
+
+    public void cityPicked(String street, String zip, String city) {
+        addressInfo.setTitle(elements.selected() + ": " + street);
+        if (zip.length() < 4) {
+            postnmbBox.setText("0" + zip);
+
+        } else {
+            postnmbBox.setText(zip);
+        }
+        cityBox.setText(city);
     }
 }

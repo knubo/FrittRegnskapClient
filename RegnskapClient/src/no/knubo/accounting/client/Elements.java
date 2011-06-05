@@ -4084,6 +4084,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String select_database();
 
   /**
+   * Translated "Valgt".
+   * 
+   * @return translated "Valgt"
+   */
+  @DefaultStringValue("Valgt")
+  @Key("selected")
+  String selected();
+
+  /**
    * Translated "Semester".
    * 
    * @return translated "Semester"

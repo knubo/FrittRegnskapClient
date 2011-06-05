@@ -832,3 +832,14 @@ table.spred td {
     background-color: #cdcdcd;
     padding: 8px;
 }
+
+.citySelectTable {
+   border-collapse: collapse;
+}
+
+.citySelectTable tr:hover th[scope=row], .citySelectTable tr:hover td
+{ 
+  background-color: #CDCDCD;
+  color: black;
+} 
+    

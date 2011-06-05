@@ -109,4 +109,9 @@ public class ImageFactory {
         return withId(new Image("images/error_add.png"), id);
     }
 
+    public static BlinkImage lighbulb(String id) {
+        return (BlinkImage) withId(new BlinkImage("images/lightbulb_off.png","images/lightbulb.png"), id);
+    }
+    
+
 }
