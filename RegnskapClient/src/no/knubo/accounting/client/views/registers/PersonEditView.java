@@ -21,6 +21,8 @@ import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.ViewCallback;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -41,7 +43,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PersonEditView extends Composite implements ClickHandler, KeyUpHandler {
+public class PersonEditView extends Composite implements ClickHandler, KeyUpHandler, BlurHandler {
 
     String currentId;
 
@@ -83,6 +85,8 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
     private BlinkImage addressInfo;
 
+    private Image postnmbSearch;
+
     public PersonEditView(I18NAccount messages, Constants constants, HelpPanel helpPanel, final ViewCallback caller,
             Elements elements) {
         this.messages = messages;
@@ -107,9 +111,9 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         table.setHTML(2, 0, elements.birthdate());
         table.setHTML(3, 0, elements.email());
         table.setHTML(4, 0, elements.address());
-        table.setHTML(5, 0, elements.postnmb());
-        table.setHTML(6, 0, elements.city());
-        table.setHTML(7, 0, elements.country());
+        table.setHTML(5, 0, elements.country());
+        table.setHTML(6, 0, elements.postnmb());
+        table.setHTML(7, 0, elements.city());
         table.setHTML(8, 0, elements.phone());
         table.setHTML(9, 0, elements.cellphone());
         table.setHTML(10, 0, elements.newsletter());
@@ -138,6 +142,12 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         postnmbBox = new TextBoxWithErrorText("postalnumber");
         postnmbBox.setMaxLength(4);
+        postnmbBox.getTextBox().addKeyUpHandler(this);
+        postnmbBox.getTextBox().addBlurHandler(this);
+
+        postnmbSearch = ImageFactory.searchImage("postnmbSearch");
+        postnmbSearch.addClickHandler(this);
+
         cityBox = new TextBoxWithErrorText("city");
         cityBox.setMaxLength(13);
         countryListBox = new ListBox();
@@ -198,9 +208,13 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         fp.add(addressSearch);
         fp.add(addressInfo);
         table.setWidget(4, 1, fp);
-        table.setWidget(5, 1, postnmbBox);
-        table.setWidget(6, 1, cityBox);
-        table.setWidget(7, 1, countryListBox);
+
+        table.setWidget(5, 1, countryListBox);
+        HorizontalPanel postHP = new HorizontalPanel();
+        postHP.add(postnmbBox);
+        postHP.add(postnmbSearch);
+        table.setWidget(6, 1, postHP);
+        table.setWidget(7, 1, cityBox);
         table.setWidget(8, 1, phoneBox);
         table.setWidget(9, 1, cellphoneBox);
         table.setWidget(10, 1, newsletterCheck);
@@ -236,6 +250,11 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
             return;
         }
 
+        if (sender == postnmbSearch) {
+            searchAddresZip();
+            return;
+        }
+
         if (sender == addressSearch) {
             searchAddressDisplayPopupIfMultile();
             return;
@@ -246,6 +265,62 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         if (deleteId != null) {
             doDeleteMembership(deleteId);
         }
+    }
+
+    private void searchAddresZip() {
+        if (!Util.getSelected(countryListBox).equals("NO")) {
+            return;
+        }
+
+        String zip = postnmbBox.getText();
+
+        if (zip.length() == 0) {
+            return;
+        }
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                displayZipResult(responseObj.isArray());
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "registers/cities.php?zip=" + zip);
+
+    }
+
+    protected void displayZipResult(JSONArray array) {
+        addressInfo.setVisible(true);
+
+        String title = null;
+        if (array.size() == 1) {
+            JSONObject cityRow = array.get(0).isObject();
+
+            String zipCode = Util.str(cityRow.get("zipcode"));
+            fillZip(zipCode);
+            title = elements.search() + ":" + Util.str(cityRow.get("street"));
+            cityBox.setText(Util.str(cityRow.get("city")));
+
+            addressInfo.blinkTwo();
+
+        } else if (array.size() == 0) {
+            title = messages.no_result();
+            cityBox.setText("");
+            postnmbBox.setText("");
+            addressInfo.blinkOne();
+
+        } else {
+            JSONObject zipInfo = array.get(0).isObject();
+
+            String zipCode = Util.str(zipInfo.get("zipcode"));
+            fillZip(zipCode);
+            cityBox.setText(Util.str(zipInfo.get("city")));
+
+            title = elements.search() + ":" + array.size();
+            addressInfo.blinkTwo();
+        }
+        addressInfo.setTitle(title);
+        addressBox.setTitle(title);
+
     }
 
     private void copyStreetFromTitle() {
@@ -286,6 +361,8 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         } else if (array.size() == 0) {
             title = messages.no_result();
+            cityBox.setText("");
+            postnmbBox.setText("");
 
             addressInfo.blinkOne();
         } else {
@@ -490,6 +567,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
             public void validationError(List<String> fields) {
                 HashMap<String, String> translate = new HashMap<String, String>();
                 translate.put("email", "epost");
+                translate.put("zip", "postnummer");
 
                 String fieldtext = Util.translate(fields, translate);
 
@@ -550,19 +628,35 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
     }
 
     public void onKeyUp(KeyUpEvent event) {
+
         if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-            searchAddressDisplayPopupIfMultile();
+            if (event.getSource() == addressBox.getTextBox()) {
+                searchAddressDisplayPopupIfMultile();
+            } else if (event.getSource() == postnmbBox.getTextBox()) {
+                searchAddresZip();
+            }
         }
     }
 
     public void cityPicked(String street, String zip, String city) {
         addressInfo.setTitle(elements.selected() + ": " + street);
+        fillZip(zip);
+        cityBox.setText(city);
+    }
+
+    private void fillZip(String zip) {
         if (zip.length() < 4) {
-            postnmbBox.setText("0" + zip);
+            postnmbBox.setText("0000".substring(zip.length()) + zip);
 
         } else {
             postnmbBox.setText(zip);
         }
-        cityBox.setText(city);
     }
+
+    public void onBlur(BlurEvent event) {
+        if (event.getSource() == postnmbBox.getTextBox()) {
+            searchAddresZip();
+        }
+    }
+
 }

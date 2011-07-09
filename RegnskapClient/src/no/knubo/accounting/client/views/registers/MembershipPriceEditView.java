@@ -281,14 +281,14 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
             StringBuffer sb = new StringBuffer();
             sb.append("action=save");
             Util.addPostParam(sb, "year", year);
-            Util.addPostParam(sb, "yearPrice", Util.money(yearPrice.getText()));
-            Util.addPostParam(sb, "yearPriceYouth", Util.money(yearPriceYouth.getText()));
-            Util.addPostParam(sb, "springCoursePrice", Util.money(springCoursePrice.getText()));
-            Util.addPostParam(sb, "springTrainPrice", Util.money(springTrainPrice.getText()));
-            Util.addPostParam(sb, "springYouthPrice", Util.money(springYouthPrice.getText()));
-            Util.addPostParam(sb, "fallCoursePrice", Util.money(fallCoursePrice.getText()));
-            Util.addPostParam(sb, "fallTrainPrice", Util.money(fallTrainPrice.getText()));
-            Util.addPostParam(sb, "fallYouthPrice", Util.money(fallYouthPrice.getText()));
+            Util.addPostParam(sb, "yearPrice", Util.moneySendServer(yearPrice.getText()));
+            Util.addPostParam(sb, "yearPriceYouth", Util.moneySendServer(yearPriceYouth.getText()));
+            Util.addPostParam(sb, "springCoursePrice", Util.moneySendServer(springCoursePrice.getText()));
+            Util.addPostParam(sb, "springTrainPrice", Util.moneySendServer(springTrainPrice.getText()));
+            Util.addPostParam(sb, "springYouthPrice", Util.moneySendServer(springYouthPrice.getText()));
+            Util.addPostParam(sb, "fallCoursePrice", Util.moneySendServer(fallCoursePrice.getText()));
+            Util.addPostParam(sb, "fallTrainPrice", Util.moneySendServer(fallTrainPrice.getText()));
+            Util.addPostParam(sb, "fallYouthPrice", Util.moneySendServer(fallYouthPrice.getText()));
 
             ServerResponse callback = new ServerResponse() {
 

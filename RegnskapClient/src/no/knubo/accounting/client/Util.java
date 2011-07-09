@@ -683,5 +683,9 @@ public class Util {
         return array;
     }
 
+    public static String moneySendServer(String text) {
+        return money(text).replace(",","");
+    }
+
 
 }
