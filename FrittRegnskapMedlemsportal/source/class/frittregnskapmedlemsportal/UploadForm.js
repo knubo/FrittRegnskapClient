@@ -60,7 +60,7 @@ qx.Class.define("frittregnskapmedlemsportal.UploadForm",
       enctype: encoding || "multipart/form-data",
       method: "POST"
     });
-    if ( qx.bom.client.Browser.NAME == 'ie' &&  qx.bom.client.Browser.VERSION < 8){
+    if ( qx.core.Environment.get("browser.name") == 'ie' &&  parseFloat(qx.core.Environment.get("browser.version")) < 8){
         el.setAttributes({
             encoding: encoding || "multipart/form-data"
         })
@@ -201,7 +201,7 @@ qx.Class.define("frittregnskapmedlemsportal.UploadForm",
     {
       var frameName = "frame_" + (new Date).valueOf();
 
-      if (qx.core.Variant.isSet("qx.client", "mshtml"))
+      if ((qx.core.Environment.get("engine.name") === "mshtml"))
       {
         this.__iframeNode = document.createElement('<iframe name="' + frameName + '"></iframe>');
       }

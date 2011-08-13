@@ -532,6 +532,10 @@ td.rute {
     margin-top:15px;
 }
 
+.airBottom {
+    margin-bottom:15px;
+}
+
 .buttonrow {
     white-space: nowrap;
     margin-right: 10px;
@@ -842,4 +846,12 @@ table.spred td {
   background-color: #CDCDCD;
   color: black;
 } 
-    
+
+/* Delete */
+.deleteBox {
+    margin-left:25px;
+}    
+
+#cke_html_area {
+    width:50em;
+}

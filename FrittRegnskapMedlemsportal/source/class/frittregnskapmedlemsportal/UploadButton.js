@@ -49,7 +49,7 @@ qx.Class.define("frittregnskapmedlemsportal.UploadButton",
     }
 
     // Fix for bug #3027
-    if (qx.bom.client.Engine.OPERA) {
+    if ((qx.core.Environment.get("engine.name") === "opera")) {
       this.setSelectable(true);
     }
   },
@@ -105,7 +105,7 @@ qx.Class.define("frittregnskapmedlemsportal.UploadButton",
     __mouseUpListenerId: null,
 
     // overridden
-    capture : qx.core.Variant.select("qx.client",
+    capture : qx.core.Environment.select("engine.name",
     {
       "mshtml" : function() {
         this.__mouseUpListenerId = this.getApplicationRoot().addListenerOnce("mouseup", this._onMouseUp, this);
@@ -118,7 +118,7 @@ qx.Class.define("frittregnskapmedlemsportal.UploadButton",
 
 
     // overridden
-    releaseCapture : qx.core.Variant.select("qx.client",
+    releaseCapture : qx.core.Environment.select("engine.name",
     {
       "mshtml" : qx.lang.Function.empty,
 
@@ -221,7 +221,7 @@ qx.Class.define("frittregnskapmedlemsportal.UploadButton",
             // the area of the upload button
             fontSize: '400px'
         };
-        if (qx.bom.client.Engine.MSHTML && qx.bom.client.Engine.VERSION < 9.0) {
+        if ((qx.core.Environment.get("engine.name") === "mshtml") && parseFloat(qx.core.Environment.get("engine.version")) < 9.0) {
             css.filter = 'alpha(opacity=0)';
         }
 

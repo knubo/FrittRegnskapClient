@@ -71,11 +71,15 @@ public class EmailSettingsView extends Composite implements ClickHandler {
         tableFooter.getRowFormatter().setStyleName(1, "header");
         tableFooter.setText(1, 1, "");
 
-        newFooterButton = new NamedButton("emailsettings_new_footer", elements.new_email_footer());
+        newFooterButton = new NamedButton("new_email_footer", elements.new_email_footer());
         newFooterButton.addClickHandler(this);
 
         dp.add(newFooterButton, DockPanel.NORTH);
         dp.add(tableFooter, DockPanel.NORTH);
+
+      //  newHTMLReplaceButton = new NamedButton
+        
+        
         idHolder = new IdHolder<Integer, Image>();
         initWidget(dp);
     }

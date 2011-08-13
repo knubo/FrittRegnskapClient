@@ -187,6 +187,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_archive_limit();
 
   /**
+   * Translated "Endrings�nske".
+   * 
+   * @return translated "Endrings�nske"
+   */
+  @DefaultStringValue("Endrings�nske")
+  @Key("admin_change_request")
+  String admin_change_request();
+
+  /**
    * Translated "Steng regnskapssystemet".
    * 
    * @return translated "Steng regnskapssystemet"
@@ -1168,6 +1177,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String delete();
 
   /**
+   * Translated "Slett alle regnskapslinjer. Dette vil også slette alle medlemsregistreringer.".
+   * 
+   * @return translated "Slett alle regnskapslinjer. Dette vil også slette alle medlemsregistreringer."
+   */
+  @DefaultStringValue("Slett alle regnskapslinjer. Dette vil også slette alle medlemsregistreringer.")
+  @Key("delete_accounting_data")
+  String delete_accounting_data();
+
+  /**
+   * Translated "Terminer mitt regnskapssystem. Alle data og tilgang blir borte.".
+   * 
+   * @return translated "Terminer mitt regnskapssystem. Alle data og tilgang blir borte."
+   */
+  @DefaultStringValue("Terminer mitt regnskapssystem. Alle data og tilgang blir borte.")
+  @Key("delete_all")
+  String delete_all();
+
+  /**
+   * Translated "Her kan du sende forespørsel for sletting av regnskapsdata/regnskapssystem. Disse operasjonene kan ikke angres etter at administrator av Fritt Regnskap har aktivert disse.".
+   * 
+   * @return translated "Her kan du sende forespørsel for sletting av regnskapsdata/regnskapssystem. Disse operasjonene kan ikke angres etter at administrator av Fritt Regnskap har aktivert disse."
+   */
+  @DefaultStringValue("Her kan du sende forespørsel for sletting av regnskapsdata/regnskapssystem. Disse operasjonene kan ikke angres etter at administrator av Fritt Regnskap har aktivert disse.")
+  @Key("delete_intro")
+  String delete_intro();
+
+  /**
    * Translated "Slett linje ".
    * 
    * @return translated "Slett linje "
@@ -1175,6 +1211,51 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Slett linje ")
   @Key("delete_line")
   String delete_line();
+
+  /**
+   * Translated "Slett alle personer som ikke er tilknyttet brukere. Dette vil også slette alle medlemsregistreringer.".
+   * 
+   * @return translated "Slett alle personer som ikke er tilknyttet brukere. Dette vil også slette alle medlemsregistreringer."
+   */
+  @DefaultStringValue("Slett alle personer som ikke er tilknyttet brukere. Dette vil også slette alle medlemsregistreringer.")
+  @Key("delete_people_and_members")
+  String delete_people_and_members();
+
+  /**
+   * Translated "Inngi grunn til at du ønsker å få utført slettingen".
+   * 
+   * @return translated "Inngi grunn til at du ønsker å få utført slettingen"
+   */
+  @DefaultStringValue("Inngi grunn til at du ønsker å få utført slettingen")
+  @Key("delete_reason")
+  String delete_reason();
+
+  /**
+   * Translated "Send inn forespørsel for sletting.".
+   * 
+   * @return translated "Send inn forespørsel for sletting."
+   */
+  @DefaultStringValue("Send inn forespørsel for sletting.")
+  @Key("delete_request")
+  String delete_request();
+
+  /**
+   * Translated "Følgende skal slettes (velg flere om ønskelig):".
+   * 
+   * @return translated "Følgende skal slettes (velg flere om ønskelig):"
+   */
+  @DefaultStringValue("Følgende skal slettes (velg flere om ønskelig):")
+  @Key("delete_some")
+  String delete_some();
+
+  /**
+   * Translated "Nullstill alle registrerte data. Dette blir det samme som om det aldri har vært brukt.".
+   * 
+   * @return translated "Nullstill alle registrerte data. Dette blir det samme som om det aldri har vært brukt."
+   */
+  @DefaultStringValue("Nullstill alle registrerte data. Dette blir det samme som om det aldri har vært brukt.")
+  @Key("delete_zero")
+  String delete_zero();
 
   /**
    * Translated "Slettet".
@@ -1400,6 +1481,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Topptekst")
   @Key("email_header")
   String email_header();
+
+  /**
+   * Translated "HTML element".
+   * 
+   * @return translated "HTML element"
+   */
+  @DefaultStringValue("HTML element")
+  @Key("email_html_tag")
+  String email_html_tag();
+
+  /**
+   * Translated "HTML elementerstatning".
+   * 
+   * @return translated "HTML elementerstatning"
+   */
+  @DefaultStringValue("HTML elementerstatning")
+  @Key("email_html_tag_replacement")
+  String email_html_tag_replacement();
 
   /**
    * Translated "Velg en av radioknappene".
@@ -2689,6 +2788,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_calculator();
 
   /**
+   * Translated "Be om sletting av regnskapsdata/system".
+   * 
+   * @return translated "Be om sletting av regnskapsdata/system"
+   */
+  @DefaultStringValue("Be om sletting av regnskapsdata/system")
+  @Key("menuitem_delete")
+  String menuitem_delete();
+
+  /**
    * Translated "Standardbilag".
    * 
    * @return translated "Standardbilag"
@@ -3353,6 +3461,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Ny topptekst")
   @Key("new_email_header")
   String new_email_header();
+
+  /**
+   * Translated "Ny html erstatning".
+   * 
+   * @return translated "Ny html erstatning"
+   */
+  @DefaultStringValue("Ny html erstatning")
+  @Key("new_email_replace")
+  String new_email_replace();
 
   /**
    * Translated "Nytt standardbilag".

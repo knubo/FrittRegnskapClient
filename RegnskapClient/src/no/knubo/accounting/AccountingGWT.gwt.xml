@@ -18,7 +18,6 @@
     <inherits name="com.google.gwt.user.theme.chrome.Chrome"/>
 
   	<stylesheet src='accountstyleNew.css' />
-	<stylesheet src='RichTextToolbar.css' />
 	
 
 	<!-- Norwegian language, independent of country -->

@@ -71,7 +71,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table.setHTML(1, 9, elements.admin_archive_limit());
         table.setHTML(1, 10, elements.admin_reduced_mode());
         table.setHTML(1, 11, elements.admin_parentdbprefix());
-        table.setHTML(1, 12, "");
+        table.setHTML(1, 12, elements.admin_change_request());
+        table.setHTML(1, 13, "");
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
 
@@ -116,9 +117,10 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             table.setText(i + 2, 9, Util.strSkipNull(obj.get("archive_limit")));
             table.setText(i + 2, 10, Util.strSkipNull(obj.get("reduced_mode")));
             table.setText(i + 2, 11, Util.strSkipNull(obj.get("parentdbprefix")));
+            table.setText(i + 2, 12, Util.strSkipNull(obj.get("change_request")));
             Image image = ImageFactory.editImage("edit" + Util.str(obj.get("id")));
             image.addClickHandler(this);
-            table.setWidget(i + 2, 12, image);
+            table.setWidget(i + 2,13, image);
 
             table.getCellFormatter().addStyleName(i + 2, 5, "right");
 

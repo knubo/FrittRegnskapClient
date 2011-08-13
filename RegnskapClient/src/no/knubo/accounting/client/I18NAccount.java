@@ -259,6 +259,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String date_format();
 
   /**
+   * Translated "00d8nsker du virkelig å be om denne slettingen? Denne operasjonen kan ikke angres.".
+   * 
+   * @return translated "00d8nsker du virkelig å be om denne slettingen? Denne operasjonen kan ikke angres."
+   */
+  @DefaultMessage("00d8nsker du virkelig å be om denne slettingen? Denne operasjonen kan ikke angres.")
+  @Key("delete_confirm")
+  String delete_confirm();
+
+  /**
    * Translated "Slett filen {0}?".
    * 
    * @return translated "Slett filen {0}?"
@@ -266,6 +275,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Slett filen {0}?")
   @Key("delete_file_question")
   String delete_file_question(String arg0);
+
+  /**
+   * Translated "Forespørsel er sendt til administrator av Fritt Regnskap.".
+   * 
+   * @return translated "Forespørsel er sendt til administrator av Fritt Regnskap."
+   */
+  @DefaultMessage("Forespørsel er sendt til administrator av Fritt Regnskap.")
+  @Key("delete_request_sent")
+  String delete_request_sent();
 
   /**
    * Translated "Slett bruker?".
@@ -941,6 +959,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Du må ha tilgang til å lese hemmelige adresser for å kunne endre tilgang for dem.")
   @Key("secret_no_access")
   String secret_no_access();
+
+  /**
+   * Translated "Du må velge minst ett valg.".
+   * 
+   * @return translated "Du må velge minst ett valg."
+   */
+  @DefaultMessage("Du må velge minst ett valg.")
+  @Key("select_at_least_one")
+  String select_at_least_one();
 
   /**
    * Translated "Portalaktiveringsbrev sendt.".

@@ -24,6 +24,7 @@ import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonSearchView;
 import no.knubo.accounting.client.views.RegisterHappeningView;
 import no.knubo.accounting.client.views.RegisterMembershipView;
+import no.knubo.accounting.client.views.RequestDeleteView;
 import no.knubo.accounting.client.views.SessionsView;
 import no.knubo.accounting.client.views.ShowMembershipView;
 import no.knubo.accounting.client.views.SystemInfoView;
@@ -281,6 +282,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(aboutMenu, elements.menuitem_sessioninfo(), WidgetIds.SESSIONINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
         addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
+        //addMenuItem(aboutMenu, elements.menuitem_delete(), WidgetIds.REQUEST_DELETE);        
         addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
         if (adminMenu != null) {
@@ -596,6 +598,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case OWNINGS_REGISTER:
                 widget = RegisterOwningsView.getInstance(constants, messages, elements, callback);
                 ((RegisterOwningsView) widget).init();
+                break;
+            case REQUEST_DELETE:
+                widget = RequestDeleteView.getInstance(constants, messages, elements);
                 break;
 
             }

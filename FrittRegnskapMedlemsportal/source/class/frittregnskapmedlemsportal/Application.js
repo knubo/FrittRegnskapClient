@@ -69,7 +69,7 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
             this.base(arguments);
             
             // Enable logging in debug variant
-            if (qx.core.Variant.isSet("qx.debug", "on")) {
+            if ((qx.core.Environment.get("qx.debug"))) {
                 // support native logging capabilities, e.g. Firebug for Firefox
                 qx.log.appender.Native;
                 // support additional cross-browser console. Press F7 to toggle visibility
@@ -89,6 +89,7 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
             this.checkPortalStatus();
         },
         setupApplication: function(){
+        
             var login = new frittregnskapmedlemsportal.Login();
             
             if (!login.setupLoginIfNeeded()) {
@@ -115,9 +116,10 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
                 new frittregnskapmedlemsportal.Membersearch().setupView(desktop);
                 new frittregnskapmedlemsportal.Profile().createWindowProfile(desktop);
             }
-            else {
-            
+            else {            
                 login.setupLoginWindow();
+                document.getElementById("applicationStuff").style.display = "none";
+
             }
             
         }
