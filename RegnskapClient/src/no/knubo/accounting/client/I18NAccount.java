@@ -88,6 +88,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String budget(String arg0);
 
   /**
+   * Translated "Endring er utført. Du må oppfriske nettleseren før endringen blir aktiv!".
+   * 
+   * @return translated "Endring er utført. Du må oppfriske nettleseren før endringen blir aktiv!"
+   */
+  @DefaultMessage("Endring er utført. Du må oppfriske nettleseren før endringen blir aktiv!")
+  @Key("change_need_restart")
+  String change_need_restart();
+
+  /**
    * Translated "Nullstill felter?".
    * 
    * @return translated "Nullstill felter?"

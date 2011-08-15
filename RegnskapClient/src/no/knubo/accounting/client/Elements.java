@@ -1510,6 +1510,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String email_select();
 
   /**
+   * Translated "Avanserte innstillinger".
+   * 
+   * @return translated "Avanserte innstillinger"
+   */
+  @DefaultStringValue("Avanserte innstillinger")
+  @Key("email_settings_advanced")
+  String email_settings_advanced();
+
+  /**
+   * Translated "Topp og bunntekst".
+   * 
+   * @return translated "Topp og bunntekst"
+   */
+  @DefaultStringValue("Topp og bunntekst")
+  @Key("email_settings_headers")
+  String email_settings_headers();
+
+  /**
+   * Translated "Stilinnstilling".
+   * 
+   * @return translated "Stilinnstilling"
+   */
+  @DefaultStringValue("Stilinnstilling")
+  @Key("email_settings_stil")
+  String email_settings_stil();
+
+  /**
    * Translated "Ansatt".
    * 
    * @return translated "Ansatt"

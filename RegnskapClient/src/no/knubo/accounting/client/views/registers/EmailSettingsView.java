@@ -8,6 +8,7 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
@@ -18,14 +19,18 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class EmailSettingsView extends Composite implements ClickHandler {
@@ -39,14 +44,60 @@ public class EmailSettingsView extends Composite implements ClickHandler {
     private EmailSettingsView.HeaderFooterEditFields editFields;
     private FlexTable tableFooter;
     private NamedButton newFooterButton;
+    private NamedTextArea settingsStil;
+    private NamedButton updateStilButton;
+    private Label settingStatusLabel;
+    private NamedButton clearStilButton;
 
     public EmailSettingsView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.elements = elements;
 
+        DecoratedTabPanel tabPanel = new DecoratedTabPanel();
+        tabPanel.setAnimationEnabled(false);
+
+        tabPanel.add(setupHeaderFooterPanel(), elements.email_settings_headers());
+        tabPanel.add(setupAdvancedPanel(), elements.email_settings_advanced());
+        
+        tabPanel.selectTab(0);
+        initWidget(tabPanel);
+    }
+
+    private Widget setupAdvancedPanel() {
+        VerticalPanel vp = new VerticalPanel();
+        
+        vp.add(new Label(elements.email_settings_stil()));
+        
+        settingsStil = new NamedTextArea("email_settings_stil");
+        settingsStil.setWidth("70em");
+        settingsStil.setHeight("40em");
+        vp.add(settingsStil);
+        
+        settingStatusLabel = new Label();
+        vp.add(settingStatusLabel);
+        
+        updateStilButton = new NamedButton("update", elements.update());
+        updateStilButton.addClickHandler(this);
+        updateStilButton.addStyleName("buttonrow");
+
+        clearStilButton = new NamedButton("clear", elements.clear());
+        clearStilButton.addClickHandler(this);
+        clearStilButton.addStyleName("buttonrow");
+        
+        HorizontalPanel buttonPanel = new HorizontalPanel();
+        buttonPanel.add(updateStilButton);
+        buttonPanel.add(clearStilButton);
+        
+        vp.add(buttonPanel);
+        
+        return vp;
+    }
+
+    private DockPanel setupHeaderFooterPanel() {
         DockPanel dp = new DockPanel();
 
+        
         tableHeader = new FlexTable();
         tableHeader.setStyleName("tableborder");
         tableHeader.setText(0, 0, elements.email_header());
@@ -77,11 +128,8 @@ public class EmailSettingsView extends Composite implements ClickHandler {
         dp.add(newFooterButton, DockPanel.NORTH);
         dp.add(tableFooter, DockPanel.NORTH);
 
-      //  newHTMLReplaceButton = new NamedButton
-        
-        
         idHolder = new IdHolder<Integer, Image>();
-        initWidget(dp);
+        return dp;
     }
 
     public static EmailSettingsView show(I18NAccount messages, Constants constants, Elements elements) {
@@ -93,6 +141,29 @@ public class EmailSettingsView extends Composite implements ClickHandler {
     }
 
     public void init() {
+        loadFooterAndHeaders();
+        loadStyle();
+    }
+
+    private void loadStyle() {
+        ServerResponseString callback = new ServerResponseString() {
+            
+            public void serverResponse(JSONValue responseObj) {
+                /* Unused */
+            }
+            
+            public void serverResponse(String response) {
+                if(response.trim().length() == 0) {
+                    settingsStil.setText(EmailDefaultStyle.DEFAULT);
+                } else {
+                    settingsStil.setText(response);   
+                }
+            }
+        };
+        AuthResponder.get(constants, messages, callback , "files/files.php?action=gettext&file=style.js");
+    }
+
+    private void loadFooterAndHeaders() {
         idHolder.init();
         while (tableHeader.getRowCount() > 1) {
             tableHeader.removeRow(1);
@@ -147,6 +218,16 @@ public class EmailSettingsView extends Composite implements ClickHandler {
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
+        if(sender == updateStilButton) {
+            updateStil();
+            return;
+        }
+        
+        if(sender == clearStilButton) {
+            deleteStil();
+            return;
+        }
+        
         if (editFields == null) {
             editFields = new HeaderFooterEditFields();
         }
@@ -163,6 +244,47 @@ public class EmailSettingsView extends Composite implements ClickHandler {
             editFields.init(id);
         }
         editFields.show();
+    }
+
+    private void updateStil() {
+        StringBuffer params = new StringBuffer();
+        params.append("action=writetext");
+        Util.addPostParam(params, "file", "style.js");
+        
+        String txtToSave = settingsStil.getText();
+        
+        if(txtToSave.trim().length() == 0) {
+            deleteStil();
+            return;
+        }
+        
+        Util.addPostParam(params, "data", txtToSave);
+        ServerResponse callback = new ServerResponse() {
+            
+            public void serverResponse(JSONValue responseObj) {
+                Util.timedMessage(settingStatusLabel, "", 20);
+                settingStatusLabel.setText(messages.change_need_restart());
+            }
+        };
+        AuthResponder.post(constants, messages, callback , params, "files/files.php?action=gettext&file=style.js");
+
+    }
+
+    private void deleteStil() {
+        boolean cont = Window.confirm(messages.confirm_clear());
+        
+        if(!cont) {
+            return;
+        }
+        
+        ServerResponse callback = new ServerResponse() {
+            
+            public void serverResponse(JSONValue responseObj) {
+               loadStyle();
+            }
+        };
+        AuthResponder.get(constants, messages, callback  , "files/files.php?action=deltext&file=style.js");
+
     }
 
     class HeaderFooterEditFields extends DialogBox implements ClickHandler {

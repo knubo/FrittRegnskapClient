@@ -12,11 +12,13 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.Logger;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.views.registers.EmailDefaultStyle;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -34,6 +36,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -51,6 +54,7 @@ public class ReportMail extends Composite implements ClickHandler {
     private static final String EMAIL_HEADER = "email_header";
     private static ReportMail reportInstance;
     private static boolean htmlVisible;
+    private static boolean configuredStyle;
     private final Constants constants;
     private final Elements elements;
     private FlexTable table;
@@ -81,6 +85,7 @@ public class ReportMail extends Composite implements ClickHandler {
     private Label infoLabel;
     private boolean emailSent;
     private boolean replacedHTMLWidget;
+    private NamedButton previewButton;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
@@ -208,8 +213,12 @@ public class ReportMail extends Composite implements ClickHandler {
         clearButton = new NamedButton("mail_clear", elements.clear());
         clearButton.addClickHandler(this);
 
+        previewButton = new NamedButton("preview", elements.preview());
+        previewButton.addClickHandler(this);
+        
         FlowPanel fp = new FlowPanel();
 
+        fp.add(previewButton);
         fp.add(sendButton);
         fp.add(reSendButton);
         fp.add(archiveButton);
@@ -393,6 +402,9 @@ public class ReportMail extends Composite implements ClickHandler {
 
         if (sender == sendButton) {
             fillReceivers();
+            
+        } else if(sender == previewButton) {
+            preview();
         } else if (sender == attachButton) {
             chooseAttachments();
         } else if (sender == reSendButton) {
@@ -418,6 +430,33 @@ public class ReportMail extends Composite implements ClickHandler {
         } else if (sender == clearButton) {
             clearEmail();
         }
+    }
+
+    private void preview() {
+        StringBuffer mailRequest = new StringBuffer();
+
+        mailRequest.append("action=preview");
+        String emailText = getFixedEmailText();
+        fillEmailText(mailRequest, emailText);
+        
+        ServerResponseString callback = new ServerResponseString() {
+
+            public void serverResponse(String response) {
+                DialogBox popup = new DialogBox();
+                popup.setText(elements.preview_actual());
+                popup.setAutoHideEnabled(true);
+                popup.setModal(true);
+                popup.add(new HTML(response));
+                popup.center();
+            }
+
+            public void serverResponse(JSONValue responseObj) {
+                /* unused */
+            }
+            
+        };
+        AuthResponder.post(constants, messages, callback, mailRequest, "reports/email.php");
+
     }
 
     private void clearEmail() {
@@ -727,6 +766,34 @@ public class ReportMail extends Composite implements ClickHandler {
     }
 
     public void init() {
+        fillFooterAndHeader();
+        fillStyle();
+
+        setupTimer();
+
+    }
+
+    private void fillStyle() {
+        ServerResponseString callback = new ServerResponseString() {
+
+            public void serverResponse(JSONValue responseObj) {
+                /* Unused */
+            }
+
+            public void serverResponse(String response) {
+                if (response.trim().length() == 0) {
+                    configStyles(EmailDefaultStyle.DEFAULT, "my_style");
+                } else {
+                    configStyles(response, "my_style");
+                }
+                
+                setHTML("");
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "files/files.php?action=gettext&file=style.js");
+    }
+
+    private void fillFooterAndHeader() {
         ServerResponse callback = new ServerResponse() {
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
@@ -739,9 +806,6 @@ public class ReportMail extends Composite implements ClickHandler {
         };
 
         AuthResponder.get(constants, messages, callback, "registers/emailcontent.php?action=report_init");
-
-        setupTimer();
-
     }
 
     private void setupTimer() {
@@ -875,32 +939,45 @@ public class ReportMail extends Composite implements ClickHandler {
         setupTimer();
     }
 
-    private static native String getHTML() 
+    private static native String getHTML()
     /*-{
 
         return $wnd['CKEDITOR'].instances.html_area.getData();
     }-*/;
 
-    public static native void setHTML(String x) 
+    public static native void setHTML(String x)
     /*-{
        $wnd['CKEDITOR'].instances.html_area.setData(x);
-}-*/;
+    }-*/;
 
     public static void setRichEditorVisible(boolean visible) {
         htmlVisible = visible;
         setRichEditorVisibleNative(visible);
     }
-    
-    
+
     public static native void setRichEditorVisibleNative(boolean visible)
     /*-{
-    if($doc.getElementById('cke_html_area')) 
-        $doc.getElementById('cke_html_area').style.display = visible ? '' : 'none';
-    }-*/;
+       if($doc.getElementById('cke_html_area')) 
+          $doc.getElementById('cke_html_area').style.display = visible ? '' : 'none';
+       }-*/;
 
     static native void setupRichEditor()
     /*-{
-     $wnd['CKEDITOR'].replace( 'html_area' );
+       $wnd['CKEDITOR'].replace( 'html_area' );
+     
+    }-*/;
+
+    static void configStyles(String styles, String id) {
+        if(configuredStyle) {
+            return;
+        }
+        configuredStyle = true;
+        configStylesInt(styles, id);
+    }
+    static native void configStylesInt(String styles, String id)
+    /*-{
+       $wnd['CKEDITOR'].stylesSet.add( id, eval("["+styles+"]"));
+       $wnd['CKEDITOR'].config.stylesSet = id;
     }-*/;
 
 }
