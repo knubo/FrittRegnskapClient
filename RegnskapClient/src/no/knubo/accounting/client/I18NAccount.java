@@ -709,13 +709,13 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String mail_confirm(String arg0);
 
   /**
-   * Translated "{0} - {1} medlemmer".
+   * Translated "{0} medlemmer".
    * 
-   * @return translated "{0} - {1} medlemmer"
+   * @return translated "{0} medlemmer"
    */
-  @DefaultMessage("{0} - {1} medlemmer")
+  @DefaultMessage("{0} medlemmer")
   @Key("members_navig_heading")
-  String members_navig_heading(String arg0,  String arg1);
+  String members_navig_heading(String arg0);
 
   /**
    * Translated "Du må sette intielle verdier før du kan registrere medlemsskap. Konfigureringen åpnes nå.   ".

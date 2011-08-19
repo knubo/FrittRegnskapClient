@@ -9,7 +9,10 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -19,18 +22,15 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ShowMembershipView extends Composite implements ClickHandler {
+public class ShowMembershipView extends Composite implements ClickHandler, ChangeHandler {
 
     static ShowMembershipView me;
     private FlexTable table;
     private HTML header;
-    private HTML periodeHeader;
-    private Image previousImage;
-    private Image nextImage;
     private final I18NAccount messages;
     private final Constants constants;
     private final ViewCallback caller;
@@ -40,6 +40,8 @@ public class ShowMembershipView extends Composite implements ClickHandler {
     private IdHolder<String, Image> idHolder;
     final HelpPanel helpPanel;
     private final Elements elements;
+    private ListBoxWithErrorText semesterOrYearListBox;
+    private Label countLabel;
 
     public static ShowMembershipView show(I18NAccount messages, Constants constants, ViewCallback caller,
             HelpPanel helpPanel, Elements elements) {
@@ -65,19 +67,16 @@ public class ShowMembershipView extends Composite implements ClickHandler {
         table.getRowFormatter().setStyleName(0, "header");
 
         header = new HTML();
-        periodeHeader = new HTML();
-        previousImage = ImageFactory.previousImage("ShowMembershipView.previousImage");
-        previousImage.addClickHandler(this);
-        nextImage = ImageFactory.nextImage("ShowMembershipView.nextImage");
-        nextImage.addClickHandler(this);
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.add(previousImage);
-        hp.add(periodeHeader);
-        hp.add(nextImage);
+
+        semesterOrYearListBox = new ListBoxWithErrorText("choose");
+        semesterOrYearListBox.addChangeHandler(this);
+
+        countLabel = new Label();
 
         DockPanel dp = new DockPanel();
         dp.add(header, DockPanel.NORTH);
-        dp.add(hp, DockPanel.NORTH);
+        dp.add(semesterOrYearListBox, DockPanel.NORTH);
+        dp.add(countLabel, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
 
         initWidget(dp);
@@ -90,25 +89,74 @@ public class ShowMembershipView extends Composite implements ClickHandler {
         table.setText(0, 3, elements.course_membership());
         table.setText(0, 4, elements.train_membership());
         table.setText(0, 5, elements.youth_membership());
-        initAll("");
+        action = "";
+        fillSemesterlistbox("alllist");
     }
 
     public void initShowMembers() {
         header.setHTML(elements.member_heading_year());
         action = "year";
-        init("");
+        fillYearListbox();
+
     }
 
     public void initShowTrainingMembers() {
         header.setHTML(elements.member_heading_train());
         action = "training";
-        init("");
+        fillSemesterlistbox("trainlist");
+
     }
 
     public void initShowClassMembers() {
         header.setHTML(elements.member_heading_course());
         action = "class";
-        init("");
+        fillSemesterlistbox("classlist");
+
+    }
+
+    private void fillSemesterlistbox(final String action) {
+        semesterOrYearListBox.clear();
+        semesterOrYearListBox.addItem("","");
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONArray array = responseObj.isArray();
+
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject semester = array.get(i).isObject();
+
+                    semesterOrYearListBox.addItem(semester.get("description"), semester.get("semester"));
+                }
+
+                if (action.equals("alllist")) {
+                    initAll("");
+                } else {
+                    init("");
+                }
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "registers/members.php?action=" + action);
+
+    }
+
+    private void fillYearListbox() {
+        semesterOrYearListBox.clear();
+        semesterOrYearListBox.addItem("","");
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONArray array = responseObj.isArray();
+
+                for (int i = 0; i < array.size(); i++) {
+                    JSONValue year = array.get(i);
+
+                    semesterOrYearListBox.addItem(year, year);
+                }
+                init("");
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "registers/members.php?action=yearlist");
+
     }
 
     private void init(String posparam) {
@@ -141,7 +189,11 @@ public class ShowMembershipView extends Composite implements ClickHandler {
                 JSONArray members = root.get("members").isArray();
 
                 String count = String.valueOf(members.size());
-                periodeHeader.setHTML(messages.members_navig_heading(Util.str(root.get("text")), count));
+                
+                String match = action.equals("year") ? String.valueOf(currentYear) : String.valueOf(currentSemester);
+                Util.setIndexByValue(semesterOrYearListBox.getListbox(), match);
+                
+                countLabel.setText(messages.members_navig_heading(count));
 
                 for (int i = 0; i < members.size(); i++) {
                     JSONArray names = members.get(i).isArray();
@@ -175,27 +227,8 @@ public class ShowMembershipView extends Composite implements ClickHandler {
 
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
-        if (sender == previousImage) {
-            doNext(-1);
-        } else if (sender == nextImage) {
-            doNext(1);
-        } else {
-            doEditUser(sender);
-        }
-    }
 
-    private void doNext(int diff) {
-        if (header.getHTML().equals(elements.member_heading_all())) {
-            initAll("semester=" + (currentSemester + diff));
-            return;
-        }
-
-        if (currentSemester != 0) {
-            init("semester=" + (currentSemester + diff));
-            return;
-        }
-
-        init("year=" + (currentYear + diff));
+        doEditUser(sender);
     }
 
     private void doEditUser(Widget sender) {
@@ -225,7 +258,9 @@ public class ShowMembershipView extends Composite implements ClickHandler {
                 JSONArray members = root.get("members").isArray();
 
                 String count = String.valueOf(members.size());
-                periodeHeader.setHTML(messages.members_navig_heading(Util.str(root.get("text")), count));
+
+                Util.setIndexByValue(semesterOrYearListBox.getListbox(), String.valueOf(currentSemester));
+                countLabel.setText(messages.members_navig_heading(count));
 
                 for (int i = 0; i < members.size(); i++) {
                     JSONObject info = members.get(i).isObject();
@@ -275,5 +310,18 @@ public class ShowMembershipView extends Composite implements ClickHandler {
 
         AuthResponder.get(constants, messages, callback, "registers/members.php?" + posparam + "&action=all");
 
+    }
+
+    public void onChange(ChangeEvent event) {
+        if(this.semesterOrYearListBox.getSelectedIndex() == 0) {
+            return;
+        }
+        if(action.equals("")) {
+            initAll("semester="+Util.getSelected(this.semesterOrYearListBox));
+        } else if(action.equals("year")){
+            init("year="+Util.getSelected(this.semesterOrYearListBox));
+        } else {
+            init("semester="+Util.getSelected(this.semesterOrYearListBox));
+        }
     }
 }

@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -215,7 +216,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
         previewButton = new NamedButton("preview", elements.preview());
         previewButton.addClickHandler(this);
-        
+
         FlowPanel fp = new FlowPanel();
 
         fp.add(previewButton);
@@ -402,8 +403,8 @@ public class ReportMail extends Composite implements ClickHandler {
 
         if (sender == sendButton) {
             fillReceivers();
-            
-        } else if(sender == previewButton) {
+
+        } else if (sender == previewButton) {
             preview();
         } else if (sender == attachButton) {
             chooseAttachments();
@@ -432,28 +433,74 @@ public class ReportMail extends Composite implements ClickHandler {
         }
     }
 
+    public HorizontalPanel addSizeSelect(final ScrollPanel sp, final DialogBox popup) {
+        HorizontalPanel horizontalPanel = new HorizontalPanel();
+        
+        for(int i=200; i <= 1200; i+=200) {
+            RadioButton radioButton = new RadioButton("width_select", i+"px");
+            final int setWidth = i;
+            
+            if(i == 600) {
+                radioButton.setValue(true);
+            }
+            
+            radioButton.addClickHandler(new ClickHandler() {
+                
+                public void onClick(ClickEvent event) {
+                    sp.setWidth(setWidth+"px");
+                }
+            });
+            
+            horizontalPanel.add(radioButton);
+        }
+        
+        RadioButton closeButton = new RadioButton("width_select", elements.close());
+        closeButton.addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                popup.hide();
+            }
+            
+        });
+        horizontalPanel.add(closeButton);
+        
+        return horizontalPanel;
+    }
+    
     private void preview() {
         StringBuffer mailRequest = new StringBuffer();
 
         mailRequest.append("action=preview");
         String emailText = getFixedEmailText();
         fillEmailText(mailRequest, emailText);
-        
+
         ServerResponseString callback = new ServerResponseString() {
 
             public void serverResponse(String response) {
+                
                 DialogBox popup = new DialogBox();
                 popup.setText(elements.preview_actual());
                 popup.setAutoHideEnabled(true);
                 popup.setModal(true);
-                popup.add(new HTML(response));
+
+                VerticalPanel vp = new VerticalPanel();
+               
+                ScrollPanel sp = new ScrollPanel();
+                vp.add(addSizeSelect(sp, popup));
+                vp.add(sp);
+
+                sp.setWidth("600px");
+                sp.setHeight("40em");
+                sp.add(new HTML(response));
+
+                popup.add(vp);
                 popup.center();
             }
 
             public void serverResponse(JSONValue responseObj) {
                 /* unused */
             }
-            
+
         };
         AuthResponder.post(constants, messages, callback, mailRequest, "reports/email.php");
 
@@ -786,7 +833,7 @@ public class ReportMail extends Composite implements ClickHandler {
                 } else {
                     configStyles(response, "my_style");
                 }
-                
+
                 setHTML("");
             }
         };
@@ -968,12 +1015,13 @@ public class ReportMail extends Composite implements ClickHandler {
     }-*/;
 
     static void configStyles(String styles, String id) {
-        if(configuredStyle) {
+        if (configuredStyle) {
             return;
         }
         configuredStyle = true;
         configStylesInt(styles, id);
     }
+
     static native void configStylesInt(String styles, String id)
     /*-{
        $wnd['CKEDITOR'].stylesSet.add( id, eval("["+styles+"]"));
