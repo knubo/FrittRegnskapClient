@@ -414,10 +414,7 @@ public class ReportMail extends Composite implements ClickHandler {
             if (bodyBox.isVisible()) {
                 bodyBox.setVisible(false);
 
-                if (!replacedHTMLWidget) {
-                    replacedHTMLWidget = true;
-                    setupRichEditor();
-                }
+               
                 setRichEditorVisible(true);
 
             }
@@ -941,9 +938,9 @@ public class ReportMail extends Composite implements ClickHandler {
         if (radioFormatHTML.getValue()) {
             String html = getHTML();
 
-            html = html.replace("\n", "");
-            html = html.replace("<br", "\n<br");
-            html = html.replace("</p", "\n</p");
+//            html = html.replace("\n", "");
+//            html = html.replace("<br", "\n<br");
+//            html = html.replace("</p", "\n</p");
 
             return URL.encode(html);
         }
@@ -997,7 +994,13 @@ public class ReportMail extends Composite implements ClickHandler {
        $wnd['CKEDITOR'].instances.html_area.setData(x);
     }-*/;
 
-    public static void setRichEditorVisible(boolean visible) {
+    public void setRichEditorVisible(boolean visible) {
+
+        if (!replacedHTMLWidget) {
+            replacedHTMLWidget = true;
+            setupRichEditor();
+        }
+        
         htmlVisible = visible;
         setRichEditorVisibleNative(visible);
     }
@@ -1019,6 +1022,7 @@ public class ReportMail extends Composite implements ClickHandler {
             return;
         }
         configuredStyle = true;
+      //  if(false)
         configStylesInt(styles, id);
     }
 
@@ -1026,6 +1030,21 @@ public class ReportMail extends Composite implements ClickHandler {
     /*-{
        $wnd['CKEDITOR'].stylesSet.add( id, eval("["+styles+"]"));
        $wnd['CKEDITOR'].config.stylesSet = id;
+       
+       $wnd['CKEDITOR'].config.toolbar_MyToolbar =
+    [
+        { name: 'column1', items : [ 'NewPage','DocProps','Preview' ] },
+        { name: 'column2', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+        { name: 'column3', items : [ 'Find','Replace','-','SelectAll','-','Scayt' ] },
+                '/',
+        { name: 'styles', items : [ 'Styles','Format' ] },
+        { name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
+        { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote' ] },
+        { name: 'links', items : [ 'Link','Unlink','Anchor' ] },
+        { name: 'tools', items : [ 'Maximize','-','About' ] }
+    ];
+    $wnd['CKEDITOR'].config.toolbar = "MyToolbar";
+       
     }-*/;
 
 }

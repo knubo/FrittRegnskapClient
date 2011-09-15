@@ -9,6 +9,8 @@
 	<path id="project.class.path">
 		<pathelement location="war/WEB-INF/classes" />
 		<pathelement location="${gwt.sdk}/gwt-user.jar" />
+		<pathelement location="${gwt.sdk}/validation-api-1.0.0.GA.jar" />
+		<pathelement location="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" />
 		<pathelement location="lib/gwt-visualization.jar" />
 		<pathelement location="lib/gwt-wizard.jar" />
 		<pathelement location="lib/gwt-widgets-0.2.0.jar" />

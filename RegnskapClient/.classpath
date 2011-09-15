@@ -5,9 +5,12 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="lib/gwt-visualization.jar"/>
-	<classpathentry kind="lib" path="/Users/knuterikborgen/kode/gwt-2.0.3/gwt-user.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-wizard.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-widgets-0.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/GWT FX v0.5.0 MS 1.jar"/>
+	<classpathentry kind="lib" path="/Users/knuterikborgen/kode/gwt-2.3.0/gwt-dev.jar"/>
+	<classpathentry kind="lib" path="/Users/knuterikborgen/kode/gwt-2.3.0/gwt-user.jar"/>
+	<classpathentry kind="lib" path="/Users/knuterikborgen/kode/gwt-2.3.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/knuterikborgen/kode/gwt-2.3.0/validation-api-1.0.0.GA.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

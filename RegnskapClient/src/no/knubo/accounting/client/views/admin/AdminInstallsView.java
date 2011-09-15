@@ -7,6 +7,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedCheckBox;
@@ -23,6 +24,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -57,22 +59,22 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         table = new FlexTable();
         table.setStyleName("tableborder");
         table.setHTML(0, 0, elements.admin_installs());
-        table.getFlexCellFormatter().setColSpan(0, 0, 13);
+        table.getFlexCellFormatter().setColSpan(0, 0, 14);
 
-        table.setHTML(1, 0, elements.admin_hostprefix());
-        table.setHTML(1, 1, elements.admin_dbprefix());
-        table.setHTML(1, 2, elements.admin_database());
-        table.setHTML(1, 3, elements.description());
-        table.setHTML(1, 4, elements.admin_wikilogin());
-        table.setHTML(1, 5, elements.admin_diskqvota());
-        table.setHTML(1, 6, "Beta");
-        table.setHTML(1, 7, elements.status());
-        table.setHTML(1, 8, elements.portal_title());
-        table.setHTML(1, 9, elements.admin_archive_limit());
-        table.setHTML(1, 10, elements.admin_reduced_mode());
-        table.setHTML(1, 11, elements.admin_parentdbprefix());
-        table.setHTML(1, 12, elements.admin_change_request());
-        table.setHTML(1, 13, "");
+        table.setHTML(1, 0, "");
+        table.setHTML(1, 1, elements.admin_hostprefix());
+        table.setHTML(1, 2, elements.admin_dbprefix());
+        table.setHTML(1, 3, elements.admin_database());
+        table.setHTML(1, 4, elements.description());
+        table.setHTML(1, 5, elements.admin_wikilogin());
+        table.setHTML(1, 6, elements.admin_diskqvota());
+        table.setHTML(1, 7, "Beta");
+        table.setHTML(1, 8, elements.status());
+        table.setHTML(1, 9, elements.portal_title());
+        table.setHTML(1, 10, elements.admin_archive_limit());
+        table.setHTML(1, 11, elements.admin_reduced_mode());
+        table.setHTML(1, 12, elements.admin_parentdbprefix());
+        table.setHTML(1, 13, elements.admin_change_request());
         table.getRowFormatter().setStyleName(0, "header");
         table.getRowFormatter().setStyleName(1, "header");
 
@@ -104,23 +106,23 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             JSONObject obj = array.get(i).isObject();
 
             String hostprefix = Util.str(obj.get("hostprefix"));
-            table.setWidget(i + 2, 0, new Anchor(hostprefix, "http://" + hostprefix
+            table.setWidget(i + 2, 1, new Anchor(hostprefix, "http://" + hostprefix
                     + ".frittregnskap.no/prg/AccountingGWT.html", "_blank"));
-            table.setText(i + 2, 1, Util.str(obj.get("dbprefix")));
-            table.setText(i + 2, 2, Util.str(obj.get("db")));
-            table.setText(i + 2, 3, Util.str(obj.get("description")));
-            table.setText(i + 2, 4, Util.str(obj.get("wikilogin")));
-            table.setText(i + 2, 5, Util.str(obj.get("diskquota")) + " MB");
-            table.setText(i + 2, 6, "" + Util.getBoolean(obj.get("beta")));
-            table.setText(i + 2, 7, statusAsString(Util.getInt(obj.get("portal_status"))));
-            table.setText(i + 2, 8, Util.str(obj.get("portal_title")));
-            table.setText(i + 2, 9, Util.strSkipNull(obj.get("archive_limit")));
-            table.setText(i + 2, 10, Util.strSkipNull(obj.get("reduced_mode")));
-            table.setText(i + 2, 11, Util.strSkipNull(obj.get("parentdbprefix")));
-            table.setText(i + 2, 12, Util.strSkipNull(obj.get("change_request")));
+            table.setText(i + 2, 2, Util.str(obj.get("dbprefix")));
+            table.setText(i + 2, 3, Util.str(obj.get("db")));
+            table.setText(i + 2, 4, Util.str(obj.get("description")));
+            table.setText(i + 2, 5, Util.str(obj.get("wikilogin")));
+            table.setText(i + 2, 6, Util.str(obj.get("diskquota")) + " MB");
+            table.setText(i + 2, 7, "" + Util.getBoolean(obj.get("beta")));
+            table.setText(i + 2, 8, statusAsString(Util.getInt(obj.get("portal_status"))));
+            table.setText(i + 2, 9, Util.str(obj.get("portal_title")));
+            table.setText(i + 2, 10, Util.strSkipNull(obj.get("archive_limit")));
+            table.setText(i + 2, 11, Util.strSkipNull(obj.get("reduced_mode")));
+            table.setText(i + 2, 12, Util.strSkipNull(obj.get("parentdbprefix")));
+            table.setText(i + 2, 13, Util.strSkipNull(obj.get("cr")));
             Image image = ImageFactory.editImage("edit" + Util.str(obj.get("id")));
             image.addClickHandler(this);
-            table.setWidget(i + 2,13, image);
+            table.setWidget(i + 2, 0, image);
 
             table.getCellFormatter().addStyleName(i + 2, 5, "right");
 
@@ -159,7 +161,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             editFields = new AdminInstallEditFields();
         }
 
-        int left = event.getRelativeElement().getAbsoluteLeft() - 250;
+        int left = event.getRelativeElement().getAbsoluteLeft() + 10;
 
         int top = event.getRelativeElement().getAbsoluteTop() + 10;
         editFields.setPopupPosition(left, top);
@@ -224,6 +226,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private NamedButton sulogin;
 
+        private FlexTable requestsTable;
+
         AdminInstallEditFields() {
             setText(elements.project());
             edittable = new FlexTable();
@@ -269,7 +273,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             reducedMode = new TextBoxWithErrorText("reducedmode");
             parentdbprefix = new TextBoxWithErrorText("parentdbprefix");
             parenthostprefix = new TextBoxWithErrorText("parentdomain");
-            
+
             edittable.setWidget(0, 1, hostprefixBox);
             edittable.setWidget(3, 1, descriptionBox);
             edittable.setWidget(4, 1, wikiLogin);
@@ -290,9 +294,6 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             cancelButton = new NamedButton("adminInstall_cancelButton", elements.cancel());
             cancelButton.addClickHandler(this);
 
-            deleteButton = new NamedButton("adminInstall_deleteButton", elements.admin_delete_accounting());
-            deleteButton.addClickHandler(this);
-
             sendWelcomeLetter = new NamedButton("admin_send_welcome_letter", elements.admin_send_welcome_letter());
             sendWelcomeLetter.addClickHandler(this);
 
@@ -310,12 +311,36 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             buttonPanel.add(sulogin);
             buttonPanel.add(saveButton);
             buttonPanel.add(cancelButton);
-            buttonPanel.add(deleteButton);
             buttonPanel.add(sendWelcomeLetter);
             buttonPanel.add(sendPortalActivationLetter);
             dp.add(buttonPanel, DockPanel.NORTH);
             dp.add(mainErrorLabel, DockPanel.NORTH);
-            setWidget(dp);
+            
+            DecoratedTabPanel tabPanel = new DecoratedTabPanel();
+            tabPanel.setAnimationEnabled(false);
+
+            tabPanel.add(dp, elements.admin_install());
+            tabPanel.add(createAdvancedTab(), elements.advanced());
+            tabPanel.selectTab(0);
+            
+            setWidget(tabPanel);
+        }
+
+        private Widget createAdvancedTab() {
+
+            deleteButton = new NamedButton("adminInstall_deleteButton", elements.admin_delete_accounting());
+            deleteButton.addClickHandler(this);
+
+            HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.add(deleteButton);
+
+            VerticalPanel vp = new VerticalPanel();
+            
+            requestsTable = new AccountTable("tableborder");
+            vp.add(requestsTable);
+            
+            vp.add(buttonPanel);
+            return vp;
         }
 
         public void setEditData(JSONObject obj) {

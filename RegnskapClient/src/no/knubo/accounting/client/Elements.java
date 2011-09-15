@@ -187,11 +187,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_archive_limit();
 
   /**
-   * Translated "Endrings�nske".
+   * Translated "Endringsønske".
    * 
-   * @return translated "Endrings�nske"
+   * @return translated "Endringsønske"
    */
-  @DefaultStringValue("Endrings�nske")
+  @DefaultStringValue("Endringsønske")
   @Key("admin_change_request")
   String admin_change_request();
 
@@ -1517,6 +1517,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Avanserte innstillinger")
   @Key("email_settings_advanced")
   String email_settings_advanced();
+
+  /**
+   * Translated "HTML editor innsstillinger".
+   * 
+   * @return translated "HTML editor innsstillinger"
+   */
+  @DefaultStringValue("HTML editor innsstillinger")
+  @Key("email_settings_editor")
+  String email_settings_editor();
 
   /**
    * Translated "Topp og bunntekst".

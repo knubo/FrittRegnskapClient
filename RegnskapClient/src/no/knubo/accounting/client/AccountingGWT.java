@@ -187,7 +187,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         if (reducedMode == 0) {
             addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
-            //addMenuItem(registerMenu, elements.menuitem_register_kid_membership(), WidgetIds.REGISTER_KID_MEMBERSHIP);
+            // addMenuItem(registerMenu,
+            // elements.menuitem_register_kid_membership(),
+            // WidgetIds.REGISTER_KID_MEMBERSHIP);
         }
 
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
@@ -206,7 +208,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
             addMenuItem(showMenu, elements.menuitem_owning_show(), WidgetIds.OWNINGS_LIST);
-            //addMenuItem(showMenu, elements.menuitem_kid_list_transactions(), WidgetIds.LIST_KID_TRANSACTIONS);
+            // addMenuItem(showMenu, elements.menuitem_kid_list_transactions(),
+            // WidgetIds.LIST_KID_TRANSACTIONS);
         }
 
         addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
@@ -282,7 +285,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(aboutMenu, elements.menuitem_sessioninfo(), WidgetIds.SESSIONINFO);
         addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
         addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
-        //addMenuItem(aboutMenu, elements.menuitem_delete(), WidgetIds.REQUEST_DELETE);        
+        addMenuItem(aboutMenu, elements.menuitem_delete(), WidgetIds.REQUEST_DELETE);
         addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
         if (adminMenu != null) {
@@ -358,7 +361,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case LIST_KID_TRANSACTIONS:
                 widget = ListKIDView.show(messages, constants, elements, helpPanel);
                 break;
-                
+
             case REGISTER_HAPPENING:
                 widget = RegisterHappeningView.show(messages, constants, callback, elements, callback);
                 ((RegisterHappeningView) widget).init();
@@ -568,7 +571,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case ADMIN_NORWEGIAN_CITIES:
                 widget = AdminNorwegianCityImportView.getInstance(messages, constants, elements);
                 break;
-                
+
             case EXPORT_ACCOUNTING:
                 widget = AccountExportView.getInstance(constants, messages, elements);
                 break;
@@ -692,9 +695,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     public void editPerson(String id) {
         HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
-        
-        PersonEditView widget = PersonEditView.show(constants, messages, helpPanel,
-                this, elements);
+
+        PersonEditView widget = PersonEditView.show(constants, messages, helpPanel, this, elements);
 
         widget.init(id);
         setActiveWidget(widget);

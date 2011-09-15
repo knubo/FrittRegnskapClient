@@ -58,10 +58,16 @@ public class EmailSettingsView extends Composite implements ClickHandler {
         tabPanel.setAnimationEnabled(false);
 
         tabPanel.add(setupHeaderFooterPanel(), elements.email_settings_headers());
+        tabPanel.add(setupHTMLEditorPanel(), elements.email_settings_editor());
         tabPanel.add(setupAdvancedPanel(), elements.email_settings_advanced());
         
         tabPanel.selectTab(0);
         initWidget(tabPanel);
+    }
+
+    private Widget setupHTMLEditorPanel() {
+        VerticalPanel vp = new VerticalPanel();
+        return vp;
     }
 
     private Widget setupAdvancedPanel() {
