@@ -268,6 +268,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_delete_accounting();
 
   /**
+   * Translated "Slett regnskapsdata".
+   * 
+   * @return translated "Slett regnskapsdata"
+   */
+  @DefaultStringValue("Slett regnskapsdata")
+  @Key("admin_delete_accounting_data")
+  String admin_delete_accounting_data();
+
+  /**
+   * Translated "Slett personer og medlemmer".
+   * 
+   * @return translated "Slett personer og medlemmer"
+   */
+  @DefaultStringValue("Slett personer og medlemmer")
+  @Key("admin_delete_people")
+  String admin_delete_people();
+
+  /**
+   * Translated "Slett personer, medlemmer og regnskapsdata".
+   * 
+   * @return translated "Slett personer, medlemmer og regnskapsdata"
+   */
+  @DefaultStringValue("Slett personer, medlemmer og regnskapsdata")
+  @Key("admin_delete_restart")
+  String admin_delete_restart();
+
+  /**
    * Translated "Diskkvote".
    * 
    * @return translated "Diskkvote"
@@ -1690,6 +1717,42 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String error_uncought_exception();
 
   /**
+   * Translated "Administrasjon av arrangementer".
+   * 
+   * @return translated "Administrasjon av arrangementer"
+   */
+  @DefaultStringValue("Administrasjon av arrangementer")
+  @Key("event_items")
+  String event_items();
+
+  /**
+   * Translated "Liste over p�meldinger".
+   * 
+   * @return translated "Liste over p�meldinger"
+   */
+  @DefaultStringValue("Liste over p�meldinger")
+  @Key("event_lists")
+  String event_lists();
+
+  /**
+   * Translated "Liste over innbetalinger".
+   * 
+   * @return translated "Liste over innbetalinger"
+   */
+  @DefaultStringValue("Liste over innbetalinger")
+  @Key("event_payments")
+  String event_payments();
+
+  /**
+   * Translated "Registrer ankomst".
+   * 
+   * @return translated "Registrer ankomst"
+   */
+  @DefaultStringValue("Registrer ankomst")
+  @Key("event_register")
+  String event_register();
+
+  /**
    * Translated "Utfør endring".
    * 
    * @return translated "Utfør endring"
@@ -2615,6 +2678,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Budsjett")
   @Key("menu_budget")
   String menu_budget();
+
+  /**
+   * Translated "Arrangementer".
+   * 
+   * @return translated "Arrangementer"
+   */
+  @DefaultStringValue("Arrangementer")
+  @Key("menu_event")
+  String menu_event();
 
   /**
    * Translated "Eksport/Import".

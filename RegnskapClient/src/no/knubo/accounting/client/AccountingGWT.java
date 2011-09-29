@@ -110,9 +110,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     public static boolean canSeeSecret;
     protected int reducedMode;
 
+    private MenuBar eventMenu;
     private MenuBar showMenu;
     private MenuBar peopleMenu;
-    private MenuBar trustMenu;
     private MenuBar reportsMenu;
     private MenuBar settingsMenu;
     private MenuBar topMenu;
@@ -160,11 +160,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar registerMenu = addTopMenu(topMenu, elements.menu_register());
         showMenu = addTopMenu(topMenu, elements.menu_show());
         peopleMenu = addTopMenu(topMenu, elements.menu_people());
+        eventMenu = addTopMenu(topMenu, elements.menu_event());
         MenuBar budgetMenu = addTopMenu(topMenu, elements.menu_budget());
 
-        if (reducedMode == 0) {
-            trustMenu = addTopMenu(topMenu, elements.menu_trust());
-        }
         reportsMenu = addTopMenu(topMenu, elements.menu_reports());
         settingsMenu = addTopMenu(topMenu, elements.menu_settings());
         MenuBar importExportMenu = addTopMenu(topMenu, elements.menu_export_import());
@@ -195,6 +193,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
         if (reducedMode == 0) {
             addMenuItem(registerMenu, elements.menuitem_owning_register(), WidgetIds.OWNINGS_REGISTER);
+            addMenuItem(registerMenu, elements.menuitem_truststatus(), WidgetIds.TRUST_STATUS);
         }
         addMenuItem(registerMenu, elements.menuitem_endmonth(), WidgetIds.END_MONTH);
         addMenuItem(registerMenu, elements.menuitem_endsemester(), WidgetIds.END_SEMESTER);
@@ -214,10 +213,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
         addMenuItem(peopleMenu, elements.menuitem_findperson(), WidgetIds.FIND_PERSON);
-
-        if (reducedMode == 0) {
-            addMenuItem(trustMenu, elements.menuitem_truststatus(), WidgetIds.TRUST_STATUS);
-        }
 
         addMenuItem(budgetMenu, elements.menuitem_budget(), WidgetIds.BUDGET);
         addMenuItem(budgetMenu, elements.menuitem_budgetsimple(), WidgetIds.BUDGET_SIMPLE_TRACKING);

@@ -107,7 +107,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             String hostprefix = Util.str(obj.get("hostprefix"));
             table.setWidget(i + 2, 1, new Anchor(hostprefix, "http://" + hostprefix
-                    + ".frittregnskap.no/prg/AccountingGWT.html", "_blank"));
+                    + domain() +
+                    		"/prg/AccountingGWT.html", "_blank"));
             table.setText(i + 2, 2, Util.str(obj.get("dbprefix")));
             table.setText(i + 2, 3, Util.str(obj.get("db")));
             table.setText(i + 2, 4, Util.str(obj.get("description")));
@@ -129,6 +130,13 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             String style = (((i + 2) % 6) < 3) ? "line2" : "line1";
             table.getRowFormatter().setStyleName(i + 2, style + " desc");
         }
+    }
+
+    private String domain() {
+        String host = Window.Location.getHost();
+        
+        String domain = host.substring(host.indexOf("."));
+        return domain;
     }
 
     private String statusAsString(int status) {
@@ -204,7 +212,10 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private FlexTable edittable;
 
-        private NamedButton deleteButton;
+        private NamedButton deleteEntireSystemButton;
+        private NamedButton deleteAccountingDataButton;
+        private NamedButton deletePeopleMembersButton;
+        private NamedButton deletePeopleMembersAndAccountingButton;
 
         private TextBoxWithErrorText wikiLogin;
 
@@ -227,6 +238,8 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         private NamedButton sulogin;
 
         private FlexTable requestsTable;
+
+        private JSONObject editData;
 
         AdminInstallEditFields() {
             setText(elements.project());
@@ -328,11 +341,24 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private Widget createAdvancedTab() {
 
-            deleteButton = new NamedButton("adminInstall_deleteButton", elements.admin_delete_accounting());
-            deleteButton.addClickHandler(this);
+            deleteEntireSystemButton = new NamedButton("admin_delete_accounting", elements.admin_delete_accounting());
+            deleteEntireSystemButton.addClickHandler(this);
 
+            deleteAccountingDataButton = new NamedButton("admin_delete_accounting_data", elements.admin_delete_accounting_data());
+            deleteAccountingDataButton.addClickHandler(this);
+
+            deletePeopleMembersButton = new NamedButton("admin_delete_people", elements.admin_delete_people());
+            deletePeopleMembersButton.addClickHandler(this);
+            
+            deletePeopleMembersAndAccountingButton = new NamedButton("admin_delete_restart", elements.admin_delete_restart());
+            deletePeopleMembersAndAccountingButton.addClickHandler(this);
+            
             HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.add(deleteButton);
+            buttonPanel.add(deleteAccountingDataButton);
+            buttonPanel.add(deletePeopleMembersButton);
+            buttonPanel.add(deletePeopleMembersAndAccountingButton);
+            buttonPanel.add(deleteEntireSystemButton);
+
 
             VerticalPanel vp = new VerticalPanel();
             
@@ -344,6 +370,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         }
 
         public void setEditData(JSONObject obj) {
+            this.editData = obj;
             hostprefixBox.setText(Util.str(obj.get("hostprefix")));
             edittable.setText(1, 1, Util.str(obj.get("dbprefix")));
             edittable.setText(2, 1, Util.str(obj.get("db")));
@@ -361,6 +388,30 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             parenthostprefix.setText(Util.strSkipNull(obj.get("parenthostprefix")));
             currentId = Util.str(obj.get("id"));
 
+            fillChangeTable(obj);
+        }
+
+        private void fillChangeTable(JSONObject obj) {
+            this.requestsTable.removeAllRows();
+            
+            
+            JSONValue changes = obj.get("changes");
+            
+            if(changes == null) {
+                return;
+            }
+            
+            JSONArray arr = changes.isArray();
+            
+            for(int i=0; i < arr.size(); i++) {
+                JSONObject change = arr.get(i).isObject();
+                              
+                requestsTable.setText(i, 0, Util.str(change.get("action")));
+                requestsTable.setText(i, 1, Util.str(change.get("addedTime")));
+                requestsTable.setText(i, 2, Util.str(change.get("addedBy")));
+                requestsTable.setText(i, 3, Util.str(change.get("reason")));
+            }
+            
         }
 
         public void onClick(ClickEvent event) {
@@ -369,8 +420,14 @@ public class AdminInstallsView extends Composite implements ClickHandler {
                 hide();
             } else if (sender == saveButton && validateFields()) {
                 doSave();
-            } else if (sender == deleteButton) {
-                doDelete();
+            } else if (sender == deleteEntireSystemButton) {
+                doDeleteEverything();
+            } else if (sender == deleteAccountingDataButton) {
+                doDeleteAccountingData();
+            } else if (sender == deletePeopleMembersButton) {
+                doDeletePeople();
+            } else if (sender == deletePeopleMembersAndAccountingButton) {
+                doDeletePeopleAndAccounting();
             } else if (sender == sendWelcomeLetter) {
                 doSendWelcomeLetter();
             } else if (sender == sendPortalActivationLetter) {
@@ -412,7 +469,21 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             }
         }
 
-        private void doDelete() {
+        private void doDeleteAccountingData() {
+            sendDeleteRequest("deleteAccountingrequest");
+        }
+        private void doDeletePeople() {
+            sendDeleteRequest("deletePeoplerequest");
+        }
+
+        private void doDeletePeopleAndAccounting() {
+            sendDeleteRequest("deletePeopleAndAccountingrequest");
+        }
+        private void doDeleteEverything() {
+            sendDeleteRequest("deleterequest");
+        }
+
+        private void sendDeleteRequest(String deleteType) {
             boolean choice = Window.confirm(messages.confirm_delete());
 
             if (choice) {
@@ -422,10 +493,11 @@ public class AdminInstallsView extends Composite implements ClickHandler {
                         hide();
                     }
                 };
-                AuthResponder.get(constants, messages, callback, "admin/installs.php?action=deleterequest&id="
+                AuthResponder.get(constants, messages, callback, "admin/installs.php?action=" +
+                		deleteType +
+                		"&id="
                         + this.currentId);
             }
-
         }
 
         public void doSuLogin() {

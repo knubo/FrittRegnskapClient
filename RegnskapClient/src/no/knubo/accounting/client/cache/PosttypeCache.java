@@ -121,6 +121,9 @@ public class PosttypeCache implements Registry {
     }
 
     public String getDescription(String type) {
+        if(typeGivesDescription == null) {
+            return "...laster";
+        }
         return typeGivesDescription.get(type);
     }
 

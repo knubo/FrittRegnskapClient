@@ -1022,7 +1022,6 @@ public class ReportMail extends Composite implements ClickHandler {
             return;
         }
         configuredStyle = true;
-      //  if(false)
         configStylesInt(styles, id);
     }
 
@@ -1033,7 +1032,7 @@ public class ReportMail extends Composite implements ClickHandler {
        
        $wnd['CKEDITOR'].config.toolbar_MyToolbar =
     [
-        { name: 'column1', items : [ 'NewPage','DocProps','Preview' ] },
+        { name: 'column1', items : [ 'NewPage','Preview' ] },
         { name: 'column2', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
         { name: 'column3', items : [ 'Find','Replace','-','SelectAll','-','Scayt' ] },
                 '/',
