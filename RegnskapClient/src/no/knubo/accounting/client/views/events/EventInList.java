@@ -1,7 +1,7 @@
 package no.knubo.accounting.client.views.events;
 
 
-public class EventListItem {
+public class EventInList {
 
     static int i = 42;
 

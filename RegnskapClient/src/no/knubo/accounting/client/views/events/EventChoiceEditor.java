@@ -23,7 +23,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
 
     private NamedButton newButton;
     private AccountTable choiceTable;
-    private EventItem event;
+    private Event event;
 
     public EventChoiceEditor(Elements elements) {
 
@@ -85,7 +85,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         delImage.addClickHandler(this);
     }
 
-    public void setData(EventItem event) {
+    public void setData(Event event) {
         this.event = event;
         while (choiceTable.getRowCount() > 1) {
             choiceTable.removeRow(1);

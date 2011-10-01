@@ -83,7 +83,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     }
 
     public void init(String id) {
-        EventItem event = EventDAO.getEvent(id);
+        Event event = EventDAO.getEvent(id);
 
         eventTitle.setText(event.getName());
         eventStartRegistrationDate.setText(event.getStartDate());
@@ -91,6 +91,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         eventDate.setText(event.getEventDate());
 
         eventChoicesEditor.setData(event);
+        eventEditor.setData(event);
         panel.selectTab(0);
     }
 
@@ -104,6 +105,10 @@ public class EventManagementView extends Composite implements SelectionHandler<I
 
         if (previous != null && previous == 1) {
             eventChoicesEditor.sync();
+        }
+        
+        if(item == 2) {
+            eventEditor.setUpWidgets();
         }
 
         previous = item;

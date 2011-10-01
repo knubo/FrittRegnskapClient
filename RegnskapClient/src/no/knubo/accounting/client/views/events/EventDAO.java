@@ -5,11 +5,11 @@ import java.util.List;
 
 public class EventDAO {
 
-    public static List<EventListItem> getEvents() {
-        return Arrays.asList(new EventListItem(), new EventListItem());
+    public static List<EventInList> getEvents() {
+        return Arrays.asList(new EventInList(), new EventInList());
     }
 
-    public static EventItem getEvent(String id) {
-        return new EventItem();
+    public static Event getEvent(String id) {
+        return new Event();
     }
 }

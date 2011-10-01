@@ -51,10 +51,10 @@ public class EventManagementListView extends Composite implements ClickHandler {
             events.removeRow(1);
         }
 
-        List<EventListItem> items = EventDAO.getEvents();
+        List<EventInList> items = EventDAO.getEvents();
 
         int row = 1;
-        for (EventListItem eventListItem : items) {
+        for (EventInList eventListItem : items) {
             Anchor anchor = new Anchor(eventListItem.getName());
             anchor.setName(eventListItem.getId());
             anchor.addClickHandler(this);

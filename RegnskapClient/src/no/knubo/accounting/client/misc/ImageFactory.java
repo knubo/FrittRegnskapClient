@@ -112,6 +112,10 @@ public class ImageFactory {
     public static BlinkImage lighbulb(String id) {
         return (BlinkImage) withId(new BlinkImage("images/lightbulb_off.png","images/lightbulb.png"), id);
     }
+
+    public static Image dragHandleImage() {
+        return new Image("images/emblem-system.png");
+    }
     
 
 }

@@ -858,3 +858,11 @@ table.spred td {
 .choicetable+TD {
    text-align:center;
 }
+
+.eventbox {
+   min-width:50px;
+   min-height:20px;
+   border-width: 1px;
+   border-spacing: 2px;
+   border-style: outset;
+   border-color: gray;
