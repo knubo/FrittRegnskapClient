@@ -855,3 +855,6 @@ table.spred td {
 #cke_html_area {
     width:50em;
 }
+.choicetable+TD {
+   text-align:center;
+}

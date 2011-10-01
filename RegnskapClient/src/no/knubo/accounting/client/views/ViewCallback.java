@@ -40,4 +40,6 @@ public interface ViewCallback {
 
     public void setReducedMode(int mode);
 
+    public void openEvent(String name);
+
 }

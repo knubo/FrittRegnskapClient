@@ -95,4 +95,11 @@ public class AccountTable extends FlexTable {
         return getFlexCellFormatter();
     }
 
+    public void setHeaders(int row, String... headers) {
+        for(int i=0; i < headers.length; i++) {
+            setText(row, i, headers[i]);
+        }
+        setHeaderRowStyle(row);
+    }
+
 }

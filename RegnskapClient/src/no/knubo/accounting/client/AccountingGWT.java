@@ -38,6 +38,8 @@ import no.knubo.accounting.client.views.admin.AdminSQLView;
 import no.knubo.accounting.client.views.admin.AdminStatsView;
 import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
+import no.knubo.accounting.client.views.events.EventManagementListView;
+import no.knubo.accounting.client.views.events.EventManagementView;
 import no.knubo.accounting.client.views.exportimport.AccountExportView;
 import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
@@ -214,6 +216,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
         addMenuItem(peopleMenu, elements.menuitem_findperson(), WidgetIds.FIND_PERSON);
 
+        addMenuItem(eventMenu, elements.menuitem_event_items(), WidgetIds.EVENT_ITEMS);
+        addMenuItem(eventMenu, elements.menuitem_event_lists(), WidgetIds.EVENT_LIST);
+        
         addMenuItem(budgetMenu, elements.menuitem_budget(), WidgetIds.BUDGET);
         addMenuItem(budgetMenu, elements.menuitem_budgetsimple(), WidgetIds.BUDGET_SIMPLE_TRACKING);
 
@@ -600,7 +605,18 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case REQUEST_DELETE:
                 widget = RequestDeleteView.getInstance(constants, messages, elements);
                 break;
-
+            case EVENT_ITEMS:
+                widget = EventManagementListView.getInstance(constants, messages, elements, callback);
+                ((EventManagementListView)widget).init();
+                break;
+            case EVENT_EDIT:
+                widget = EventManagementView.getInstance(constants, messages, elements);
+                if(params != null && params.length > 0) {
+                    ((EventManagementView)widget).init(params[0]);
+                } else {
+                    ((EventManagementView)widget).init();
+                }
+                break;
             }
 
             if (widget == null) {
@@ -735,5 +751,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             menuSetUp = true;
             setupMenu(topMenu);
         }
+    }
+
+    public void openEvent(String id) {
+        new Commando(this, WidgetIds.EVENT_EDIT, "Rediger arrangement", id).execute();
     }
 }

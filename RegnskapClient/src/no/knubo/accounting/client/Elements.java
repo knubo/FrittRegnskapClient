@@ -1717,40 +1717,76 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String error_uncought_exception();
 
   /**
-   * Translated "Administrasjon av arrangementer".
+   * Translated "Arrangement".
    * 
-   * @return translated "Administrasjon av arrangementer"
+   * @return translated "Arrangement"
    */
-  @DefaultStringValue("Administrasjon av arrangementer")
-  @Key("event_items")
-  String event_items();
+  @DefaultStringValue("Arrangement")
+  @Key("event")
+  String event();
 
   /**
-   * Translated "Liste over p�meldinger".
+   * Translated "Påmeldingsalternativer".
    * 
-   * @return translated "Liste over p�meldinger"
+   * @return translated "Påmeldingsalternativer"
    */
-  @DefaultStringValue("Liste over p�meldinger")
-  @Key("event_lists")
-  String event_lists();
+  @DefaultStringValue("Påmeldingsalternativer")
+  @Key("event_choices")
+  String event_choices();
 
   /**
-   * Translated "Liste over innbetalinger".
+   * Translated "Arrangementdato".
    * 
-   * @return translated "Liste over innbetalinger"
+   * @return translated "Arrangementdato"
    */
-  @DefaultStringValue("Liste over innbetalinger")
-  @Key("event_payments")
-  String event_payments();
+  @DefaultStringValue("Arrangementdato")
+  @Key("event_date")
+  String event_date();
 
   /**
-   * Translated "Registrer ankomst".
+   * Translated "Påmeldingsskjema".
    * 
-   * @return translated "Registrer ankomst"
+   * @return translated "Påmeldingsskjema"
    */
-  @DefaultStringValue("Registrer ankomst")
-  @Key("event_register")
-  String event_register();
+  @DefaultStringValue("Påmeldingsskjema")
+  @Key("event_form")
+  String event_form();
+
+  /**
+   * Translated "Maks antall deltagere".
+   * 
+   * @return translated "Maks antall deltagere"
+   */
+  @DefaultStringValue("Maks antall deltagere")
+  @Key("event_max_partisipants")
+  String event_max_partisipants();
+
+  /**
+   * Translated "Ny påmeldingsvalg ".
+   * 
+   * @return translated "Ny påmeldingsvalg "
+   */
+  @DefaultStringValue("Ny påmeldingsvalg ")
+  @Key("event_new_choice")
+  String event_new_choice();
+
+  /**
+   * Translated "Påmelding starter".
+   * 
+   * @return translated "Påmelding starter"
+   */
+  @DefaultStringValue("Påmelding starter")
+  @Key("event_start")
+  String event_start();
+
+  /**
+   * Translated "Påmelding slutter".
+   * 
+   * @return translated "Påmelding slutter"
+   */
+  @DefaultStringValue("Påmelding slutter")
+  @Key("event_stop")
+  String event_stop();
 
   /**
    * Translated "Utfør endring".
@@ -2966,6 +3002,42 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Avslutt år")
   @Key("menuitem_endyear")
   String menuitem_endyear();
+
+  /**
+   * Translated "Administrasjon av arrangementer".
+   * 
+   * @return translated "Administrasjon av arrangementer"
+   */
+  @DefaultStringValue("Administrasjon av arrangementer")
+  @Key("menuitem_event_items")
+  String menuitem_event_items();
+
+  /**
+   * Translated "Liste over påmeldinger".
+   * 
+   * @return translated "Liste over påmeldinger"
+   */
+  @DefaultStringValue("Liste over påmeldinger")
+  @Key("menuitem_event_lists")
+  String menuitem_event_lists();
+
+  /**
+   * Translated "Liste over innbetalinger".
+   * 
+   * @return translated "Liste over innbetalinger"
+   */
+  @DefaultStringValue("Liste over innbetalinger")
+  @Key("menuitem_event_payments")
+  String menuitem_event_payments();
+
+  /**
+   * Translated "Registrer ankomst".
+   * 
+   * @return translated "Registrer ankomst"
+   */
+  @DefaultStringValue("Registrer ankomst")
+  @Key("menuitem_event_register")
+  String menuitem_event_register();
 
   /**
    * Translated "Eksport av regnskapsdata".
