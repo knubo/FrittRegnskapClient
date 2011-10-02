@@ -1,22 +1,24 @@
 package no.knubo.accounting.client.views.events;
 
 import java.util.Collection;
-import java.util.List;
 
-import no.knubo.accounting.client.views.events.dad.PaletteWidget;
+import no.knubo.accounting.client.Elements;
+import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.views.events.dad.SetWidgetDropController;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class EventFormEditor extends Composite {
+public class EventFormEditor extends Composite implements ClickHandler {
 
     private static final int COLUMNS = 6;
     private static final int ROWS = 4;
@@ -25,8 +27,12 @@ public class EventFormEditor extends Composite {
     private PickupDragController dragController;
     private FlexTable flexTable;
     private VerticalPanel sourcePanel;
+    private final Elements elements;
+    private final I18NAccount messages;
 
-    public EventFormEditor() {
+    public EventFormEditor(Elements elements, I18NAccount messages) {
+        this.elements = elements;
+        this.messages = messages;
 
         AbsolutePanel boundaryPanel = new AbsolutePanel();
         boundaryPanel.setPixelSize(800, 600);
@@ -35,6 +41,8 @@ public class EventFormEditor extends Composite {
 
         flexTable = new FlexTable();
         boundaryPanel.add(flexTable, 5, 5);
+
+        flexTable.addClickHandler(this);
 
         for (int i = 0; i < COLUMNS; i++) {
             for (int j = 0; j < ROWS; j++) {
@@ -83,4 +91,23 @@ public class EventFormEditor extends Composite {
 
         sourcePanel.add(paletteWidget);
     }
+
+    public void onClick(ClickEvent event) {
+        Cell cell = flexTable.getCellForEvent(event);
+        int x = cell.getCellIndex();
+        int y = cell.getRowIndex();
+
+        Widget widget = flexTable.getWidget(y, x);
+
+        if (widget instanceof SimplePanel) {
+            SimplePanel sp = (SimplePanel) widget;
+
+            if (sp.getWidget() == null || sp.getWidget() instanceof HTML) {
+                EditTextPopup.showPopupForEditingText(elements, messages, sp);
+            }
+
+        }
+
+    }
+
 }

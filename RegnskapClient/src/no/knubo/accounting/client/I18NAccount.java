@@ -124,6 +124,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String confirm_delete_deprecate();
 
   /**
+   * Translated "Vil du slette teksten?".
+   * 
+   * @return translated "Vil du slette teksten?"
+   */
+  @DefaultMessage("Vil du slette teksten?")
+  @Key("confirm_delete_text")
+  String confirm_delete_text();
+
+  /**
    * Translated "Fortsette med import av personer?".
    * 
    * @return translated "Fortsette med import av personer?"

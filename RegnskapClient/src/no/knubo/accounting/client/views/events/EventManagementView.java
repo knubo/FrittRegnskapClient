@@ -66,7 +66,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
 
         panel.add(eventChoicesEditor, elements.event_choices());
 
-        eventEditor = new EventFormEditor();
+        eventEditor = new EventFormEditor(elements, messages);
         panel.add(eventEditor, elements.event_form());
 
         panel.addSelectionHandler(this);
