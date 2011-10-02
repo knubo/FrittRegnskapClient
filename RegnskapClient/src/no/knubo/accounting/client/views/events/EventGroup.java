@@ -3,8 +3,11 @@ package no.knubo.accounting.client.views.events;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import no.knubo.accounting.client.views.events.dad.PaletteWidget;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ListBox;
@@ -16,6 +19,7 @@ public class EventGroup {
     Integer xPos;
     Integer yPos;
     private Widget widget;
+    private PaletteWidget paletteWidget;
 
     public EventGroup(String name) {
         this.name = name;
@@ -29,12 +33,8 @@ public class EventGroup {
         choices.clear();
     }
 
-    public void setWidget(Widget widget) {
-        this.widget = widget;
-    }
-
     public boolean hasWidget() {
-        return widget != null;
+        return paletteWidget != null;
     }
 
     public List<String> getStringChoices() {
@@ -52,20 +52,73 @@ public class EventGroup {
     }
 
     public Widget createWidget() {
-        List<String> choices = getStringChoices();
+        widget = createWidgetInt();
 
-        Widget widget = null;
-
-        if (choices.size() == 1) {
-            widget = new CheckBox(choices.get(0));
-        } else {
-            ListBox box = (ListBox) (widget = new ListBox());
-
-            for (String c : choices) {
-                box.addItem(c);
-            }
-        }
-        return widget;
+        paletteWidget = new PaletteWidget(widget);
+        return paletteWidget;
     }
 
+    private Widget createWidgetInt() {
+        List<String> choices = getStringChoices();
+
+        if (choices.size() == 1) {
+            return new CheckBox(choices.get(0));
+        }
+        ListBox box = new ListBox();
+
+        for (String c : choices) {
+            box.addItem(c);
+        }
+        return box;
+    }
+
+    public void checkAndUpdateChoices() {
+        if (widget == null) {
+            return;
+        }
+
+        boolean turnedIntoListbox = widget instanceof CheckBox && choices.size() > 1;
+        boolean turnedIntoCheckbox = widget instanceof ListBox && choices.size() == 1;
+
+        if (turnedIntoCheckbox || turnedIntoListbox) {
+            replaceWidget();
+            return;
+        }
+
+        if (choices.size() == 1) {
+
+            CheckBox box = (CheckBox) widget;
+            if (!box.getText().equals(choices.values().iterator().next().getName())) {
+                replaceWidget();
+            }
+            return;
+        }
+
+        ListBox box = (ListBox) widget;
+
+        if (box.getItemCount() != choices.size()) {
+            replaceWidget();
+            return;
+        }
+
+        Iterator<String> choiceIterator = getStringChoices().iterator();
+        for (int i = 0; i < box.getItemCount() && choiceIterator.hasNext(); i++) {
+            String existingChoice = choiceIterator.next();
+
+            if (!existingChoice.equals(box.getItemText(i))) {
+                replaceWidget();
+                return;
+            }
+        }
+
+    }
+
+    private void replaceWidget() {
+        widget = createWidgetInt();
+        paletteWidget.replaceWidget(widget);
+    }
+
+    public void removeWidgetFromParent() {
+        paletteWidget.removeFromParent();
+    }
 }

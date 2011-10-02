@@ -48,8 +48,14 @@ public class Event extends EventInList {
         for(Iterator<String> i = eventGroups.keySet().iterator();i.hasNext();) {
             String group = i.next();
             
+            EventGroup eventGroup = eventGroups.get(group);
+            
             if(!visited.contains(group)) {
+                
+                eventGroup.removeWidgetFromParent();
                 i.remove();
+            } else {
+                eventGroup.checkAndUpdateChoices();
             }
         }
         

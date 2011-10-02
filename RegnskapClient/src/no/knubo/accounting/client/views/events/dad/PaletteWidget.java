@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class PaletteWidget extends HorizontalPanel implements HasDragHandle {
 
     private Image shim = new Image();
+    private Widget widget;
 
     /**
      * Default constructor to wrap the provided widget.
@@ -21,6 +22,7 @@ public class PaletteWidget extends HorizontalPanel implements HasDragHandle {
      *            the widget to be wrapped
      */
     public PaletteWidget(Widget widget) {
+        this.widget = widget;
         shim = ImageFactory.dragHandleImage();
         add(shim);
 
@@ -29,5 +31,11 @@ public class PaletteWidget extends HorizontalPanel implements HasDragHandle {
 
     public Widget getDragHandle() {
         return shim;
+    }
+
+    public void replaceWidget(Widget newWidget) {
+        remove(widget);
+        add(newWidget);
+        this.widget = newWidget;
     }
 }

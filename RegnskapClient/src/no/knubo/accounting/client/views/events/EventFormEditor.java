@@ -29,7 +29,7 @@ public class EventFormEditor extends Composite {
     public EventFormEditor() {
 
         AbsolutePanel boundaryPanel = new AbsolutePanel();
-        boundaryPanel.setPixelSize(500, 300);
+        boundaryPanel.setPixelSize(800, 600);
         dragController = new PickupDragController(boundaryPanel, false);
         dragController.setBehaviorMultipleSelection(false);
 
@@ -70,20 +70,17 @@ public class EventFormEditor extends Composite {
 
         for (EventGroup eventGroup : eventGroups) {
             if (!eventGroup.hasWidget()) {
-                eventGroup.setWidget(assignWidget(eventGroup));
+                assignWidget(eventGroup);
             }
         }
 
     }
 
-    private Widget assignWidget(EventGroup eventGroup) {
-        Widget widget = eventGroup.createWidget();
-        
-        PaletteWidget paletteWidget = new PaletteWidget(widget);
+    private void assignWidget(EventGroup eventGroup) {
+        Widget paletteWidget = eventGroup.createWidget();
+
         dragController.makeDraggable(paletteWidget);
 
         sourcePanel.add(paletteWidget);
-        
-        return paletteWidget;
     }
 }
