@@ -4,6 +4,7 @@ import no.knubo.accounting.client.Util;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 
 public class EventChoice {
 
@@ -92,5 +93,9 @@ public class EventChoice {
 
     public Boolean getMembershipRequired() {
         return Util.str(obj.get(MEMB_REQ)).equals("1");
+    }
+
+    public JSONValue getAsJSON() {
+        return obj;
     }
 }

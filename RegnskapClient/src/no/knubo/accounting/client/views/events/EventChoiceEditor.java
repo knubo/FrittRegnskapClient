@@ -35,8 +35,10 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
 
         choiceTable = new AccountTable("tableborder choicetable");
 
-        choiceTable.setHeaders(0, "Navn", "Gruppe", "Fra dato", "Til dato", "Krav medlemskap", "Pris", "Pris m/Œr",
-                "Pris m/kurs", "Pris m/trening", "Pris m/ungdom", "Antall", "Maks differanse kj¿nn", "Slett");
+        choiceTable.setHeaders(0, elements.name(), elements.group(), elements.from_date(), elements.to_date(),
+                elements.membership_required(), elements.price(), elements.price_year(), elements.price_course(),
+                elements.price_train(), elements.price_youth(), elements.count(), elements.max_diff_sex(),
+                elements.delete());
 
         vp.add(choiceTable);
 

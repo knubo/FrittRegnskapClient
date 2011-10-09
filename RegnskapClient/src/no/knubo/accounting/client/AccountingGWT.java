@@ -610,7 +610,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((EventManagementListView)widget).init();
                 break;
             case EVENT_EDIT:
-                widget = EventManagementView.getInstance(constants, messages, elements);
+                widget = EventManagementView.getInstance(messages, elements);
                 if(params != null && params.length > 0) {
                     ((EventManagementView)widget).init(params[0]);
                 } else {

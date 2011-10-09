@@ -14,6 +14,7 @@ public class PaletteWidget extends HorizontalPanel implements HasDragHandle {
 
     private Image shim = new Image();
     private Widget widget;
+    private final String groupName;
 
     /**
      * Default constructor to wrap the provided widget.
@@ -21,8 +22,9 @@ public class PaletteWidget extends HorizontalPanel implements HasDragHandle {
      * @param widget
      *            the widget to be wrapped
      */
-    public PaletteWidget(Widget widget) {
+    public PaletteWidget(Widget widget, String groupName) {
         this.widget = widget;
+        this.groupName = groupName;
         shim = ImageFactory.dragHandleImage();
         add(shim);
 
@@ -33,9 +35,17 @@ public class PaletteWidget extends HorizontalPanel implements HasDragHandle {
         return shim;
     }
 
+    public Widget getWidget() {
+        return widget;
+    }
+
     public void replaceWidget(Widget newWidget) {
         remove(widget);
         add(newWidget);
         this.widget = newWidget;
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 }

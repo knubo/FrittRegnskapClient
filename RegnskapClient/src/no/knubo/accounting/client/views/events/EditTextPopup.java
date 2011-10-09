@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 public class EditTextPopup extends DialogBox implements ClickHandler {
 
@@ -62,10 +61,13 @@ public class EditTextPopup extends DialogBox implements ClickHandler {
             HTML html = (HTML) targetPanel.getWidget();
             text.setText(html.getHTML());
         }
+     
     }
 
     public static void showPopupForEditingText(Elements elements, I18NAccount messages, SimplePanel sp) {
-        new EditTextPopup(elements, messages, sp).center();
+        EditTextPopup popup = new EditTextPopup(elements, messages, sp);
+        popup.center();
+        popup.text.setFocus(true);
     }
 
     public void onClick(ClickEvent event) {

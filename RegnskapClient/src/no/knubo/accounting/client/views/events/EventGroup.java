@@ -14,16 +14,17 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class EventGroup {
-    String name;
+    final String name;
     Map<String, EventChoice> choices = new HashMap<String, EventChoice>();
-    Integer xPos;
-    Integer yPos;
     private Widget widget;
     private PaletteWidget paletteWidget;
+    private Integer row;
+    private Integer col;
 
     public EventGroup(String name) {
         this.name = name;
     }
+    
 
     public void registerChoice(EventChoice choice) {
         choices.put(choice.getName(), choice);
@@ -54,7 +55,7 @@ public class EventGroup {
     public Widget createWidget() {
         widget = createWidgetInt();
 
-        paletteWidget = new PaletteWidget(widget);
+        paletteWidget = new PaletteWidget(widget, name);
         return paletteWidget;
     }
 
@@ -120,5 +121,23 @@ public class EventGroup {
 
     public void removeWidgetFromParent() {
         paletteWidget.removeFromParent();
+    }
+
+    public void setPosition(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+
+    public boolean isPositioned() {
+        return row != null && col != null;
     }
 }

@@ -2023,6 +2023,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String gender_unset();
 
   /**
+   * Translated "Gruppe".
+   * 
+   * @return translated "Gruppe"
+   */
+  @DefaultStringValue("Gruppe")
+  @Key("group")
+  String group();
+
+  /**
    * Translated "Standardbilag".
    * 
    * @return translated "Standardbilag"
@@ -2644,6 +2653,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String massletter_start_y();
 
   /**
+   * Translated "Maks differanse kjønn".
+   * 
+   * @return translated "Maks differanse kjønn"
+   */
+  @DefaultStringValue("Maks differanse kjønn")
+  @Key("max_diff_sex")
+  String max_diff_sex();
+
+  /**
    * Translated "Alle medlemskap".
    * 
    * @return translated "Alle medlemskap"
@@ -2696,6 +2714,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Medlemstall")
   @Key("membership_numbers")
   String membership_numbers();
+
+  /**
+   * Translated "Krav medlemskap".
+   * 
+   * @return translated "Krav medlemskap"
+   */
+  @DefaultStringValue("Krav medlemskap")
+  @Key("membership_required")
+  String membership_required();
 
   /**
    * Translated "Admin".
@@ -4226,6 +4253,51 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Forhåndsvisning")
   @Key("preview_actual")
   String preview_actual();
+
+  /**
+   * Translated "Pris".
+   * 
+   * @return translated "Pris"
+   */
+  @DefaultStringValue("Pris")
+  @Key("price")
+  String price();
+
+  /**
+   * Translated "Pris m/kurs".
+   * 
+   * @return translated "Pris m/kurs"
+   */
+  @DefaultStringValue("Pris m/kurs")
+  @Key("price_course")
+  String price_course();
+
+  /**
+   * Translated "Pris m/trening".
+   * 
+   * @return translated "Pris m/trening"
+   */
+  @DefaultStringValue("Pris m/trening")
+  @Key("price_train")
+  String price_train();
+
+  /**
+   * Translated "Pris m/år".
+   * 
+   * @return translated "Pris m/år"
+   */
+  @DefaultStringValue("Pris m/år")
+  @Key("price_year")
+  String price_year();
+
+  /**
+   * Translated "Pris m/ungdom".
+   * 
+   * @return translated "Pris m/ungdom"
+   */
+  @DefaultStringValue("Pris m/ungdom")
+  @Key("price_youth")
+  String price_youth();
 
   /**
    * Translated "Prosjekt".

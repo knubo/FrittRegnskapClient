@@ -10,6 +10,7 @@
     <inherits name='com.google.gwt.visualization.Visualization'/>
 	<inherits name='net.binarymuse.gwt.Wizard' />
 	<inherits name="org.adamtacy.GWTEffects"/> 
+    <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class='no.knubo.accounting.client.Login' />

@@ -1,22 +1,26 @@
 package no.knubo.accounting.client.views.events;
 
-import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.ui.AccountTable;
+import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class EventManagementView extends Composite implements SelectionHandler<Integer> {
+public class EventManagementView extends Composite implements SelectionHandler<Integer>, ClickHandler {
     static EventManagementView instance;
-    private final Constants constants;
-    private final I18NAccount messages;
-    private final Elements elements;
     private AccountTable eventData;
     private TextBoxWithErrorText eventTitle;
     private TextBoxWithErrorText eventStartRegistrationDate;
@@ -27,14 +31,35 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     private EventChoiceEditor eventChoicesEditor;
     private TabPanel panel;
     private Integer previous;
+    private HTML previewPanel;
+    private Label infoLabel;
+    private NamedButton saveButton;
+    private Event event;
+    private final I18NAccount messages;
 
-    public EventManagementView(Constants constants, I18NAccount messages, Elements elements) {
-        this.constants = constants;
+    public EventManagementView(I18NAccount messages, Elements elements) {
         this.messages = messages;
-        this.elements = elements;
-
         panel = new TabPanel();
 
+        panel.add(createMainEntry(elements), elements.event());
+
+        eventChoicesEditor = new EventChoiceEditor(elements);
+
+        panel.add(eventChoicesEditor, elements.event_choices());
+
+        eventEditor = new EventFormEditor(elements, messages);
+        panel.add(eventEditor, elements.event_form());
+
+        panel.addSelectionHandler(this);
+
+        previewPanel = new HTML();
+        panel.add(previewPanel, elements.preview());
+
+        initWidget(panel);
+
+    }
+
+    private VerticalPanel createMainEntry(Elements elements) {
         VerticalPanel vp = new VerticalPanel();
 
         eventData = new AccountTable("tableborder");
@@ -60,30 +85,28 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         eventData.setWidget(4, 1, eventMaxPartisipants);
         vp.add(eventData);
 
-        panel.add(vp, elements.event());
+        infoLabel = new Label();
+        vp.add(infoLabel);
+        HorizontalPanel buttonRow = new HorizontalPanel();
 
-        eventChoicesEditor = new EventChoiceEditor(elements);
+        saveButton = new NamedButton("save", elements.save());
+        saveButton.addClickHandler(this);
 
-        panel.add(eventChoicesEditor, elements.event_choices());
+        buttonRow.add(saveButton);
 
-        eventEditor = new EventFormEditor(elements, messages);
-        panel.add(eventEditor, elements.event_form());
-
-        panel.addSelectionHandler(this);
-
-        initWidget(panel);
-
+        vp.add(buttonRow);
+        return vp;
     }
 
-    public static EventManagementView getInstance(Constants constants, I18NAccount messages, Elements elements) {
+    public static EventManagementView getInstance(I18NAccount messages, Elements elements) {
         if (instance == null) {
-            instance = new EventManagementView(constants, messages, elements);
+            instance = new EventManagementView(messages, elements);
         }
         return instance;
     }
 
     public void init(String id) {
-        Event event = EventDAO.getEvent(id);
+        event = EventDAO.getEvent(id);
 
         eventTitle.setText(event.getName());
         eventStartRegistrationDate.setText(event.getStartDate());
@@ -106,11 +129,53 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         if (previous != null && previous == 1) {
             eventChoicesEditor.sync();
         }
-        
-        if(item == 2) {
+
+        if (item == 2) {
             eventEditor.setUpWidgets();
         }
 
+        if (item == 3) {
+            previewPanel.setHTML(eventEditor.getHTMLView());
+        }
+
         previous = item;
+    }
+
+    public void onClick(ClickEvent event) {
+        if (event.getSource() == saveButton) {
+            save();
+        }
+    }
+
+    private void save() {
+        if (!validate_ok()) {
+            return;
+        }
+
+        JSONObject obj = getEventAsJSON();
+        System.out.println(obj.toString());
+    }
+
+    private boolean validate_ok() {
+        MasterValidator mv = new MasterValidator();
+        mv.mandatory(messages.required_field(), eventTitle, eventStartRegistrationDate, eventStopRegistrationDate,
+                eventDate);
+
+        mv.date(messages.date_format(), eventStartRegistrationDate, eventStopRegistrationDate, eventDate);
+        mv.range(messages.field_positive(), 0, Integer.MAX_VALUE, eventMaxPartisipants);
+
+        return mv.validateStatus();
+    }
+
+    private JSONObject getEventAsJSON() {
+        event.setName(eventTitle.getText());
+        event.setStartDate(eventStartRegistrationDate.getText());
+        event.setStopDate(eventStopRegistrationDate.getText());
+        event.setEventDate(eventDate.getText());
+        event.setMaxPeople(eventMaxPartisipants.getText());
+
+        eventEditor.setGroupPositionsAndHTML();
+
+        return event.getAsJSON();
     }
 }
