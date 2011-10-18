@@ -22,13 +22,13 @@ public class AccountTable extends FlexTable {
     public void setHeader(int row, int column, String text) {
         setText(row, column, text, "header desc");
     }
-    
+
     public void setText(int row, int column, String text, String style) {
         super.setText(row, column, text);
         getCellFormatter().addStyleName(row, column, style);
 
     }
-    
+
     public void setInt(int row, int column, int value) {
         super.setText(row, column, String.valueOf(value));
     }
@@ -96,10 +96,15 @@ public class AccountTable extends FlexTable {
     }
 
     public void setHeaders(int row, String... headers) {
-        for(int i=0; i < headers.length; i++) {
+        for (int i = 0; i < headers.length; i++) {
             setText(row, i, headers[i]);
         }
         setHeaderRowStyle(row);
+    }
+
+    public void alternateStyleBlue(int row, int modifier) {
+        String style = ((row + modifier) % 2 == 0) ? "line1" : "line2";
+        getRowFormatter().setStyleName(row, style);
     }
 
 }

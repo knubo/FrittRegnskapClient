@@ -47,7 +47,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
 
     public void onClick(ClickEvent event) {
         if (event.getSource() == newButton) {
-            addNewRow();
+            addNewRow(false);
         }
         if (event.getSource() instanceof Image) {
             delRow((Image) event.getSource());
@@ -62,7 +62,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         choiceTable.removeRow(Integer.parseInt(rownum));
     }
 
-    private void addNewRow() {
+    private void addNewRow(boolean disabled) {
         int row = choiceTable.getRowCount();
 
         for (int i = 0; i < 4; i++) {
@@ -72,19 +72,35 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
                 box.setMaxLength(10);
                 box.setWidth("6em");
             }
+
+            if (disabled && (i >= 0 && i <= 9)) {
+                box.setEnabled(false);
+            }
         }
 
-        choiceTable.setWidget(row, 4, new CheckBox());
+        CheckBox choiceBox = new CheckBox();
+
+        if (disabled) {
+            choiceBox.setEnabled(false);
+        }
+
+        choiceTable.setWidget(row, 4, choiceBox);
         for (int i = 5; i < 12; i++) {
             TextBox box = new TextBox();
             choiceTable.setWidget(row, i, box);
             box.setWidth("7em");
+
+            if (disabled && (i >= 0 && i <= 9)) {
+                box.setEnabled(false);
+            }
+
         }
 
-        Image delImage = ImageFactory.deleteImage("del" + row);
-
-        choiceTable.setWidget(row, 12, delImage);
-        delImage.addClickHandler(this);
+        if (!disabled) {
+            Image delImage = ImageFactory.deleteImage("del" + row);
+            choiceTable.setWidget(row, 12, delImage);
+            delImage.addClickHandler(this);
+        }
     }
 
     public void setData(Event event) {
@@ -93,11 +109,14 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
             choiceTable.removeRow(1);
         }
 
+        newButton.setEnabled(!event.isActive());
+        
+        
         List<EventChoice> choices = event.getChoices();
 
         int row = 1;
         for (EventChoice e : choices) {
-            addNewRow();
+            addNewRow(event.isActive());
             setText(row, 0, e.getName(), e.getGroup(), e.getFromDate(), e.getToDate(), null, e.getPrice(),
                     e.getPriceMembers(), e.getPriceLessons(), e.getPriceTrain(), e.getPriceYouth(), e.getMaxNumber(),
                     e.getMaxDifferenceSex());
@@ -107,7 +126,6 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
             checkbox.setValue(e.getMembershipRequired());
 
             row++;
-
         }
     }
 

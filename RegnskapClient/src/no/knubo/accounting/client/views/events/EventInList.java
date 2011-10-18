@@ -14,12 +14,13 @@ public class EventInList {
     public EventInList() {
         data = new JSONObject();
 
-        data.put("id", new JSONNumber(42));
-        data.put("name", new JSONString("Winter Jump"));
-        data.put("startDate", new JSONString("20.09.2011"));
-        data.put("endDate", new JSONString("30.09.2011"));
-        data.put("eventDate", new JSONString("01.10.2011"));
-        data.put("maxPeople", new JSONNumber(42));
+        data.put("id", new JSONString(""));
+        data.put("name", new JSONString(""));
+        data.put("startDate", new JSONString(""));
+        data.put("endDate", new JSONString(""));
+        data.put("eventDate", new JSONString(""));
+        data.put("maxPeople", new JSONNumber(0));
+        data.put("active", new JSONString("0"));
     }
 
     public EventInList(JSONObject data) {
@@ -69,6 +70,14 @@ public class EventInList {
 
     public void setMaxPeople(String number) {
         data.put("maxPeople", new JSONNumber(Double.parseDouble(number)));
+    }
+
+    public boolean isActive() {
+        return Util.getBoolean(data.get("active"));
+    }
+
+    public void setActive(boolean active) {
+        data.put("active", new JSONString(active ? "1" : "0"));
     }
 
     public JSONObject getAsJSON() {

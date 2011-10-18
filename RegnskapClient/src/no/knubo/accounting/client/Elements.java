@@ -1726,6 +1726,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String event();
 
   /**
+   * Translated "Aktiver påmelding".
+   * 
+   * @return translated "Aktiver påmelding"
+   */
+  @DefaultStringValue("Aktiver påmelding")
+  @Key("event_activate")
+  String event_activate();
+
+  /**
    * Translated "Påmeldingsalternativer".
    * 
    * @return translated "Påmeldingsalternativer"
@@ -1742,6 +1751,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Arrangementdato")
   @Key("event_date")
   String event_date();
+
+  /**
+   * Translated "Deaktiver påmelding".
+   * 
+   * @return translated "Deaktiver påmelding"
+   */
+  @DefaultStringValue("Deaktiver påmelding")
+  @Key("event_deactivate")
+  String event_deactivate();
 
   /**
    * Translated "Påmeldingsskjema".

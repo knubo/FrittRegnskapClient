@@ -60,6 +60,8 @@ public class AdminSQLView extends Composite implements ClickHandler {
 
         sqlTable = new AccountTable("tableborder");
         sqlTable.setText(0, 0, "SQL");
+        sqlTable.getFlexCellFormatter().addStyleName(0, 0, "adminsql");
+        
         sqlTable.setText(0, 1, elements.admin_verified());
         sqlTable.setText(0, 2, elements.admin_runinbeta());
         sqlTable.setText(0, 3, elements.admin_runinmain());
@@ -157,7 +159,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
                     deleteImage.addClickHandler(me);
                     sqlTable.setWidget(i + 1, 6, deleteImage);
 
-                    sqlTable.alternateStyle(i + 1, 0);
+                    sqlTable.alternateStyleBlue(i + 1, 0);
                 }
             }
 

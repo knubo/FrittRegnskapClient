@@ -866,3 +866,8 @@ table.spred td {
    border-spacing: 2px;
    border-style: outset;
    border-color: gray;
+}
+
+.adminsql {
+    min-width:800px;
+}

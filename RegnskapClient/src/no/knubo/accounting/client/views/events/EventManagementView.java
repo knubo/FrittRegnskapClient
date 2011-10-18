@@ -1,7 +1,11 @@
 package no.knubo.accounting.client.views.events;
 
+import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
@@ -12,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -36,9 +41,16 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     private NamedButton saveButton;
     private Event event;
     private final I18NAccount messages;
+    private NamedButton activateButton;
+    private NamedButton deactivateButton;
+    private String currentId;
+    private final Elements elements;
+    private final Constants constants;
 
-    public EventManagementView(I18NAccount messages, Elements elements) {
+    public EventManagementView(Constants constants, I18NAccount messages, Elements elements) {
+        this.constants = constants;
         this.messages = messages;
+        this.elements = elements;
         panel = new TabPanel();
 
         panel.add(createMainEntry(elements), elements.event());
@@ -90,7 +102,16 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         HorizontalPanel buttonRow = new HorizontalPanel();
 
         saveButton = new NamedButton("save", elements.save());
+        saveButton.addStyleName("buttonrow");
         saveButton.addClickHandler(this);
+
+        activateButton = new NamedButton("event_activate", elements.event_activate());
+        activateButton.addStyleName("buttonrow");
+        activateButton.addClickHandler(this);
+
+        deactivateButton = new NamedButton("event_deactivate", elements.event_deactivate());
+        deactivateButton.addStyleName("buttonrow");
+        deactivateButton.addClickHandler(this);
 
         buttonRow.add(saveButton);
 
@@ -98,24 +119,30 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         return vp;
     }
 
-    public static EventManagementView getInstance(I18NAccount messages, Elements elements) {
+    public static EventManagementView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (instance == null) {
-            instance = new EventManagementView(messages, elements);
+            instance = new EventManagementView(constants, messages, elements);
         }
         return instance;
     }
 
     public void init(String id) {
-        event = EventDAO.getEvent(id);
+        this.currentId = id;
+        event = EventActions.getEvent(id);
 
         eventTitle.setText(event.getName());
         eventStartRegistrationDate.setText(event.getStartDate());
         eventStopRegistrationDate.setText(event.getEndDate());
         eventDate.setText(event.getEventDate());
+        eventMaxPartisipants.setText(event.getMaxPeople());
 
         eventChoicesEditor.setData(event);
         eventEditor.setData(event);
         panel.selectTab(0);
+
+        activateButton.setEnabled(!event.isActive());
+        deactivateButton.setEnabled(event.isActive());
+
     }
 
     public void init() {
@@ -144,7 +171,20 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     public void onClick(ClickEvent event) {
         if (event.getSource() == saveButton) {
             save();
+        } else if (event.getSource() == activateButton) {
+            activate();
+        } else if (event.getSource() == deactivateButton) {
+            deactivate();
         }
+
+    }
+
+    private void deactivate() {
+        EventActions.deactivate();
+    }
+
+    private void activate() {
+        EventActions.activate();
     }
 
     private void save() {
@@ -153,7 +193,27 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         }
 
         JSONObject obj = getEventAsJSON();
-        System.out.println(obj.toString());
+
+        StringBuffer parameters = new StringBuffer();
+        parameters.append("action=save");
+        Util.addPostParam(parameters, "data", obj.toString());
+
+        ServerResponse callback = new ServerResponse() {
+
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject object = responseObj.isObject();
+
+                if (Util.str(object.get("status")).equals("1")) {
+                    infoLabel.setText(messages.save_ok());
+                } else {
+                    infoLabel.setText(messages.save_failed());
+                }
+                
+                Util.timedMessage(infoLabel, "", 15);
+            }
+        };
+        AuthResponder.post(constants, messages, callback, parameters, "registers/events.php");
+
     }
 
     private boolean validate_ok() {
