@@ -3697,6 +3697,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String new_email_replace();
 
   /**
+   * Translated "Nytt arrangement".
+   * 
+   * @return translated "Nytt arrangement"
+   */
+  @DefaultStringValue("Nytt arrangement")
+  @Key("new_event")
+  String new_event();
+
+  /**
    * Translated "Nytt standardbilag".
    * 
    * @return translated "Nytt standardbilag"

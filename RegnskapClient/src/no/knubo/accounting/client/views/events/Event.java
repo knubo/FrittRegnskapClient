@@ -1,7 +1,6 @@
 package no.knubo.accounting.client.views.events;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +24,7 @@ public class Event extends EventInList {
     private Map<Pair<Integer, Integer>, String> htmllabels = new HashMap<Pair<Integer, Integer>, String>();
 
     public Event() {
-        choices = Arrays.asList(new EventChoice(), new EventChoice(), new EventChoice());
+        choices = new ArrayList<EventChoice>();
     }
 
     public Event(JSONObject obj) {
@@ -33,36 +32,41 @@ public class Event extends EventInList {
 
         choices = new ArrayList<EventChoice>();
 
-        JSONArray choicesToFill = obj.get("choices").isArray();
-        for (int i = 0; i < choicesToFill.size(); i++) {
-            choices.add(new EventChoice(choicesToFill.get(i).isObject()));
+        if (obj.containsKey("choices")) {
+            JSONArray choicesToFill = obj.get("choices").isArray();
+            for (int i = 0; i < choicesToFill.size(); i++) {
+                choices.add(new EventChoice(choicesToFill.get(i).isObject()));
+            }
         }
 
-        JSONObject groups = obj.get("groups").isObject();
+        if (obj.containsKey("groups")) {
+            JSONObject groups = obj.get("groups").isObject();
+            Set<String> groupnames = groups.keySet();
 
-        Set<String> groupnames = groups.keySet();
+            for (String group : groupnames) {
+                JSONObject oneGroup = groups.get(group).isObject();
 
-        for (String group : groupnames) {
-            JSONObject oneGroup = groups.get(group).isObject();
+                EventGroup eg = new EventGroup(group);
+                eg.setPosition((int) oneGroup.get("row").isNumber().doubleValue(), (int) oneGroup.get("col").isNumber()
+                        .doubleValue());
 
-            EventGroup eg = new EventGroup(group);
-            eg.setPosition((int) oneGroup.get("row").isNumber().doubleValue(), (int) oneGroup.get("col").isNumber()
-                    .doubleValue());
-
-            eventGroups.put(group, eg);
+                eventGroups.put(group, eg);
+            }
         }
 
-        JSONObject htmls = obj.get("html").isObject();
+        if (obj.containsKey("html")) {
+            JSONObject htmls = obj.get("html").isObject();
 
-        Set<String> positions = htmls.keySet();
+            Set<String> positions = htmls.keySet();
 
-        for (String xandy : positions) {
-            String[] parts = xandy.split(":");
+            for (String xandy : positions) {
+                String[] parts = xandy.split(":");
 
-            Pair<Integer, Integer> pair = new Pair<Integer, Integer>(Integer.parseInt(parts[0]),
-                    Integer.parseInt(parts[1]));
+                Pair<Integer, Integer> pair = new Pair<Integer, Integer>(Integer.parseInt(parts[0]),
+                        Integer.parseInt(parts[1]));
 
-            htmllabels.put(pair, Util.str(htmls.get(xandy)));
+                htmllabels.put(pair, Util.str(htmls.get(xandy)));
+            }
         }
     }
 
@@ -131,6 +135,10 @@ public class Event extends EventInList {
 
         for (EventGroup group : eventGroups.values()) {
             JSONObject groupinfo = new JSONObject();
+
+            if (!group.isPositioned()) {
+                throw new IllegalStateException("Not positioned");
+            }
 
             groupinfo.put("col", new JSONNumber(group.getCol()));
             groupinfo.put("row", new JSONNumber(group.getRow()));

@@ -29,18 +29,18 @@ public class EventChoice {
     public EventChoice() {
         obj = new JSONObject();
 
-        put(NAME, "Foo");
-        put(GROUP, "bar");
-        put(FROM_DATE, "20.09.2011");
-        put(TO_DATE, "21.09.2011");
-        put(PRICE, "100");
-        put(PRICE_MEMBERS, "101");
-        put(MEMB_REQ, "1");
-        put(PRICE_LESSONS, "102");
-        put(PRICE_TRAIN, "103");
-        put(PRICE_YOUTH, "103");
-        put(MAX, "42");
-        put(MAX_DIFFERENCE_SEX, "3");
+        put(NAME, "");
+        put(GROUP, "");
+        put(FROM_DATE, "");
+        put(TO_DATE, "");
+        put(PRICE, "");
+        put(PRICE_MEMBERS, "");
+        put(MEMB_REQ, "");
+        put(PRICE_LESSONS, "");
+        put(PRICE_TRAIN, "");
+        put(PRICE_YOUTH, "");
+        put(MAX, "");
+        put(MAX_DIFFERENCE_SEX, "");
     }
 
     void put(String key, String value) {

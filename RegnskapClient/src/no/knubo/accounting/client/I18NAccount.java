@@ -430,6 +430,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String end_year_confirm();
 
   /**
+   * Translated "Du må plassere alle inputfelter i påmeldingsskjema før du kan lagre.".
+   * 
+   * @return translated "Du må plassere alle inputfelter i påmeldingsskjema før du kan lagre."
+   */
+  @DefaultMessage("Du må plassere alle inputfelter i påmeldingsskjema før du kan lagre.")
+  @Key("event_position_grops")
+  String event_position_grops();
+
+  /**
    * Translated "Klarte ikke koble til server".
    * 
    * @return translated "Klarte ikke koble til server"

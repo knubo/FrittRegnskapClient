@@ -29,7 +29,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     private AccountTable eventData;
     private TextBoxWithErrorText eventTitle;
     private TextBoxWithErrorText eventStartRegistrationDate;
-    private TextBoxWithErrorText eventStopRegistrationDate;
+    private TextBoxWithErrorText eventEndRegistrationDate;
     private TextBoxWithErrorText eventDate;
     private EventFormEditor eventEditor;
     private TextBoxWithErrorText eventMaxPartisipants;
@@ -43,14 +43,11 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     private final I18NAccount messages;
     private NamedButton activateButton;
     private NamedButton deactivateButton;
-    private String currentId;
-    private final Elements elements;
     private final Constants constants;
 
     public EventManagementView(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
-        this.elements = elements;
         panel = new TabPanel();
 
         panel.add(createMainEntry(elements), elements.event());
@@ -85,8 +82,8 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         eventData.setWidget(1, 1, eventStartRegistrationDate);
 
         eventData.setText(2, 0, elements.event_stop());
-        eventStopRegistrationDate = new TextBoxWithErrorText("event_stop");
-        eventData.setWidget(2, 1, eventStopRegistrationDate);
+        eventEndRegistrationDate = new TextBoxWithErrorText("event_stop");
+        eventData.setWidget(2, 1, eventEndRegistrationDate);
 
         eventData.setText(3, 0, elements.event_date());
         eventDate = new TextBoxWithErrorText("event_date");
@@ -127,14 +124,32 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     }
 
     public void init(String id) {
-        this.currentId = id;
-        event = EventActions.getEvent(id);
+        ServerResponse callback = new ServerResponse() {
 
-        eventTitle.setText(event.getName());
-        eventStartRegistrationDate.setText(event.getStartDate());
-        eventStopRegistrationDate.setText(event.getEndDate());
-        eventDate.setText(event.getEventDate());
-        eventMaxPartisipants.setText(event.getMaxPeople());
+            public void serverResponse(JSONValue responseObj) {
+                event = new Event(responseObj.isObject());
+
+                eventTitle.setText(event.getName());
+                eventStartRegistrationDate.setText(event.getStartDate());
+                eventEndRegistrationDate.setText(event.getEndDate());
+                eventDate.setText(event.getEventDate());
+                eventMaxPartisipants.setText(event.getMaxPeople());
+
+                eventChoicesEditor.setData(event);
+                eventEditor.setData(event);
+                panel.selectTab(0);
+
+                activateButton.setEnabled(!event.isActive());
+                deactivateButton.setEnabled(event.isActive());
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "registers/events/event.php?action=get&id=" + id);
+
+    }
+
+    public void init() {
+        panel.selectTab(0, true);
+        event = new Event();
 
         eventChoicesEditor.setData(event);
         eventEditor.setData(event);
@@ -142,12 +157,6 @@ public class EventManagementView extends Composite implements SelectionHandler<I
 
         activateButton.setEnabled(!event.isActive());
         deactivateButton.setEnabled(event.isActive());
-
-    }
-
-    public void init() {
-        panel.selectTab(0, false);
-
     }
 
     public void onSelection(SelectionEvent<Integer> selected) {
@@ -191,9 +200,16 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         if (!validate_ok()) {
             return;
         }
-
-        JSONObject obj = getEventAsJSON();
-
+        JSONObject obj = null;
+        try {
+            obj = getEventAsJSON();
+            infoLabel.setText("");
+            infoLabel.removeStyleName("error");
+        } catch (IllegalStateException e) {
+            infoLabel.addStyleName("error");
+            infoLabel.setText(messages.event_position_grops());
+            return;
+        }
         StringBuffer parameters = new StringBuffer();
         parameters.append("action=save");
         Util.addPostParam(parameters, "data", obj.toString());
@@ -203,12 +219,10 @@ public class EventManagementView extends Composite implements SelectionHandler<I
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
 
-                if (Util.str(object.get("status")).equals("1")) {
-                    infoLabel.setText(messages.save_ok());
-                } else {
-                    infoLabel.setText(messages.save_failed());
-                }
-                
+                event.setId(Util.str(object.get("id")));
+
+                infoLabel.setText(messages.save_ok());
+
                 Util.timedMessage(infoLabel, "", 15);
             }
         };
@@ -218,10 +232,10 @@ public class EventManagementView extends Composite implements SelectionHandler<I
 
     private boolean validate_ok() {
         MasterValidator mv = new MasterValidator();
-        mv.mandatory(messages.required_field(), eventTitle, eventStartRegistrationDate, eventStopRegistrationDate,
+        mv.mandatory(messages.required_field(), eventTitle, eventStartRegistrationDate, eventEndRegistrationDate,
                 eventDate);
 
-        mv.date(messages.date_format(), eventStartRegistrationDate, eventStopRegistrationDate, eventDate);
+        mv.date(messages.date_format(), eventStartRegistrationDate, eventEndRegistrationDate, eventDate);
         mv.range(messages.field_positive(), 0, Integer.MAX_VALUE, eventMaxPartisipants);
 
         return mv.validateStatus();
@@ -230,7 +244,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     private JSONObject getEventAsJSON() {
         event.setName(eventTitle.getText());
         event.setStartDate(eventStartRegistrationDate.getText());
-        event.setStopDate(eventStopRegistrationDate.getText());
+        event.setEndDate(eventEndRegistrationDate.getText());
         event.setEventDate(eventDate.getText());
         event.setMaxPeople(eventMaxPartisipants.getText());
 

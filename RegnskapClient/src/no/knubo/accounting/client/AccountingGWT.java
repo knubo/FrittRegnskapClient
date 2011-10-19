@@ -754,6 +754,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     public void openEvent(String id) {
-        new Commando(this, WidgetIds.EVENT_EDIT, "Rediger arrangement", id).execute();
+        if(id != null) {
+            new Commando(this, WidgetIds.EVENT_EDIT, "Rediger arrangement", id).execute();            
+        } else {
+            new Commando(this, WidgetIds.EVENT_EDIT, "Rediger arrangement").execute();            
+        }
+        
     }
 }

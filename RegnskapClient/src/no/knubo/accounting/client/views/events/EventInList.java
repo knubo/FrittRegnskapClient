@@ -52,6 +52,10 @@ public class EventInList {
         return String.valueOf((int) data.get("id").isNumber().doubleValue());
     }
 
+    public void setId(String str) {
+        data.put("id", new JSONNumber(Double.parseDouble(str)));
+    }
+
     public void setName(String text) {
         data.put("name", new JSONString(text));
     }
@@ -60,8 +64,8 @@ public class EventInList {
         data.put("startDate", new JSONString(date));
     }
 
-    public void setStopDate(String date) {
-        data.put("stopDate", new JSONString(date));
+    public void setEndDate(String date) {
+        data.put("endDate", new JSONString(date));
     }
 
     public void setEventDate(String date) {
