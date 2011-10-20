@@ -483,7 +483,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 ((ReportMassLetters) widget).init();
                 break;
             case REPORT_ODF_LETTER:
-                widget = ReportMassLetterODF.getInstance(constants, messages, elements, callback);
+                widget = ReportMassLetterODF.getInstance(constants, messages, elements);
                 ((ReportMassLetterODF) widget).init();
                 break;
 
@@ -576,8 +576,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                 widget = AccountExportView.getInstance(constants, messages, elements);
                 break;
             case EDIT_MASSLETTER_SIMPLE:
-                widget = SimpleMassletterEditView.getInstance(constants, messages, elements, callback);
-                ((SimpleMassletterEditView) widget).init(params);
+                widget = SimpleMassletterEditView.getInstance(constants, messages, elements);
+                ((SimpleMassletterEditView) widget).init();
                 break;
             case CALCULATOR:
                 createCalculatorPopup();

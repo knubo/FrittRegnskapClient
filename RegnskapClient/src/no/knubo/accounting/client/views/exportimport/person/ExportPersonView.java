@@ -63,7 +63,7 @@ public class ExportPersonView extends Composite implements ClickHandler {
             return;
         }
         
-        Window.open(this.constants.baseurl() + "exportimport/personexport.php?delimiter=" + URL.encodeComponent(delimiterBox.getText()),
+        Window.open(this.constants.baseurl() + "exportimport/personexport.php?delimiter=" + URL.encodeQueryString(delimiterBox.getText()),
                 "_blank", "");
     }
 

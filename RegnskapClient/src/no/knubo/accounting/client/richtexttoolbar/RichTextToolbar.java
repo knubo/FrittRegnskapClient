@@ -20,8 +20,6 @@ package no.knubo.accounting.client.richtexttoolbar;
 
 import java.util.HashMap;
 
-import no.knubo.accounting.client.Util;
-
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -39,9 +37,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 
 public class RichTextToolbar extends Composite {
     /** Local CONSTANTS **/
@@ -220,8 +218,6 @@ public class RichTextToolbar extends Composite {
             } else if (event.getSource().equals(h1Tag)) {
                 if (isHTMLMode()) {
                     changeHtmlStyle("<H1>", "</H1>");
-                } else {
-                    toggleTag("H1");
                 }
 
             } else if (event.getSource().equals(italic)) {
@@ -397,16 +393,6 @@ public class RichTextToolbar extends Composite {
                                                                   return [""+txt,""+pos];
                                                                   }-*/;
 
-    public void toggleTag(String tag) {
-        JsArrayString tx = getSelection(styleText.getElement());
-
-        Integer startpos = Integer.parseInt(tx.get(1));
-        String selectedText = tx.get(0);
-        
-        Util.log("startpos:"+startpos+" txt:"+selectedText);
-        
-        
-    }
 
     /** Method called to toggle the style in HTML-Mode **/
     private void changeHtmlStyle(String startTag, String stopTag) {

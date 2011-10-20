@@ -14,7 +14,6 @@ import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
-import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -47,18 +46,16 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
     private final Constants constants;
     private final I18NAccount messages;
     private final Elements elements;
-    private final ViewCallback callback;
     private TextArea editArea;
     private JSONArray fonts;
     protected JSONArray images;
     private HashMap<String, String> addText;
     public int lastUsedFont = 0;
 
-    public SimpleMassletterEditView(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
+    public SimpleMassletterEditView(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
-        this.callback = callback;
 
         VerticalPanel vp = new VerticalPanel();
         HorizontalPanel hp = new HorizontalPanel();
@@ -177,18 +174,15 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         return table;
     }
 
-    public static SimpleMassletterEditView getInstance(Constants constants, I18NAccount messages, Elements elements,
-            ViewCallback callback) {
+    public static SimpleMassletterEditView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (instance == null) {
-            instance = new SimpleMassletterEditView(constants, messages, elements, callback);
+            instance = new SimpleMassletterEditView(constants, messages, elements);
         }
 
         return instance;
     }
 
-    public void init(String[] params) {
-        String filename = params[0];
-        String response = params[1];
+    public void init() {
 
         initImages();
     }

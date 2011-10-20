@@ -1,7 +1,5 @@
 package no.knubo.accounting.client.misc;
 
-import no.knubo.accounting.client.Util;
-
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 

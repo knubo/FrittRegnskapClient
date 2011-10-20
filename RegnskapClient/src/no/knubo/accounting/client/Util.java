@@ -363,9 +363,9 @@ public class Util {
             return;
         }
         sb.append("&");
-        sb.append(URL.encodeComponent(param));
+        sb.append(URL.encodeQueryString(param));
         sb.append("=");
-        sb.append(URL.encodeComponent(value));
+        sb.append(URL.encodeQueryString(value));
     }
 
     public static String getSelected(ListBox box) {

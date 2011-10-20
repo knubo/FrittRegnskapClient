@@ -10,7 +10,6 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
-import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.files.UploadDelegate;
 import no.knubo.accounting.client.views.files.UploadDelegateCallback;
 
@@ -23,13 +22,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 
 public class ReportMassLetterODF extends Composite implements ClickHandler, UploadDelegateCallback {
     private static ReportMassLetterODF reportInstance;
@@ -37,26 +34,21 @@ public class ReportMassLetterODF extends Composite implements ClickHandler, Uplo
     private final I18NAccount messages;
     private FlexTable table;
     private ArrayList<RadioButton> radiobuttons;
-    private final Elements elements;
     private NamedButton joinButton;
-    private final ViewCallback callback;
     UploadDelegate uploadDelegate;
     private ListBox yearListBox;
     private NamedButton previewButton;
 
-    public static ReportMassLetterODF getInstance(Constants constants, I18NAccount messages, Elements elements,
-            ViewCallback callback) {
+    public static ReportMassLetterODF getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
-            reportInstance = new ReportMassLetterODF(constants, messages, elements, callback);
+            reportInstance = new ReportMassLetterODF(constants, messages, elements);
         }
         return reportInstance;
     }
 
-    public ReportMassLetterODF(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
+    public ReportMassLetterODF(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
         this.messages = messages;
-        this.elements = elements;
-        this.callback = callback;
 
         table = new FlexTable();
         table.setStyleName("edittable");

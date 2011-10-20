@@ -239,7 +239,6 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         private FlexTable requestsTable;
 
-        private JSONObject editData;
 
         AdminInstallEditFields() {
             setText(elements.project());
@@ -370,7 +369,6 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         }
 
         public void setEditData(JSONObject obj) {
-            this.editData = obj;
             hostprefixBox.setText(Util.str(obj.get("hostprefix")));
             edittable.setText(1, 1, Util.str(obj.get("dbprefix")));
             edittable.setText(2, 1, Util.str(obj.get("db")));
