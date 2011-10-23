@@ -6,6 +6,8 @@ import java.util.Set;
 
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.misc.CKEditorFunctions;
+import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.views.events.dad.PaletteWidget;
 import no.knubo.accounting.client.views.events.dad.SetWidgetDropController;
 
@@ -32,13 +34,16 @@ public class EventFormEditor extends Composite implements ClickHandler {
     private VerticalPanel sourcePanel;
     private final Elements elements;
     private final I18NAccount messages;
+    private boolean editorReplaced;
 
     public EventFormEditor(Elements elements, I18NAccount messages) {
         this.elements = elements;
         this.messages = messages;
 
+        VerticalPanel vp = new VerticalPanel();
+
         AbsolutePanel boundaryPanel = new AbsolutePanel();
-        boundaryPanel.setPixelSize(800, 600);
+        boundaryPanel.setPixelSize(600, 400);
         dragController = new PickupDragController(boundaryPanel, false);
         dragController.setBehaviorMultipleSelection(false);
 
@@ -68,8 +73,12 @@ public class EventFormEditor extends Composite implements ClickHandler {
         flexTable.setWidget(0, COLUMNS + 1, sourcePanel);
         flexTable.getFlexCellFormatter().setRowSpan(0, COLUMNS + 1, ROWS);
 
-        initWidget(boundaryPanel);
+        NamedTextArea aboveTextBox = new NamedTextArea("above_text_box");
+        aboveTextBox.setSize("60em", "20em");
 
+        vp.add(aboveTextBox);
+        vp.add(boundaryPanel);
+        initWidget(vp);
     }
 
     public void setData(Event event) {
@@ -78,16 +87,24 @@ public class EventFormEditor extends Composite implements ClickHandler {
         resetView();
         setPreSetHTML(event);
         setUpWidgets();
-    }
+        
+        if (!editorReplaced) {
+            editorReplaced = true;
+            setupRichEditor();
+            CKEditorFunctions.configStylesInt("", "");
+        }
+
+        setHTML(event.getHeaderHTML());
+}
 
     private void resetView() {
         for (int i = 0; i < COLUMNS; i++) {
             for (int j = 0; j < ROWS; j++) {
                 Widget widget = flexTable.getWidget(j, i);
-                
-                if(widget instanceof SimplePanel) {
+
+                if (widget instanceof SimplePanel) {
                     SimplePanel sp = (SimplePanel) widget;
-                    if(sp.getWidget() != null) {
+                    if (sp.getWidget() != null) {
                         sp.clear();
                     }
                 }
@@ -206,6 +223,24 @@ public class EventFormEditor extends Composite implements ClickHandler {
                 }
             }
         }
+        event.setHeaderHTML(getHTML());
     }
+
+    static native void setupRichEditor()
+    /*-{
+       $wnd['CKEDITOR'].replace( 'above_text_box' );
+     
+    }-*/;
+
+    static native String getHTML()
+    /*-{
+    
+        return $wnd['CKEDITOR'].instances.above_text_box.getData();
+    }-*/;
+
+    static native void setHTML(String x)
+    /*-{
+       $wnd['CKEDITOR'].instances.above_text_box.setData(x);
+    }-*/;
 
 }

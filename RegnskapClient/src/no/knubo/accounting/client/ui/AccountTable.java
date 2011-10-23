@@ -107,4 +107,5 @@ public class AccountTable extends FlexTable {
         getRowFormatter().setStyleName(row, style);
     }
 
+
 }

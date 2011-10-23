@@ -9,7 +9,7 @@ import com.google.gwt.json.client.JSONString;
 public class EventInList {
 
     static int i = 42;
-    private JSONObject data;
+    protected JSONObject data;
 
     public EventInList() {
         data = new JSONObject();

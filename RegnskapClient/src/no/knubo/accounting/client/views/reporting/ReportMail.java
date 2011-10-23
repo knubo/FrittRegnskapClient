@@ -9,6 +9,7 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.CKEditorFunctions;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.Logger;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -414,7 +415,6 @@ public class ReportMail extends Composite implements ClickHandler {
             if (bodyBox.isVisible()) {
                 bodyBox.setVisible(false);
 
-               
                 setRichEditorVisible(true);
 
             }
@@ -432,38 +432,38 @@ public class ReportMail extends Composite implements ClickHandler {
 
     public HorizontalPanel addSizeSelect(final ScrollPanel sp, final DialogBox popup) {
         HorizontalPanel horizontalPanel = new HorizontalPanel();
-        
-        for(int i=200; i <= 1200; i+=200) {
-            RadioButton radioButton = new RadioButton("width_select", i+"px");
+
+        for (int i = 200; i <= 1200; i += 200) {
+            RadioButton radioButton = new RadioButton("width_select", i + "px");
             final int setWidth = i;
-            
-            if(i == 600) {
+
+            if (i == 600) {
                 radioButton.setValue(true);
             }
-            
+
             radioButton.addClickHandler(new ClickHandler() {
-                
+
                 public void onClick(ClickEvent event) {
-                    sp.setWidth(setWidth+"px");
+                    sp.setWidth(setWidth + "px");
                 }
             });
-            
+
             horizontalPanel.add(radioButton);
         }
-        
+
         RadioButton closeButton = new RadioButton("width_select", elements.close());
         closeButton.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
                 popup.hide();
             }
-            
+
         });
         horizontalPanel.add(closeButton);
-        
+
         return horizontalPanel;
     }
-    
+
     private void preview() {
         StringBuffer mailRequest = new StringBuffer();
 
@@ -474,14 +474,14 @@ public class ReportMail extends Composite implements ClickHandler {
         ServerResponseString callback = new ServerResponseString() {
 
             public void serverResponse(String response) {
-                
+
                 DialogBox popup = new DialogBox();
                 popup.setText(elements.preview_actual());
                 popup.setAutoHideEnabled(true);
                 popup.setModal(true);
 
                 VerticalPanel vp = new VerticalPanel();
-               
+
                 ScrollPanel sp = new ScrollPanel();
                 vp.add(addSizeSelect(sp, popup));
                 vp.add(sp);
@@ -938,9 +938,9 @@ public class ReportMail extends Composite implements ClickHandler {
         if (radioFormatHTML.getValue()) {
             String html = getHTML();
 
-//            html = html.replace("\n", "");
-//            html = html.replace("<br", "\n<br");
-//            html = html.replace("</p", "\n</p");
+            // html = html.replace("\n", "");
+            // html = html.replace("<br", "\n<br");
+            // html = html.replace("</p", "\n</p");
 
             return URL.encode(html);
         }
@@ -983,24 +983,13 @@ public class ReportMail extends Composite implements ClickHandler {
         setupTimer();
     }
 
-    private static native String getHTML()
-    /*-{
-
-        return $wnd['CKEDITOR'].instances.html_area.getData();
-    }-*/;
-
-    public static native void setHTML(String x)
-    /*-{
-       $wnd['CKEDITOR'].instances.html_area.setData(x);
-    }-*/;
-
     public void setRichEditorVisible(boolean visible) {
 
         if (!replacedHTMLWidget) {
             replacedHTMLWidget = true;
             setupRichEditor();
         }
-        
+
         htmlVisible = visible;
         setRichEditorVisibleNative(visible);
     }
@@ -1022,28 +1011,19 @@ public class ReportMail extends Composite implements ClickHandler {
             return;
         }
         configuredStyle = true;
-        configStylesInt(styles, id);
+        CKEditorFunctions.configStylesInt(styles, id);
     }
 
-    static native void configStylesInt(String styles, String id)
+    public static native String getHTML()
     /*-{
-       $wnd['CKEDITOR'].stylesSet.add( id, eval("["+styles+"]"));
-       $wnd['CKEDITOR'].config.stylesSet = id;
-       
-       $wnd['CKEDITOR'].config.toolbar_MyToolbar =
-    [
-        { name: 'column1', items : [ 'NewPage','Preview' ] },
-        { name: 'column2', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
-        { name: 'column3', items : [ 'Find','Replace','-','SelectAll','-','Scayt' ] },
-                '/',
-        { name: 'styles', items : [ 'Styles','Format' ] },
-        { name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
-        { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote' ] },
-        { name: 'links', items : [ 'Link','Unlink','Anchor' ] },
-        { name: 'tools', items : [ 'Maximize','-','About' ] }
-    ];
-    $wnd['CKEDITOR'].config.toolbar = "MyToolbar";
-       
+    
+        return $wnd['CKEDITOR'].instances.html_area.getData();
     }-*/;
 
+    public static native void setHTML(String x)
+    /*-{
+       $wnd['CKEDITOR'].instances.html_area.setData(x);
+    }-*/;
+
+    
 }

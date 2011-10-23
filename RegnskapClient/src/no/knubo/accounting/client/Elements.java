@@ -1762,6 +1762,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String event_deactivate();
 
   /**
+   * Translated "Felttype".
+   * 
+   * @return translated "Felttype"
+   */
+  @DefaultStringValue("Felttype")
+  @Key("event_field_type")
+  String event_field_type();
+
+  /**
    * Translated "Påmeldingsskjema".
    * 
    * @return translated "Påmeldingsskjema"

@@ -111,7 +111,9 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         deactivateButton.addClickHandler(this);
 
         buttonRow.add(saveButton);
-
+        buttonRow.add(activateButton);
+        buttonRow.add(deactivateButton);
+        
         vp.add(buttonRow);
         return vp;
     }
@@ -139,8 +141,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
                 eventEditor.setData(event);
                 panel.selectTab(0);
 
-                activateButton.setEnabled(!event.isActive());
-                deactivateButton.setEnabled(event.isActive());
+                enableDisable();
             }
         };
         AuthResponder.get(constants, messages, callback, "registers/events/event.php?action=get&id=" + id);
@@ -155,8 +156,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         eventEditor.setData(event);
         panel.selectTab(0);
 
-        activateButton.setEnabled(!event.isActive());
-        deactivateButton.setEnabled(event.isActive());
+        enableDisable();
     }
 
     public void onSelection(SelectionEvent<Integer> selected) {
@@ -181,19 +181,30 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         if (event.getSource() == saveButton) {
             save();
         } else if (event.getSource() == activateButton) {
-            activate();
+            activate(true);
         } else if (event.getSource() == deactivateButton) {
-            deactivate();
+            activate(false);
         }
 
     }
 
-    private void deactivate() {
-        EventActions.deactivate();
-    }
 
-    private void activate() {
-        EventActions.activate();
+    private void activate(boolean activate) {
+        if (!validate_ok()) {
+            return;
+        }
+        try {
+            getEventAsJSON();
+            infoLabel.setText("");
+            infoLabel.removeStyleName("error");
+        } catch (IllegalStateException e) {
+            infoLabel.addStyleName("error");
+            infoLabel.setText(messages.event_position_grops());
+            return;
+        }
+
+        event.setActive(activate);
+        save();
     }
 
     private void save() {
@@ -223,6 +234,10 @@ public class EventManagementView extends Composite implements SelectionHandler<I
 
                 infoLabel.setText(messages.save_ok());
 
+                enableDisable();
+                eventChoicesEditor.setData(event);
+                eventEditor.setData(event);
+
                 Util.timedMessage(infoLabel, "", 15);
             }
         };
@@ -251,5 +266,10 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         eventEditor.setGroupPositionsAndHTML();
 
         return event.getAsJSON();
+    }
+
+    private void enableDisable() {
+        activateButton.setEnabled(!event.isActive());
+        deactivateButton.setEnabled(event.isActive());
     }
 }

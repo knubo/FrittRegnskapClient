@@ -1,6 +1,8 @@
 package no.knubo.accounting.client.views.events;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import no.knubo.accounting.client.Elements;
@@ -12,9 +14,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -24,8 +28,10 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
     private NamedButton newButton;
     private AccountTable choiceTable;
     private Event event;
+    private final Elements elements;
 
     public EventChoiceEditor(Elements elements) {
+        this.elements = elements;
 
         VerticalPanel vp = new VerticalPanel();
 
@@ -35,10 +41,9 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
 
         choiceTable = new AccountTable("tableborder choicetable");
 
-        choiceTable.setHeaders(0, elements.name(), elements.group(), elements.from_date(), elements.to_date(),
-                elements.membership_required(), elements.price(), elements.price_year(), elements.price_course(),
-                elements.price_train(), elements.price_youth(), elements.count(), elements.max_diff_sex(),
-                elements.delete());
+        FieldConfig.init(elements);
+
+        choiceTable.setHeaders(0, FieldConfig.getHeaders(elements.delete()));
 
         vp.add(choiceTable);
 
@@ -65,40 +70,15 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
     private void addNewRow(boolean disabled) {
         int row = choiceTable.getRowCount();
 
-        for (int i = 0; i < 4; i++) {
-            TextBox box = new TextBox();
-            choiceTable.setWidget(row, i, box);
-            if (i == 2 || i == 3) {
-                box.setMaxLength(10);
-                box.setWidth("6em");
-            }
+        for (int i = 0; i < FieldConfig.fieldConfigs.size(); i++) {
+            FieldConfig fieldConfig = FieldConfig.fieldConfigs.get(i);
 
-            if (disabled && (i >= 0 && i <= 9)) {
-                box.setEnabled(false);
-            }
-        }
-
-        CheckBox choiceBox = new CheckBox();
-
-        if (disabled) {
-            choiceBox.setEnabled(false);
-        }
-
-        choiceTable.setWidget(row, 4, choiceBox);
-        for (int i = 5; i < 12; i++) {
-            TextBox box = new TextBox();
-            choiceTable.setWidget(row, i, box);
-            box.setWidth("7em");
-
-            if (disabled && (i >= 0 && i <= 9)) {
-                box.setEnabled(false);
-            }
-
+            choiceTable.setWidget(row, i, fieldConfig.widget);
         }
 
         if (!disabled) {
             Image delImage = ImageFactory.deleteImage("del" + row);
-            choiceTable.setWidget(row, 12, delImage);
+            choiceTable.setWidget(row, FieldConfig.fieldConfigs.size() + 1, delImage);
             delImage.addClickHandler(this);
         }
     }
@@ -110,48 +90,30 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         }
 
         newButton.setEnabled(!event.isActive());
-        
-        
+
         List<EventChoice> choices = event.getChoices();
 
         int row = 1;
         for (EventChoice e : choices) {
             addNewRow(event.isActive());
-            setText(row, 0, e.getName(), e.getGroup(), e.getFromDate(), e.getToDate(), null, e.getPrice(),
-                    e.getPriceMembers(), e.getPriceLessons(), e.getPriceTrain(), e.getPriceYouth(), e.getMaxNumber(),
-                    e.getMaxDifferenceSex());
+            
+            FieldConfig.setText(choiceTable, row, elements.name(), e.getName());
+            FieldConfig.setText(choiceTable, row, elements.group(), e.getGroup());
+            FieldConfig.setText(choiceTable, row, elements.from_date(), e.getFromDate());
+            FieldConfig.setText(choiceTable, row, elements.to_date(), e.getToDate());
+            FieldConfig.setText(choiceTable, row, elements.price(), e.getPrice());
+            FieldConfig.setBoolean(choiceTable, row, elements.membership_required(), e.getMembershipRequired());
 
-            CheckBox checkbox = (CheckBox) choiceTable.getWidget(row, 4);
-
-            checkbox.setValue(e.getMembershipRequired());
-
+            FieldConfig.setText(choiceTable, row, elements.price(), e.getPrice()); 
+            FieldConfig.setText(choiceTable, row, elements.price_year(), e.getPriceMembers());  
+            FieldConfig.setText(choiceTable, row, elements.price_course(), e.getPriceLessons());
+            FieldConfig.setText(choiceTable, row, elements.price_train(),e.getPriceTrain());
+            FieldConfig.setText(choiceTable, row, elements.price_youth(),e.getPriceYouth());
+            FieldConfig.setText(choiceTable, row, elements.count(), e.getMaxNumber());
+            FieldConfig.setText(choiceTable, row, elements.max_diff_sex(), e.getMaxDifferenceSex());
+            
             row++;
         }
-    }
-
-    void setText(int row, int col, String... texts) {
-
-        int column = col;
-
-        for (String text : texts) {
-            if (text != null) {
-                TextBox box = (TextBox) choiceTable.getWidget(row, column);
-                box.setText(text);
-            }
-            column++;
-        }
-    }
-
-    JSONString getText(int row, int col) {
-        Widget widget = choiceTable.getWidget(row, col);
-
-        if (widget instanceof TextBox) {
-            TextBox box = (TextBox) widget;
-            return new JSONString(box.getText());
-        }
-
-        return ((CheckBox) widget).getValue() ? new JSONString("1") : new JSONString("0");
-
     }
 
     public void sync() {
@@ -171,19 +133,114 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         JSONObject obj = new JSONObject();
         EventChoice eventChoice = new EventChoice(obj);
 
-        obj.put(EventChoice.NAME, getText(row, 0));
-        obj.put(EventChoice.GROUP, getText(row, 1));
-        obj.put(EventChoice.FROM_DATE, getText(row, 2));
-        obj.put(EventChoice.TO_DATE, getText(row, 3));
-        obj.put(EventChoice.MEMB_REQ, getText(row, 4));
-        obj.put(EventChoice.PRICE, getText(row, 5));
-        obj.put(EventChoice.PRICE_MEMBERS, getText(row, 6));
-        obj.put(EventChoice.PRICE_LESSONS, getText(row, 7));
-        obj.put(EventChoice.PRICE_TRAIN, getText(row, 8));
-        obj.put(EventChoice.PRICE_YOUTH, getText(row, 9));
-        obj.put(EventChoice.MAX, getText(row, 10));
-        obj.put(EventChoice.MAX_DIFFERENCE_SEX, getText(row, 11));
+        obj.put(EventChoice.NAME, FieldConfig.getText(choiceTable, row, elements.name()));
+        obj.put(EventChoice.GROUP, FieldConfig.getText(choiceTable, row, elements.group()));
+        obj.put(EventChoice.FROM_DATE, FieldConfig.getText(choiceTable, row, elements.from_date()));
+        obj.put(EventChoice.TO_DATE, FieldConfig.getText(choiceTable, row, elements.to_date()));
+        obj.put(EventChoice.MEMB_REQ, FieldConfig.getText(choiceTable, row, elements.membership_required()));
+        obj.put(EventChoice.PRICE, FieldConfig.getText(choiceTable, row, elements.price()));
+        obj.put(EventChoice.PRICE_MEMBERS, FieldConfig.getText(choiceTable, row, elements.price_year()));
+        obj.put(EventChoice.PRICE_LESSONS, FieldConfig.getText(choiceTable, row, elements.price_course()));
+        obj.put(EventChoice.PRICE_TRAIN, FieldConfig.getText(choiceTable, row, elements.price_train()));
+        obj.put(EventChoice.PRICE_YOUTH, FieldConfig.getText(choiceTable, row, elements.price_youth()));
+        obj.put(EventChoice.MAX, FieldConfig.getText(choiceTable, row, elements.count()));
+        obj.put(EventChoice.MAX_DIFFERENCE_SEX, FieldConfig.getText(choiceTable, row, elements.max_diff_sex()));
 
         return eventChoice;
     }
+
+    static class FieldConfig {
+        static ArrayList<FieldConfig> fieldConfigs = new ArrayList<FieldConfig>();
+        static HashMap<String, Integer> indexed = new HashMap<String, Integer>();
+        
+        final String name;
+        final Widget widget;
+
+        enum Config {
+            DATEFIELD, DISABLED_WHEN_ACTIVE, MONEY
+        }
+
+        public FieldConfig(String name, Widget widget, Config... configs) {
+            this.name = name;
+            this.widget = widget;
+
+            indexed.put(name, fieldConfigs.size());
+            fieldConfigs.add(this);
+            
+            for (Config config : configs) {
+                if (config == Config.DATEFIELD) {
+                    ((TextBox) widget).setMaxLength(10);
+                    ((TextBox) widget).setWidth("6em");
+                }
+                if (config == Config.MONEY) {
+                    ((TextBox) widget).setWidth("7em");
+                }
+            }
+
+        }
+
+        public static JSONValue getText(AccountTable choiceTable, int row, String name) {
+            Widget widgetInColumn = choiceTable.getWidget(row, indexed.get(name));
+
+            if (widgetInColumn instanceof TextBox) {
+                TextBox box = (TextBox) widgetInColumn;
+                return new JSONString(box.getText());
+            }
+
+            return ((CheckBox) widgetInColumn).getValue() ? new JSONString("1") : new JSONString("0");
+        }
+
+
+        public static void setBoolean(AccountTable choiceTable, int row, String name,
+                Boolean b) {
+            Widget widgetInColumn = choiceTable.getWidget(row, indexed.get(name));
+            
+            if (widgetInColumn instanceof CheckBox) {
+                CheckBox check = (CheckBox) widgetInColumn;
+                check.setValue(b);
+            }
+            
+        }
+
+        public static void setText(AccountTable choiceTable, int row, String name, String textToSet) {
+            Widget widgetInColumn = choiceTable.getWidget(row, indexed.get(name));
+            
+            if (widgetInColumn instanceof TextBox) {
+                TextBox box = (TextBox) widgetInColumn;
+                box.setText(textToSet);
+            }
+        }
+
+        public static String[] getHeaders(String... extra) {
+            ArrayList<String> headers = new ArrayList<String>();
+
+            for (FieldConfig fc : fieldConfigs) {
+                headers.add(fc.name);
+            }
+            headers.addAll(Arrays.asList(extra));
+
+            return headers.toArray(new String[] {});
+        }
+
+        static void init(Elements elements) {
+            add(elements.name(), new TextBox(), Config.DISABLED_WHEN_ACTIVE);
+            add(elements.group(), new TextBox(), Config.DISABLED_WHEN_ACTIVE);
+            add(elements.event_field_type(), new ListBox(), Config.DISABLED_WHEN_ACTIVE);
+            add(elements.from_date(), new TextBox(), Config.DATEFIELD, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.to_date(), new TextBox(), Config.DATEFIELD, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.membership_required(), new CheckBox(), Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price(), new TextBox(), Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price_year(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price_course(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price_train(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price_youth(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.count(), new TextBox());
+            add(elements.max_diff_sex(), new TextBox());
+        }
+
+        private static void add(String name, Widget widget, Config... configs) {
+            new FieldConfig(name, widget, configs);
+        }
+    }
+
 }

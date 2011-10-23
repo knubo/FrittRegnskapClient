@@ -88,6 +88,7 @@ public class EventManagementListView extends Composite implements ClickHandler {
         for (EventInList eventListItem : items) {
             Anchor anchor = new Anchor(eventListItem.getName());
             anchor.setName(eventListItem.getId());
+            anchor.addStyleName("nowrap");
             anchor.addClickHandler(this);
             events.setWidget(row, 0, anchor);
             events.setText(row, 1, eventListItem.getStartDate());

@@ -24,11 +24,17 @@ public class Event extends EventInList {
     private Map<Pair<Integer, Integer>, String> htmllabels = new HashMap<Pair<Integer, Integer>, String>();
 
     public Event() {
+        super();
+        data.put("headerHTML", new JSONString(""));
         choices = new ArrayList<EventChoice>();
     }
 
     public Event(JSONObject obj) {
         super(obj);
+
+        if (!obj.containsKey("headerHTML")) {
+            obj.put("headerHTML", new JSONString(""));
+        }
 
         choices = new ArrayList<EventChoice>();
 
@@ -166,6 +172,14 @@ public class Event extends EventInList {
 
     public Map<Pair<Integer, Integer>, String> getHTMLLabels() {
         return htmllabels;
+    }
+
+    public void setHeaderHTML(String html) {
+        data.put("headerHTML", new JSONString(html));
+    }
+
+    public String getHeaderHTML() {
+        return Util.str(data.get("headerHTML"));
     }
 
 }
