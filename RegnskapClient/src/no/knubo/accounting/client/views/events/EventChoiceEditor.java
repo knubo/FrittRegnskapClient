@@ -78,7 +78,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
 
         if (!disabled) {
             Image delImage = ImageFactory.deleteImage("del" + row);
-            choiceTable.setWidget(row, FieldConfig.fieldConfigs.size() + 1, delImage);
+            choiceTable.setWidget(row, FieldConfig.fieldConfigs.size(), delImage);
             delImage.addClickHandler(this);
         }
     }

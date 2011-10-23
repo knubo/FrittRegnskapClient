@@ -169,6 +169,10 @@ public class EventFormEditor extends Composite implements ClickHandler {
 
     public String getHTMLView() {
         StringBuffer sb = new StringBuffer();
+        
+        sb.append("<div>");
+        sb.append(getHTML());
+        sb.append("</div>");
         sb.append("<table>\n");
         for (int row = 0; row < flexTable.getRowCount(); row++) {
             sb.append("<tr>");
