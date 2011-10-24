@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import no.knubo.accounting.client.Elements;
+import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -135,6 +137,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
 
         obj.put(EventChoice.NAME, FieldConfig.getText(choiceTable, row, elements.name()));
         obj.put(EventChoice.GROUP, FieldConfig.getText(choiceTable, row, elements.group()));
+        obj.put(EventChoice.INPUTTYPE, FieldConfig.getSelectedText(choiceTable, row, elements.event_field_type()));
         obj.put(EventChoice.FROM_DATE, FieldConfig.getText(choiceTable, row, elements.from_date()));
         obj.put(EventChoice.TO_DATE, FieldConfig.getText(choiceTable, row, elements.to_date()));
         obj.put(EventChoice.MEMB_REQ, FieldConfig.getText(choiceTable, row, elements.membership_required()));
@@ -179,6 +182,12 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
 
         }
 
+        public static JSONValue getSelectedText(AccountTable choiceTable, int row, String name) {
+            Widget widgetInColumn = choiceTable.getWidget(row, indexed.get(name));
+
+            return new JSONString(Util.getSelected((ListBox) widgetInColumn));
+        }
+
         public static JSONValue getText(AccountTable choiceTable, int row, String name) {
             Widget widgetInColumn = choiceTable.getWidget(row, indexed.get(name));
 
@@ -187,7 +196,19 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
                 return new JSONString(box.getText());
             }
 
-            return ((CheckBox) widgetInColumn).getValue() ? new JSONString("1") : new JSONString("0");
+            if(widgetInColumn instanceof CheckBox) {
+                return ((CheckBox) widgetInColumn).getValue() ? new JSONString("1") : new JSONString("0");
+            }
+
+            if(widgetInColumn instanceof TextBox) {
+                return new JSONString(((TextBox)widgetInColumn).getText());
+            }
+
+            if(widgetInColumn instanceof TextArea) {
+                return new JSONString(((TextArea)widgetInColumn).getText());
+            }
+            
+            return new JSONString("BADBAD");
         }
 
 
@@ -225,7 +246,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         static void init(Elements elements) {
             add(elements.name(), new TextBox(), Config.DISABLED_WHEN_ACTIVE);
             add(elements.group(), new TextBox(), Config.DISABLED_WHEN_ACTIVE);
-            add(elements.event_field_type(), new ListBox(), Config.DISABLED_WHEN_ACTIVE);
+            add(elements.event_field_type(), fieldTypeListBox(), Config.DISABLED_WHEN_ACTIVE);
             add(elements.from_date(), new TextBox(), Config.DATEFIELD, Config.DISABLED_WHEN_ACTIVE);
             add(elements.to_date(), new TextBox(), Config.DATEFIELD, Config.DISABLED_WHEN_ACTIVE);
             add(elements.membership_required(), new CheckBox(), Config.DISABLED_WHEN_ACTIVE);
@@ -236,6 +257,15 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
             add(elements.price_youth(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
             add(elements.count(), new TextBox());
             add(elements.max_diff_sex(), new TextBox());
+        }
+
+        private static ListBox fieldTypeListBox() {
+            ListBox listBox = new ListBox();
+            listBox.addItem("");
+            listBox.addItem(EventGroup.TYPE_CHECKBOX);
+            listBox.addItem(EventGroup.TYPE_TEXTFIELD);
+            listBox.addItem(EventGroup.TYPE_TEXTAREA);
+            return listBox;
         }
 
         private static void add(String name, Widget widget, Config... configs) {

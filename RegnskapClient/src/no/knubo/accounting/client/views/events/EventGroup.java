@@ -11,6 +11,8 @@ import no.knubo.accounting.client.views.events.dad.PaletteWidget;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class EventGroup {
@@ -20,11 +22,13 @@ public class EventGroup {
     private PaletteWidget paletteWidget;
     private Integer row;
     private Integer col;
+    static final String TYPE_CHECKBOX = "Checkbox";
+    static final String TYPE_TEXTFIELD = "Textfield";
+    static final String TYPE_TEXTAREA = "Textarea";
 
     public EventGroup(String name) {
         this.name = name;
     }
-    
 
     public void registerChoice(EventChoice choice) {
         choices.put(choice.getName(), choice);
@@ -60,11 +64,26 @@ public class EventGroup {
     }
 
     private Widget createWidgetInt() {
+        if (choices.size() == 1) {
+            EventChoice choice = choices.values().iterator().next();
+            String type = choice.getInputType();
+
+            if (type.equals(TYPE_TEXTFIELD)) {
+                TextBox textBox = new TextBox();
+                textBox.setTitle(choice.getName());
+                return textBox;
+            } else if (type.equals(TYPE_TEXTAREA)) {
+                TextArea textBox = new TextArea();
+                textBox.setTitle(choice.getName());
+                return textBox;
+            }
+
+            return new CheckBox(choice.getName());
+
+        }
+
         List<String> choices = getStringChoices();
 
-        if (choices.size() == 1) {
-            return new CheckBox(choices.get(0));
-        }
         ListBox box = new ListBox();
 
         for (String c : choices) {
@@ -78,20 +97,39 @@ public class EventGroup {
             return;
         }
 
-        boolean turnedIntoListbox = widget instanceof CheckBox && choices.size() > 1;
-        boolean turnedIntoCheckbox = widget instanceof ListBox && choices.size() == 1;
+        boolean turnedIntoListbox = !(widget instanceof ListBox) && choices.size() > 1;
+        boolean turnedIntoSingleChoice = widget instanceof ListBox && choices.size() == 1;
 
-        if (turnedIntoCheckbox || turnedIntoListbox) {
+        if (turnedIntoSingleChoice || turnedIntoListbox) {
             replaceWidget();
             return;
         }
 
         if (choices.size() == 1) {
+            EventChoice choice = choices.values().iterator().next();
 
-            CheckBox box = (CheckBox) widget;
-            if (!box.getText().equals(choices.values().iterator().next().getName())) {
+            if (widget instanceof CheckBox && !choice.getInputType().equals(TYPE_CHECKBOX)) {
                 replaceWidget();
+                return;
             }
+
+            if (widget instanceof TextBox && !choice.getInputType().equals(TYPE_TEXTFIELD)) {
+                replaceWidget();
+                return;
+            }
+
+            if (widget instanceof TextArea && !choice.getInputType().equals(TYPE_TEXTAREA)) {
+                replaceWidget();
+                return;
+            }
+
+            if (widget instanceof CheckBox) {
+                CheckBox box = (CheckBox) widget;
+                if (!box.getText().equals(choice.getName())) {
+                    replaceWidget();
+                }
+            }
+
             return;
         }
 
@@ -135,7 +173,6 @@ public class EventGroup {
     public int getCol() {
         return col;
     }
-
 
     public boolean isPositioned() {
         return row != null && col != null;

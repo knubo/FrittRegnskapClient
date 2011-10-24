@@ -20,6 +20,7 @@ public class EventChoice {
     static final String FROM_DATE = "fromDate";
     static final String GROUP = "group";
     static final String NAME = "name";
+    static final String INPUTTYPE = "inputType";
     JSONObject obj;
 
     public EventChoice(JSONObject obj) {
@@ -31,6 +32,7 @@ public class EventChoice {
 
         put(NAME, "");
         put(GROUP, "");
+        put(INPUTTYPE, "");
         put(FROM_DATE, "");
         put(TO_DATE, "");
         put(PRICE, "");
@@ -91,6 +93,10 @@ public class EventChoice {
         return Util.str(obj.get(MAX_DIFFERENCE_SEX));
     }
 
+    public String getInputType() {
+        return Util.str(obj.get(INPUTTYPE));
+    }
+    
     public Boolean getMembershipRequired() {
         return Util.str(obj.get(MEMB_REQ)).equals("1");
     }

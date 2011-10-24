@@ -84,7 +84,7 @@ public class Event extends EventInList {
         choices = all;
     }
 
-    public Collection<EventGroup> getEventGroups() {
+    public Collection<EventGroup> getEventGroupsAndUpdateWidgets() {
         for (EventGroup group : eventGroups.values()) {
             group.reset();
         }

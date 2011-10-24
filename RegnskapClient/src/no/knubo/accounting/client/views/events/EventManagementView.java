@@ -153,7 +153,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         event = new Event();
 
         eventChoicesEditor.setData(event);
-        eventEditor.setData(event);
+    eventEditor.setData(event);
         panel.selectTab(0);
 
         enableDisable();

@@ -15,11 +15,14 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -125,7 +128,7 @@ public class EventFormEditor extends Composite implements ClickHandler {
     }
 
     public void setUpWidgets() {
-        Collection<EventGroup> eventGroups = event.getEventGroups();
+        Collection<EventGroup> eventGroups = event.getEventGroupsAndUpdateWidgets();
 
         for (EventGroup eventGroup : eventGroups) {
             if (!eventGroup.hasWidget()) {
@@ -190,7 +193,15 @@ public class EventFormEditor extends Composite implements ClickHandler {
                     } else if (w instanceof PaletteWidget) {
                         PaletteWidget pw = (PaletteWidget) w;
 
-                        sb.append(pw.getWidget().getElement().getInnerHTML());
+                        if(pw.getWidget() instanceof CheckBox) {
+                            sb.append(pw.getWidget().getElement().getInnerHTML());
+                        } else if(pw.getWidget() instanceof TextBox) {
+                            sb.append("<input type=\"text\"/>");
+                        } else if(pw.getWidget() instanceof TextArea) {
+                            sb.append("<textarea>...</textarea>");
+                        }
+                       
+                        
                     }
                 }
 
