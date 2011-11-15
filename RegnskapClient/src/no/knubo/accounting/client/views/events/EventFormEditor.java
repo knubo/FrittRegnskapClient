@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class EventFormEditor extends Composite implements ClickHandler {
 
     private static final int COLUMNS = 6;
-    private static final int ROWS = 10;
+    private static final int ROWS = 20;
 
     private Event event;
     private PickupDragController dragController;

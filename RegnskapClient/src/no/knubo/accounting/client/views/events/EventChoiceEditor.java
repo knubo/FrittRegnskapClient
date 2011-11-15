@@ -10,6 +10,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.views.events.EventChoiceEditorFactory.WidgetFactory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -75,7 +76,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         for (int i = 0; i < FieldConfig.fieldConfigs.size(); i++) {
             FieldConfig fieldConfig = FieldConfig.fieldConfigs.get(i);
 
-            choiceTable.setWidget(row, i, fieldConfig.widget);
+            choiceTable.setWidget(row, i, fieldConfig.getWidget());
         }
 
         if (!disabled) {
@@ -98,7 +99,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         int row = 1;
         for (EventChoice e : choices) {
             addNewRow(event.isActive());
-            
+
             FieldConfig.setText(choiceTable, row, elements.name(), e.getName());
             FieldConfig.setText(choiceTable, row, elements.group(), e.getGroup());
             FieldConfig.setText(choiceTable, row, elements.from_date(), e.getFromDate());
@@ -106,14 +107,14 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
             FieldConfig.setText(choiceTable, row, elements.price(), e.getPrice());
             FieldConfig.setBoolean(choiceTable, row, elements.membership_required(), e.getMembershipRequired());
 
-            FieldConfig.setText(choiceTable, row, elements.price(), e.getPrice()); 
-            FieldConfig.setText(choiceTable, row, elements.price_year(), e.getPriceMembers());  
+            FieldConfig.setText(choiceTable, row, elements.price(), e.getPrice());
+            FieldConfig.setText(choiceTable, row, elements.price_year(), e.getPriceMembers());
             FieldConfig.setText(choiceTable, row, elements.price_course(), e.getPriceLessons());
-            FieldConfig.setText(choiceTable, row, elements.price_train(),e.getPriceTrain());
-            FieldConfig.setText(choiceTable, row, elements.price_youth(),e.getPriceYouth());
+            FieldConfig.setText(choiceTable, row, elements.price_train(), e.getPriceTrain());
+            FieldConfig.setText(choiceTable, row, elements.price_youth(), e.getPriceYouth());
             FieldConfig.setText(choiceTable, row, elements.count(), e.getMaxNumber());
             FieldConfig.setText(choiceTable, row, elements.max_diff_sex(), e.getMaxDifferenceSex());
-            
+
             row++;
         }
     }
@@ -155,20 +156,27 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
     static class FieldConfig {
         static ArrayList<FieldConfig> fieldConfigs = new ArrayList<FieldConfig>();
         static HashMap<String, Integer> indexed = new HashMap<String, Integer>();
-        
+
         final String name;
-        final Widget widget;
+        final WidgetFactory widgetFactory;
+        private final Config[] configs;
 
         enum Config {
             DATEFIELD, DISABLED_WHEN_ACTIVE, MONEY
         }
 
-        public FieldConfig(String name, Widget widget, Config... configs) {
+        public FieldConfig(String name, WidgetFactory factory, Config... configs) {
             this.name = name;
-            this.widget = widget;
+            this.widgetFactory = factory;
+            this.configs = configs;
 
             indexed.put(name, fieldConfigs.size());
             fieldConfigs.add(this);
+
+        }
+
+        Widget getWidget() {
+            Widget widget = widgetFactory.makeWidget();
             
             for (Config config : configs) {
                 if (config == Config.DATEFIELD) {
@@ -179,7 +187,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
                     ((TextBox) widget).setWidth("7em");
                 }
             }
-
+            return widget;
         }
 
         public static JSONValue getSelectedText(AccountTable choiceTable, int row, String name) {
@@ -196,36 +204,34 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
                 return new JSONString(box.getText());
             }
 
-            if(widgetInColumn instanceof CheckBox) {
+            if (widgetInColumn instanceof CheckBox) {
                 return ((CheckBox) widgetInColumn).getValue() ? new JSONString("1") : new JSONString("0");
             }
 
-            if(widgetInColumn instanceof TextBox) {
-                return new JSONString(((TextBox)widgetInColumn).getText());
+            if (widgetInColumn instanceof TextBox) {
+                return new JSONString(((TextBox) widgetInColumn).getText());
             }
 
-            if(widgetInColumn instanceof TextArea) {
-                return new JSONString(((TextArea)widgetInColumn).getText());
+            if (widgetInColumn instanceof TextArea) {
+                return new JSONString(((TextArea) widgetInColumn).getText());
             }
-            
+
             return new JSONString("BADBAD");
         }
 
-
-        public static void setBoolean(AccountTable choiceTable, int row, String name,
-                Boolean b) {
+        public static void setBoolean(AccountTable choiceTable, int row, String name, Boolean b) {
             Widget widgetInColumn = choiceTable.getWidget(row, indexed.get(name));
-            
+
             if (widgetInColumn instanceof CheckBox) {
                 CheckBox check = (CheckBox) widgetInColumn;
                 check.setValue(b);
             }
-            
+
         }
 
         public static void setText(AccountTable choiceTable, int row, String name, String textToSet) {
             Widget widgetInColumn = choiceTable.getWidget(row, indexed.get(name));
-            
+
             if (widgetInColumn instanceof TextBox) {
                 TextBox box = (TextBox) widgetInColumn;
                 box.setText(textToSet);
@@ -244,32 +250,29 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         }
 
         static void init(Elements elements) {
-            add(elements.name(), new TextBox(), Config.DISABLED_WHEN_ACTIVE);
-            add(elements.group(), new TextBox(), Config.DISABLED_WHEN_ACTIVE);
-            add(elements.event_field_type(), fieldTypeListBox(), Config.DISABLED_WHEN_ACTIVE);
-            add(elements.from_date(), new TextBox(), Config.DATEFIELD, Config.DISABLED_WHEN_ACTIVE);
-            add(elements.to_date(), new TextBox(), Config.DATEFIELD, Config.DISABLED_WHEN_ACTIVE);
-            add(elements.membership_required(), new CheckBox(), Config.DISABLED_WHEN_ACTIVE);
-            add(elements.price(), new TextBox(), Config.DISABLED_WHEN_ACTIVE);
-            add(elements.price_year(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
-            add(elements.price_course(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
-            add(elements.price_train(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
-            add(elements.price_youth(), new TextBox(), Config.MONEY, Config.DISABLED_WHEN_ACTIVE);
-            add(elements.count(), new TextBox());
-            add(elements.max_diff_sex(), new TextBox());
+            add(elements.name(), EventChoiceEditorFactory.textFieldFactory, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.group(), EventChoiceEditorFactory.textFieldFactory, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.event_field_type(), EventChoiceEditorFactory.fieldTypeListBox, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.from_date(), EventChoiceEditorFactory.textFieldFactory, Config.DATEFIELD,
+                    Config.DISABLED_WHEN_ACTIVE);
+            add(elements.to_date(), EventChoiceEditorFactory.textFieldFactory, Config.DATEFIELD,
+                    Config.DISABLED_WHEN_ACTIVE);
+            add(elements.membership_required(), EventChoiceEditorFactory.checkBoxFactory, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price(), EventChoiceEditorFactory.textFieldFactory, Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price_year(), EventChoiceEditorFactory.textFieldFactory, Config.MONEY,
+                    Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price_course(), EventChoiceEditorFactory.textFieldFactory, Config.MONEY,
+                    Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price_train(), EventChoiceEditorFactory.textFieldFactory, Config.MONEY,
+                    Config.DISABLED_WHEN_ACTIVE);
+            add(elements.price_youth(), EventChoiceEditorFactory.textFieldFactory, Config.MONEY,
+                    Config.DISABLED_WHEN_ACTIVE);
+            add(elements.count(), EventChoiceEditorFactory.textFieldFactory);
+            add(elements.max_diff_sex(), EventChoiceEditorFactory.textFieldFactory);
         }
 
-        private static ListBox fieldTypeListBox() {
-            ListBox listBox = new ListBox();
-            listBox.addItem("");
-            listBox.addItem(EventGroup.TYPE_CHECKBOX);
-            listBox.addItem(EventGroup.TYPE_TEXTFIELD);
-            listBox.addItem(EventGroup.TYPE_TEXTAREA);
-            return listBox;
-        }
-
-        private static void add(String name, Widget widget, Config... configs) {
-            new FieldConfig(name, widget, configs);
+        private static void add(String name, WidgetFactory factory, Config... configs) {
+            new FieldConfig(name, factory, configs);
         }
     }
 

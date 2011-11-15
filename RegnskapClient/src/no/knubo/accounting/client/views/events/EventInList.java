@@ -19,6 +19,7 @@ public class EventInList {
         data.put("startDate", new JSONString(""));
         data.put("endDate", new JSONString(""));
         data.put("eventDate", new JSONString(""));
+        data.put("eventEndDate", new JSONString(""));
         data.put("maxPeople", new JSONNumber(0));
         data.put("active", new JSONString("0"));
     }
@@ -33,15 +34,19 @@ public class EventInList {
     }
 
     public String getStartDate() {
-        return Util.str(data.get("startDate"));
+        return Util.strSkipNull(data.get("startDate"));
     }
 
     public String getEndDate() {
-        return Util.str(data.get("endDate"));
+        return Util.strSkipNull(data.get("endDate"));
     }
 
     public String getEventDate() {
-        return Util.str(data.get("eventDate"));
+        return Util.strSkipNull(data.get("eventDate"));
+    }
+
+    public String getEventEndDate() {
+        return Util.strSkipNull(data.get("eventEndDate"));
     }
 
     public String getMaxPeople() {
@@ -72,6 +77,10 @@ public class EventInList {
         data.put("eventDate", new JSONString(date));
     }
 
+    public void setEventEndDate(String text) {
+        data.put("eventEndDate", new JSONString(text));
+    }
+
     public void setMaxPeople(String number) {
         data.put("maxPeople", new JSONNumber(Double.parseDouble(number)));
     }
@@ -87,5 +96,7 @@ public class EventInList {
     public JSONObject getAsJSON() {
         return data;
     }
+
+
 
 }

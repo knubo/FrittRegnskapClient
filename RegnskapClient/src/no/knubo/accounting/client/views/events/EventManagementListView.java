@@ -50,6 +50,7 @@ public class EventManagementListView extends Composite implements ClickHandler {
         events.setHeader(0, 1, elements.event_start());
         events.setHeader(0, 2, elements.event_stop());
         events.setHeader(0, 3, elements.event_date());
+        events.setHeader(0, 4, elements.event_end_date());
         events.setHeaderRowStyle(0);
 
         newButton = new NamedButton("new_event", elements.new_event());
@@ -94,6 +95,7 @@ public class EventManagementListView extends Composite implements ClickHandler {
             events.setText(row, 1, eventListItem.getStartDate());
             events.setText(row, 2, eventListItem.getEndDate());
             events.setText(row, 3, eventListItem.getEventDate());
+            events.setText(row, 4, eventListItem.getEventEndDate());
             
             row++;
         }

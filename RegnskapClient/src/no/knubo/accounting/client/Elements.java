@@ -1762,6 +1762,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String event_deactivate();
 
   /**
+   * Translated "Siste dag i arrangement".
+   * 
+   * @return translated "Siste dag i arrangement"
+   */
+  @DefaultStringValue("Siste dag i arrangement")
+  @Key("event_end_date")
+  String event_end_date();
+
+  /**
    * Translated "Felttype".
    * 
    * @return translated "Felttype"

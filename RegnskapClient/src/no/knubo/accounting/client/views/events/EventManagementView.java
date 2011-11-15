@@ -44,6 +44,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     private NamedButton activateButton;
     private NamedButton deactivateButton;
     private final Constants constants;
+    private TextBoxWithErrorText eventEndDate;
 
     public EventManagementView(Constants constants, I18NAccount messages, Elements elements) {
         this.constants = constants;
@@ -89,9 +90,13 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         eventDate = new TextBoxWithErrorText("event_date");
         eventData.setWidget(3, 1, eventDate);
 
-        eventData.setText(4, 0, elements.event_max_partisipants());
+        eventData.setText(4, 0, elements.event_end_date());
+        eventEndDate = new TextBoxWithErrorText("event_end_date");
+        eventData.setWidget(4, 1, eventEndDate);
+
+        eventData.setText(5, 0, elements.event_max_partisipants());
         eventMaxPartisipants = new TextBoxWithErrorText("event_max_partisipants");
-        eventData.setWidget(4, 1, eventMaxPartisipants);
+        eventData.setWidget(5, 1, eventMaxPartisipants);
         vp.add(eventData);
 
         infoLabel = new Label();
@@ -113,7 +118,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         buttonRow.add(saveButton);
         buttonRow.add(activateButton);
         buttonRow.add(deactivateButton);
-        
+
         vp.add(buttonRow);
         return vp;
     }
@@ -135,6 +140,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
                 eventStartRegistrationDate.setText(event.getStartDate());
                 eventEndRegistrationDate.setText(event.getEndDate());
                 eventDate.setText(event.getEventDate());
+                eventEndDate.setText(event.getEventEndDate());
                 eventMaxPartisipants.setText(event.getMaxPeople());
 
                 eventChoicesEditor.setData(event);
@@ -153,7 +159,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         event = new Event();
 
         eventChoicesEditor.setData(event);
-    eventEditor.setData(event);
+        eventEditor.setData(event);
         panel.selectTab(0);
 
         enableDisable();
@@ -187,7 +193,6 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         }
 
     }
-
 
     private void activate(boolean activate) {
         if (!validate_ok()) {
@@ -250,7 +255,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         mv.mandatory(messages.required_field(), eventTitle, eventStartRegistrationDate, eventEndRegistrationDate,
                 eventDate);
 
-        mv.date(messages.date_format(), eventStartRegistrationDate, eventEndRegistrationDate, eventDate);
+        mv.date(messages.date_format(), eventStartRegistrationDate, eventEndRegistrationDate, eventDate, eventEndDate);
         mv.range(messages.field_positive(), 0, Integer.MAX_VALUE, eventMaxPartisipants);
 
         return mv.validateStatus();
@@ -261,6 +266,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         event.setStartDate(eventStartRegistrationDate.getText());
         event.setEndDate(eventEndRegistrationDate.getText());
         event.setEventDate(eventDate.getText());
+        event.setEventEndDate(eventEndDate.getText());
         event.setMaxPeople(eventMaxPartisipants.getText());
 
         eventEditor.setGroupPositionsAndHTML();
