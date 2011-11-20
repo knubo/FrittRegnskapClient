@@ -104,4 +104,5 @@ public class EventChoice {
     public JSONValue getAsJSON() {
         return obj;
     }
+
 }

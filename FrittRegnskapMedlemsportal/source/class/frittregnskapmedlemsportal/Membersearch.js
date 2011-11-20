@@ -342,7 +342,7 @@ qx.Class.define("frittregnskapmedlemsportal.Membersearch", {
                 
                 var mailto_link = 'mailto:' + email;
                 
-                win = window.open(mailto_link, 'emailWindow');
+                var win = window.open(mailto_link, 'emailWindow');
                 win.close();
                 return;
             }

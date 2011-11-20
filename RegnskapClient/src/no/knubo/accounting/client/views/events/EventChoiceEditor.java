@@ -102,6 +102,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
 
             FieldConfig.setText(choiceTable, row, elements.name(), e.getName());
             FieldConfig.setText(choiceTable, row, elements.group(), e.getGroup());
+            FieldConfig.setSelected(choiceTable, row, elements.event_field_type(), e.getInputType());
             FieldConfig.setText(choiceTable, row, elements.from_date(), e.getFromDate());
             FieldConfig.setText(choiceTable, row, elements.to_date(), e.getToDate());
             FieldConfig.setText(choiceTable, row, elements.price(), e.getPrice());
@@ -174,6 +175,14 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
             fieldConfigs.add(this);
 
         }
+
+
+        public static void setSelected(AccountTable choiceTable, int row, String name, String textToSelect) {
+            ListBox widgetInColumn = (ListBox) choiceTable.getWidget(row, indexed.get(name));
+            
+            Util.setIndexByItemText(widgetInColumn, textToSelect);
+        }
+
 
         Widget getWidget() {
             Widget widget = widgetFactory.makeWidget();

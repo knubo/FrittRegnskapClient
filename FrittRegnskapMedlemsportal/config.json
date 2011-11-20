@@ -32,7 +32,7 @@
   "let" :
   {
     "APPLICATION"  : "frittregnskapmedlemsportal",
-    "QOOXDOO_PATH" : "../../qooxdoo-1.4.1-sdk",
+    "QOOXDOO_PATH" : "../../qooxdoo-1.5-sdk",
     "QXTHEME"      : "frittregnskapmedlemsportal.theme.Theme",
     "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
     "LOCALES"      : [ "en" ],

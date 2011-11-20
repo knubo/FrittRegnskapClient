@@ -10,7 +10,7 @@ qx.Class.define("frittregnskapmedlemsportal.Login", {
             
             var loginNeeded = false;
             
-            req.addListener("failed", function(t){
+            req.addListener("failed", function(t) {
                 loginNeeded = true;
             });
             
