@@ -99,7 +99,25 @@ qx.Class.define("frittregnskapmedlemsportal.EventAccesser", {
                 return new qx.ui.basic.Label("missing "+group);
              }          
              return widget;
+          },
+          
+          getData : function() {
+              var data = {};
+          
+              for(var group in this.__inputs) {
+                var input = this.__inputs[group];
+                 if(input.getValue) {
+                     data[group] = input.getValue(); 
+                 } else {
+                    var selected = input.getSelection();
+
+                    data[group] = selected[0].getModel(); 
+                    
+                 }
+              }         
+              return data;
           }
+          
           
     }
     

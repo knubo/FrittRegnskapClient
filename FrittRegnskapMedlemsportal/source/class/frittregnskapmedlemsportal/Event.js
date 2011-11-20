@@ -6,12 +6,10 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
         __win : null,
         __mainBox : null,
         __detailBox : null,
-        __title : null,
+        __eventAccessor : null,
         changeToEventView : function(event) {
             var hide = new qx.fx.effect.core.Fade(this.__mainBox.getContainerElement().getDomElement());
             hide.start();
-            
-            this.__title.setValue(event["eventdesc"]);
             
             this.__detailBox.show();
 
@@ -35,8 +33,14 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             req.send();
             
         },
+        register: function() {
+            console.log(this.__eventAccessor.getData());           
+           
+        },
         setupDynamicView : function(event) {
             this.__detailBox.removeAll();
+
+            this.__win.setCaption(event.name);
             
             var grid = new qx.ui.layout.Grid(6, 20);
             grid.setSpacing(5);
@@ -47,11 +51,33 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             header.setValue(event.headerHTML);
             this.__detailBox.add(header, {row:0, column:0});
             this.__detailBox.add(table, {row:1, column:0});
+            
+            var rowlayout = new qx.ui.layout.Flow();
+            rowlayout.setSpacingX(7);
+            var buttonrow = new qx.ui.container.Composite(rowlayout);
+            
+            
+            var registerButton = new qx.ui.form.Button("Meld meg p\u00E5");
+            registerButton.setAllowStretchX(false);
+            registerButton.addListener("execute", function() {
+                    this.register();
+            }, this);
+            
+            var abortButton = new qx.ui.form.Button("Avbryt");
+            abortButton.setAllowStretchX(false);
+            
+            buttonrow.add(registerButton);
+            buttonrow.add(abortButton);
+            
+            this.__detailBox.add(buttonrow, {row:2, column:0, colSpan:10});
+
 
             var hrow;
             var hcol;
             
             var accessor = new frittregnskapmedlemsportal.EventAccesser();
+            this.__eventAccessor = accessor;
+            
             accessor.setEventObject(event);
             
             for(hrow = 0; hrow < 20; hrow++) {
@@ -82,7 +108,7 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
                 var eventdate = new qx.util.format.DateFormat("dd.MM.yyyy", "no").format(this.fixDate(event.eventDate));
                 eventbox.add(new qx.ui.basic.Label("Moroa starter: "+eventdate), { row:0, column:0 });
 
-                var signUpButton = new qx.ui.form.Button("Meld deg p\u00E5");
+                var signUpButton = new qx.ui.form.Button("Meld meg p\u00E5");
                 signUpButton.addListener("execute", function() {
                     this.changeToEventView(event);
                 }, this);
@@ -126,10 +152,6 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             this.__detailBox.hide();
             this.__win.add(this.__detailBox);
             
-            this.__title = new qx.ui.basic.Label("");
-            
-            this.__detailBox.add(this.__title,  { row:0, column:0 });
-            
         },
         setupView: function(desktop) {
             this.__desktop = desktop;
@@ -153,7 +175,7 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             this.setupDetailView();
       },
       destruct: function() {
-            this._disposeObjects("__win","__mainBox","__desktop", "__title", "__detailBox");
+            this._disposeObjects("__win","__mainBox","__desktop", "__detailBox", "__eventAccessor");
       }
     }
 });
