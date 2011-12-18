@@ -183,7 +183,11 @@ public class Event extends EventInList {
     }
 
     public void setGroupData(String groupName, String inputType, Boolean required) {
-        
+        for (EventChoice choice : choices) {
+            if(choice.getGroup().equals(groupName)) {
+                choice.setInputType(inputType);
+            }
+        }
     }
 
 }

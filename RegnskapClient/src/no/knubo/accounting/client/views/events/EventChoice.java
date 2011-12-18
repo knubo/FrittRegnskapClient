@@ -96,6 +96,10 @@ public class EventChoice {
     public String getInputType() {
         return Util.str(obj.get(INPUTTYPE));
     }
+
+    public void setInputType(String str) {
+        obj.put(INPUTTYPE, new JSONString(str));
+    }
     
     public Boolean getMembershipRequired() {
         return Util.str(obj.get(MEMB_REQ)).equals("1");

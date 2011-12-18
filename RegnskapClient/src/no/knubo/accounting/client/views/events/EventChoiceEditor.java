@@ -127,7 +127,6 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
             row++;
 
             /* Fill choices */
-          
 
             if (groupsAdded.contains(e.getGroup())) {
                 continue;
