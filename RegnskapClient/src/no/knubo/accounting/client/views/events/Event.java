@@ -182,4 +182,8 @@ public class Event extends EventInList {
         return Util.str(data.get("headerHTML"));
     }
 
+    public void setGroupData(String groupName, String inputType, Boolean required) {
+        
+    }
+
 }

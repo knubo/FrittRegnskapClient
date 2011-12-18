@@ -104,6 +104,8 @@ qx.Class.define("frittregnskapmedlemsportal.EventAccesser", {
           getData : function() {
               var data = {};
           
+              data["id"] = this.__event.id;
+          
               for(var group in this.__inputs) {
                 var input = this.__inputs[group];
                  if(input.getValue) {

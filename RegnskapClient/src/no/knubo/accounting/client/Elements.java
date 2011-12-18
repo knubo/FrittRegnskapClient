@@ -1735,6 +1735,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String event_activate();
 
   /**
+   * Translated "Valg for påmeldingsalternativer".
+   * 
+   * @return translated "Valg for påmeldingsalternativer"
+   */
+  @DefaultStringValue("Valg for påmeldingsalternativer")
+  @Key("event_choice_settings")
+  String event_choice_settings();
+
+  /**
    * Translated "Påmeldingsalternativer".
    * 
    * @return translated "Påmeldingsalternativer"
@@ -1805,6 +1814,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Ny påmeldingsvalg ")
   @Key("event_new_choice")
   String event_new_choice();
+
+  /**
+   * Translated "Antall påmeldt".
+   * 
+   * @return translated "Antall påmeldt"
+   */
+  @DefaultStringValue("Antall påmeldt")
+  @Key("event_partisipant_count")
+  String event_partisipant_count();
 
   /**
    * Translated "Påmelding starter".
@@ -4442,6 +4460,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Om det kun skal registreres medlemsskap, ikke inngi betalt dag.")
   @Key("register_membership_help")
   String register_membership_help();
+
+  /**
+   * Translated "Påkrevd".
+   * 
+   * @return translated "Påkrevd"
+   */
+  @DefaultStringValue("Påkrevd")
+  @Key("required")
+  String required();
 
   /**
    * Translated "Ansvarlig".

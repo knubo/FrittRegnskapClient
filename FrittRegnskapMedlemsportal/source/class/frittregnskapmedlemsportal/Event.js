@@ -34,8 +34,16 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             
         },
         register: function() {
-            console.log(this.__eventAccessor.getData());           
-           
+            var data = this.__eventAccessor.getData();
+
+            var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_events.php?action=register", "POST", "application/json");
+            req.setParameter("data", qx.lang.Json.stringify(data), true);
+            
+            req.addListener("completed", function(data) {
+            
+            });
+            req.send();
+
         },
         setupDynamicView : function(event) {
             this.__detailBox.removeAll();
@@ -49,8 +57,14 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             var header = new qx.ui.basic.Label();
             header.setRich(true);
             header.setValue(event.headerHTML);
-            this.__detailBox.add(header, {row:0, column:0});
-            this.__detailBox.add(table, {row:1, column:0});
+            this.__detailBox.add(header, {
+                row:0, 
+                column:0
+            });
+            this.__detailBox.add(table, {
+                row:1, 
+                column:0
+            });
             
             var rowlayout = new qx.ui.layout.Flow();
             rowlayout.setSpacingX(7);
@@ -60,7 +74,7 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             var registerButton = new qx.ui.form.Button("Meld meg p\u00E5");
             registerButton.setAllowStretchX(false);
             registerButton.addListener("execute", function() {
-                    this.register();
+                this.register();
             }, this);
             
             var abortButton = new qx.ui.form.Button("Avbryt");
@@ -69,7 +83,11 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             buttonrow.add(registerButton);
             buttonrow.add(abortButton);
             
-            this.__detailBox.add(buttonrow, {row:2, column:0, colSpan:10});
+            this.__detailBox.add(buttonrow, {
+                row:2, 
+                column:0, 
+                colSpan:10
+            });
 
 
             var hrow;
@@ -82,9 +100,12 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             
             for(hrow = 0; hrow < 20; hrow++) {
                 for(hcol = 0; hcol < 10; hcol++) {
-                   if(accessor.hasWidget(hrow, hcol)) {
-                      table.add(accessor.getWidget(hrow, hcol), { row:hrow, column:hcol });
-                   }
+                    if(accessor.hasWidget(hrow, hcol)) {
+                        table.add(accessor.getWidget(hrow, hcol), {
+                            row:hrow, 
+                            column:hcol
+                        });
+                    }
                 }
             }
             
@@ -106,7 +127,10 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
                 eventbox.setLayout(gridLayout);
 
                 var eventdate = new qx.util.format.DateFormat("dd.MM.yyyy", "no").format(this.fixDate(event.eventDate));
-                eventbox.add(new qx.ui.basic.Label("Moroa starter: "+eventdate), { row:0, column:0 });
+                eventbox.add(new qx.ui.basic.Label("Moroa starter: "+eventdate), {
+                    row:0, 
+                    column:0
+                });
 
                 var signUpButton = new qx.ui.form.Button("Meld meg p\u00E5");
                 signUpButton.addListener("execute", function() {
@@ -114,9 +138,12 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
                 }, this);
                 
                 
-                eventbox.add(signUpButton, {row:1, column:0});
+                eventbox.add(signUpButton, {
+                    row:1, 
+                    column:0
+                });
 
-	            mainBox.add(eventbox);
+                mainBox.add(eventbox);
 
             }
 
@@ -173,9 +200,9 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
 
             this.loadEvents();
             this.setupDetailView();
-      },
-      destruct: function() {
+        },
+        destruct: function() {
             this._disposeObjects("__win","__mainBox","__desktop", "__detailBox", "__eventAccessor");
-      }
+        }
     }
 });

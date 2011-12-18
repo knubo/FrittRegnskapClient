@@ -105,4 +105,8 @@ public class EventChoice {
         return obj;
     }
 
+    public boolean getRequired() {
+        return true;
+    }
+
 }

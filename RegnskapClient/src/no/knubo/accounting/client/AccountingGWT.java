@@ -40,6 +40,7 @@ import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
 import no.knubo.accounting.client.views.budget.BudgetView;
 import no.knubo.accounting.client.views.events.EventManagementListView;
 import no.knubo.accounting.client.views.events.EventManagementView;
+import no.knubo.accounting.client.views.events.EventPartisipantsListView;
 import no.knubo.accounting.client.views.exportimport.AccountExportView;
 import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
@@ -617,6 +618,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
                     ((EventManagementView)widget).init();
                 }
                 break;
+            case EVENT_PARTISIPANTS_LIST:
+                widget = EventPartisipantsListView.getInstance(constants, messages, elements);
+                ((EventPartisipantsListView)widget).init();
             }
 
             if (widget == null) {

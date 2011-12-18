@@ -23,7 +23,7 @@ public class EventGroup {
     private Integer row;
     private Integer col;
     static final String TYPE_CHECKBOX = "Checkbox";
-    static final String TYPE_TEXTFIELD = "Textfield";
+    static final String TYPE_TEXTFIELD = "Tekstbox";
     static final String TYPE_TEXTAREA = "Textarea";
 
     public EventGroup(String name) {
