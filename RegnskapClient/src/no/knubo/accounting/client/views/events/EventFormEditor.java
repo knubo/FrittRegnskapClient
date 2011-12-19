@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -199,9 +200,9 @@ public class EventFormEditor extends Composite implements ClickHandler {
                             sb.append("<input type=\"text\"/>");
                         } else if(pw.getWidget() instanceof TextArea) {
                             sb.append("<textarea>...</textarea>");
+                        } else if(pw.getWidget() instanceof ListBox) {
+                            sb.append(pw.getWidget().getElement().getParentElement().getInnerHTML());
                         }
-                       
-                        
                     }
                 }
 

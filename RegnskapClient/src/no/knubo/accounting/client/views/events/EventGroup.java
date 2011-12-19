@@ -85,7 +85,7 @@ public class EventGroup {
         List<String> choices = getStringChoices();
 
         ListBox box = new ListBox();
-
+        box.addItem("");
         for (String c : choices) {
             box.addItem(c);
         }

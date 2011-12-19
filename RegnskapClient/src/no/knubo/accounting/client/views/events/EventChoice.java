@@ -2,6 +2,7 @@ package no.knubo.accounting.client.views.events;
 
 import no.knubo.accounting.client.Util;
 
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -21,6 +22,7 @@ public class EventChoice {
     static final String GROUP = "group";
     static final String NAME = "name";
     static final String INPUTTYPE = "inputType";
+    static final String REQUIRED = "required";
     JSONObject obj;
 
     public EventChoice(JSONObject obj) {
@@ -100,17 +102,20 @@ public class EventChoice {
     public void setInputType(String str) {
         obj.put(INPUTTYPE, new JSONString(str));
     }
-    
+
     public Boolean getMembershipRequired() {
         return Util.str(obj.get(MEMB_REQ)).equals("1");
+    }
+
+    public boolean getRequired() {
+        return Util.str(obj.get(REQUIRED)).equals("1");
     }
 
     public JSONValue getAsJSON() {
         return obj;
     }
 
-    public boolean getRequired() {
-        return true;
+    public void setRequired(boolean required) {
+        obj.put(REQUIRED, new JSONNumber(required ? 1 : 0));
     }
-
 }

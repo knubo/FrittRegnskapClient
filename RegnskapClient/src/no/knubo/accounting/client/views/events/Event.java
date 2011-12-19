@@ -186,6 +186,7 @@ public class Event extends EventInList {
         for (EventChoice choice : choices) {
             if(choice.getGroup().equals(groupName)) {
                 choice.setInputType(inputType);
+                choice.setRequired(required);
             }
         }
     }
