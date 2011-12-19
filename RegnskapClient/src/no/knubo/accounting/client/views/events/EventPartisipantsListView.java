@@ -34,7 +34,7 @@ public class EventPartisipantsListView extends Composite {
     }
 
     public void init() {
-        // TODO Auto-generated method stub
+        
         
     }
 

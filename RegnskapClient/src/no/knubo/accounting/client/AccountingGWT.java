@@ -621,6 +621,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case EVENT_PARTISIPANTS_LIST:
                 widget = EventPartisipantsListView.getInstance(constants, messages, elements);
                 ((EventPartisipantsListView)widget).init();
+                break;
             }
 
             if (widget == null) {
