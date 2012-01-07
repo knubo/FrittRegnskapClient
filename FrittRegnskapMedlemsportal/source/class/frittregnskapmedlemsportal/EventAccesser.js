@@ -53,6 +53,7 @@ qx.Class.define("frittregnskapmedlemsportal.EventAccesser", {
                     this.__inputs[choices[0].group] = select;
                     
                     var model = new qx.data.Array();
+                    model.push("");
                     for(var c in choices) {
                         var choice = choices[c];
                         

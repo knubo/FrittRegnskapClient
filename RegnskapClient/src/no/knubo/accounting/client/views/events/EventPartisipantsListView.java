@@ -33,7 +33,7 @@ public class EventPartisipantsListView extends Composite {
         return instance;
     }
 
-    public void init() {
+    public void init(String id) {
         
         
     }

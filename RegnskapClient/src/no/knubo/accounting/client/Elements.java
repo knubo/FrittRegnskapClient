@@ -1771,6 +1771,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String event_deactivate();
 
   /**
+   * Translated "Rediger arrangement".
+   * 
+   * @return translated "Rediger arrangement"
+   */
+  @DefaultStringValue("Rediger arrangement")
+  @Key("event_edit")
+  String event_edit();
+
+  /**
    * Translated "Siste dag i arrangement".
    * 
    * @return translated "Siste dag i arrangement"
@@ -1796,6 +1805,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Påmeldingsskjema")
   @Key("event_form")
   String event_form();
+
+  /**
+   * Translated "Liste over påmeldte".
+   * 
+   * @return translated "Liste over påmeldte"
+   */
+  @DefaultStringValue("Liste over påmeldte")
+  @Key("event_list_partisipants")
+  String event_list_partisipants();
 
   /**
    * Translated "Maks antall deltagere".

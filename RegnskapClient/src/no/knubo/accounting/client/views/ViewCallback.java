@@ -42,4 +42,6 @@ public interface ViewCallback {
 
     public void openEvent(String name);
 
+    public void openEventPartisipants(String id);
+
 }
