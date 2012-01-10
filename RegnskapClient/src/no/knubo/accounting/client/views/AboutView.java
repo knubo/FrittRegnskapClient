@@ -132,6 +132,7 @@ public class AboutView extends Composite implements ClickHandler {
                 }
 
                 AccountingGWT.canSeeSecret = Util.getBoolean(object.get("see_secret"));
+                AccountingGWT.eventEnabled = Util.getBoolean(object.get("eventEnabled"));
                 caller.setReducedMode(Util.getInt(object.get("reduced_mode")));
                 
                 enrichDashboard(object.get("info").isObject(), object.get("accountstatus"));

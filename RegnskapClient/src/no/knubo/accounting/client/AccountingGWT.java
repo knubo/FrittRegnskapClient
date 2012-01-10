@@ -112,6 +112,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     private static Image loadingImage;
 
     public static boolean canSeeSecret;
+    public static boolean eventEnabled;
+    
     protected int reducedMode;
 
     private MenuBar eventMenu;
@@ -164,7 +166,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar registerMenu = addTopMenu(topMenu, elements.menu_register());
         showMenu = addTopMenu(topMenu, elements.menu_show());
         peopleMenu = addTopMenu(topMenu, elements.menu_people());
-        eventMenu = addTopMenu(topMenu, elements.menu_event());
+        eventMenu = eventEnabled ? addTopMenu(topMenu, elements.menu_event()) : new MenuBar();
         MenuBar budgetMenu = addTopMenu(topMenu, elements.menu_budget());
 
         reportsMenu = addTopMenu(topMenu, elements.menu_reports());

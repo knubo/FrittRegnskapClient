@@ -20,7 +20,8 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
      *****************************************************************************
      */
     members: {
-    
+        __portalEnabled : 0,
+        
         checkPortalStatus: function(){
             var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_authenticate.php?action=status", "GET", "application/json");
             req.setAsynchronous(false);
@@ -51,6 +52,7 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
                             if (json["portal_status"] == 1) {
                                 document.getElementById("maintitle1").innerHTML = json["portal_title"];
                                 document.getElementById("maintitle2").innerHTML = json["portal_title"];
+                                this.setPortalEnabled(json["eventEnabled"]);
                                 this.setupApplication();
                             }
             }, this);
@@ -88,6 +90,9 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
              */
             this.checkPortalStatus();
         },
+        setPortalEnabled: function(stat) {
+            this.__portalEnabled = stat;
+        },
         setupApplication: function(){
         
             var login = new frittregnskapmedlemsportal.Login();
@@ -115,7 +120,10 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
                 inlineIsle.add(desktop);
                 new frittregnskapmedlemsportal.Membersearch().setupView(desktop);
                 new frittregnskapmedlemsportal.Profile().createWindowProfile(desktop);
-                new frittregnskapmedlemsportal.Event().setupView(desktop);
+                
+                if(this.__portalEnabled) {
+                   new frittregnskapmedlemsportal.Event().setupView(desktop);                    
+                }
             }
             else {            
                 login.setupLoginWindow();
