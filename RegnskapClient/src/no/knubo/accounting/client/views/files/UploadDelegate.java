@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 public class UploadDelegate {
     private FormPanel form;
     
-    public UploadDelegate(String action, final UploadDelegateCallback callback, final Constants constants, final I18NAccount messages, final Elements elements) {
+    public UploadDelegate(String action, final UploadDelegateCallback callback, final Constants constants, final I18NAccount messages, final Elements elements, Hidden... extra) {
 
         form = new FormPanel();
         form.setAction(constants.baseurl() + action);
@@ -35,17 +35,24 @@ public class UploadDelegate {
         form.setEncoding(FormPanel.ENCODING_MULTIPART);
         form.setMethod(FormPanel.METHOD_POST);
 
+     
         VerticalPanel panel = new VerticalPanel();
         form.setWidget(panel);
 
         final Label tb = new Label(elements.file());
         panel.add(tb);
 
+        
+    
         Hidden hidden = new Hidden();
         hidden.setName("action");
         hidden.setValue("upload");
         panel.add(hidden);
 
+        for (Hidden hiddenExtra : extra) {
+            panel.add(hiddenExtra);
+        }
+        
         FileUpload upload = new FileUpload();
         upload.setName("uploadFormElement");
         panel.add(upload);
@@ -53,6 +60,8 @@ public class UploadDelegate {
         panel.add(new Button(elements.upload_file(), new ClickHandler() {
 
             public void onClick(ClickEvent event) {
+                callback.preUpload();
+
                 form.submit();
             }
         }));
@@ -79,6 +88,11 @@ public class UploadDelegate {
                     Window.alert(messages.save_failed_badly());
                     return;
                 }
+                
+                if(callback.uploadBody(result)) {
+                    return;
+                }
+                
                 JSONValue jsonVal = JSONParser.parse(result);
 
                 if (jsonVal == null) {

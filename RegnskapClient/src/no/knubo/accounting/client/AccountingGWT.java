@@ -43,6 +43,7 @@ import no.knubo.accounting.client.views.events.EventManagementListView;
 import no.knubo.accounting.client.views.events.EventManagementView;
 import no.knubo.accounting.client.views.events.EventPartisipantsListView;
 import no.knubo.accounting.client.views.exportimport.AccountExportView;
+import no.knubo.accounting.client.views.exportimport.FilerImportFileView;
 import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
 import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
 import no.knubo.accounting.client.views.files.BackupView;
@@ -273,6 +274,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         if (reducedMode == 0) {
             addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
             addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
+            addMenuItem(importExportMenu, elements.menuitem_import_filter(), WidgetIds.IMPORT_FILTER);
         }
 
         addMenuItem(importExportMenu, elements.menuitem_export_accounting(), WidgetIds.EXPORT_ACCOUNTING);
@@ -628,6 +630,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             case EVENT_LIST:
                 widget = EventListView.getInstance(constants, messages, elements, callback);
                 ((EventListView) widget).init();
+                break;
+            case IMPORT_FILTER:
+                widget = FilerImportFileView.getInstance(messages, constants, elements);
                 break;
             }
 

@@ -36,5 +36,13 @@ public class AdminNorwegianCityImportView extends Composite implements UploadDel
         /* Not needed */
     }
 
+    public boolean uploadBody(String body) {
+        return false;
+    }
+
+    public void preUpload() {
+        /* Not needed */
+    }
+
     
 }

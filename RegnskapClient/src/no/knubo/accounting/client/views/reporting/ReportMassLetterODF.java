@@ -63,7 +63,7 @@ public class ReportMassLetterODF extends Composite implements ClickHandler, Uplo
         joinButton = new NamedButton("join_letters", elements.join_letters());
         joinButton.addClickHandler(this);
         joinButton.addStyleName("nowrap");
-        
+
         previewButton = new NamedButton("preview", elements.preview());
         previewButton.addClickHandler(this);
 
@@ -74,7 +74,7 @@ public class ReportMassLetterODF extends Composite implements ClickHandler, Uplo
         hp.add(yearListBox);
 
         hp.add(joinButton);
-        
+
         hp.add(previewButton);
         dp.add(hp, DockPanel.NORTH);
 
@@ -163,4 +163,11 @@ public class ReportMassLetterODF extends Composite implements ClickHandler, Uplo
         init();
     }
 
+    public boolean uploadBody(String body) {
+        return false;
+    }
+
+    public void preUpload() {
+        /* Not needed */
+    }
 }

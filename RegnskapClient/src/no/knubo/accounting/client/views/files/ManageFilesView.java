@@ -149,4 +149,11 @@ public class ManageFilesView extends Composite implements ClickHandler, UploadDe
         init();
     }
 
+    public boolean uploadBody(String body) {
+        return false;
+    }
+
+    public void preUpload() {
+        /* Not needed */
+    }
 }

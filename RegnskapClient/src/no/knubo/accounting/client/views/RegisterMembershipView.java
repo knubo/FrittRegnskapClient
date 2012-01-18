@@ -103,8 +103,8 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
         resultTable.setHTML(0, 9, elements.post());
         dp.add(resultTable, DockPanel.NORTH);
 
-        Button button = new NamedButton("RegisterMembershipView.registerMembershipButton", elements
-                .register_membership());
+        Button button = new NamedButton("RegisterMembershipView.registerMembershipButton",
+                elements.register_membership());
         button.addClickHandler(this);
         dp.add(button, DockPanel.NORTH);
 
@@ -213,7 +213,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
             yearCheck.setValue(true);
             yearCheck.setEnabled(false);
             yearYouthCheck.setEnabled(false);
-        } else if("2".equals(Util.str(obj.get("year")))) {
+        } else if ("2".equals(Util.str(obj.get("year")))) {
             yearYouthCheck.setValue(true);
             yearCheck.setEnabled(false);
             yearYouthCheck.setEnabled(false);
@@ -315,10 +315,13 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
             boolean doTrain = trainBox.isEnabled() && trainBox.getValue();
             boolean doYouth = youthBox.isEnabled() && youthBox.getValue();
 
+            boolean somethingCheckedForThisRow = false;
+
             if (doYear || doYearYouth || doCourse || doTrain || doYouth) {
                 validateDay(mv, dayBox);
                 ok = ok && mv.validateStatus();
                 somethingChecked = true;
+                somethingCheckedForThisRow = true;
             }
 
             /* If daybox is given, then a checkbox must be set. */
@@ -328,10 +331,10 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                 ok = ok && mv.fail(dayBox, shouldFail, message);
             }
 
-            if(dayBox.getText().length() == 0) {
+            if (somethingCheckedForThisRow && dayBox.getText().length() == 0) {
                 requireDayConfirmation = true;
             }
-            
+
             if (doYear) {
                 Util.addPostParam(sb, "year" + id, "1");
             }
@@ -354,16 +357,15 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
                 Util.addPostParam(sb, "post" + id, Util.getSelected(post));
             }
         }
-        
 
         if (!ok || !somethingChecked) {
             return null;
         }
 
-        if(requireDayConfirmation) {
+        if (requireDayConfirmation) {
             boolean cont = Window.confirm(messages.confirm_register_membership());
-            
-            if(!cont) {
+
+            if (!cont) {
                 return null;
             }
         }

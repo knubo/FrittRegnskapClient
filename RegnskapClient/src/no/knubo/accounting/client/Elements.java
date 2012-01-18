@@ -3175,6 +3175,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_findperson();
 
   /**
+   * Translated "Filtrer personliste for import".
+   * 
+   * @return translated "Filtrer personliste for import"
+   */
+  @DefaultStringValue("Filtrer personliste for import")
+  @Key("menuitem_import_filter")
+  String menuitem_import_filter();
+
+  /**
    * Translated "Import av personer".
    * 
    * @return translated "Import av personer"

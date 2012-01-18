@@ -4,4 +4,8 @@ public interface UploadDelegateCallback {
 
     void uploadComplete();
     
+    boolean uploadBody(String body);
+
+    void preUpload();
+    
 }
