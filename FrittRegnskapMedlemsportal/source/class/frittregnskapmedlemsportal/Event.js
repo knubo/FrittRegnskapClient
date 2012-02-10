@@ -8,9 +8,7 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
         __detailBox : null,
         __eventAccessor : null,
         changeToEventView : function(event) {
-            var hide = new qx.fx.effect.core.Fade(this.__mainBox.getContainerElement().getDomElement());
-            hide.start();
-            
+            this.__mainBox.hide();
             this.__detailBox.show();
 
             this.loadDynamicView(event);
@@ -79,6 +77,10 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             
             var abortButton = new qx.ui.form.Button("Avbryt");
             abortButton.setAllowStretchX(false);
+            abortButton.addListener("execute", function() {
+                this.__detailBox.hide();           
+                this.__mainBox.show();
+            }, this);
             
             buttonrow.add(registerButton);
             buttonrow.add(abortButton);
@@ -133,9 +135,12 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
                 });
 
                 var signUpButton = new qx.ui.form.Button("Meld meg p\u00E5");
+                
+                var eventId = event["id"];
                 signUpButton.addListener("execute", function() {
-                    this.changeToEventView(event);
-                }, this);
+                    this.t.changeToEventView(this.e);
+                    
+                }, {t:this, e:event});
                 
                 
                 eventbox.add(signUpButton, {

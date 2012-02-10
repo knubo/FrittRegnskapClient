@@ -73,7 +73,7 @@ qx.Class.define("frittregnskapmedlemsportal.EventAccesser", {
              } else if(choice.inputType == "Checkbox") {
                 this.__inputs[choice.group] = new qx.ui.form.CheckBox(choice.name);
              } else {
-                alert(choice.inputType);
+               // alert(choice.inputType);
              }
           },          
 
