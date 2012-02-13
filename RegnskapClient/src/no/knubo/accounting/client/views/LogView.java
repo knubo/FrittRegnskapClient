@@ -20,7 +20,7 @@ public class LogView extends Composite {
     private final Constants constants;
     private FlexTable table;
 
-    public static LogView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static LogView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new LogView(messages, constants, elements);
         }

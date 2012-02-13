@@ -67,7 +67,7 @@ public class SemesterEditView extends Composite implements ClickHandler {
 		initWidget(dp);
 	}
 
-	public static SemesterEditView show(I18NAccount messages,
+	public static SemesterEditView getInstance(I18NAccount messages,
 			Constants constants, Elements elements) {
 		if (me == null) {
 			me = new SemesterEditView(messages, constants, elements);

@@ -36,7 +36,7 @@ public class AdminOperationsView extends Composite implements ClickHandler {
     private Label statusLabel;
     private NamedButton distributeButton;
 
-    public static AdminOperationsView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static AdminOperationsView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new AdminOperationsView(messages, constants, elements);
         }

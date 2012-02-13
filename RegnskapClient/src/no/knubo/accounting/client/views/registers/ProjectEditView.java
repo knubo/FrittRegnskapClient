@@ -67,7 +67,7 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
         initWidget(dp);
     }
 
-    public static ProjectEditView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static ProjectEditView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new ProjectEditView(messages, constants, elements);
         }

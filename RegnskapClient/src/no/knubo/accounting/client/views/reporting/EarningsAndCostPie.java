@@ -187,7 +187,7 @@ public class EarningsAndCostPie extends Composite implements ClickHandler {
         return data;
     }
 
-    public static Widget show(I18NAccount messages, Constants constants, Elements elements) {
+    public static Widget getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new EarningsAndCostPie(messages, constants, elements);
         }

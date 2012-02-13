@@ -24,7 +24,7 @@ public class LogoutView extends DialogBox implements ClickHandler, ServerRespons
     private NamedButton logoutButton;
     private NamedButton cancelButton;
 
-    public static LogoutView show(Constants constants, I18NAccount messages, Elements elements) {
+    public static LogoutView getInstance(Constants constants, I18NAccount messages, Elements elements) {
         LogoutView.messages = messages;
         LogoutView.constants = constants;
         LogoutView.elements = elements;

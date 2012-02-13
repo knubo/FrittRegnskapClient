@@ -49,12 +49,11 @@ public class LineEditView extends Composite implements ClickHandler {
 
     private IdHolder<String, Image> removeIdHolder = new IdHolder<String, Image>();
 
-    public static LineEditView show(ViewCallback caller, I18NAccount messages, Constants constants, String line,
+    public static LineEditView getInstance(ViewCallback caller, I18NAccount messages, Constants constants, 
             HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new LineEditView(caller, messages, constants, helpPanel, elements);
         }
-        me.init(line, null);
         return me;
     }
 
@@ -128,7 +127,15 @@ public class LineEditView extends Composite implements ClickHandler {
 
         initWidget(dp);
     }
+    
+    public void init() {
+        init(null, null);
+    }
 
+    public void init(String line) {
+        init(line, null);
+    }
+    
     private void init(String line, String navigate) {
         currentLine = line;
 
@@ -682,4 +689,5 @@ public class LineEditView extends Composite implements ClickHandler {
         projectNameBox.setSelectedIndex(defaultProjectNameBox.getSelectedIndex());
         projectIdBox.setText(projectCache.getId(Util.getSelectedText(defaultProjectNameBox.getListbox())));
     }
+
 }

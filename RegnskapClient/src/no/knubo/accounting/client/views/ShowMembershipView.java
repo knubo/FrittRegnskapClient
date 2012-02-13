@@ -43,7 +43,7 @@ public class ShowMembershipView extends Composite implements ClickHandler, Chang
     private ListBoxWithErrorText semesterOrYearListBox;
     private Label countLabel;
 
-    public static ShowMembershipView show(I18NAccount messages, Constants constants, ViewCallback caller,
+    public static ShowMembershipView getInstance(I18NAccount messages, Constants constants, ViewCallback caller,
             HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new ShowMembershipView(messages, constants, caller, helpPanel, elements);

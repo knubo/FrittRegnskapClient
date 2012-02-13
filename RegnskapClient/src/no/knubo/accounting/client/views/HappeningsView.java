@@ -82,7 +82,7 @@ public class HappeningsView extends Composite implements ClickHandler,
 		initWidget(dp);
 	}
 
-	public static HappeningsView show(I18NAccount messages,
+	public static HappeningsView getInstance(I18NAccount messages,
 			Constants constants, Elements elements) {
 		if (me == null) {
 			me = new HappeningsView(messages, constants, elements);

@@ -34,7 +34,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
 
     private HashMap<String, JSONObject> idGivesObject;
 
-    public static PersonSearchView show(ViewCallback caller, I18NAccount messages, Constants constants,
+    public static PersonSearchView getInstance(ViewCallback caller, I18NAccount messages, Constants constants,
             Elements elements) {
         if (me == null) {
             me = new PersonSearchView(messages, constants, elements);

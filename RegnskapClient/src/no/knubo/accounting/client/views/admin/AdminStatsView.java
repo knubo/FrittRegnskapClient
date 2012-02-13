@@ -19,7 +19,7 @@ public class AdminStatsView extends Composite {
     private final I18NAccount messages;
     private final Constants constants;
 
-    public static AdminStatsView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static AdminStatsView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new AdminStatsView(messages, constants, elements);
         }

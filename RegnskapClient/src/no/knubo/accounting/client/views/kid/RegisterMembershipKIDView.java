@@ -34,7 +34,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
     private AccountTable table;
     final HashMap<String, String> postGiveBDG = new HashMap<String, String>();
 
-    public static RegisterMembershipKIDView show(I18NAccount messages, Constants constants, Elements elements,
+    public static RegisterMembershipKIDView getInstance(I18NAccount messages, Constants constants, Elements elements,
             ViewCallback vc) {
         if (me == null) {
             me = new RegisterMembershipKIDView(messages, constants, elements, vc);

@@ -49,7 +49,7 @@ public class PostTypeEditView extends Composite implements ClickHandler {
     private PostTypeEditFields editFields;
     private Elements elements;
 
-    public static PostTypeEditView show(I18NAccount messages, Constants constants,
+    public static PostTypeEditView getInstance(I18NAccount messages, Constants constants,
             HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new PostTypeEditView(messages, constants, helpPanel, elements);

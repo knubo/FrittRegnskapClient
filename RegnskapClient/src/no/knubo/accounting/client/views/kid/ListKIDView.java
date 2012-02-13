@@ -43,7 +43,7 @@ public class ListKIDView extends Composite implements ClickHandler, PersonPickCa
     private final HelpPanel helpPanel;
     private NamedButton searchButton;
 
-    public static ListKIDView show(I18NAccount messages, Constants constants, Elements elements, HelpPanel helpPanel) {
+    public static ListKIDView getInstance(I18NAccount messages, Constants constants, Elements elements, HelpPanel helpPanel) {
         if (me == null) {
             me = new ListKIDView(messages, constants, elements, helpPanel);
         }

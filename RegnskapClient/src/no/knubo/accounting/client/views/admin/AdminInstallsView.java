@@ -44,7 +44,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
     private AdminInstallEditFields editFields;
     private NamedButton newButton;
 
-    public static AdminInstallsView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static AdminInstallsView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new AdminInstallsView(messages, constants, elements);
         }

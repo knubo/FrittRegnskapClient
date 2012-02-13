@@ -78,7 +78,7 @@ public class TrustEditView extends Composite implements ClickHandler, CacheCallb
         initWidget(dp);
     }
 
-    public static TrustEditView show(I18NAccount messages, Constants constants,
+    public static TrustEditView getInstance(I18NAccount messages, Constants constants,
             HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new TrustEditView(messages, constants, helpPanel, elements);

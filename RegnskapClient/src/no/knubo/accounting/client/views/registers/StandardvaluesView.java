@@ -35,7 +35,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
 
     private static StandardvaluesView me;
 
-    public static StandardvaluesView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static StandardvaluesView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new StandardvaluesView(messages, constants, elements);
         }

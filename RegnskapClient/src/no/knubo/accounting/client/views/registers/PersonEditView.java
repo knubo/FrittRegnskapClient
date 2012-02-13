@@ -229,7 +229,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         initWidget(dp);
     }
 
-    public static PersonEditView show(Constants constants, I18NAccount messages, HelpPanel helpPanel,
+    public static PersonEditView getInstance(Constants constants, I18NAccount messages, HelpPanel helpPanel,
             ViewCallback caller, Elements elements) {
         if (me == null) {
             me = new PersonEditView(messages, constants, helpPanel, caller, elements);

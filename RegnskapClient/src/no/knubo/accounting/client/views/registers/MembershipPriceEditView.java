@@ -81,7 +81,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         initWidget(dp);
     }
 
-    public static MembershipPriceEditView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static MembershipPriceEditView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new MembershipPriceEditView(messages, constants, elements);
         }

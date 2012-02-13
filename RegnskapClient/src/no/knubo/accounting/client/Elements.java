@@ -1735,6 +1735,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String event_activate();
 
   /**
+   * Translated "Sist oppdatert".
+   * 
+   * @return translated "Sist oppdatert"
+   */
+  @DefaultStringValue("Sist oppdatert")
+  @Key("event_change_date")
+  String event_change_date();
+
+  /**
    * Translated "Valg for påmeldingsalternativer".
    * 
    * @return translated "Valg for påmeldingsalternativer"
@@ -1841,6 +1850,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Antall påmeldt")
   @Key("event_partisipant_count")
   String event_partisipant_count();
+
+  /**
+   * Translated "Først registrert".
+   * 
+   * @return translated "Først registrert"
+   */
+  @DefaultStringValue("Først registrert")
+  @Key("event_register_date")
+  String event_register_date();
 
   /**
    * Translated "Påmelding starter".
@@ -2948,6 +2966,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Opprett ny person")
   @Key("menuitem_addperson")
   String menuitem_addperson();
+
+  /**
+   * Translated "Backup operasjoner".
+   * 
+   * @return translated "Backup operasjoner"
+   */
+  @DefaultStringValue("Backup operasjoner")
+  @Key("menuitem_admin_back_admin")
+  String menuitem_admin_back_admin();
 
   /**
    * Translated "Installasjoner".

@@ -54,7 +54,7 @@ public class MassRegisterView extends Composite implements ClickHandler {
     private TextBoxWithErrorText postnmbbox;
     private PosttypeCache postTypeCache;
 
-    public static MassRegisterView show(I18NAccount messages, Constants constants, Elements elements, ViewCallback callback) {
+    public static MassRegisterView getInstance(I18NAccount messages, Constants constants, Elements elements, ViewCallback callback) {
         if (me == null) {
             me = new MassRegisterView(messages, constants, elements, callback);
         }

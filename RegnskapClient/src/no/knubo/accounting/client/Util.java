@@ -81,7 +81,7 @@ public class Util {
         case 12:
             return i18n.month_12();
         default:
-            return "ERROR "+month;
+            return "ERROR " + month;
         }
     }
 
@@ -100,7 +100,7 @@ public class Util {
     }
 
     public static String formatDate(String string) {
-        if(string.length() == 0) {
+        if (string.length() == 0) {
             return "";
         }
         String[] dateparts = string.split("-");
@@ -253,7 +253,6 @@ public class Util {
                 syncOnce(listbox, textbox);
             }
 
-
         };
         textbox.addChangeHandler(textchange);
     }
@@ -261,7 +260,7 @@ public class Util {
     public static void syncOnce(final ListBox listbox, final TextBox textbox) {
         listbox.setSelectedIndex(0);
         String id = textbox.getText();
-        
+
         for (int i = 0; i < listbox.getItemCount(); i++) {
             if (listbox.getValue(i).equals(id)) {
                 listbox.setSelectedIndex(i);
@@ -269,6 +268,7 @@ public class Util {
             }
         }
     }
+
     /**
      * Get month part of string on format dd.mm.yyyy
      * 
@@ -573,7 +573,7 @@ public class Util {
     public static String numberDecimalFormat(String value) {
         int index = value.indexOf('.');
         if (index == -1) {
-            return value+".00";
+            return value + ".00";
         }
         if (value.length() < index + 3) {
             return value;
@@ -594,7 +594,7 @@ public class Util {
                     String id = Util.getSelected(sourceBox);
 
                     for (ListBox listBox : boxes) {
-                        if(listBox == sourceBox) {
+                        if (listBox == sourceBox) {
                             continue;
                         }
                         listBox.setSelectedIndex(0);
@@ -606,17 +606,16 @@ public class Util {
                             }
                         }
 
-
                     }
                 }
-                
+
             });
         }
     }
 
     public static boolean selectionContains(List<ListBoxWithErrorText> allBoxes, String needle) {
         for (ListBoxWithErrorText listBoxWithErrorText : allBoxes) {
-            if(needle.equals(getSelected(listBoxWithErrorText))) {
+            if (needle.equals(getSelected(listBoxWithErrorText))) {
                 return true;
             }
         }
@@ -628,12 +627,12 @@ public class Util {
 
         for (ListBoxWithErrorText listBoxWithErrorText : allBoxes) {
             String selected = getSelected(listBoxWithErrorText);
-            
-            if(selected.trim().length() == 0) {
+
+            if (selected.trim().length() == 0) {
                 continue;
             }
-            
-            if(selectedValues.contains(selected)) {
+
+            if (selectedValues.contains(selected)) {
                 return false;
             }
             selectedValues.add(selected);
@@ -643,7 +642,7 @@ public class Util {
     }
 
     public static void fill(ListBox box, JSONArray elements) {
-        for(int i=0; i < elements.size(); i++) {
+        for (int i = 0; i < elements.size(); i++) {
             box.addItem(Util.str(elements.get(i)));
         }
     }
@@ -652,7 +651,7 @@ public class Util {
         return getSelectedText(postTypeBox.getListbox());
     }
 
-    public static void fill(ListBox listbox, String ...items) {
+    public static void fill(ListBox listbox, String... items) {
         for (String elem : items) {
             listbox.addItem(elem);
         }
@@ -660,14 +659,14 @@ public class Util {
 
     public static String join(String[] match) {
         StringBuffer sb = new StringBuffer();
-        
+
         for (String string : match) {
-            if(sb.length() > 0) {
+            if (sb.length() > 0) {
                 sb.append(",");
             }
             sb.append(string);
         }
-        
+
         return sb.toString();
     }
 
@@ -679,13 +678,18 @@ public class Util {
             array.set(i, new JSONString(string));
         }
 
-        
         return array;
     }
 
     public static String moneySendServer(String text) {
-        return money(text).replace(",","");
+        return money(text).replace(",", "");
     }
 
+    public static String formatTime(JSONValue jsonValue) {
+        String dateAndTime = Util.str(jsonValue);
+
+        String[] parts = dateAndTime.split(" ");
+        return formatDate(parts[0]) + " " + parts[1];
+    }
 
 }

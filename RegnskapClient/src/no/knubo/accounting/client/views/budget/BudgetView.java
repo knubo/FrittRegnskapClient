@@ -146,7 +146,7 @@ public class BudgetView extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
-    public static BudgetView show(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements, ViewCallback callback) {
+    public static BudgetView getInstance(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements, ViewCallback callback) {
         if (me == null) {
             me = new BudgetView(messages, constants, helpPanel, elements, callback);
         }

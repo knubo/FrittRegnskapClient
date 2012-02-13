@@ -38,7 +38,7 @@ public class AccountTrackEditView extends Composite implements ClickHandler {
     private Image nextImageBig;
     private Image previousImageBig;
 
-    public static AccountTrackEditView show(I18NAccount messages, Constants constants,
+    public static AccountTrackEditView getInstance(I18NAccount messages, Constants constants,
             HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new AccountTrackEditView(messages, constants, helpPanel, elements);

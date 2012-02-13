@@ -95,7 +95,7 @@ public class UsersEditView extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
-    public static UsersEditView show(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
+    public static UsersEditView getInstance(I18NAccount messages, Constants constants, HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new UsersEditView(messages, constants, helpPanel, elements);
         }

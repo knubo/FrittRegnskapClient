@@ -42,7 +42,7 @@ public class RegisterHappeningView extends Composite implements ClickHandler, Ch
 
     private static ViewCallback caller;
 
-    public static RegisterHappeningView show(I18NAccount messages, Constants constants,
+    public static RegisterHappeningView getInstance(I18NAccount messages, Constants constants,
             ViewCallback caller, Elements elements, ViewCallback callback) {
         RegisterHappeningView.caller = caller;
         if (me == null) {

@@ -79,7 +79,7 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
 
     }
 
-    public static GeneralReportView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static GeneralReportView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new GeneralReportView(messages, constants, elements);
         }

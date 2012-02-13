@@ -138,7 +138,7 @@ public class EmailSettingsView extends Composite implements ClickHandler {
         return dp;
     }
 
-    public static EmailSettingsView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static EmailSettingsView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new EmailSettingsView(messages, constants, elements);
         }

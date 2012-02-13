@@ -37,7 +37,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
     private static RegisterMembershipView me;
 
-    public static RegisterMembershipView show(I18NAccount messages, Constants constants, HelpPanel helpPanel,
+    public static RegisterMembershipView getInstance(I18NAccount messages, Constants constants, HelpPanel helpPanel,
             Elements elements) {
         if (me == null) {
             me = new RegisterMembershipView(messages, constants, helpPanel, elements);

@@ -29,7 +29,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
 
     private static AdminSQLView me;
 
-    public static AdminSQLView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static AdminSQLView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new AdminSQLView(messages, constants, elements);
         }

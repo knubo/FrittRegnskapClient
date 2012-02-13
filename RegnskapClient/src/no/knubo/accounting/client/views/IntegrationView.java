@@ -29,7 +29,7 @@ public class IntegrationView extends Composite implements ClickHandler {
     private NamedButton updateButton;
     private static Elements elements;
 
-    public static IntegrationView show(I18NAccount messages, Constants constants, Elements elements) {
+    public static IntegrationView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         IntegrationView.elements = elements;
         if (me == null) {
             me = new IntegrationView(messages, constants, elements);
