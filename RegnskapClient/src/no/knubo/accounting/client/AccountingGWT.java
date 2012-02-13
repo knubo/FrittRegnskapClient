@@ -11,92 +11,21 @@ import no.knubo.accounting.client.cache.TrustActionCache;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.WidgetIds;
-import no.knubo.accounting.client.views.AboutView;
-import no.knubo.accounting.client.views.HappeningsView;
-import no.knubo.accounting.client.views.IntegrationView;
 import no.knubo.accounting.client.views.LineEditView;
-import no.knubo.accounting.client.views.LogView;
-import no.knubo.accounting.client.views.LogoutView;
-import no.knubo.accounting.client.views.MassRegisterView;
-import no.knubo.accounting.client.views.MonthAndSemesterEndView;
-import no.knubo.accounting.client.views.MonthDetailsView;
 import no.knubo.accounting.client.views.MonthView;
 import no.knubo.accounting.client.views.PersonSearchView;
-import no.knubo.accounting.client.views.RegisterHappeningView;
-import no.knubo.accounting.client.views.RegisterMembershipView;
-import no.knubo.accounting.client.views.RequestDeleteView;
-import no.knubo.accounting.client.views.SessionsView;
-import no.knubo.accounting.client.views.ShowMembershipView;
-import no.knubo.accounting.client.views.SystemInfoView;
-import no.knubo.accounting.client.views.TrustStatusView;
 import no.knubo.accounting.client.views.ViewCallback;
-import no.knubo.accounting.client.views.YearEndView;
-import no.knubo.accounting.client.views.admin.AdminBackupView;
-import no.knubo.accounting.client.views.admin.AdminInstallsView;
-import no.knubo.accounting.client.views.admin.AdminNorwegianCityImportView;
-import no.knubo.accounting.client.views.admin.AdminOperationsView;
-import no.knubo.accounting.client.views.admin.AdminSQLView;
-import no.knubo.accounting.client.views.admin.AdminStatsView;
-import no.knubo.accounting.client.views.budget.BudgetSimpleTracking;
-import no.knubo.accounting.client.views.budget.BudgetView;
-import no.knubo.accounting.client.views.events.EventListView;
-import no.knubo.accounting.client.views.events.EventManagementListView;
-import no.knubo.accounting.client.views.events.EventManagementView;
-import no.knubo.accounting.client.views.events.EventPartisipantsListView;
-import no.knubo.accounting.client.views.exportimport.AccountExportView;
-import no.knubo.accounting.client.views.exportimport.FilerImportFileView;
-import no.knubo.accounting.client.views.exportimport.person.ExportPersonView;
-import no.knubo.accounting.client.views.exportimport.person.ImportPersonView;
-import no.knubo.accounting.client.views.files.BackupView;
-import no.knubo.accounting.client.views.files.ManageFilesView;
-import no.knubo.accounting.client.views.kid.ListKIDView;
-import no.knubo.accounting.client.views.kid.RegisterMembershipKIDView;
-import no.knubo.accounting.client.views.ownings.OwningsListView;
-import no.knubo.accounting.client.views.ownings.RegisterOwningsView;
-import no.knubo.accounting.client.views.portal.PortalGallery;
-import no.knubo.accounting.client.views.portal.PortalMemberlist;
-import no.knubo.accounting.client.views.portal.PortalSettings;
-import no.knubo.accounting.client.views.registers.AccountTrackEditView;
-import no.knubo.accounting.client.views.registers.EmailSettingsView;
-import no.knubo.accounting.client.views.registers.MembershipPriceEditView;
 import no.knubo.accounting.client.views.registers.PersonEditView;
-import no.knubo.accounting.client.views.registers.PostTypeEditView;
-import no.knubo.accounting.client.views.registers.ProjectEditView;
-import no.knubo.accounting.client.views.registers.SemesterEditView;
-import no.knubo.accounting.client.views.registers.StandardvaluesView;
-import no.knubo.accounting.client.views.registers.TrustActionEditView;
-import no.knubo.accounting.client.views.registers.TrustEditView;
-import no.knubo.accounting.client.views.registers.UsersEditView;
-import no.knubo.accounting.client.views.reporting.EarningsAndCostPie;
-import no.knubo.accounting.client.views.reporting.GeneralReportView;
-import no.knubo.accounting.client.views.reporting.ReportAccountlines;
-import no.knubo.accounting.client.views.reporting.ReportAccounttracking;
-import no.knubo.accounting.client.views.reporting.ReportMail;
-import no.knubo.accounting.client.views.reporting.ReportMassLetterODF;
-import no.knubo.accounting.client.views.reporting.ReportMassLetters;
-import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
-import no.knubo.accounting.client.views.reporting.ReportMembersBirth;
-import no.knubo.accounting.client.views.reporting.ReportMembersBirthGender;
-import no.knubo.accounting.client.views.reporting.ReportUsersEmail;
-import no.knubo.accounting.client.views.reporting.SimpleMassletterEditView;
-
-import org.gwtwidgets.client.ui.SimpleCalcPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -104,18 +33,19 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class AccountingGWT implements EntryPoint, ViewCallback {
 
-    private I18NAccount messages;
-    private Constants constants;
-    private HelpTexts helpTexts;
-    private Elements elements;
-    private DockPanel activeView;
+    static I18NAccount messages;
+    static Constants constants;
+    static HelpTexts helpTexts;
+    static Elements elements;
+
+    static DockPanel activeView;
 
     private static Image blankImage;
     private static Image loadingImage;
 
     public static boolean canSeeSecret;
     public static boolean eventEnabled;
-    
+
     protected int reducedMode;
 
     private MenuBar eventMenu;
@@ -188,46 +118,84 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         MenuBar logoutMenu = addTopMenu(topMenu, elements.menu_logout());
         MenuBar aboutMenu = addTopMenu(topMenu, elements.menu_info());
 
-        addMenuItem(registerMenu, elements.menuitem_regline(), WidgetIds.LINE_EDIT_VIEW);
-        addMenuItem(registerMenu, elements.menuitem_massregister(), WidgetIds.MASSREGISTER_VIEW);
+        setupRegisterMenu(registerMenu);
+        setupShowMenu();
+        setupPeopleMenu();
+        setupEventMenu();
+        setupBudgetMenu(budgetMenu);
+        setupReportsMenu();
+        setupSettingsMenu();
+        setupExportImportMenu(importExportMenu);
+        setupPortalMenu(portalMenu);
+        setupAdminMenu(adminMenu);
+        setupAboutMenu(aboutMenu);
+        addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
 
+    }
+
+    private void setupAdminMenu(MenuBar adminMenu) {
+        if (adminMenu != null) {
+            addMenuItem(adminMenu, elements.menuitem_admin_installs(), WidgetIds.ADMIN_INSTALLS);
+            addMenuItem(adminMenu, elements.menuitem_admin_sql(), WidgetIds.ADMIN_SQL);
+            addMenuItem(adminMenu, elements.menuitem_admin_operations(), WidgetIds.ADMIN_OPERATIONS);
+            addMenuItem(adminMenu, elements.menuitem_admin_stats(), WidgetIds.ADMIN_STATS);
+            addMenuItem(adminMenu, elements.menuitem_admin_poststed(), WidgetIds.ADMIN_NORWEGIAN_CITIES);
+            addMenuItem(adminMenu, elements.menuitem_admin_back_admin(), WidgetIds.ADMIN_BACKUP_OPERATIONS);
+        }
+    }
+
+    private void setupAboutMenu(MenuBar aboutMenu) {
+        addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
+        addMenuItem(aboutMenu, elements.menuitem_calculator(), WidgetIds.CALCULATOR);
+        addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
+        addMenuItem(aboutMenu, elements.menuitem_sessioninfo(), WidgetIds.SESSIONINFO);
+        addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
+        addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
+        addMenuItem(aboutMenu, elements.menuitem_delete(), WidgetIds.REQUEST_DELETE);
+    }
+
+    private void setupPortalMenu(MenuBar portalMenu) {
         if (reducedMode == 0) {
-            addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
-            // addMenuItem(registerMenu,
-            // elements.menuitem_register_kid_membership(),
-            // WidgetIds.REGISTER_KID_MEMBERSHIP);
+            addMenuItem(portalMenu, elements.menuitem_portal_settings(), WidgetIds.PORTAL_SETTINGS);
+            addMenuItem(portalMenu, elements.menuitem_portal_members(), WidgetIds.PORTAL_MEMBERLIST);
+            addMenuItem(portalMenu, elements.menuitem_portal_profilegallery(), WidgetIds.PORTAL_PROFILE_GALLERY);
+        }
+    }
+
+    private void setupExportImportMenu(MenuBar importExportMenu) {
+        if (reducedMode == 0) {
+            addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
+            addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
+            addMenuItem(importExportMenu, elements.menuitem_import_filter(), WidgetIds.IMPORT_FILTER);
         }
 
-        addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
+        addMenuItem(importExportMenu, elements.menuitem_export_accounting(), WidgetIds.EXPORT_ACCOUNTING);
+    }
+
+    private void setupSettingsMenu() {
         if (reducedMode == 0) {
-            addMenuItem(registerMenu, elements.menuitem_owning_register(), WidgetIds.OWNINGS_REGISTER);
-            addMenuItem(registerMenu, elements.menuitem_truststatus(), WidgetIds.TRUST_STATUS);
+            addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
         }
-        addMenuItem(registerMenu, elements.menuitem_endmonth(), WidgetIds.END_MONTH);
-        addMenuItem(registerMenu, elements.menuitem_endsemester(), WidgetIds.END_SEMESTER);
-        addMenuItem(registerMenu, elements.menuitem_endyear(), WidgetIds.END_YEAR);
-
-        addMenuItem(showMenu, elements.menuitem_showmonth(), WidgetIds.SHOW_MONTH);
-        addMenuItem(showMenu, elements.menuitem_showmonthdetails(), WidgetIds.SHOW_MONTH_DETAILS);
+        addMenuItem(settingsMenu, elements.menuitem_email_settings(), WidgetIds.EDIT_EMAIL_CONTENT);
         if (reducedMode == 0) {
-            addMenuItem(showMenu, elements.menuitem_showallmembers(), WidgetIds.SHOW_ALL_MEMBERS);
-            addMenuItem(showMenu, elements.menuitem_showmembers(), WidgetIds.SHOW_MEMBERS);
-            addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
-            addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
-            addMenuItem(showMenu, elements.menuitem_owning_show(), WidgetIds.OWNINGS_LIST);
-            // addMenuItem(showMenu, elements.menuitem_kid_list_transactions(),
-            // WidgetIds.LIST_KID_TRANSACTIONS);
+            addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
         }
+        if (reducedMode == 0) {
+            addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(), WidgetIds.EDIT_TRUST_ACTIONS);
+        }
+        addMenuItem(settingsMenu, elements.menuitem_accounts(), WidgetIds.EDIT_ACCOUNTS);
+        addMenuItem(settingsMenu, elements.menuitem_accounttrack(), WidgetIds.EDIT_ACCOUNTTRACK);
+        if (reducedMode == 0) {
+            addMenuItem(settingsMenu, elements.menuitem_membership_prices(), WidgetIds.EDIT_PRICES);
+        }
+        addMenuItem(settingsMenu, elements.menuitem_projects(), WidgetIds.EDIT_PROJECTS);
+        addMenuItem(settingsMenu, elements.menuitem_semesters(), WidgetIds.EDIT_SEMESTER);
+        addMenuItem(settingsMenu, elements.menuitem_edit_happening(), WidgetIds.EDIT_HAPPENING);
+        addMenuItem(settingsMenu, elements.menuitem_values(), WidgetIds.SETTINGS);
+        addMenuItem(settingsMenu, elements.menuitem_integration(), WidgetIds.INTEGRATION);
+    }
 
-        addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
-        addMenuItem(peopleMenu, elements.menuitem_findperson(), WidgetIds.FIND_PERSON);
-
-        addMenuItem(eventMenu, elements.menuitem_event_items(), WidgetIds.EVENT_ITEMS);
-        addMenuItem(eventMenu, elements.menuitem_event_lists(), WidgetIds.EVENT_LIST);
-
-        addMenuItem(budgetMenu, elements.menuitem_budget(), WidgetIds.BUDGET);
-        addMenuItem(budgetMenu, elements.menuitem_budgetsimple(), WidgetIds.BUDGET_SIMPLE_TRACKING);
-
+    private void setupReportsMenu() {
         if (reducedMode == 0) {
             addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
             addMenuItem(reportsMenu, elements.menuitem_report_member_per_year_gender(),
@@ -251,58 +219,58 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
             addMenuItem(reportsMenu, elements.menuitem_report_belonging_responsible(),
                     WidgetIds.REPORT_BELONGINGS_RESPONSIBLE);
-
-            addMenuItem(settingsMenu, elements.menuitem_useradm(), WidgetIds.EDIT_USERS);
         }
-        addMenuItem(settingsMenu, elements.menuitem_email_settings(), WidgetIds.EDIT_EMAIL_CONTENT);
+    }
+
+    private void setupBudgetMenu(MenuBar budgetMenu) {
+        addMenuItem(budgetMenu, elements.menuitem_budget(), WidgetIds.BUDGET);
+        addMenuItem(budgetMenu, elements.menuitem_budgetsimple(), WidgetIds.BUDGET_SIMPLE_TRACKING);
+    }
+
+    private void setupEventMenu() {
+        addMenuItem(eventMenu, elements.menuitem_event_items(), WidgetIds.EVENT_ITEMS);
+        addMenuItem(eventMenu, elements.menuitem_event_lists(), WidgetIds.EVENT_LIST);
+    }
+
+    private void setupPeopleMenu() {
+        addMenuItem(peopleMenu, elements.menuitem_addperson(), WidgetIds.ADD_PERSON);
+        addMenuItem(peopleMenu, elements.menuitem_findperson(), WidgetIds.FIND_PERSON);
+    }
+
+    private void setupShowMenu() {
+        addMenuItem(showMenu, elements.menuitem_showmonth(), WidgetIds.SHOW_MONTH);
+        addMenuItem(showMenu, elements.menuitem_showmonthdetails(), WidgetIds.SHOW_MONTH_DETAILS);
         if (reducedMode == 0) {
-            addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
+            addMenuItem(showMenu, elements.menuitem_showallmembers(), WidgetIds.SHOW_ALL_MEMBERS);
+            addMenuItem(showMenu, elements.menuitem_showmembers(), WidgetIds.SHOW_MEMBERS);
+            addMenuItem(showMenu, elements.menuitem_showtraining(), WidgetIds.SHOW_TRAINING_MEMBERS);
+            addMenuItem(showMenu, elements.menuitem_showclassmembers(), WidgetIds.SHOW_CLASS_MEMBERS);
+            addMenuItem(showMenu, elements.menuitem_owning_show(), WidgetIds.OWNINGS_LIST);
+            // addMenuItem(showMenu, elements.menuitem_kid_list_transactions(),
+            // WidgetIds.LIST_KID_TRANSACTIONS);
         }
-        if (reducedMode == 0) {
-            addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(), WidgetIds.EDIT_TRUST_ACTIONS);
-        }
-        addMenuItem(settingsMenu, elements.menuitem_accounts(), WidgetIds.EDIT_ACCOUNTS);
-        addMenuItem(settingsMenu, elements.menuitem_accounttrack(), WidgetIds.EDIT_ACCOUNTTRACK);
-        if (reducedMode == 0) {
-            addMenuItem(settingsMenu, elements.menuitem_membership_prices(), WidgetIds.EDIT_PRICES);
-        }
-        addMenuItem(settingsMenu, elements.menuitem_projects(), WidgetIds.EDIT_PROJECTS);
-        addMenuItem(settingsMenu, elements.menuitem_semesters(), WidgetIds.EDIT_SEMESTER);
-        addMenuItem(settingsMenu, elements.menuitem_edit_happening(), WidgetIds.EDIT_HAPPENING);
-        addMenuItem(settingsMenu, elements.menuitem_values(), WidgetIds.SETTINGS);
-        addMenuItem(settingsMenu, elements.menuitem_integration(), WidgetIds.INTEGRATION);
+    }
+
+    private void setupRegisterMenu(MenuBar registerMenu) {
+        addMenuItem(registerMenu, elements.menuitem_regline(), WidgetIds.LINE_EDIT_VIEW);
+        addMenuItem(registerMenu, elements.menuitem_massregister(), WidgetIds.MASSREGISTER_VIEW);
 
         if (reducedMode == 0) {
-            addMenuItem(importExportMenu, elements.menuitem_export_person(), WidgetIds.EXPORT_PERSON);
-            addMenuItem(importExportMenu, elements.menuitem_import_person(), WidgetIds.IMPORT_PERSON);
-            addMenuItem(importExportMenu, elements.menuitem_import_filter(), WidgetIds.IMPORT_FILTER);
+            addMenuItem(registerMenu, elements.menuitem_registerMembership(), WidgetIds.REGISTER_MEMBERSHIP);
+            // addMenuItem(registerMenu,
+            // elements.menuitem_register_kid_membership(),
+            // WidgetIds.REGISTER_KID_MEMBERSHIP);
         }
 
-        addMenuItem(importExportMenu, elements.menuitem_export_accounting(), WidgetIds.EXPORT_ACCOUNTING);
+        addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
 
         if (reducedMode == 0) {
-            addMenuItem(portalMenu, elements.menuitem_portal_settings(), WidgetIds.PORTAL_SETTINGS);
-            addMenuItem(portalMenu, elements.menuitem_portal_members(), WidgetIds.PORTAL_MEMBERLIST);
-            addMenuItem(portalMenu, elements.menuitem_portal_profilegallery(), WidgetIds.PORTAL_PROFILE_GALLERY);
+            addMenuItem(registerMenu, elements.menuitem_owning_register(), WidgetIds.OWNINGS_REGISTER);
+            addMenuItem(registerMenu, elements.menuitem_truststatus(), WidgetIds.TRUST_STATUS);
         }
-
-        addMenuItem(aboutMenu, elements.menuitem_about(), WidgetIds.ABOUT);
-        addMenuItem(aboutMenu, elements.menuitem_calculator(), WidgetIds.CALCULATOR);
-        addMenuItem(aboutMenu, elements.menuitem_serverinfo(), WidgetIds.SERVERINFO);
-        addMenuItem(aboutMenu, elements.menuitem_sessioninfo(), WidgetIds.SESSIONINFO);
-        addMenuItem(aboutMenu, elements.menuitem_log(), WidgetIds.LOGGING);
-        addMenuItem(aboutMenu, elements.menuitem_backup(), WidgetIds.BACKUP);
-        addMenuItem(aboutMenu, elements.menuitem_delete(), WidgetIds.REQUEST_DELETE);
-        addMenuItem(logoutMenu, elements.menuitem_logout(), WidgetIds.LOGOUT);
-
-        if (adminMenu != null) {
-            addMenuItem(adminMenu, elements.menuitem_admin_installs(), WidgetIds.ADMIN_INSTALLS);
-            addMenuItem(adminMenu, elements.menuitem_admin_sql(), WidgetIds.ADMIN_SQL);
-            addMenuItem(adminMenu, elements.menuitem_admin_operations(), WidgetIds.ADMIN_OPERATIONS);
-            addMenuItem(adminMenu, elements.menuitem_admin_stats(), WidgetIds.ADMIN_STATS);
-            addMenuItem(adminMenu, elements.menuitem_admin_poststed(), WidgetIds.ADMIN_NORWEGIAN_CITIES);
-            addMenuItem(adminMenu, elements.menuitem_admin_back_admin(), WidgetIds.ADMIN_BACKUP_OPERATIONS);
-        }
+        addMenuItem(registerMenu, elements.menuitem_endmonth(), WidgetIds.END_MONTH);
+        addMenuItem(registerMenu, elements.menuitem_endsemester(), WidgetIds.END_SEMESTER);
+        addMenuItem(registerMenu, elements.menuitem_endyear(), WidgetIds.END_YEAR);
     }
 
     private void addMenuItem(MenuBar menu, String title, WidgetIds widgetId) {
@@ -329,334 +297,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         AccountPlanCache.getInstance(cons, messages);
     }
 
-    class Commando implements Command {
-
-        WidgetIds action;
-
-        private final ViewCallback callback;
-
-        private String title;
-
-        private final String[] params;
-
-        Commando(ViewCallback callback, WidgetIds action, String title, String... params) {
-            this.callback = callback;
-            this.action = action;
-            this.title = title;
-            this.params = params;
-        }
-
-        public void execute() {
-            Widget widget = null;
-
-            HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
-            switch (action) {
-            case LINE_EDIT_VIEW:
-                widget = LineEditView.getInstance(callback, messages, constants, helpPanel, elements);
-                ((LineEditView)widget).init();
-                break;
-            case MASSREGISTER_VIEW:
-                widget = MassRegisterView.getInstance(messages, constants, elements, callback);
-                ((MassRegisterView) widget).init();
-                break;
-            case REGISTER_MEMBERSHIP:
-                widget = RegisterMembershipView.getInstance(messages, constants, helpPanel, elements);
-                ((RegisterMembershipView) widget).init();
-                break;
-            case REGISTER_KID_MEMBERSHIP:
-                widget = RegisterMembershipKIDView.getInstance(messages, constants, elements, callback);
-                ((RegisterMembershipKIDView) widget).init();
-                break;
-            case LIST_KID_TRANSACTIONS:
-                widget = ListKIDView.getInstance(messages, constants, elements, helpPanel);
-                break;
-
-            case REGISTER_HAPPENING:
-                widget = RegisterHappeningView.getInstance(messages, constants, callback, elements, callback);
-                ((RegisterHappeningView) widget).init();
-                break;
-            case END_MONTH:
-                widget = MonthAndSemesterEndView.getInstance(constants, messages, callback, elements);
-                ((MonthAndSemesterEndView) widget).initEndMonth();
-                break;
-            case END_SEMESTER:
-                widget = MonthAndSemesterEndView.getInstance(constants, messages, callback, elements);
-                ((MonthAndSemesterEndView) widget).initEndSemester();
-                break;
-            case INTEGRATION:
-                widget = IntegrationView.getInstance(messages, constants, elements);
-                ((IntegrationView) widget).init();
-                break;
-            case SETTINGS:
-                widget = StandardvaluesView.getInstance(messages, constants, elements);
-                ((StandardvaluesView) widget).init();
-                break;
-            case EDIT_EMAIL_CONTENT:
-                widget = EmailSettingsView.getInstance(messages, constants, elements);
-                ((EmailSettingsView) widget).init();
-                break;
-            case EDIT_HAPPENING:
-                widget = HappeningsView.getInstance(messages, constants, elements);
-                ((HappeningsView) widget).init();
-                break;
-            case EDIT_PROJECTS:
-                widget = ProjectEditView.getInstance(messages, constants, elements);
-                ((ProjectEditView) widget).init();
-                break;
-            case EDIT_USERS:
-                widget = UsersEditView.getInstance(messages, constants, helpPanel, elements);
-                ((UsersEditView) widget).init();
-                break;
-            case EDIT_ACCOUNTS:
-                widget = PostTypeEditView.getInstance(messages, constants, helpPanel, elements);
-                ((PostTypeEditView) widget).init();
-                break;
-            case EDIT_ACCOUNTTRACK:
-                widget = AccountTrackEditView.getInstance(messages, constants, helpPanel, elements);
-                ((AccountTrackEditView) widget).init();
-                break;
-            case EDIT_TRUST_ACTIONS:
-                widget = TrustActionEditView.show(messages, constants, helpPanel, elements);
-                ((TrustActionEditView) widget).init();
-                break;
-            case EDIT_TRUST:
-                widget = TrustEditView.getInstance(messages, constants, helpPanel, elements);
-                ((TrustEditView) widget).init();
-                break;
-
-            case BUDGET:
-                widget = BudgetView.getInstance(messages, constants, helpPanel, elements, callback);
-                ((BudgetView) widget).init();
-                break;
-            case BUDGET_SIMPLE_TRACKING:
-                widget = BudgetSimpleTracking.getInstance(messages, constants, elements);
-                ((BudgetSimpleTracking) widget).init();
-                break;
-
-            case ADD_PERSON:
-                widget = PersonEditView.getInstance(constants, messages, helpPanel, callback, elements);
-                ((PersonEditView) widget).init(null);
-                break;
-            case FIND_PERSON:
-                widget = PersonSearchView.getInstance(callback, messages, constants, elements);
-                break;
-            case SHOW_MONTH:
-                widget = MonthView.getInstance(constants, messages, callback, elements);
-                ((MonthView) widget).init();
-                break;
-            case SHOW_MONTH_DETAILS:
-                widget = MonthDetailsView.getInstance(constants, messages, elements);
-                ((MonthDetailsView) widget).init();
-                break;
-            case SHOW_MEMBERS:
-                widget = ShowMembershipView.getInstance(messages, constants, callback, helpPanel, elements);
-                ((ShowMembershipView) widget).initShowMembers();
-                break;
-            case SHOW_ALL_MEMBERS:
-                widget = ShowMembershipView.getInstance(messages, constants, callback, helpPanel, elements);
-                ((ShowMembershipView) widget).initShowAll();
-                break;
-            case SHOW_CLASS_MEMBERS:
-                widget = ShowMembershipView.getInstance(messages, constants, callback, helpPanel, elements);
-                ((ShowMembershipView) widget).initShowClassMembers();
-                break;
-            case SHOW_TRAINING_MEMBERS:
-                widget = ShowMembershipView.getInstance(messages, constants, callback, helpPanel, elements);
-                ((ShowMembershipView) widget).initShowTrainingMembers();
-                break;
-            case TRUST_STATUS:
-                widget = TrustStatusView.getInstance(constants, messages, helpPanel, callback, elements);
-                ((TrustStatusView) widget).init();
-                break;
-            case REPORT_ACCOUNTTRACK:
-                widget = ReportAccounttracking.getInstance(constants, messages, elements);
-                break;
-            case REPORT_MEMBER_PER_YEAR:
-                widget = ReportMembersBirth.getInstance(constants, messages, helpPanel, elements);
-                ((ReportMembersBirth) widget).init();
-                break;
-            case REPORT_MEMBER_PER_YEAR_GENDER:
-                widget = ReportMembersBirthGender.getInstance(constants, messages, helpPanel, elements);
-                ((ReportMembersBirthGender) widget).init();
-                break;
-
-            case REPORT_ADDRESSES:
-                widget = ReportMembersAddresses.getInstance(constants, messages, helpPanel, elements);
-                ((ReportMembersAddresses) widget).init();
-                break;
-            case REPORT_SELECTEDLINES:
-                widget = ReportAccountlines.getInstance(constants, messages, helpPanel, elements);
-                break;
-            case REPORT_LETTER:
-                widget = ReportMassLetters.getInstance(constants, messages, elements, callback);
-                ((ReportMassLetters) widget).init();
-                break;
-            case REPORT_ODF_LETTER:
-                widget = ReportMassLetterODF.getInstance(constants, messages, elements);
-                ((ReportMassLetterODF) widget).init();
-                break;
-
-            case REPORT_EMAIL:
-                widget = ReportMail.getInstance(constants, messages, elements);
-                ((ReportMail) widget).init();
-                break;
-            case REPORT_USERS_EMAIL:
-                widget = ReportUsersEmail.getInstance(constants, messages, helpPanel, elements);
-                ((ReportUsersEmail) widget).init();
-                break;
-            case REPORT_YEAR:
-                widget = GeneralReportView.getInstance(messages, constants, elements);
-                ((GeneralReportView) widget).initSumYears();
-                break;
-            case REPORT_BELONGINGS_RESPONSIBLE:
-                widget = GeneralReportView.getInstance(messages, constants, elements);
-                ((GeneralReportView) widget).initBelongings();
-                break;
-
-            case REPORT_EARNINGS_YEAR:
-                widget = EarningsAndCostPie.getInstance(messages, constants, elements);
-                break;
-            case MANAGE_FILES:
-                widget = ManageFilesView.getInstance(constants, messages, elements);
-                ((ManageFilesView) widget).init();
-                break;
-
-            case ABOUT:
-                widget = AboutView.getInstance(constants, messages, elements, callback, helpTexts);
-                title = title + " - " + AboutView.CLIENT_VERSION;
-                break;
-            case SERVERINFO:
-                widget = SystemInfoView.getInstance(constants, messages);
-                break;
-            case SESSIONINFO:
-                widget = SessionsView.getInstance(constants, elements, messages);
-                break;
-            case LOGGING:
-                widget = LogView.getInstance(messages, constants, elements);
-                ((LogView) widget).init();
-                break;
-            case BACKUP:
-                widget = BackupView.getInstance(constants, messages, elements);
-                ((BackupView) widget).init();
-                break;
-            case LOGOUT:
-                widget = LogoutView.getInstance(constants, messages, elements);
-                return;
-            case EDIT_PRICES:
-                widget = MembershipPriceEditView.getInstance(messages, constants, elements);
-                ((MembershipPriceEditView) widget).init();
-                break;
-            case EDIT_SEMESTER:
-                widget = SemesterEditView.getInstance(messages, constants, elements);
-                ((SemesterEditView) widget).init();
-                break;
-            case END_YEAR:
-                widget = YearEndView.getInstance(constants, messages, callback, elements);
-                ((YearEndView) widget).init();
-                break;
-            case IMPORT_PERSON:
-                widget = ImportPersonView.getInstance(constants, messages, elements);
-                break;
-            case EXPORT_PERSON:
-                widget = ExportPersonView.getInstance(constants, messages, elements);
-                ((ExportPersonView) widget).init();
-                break;
-            case ADMIN_INSTALLS:
-                widget = AdminInstallsView.getInstance(messages, constants, elements);
-                ((AdminInstallsView) widget).init();
-                break;
-            case ADMIN_STATS:
-                widget = AdminStatsView.getInstance(messages, constants, elements);
-                ((AdminStatsView) widget).init();
-                break;
-            case ADMIN_SQL:
-                widget = AdminSQLView.getInstance(messages, constants, elements);
-                ((AdminSQLView) widget).init();
-                break;
-            case ADMIN_OPERATIONS:
-                widget = AdminOperationsView.getInstance(messages, constants, elements);
-                ((AdminOperationsView) widget).init();
-                break;
-            case ADMIN_NORWEGIAN_CITIES:
-                widget = AdminNorwegianCityImportView.getInstance(messages, constants, elements);
-                break;
-
-            case EXPORT_ACCOUNTING:
-                widget = AccountExportView.getInstance(constants, messages, elements);
-                break;
-            case EDIT_MASSLETTER_SIMPLE:
-                widget = SimpleMassletterEditView.getInstance(constants, messages, elements);
-                ((SimpleMassletterEditView) widget).init();
-                break;
-            case CALCULATOR:
-                createCalculatorPopup();
-                return;
-            case PORTAL_MEMBERLIST:
-                widget = PortalMemberlist.getInstance(constants, messages, elements, callback);
-                ((PortalMemberlist) widget).init();
-                break;
-            case PORTAL_PROFILE_GALLERY:
-                widget = PortalGallery.getInstance(constants, messages);
-                ((PortalGallery) widget).init();
-                break;
-            case PORTAL_SETTINGS:
-                widget = PortalSettings.getInstance(constants, messages, elements);
-                ((PortalSettings) widget).init();
-                break;
-            case OWNINGS_LIST:
-                widget = OwningsListView.getInstance(constants, messages, elements, helpPanel, callback);
-                ((OwningsListView) widget).init();
-                break;
-            case OWNINGS_REGISTER:
-                widget = RegisterOwningsView.getInstance(constants, messages, elements, callback);
-                ((RegisterOwningsView) widget).init();
-                break;
-            case REQUEST_DELETE:
-                widget = RequestDeleteView.getInstance(constants, messages, elements);
-                break;
-            case EVENT_ITEMS:
-                widget = EventManagementListView.getInstance(constants, messages, elements, callback);
-                ((EventManagementListView) widget).init();
-                break;
-            case EVENT_EDIT:
-                widget = EventManagementView.getInstance(constants, messages, elements);
-                if (params != null && params.length > 0) {
-                    ((EventManagementView) widget).init(params[0]);
-                } else {
-                    ((EventManagementView) widget).init();
-                }
-                break;
-            case EVENT_PARTISIPANTS_LIST:
-                widget = EventPartisipantsListView.getInstance(constants, messages, elements);
-                ((EventPartisipantsListView)widget).init(params[0]);
-                break;
-            case EVENT_LIST:
-                widget = EventListView.getInstance(constants, messages, elements, callback);
-                ((EventListView) widget).init();
-                break;
-            case IMPORT_FILTER:
-                widget = FilerImportFileView.getInstance(messages, constants, elements);
-                break;
-            case ADMIN_BACKUP_OPERATIONS:
-                widget = AdminBackupView.getInstance(messages, constants, elements);
-                break;
-            }
-
-            if (widget == null) {
-                Window.alert("No action");
-                return;
-            }
-            setActiveWidget(widget);
-            if (widget.getTitle() != null && widget.getTitle().length() > 0) {
-                Window.setTitle(widget.getTitle());
-            } else {
-                Window.setTitle(title);
-            }
-            helpPanel.setCurrentWidget(widget, action);
-        }
-    }
-
-    private void setActiveWidget(Widget widget) {
+    static void setActiveWidget(Widget widget) {
         activeView.clear();
         activeView.add(widget, DockPanel.CENTER);
         activeView.setCellHeight(widget, "100%");
@@ -664,36 +305,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         widget.setVisible(true);
     }
 
-    public void createCalculatorPopup() {
-
-        final DialogBox db = new DialogBox();
-        db.addStyleName("calculator");
-        db.setModal(false);
-        db.setText(elements.menuitem_calculator());
-
-        VerticalPanel vp = new VerticalPanel();
-        SimpleCalcPanel simpleCalcPanel = new SimpleCalcPanel();
-        vp.add(simpleCalcPanel);
-
-        Button okButton = new Button(elements.ok());
-        okButton.addStyleName("buttonrow");
-        okButton.addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                db.hide();
-            }
-        });
-        vp.add(okButton);
-
-        db.setWidget(vp);
-        db.center();
-    }
-
     public void openDetails(String id) {
         HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
         LineEditView widget = LineEditView.getInstance(this, messages, constants, helpPanel, elements);
         widget.init(id);
-        
+
         setActiveWidget(widget);
         helpPanel.setCurrentWidget(widget, WidgetIds.LINE_EDIT_VIEW);
         Window.setTitle(elements.menuitem_showmonthdetails());
