@@ -95,6 +95,7 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
     private void addDelayedCheck() {
         ClickHandler handler = new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 if (timer != null) {
                     return;
@@ -123,6 +124,7 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
     public void addDelayedKeyUpHandler(final TextBox box) {
 
         KeyUpHandler delayedHandler = new KeyUpHandler() {
+            @Override
             public void onKeyUp(KeyUpEvent event) {
                 if (timer != null) {
                     return;
@@ -167,6 +169,7 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 fillResponse(responseObj.isArray());
             }
@@ -215,10 +218,12 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
         }
     }
 
+    @Override
     public void onKeyUp(KeyUpEvent event) {
         filter();
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Image editImage = (Image) event.getSource();
 
@@ -229,6 +234,7 @@ public class OwningsListView extends Composite implements KeyUpHandler, ClickHan
         new OwningsPopup(id, elements, constants, messages, helpPanel, callback, this);
     }
 
+    @Override
     public void reload() {
         init();
     }

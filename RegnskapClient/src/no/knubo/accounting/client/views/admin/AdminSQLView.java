@@ -74,6 +74,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
         initWidget(vp);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == insertButton) {
             doInsert();
@@ -88,6 +89,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
 
                 ServerResponse callback = new ServerResponse() {
 
+                    @Override
                     public void serverResponse(JSONValue responseObj) {
                         new SQLRunner(responseObj.isObject());
                     }
@@ -99,6 +101,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
 
                 ServerResponse callback = new ServerResponse() {
 
+                    @Override
                     public void serverResponse(JSONValue responseObj) {
                         init();
                     }
@@ -117,6 +120,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 insertSQLText.setText("");
                 init();
@@ -132,6 +136,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
 
@@ -245,6 +250,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
             }
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             if (event.getSource() == closeButton) {
                 hide();
@@ -281,6 +287,7 @@ public class AdminSQLView extends Composite implements ClickHandler {
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue responseObj) {
                     JSONObject obj = responseObj.isObject();
 

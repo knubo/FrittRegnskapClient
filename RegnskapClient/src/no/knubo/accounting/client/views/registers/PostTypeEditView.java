@@ -121,6 +121,7 @@ public class PostTypeEditView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 JSONArray array = parse.isArray();
 
@@ -189,7 +190,8 @@ public class PostTypeEditView extends Composite implements ClickHandler {
         table.getRowFormatter().setStyleName(row, style);
     }
 
-	public void onClick(ClickEvent event) {
+	@Override
+    public void onClick(ClickEvent event) {
     	Widget sender = (Widget) event.getSource();
 
 		String id = null;
@@ -246,6 +248,7 @@ public class PostTypeEditView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 JSONObject respObj = parse.isObject();
                 if ("1".equals(Util.str(respObj.get("result")))) {
@@ -372,6 +375,7 @@ public class PostTypeEditView extends Composite implements ClickHandler {
             accountBox.setEnabled(false);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
         	Widget sender = (Widget) event.getSource();
 
@@ -395,6 +399,7 @@ public class PostTypeEditView extends Composite implements ClickHandler {
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue parse) {
                     JSONObject object = parse.isObject();
 

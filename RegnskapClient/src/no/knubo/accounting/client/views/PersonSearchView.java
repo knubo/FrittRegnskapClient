@@ -102,6 +102,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
         initWidget(dp);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
         if (personPick == null) {
@@ -124,6 +125,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
         caller.editPerson(id);
     }
 
+    @Override
     public void doSearch(StringBuffer searchRequest) {
         doClear();
 
@@ -133,6 +135,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
@@ -207,6 +210,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
 
     }
 
+    @Override
     public void doClear() {
         while (resultTable.getRowCount() > 1) {
             resultTable.removeRow(1);

@@ -94,6 +94,7 @@ public class ReportMembersAddresses extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
@@ -153,6 +154,7 @@ public class ReportMembersAddresses extends Composite implements ClickHandler {
         AuthResponder.get(constants, messages, callback, "reports/membership_addresses.php?year=" + year);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (!valiateYear()) {
             return;

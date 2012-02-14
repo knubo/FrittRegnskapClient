@@ -77,6 +77,7 @@ public class BudgetGraphView extends DialogBox implements Runnable, ClickHandler
         VisualizationUtils.loadVisualizationApi(this, LineChart.PACKAGE);
     }
 
+    @Override
     public void run() {
         if (chart != null) {
             chartHolder.remove(chart);
@@ -97,12 +98,14 @@ public class BudgetGraphView extends DialogBox implements Runnable, ClickHandler
         chart.draw(data, opts);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == closeButton) {
             hide();
         }
     }
 
+    @Override
     public void onChange(ChangeEvent event) {
         String selectedText = Util.getSelectedText(sizeListbox);
         int xIndex = selectedText.indexOf('x');

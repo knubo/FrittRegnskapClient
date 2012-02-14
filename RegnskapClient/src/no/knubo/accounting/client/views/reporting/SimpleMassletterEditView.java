@@ -90,6 +90,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
     private void initFonts() {
         ServerResponse init = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 fonts = responseObj.isArray();
                 initAddtext();
@@ -212,6 +213,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
     private void initImages() {
         ServerResponse init = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 images = responseObj.isArray();
             }
@@ -220,6 +222,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
     }
 
+    @Override
     public void onKeyDown(KeyDownEvent event) {
         if (event.isControlKeyDown() && event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 
@@ -287,6 +290,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             box.setFocus(true);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             String text = Util.getSelectedText(box);
             String allText = editArea.getText();
@@ -331,6 +335,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
             calculateSelection();
         }
 
+        @Override
         public void onKeyDown(KeyDownEvent event) {
 
             if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
@@ -514,6 +519,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
 
         ChangeHandler imageSelect = new ChangeHandler() {
 
+            @Override
             public void onChange(ChangeEvent event) {
                 String file = Util.getSelected(imageListbox);
                 imagePreview.setUrl(constants.baseurl() + "files/files.php?action=image&file=" + file);
@@ -542,6 +548,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         final NamedButton cancelButton = new NamedButton("cancel", elements.cancel());
         ClickHandler clickHandler = new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 if (event.getSource() == useButton) {
                     MasterValidator mv = new MasterValidator();
@@ -634,6 +641,7 @@ public class SimpleMassletterEditView extends Composite implements KeyDownHandle
         showAutofill(autoFill);
     }
 
+    @Override
     public void onKeyPress(KeyPressEvent event) {
         if (event.getCharCode() == '#') {
             AutoFill autofill = null;

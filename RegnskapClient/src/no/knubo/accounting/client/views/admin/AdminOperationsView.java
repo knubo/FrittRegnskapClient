@@ -101,6 +101,7 @@ public class AdminOperationsView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
 
@@ -123,6 +124,7 @@ public class AdminOperationsView extends Composite implements ClickHandler {
         AuthResponder.get(constants, messages, callback, "admin/siteadmin.php?action=init");
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == saveButton) {
             doAction("save");
@@ -156,6 +158,7 @@ public class AdminOperationsView extends Composite implements ClickHandler {
         Util.addPostParam(sb, "content", richBodyBox.getHTML());
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 statusLabel.setText(messages.save_ok());
                 Util.timedMessage(statusLabel, "", 8);

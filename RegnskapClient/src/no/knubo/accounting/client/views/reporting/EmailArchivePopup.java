@@ -77,6 +77,7 @@ public class EmailArchivePopup extends DialogBox implements ClickHandler {
     public void init() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
 
@@ -98,6 +99,7 @@ public class EmailArchivePopup extends DialogBox implements ClickHandler {
         AuthResponder.get(constants, messages, callback, "reports/email.php?action=archive_list");
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == closeButton) {
             hide();
@@ -126,6 +128,7 @@ public class EmailArchivePopup extends DialogBox implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 deleteSelected();
             }
@@ -136,6 +139,7 @@ public class EmailArchivePopup extends DialogBox implements ClickHandler {
     private void archiveEdit() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
 
                 boolean doEdit = Window.confirm(messages.email_edit_confirm());

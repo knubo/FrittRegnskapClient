@@ -195,6 +195,7 @@ public class RegisterOwningsView extends Composite implements ClickHandler, KeyU
         owning.setFocus(true);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         MasterValidator mv = new MasterValidator();
 
@@ -251,6 +252,7 @@ public class RegisterOwningsView extends Composite implements ClickHandler, KeyU
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 boolean ok = Util.getBoolean(responseObj.isObject().get("status"));
 
@@ -281,6 +283,7 @@ public class RegisterOwningsView extends Composite implements ClickHandler, KeyU
         AuthResponder.post(constants, messages, callback, sb, "accounting/belongings.php");
     }
 
+    @Override
     public void onKeyUp(KeyUpEvent event) {
         double purchase = getPurchasePrice();
         int years = getDeprecationYears();

@@ -40,6 +40,7 @@ public class SessionsView extends Composite {
         
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
                 

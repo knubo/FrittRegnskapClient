@@ -322,6 +322,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == abortButton) {
             hide();

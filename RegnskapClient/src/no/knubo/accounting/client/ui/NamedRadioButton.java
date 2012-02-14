@@ -21,6 +21,7 @@ public class NamedRadioButton extends RadioButton implements Validateable {
         super.setText(text);
     }
 
+    @Override
     public void setErrorText(String text) {
         setTitle(text);
         setText(originalText + " " + text);
@@ -34,6 +35,7 @@ public class NamedRadioButton extends RadioButton implements Validateable {
         }
     }
 
+    @Override
     public void setMouseOver(String mouseOver) {
         setTitle(mouseOver);
     }

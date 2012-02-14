@@ -125,6 +125,7 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == cancelButton) {
             hide();
@@ -170,6 +171,7 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
 
         ServerResponse rh = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 if (responseObj == null) {
                     Window.alert("No server result from save of budget membership. They were probably not saved.");
@@ -439,6 +441,7 @@ public class BudgetMembershipCalculatorView extends DialogBox implements ClickHa
         return yearCol;
     }
 
+    @Override
     public void onKeyUp(KeyUpEvent event) {
         MasterValidator mv = validateInputs();
         if (!mv.validateStatus()) {

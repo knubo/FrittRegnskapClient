@@ -69,6 +69,7 @@ public class EventManagementListView extends Composite implements ClickHandler {
 
         ServerResponse response = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 fillList(responseObj);
             }
@@ -102,6 +103,7 @@ public class EventManagementListView extends Composite implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
 
         if (event.getSource() == newButton) {

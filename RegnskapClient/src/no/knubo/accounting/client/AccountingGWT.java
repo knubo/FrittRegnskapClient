@@ -59,6 +59,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     /**
      * This is the entry point method.
      */
+    @Override
     public void onModuleLoad() {
         messages = (I18NAccount) GWT.create(I18NAccount.class);
         constants = (Constants) GWT.create(Constants.class);
@@ -305,6 +306,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         widget.setVisible(true);
     }
 
+    @Override
     public void openDetails(String id) {
         HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
         LineEditView widget = LineEditView.getInstance(this, messages, constants, helpPanel, elements);
@@ -315,6 +317,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         Window.setTitle(elements.menuitem_showmonthdetails());
     }
 
+    @Override
     public void viewMonth(int year, int month) {
         MonthView instance = MonthView.getInstance(constants, messages, this, elements);
 
@@ -326,6 +329,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         Window.setTitle(elements.menuitem_showmonth());
     }
 
+    @Override
     public void searchPerson() {
         PersonSearchView widget = PersonSearchView.getInstance(this, messages, constants, elements);
         setActiveWidget(widget);
@@ -333,6 +337,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         Window.setTitle(elements.menuitem_showmonth());
     }
 
+    @Override
     public void viewMonth() {
         MonthView instance = MonthView.getInstance(constants, messages, this, elements);
 
@@ -344,6 +349,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         Window.setTitle(elements.menuitem_showmonth());
     }
 
+    @Override
     public void editPerson(String id) {
         HelpPanel helpPanel = HelpPanel.getInstance(constants, messages, elements, helpTexts);
 
@@ -373,16 +379,19 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         }
     }
 
+    @Override
     public void openView(WidgetIds view, String title) {
         new Commando(this, view, title).execute();
     }
 
+    @Override
     public void openMassletterEditSimple(String filename, String response) {
         new Commando(this, WidgetIds.EDIT_MASSLETTER_SIMPLE, elements.title_edit_massletter(), filename, response)
                 .execute();
 
     }
 
+    @Override
     public void setReducedMode(int v) {
         reducedMode = v;
         Util.log("Reduced mode:" + v);
@@ -393,6 +402,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         }
     }
 
+    @Override
     public void openEvent(String id) {
         if (id != null) {
             new Commando(this, WidgetIds.EVENT_EDIT, elements.event_edit(), id).execute();
@@ -402,6 +412,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     }
 
+    @Override
     public void openEventPartisipants(String id) {
         new Commando(this, WidgetIds.EVENT_PARTISIPANTS_LIST, elements.event_list_partisipants(), id).execute();
     }

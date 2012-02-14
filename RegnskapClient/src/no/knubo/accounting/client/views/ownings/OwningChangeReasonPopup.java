@@ -113,6 +113,7 @@ public class OwningChangeReasonPopup extends DialogBox implements ClickHandler {
         center();
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == closeButton) {
             hide();

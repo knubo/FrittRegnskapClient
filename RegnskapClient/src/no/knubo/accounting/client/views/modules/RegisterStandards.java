@@ -58,6 +58,7 @@ public class RegisterStandards {
     public void fetchInitalData(final boolean fillFields, final RegisterStandardsLoaded... registerStandardsLoaded) {
 
         ServerResponse rh = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue jsonValue) {
 
                 JSONObject root = jsonValue.isObject();

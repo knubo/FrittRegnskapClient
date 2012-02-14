@@ -50,6 +50,7 @@ public class ErrorReportingWindow {
     private static ClickHandler createCloseHandler(final DialogBox dialogBox) {
         return new ClickHandler() {
             
+            @Override
             public void onClick(ClickEvent event) {
                 dialogBox.hide();
             }

@@ -152,6 +152,7 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
         return image;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         String id = event.getRelativeElement().getId();
 

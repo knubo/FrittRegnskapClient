@@ -51,6 +51,7 @@ public class AdminStatsView extends Composite {
     public void init() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
 

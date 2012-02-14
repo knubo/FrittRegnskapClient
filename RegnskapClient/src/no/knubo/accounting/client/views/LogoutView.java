@@ -53,6 +53,7 @@ public class LogoutView extends DialogBox implements ClickHandler, ServerRespons
         setWidget(dp);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == logoutButton) {
             StringBuffer sb = new StringBuffer();
@@ -64,6 +65,7 @@ public class LogoutView extends DialogBox implements ClickHandler, ServerRespons
         }
     }
 
+    @Override
     public void serverResponse(JSONValue val) {
         JSONObject obj = val.isObject();
 

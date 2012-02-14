@@ -54,6 +54,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
     /**
      * This is the entry point method.
      */
+    @Override
     public void onModuleLoad() {
         messages = (I18NAccount) GWT.create(I18NAccount.class);
         constants = (Constants) GWT.create(Constants.class);
@@ -96,6 +97,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
     private void addEnterGivesLogin() {
         NativePreviewHandler handler = new NativePreviewHandler() {
 
+            @Override
             public void onPreviewNativeEvent(NativePreviewEvent event) {
                 NativeEvent nativeEvent = event.getNativeEvent();
 
@@ -113,6 +115,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
         elem.setInnerHTML(text);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (loginButton == event.getSource()) {
             doLogin();
@@ -139,6 +142,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
 
         ServerResponse callback = new ServerResponse() {
             
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject obj = responseObj.isObject();
                 
@@ -203,6 +207,7 @@ public class Login implements EntryPoint, ClickHandler, ServerResponse {
                 + "&password=" + password);
     }
 
+    @Override
     public void serverResponse(JSONValue resonseObj) {
         JSONObject isObject = resonseObj.isObject();
 

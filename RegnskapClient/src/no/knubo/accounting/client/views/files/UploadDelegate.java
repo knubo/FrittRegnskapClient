@@ -59,6 +59,7 @@ public class UploadDelegate {
 
         panel.add(new Button(elements.upload_file(), new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 callback.preUpload();
 
@@ -71,6 +72,7 @@ public class UploadDelegate {
         panel.add(statusLabel);
 
         form.addSubmitHandler(new SubmitHandler() {
+            @Override
             public void onSubmit(SubmitEvent event) {
                 if (tb.getText().length() == 0) {
                     Window.alert("The text box must not be empty");
@@ -81,6 +83,7 @@ public class UploadDelegate {
 
         form.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
+            @Override
             public void onSubmitComplete(SubmitCompleteEvent event) {
                 String result = event.getResults();
 

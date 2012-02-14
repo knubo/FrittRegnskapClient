@@ -114,6 +114,7 @@ public class StructuralTableEditDialogBox extends DialogBox implements ClickHand
         return meta;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == cancelButton) {
             hide();
@@ -176,6 +177,7 @@ public class StructuralTableEditDialogBox extends DialogBox implements ClickHand
         editCol = x;
     }
 
+    @Override
     public void onKeyPress(KeyPressEvent event) {
         resizeTextbox();
     }
@@ -184,6 +186,7 @@ public class StructuralTableEditDialogBox extends DialogBox implements ClickHand
         editBox.setVisibleLength(editBox.getText().length() + 1);
     }
 
+    @Override
     public void onKeyDown(KeyDownEvent event) {
         if (event.getNativeKeyCode() == KeyCodes.KEY_TAB) {
             int cols = data.getCellCount(0);

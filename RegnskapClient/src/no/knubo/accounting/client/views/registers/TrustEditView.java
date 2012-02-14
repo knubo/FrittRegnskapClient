@@ -87,6 +87,7 @@ public class TrustEditView extends Composite implements ClickHandler, CacheCallb
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
     	Widget sender = (Widget) event.getSource();
         if (editFields == null) {
@@ -202,6 +203,7 @@ public class TrustEditView extends Composite implements ClickHandler, CacheCallb
             trustBox.setEnabled(false);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
         	Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
@@ -222,6 +224,7 @@ public class TrustEditView extends Composite implements ClickHandler, CacheCallb
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue parse) {
                     JSONObject resobj = parse.isObject();
                     String result = Util.str(resobj.get("result"));
@@ -254,6 +257,7 @@ public class TrustEditView extends Composite implements ClickHandler, CacheCallb
         }
     }
 
+    @Override
     public void flushCompleted() {
         me.init();
     }

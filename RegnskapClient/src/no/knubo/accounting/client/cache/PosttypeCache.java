@@ -52,6 +52,7 @@ public class PosttypeCache implements Registry {
 
         ServerResponse handlerTypes = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue jsonValue) {
                 JSONArray array = jsonValue.isArray();
 
@@ -101,6 +102,7 @@ public class PosttypeCache implements Registry {
 
         ServerResponse handlerMembershipPayment = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
@@ -188,6 +190,7 @@ public class PosttypeCache implements Registry {
         }
     }
 
+    @Override
     public boolean keyExists(String key) {
         return typeGivesDescription.containsKey(key);
     }

@@ -228,6 +228,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         return table;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == updateButton) {
             save();
@@ -301,6 +302,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 JSONObject object = parse.isObject();
                 if ("1".equals(Util.str(object.get("result")))) {
@@ -323,6 +325,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         /* Fills first semesters, then standard values */
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONArray arr = value.isArray();
 
@@ -343,6 +346,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
     private void fillStandardValues() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
@@ -387,6 +391,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
 
     }
 
+    @Override
     public void selectedAccounts(String accounts, String title) {
         if (title.equals(elements.setup_expected_income_or_cost_post())) {
             setFordringerPosts(accounts);

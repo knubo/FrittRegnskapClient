@@ -92,6 +92,7 @@ public class IntegrationView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 parse(responseObj);
                 
@@ -109,6 +110,7 @@ public class IntegrationView extends Composite implements ClickHandler {
         AuthResponder.post(constants, messages, callback, params, "accounting/integration.php");
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == enableButton) {
             doAction("enable");

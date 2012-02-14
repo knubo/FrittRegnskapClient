@@ -62,6 +62,7 @@ public class ReportUsersEmail extends Composite {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 JSONArray array = parse.isArray();
 

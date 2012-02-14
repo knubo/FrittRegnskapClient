@@ -98,6 +98,7 @@ public class ReportMassLetterODF extends Composite implements ClickHandler, Uplo
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 JSONObject data = parse.isObject();
                 setYears(data.get("years").isArray());
@@ -135,6 +136,7 @@ public class ReportMassLetterODF extends Composite implements ClickHandler, Uplo
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (joinButton == event.getSource()) {
             for (RadioButton rb : radiobuttons) {
@@ -159,14 +161,17 @@ public class ReportMassLetterODF extends Composite implements ClickHandler, Uplo
                 "_blank", "");
     }
 
+    @Override
     public void uploadComplete() {
         init();
     }
 
+    @Override
     public boolean uploadBody(String body) {
         return false;
     }
 
+    @Override
     public void preUpload() {
         /* Not needed */
     }

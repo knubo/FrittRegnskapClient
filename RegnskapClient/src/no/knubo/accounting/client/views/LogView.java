@@ -58,6 +58,7 @@ public class LogView extends Composite {
         }
 
         ServerResponse resphandler = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue jsonValue) {
                 JSONArray array = jsonValue.isArray();
 

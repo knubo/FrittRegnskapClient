@@ -162,6 +162,7 @@ public class RegisterHappeningView extends Composite implements ClickHandler, Ch
         happeningCache.fill(postListBox.getListbox());
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (!validateSave()) {
             return;
@@ -197,6 +198,7 @@ public class RegisterHappeningView extends Composite implements ClickHandler, Ch
         }
 
         ServerResponse callback = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue value) {
                 handleSaveResponse(value);
             }
@@ -251,6 +253,7 @@ public class RegisterHappeningView extends Composite implements ClickHandler, Ch
         return mv.validateStatus();
     }
 
+    @Override
     public void onChange(ChangeEvent event) {
     	Widget sender = (Widget) event.getSource();
         if (sender == postListBox.getListbox()) {
@@ -260,10 +263,12 @@ public class RegisterHappeningView extends Composite implements ClickHandler, Ch
         }
     }
 
+    @Override
     public void onFocus(Validateable me) {
         /* Not used */
     }
 
+    @Override
     public void onLostFocus(ErrorLabelWidget me) {
         /* Re-calculate sums */
 

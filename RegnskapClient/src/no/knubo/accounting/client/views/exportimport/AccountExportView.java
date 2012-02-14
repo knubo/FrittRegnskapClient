@@ -62,6 +62,7 @@ public class AccountExportView extends Composite implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         MasterValidator mv = new MasterValidator();
         mv.mandatory(messages.required_field(), yearTextBox);

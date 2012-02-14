@@ -91,7 +91,8 @@ public class HappeningsView extends Composite implements ClickHandler,
 		return me;
 	}
 
-	public void onClick(ClickEvent event) {
+	@Override
+    public void onClick(ClickEvent event) {
 		Widget sender = (Widget) event.getSource();
 		
 		if (editFields == null) {
@@ -290,7 +291,8 @@ public class HappeningsView extends Composite implements ClickHandler,
 			countReq.setValue(required);
 		}
 
-	    public void onClick(ClickEvent event) {
+	    @Override
+        public void onClick(ClickEvent event) {
 	    	Widget sender = (Widget) event.getSource();
 	    	
 			if (sender == cancelButton) {
@@ -320,7 +322,8 @@ public class HappeningsView extends Composite implements ClickHandler,
 
 			ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
-				public void serverResponse(JSONValue value) {
+				@Override
+                public void serverResponse(JSONValue value) {
 					if (sendId == null) {
 						if (value == null) {
 							mainErrorLabel
@@ -347,7 +350,8 @@ public class HappeningsView extends Composite implements ClickHandler,
 					hide();
 				}
 
-				public void onError() {
+				@Override
+                public void onError() {
 					mainErrorLabel.setHTML(messages.save_failed());
 					Util.timedMessage(mainErrorLabel, "", 5);
 				}
@@ -380,7 +384,8 @@ public class HappeningsView extends Composite implements ClickHandler,
 		}
 	}
 
-	public void flushCompleted() {
+	@Override
+    public void flushCompleted() {
 		me.init();
 	}
 }

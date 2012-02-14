@@ -93,6 +93,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 fillInstalls(responseObj.isArray());
             }
@@ -155,6 +156,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         return "???";
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == newButton) {
             new NewInstallPopup(this, messages, elements, constants);
@@ -176,6 +178,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 editFields.setEditData(responseObj.isObject());
                 editFields.show();
@@ -412,6 +415,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
@@ -441,6 +445,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             if (choice) {
                 ServerResponse callback = new ServerResponse() {
 
+                    @Override
                     public void serverResponse(JSONValue responseObj) {
                         mainErrorLabel.setText(messages.sendt_portal_letter());
                     }
@@ -457,6 +462,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             if (choice) {
                 ServerResponse callback = new ServerResponse() {
 
+                    @Override
                     public void serverResponse(JSONValue responseObj) {
                         mainErrorLabel.setText(messages.sendt_welcome_letter());
                     }
@@ -487,6 +493,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             if (choice) {
                 ServerResponse callback = new ServerResponse() {
 
+                    @Override
                     public void serverResponse(JSONValue responseObj) {
                         hide();
                     }
@@ -501,6 +508,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
         public void doSuLogin() {
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue responseObj) {
                     JSONObject object = responseObj.isObject();
                     String secret = Util.str(object.get("secret"));
@@ -533,6 +541,7 @@ public class AdminInstallsView extends Composite implements ClickHandler {
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue value) {
                     JSONObject object = value.isObject();
 

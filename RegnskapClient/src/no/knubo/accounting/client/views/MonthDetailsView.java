@@ -95,6 +95,7 @@ public class MonthDetailsView extends Composite implements ClickHandler, ChangeH
         AuthResponder.get(constants, messages, me, "accounting/showmonthpost.php");
     }
 
+    @Override
     public void serverResponse(JSONValue value) {
         JSONArray array = value.isArray();
 
@@ -107,6 +108,7 @@ public class MonthDetailsView extends Composite implements ClickHandler, ChangeH
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
 
         Widget sender = (Widget) event.getSource();
@@ -132,6 +134,7 @@ public class MonthDetailsView extends Composite implements ClickHandler, ChangeH
 
     }
 
+    @Override
     public void onChange(ChangeEvent event) {
         ListBox listBox = (ListBox) event.getSource();
 

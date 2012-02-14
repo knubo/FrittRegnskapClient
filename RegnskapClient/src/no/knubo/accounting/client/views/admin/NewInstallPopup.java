@@ -107,6 +107,7 @@ public class NewInstallPopup extends DialogBox implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 hide();
                 adminInstallsView.init();
@@ -116,6 +117,7 @@ public class NewInstallPopup extends DialogBox implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == closeButton) {
             hide();
@@ -152,11 +154,13 @@ public class NewInstallPopup extends DialogBox implements ClickHandler {
 
         ServerResponse callback = new ServerResponseWithValidation() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
                 callInstall(Util.str(object.get("secret")));
             }
 
+            @Override
             public void validationError(List<String> fields) {
                 StringBuilder sb = new StringBuilder();
                 for (String field : fields) {

@@ -81,6 +81,7 @@ public class ReportMembersBirthGender extends Composite implements ClickHandler 
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
@@ -228,6 +229,7 @@ public class ReportMembersBirthGender extends Composite implements ClickHandler 
         return 0;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         init();
     }

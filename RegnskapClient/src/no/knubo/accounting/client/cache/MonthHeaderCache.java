@@ -37,6 +37,7 @@ public class MonthHeaderCache implements ServerResponse {
         AuthResponder.get(constants, messages, this, "registers/monthcolumns.php");
     }
 
+    @Override
     public void serverResponse(JSONValue jsonValue) {
 
         JSONArray array = jsonValue.isArray();

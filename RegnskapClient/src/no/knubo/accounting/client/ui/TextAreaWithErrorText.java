@@ -98,6 +98,7 @@ public class TextAreaWithErrorText extends ErrorLabelWidget implements Validatea
      */
     public void addDelayedKeyUpHandler(final KeyUpHandler handler) {
         KeyUpHandler delayedHandler = new KeyUpHandler() {
+            @Override
             public void onKeyUp(KeyUpEvent event) {
                 if (timer != null) {
                     return;
@@ -121,6 +122,7 @@ public class TextAreaWithErrorText extends ErrorLabelWidget implements Validatea
         final ErrorLabelWidget me = this;
         FocusHandler focusHandler = new FocusHandler() {
 
+            @Override
             public void onFocus(FocusEvent event) {
                 callback.onFocus(me);
             }
@@ -128,6 +130,7 @@ public class TextAreaWithErrorText extends ErrorLabelWidget implements Validatea
 
         BlurHandler blurHandler = new BlurHandler() {
 
+            @Override
             public void onBlur(BlurEvent event) {
                 callback.onLostFocus(me);
             }

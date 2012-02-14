@@ -154,10 +154,12 @@ public class EmailSettingsView extends Composite implements ClickHandler {
     private void loadStyle() {
         ServerResponseString callback = new ServerResponseString() {
             
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 /* Unused */
             }
             
+            @Override
             public void serverResponse(String response) {
                 if(response.trim().length() == 0) {
                     settingsStil.setText(EmailDefaultStyle.DEFAULT);
@@ -179,6 +181,7 @@ public class EmailSettingsView extends Composite implements ClickHandler {
         }
 
         ServerResponse callback = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
@@ -221,6 +224,7 @@ public class EmailSettingsView extends Composite implements ClickHandler {
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -267,6 +271,7 @@ public class EmailSettingsView extends Composite implements ClickHandler {
         Util.addPostParam(params, "data", txtToSave);
         ServerResponse callback = new ServerResponse() {
             
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 Util.timedMessage(settingStatusLabel, "", 20);
                 settingStatusLabel.setText(messages.change_need_restart());
@@ -285,6 +290,7 @@ public class EmailSettingsView extends Composite implements ClickHandler {
         
         ServerResponse callback = new ServerResponse() {
             
+            @Override
             public void serverResponse(JSONValue responseObj) {
                loadStyle();
             }
@@ -343,6 +349,7 @@ public class EmailSettingsView extends Composite implements ClickHandler {
             setWidget(dp);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
@@ -363,6 +370,7 @@ public class EmailSettingsView extends Composite implements ClickHandler {
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue value) {
                     JSONObject object = value.isObject();
 
@@ -391,6 +399,7 @@ public class EmailSettingsView extends Composite implements ClickHandler {
             this.id = id;
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue responseObj) {
                     JSONObject one = responseObj.isObject();
 

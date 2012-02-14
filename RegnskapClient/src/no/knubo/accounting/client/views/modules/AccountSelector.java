@@ -94,6 +94,7 @@ public class AccountSelector extends DialogBox implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         try {
             if (event.getSource() == cancelButton) {

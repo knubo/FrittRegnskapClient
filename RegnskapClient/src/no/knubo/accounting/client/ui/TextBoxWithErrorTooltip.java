@@ -37,11 +37,13 @@ public class TextBoxWithErrorTooltip extends TextBox implements Validateable {
         super.setEnabled(enabled);
     }
 
+    @Override
     public void setErrorText(String text) {
         setTitle(text);
         addStyleName("errorinput");
     }
 
+    @Override
     public void setMouseOver(String mouseOver) {
         setTitle(mouseOver);
     }

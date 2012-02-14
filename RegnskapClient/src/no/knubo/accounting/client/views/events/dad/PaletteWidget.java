@@ -31,6 +31,7 @@ public class PaletteWidget extends HorizontalPanel implements HasDragHandle {
         add(widget);
     }
 
+    @Override
     public Widget getDragHandle() {
         return shim;
     }

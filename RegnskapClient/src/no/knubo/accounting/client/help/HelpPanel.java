@@ -56,10 +56,12 @@ public class HelpPanel extends Composite implements NativePreviewHandler, OpenHa
         helpHTML.setHTML("");
         ServerResponse callback = new ServerResponseString() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 /* Unused */
             }
 
+            @Override
             public void serverResponse(String response) {
                 helpHTML.setHTML(response);
             }
@@ -142,6 +144,7 @@ public class HelpPanel extends Composite implements NativePreviewHandler, OpenHa
         nativePreviewHandler = Event.addNativePreviewHandler(this);
     }
 
+    @Override
     public void onPreviewNativeEvent(NativePreviewEvent event) {
         EventTarget eventTarget = event.getNativeEvent().getEventTarget();
 
@@ -183,6 +186,7 @@ public class HelpPanel extends Composite implements NativePreviewHandler, OpenHa
         return "<strong>" + header + "</strong><br>" + (text != null ? text : "---");
     }
 
+    @Override
     public void onOpen(OpenEvent<DisclosurePanel> event) {
         fetchHelp();
     }

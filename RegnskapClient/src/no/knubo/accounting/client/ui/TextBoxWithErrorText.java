@@ -124,6 +124,7 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
      */
     public void addDelayedKeyUpHandler(final KeyUpHandler handler) {
         KeyUpHandler delayedHandler = new KeyUpHandler() {
+            @Override
             public void onKeyUp(KeyUpEvent event) {
                 if (timer != null) {
                     return;
@@ -147,6 +148,7 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
         final ErrorLabelWidget me = this;
         FocusHandler focusHandler = new FocusHandler() {
 
+            @Override
             public void onFocus(FocusEvent event) {
                 callback.onFocus(me);
             }
@@ -154,6 +156,7 @@ public class TextBoxWithErrorText extends ErrorLabelWidget implements Validateab
 
         BlurHandler blurHandler = new BlurHandler() {
 
+            @Override
             public void onBlur(BlurEvent event) {
                 callback.onLostFocus(me);
             }

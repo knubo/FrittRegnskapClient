@@ -71,6 +71,7 @@ public class HappeningCache implements ServerResponse {
         return Util.str(object.get("linedesc"));
     }
 
+    @Override
     public void serverResponse(JSONValue value) {
         JSONArray array = value.isArray();
 

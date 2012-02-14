@@ -67,6 +67,7 @@ public class BudgetSelectView extends DialogBox implements ClickHandler {
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         String selectedYear = Util.getSelected(budgetYear.getListbox());
         

@@ -187,6 +187,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         Anchor toSearch = new Anchor(elements.back_search());
         toSearch.addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 caller.searchPerson();
             }
@@ -237,6 +238,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -280,6 +282,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 displayZipResult(responseObj.isArray());
             }
@@ -338,6 +341,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 pickOrDisplay(responseObj.isArray());
             }
@@ -401,6 +405,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
@@ -427,6 +432,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         Util.addPostParam(sb, "id", currentId);
 
         ServerResponse callback = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
@@ -546,6 +552,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         ServerResponseWithValidation callback = new ServerResponseWithValidation() {
 
+            @Override
             public void serverResponse(JSONValue value) {
 
                 JSONObject obj = value.isObject();
@@ -564,6 +571,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
                 Util.timedMessage(saveStatus, "", 5);
             }
 
+            @Override
             public void validationError(List<String> fields) {
                 HashMap<String, String> translate = new HashMap<String, String>();
                 translate.put("email", "epost");
@@ -627,6 +635,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         return masterValidator.validateStatus();
     }
 
+    @Override
     public void onKeyUp(KeyUpEvent event) {
 
         if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
@@ -653,6 +662,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         }
     }
 
+    @Override
     public void onBlur(BlurEvent event) {
         if (event.getSource() == postnmbBox.getTextBox()) {
             searchAddresZip();

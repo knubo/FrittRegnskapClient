@@ -163,6 +163,7 @@ public class ReportAccountlines extends Composite implements ClickHandler {
         helpPanel.resize(this);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -203,6 +204,7 @@ public class ReportAccountlines extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 

@@ -28,18 +28,22 @@ public class AdminNorwegianCityImportView extends Composite implements UploadDel
 
         dp.add(uploadDelegate.getForm(), DockPanel.NORTH);
 
+        
     
         initWidget(dp);
     }
 
+    @Override
     public void uploadComplete() {
         /* Not needed */
     }
 
+    @Override
     public boolean uploadBody(String body) {
         return false;
     }
 
+    @Override
     public void preUpload() {
         /* Not needed */
     }

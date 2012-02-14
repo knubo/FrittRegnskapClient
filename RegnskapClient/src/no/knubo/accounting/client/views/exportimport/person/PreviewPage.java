@@ -60,6 +60,7 @@ public class PreviewPage extends WizardPage<ImportPersonContext> implements Clic
         preview.setHTML(results);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         getWizard().showPreviousPage();
     }

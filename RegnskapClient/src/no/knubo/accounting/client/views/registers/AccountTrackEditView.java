@@ -90,6 +90,7 @@ public class AccountTrackEditView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONArray posts = value.isArray();
 
@@ -119,6 +120,7 @@ public class AccountTrackEditView extends Composite implements ClickHandler {
                 .fillAllPosts(availableList.getListbox(), chosenList.getListbox(), false, true);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
     	Widget sender = (Widget) event.getSource();
         if (sender == nextImageBig) {
@@ -142,10 +144,12 @@ public class AccountTrackEditView extends Composite implements ClickHandler {
 
         ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 /* OK */
             }
 
+            @Override
             public void onError() {
                 Window.alert(messages.save_failed_badly());
                 init();

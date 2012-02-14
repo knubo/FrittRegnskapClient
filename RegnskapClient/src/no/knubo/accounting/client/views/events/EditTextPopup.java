@@ -70,6 +70,7 @@ public class EditTextPopup extends DialogBox implements ClickHandler {
         popup.text.setFocus(true);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == cancelButton) {
             hide();

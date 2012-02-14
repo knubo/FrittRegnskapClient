@@ -37,6 +37,7 @@ public class YearMonthComboHelper {
         monthYearCombo.clear();
         ServerResponse resp = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
 
                 JSONArray array = value.isArray();

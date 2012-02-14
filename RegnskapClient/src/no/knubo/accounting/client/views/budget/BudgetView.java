@@ -175,6 +175,7 @@ public class BudgetView extends Composite implements ClickHandler {
         helpPanel.resize(this);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == addEarningRowButton) {
             budgetDrawDelegate.addEarningClick();
@@ -239,6 +240,7 @@ public class BudgetView extends Composite implements ClickHandler {
 
         ServerResponse rh = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 if (Util.str(responseObj).equals("1")) {
                     saveResultLabel.setText(messages.save_ok());
@@ -273,6 +275,7 @@ public class BudgetView extends Composite implements ClickHandler {
     private void loadBudgetData(String... year) {
         ServerResponse rh = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
                 JSONObject result = object.get("result").isObject();

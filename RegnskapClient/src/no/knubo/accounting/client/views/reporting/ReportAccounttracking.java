@@ -58,6 +58,7 @@ public class ReportAccounttracking extends Composite {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject posts = value.isObject();
 

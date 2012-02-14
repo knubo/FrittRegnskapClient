@@ -83,7 +83,8 @@ public class SemesterEditView extends Composite implements ClickHandler {
 		}
 
 		ServerResponse callback = new ServerResponse() {
-			public void serverResponse(JSONValue value) {
+			@Override
+            public void serverResponse(JSONValue value) {
 				showSemesters(value.isArray());
 			}
 
@@ -125,6 +126,7 @@ public class SemesterEditView extends Composite implements ClickHandler {
 		}
 	}
 
+    @Override
     public void onClick(ClickEvent event) {
     	Widget sender = (Widget) event.getSource();
 
@@ -210,6 +212,7 @@ public class SemesterEditView extends Composite implements ClickHandler {
 			setWidget(dp);
 		}
 
+        @Override
         public void onClick(ClickEvent event) {
         	Widget sender = (Widget) event.getSource();
 			if (sender == cancelButton) {
@@ -229,7 +232,8 @@ public class SemesterEditView extends Composite implements ClickHandler {
 
 			ServerResponse callback = new ServerResponse() {
 
-				public void serverResponse(JSONValue value) {
+				@Override
+                public void serverResponse(JSONValue value) {
 					JSONObject object = value.isObject();
 
 					if ("1".equals(Util.str(object.get("result")))) {

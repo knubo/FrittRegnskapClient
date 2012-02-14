@@ -186,6 +186,7 @@ public class LineEditView extends Composite implements ClickHandler {
     private void showLine(String line, String navigate) {
 
         ServerResponse rh = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue responseValue) {
 
                 JSONObject root = responseValue.isObject();
@@ -462,6 +463,7 @@ public class LineEditView extends Composite implements ClickHandler {
         defaultProjectNameBox.setVisibleItemCount(1);
         defaultProjectNameBox.addChangeHandler(new ChangeHandler() {
 
+            @Override
             public void onChange(ChangeEvent event) {
                 changeProjectBoxBasedOnDefault();
             }
@@ -494,6 +496,7 @@ public class LineEditView extends Composite implements ClickHandler {
         return vp;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
         if (sender == updateButton) {
@@ -527,6 +530,7 @@ public class LineEditView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
 
@@ -590,6 +594,7 @@ public class LineEditView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponseWithValidation() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
 
@@ -607,6 +612,7 @@ public class LineEditView extends Composite implements ClickHandler {
                 Util.timedMessage(updateLabel, "", 5);
             }
 
+            @Override
             public void validationError(List<String> fields) {
                 MasterValidator masterValidator = new MasterValidator();
 
@@ -647,6 +653,7 @@ public class LineEditView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
 

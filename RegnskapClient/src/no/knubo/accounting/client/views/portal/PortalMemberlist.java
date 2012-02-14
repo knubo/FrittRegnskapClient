@@ -81,6 +81,7 @@ public class PortalMemberlist extends Composite implements ClickHandler {
     public void init() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
                 for (int i = 0; i < array.size(); i++) {
@@ -148,6 +149,7 @@ public class PortalMemberlist extends Composite implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() instanceof Anchor) {
             Anchor anchor = (Anchor) event.getSource();
@@ -170,6 +172,7 @@ public class PortalMemberlist extends Composite implements ClickHandler {
     private void showDeletePopup(final String id) {
         ServerResponse resp = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
                 createDeleteDialog(object, id);

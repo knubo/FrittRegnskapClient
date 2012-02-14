@@ -61,6 +61,7 @@ public class EventChoiceEditor extends Composite implements ClickHandler {
         initWidget(vp);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == newButton) {
             addNewRow(false);

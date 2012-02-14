@@ -65,6 +65,7 @@ public class EventPartisipantsListView extends Composite {
     public void init(String id) {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 event = new EventParticipants(responseObj.isObject());
                 fillGroupedData();

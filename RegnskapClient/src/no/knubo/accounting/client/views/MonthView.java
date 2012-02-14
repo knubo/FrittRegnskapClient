@@ -161,6 +161,7 @@ public class MonthView extends Composite implements ClickHandler, ChangeHandler,
         }
     }
 
+    @Override
     public void serverResponse(JSONValue jsonValue) {
         JSONObject root = jsonValue.isObject();
 
@@ -305,6 +306,7 @@ public class MonthView extends Composite implements ClickHandler, ChangeHandler,
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
         if (sender == backImage) {
@@ -359,6 +361,7 @@ public class MonthView extends Composite implements ClickHandler, ChangeHandler,
         }
     }
 
+    @Override
     public void onChange(ChangeEvent event) {
         ListBox listBox = (ListBox) event.getSource();
 

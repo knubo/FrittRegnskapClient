@@ -92,6 +92,7 @@ public class TrustActionEditView extends Composite implements ClickHandler, Cach
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
     	Widget sender = (Widget) event.getSource();
         if (editFields == null) {
@@ -319,6 +320,7 @@ public class TrustActionEditView extends Composite implements ClickHandler, Cach
             Util.setIndexByValue(actionTrustBox, actiontrust);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
         	Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
@@ -343,6 +345,7 @@ public class TrustActionEditView extends Composite implements ClickHandler, Cach
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue value) {
                     JSONObject obj = value.isObject();
 
@@ -395,6 +398,7 @@ public class TrustActionEditView extends Composite implements ClickHandler, Cach
         }
     }
 
+    @Override
     public void flushCompleted() {
         me.init();
     }

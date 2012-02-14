@@ -93,6 +93,7 @@ public class BackupView extends Composite implements ClickHandler {
     private void getInfo() {
         ServerResponse callback = new ServerResponseWithValidation() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject info = value.isObject();
 
@@ -101,6 +102,7 @@ public class BackupView extends Composite implements ClickHandler {
                         + Util.strSkipNull(info.get("last_backup_by")) + ")");
             }
 
+            @Override
             public void validationError(List<String> fields) {
                 startBackup.setEnabled(false);
                 downloadLast.setEnabled(false);
@@ -112,6 +114,7 @@ public class BackupView extends Composite implements ClickHandler {
         AuthResponder.get(constants, messages, callback, "backup.php?action=info");
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -206,6 +209,7 @@ public class BackupView extends Composite implements ClickHandler {
 
         private void doBackup() {
             ServerResponse callback = new ServerResponse() {
+                @Override
                 public void serverResponse(JSONValue value) {
                     data(value);
                     progress.setText(text + "\n" + progress.getText());

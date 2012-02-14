@@ -91,6 +91,7 @@ public class UserSearchFields implements ClickHandler, KeyDownHandler {
             searchTable.setWidget(1, 5, includeHiddenCheck);
             ClickHandler handler = new ClickHandler() {
 
+                @Override
                 public void onClick(ClickEvent event) {
                     showHidden = includeHiddenCheck.getValue();
                 }
@@ -116,6 +117,7 @@ public class UserSearchFields implements ClickHandler, KeyDownHandler {
         return searchTable;
     }
 
+    @Override
     public void onKeyDown(KeyDownEvent event) {
         if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
             doSearch();
@@ -123,6 +125,7 @@ public class UserSearchFields implements ClickHandler, KeyDownHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
         if (sender == searchButton) {

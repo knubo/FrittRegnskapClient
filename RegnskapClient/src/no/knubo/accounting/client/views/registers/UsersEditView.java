@@ -103,6 +103,7 @@ public class UsersEditView extends Composite implements ClickHandler {
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -145,6 +146,7 @@ public class UsersEditView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
@@ -175,6 +177,7 @@ public class UsersEditView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
 
                 JSONArray array = value.isArray();
@@ -361,6 +364,7 @@ public class UsersEditView extends Composite implements ClickHandler {
             projectRequired.setValue(false);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
@@ -399,6 +403,7 @@ public class UsersEditView extends Composite implements ClickHandler {
             Util.addPostParam(sb, "see_secret", readSecretCheck.getValue() ? "1" : "0");
 
             ServerResponse callback = new ServerResponseWithValidation() {
+                @Override
                 public void serverResponse(JSONValue parse) {
 
                     if (parse == null || parse.isObject() == null) {
@@ -419,6 +424,7 @@ public class UsersEditView extends Composite implements ClickHandler {
                     Util.timedMessage(mainErrorLabel, "", 5);
                 }
 
+                @Override
                 public void validationError(List<String> fields) {
                     String errorCode = fields.get(0);
                     if (errorCode.equals("LAST_USER")) {
@@ -447,6 +453,7 @@ public class UsersEditView extends Composite implements ClickHandler {
             return mv.validateStatus();
         }
 
+        @Override
         public void pickPerson(String id, JSONObject personObj) {
             personId = id;
             personBox.setText(Util.str(personObj.get("firstname")) + " " + Util.str(personObj.get("lastname")));

@@ -98,6 +98,7 @@ public class FirstTimeRegisterView extends DialogBox implements ClickHandler {
     private void initData() {
         ServerResponse initer = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject obj = responseObj.isObject();
 
@@ -118,6 +119,7 @@ public class FirstTimeRegisterView extends DialogBox implements ClickHandler {
         new FirstTimeRegisterView(messages, constants, elements);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == newButton) {
             showAddPopup();
@@ -186,6 +188,7 @@ public class FirstTimeRegisterView extends DialogBox implements ClickHandler {
 
         ServerResponse post = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
                 if (!Util.getBoolean(object.get("result"))) {

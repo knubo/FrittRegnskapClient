@@ -108,6 +108,7 @@ public class EditPortalUserPopup extends DialogBox implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == delPortalImage) {
             if (Window.confirm(messages.portal_confirm_delete_image())) {
@@ -139,6 +140,7 @@ public class EditPortalUserPopup extends DialogBox implements ClickHandler {
     private void setBlocked(final boolean blocked) {
         ServerResponse callback = new ServerResponse() {
             
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 blockAccessButton.setEnabled(!blocked);
                 grantAccessButton.setEnabled(blocked);
@@ -153,6 +155,7 @@ public class EditPortalUserPopup extends DialogBox implements ClickHandler {
     private void delField(final String field) {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 if (field.equals("facebook")) {
                     delTable.setText(2, 1, "");
@@ -172,6 +175,7 @@ public class EditPortalUserPopup extends DialogBox implements ClickHandler {
     private void deleteImage() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 profileImage.setUrl("???");
             }

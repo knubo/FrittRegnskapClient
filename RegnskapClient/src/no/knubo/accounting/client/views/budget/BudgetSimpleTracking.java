@@ -86,6 +86,7 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
         posttypeCache = PosttypeCache.getInstance(constants, messages);
         ServerResponse rh = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
 
@@ -100,6 +101,7 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == selectButton) {
             selectBudgetYear();
@@ -114,6 +116,7 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
 
         ServerResponse rh = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 try {
                     fillBudgetAndResult(responseObj.isObject());
@@ -306,6 +309,7 @@ public class BudgetSimpleTracking extends Composite implements ClickHandler {
         double actual;
         boolean earning;
 
+        @Override
         public int compareTo(Row r) {
 
             int earningComp = Boolean.valueOf(r.earning).compareTo(Boolean.valueOf(earning));

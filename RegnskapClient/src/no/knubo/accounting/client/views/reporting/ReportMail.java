@@ -264,6 +264,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 JSONArray files = parse.isObject().get("files").isArray();
 
@@ -294,6 +295,7 @@ public class ReportMail extends Composite implements ClickHandler {
         }
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 receivers = parse.isArray();
                 confirmSendEmail();
@@ -399,6 +401,7 @@ public class ReportMail extends Composite implements ClickHandler {
         emailSendStatusView.sendEmails(reciversListBox.getText().equals("simulate"));
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -443,6 +446,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
             radioButton.addClickHandler(new ClickHandler() {
 
+                @Override
                 public void onClick(ClickEvent event) {
                     sp.setWidth(setWidth + "px");
                 }
@@ -454,6 +458,7 @@ public class ReportMail extends Composite implements ClickHandler {
         RadioButton closeButton = new RadioButton("width_select", elements.close());
         closeButton.addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 popup.hide();
             }
@@ -473,6 +478,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
         ServerResponseString callback = new ServerResponseString() {
 
+            @Override
             public void serverResponse(String response) {
 
                 DialogBox popup = new DialogBox();
@@ -494,6 +500,7 @@ public class ReportMail extends Composite implements ClickHandler {
                 popup.center();
             }
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 /* unused */
             }
@@ -588,6 +595,7 @@ public class ReportMail extends Composite implements ClickHandler {
             attachmentsAsJSONString = URL.encode(attachments.toString());
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             pause = true;
 
@@ -638,6 +646,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
             ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
+                @Override
                 public void serverResponse(JSONValue value) {
                     JSONObject object = value.isObject();
 
@@ -657,6 +666,7 @@ public class ReportMail extends Composite implements ClickHandler {
                     }
                 }
 
+                @Override
                 public void onError() {
                     fillSentLine(name, email, personId);
                     table.setStyleName("error");
@@ -785,6 +795,7 @@ public class ReportMail extends Composite implements ClickHandler {
             }
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
@@ -820,10 +831,12 @@ public class ReportMail extends Composite implements ClickHandler {
     private void fillStyle() {
         ServerResponseString callback = new ServerResponseString() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 /* Unused */
             }
 
+            @Override
             public void serverResponse(String response) {
                 if (response.trim().length() == 0) {
                     configStyles(EmailDefaultStyle.DEFAULT, "my_style");
@@ -839,6 +852,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
     private void fillFooterAndHeader() {
         ServerResponse callback = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
 
@@ -889,6 +903,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
                 archiveId = Util.getInt(object.get("insert_id"));

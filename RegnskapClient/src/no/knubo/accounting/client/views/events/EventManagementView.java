@@ -133,6 +133,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
     public void init(String id) {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 event = new Event(responseObj.isObject());
 
@@ -165,6 +166,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         enableDisable();
     }
 
+    @Override
     public void onSelection(SelectionEvent<Integer> selected) {
         Integer item = selected.getSelectedItem();
 
@@ -183,6 +185,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
         previous = item;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == saveButton) {
             save();
@@ -232,6 +235,7 @@ public class EventManagementView extends Composite implements SelectionHandler<I
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
 

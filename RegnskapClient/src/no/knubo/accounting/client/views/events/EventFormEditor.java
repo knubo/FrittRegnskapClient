@@ -153,6 +153,7 @@ public class EventFormEditor extends Composite implements ClickHandler {
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Cell cell = flexTable.getCellForEvent(event);
         int x = cell.getCellIndex();

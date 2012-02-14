@@ -240,6 +240,7 @@ public class Util {
     public static void syncListbox(final ListBox listbox, final TextBox textbox) {
         ChangeHandler listchange = new ChangeHandler() {
 
+            @Override
             public void onChange(ChangeEvent event) {
                 textbox.setText(listbox.getValue(listbox.getSelectedIndex()));
             }
@@ -249,6 +250,7 @@ public class Util {
 
         ChangeHandler textchange = new ChangeHandler() {
 
+            @Override
             public void onChange(ChangeEvent event) {
                 syncOnce(listbox, textbox);
             }
@@ -474,6 +476,7 @@ public class Util {
     public static void linkJustOne(final CheckBox checkOne, final CheckBox checkTwo) {
         ClickHandler listener = new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 CheckBox sender = (CheckBox) event.getSource();
                 if (sender == checkOne) {
@@ -589,6 +592,7 @@ public class Util {
         for (ListBox listBox : boxes) {
             listBox.addChangeHandler(new ChangeHandler() {
 
+                @Override
                 public void onChange(ChangeEvent event) {
                     ListBox sourceBox = (ListBox) event.getSource();
                     String id = Util.getSelected(sourceBox);

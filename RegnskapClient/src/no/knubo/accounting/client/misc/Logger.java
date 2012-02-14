@@ -40,10 +40,12 @@ public class Logger {
     private static RequestCallback nullCallback() {
         return new RequestCallback() {
 
+            @Override
             public void onError(Request request, Throwable exception) {
                 /* Silent */
             }
 
+            @Override
             public void onResponseReceived(Request request, Response response) {
                 /* Silent */
             }

@@ -117,12 +117,14 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
         helpPanel.resize(this);
     }
 
+    @Override
     public void doSearch(StringBuffer searchRequest) {
         doClear();
         idHolder.init();
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONArray array = value.isArray();
 
@@ -236,6 +238,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         StringBuffer sb = buildAddMemberParameters();
 
@@ -245,6 +248,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
 
@@ -380,6 +384,7 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
     private void setHeader() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
 
                 JSONObject object = value.isObject();
@@ -397,16 +402,19 @@ public class RegisterMembershipView extends Composite implements ClickHandler, U
 
     }
 
+    @Override
     public void onFocus(Validateable me) {
         /* Not used */
     }
 
+    @Override
     public void onLostFocus(ErrorLabelWidget textbox) {
         /* Just flag the error. */
 
         validateDay(new MasterValidator(), textbox);
     }
 
+    @Override
     public void doClear() {
         while (resultTable.getRowCount() > 1) {
             resultTable.removeRow(1);

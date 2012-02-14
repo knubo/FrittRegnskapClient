@@ -47,6 +47,7 @@ public class ManageFilesView extends Composite implements ClickHandler, UploadDe
         }
 
         ServerResponse callback = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject data = value.isObject();
 
@@ -114,6 +115,7 @@ public class ManageFilesView extends Composite implements ClickHandler, UploadDe
         initWidget(dp);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
         String fileName = idHolder.findId(sender);
@@ -125,6 +127,7 @@ public class ManageFilesView extends Composite implements ClickHandler, UploadDe
         }
 
         ServerResponse callback = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
 
@@ -145,14 +148,17 @@ public class ManageFilesView extends Composite implements ClickHandler, UploadDe
                 + "\" target=\"_blank\">" + fileName + "</a>");
     }
 
+    @Override
     public void uploadComplete() {
         init();
     }
 
+    @Override
     public boolean uploadBody(String body) {
         return false;
     }
 
+    @Override
     public void preUpload() {
         /* Not needed */
     }

@@ -58,6 +58,7 @@ public class ResultPage extends WizardPage<ImportPersonContext> implements Click
         resultHTML.setHTML(results);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         getWizard().showFirstPage();
     }

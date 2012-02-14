@@ -208,6 +208,7 @@ public class RichTextToolbar extends Composite {
 
     /** Click Handler of the Toolbar **/
     private class EventHandler implements ClickHandler, KeyUpHandler, ChangeHandler {
+        @Override
         public void onClick(ClickEvent event) {
             if (event.getSource().equals(bold)) {
                 if (isHTMLMode()) {
@@ -340,10 +341,12 @@ public class RichTextToolbar extends Composite {
             updateStatus();
         }
 
+        @Override
         public void onKeyUp(KeyUpEvent event) {
             updateStatus();
         }
 
+        @Override
         public void onChange(ChangeEvent event) {
             if (event.getSource().equals(fontlist)) {
                 if (isHTMLMode()) {

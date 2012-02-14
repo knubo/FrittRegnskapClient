@@ -94,6 +94,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject data = responseObj.isObject();
 
@@ -162,6 +163,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         table.setWidget(row, 6, editImage, "center");
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() instanceof Image) {
             Image image = (Image) event.getSource();
@@ -192,6 +194,7 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 if (!Util.getBoolean(responseObj.isObject().get("status"))) {
                     Window.alert(messages.save_failed_badly());

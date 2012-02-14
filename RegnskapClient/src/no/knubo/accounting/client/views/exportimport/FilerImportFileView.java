@@ -62,16 +62,19 @@ public class FilerImportFileView extends Composite implements UploadDelegateCall
         initWidget(dp);
     }
 
+    @Override
     public void uploadComplete() {
         /* Not needed */
     }
 
+    @Override
     public boolean uploadBody(String body) {
         uploadOutput.setHTML(body);
         outputFrame.setUrl(constants.baseurl() + "exportimport/filter_for_import_read.php");
         return true;
     }
 
+    @Override
     public void preUpload() {
         separator.setValue(separatorInput.getText());
         uploadOutput.setHTML("...<blink>.</blink>");

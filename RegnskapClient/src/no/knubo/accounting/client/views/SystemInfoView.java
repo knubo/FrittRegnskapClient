@@ -34,10 +34,12 @@ public class SystemInfoView extends Composite {
 
         ServerResponse callback =new ServerResponseString() {
 
+            @Override
             public void serverResponse(String response) {
                 html.setHTML(response);
             }
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 /* Unused */
             }

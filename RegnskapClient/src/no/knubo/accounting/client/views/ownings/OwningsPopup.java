@@ -215,6 +215,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
     private void loadData(int id) {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 current = responseObj.isObject();
 
@@ -256,6 +257,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         AuthResponder.get(constants, messages, callback, "accounting/belongings.php?action=get&id=" + id);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == closeButton) {
             hide();
@@ -296,6 +298,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         final OwningsPopup me = this;
         ServerResponse cb = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
 
@@ -385,6 +388,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
 
@@ -404,11 +408,13 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         return false;
     }
 
+    @Override
     public void pickPerson(String id, JSONObject personObj) {
         responsibleLabel.setText(Util.str(personObj.get("firstname")) + " " + Util.str(personObj.get("lastname")));
         current.put("person", new JSONString(id));
     }
 
+    @Override
     public void deleteExecuted(JSONObject data) {
         StringBuffer parameters = new StringBuffer();
         parameters.append("action=delete");
@@ -418,6 +424,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
 
         ServerResponse call = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
                 if (Util.getBoolean(object.get("status"))) {
@@ -429,12 +436,14 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         AuthResponder.post(constants, messages, call, parameters, "accounting/belongings.php");
     }
 
+    @Override
     public void changeExecuted(JSONObject data) {
         StringBuffer sb = updateParams("update");
         Util.addPostParam(sb, "change", data.toString());
 
         ServerResponse call = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
                 if (Util.getBoolean(object.get("updated"))) {
@@ -446,6 +455,7 @@ public class OwningsPopup extends DialogBox implements ClickHandler, PersonPickC
         AuthResponder.post(constants, messages, call, sb, "accounting/belongings.php");
     }
 
+    @Override
     public void onKeyUp(KeyUpEvent event) {
         String value = remaining.getText().replace(",", "");
 

@@ -96,6 +96,7 @@ public class YearEndView extends Composite implements ClickHandler {
 
         ServerResponse rh = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject root = responseObj.isObject();
 
@@ -152,6 +153,7 @@ public class YearEndView extends Composite implements ClickHandler {
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
 
         boolean okContinue = Window.confirm(messages.end_year_confirm());
@@ -162,6 +164,7 @@ public class YearEndView extends Composite implements ClickHandler {
 
         ServerResponse rh = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 callback.viewMonth();
             }

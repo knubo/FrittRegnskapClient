@@ -49,10 +49,12 @@ public class PersonPickView extends DialogBox implements ClickHandler, PersonPic
         setWidget(dp);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         hide();
     }
 
+    @Override
     public void pickPerson(String id, JSONObject personObj) {
         hide();
         personPick.pickPerson(id, personObj);

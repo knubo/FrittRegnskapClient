@@ -119,6 +119,7 @@ public class ShowMembershipView extends Composite implements ClickHandler, Chang
         semesterOrYearListBox.addItem("","");
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
 
@@ -144,6 +145,7 @@ public class ShowMembershipView extends Composite implements ClickHandler, Chang
         semesterOrYearListBox.addItem("","");
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
 
@@ -178,6 +180,7 @@ public class ShowMembershipView extends Composite implements ClickHandler, Chang
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
 
                 JSONObject root = value.isObject();
@@ -225,6 +228,7 @@ public class ShowMembershipView extends Composite implements ClickHandler, Chang
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -247,6 +251,7 @@ public class ShowMembershipView extends Composite implements ClickHandler, Chang
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
 
                 JSONObject root = value.isObject();
@@ -312,6 +317,7 @@ public class ShowMembershipView extends Composite implements ClickHandler, Chang
 
     }
 
+    @Override
     public void onChange(ChangeEvent event) {
         if(this.semesterOrYearListBox.getSelectedIndex() == 0) {
             return;

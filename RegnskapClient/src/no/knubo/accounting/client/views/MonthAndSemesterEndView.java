@@ -139,6 +139,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
 
         
         ServerResponse rh = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue jsonValue) {
                 PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
@@ -183,6 +184,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
         AuthResponder.get(constants, messages, rh, "accounting/endmonthorsemester.php?action=status");
     }
 
+    @Override
     public void onClick(ClickEvent event) {
 
         boolean okContinue = Window.confirm(messages.end_month_confirm());
@@ -193,6 +195,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
 
         ServerResponse rh = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue resonseObj) {
                 if ("1".equals(Util.str(resonseObj.isString()))) {
                     callback.viewMonth();
@@ -206,6 +209,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
                 + elements.deprecation());
     }
 
+    @Override
     public void standardsLoaded() {
         
         if(unhandledKids) {

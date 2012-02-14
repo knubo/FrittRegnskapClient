@@ -75,6 +75,7 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -185,6 +186,7 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
             projectBox.setText(project);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             Widget sender = (Widget) event.getSource();
             if (sender == cancelButton) {
@@ -205,6 +207,7 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue value) {
                     JSONObject object = value.isObject();
 
@@ -240,6 +243,7 @@ public class ProjectEditView extends Composite implements ClickHandler, CacheCal
         }
     }
 
+    @Override
     public void flushCompleted() {
         me.init();
     }

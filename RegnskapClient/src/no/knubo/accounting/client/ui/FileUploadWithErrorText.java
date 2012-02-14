@@ -39,18 +39,22 @@ public class FileUploadWithErrorText extends Composite implements Validateable {
         return fileUpload.isEnabled();
     }
 
+    @Override
     public String getText() {
         return fileUpload.getFilename();
     }
 
+    @Override
     public void setErrorText(String text) {
         label.setText(text);
     }
 
+    @Override
     public void setFocus(boolean b) {
         /* Not possible */
     }
 
+    @Override
     public void setMouseOver(String mouseOver) {
         fileUpload.setTitle(mouseOver);
     }

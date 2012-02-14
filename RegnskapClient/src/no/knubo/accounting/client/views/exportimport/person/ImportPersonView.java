@@ -92,6 +92,7 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
     }
 
 
+    @Override
     public void onSubmitComplete(SubmitCompleteEvent event) {
         if (hiddenAction.getValue().equals("findfields")) {
             chooseFieldsAndDataPage.setHTMLInDataTable(event.getResults());
@@ -103,6 +104,7 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
         }
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         hiddenAction.setValue("insert");
         form.submit();

@@ -98,6 +98,7 @@ public class TrustStatusView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject object = value.isObject();
                 renderResult(object);
@@ -181,6 +182,7 @@ public class TrustStatusView extends Composite implements ClickHandler {
         row++;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
     	Widget sender = (Widget) event.getSource();
     	
@@ -311,6 +313,7 @@ public class TrustStatusView extends Composite implements ClickHandler {
             registerStandards.fetchInitalData(false);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
         	Widget sender = (Widget) event.getSource();
         	if (sender == cancelButton) {
@@ -336,6 +339,7 @@ public class TrustStatusView extends Composite implements ClickHandler {
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue value) {
 
                     JSONObject object = value.isObject();
@@ -376,6 +380,7 @@ public class TrustStatusView extends Composite implements ClickHandler {
             return mv.validateStatus();
         }
 
+        @Override
         public void onChange(ChangeEvent event) {
             TrustActionCache trustActionCache = TrustActionCache.getInstance(constants, messages);
 

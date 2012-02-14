@@ -97,6 +97,7 @@ public class RequestDeleteView extends Composite implements ClickHandler {
         return instance;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == deleteButton) {
             requestDelete();
@@ -149,6 +150,7 @@ public class RequestDeleteView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 Window.alert(messages.delete_request_sent());
             }

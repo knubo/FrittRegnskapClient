@@ -60,6 +60,7 @@ public class CountFields {
 
         ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
 
+            @Override
             public void serverResponse(JSONValue value) {
 
                 JSONObject object = value.isObject();
@@ -98,6 +99,7 @@ public class CountFields {
                 }
             }
 
+            @Override
             public void onError() {
                 table.setVisible(false);
             }

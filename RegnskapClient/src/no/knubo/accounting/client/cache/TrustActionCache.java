@@ -45,6 +45,7 @@ public class TrustActionCache {
 
         ServerResponse resphandler = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue jsonValue) {
                 JSONObject mainObject = jsonValue.isObject();
                 JSONArray actionArray = mainObject.get("actions").isArray();

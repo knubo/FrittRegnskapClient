@@ -101,6 +101,7 @@ public class ListKIDView extends Composite implements ClickHandler, PersonPickCa
         initWidget(vp);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == searchImage) {
             PersonPickView.show(messages, constants, this, helpPanel, elements).center();
@@ -129,6 +130,7 @@ public class ListKIDView extends Composite implements ClickHandler, PersonPickCa
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 showKIDlines(responseObj.isArray());
 
@@ -173,11 +175,13 @@ public class ListKIDView extends Composite implements ClickHandler, PersonPickCa
         return mv.validateStatus();
     }
 
+    @Override
     public void pickPerson(String id, JSONObject personObj) {
         memberBox.setText(id);
         criteriatable.setText(2, 3, Util.str(personObj.get("firstname")) + " " + Util.str(personObj.get("lastname")));
     }
 
+    @Override
     public void onKeyUp(KeyUpEvent event) {
 
         if (memberBox.getText().length() == 0) {
@@ -194,6 +198,7 @@ public class ListKIDView extends Composite implements ClickHandler, PersonPickCa
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
 

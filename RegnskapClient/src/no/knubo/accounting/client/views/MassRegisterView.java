@@ -154,6 +154,7 @@ public class MassRegisterView extends Composite implements ClickHandler {
         projectIdBox.setFocus(true);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == addButton) {
             addLine();
@@ -187,6 +188,7 @@ public class MassRegisterView extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponseWithValidation() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
 
@@ -205,6 +207,7 @@ public class MassRegisterView extends Composite implements ClickHandler {
                 standards.fillFields(object);
             }
 
+            @Override
             public void validationError(List<String> fields) {
                 MasterValidator masterValidator = new MasterValidator();
 

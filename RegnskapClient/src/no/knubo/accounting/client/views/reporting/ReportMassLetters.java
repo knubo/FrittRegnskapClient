@@ -91,6 +91,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
 
                 JSONArray array = parse.isArray();
@@ -120,6 +121,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
         Image editImage = ImageFactory.editImage("edit");
         ClickHandler handler = new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 editFile(str, editType);
             }
@@ -131,10 +133,12 @@ public class ReportMassLetters extends Composite implements ClickHandler {
     protected void editFile(final String filename, final String editType) {
         ServerResponse callback = new ServerResponseString() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 /* Not Used */
             }
 
+            @Override
             public void serverResponse(String response) {
                 if (editType.equals("advanced")) {
                     openEditDialogAdvanced(filename, response);
@@ -147,6 +151,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
         AuthResponder.get(constants, messages, callback, "reports/massletter.php?action=source&template=" + filename);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (joinButton == event.getSource()) {
             for (RadioButton rb : radiobuttons) {
@@ -179,6 +184,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
 
         okButton.addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 MasterValidator mv = new MasterValidator();
                 mv.mandatory(messages.required_field(), nameBox);
@@ -195,6 +201,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
         buttonhp.add(cancelButton);
         cancelButton.addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 db.hide();
             }
@@ -216,6 +223,7 @@ public class ReportMassLetters extends Composite implements ClickHandler {
         editMassletterView.init(response, filename);
         CloseHandler<PopupPanel> closehandler = new CloseHandler<PopupPanel>() {
 
+            @Override
             public void onClose(CloseEvent<PopupPanel> event) {
                 init();
             }

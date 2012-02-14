@@ -112,6 +112,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         table.getCellFormatter().setStyleName(row, col, "showline");
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
         if (sender == closeImage) {
@@ -122,6 +123,7 @@ public class PostView extends DialogBox implements ClickHandler, ServerResponse 
         }
     }
 
+    @Override
     public void serverResponse(JSONValue jsonValue) {
         JSONObject object = jsonValue.isObject();
 

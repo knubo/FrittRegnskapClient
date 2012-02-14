@@ -78,10 +78,12 @@ public class AboutView extends Composite implements ClickHandler {
     private void getNews() {
         ServerResponse callback = new ServerResponseString() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 /* Not used */
             }
 
+            @Override
             public void serverResponse(String response) {
                 newsPanel.clear();
                 newsPanel.add(new HTML("<h2>Nyheter</h2>"));
@@ -119,6 +121,7 @@ public class AboutView extends Composite implements ClickHandler {
     private void checkServerVersion() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
 
                 JSONObject object = value.isObject();
@@ -379,6 +382,7 @@ public class AboutView extends Composite implements ClickHandler {
         hintLabel.setHTML(helpTexts.getString("hint" + r));
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() instanceof Anchor) {
             Anchor anchor = (Anchor) event.getSource();

@@ -38,6 +38,7 @@ public class PickCityPopup extends PopupPanel implements ClickHandler {
         showRelativeTo(addressInfo);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Cell cell = table.getCellForEvent(event);
 

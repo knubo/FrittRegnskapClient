@@ -55,6 +55,7 @@ public class ExportPersonView extends Composite implements ClickHandler {
         delimiterBox.setFocus(true);
     }
     
+    @Override
     public void onClick(ClickEvent event) {
         MasterValidator mv = new MasterValidator();
         mv.mandatory(messages.required_field(), delimiterBox);

@@ -89,6 +89,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
 
@@ -119,6 +120,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue value) {
                 JSONObject obj = value.isObject();
                 JSONArray semesters = obj.get("semesters").isArray();
@@ -267,6 +269,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
             setWidget(dp);
         }
 
+        @Override
         public void onClick(ClickEvent event) {
             Widget sender = (Widget) event.getSource();
 
@@ -292,6 +295,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
 
             ServerResponse callback = new ServerResponse() {
 
+                @Override
                 public void serverResponse(JSONValue response) {
                     JSONObject responseObj = response.isObject();
 
@@ -343,6 +347,7 @@ public class MembershipPriceEditView extends Composite implements ClickHandler, 
         }
     }
 
+    @Override
     public void flushCompleted() {
         me.init();
     }

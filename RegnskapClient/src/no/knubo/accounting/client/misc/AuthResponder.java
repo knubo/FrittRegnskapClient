@@ -41,10 +41,12 @@ public class AuthResponder implements RequestCallback {
         AccountingGWT.setLoading();
     }
 
+    @Override
     public void onError(Request request, Throwable exception) {
         /* Not needed? */
     }
 
+    @Override
     public void onResponseReceived(Request request, Response response) {
         AccountingGWT.setDoneLoading();
         if (response.getStatusCode() == 510) {
@@ -187,6 +189,7 @@ public class AuthResponder implements RequestCallback {
 
     static ServerResponse ignoreCallback = new ServerResponse() {
         
+        @Override
         public void serverResponse(JSONValue responseObj) {
             /* Ignored */
         }

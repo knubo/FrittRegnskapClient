@@ -85,6 +85,7 @@ public class EditMassletterView extends DialogBox implements ClickHandler, LoadH
         show();
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if (event.getSource() == cancelButton) {
             hide();
@@ -108,6 +109,7 @@ public class EditMassletterView extends DialogBox implements ClickHandler, LoadH
     private void save(final boolean doHide) {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 if (!"1".equals(Util.str(responseObj))) {
                     Window.alert(messages.save_failed_badly());
@@ -128,6 +130,7 @@ public class EditMassletterView extends DialogBox implements ClickHandler, LoadH
 
     }
 
+    @Override
     public void onLoad(LoadEvent event) {
         source.setHeight(previewImage.getHeight()+"px");
     }

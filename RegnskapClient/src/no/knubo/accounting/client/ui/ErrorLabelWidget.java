@@ -23,14 +23,17 @@ public class ErrorLabelWidget extends Composite implements Validateable {
         label.setStyleName("error");
     }
 
+    @Override
     public void setFocus(boolean b) {
         widget.setFocus(b);
     }
 
+    @Override
     public void setMouseOver(String mouseOver) {
         widget.setTitle(mouseOver);
     }
 
+    @Override
     public String getText() {
         return "";
     }
@@ -41,6 +44,7 @@ public class ErrorLabelWidget extends Composite implements Validateable {
      * @param text
      *            The text.
      */
+    @Override
     public void setErrorText(String text) {
         label.setHTML(text);
     }

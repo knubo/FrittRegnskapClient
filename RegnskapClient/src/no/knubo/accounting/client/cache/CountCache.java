@@ -39,6 +39,7 @@ public class CountCache implements ServerResponse {
         return instance;
     }
 
+    @Override
     public void serverResponse(JSONValue value) {
         JSONObject object = value.isObject();
 

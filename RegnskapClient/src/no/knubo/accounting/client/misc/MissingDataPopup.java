@@ -34,6 +34,7 @@ public class MissingDataPopup extends DialogBox implements ClickHandler {
         setWidget(dp);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         hide();
     }

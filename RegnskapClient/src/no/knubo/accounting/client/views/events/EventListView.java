@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -61,6 +60,7 @@ public class EventListView extends Composite implements ClickHandler {
 
         ServerResponse response = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 fillList(responseObj);
             }
@@ -85,6 +85,7 @@ public class EventListView extends Composite implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Object source = event.getSource();
         

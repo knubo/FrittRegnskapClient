@@ -99,6 +99,7 @@ public class EarningsAndCostPie extends Composite implements ClickHandler {
 
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue parse) {
                 JSONObject object = parse.isObject();
                 year = Util.getInt(object.get("year"));
@@ -118,6 +119,7 @@ public class EarningsAndCostPie extends Composite implements ClickHandler {
         // Create a callback to be called when the visualization API
         // has been loaded.
         Runnable onLoadCallback = new Runnable() {
+            @Override
             public void run() {
 
                 if (!utgiftBox.getValue()) {
@@ -195,6 +197,7 @@ public class EarningsAndCostPie extends Composite implements ClickHandler {
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
         if (sender == previousImage) {

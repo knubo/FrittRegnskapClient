@@ -31,6 +31,7 @@ public class HTMLStreamWindow extends DialogBox implements ClickHandler {
         return new HTMLStreamWindow(address, elements);
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         hide();
     }

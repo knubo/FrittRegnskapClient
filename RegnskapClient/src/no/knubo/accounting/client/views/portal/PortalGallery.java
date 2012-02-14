@@ -44,6 +44,7 @@ public class PortalGallery extends Composite {
     public void init() {
         ServerResponse callback = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONArray array = responseObj.isArray();
 
@@ -62,6 +63,7 @@ public class PortalGallery extends Composite {
 
         ServerResponse callbackInfo = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 objectsWithIds = responseObj.isArray();
 

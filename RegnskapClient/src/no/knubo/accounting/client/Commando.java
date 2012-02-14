@@ -104,6 +104,7 @@ class Commando implements Command {
         this.params = params;
     }
 
+    @Override
     public void execute() {
         Widget widget = null;
 
@@ -428,6 +429,7 @@ class Commando implements Command {
         okButton.addStyleName("buttonrow");
         okButton.addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 db.hide();
             }

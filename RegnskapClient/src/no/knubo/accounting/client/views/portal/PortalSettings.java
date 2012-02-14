@@ -87,6 +87,7 @@ public class PortalSettings extends Composite implements ClickHandler {
     public void init() {
         ServerResponse resp = new ServerResponse() {
 
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject object = responseObj.isObject();
 
@@ -102,6 +103,7 @@ public class PortalSettings extends Composite implements ClickHandler {
 
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         if(event.getSource() == updateButton) {
             savePortalTitle();
@@ -121,6 +123,7 @@ public class PortalSettings extends Composite implements ClickHandler {
     private void sendStatusChange(final int newStatus) {
         ServerResponse callback = new ServerResponse() {
             
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 infoLabel.setText(messages.save_ok());
                 updateStatusText(newStatus);
@@ -137,6 +140,7 @@ public class PortalSettings extends Composite implements ClickHandler {
     private void savePortalTitle() {
         ServerResponse callback = new ServerResponse() {
             
+            @Override
             public void serverResponse(JSONValue responseObj) {
                 infoLabel.setText(messages.save_ok());
             }

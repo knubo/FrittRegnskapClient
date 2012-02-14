@@ -87,6 +87,7 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
         return me;
     }
 
+    @Override
     public void onClick(ClickEvent event) {
         
         MasterValidator mv = new MasterValidator();
@@ -106,10 +107,12 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
     
     }
 
+    @Override
     public void serverResponse(String response) {
         result.setHTML(response);
     }
 
+    @Override
     public void serverResponse(JSONValue resonseObj) {
         /* Not used */
     }

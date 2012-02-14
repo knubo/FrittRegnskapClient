@@ -45,6 +45,7 @@ public class ProjectCache implements Registry {
 
     public void flush(final CacheCallback flushcallback) {
         ServerResponse resphandler = new ServerResponse() {
+            @Override
             public void serverResponse(JSONValue jsonValue) {
                 JSONArray array = jsonValue.isArray();
 
@@ -98,6 +99,7 @@ public class ProjectCache implements Registry {
         return descGivesProject.get(description);
     }
     
+    @Override
     public boolean keyExists(String key) {
         return projectGivesDesc.containsKey(key);
     }
