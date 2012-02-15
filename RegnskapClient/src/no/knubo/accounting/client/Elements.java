@@ -439,6 +439,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_registered_date();
 
   /**
+   * Translated "Overskriv backup tabeller ved opplasting".
+   * 
+   * @return translated "Overskriv backup tabeller ved opplasting"
+   */
+  @DefaultStringValue("Overskriv backup tabeller ved opplasting")
+  @Key("admin_replace_backup")
+  String admin_replace_backup();
+
+  /**
    * Translated "Kjør".
    * 
    * @return translated "Kjør"
@@ -4559,6 +4568,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Hemmelig adresse")
   @Key("secret_address")
   String secret_address();
+
+  /**
+   * Translated "Velg alle".
+   * 
+   * @return translated "Velg alle"
+   */
+  @DefaultStringValue("Velg alle")
+  @Key("select_all")
+  String select_all();
 
   /**
    * Translated "Velg budsjettår".
