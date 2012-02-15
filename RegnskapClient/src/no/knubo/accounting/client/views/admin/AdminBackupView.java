@@ -1,10 +1,13 @@
 package no.knubo.accounting.client.views.admin;
 
+import java.util.Set;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.FileUploadWithErrorText;
@@ -23,6 +26,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Hidden;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AdminBackupView extends Composite implements UploadDelegateCallback, ClickHandler {
@@ -35,18 +41,26 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
     private UploadDelegate uploadDelegate;
     private AccountTable analyzeTable;
     private CheckBox selectAll;
+    private Hidden dbSelect;
+    private ListBox dbListbox;
 
     public AdminBackupView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.elements = elements;
 
-        uploadDelegate = new UploadDelegate("admin/admin_backup_admin.php", this, constants, messages, elements);
+        dbSelect = new Hidden("dbSelect");
+        
+        uploadDelegate = new UploadDelegate("admin/admin_backup_admin.php", this, constants, messages, elements, dbSelect);
 
         DockPanel dp = new DockPanel();
 
         analyzeTable = new AccountTable("tableborder");
         dp.add(uploadDelegate.getForm(), DockPanel.NORTH);
+
+        dbListbox = new ListBox();
+        dp.add(new Label(elements.select_database()), DockPanel.NORTH);
+        dp.add(dbListbox, DockPanel.NORTH);
         dp.add(analyzeTable, DockPanel.NORTH);
 
         analyzeTable.setHeaders(0, "", "Table", "Drop", "Truncate", "Lock", "Insert", "Unlock");
@@ -64,6 +78,27 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
         return me;
     }
 
+    public void init() {
+        ServerResponse callback = new ServerResponse() {
+            
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject obj = responseObj.isObject();
+                JSONObject allDB = obj.get("db").isObject();
+                
+                dbListbox.clear();
+                
+                Set<String> keys = allDB.keySet();
+                
+                for (String k : keys) {
+                    JSONArray db = allDB.get(k).isArray();
+                    dbListbox.addItem(Util.str(db.get(3)), k);
+                }
+            }
+        };
+        AuthResponder.get(constants, messages, callback , "admin/admin_backup_admin.php?action=init");
+    }
+    
     @Override
     public void uploadComplete() {
         /* Not needed */
@@ -113,6 +148,9 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
         while (analyzeTable.getRowCount() > 1) {
             analyzeTable.removeRow(1);
         }
+        selectAll.setValue(false);
+        
+        dbSelect.setValue(Util.getSelected(dbListbox));
     }
 
     @Override

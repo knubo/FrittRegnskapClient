@@ -398,6 +398,7 @@ class Commando implements Command {
             break;
         case ADMIN_BACKUP_OPERATIONS:
             widget = AdminBackupView.getInstance(messages, constants, elements);
+            ((AdminBackupView)widget).init();
             break;
         }
 
