@@ -646,6 +646,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String backup_init();
 
   /**
+   * Translated "Installer sikkerhetskopi".
+   * 
+   * @return translated "Installer sikkerhetskopi"
+   */
+  @DefaultStringValue("Installer sikkerhetskopi")
+  @Key("backup_install")
+  String backup_install();
+
+  /**
    * Translated "Siste sikkerhetskopi ".
    * 
    * @return translated "Siste sikkerhetskopi "
