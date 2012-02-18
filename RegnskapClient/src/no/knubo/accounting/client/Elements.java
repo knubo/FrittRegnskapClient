@@ -187,6 +187,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String admin_archive_limit();
 
   /**
+   * Translated "Installer indekser".
+   * 
+   * @return translated "Installer indekser"
+   */
+  @DefaultStringValue("Installer indekser")
+  @Key("admin_backup_install_index")
+  String admin_backup_install_index();
+
+  /**
    * Translated "Endringsønske".
    * 
    * @return translated "Endringsønske"

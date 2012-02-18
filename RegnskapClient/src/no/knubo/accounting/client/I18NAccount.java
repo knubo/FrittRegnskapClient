@@ -52,6 +52,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String attachment_used();
 
   /**
+   * Translated "Vil du virkelig installere backup i database {0} med prefix {1}?".
+   * 
+   * @return translated "Vil du virkelig installere backup i database {0} med prefix {1}?"
+   */
+  @DefaultMessage("Vil du virkelig installere backup i database {0} med prefix {1}?")
+  @Key("backup_admin_config")
+  String backup_admin_config(String arg0,  String arg1);
+
+  /**
    * Translated "Sikkerhetskopi kan ikke benyttes uten tilgang til hemmelige adresser.".
    * 
    * @return translated "Sikkerhetskopi kan ikke benyttes uten tilgang til hemmelige adresser."

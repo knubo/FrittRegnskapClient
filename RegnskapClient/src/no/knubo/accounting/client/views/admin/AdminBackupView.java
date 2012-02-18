@@ -10,7 +10,6 @@ import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.ui.AccountTable;
-import no.knubo.accounting.client.ui.FileUploadWithErrorText;
 import no.knubo.accounting.client.views.files.UploadDelegate;
 import no.knubo.accounting.client.views.files.UploadDelegateCallback;
 
@@ -20,6 +19,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -39,7 +39,6 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
     private final Elements elements;
     private final I18NAccount messages;
     private final Constants constants;
-    private FileUploadWithErrorText upload;
     private UploadDelegate uploadDelegate;
     private AccountTable analyzeTable;
     private CheckBox selectAll;
@@ -47,6 +46,7 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
     private ListBox dbListbox;
     private Button clearButton;
     private Button installButton;
+    private Button installIndexButton;
 
     public AdminBackupView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
@@ -74,16 +74,21 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
         installButton = new Button(elements.backup_install());
         installButton.addClickHandler(this);
         installButton.setEnabled(false);
+
+        installIndexButton = new Button(elements.admin_backup_install_index());
+        installIndexButton.addClickHandler(this);
         
         hp.add(dbListbox);
         hp.add(clearButton);
         hp.add(installButton);
+        hp.add(installIndexButton);
+        
         dp.add(hp, DockPanel.NORTH);
 
         dp.add(analyzeTable, DockPanel.NORTH);
 
         analyzeTable.setHeaders(0, "", "Table", "Drop", "Truncate", "Lock", "Insert", "Unlock", "Table exist",
-                "Backup exist");
+                "Backup exist", "Operation status");
 
         selectAll = new CheckBox(elements.select_all());
         selectAll.addClickHandler(this);
@@ -132,7 +137,7 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
             Util.log("No message upload admin");
             return true;
         }
-        
+
         installButton.setEnabled(true);
 
         JSONValue jsonValue = JSONParser.parseStrict(body);
@@ -164,6 +169,9 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
                     analyzeTable.setWidget(i + 1, j + 1, anchor);
                 }
             }
+            analyzeTable.setText(i+1, 9, "");
+            analyzeTable.getCellFormatter().addStyleName(i, 9, "desc");
+
         }
         return true;
     }
@@ -190,15 +198,119 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
             showSqlContentPopup((Anchor) event.getSource());
         } else if (event.getSource() == selectAll) {
             toggleSelectAll();
-        } else if(event.getSource() == clearButton) {
+        } else if (event.getSource() == clearButton) {
             clear();
+        } else if (event.getSource() == installButton) {
+            installBackup();
+        } else if(event.getSource() == installIndexButton) {
+            installIndexButton();
         }
+    }
+
+    int currentRow;
+    private String prefix;
+
+    private void installBackup() {
+        String selectedDB = Util.getSelectedText(dbListbox);
+        prefix = calculatePrefix();
+        if (!Window.confirm(messages.backup_admin_config(selectedDB, prefix))) {
+            return;
+        }
+        dbListbox.setEnabled(false);
+        for (int row = 1; row < analyzeTable.getRowCount(); row++) {
+            CheckBox box = getCheckbox(row);
+            box.setEnabled(false);
+        }
+        currentRow = 0;
+        dropBackupTable();
+    }
+
+    private void installIndexButton() {
+        prefix = calculatePrefix();
+        ServerResponse callback = new ServerResponseString() {
+            
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                /* Unused */
+            }
+            
+            @Override
+            public void serverResponse(String response) {
+                DialogBox db = new DialogBox();
+                db.setAutoHideEnabled(true);
+                db.setText(response);
+                db.center();
+            }
+        };
+        AuthResponder.get(constants, messages, callback ,
+                "admin/admin_backup_admin.php?action=install_indexes&dbSelect=" + Util.getSelected(dbListbox)
+                        + "&dbprefix=" + prefix);
+
+    }
+    
+    private String calculatePrefix() {
+        String table = analyzeTable.getText(1, 1);
+        return table.substring(0, table.indexOf('_'));
+    }
+
+    private CheckBox getCheckbox(int row) {
+        return (CheckBox) analyzeTable.getWidget(row, 0);
+    }
+
+    private void dropBackupTable() {
+        currentRow++;
+
+        if (currentRow == analyzeTable.getRowCount()) {
+            installBackupTables();
+            return;
+        }
+        CheckBox box = getCheckbox(currentRow);
+
+        if (box.getValue()) {
+            String table = analyzeTable.getText(currentRow, 1);
+
+            ServerResponse callback = new ServerResponse() {
+
+                @Override
+                public void serverResponse(JSONValue responseObj) {
+                    analyzeTable.setText(currentRow, 9, "Backup dropped");
+
+                    dropBackupTable();
+                }
+            };
+            String url = "admin/admin_backup_admin.php?action=drop_table&dbSelect=" + Util.getSelected(dbListbox)
+                    + "&table=" + table;
+            AuthResponder.get(constants, messages, callback, url);
+        } else {
+            dropBackupTable();
+        }
+
+    }
+
+    private void installBackupTables() {
+        ServerResponse callback = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                for (int row = 1; row < analyzeTable.getRowCount(); row++) {
+                    CheckBox box = getCheckbox(row);
+
+                    if (box.getValue()) {
+                        analyzeTable.setText(row, 9, "Backup table ready");
+                    }
+                }
+
+            }
+        };
+        AuthResponder.get(constants, messages, callback,
+                "admin/admin_backup_admin.php?action=install_backup_tables&dbSelect=" + Util.getSelected(dbListbox)
+                        + "&dbprefix=" + prefix);
     }
 
     private void toggleSelectAll() {
 
         for (int row = 1; row < analyzeTable.getRowCount(); row++) {
-            Widget box = analyzeTable.getWidget(row, 0);
+            Widget box = getCheckbox(row);
 
             if (box instanceof CheckBox) {
                 CheckBox cb = (CheckBox) box;
