@@ -77,12 +77,12 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
 
         installIndexButton = new Button(elements.admin_backup_install_index());
         installIndexButton.addClickHandler(this);
-        
+
         hp.add(dbListbox);
         hp.add(clearButton);
         hp.add(installButton);
         hp.add(installIndexButton);
-        
+
         dp.add(hp, DockPanel.NORTH);
 
         dp.add(analyzeTable, DockPanel.NORTH);
@@ -169,7 +169,7 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
                     analyzeTable.setWidget(i + 1, j + 1, anchor);
                 }
             }
-            analyzeTable.setText(i+1, 9, "");
+            analyzeTable.setText(i + 1, 9, "");
             analyzeTable.getCellFormatter().addStyleName(i, 9, "desc");
 
         }
@@ -202,7 +202,7 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
             clear();
         } else if (event.getSource() == installButton) {
             installBackup();
-        } else if(event.getSource() == installIndexButton) {
+        } else if (event.getSource() == installIndexButton) {
             installIndexButton();
         }
     }
@@ -228,12 +228,12 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
     private void installIndexButton() {
         prefix = calculatePrefix();
         ServerResponse callback = new ServerResponseString() {
-            
+
             @Override
             public void serverResponse(JSONValue responseObj) {
                 /* Unused */
             }
-            
+
             @Override
             public void serverResponse(String response) {
                 DialogBox db = new DialogBox();
@@ -242,12 +242,12 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
                 db.center();
             }
         };
-        AuthResponder.get(constants, messages, callback ,
+        AuthResponder.get(constants, messages, callback,
                 "admin/admin_backup_admin.php?action=install_indexes&dbSelect=" + Util.getSelected(dbListbox)
                         + "&dbprefix=" + prefix);
 
     }
-    
+
     private String calculatePrefix() {
         String table = analyzeTable.getText(1, 1);
         return table.substring(0, table.indexOf('_'));
@@ -299,12 +299,43 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
                         analyzeTable.setText(row, 9, "Backup table ready");
                     }
                 }
-
+                currentRow = 0;
+                copyToBackupTables();
             }
         };
         AuthResponder.get(constants, messages, callback,
                 "admin/admin_backup_admin.php?action=install_backup_tables&dbSelect=" + Util.getSelected(dbListbox)
                         + "&dbprefix=" + prefix);
+    }
+
+    protected void copyToBackupTables() {
+        currentRow++;
+
+        if (currentRow == analyzeTable.getRowCount()) {
+            return;
+        }
+        CheckBox box = getCheckbox(currentRow);
+
+        if (box.getValue()) {
+            String table = analyzeTable.getText(currentRow, 1);
+
+            ServerResponse callback = new ServerResponse() {
+
+                @Override
+                public void serverResponse(JSONValue responseObj) {
+                    String count = Util.str(responseObj.isObject().get("count"));
+                    analyzeTable.setText(currentRow, 9, "Backup rows: " + count);
+
+                    copyToBackupTables();
+                }
+            };
+            String url = "admin/admin_backup_admin.php?action=backup_table&dbSelect=" + Util.getSelected(dbListbox)
+                    + "&table=" + table;
+            AuthResponder.get(constants, messages, callback, url);
+        } else {
+            copyToBackupTables();
+        }
+
     }
 
     private void toggleSelectAll() {
