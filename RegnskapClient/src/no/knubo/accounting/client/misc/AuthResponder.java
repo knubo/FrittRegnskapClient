@@ -188,13 +188,13 @@ public class AuthResponder implements RequestCallback {
     }
 
     static ServerResponse ignoreCallback = new ServerResponse() {
-        
+
         @Override
         public void serverResponse(JSONValue responseObj) {
             /* Ignored */
         }
     };
-    
+
     /** Calls and just checks that it gets any valid json response */
     public static void getIgnore(Constants constants, I18NAccount messages, String url) {
         get(constants, messages, ignoreCallback, url);

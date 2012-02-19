@@ -268,6 +268,15 @@ public interface HelpTexts extends com.google.gwt.i18n.client.ConstantsWithLooku
   String missing_member_youth_price();
 
   /**
+   * Translated "Klarte ikke finne neste semester. Operasjonen er avbrutt.".
+   * 
+   * @return translated "Klarte ikke finne neste semester. Operasjonen er avbrutt."
+   */
+  @DefaultStringValue("Klarte ikke finne neste semester. Operasjonen er avbrutt.")
+  @Key("missing_semester")
+  String missing_semester();
+
+  /**
    * Translated "<p>Det mangler pris for treningsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>".
    * 
    * @return translated "<p>Det mangler pris for treningsmedlemsskap for i &aring;r. Kan ikke fullf&oslash;re registreringen.</p><p>Legg inn pris i innstillinger, Priser for medlemsskap.</p>"

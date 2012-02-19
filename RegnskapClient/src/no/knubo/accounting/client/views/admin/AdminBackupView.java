@@ -298,7 +298,7 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
 
                     if (box.getValue()) {
                         analyzeTable.setText(row, 9, analyzeTable.getText(row, 9) + ", Backup table ready");
-                    }
+                    }   
                 }
                 currentRow = 0;
                 copyToBackupTables();
