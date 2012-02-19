@@ -220,6 +220,7 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
         for (int row = 1; row < analyzeTable.getRowCount(); row++) {
             CheckBox box = getCheckbox(row);
             box.setEnabled(false);
+            analyzeTable.setText(row, 9, "");
         }
         currentRow = 0;
         dropBackupTable();
@@ -296,7 +297,7 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
                     CheckBox box = getCheckbox(row);
 
                     if (box.getValue()) {
-                        analyzeTable.setText(row, 9, "Backup table ready");
+                        analyzeTable.setText(row, 9, analyzeTable.getText(row, 9) + ", Backup table ready");
                     }
                 }
                 currentRow = 0;
@@ -312,6 +313,8 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
         currentRow++;
 
         if (currentRow == analyzeTable.getRowCount()) {
+            currentRow = 0;
+            installFromBackup();
             return;
         }
         CheckBox box = getCheckbox(currentRow);
@@ -324,16 +327,48 @@ public class AdminBackupView extends Composite implements UploadDelegateCallback
                 @Override
                 public void serverResponse(JSONValue responseObj) {
                     String count = Util.str(responseObj.isObject().get("count"));
-                    analyzeTable.setText(currentRow, 9, "Backup rows: " + count);
+                    analyzeTable
+                            .setText(currentRow, 9, analyzeTable.getText(currentRow, 9) + ", Backup rows: " + count);
 
                     copyToBackupTables();
                 }
             };
             String url = "admin/admin_backup_admin.php?action=backup_table&dbSelect=" + Util.getSelected(dbListbox)
-                    + "&table=" + table;
+                    + "&table=" + table + "&dbprefix=" + prefix;
             AuthResponder.get(constants, messages, callback, url);
         } else {
             copyToBackupTables();
+        }
+
+    }
+
+    private void installFromBackup() {
+        currentRow++;
+
+        if (currentRow == analyzeTable.getRowCount()) {
+            return;
+        }
+        CheckBox box = getCheckbox(currentRow);
+
+        if (box.getValue()) {
+            String table = analyzeTable.getText(currentRow, 1);
+
+            ServerResponse callback = new ServerResponse() {
+
+                @Override
+                public void serverResponse(JSONValue responseObj) {
+                    String count = Util.str(responseObj.isObject().get("count"));
+                    analyzeTable.setText(currentRow, 9, analyzeTable.getText(currentRow, 9) + ", Backup installed: "
+                            + count);
+
+                    installFromBackup();
+                }
+            };
+            String url = "admin/admin_backup_admin.php?action=install_from_backup&dbSelect="
+                    + Util.getSelected(dbListbox) + "&table=" + table;
+            AuthResponder.get(constants, messages, callback, url);
+        } else {
+            installFromBackup();
         }
 
     }
