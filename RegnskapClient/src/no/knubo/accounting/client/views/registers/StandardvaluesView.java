@@ -89,6 +89,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
 
     private ListBoxWithErrorText bankKidPost;
 
+    private TextBoxWithErrorText lastMonthInSemesterBox;
+
     public StandardvaluesView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
@@ -134,7 +136,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         accountsTable.setHTML(7, 0, elements.setup_end_month_transfer_posts());
         accountsTable.setHTML(8, 0, elements.setup_register_membership_posts());
         accountsTable.setHTML(9, 0, elements.setup_kid_bank_post());
-        
+
         postYear = new ListBoxWithErrorText("budget_post_year");
         accountsTable.setWidget(0, 1, postYear);
         postCourse = new ListBoxWithErrorText("budget_post_course");
@@ -164,9 +166,9 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         accountsTable.setWidget(8, 2, editRegisterMembershipPostsImage);
 
         bankKidPost = new ListBoxWithErrorText("setup_kid_bank_post");
-        
+
         accountsTable.setWidget(9, 1, bankKidPost);
-        
+
         PosttypeCache posttypeCache = PosttypeCache.getInstance(constants, messages);
 
         posttypeCache.fillAllPosts(postYear.getListbox(), null, true, true);
@@ -176,7 +178,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         posttypeCache.fillAllPosts(endMonthPost.getListbox(), null, true, true);
         posttypeCache.fillAllPosts(endYearPost.getListbox(), null, true, true);
         posttypeCache.fillBank(bankKidPost.getListbox());
-        
+
         return accountsTable;
     }
 
@@ -193,6 +195,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         table.setHTML(6, 0, elements.mail_sender());
         table.setHTML(7, 0, elements.massletter_due_date());
         table.setHTML(8, 0, elements.birthdate_required());
+        table.setHTML(9, 0, elements.last_month_in_semester());
 
         yearBox = new TextBoxWithErrorText("year");
         yearBox.setMaxLength(4);
@@ -215,6 +218,9 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
 
         birthdateRequiredBox = new NamedCheckBox("birthdate_required");
 
+        lastMonthInSemesterBox = new TextBoxWithErrorText("last_month_in_semester");
+        lastMonthInSemesterBox.setMaxLength(2);
+
         table.setWidget(0, 1, yearBox);
         table.setWidget(1, 1, monthBox);
         table.setWidget(2, 1, semesterBox);
@@ -224,6 +230,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         table.setWidget(6, 1, emailBox);
         table.setWidget(7, 1, massletterDueDateBox);
         table.setWidget(8, 1, birthdateRequiredBox);
+        table.setWidget(9, 1, lastMonthInSemesterBox);
 
         return table;
     }
@@ -299,7 +306,7 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         Util.addPostParam(sb, "register_membership_posts", getRegisterMembershipPosts());
         Util.addPostParam(sb, "birthdate_required", birthdateRequiredBox.getValue() ? "1" : "0");
         Util.addPostParam(sb, "bank_kid_post", Util.getSelected(bankKidPost.getListbox()));
-
+        Util.addPostParam(sb, "last_spring_month", lastMonthInSemesterBox.getText());
         ServerResponse callback = new ServerResponse() {
 
             @Override
@@ -370,6 +377,8 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
                 setEndMonthTransferPosts(Util.strSkipNull(object.get("end_month_transfer_posts")));
                 setRegisterMembershipPosts(Util.strSkipNull(object.get("register_membership_posts")));
                 birthdateRequiredBox.setValue(Util.getBoolean(object.get("birthdate_required")));
+                lastMonthInSemesterBox.setText(Util.strSkipNull(object.get("last_spring_month")));
+
             }
 
         };
@@ -381,9 +390,12 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         MasterValidator masterValidator = new MasterValidator();
 
         masterValidator.mandatory(messages.required_field(), new Widget[] { yearBox, monthBox, semesterBox,
-                endMonthPost, endYearPost, postCourse, postTrain, postYear, postYouth });
+                endMonthPost, endYearPost, postCourse, postTrain, postYear, postYouth, lastMonthInSemesterBox });
 
         masterValidator.range(messages.illegal_month(), new Integer(1), new Integer(12), new Widget[] { monthBox });
+
+        masterValidator.range(messages.illegal_month(), new Integer(1), new Integer(11),
+                new Widget[] { lastMonthInSemesterBox });
 
         masterValidator.date(messages.date_format(), new Widget[] { massletterDueDateBox });
 

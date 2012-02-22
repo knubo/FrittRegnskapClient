@@ -2428,6 +2428,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String last_login();
 
   /**
+   * Translated "Siste måned i vårsemesteret".
+   * 
+   * @return translated "Siste måned i vårsemesteret"
+   */
+  @DefaultStringValue("Siste måned i vårsemesteret")
+  @Key("last_month_in_semester")
+  String last_month_in_semester();
+
+  /**
    * Translated "Etternavn".
    * 
    * @return translated "Etternavn"

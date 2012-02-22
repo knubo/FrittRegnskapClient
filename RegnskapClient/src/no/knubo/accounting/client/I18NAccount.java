@@ -1033,6 +1033,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String too_many_hits(String arg0);
 
   /**
+   * Translated "Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste mu00e5ned i vu00e5rsemester i standardverdier.".
+   * 
+   * @return translated "Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste mu00e5ned i vu00e5rsemester i standardverdier."
+   */
+  @DefaultMessage("Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste mu00e5ned i vu00e5rsemester i standardverdier.")
+  @Key("use_end_month")
+  String use_end_month();
+
+  /**
    * Translated "Din cachet(?) versjon av klienten er ikke på samme versjon som serverversjonen. Klientversjonen er {0} og serverversjonen er {1}. Prøv en shift reload av siden. Dette kan gjøre at deler av applikasjonen ikke fungerer som forventet.".
    * 
    * @return translated "Din cachet(?) versjon av klienten er ikke på samme versjon som serverversjonen. Klientversjonen er {0} og serverversjonen er {1}. Prøv en shift reload av siden. Dette kan gjøre at deler av applikasjonen ikke fungerer som forventet."

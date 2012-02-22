@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.views;
 
+import java.util.List;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -7,6 +9,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseWithValidation;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.views.modules.DeprecationRenderer;
@@ -19,6 +22,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -193,13 +197,21 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
             return;
         }
 
-        ServerResponse rh = new ServerResponse() {
-
+        ServerResponse rh = new ServerResponseWithValidation() {
+            
             @Override
             public void serverResponse(JSONValue resonseObj) {
                 if ("1".equals(Util.str(resonseObj.isString()))) {
                     callback.viewMonth();
                 }
+            }
+
+            @Override
+            public void validationError(List<String> fields) {
+                DialogBox db = new DialogBox();
+                db.setText(messages.use_end_month());
+                db.setAutoHideEnabled(true);
+                db.center();
             }
 
         };
