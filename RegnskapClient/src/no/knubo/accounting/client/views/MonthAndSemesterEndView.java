@@ -197,7 +197,7 @@ public class MonthAndSemesterEndView extends Composite implements ClickHandler, 
             return;
         }
 
-        ServerResponse rh = new ServerResponseWithValidation() {
+        ServerResponseWithValidation rh = new ServerResponseWithValidation() {
             
             @Override
             public void serverResponse(JSONValue resonseObj) {
