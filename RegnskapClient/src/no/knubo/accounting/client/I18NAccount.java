@@ -1033,11 +1033,11 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String too_many_hits(String arg0);
 
   /**
-   * Translated "Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste mu00e5ned i vu00e5rsemester i standardverdier.".
+   * Translated "Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste måned for vårsemester i standardverdier.".
    * 
-   * @return translated "Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste mu00e5ned i vu00e5rsemester i standardverdier."
+   * @return translated "Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste måned for vårsemester i standardverdier."
    */
-  @DefaultMessage("Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste mu00e5ned i vu00e5rsemester i standardverdier.")
+  @DefaultMessage("Siste måned i vårsemester er nådd. Bruk avslutt semester eller bytt siste måned for vårsemester i standardverdier.")
   @Key("use_end_month")
   String use_end_month();
 
