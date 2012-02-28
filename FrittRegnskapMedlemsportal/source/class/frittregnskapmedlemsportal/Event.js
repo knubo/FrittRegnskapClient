@@ -32,6 +32,57 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             
         },
         register: function() {
+            
+            var grid = new qx.ui.layout.Grid(6, 20);
+            grid.setSpacing(5);
+            
+            var popup = new qx.ui.popup.Popup(grid).set({
+                // backgroundColor: "#FFFAD3",
+                padding: [2, 4],
+                offset : 3,
+                offsetBottom : 20
+            });
+            
+            var header = new qx.ui.basic.Label("Din påmelding");
+
+            
+            popup.add(header, {
+                row:0, 
+                column:0, 
+                colSpan:10
+            });
+            
+            var rowlayout = new qx.ui.layout.Flow();
+            rowlayout.setSpacingX(7);
+            var buttonrow = new qx.ui.container.Composite(rowlayout);           
+            
+            var registerButton = new qx.ui.form.Button("Meld meg p\u00E5");
+            registerButton.setAllowStretchX(false);
+            registerButton.addListener("execute", function() {                 
+                popup.hide();
+                this.doRegister();
+            }, this);
+            
+            var abortButton = new qx.ui.form.Button("Avbryt");
+            abortButton.setAllowStretchX(false);
+            abortButton.addListener("execute", function() {
+                popup.hide();           
+            }, this);
+            
+            buttonrow.add(registerButton);
+            buttonrow.add(abortButton);
+            
+            popup.add(buttonrow, {
+                row:1, 
+                column:0, 
+                colSpan:10
+            });
+            popup.setAutoHide(false);
+            
+            popup.show();
+           
+        },
+        doRegister: function() {
             var data = this.__eventAccessor.getData();
 
             var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_events.php?action=register", "POST", "application/json");
