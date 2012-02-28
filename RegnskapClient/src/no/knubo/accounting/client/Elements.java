@@ -3013,6 +3013,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_admin_back_admin();
 
   /**
+   * Translated "Epostutsendelse".
+   * 
+   * @return translated "Epostutsendelse"
+   */
+  @DefaultStringValue("Epostutsendelse")
+  @Key("menuitem_admin_email")
+  String menuitem_admin_email();
+
+  /**
    * Translated "Installasjoner".
    * 
    * @return translated "Installasjoner"
