@@ -2851,6 +2851,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String membership_required();
 
   /**
+   * Translated "Krav om semestermedlemskap".
+   * 
+   * @return translated "Krav om semestermedlemskap"
+   */
+  @DefaultStringValue("Krav om semestermedlemskap")
+  @Key("membership_required_semester")
+  String membership_required_semester();
+
+  /**
+   * Translated "Krav om årsmedlemskap".
+   * 
+   * @return translated "Krav om årsmedlemskap"
+   */
+  @DefaultStringValue("Krav om årsmedlemskap")
+  @Key("membership_required_year")
+  String membership_required_year();
+
+  /**
    * Translated "Admin".
    * 
    * @return translated "Admin"

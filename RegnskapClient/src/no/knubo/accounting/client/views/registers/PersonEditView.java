@@ -72,6 +72,8 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
     private final HelpPanel helpPanel;
     private CheckBox hiddenCheck;
+    private CheckBox semesterMembershipRequiredCheck;
+    private CheckBox yearMembershipRequiredCheck;
 
     private FlexTable membershipsTable;
 
@@ -122,7 +124,10 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         table.setHTML(13, 0, elements.comment());
         table.setHTML(14, 0, elements.employee());
         table.setHTML(15, 0, elements.hidden_person());
+        table.setHTML(16, 0, elements.membership_required_year());
+        table.setHTML(17, 0, elements.membership_required_semester());
 
+        
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
         firstnameBox.setVisibleLength(50);
@@ -176,6 +181,10 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         hiddenCheck = new CheckBox();
         secretaddressCheck = new CheckBox();
 
+        semesterMembershipRequiredCheck = new CheckBox();
+        yearMembershipRequiredCheck = new CheckBox();
+        
+        
         updateButton = new NamedButton("PersonEditView.updateButton", elements.update());
         updateButton.addClickHandler(this);
 
@@ -224,9 +233,12 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         table.setWidget(13, 1, commentBox);
         table.setWidget(14, 1, employeeCheck);
         table.setWidget(15, 1, hiddenCheck);
-        table.setWidget(16, 0, updateButton);
-        table.setWidget(17, 1, saveStatus);
-        table.setWidget(18, 0, toSearch);
+        table.setWidget(16, 1, yearMembershipRequiredCheck);
+        table.setWidget(17, 1, semesterMembershipRequiredCheck);
+        
+        table.setWidget(18, 0, updateButton);
+        table.setWidget(19, 1, saveStatus);
+        table.setWidget(20, 0, toSearch);
         initWidget(dp);
     }
 
@@ -519,6 +531,8 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         commentBox.setText(Util.strSkipNull(object.get("Comment")));
         secretaddressCheck.setValue("1".equals(Util.str(object.get("Secretaddress"))));
+        yearMembershipRequiredCheck.setValue("1".equals(Util.str(object.get("YearMembershipRequired"))));
+        semesterMembershipRequiredCheck.setValue("1".equals(Util.str(object.get("SemesterMembershipRequired"))));
     }
 
     private void doSave() {
@@ -549,7 +563,9 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         Util.addPostParam(sb, "gender", Util.getSelected(genderBox));
         Util.addPostParam(sb, "secretaddress", secretaddressCheck.getValue() ? "1" : "0");
         Util.addPostParam(sb, "comment", commentBox.getText());
-
+        Util.addPostParam(sb, "yearRequired", yearMembershipRequiredCheck.getValue() ? "1" : "0");
+        Util.addPostParam(sb, "semesterRequired", semesterMembershipRequiredCheck.getValue() ? "1" : "0");
+        
         ServerResponseWithValidation callback = new ServerResponseWithValidation() {
 
             @Override
@@ -612,6 +628,8 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
             commentBox.setText("");
             secretaddressCheck.setValue(false);
             updateButton.setHTML(elements.save());
+            semesterMembershipRequiredCheck.setValue(false);
+            yearMembershipRequiredCheck.setValue(false);
         } else {
             doOpen();
             updateButton.setHTML(elements.update());
