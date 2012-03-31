@@ -55,6 +55,10 @@ public class BudgetSumView extends DialogBox {
         JSONObject costs = resultData.get("cost").isObject();
         JSONObject earnings = resultData.get("earnings").isObject();
 
+        if(costs == null || earnings == null) {
+            return;
+        }
+        
         HashMap<String, Double> sumCosts = calcSum(costs);
         HashMap<String, Double> sumEarnings = calcSum(earnings);
 

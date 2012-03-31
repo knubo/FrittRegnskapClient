@@ -3508,6 +3508,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_report_member_per_year_gender();
 
   /**
+   * Translated "Manglende påkrevde semestermedlemskap".
+   * 
+   * @return translated "Manglende påkrevde semestermedlemskap"
+   */
+  @DefaultStringValue("Manglende påkrevde semestermedlemskap")
+  @Key("menuitem_report_missing_semester_members")
+  String menuitem_report_missing_semester_members();
+
+  /**
+   * Translated "Manglende påkrevde årsmedlemskap".
+   * 
+   * @return translated "Manglende påkrevde årsmedlemskap"
+   */
+  @DefaultStringValue("Manglende påkrevde årsmedlemskap")
+  @Key("menuitem_report_missing_year_members")
+  String menuitem_report_missing_year_members();
+
+  /**
    * Translated "Vis detaljer for utvalgte posteringer".
    * 
    * @return translated "Vis detaljer for utvalgte posteringer"

@@ -235,6 +235,10 @@ public class BudgetDrawDelegate {
         JSONObject costs = object.get("cost").isObject();
         JSONObject earnings = object.get("earnings").isObject();
 
+        if(earnings == null) {
+            return;
+        }
+        
         int numberOfBudgetYears = fillEarningsAndYearHeaders(earnings);
         fillCosts(costs);
 
@@ -290,8 +294,11 @@ public class BudgetDrawDelegate {
     
     int fillEarningsAndYearHeaders(JSONObject earnings) {
         List<String> keySet = new ArrayList<String>(earnings.keySet());
+        
         Collections.sort(keySet);
 
+       
+        
         int firstYear = findYearFromKey(keySet.get(0));
         int lastYear = findYearFromKey(keySet.get(keySet.size() - 1));
 

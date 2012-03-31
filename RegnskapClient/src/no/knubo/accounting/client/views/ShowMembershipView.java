@@ -104,7 +104,6 @@ public class ShowMembershipView extends Composite implements ClickHandler, Chang
         header.setHTML(elements.member_heading_train());
         action = "training";
         fillSemesterlistbox("trainlist");
-
     }
 
     public void initShowClassMembers() {

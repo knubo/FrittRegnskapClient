@@ -27,7 +27,6 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
 
     private final I18NAccount messages;
 
-
     private NamedButton reportButton;
 
     private HTML result;
@@ -37,6 +36,14 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
     private TextBoxWithErrorText monthTextBox;
 
     private HorizontalPanel hp;
+
+    private Label monthLabel;
+
+    enum Mode {
+        SUM_YEARS, MISSING_YEAR_MEMBERS, MISSING_SEMESTER_MEMBERS
+    }
+
+    Mode currentMode = null;
 
     public GeneralReportView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
@@ -53,32 +60,63 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
         hp = new HorizontalPanel();
         hp.add(new Label(elements.year()));
         hp.add(yearTextBox);
-        hp.add(new Label(elements.month()));
+        monthLabel = new Label(elements.month());
+        hp.add(monthLabel);
         hp.add(monthTextBox);
-        
+
         dp.add(hp, DockPanel.NORTH);
         dp.add(reportButton, DockPanel.NORTH);
 
         result = new HTML();
         dp.add(result, DockPanel.NORTH);
-        
+
         initWidget(dp);
     }
-    
+
+    void init() {
+        hp.setVisible(false);
+        monthLabel.setVisible(false);
+        monthTextBox.setVisible(false);
+        reportButton.setVisible(false);
+        result.setHTML("");
+
+    }
+
     public void initSumYears() {
+        init();
+        hp.setVisible(true);
+        monthLabel.setVisible(true);
+        monthTextBox.setVisible(true);
+        reportButton.setVisible(true);
+        result.setHTML("");
+        currentMode = Mode.SUM_YEARS;
+    }
+
+    public void initBelongings() {
+        init();
+        monthLabel.setVisible(true);
+        monthTextBox.setVisible(true);
+        result.setHTML("");
+        AuthResponder.get(constants, messages, this, "reports/belongings_responsible.php");
+    }
+
+    public void initMissingYearMembers() {
+        init();
         hp.setVisible(true);
         reportButton.setVisible(true);
         result.setHTML("");
+        currentMode = Mode.MISSING_YEAR_MEMBERS;
+    }
+
+    public void initMissingSemesterMembers() {
+        init();
+        hp.setVisible(true);
+        reportButton.setVisible(true);
+        result.setHTML("");
+        currentMode = Mode.MISSING_SEMESTER_MEMBERS;
+        
     }
     
-    public void initBelongings() {
-        hp.setVisible(false);
-        reportButton.setVisible(false);
-        result.setHTML("");
-        AuthResponder.get(constants, messages, this, "reports/belongings_responsible.php");
-
-    }
-
     public static GeneralReportView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
             me = new GeneralReportView(messages, constants, elements);
@@ -89,22 +127,32 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
 
     @Override
     public void onClick(ClickEvent event) {
-        
+
         MasterValidator mv = new MasterValidator();
         mv.mandatory(messages.year_required(), yearTextBox);
-        
-        if(!mv.validateStatus()) {
+
+        if (!mv.validateStatus()) {
             return;
         }
 
-        
         StringBuffer sb = new StringBuffer();
         sb.append("year=");
         sb.append(yearTextBox.getText());
 
         Util.addPostParam(sb, "month", monthTextBox.getText());
-        AuthResponder.post(constants, messages, this, sb, "reports/sum_years.php");
-    
+        AuthResponder.post(constants, messages, this, sb, getUrl());
+
+    }
+
+    private String getUrl() {
+        switch (currentMode) {
+        case MISSING_YEAR_MEMBERS:
+            return "reports/missing_memberships.php?action=year";
+        case SUM_YEARS:
+            return "reports/sum_years.php";
+        default:
+            return "???";
+        }
     }
 
     @Override
@@ -116,8 +164,5 @@ public class GeneralReportView extends Composite implements ClickHandler, Server
     public void serverResponse(JSONValue resonseObj) {
         /* Not used */
     }
-
-    
-    
 
 }

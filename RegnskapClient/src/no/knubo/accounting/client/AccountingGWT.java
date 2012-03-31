@@ -221,6 +221,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(reportsMenu, elements.menuitem_report_belonging_responsible(),
                     WidgetIds.REPORT_BELONGINGS_RESPONSIBLE);
         }
+
+        addMenuItem(reportsMenu, elements.menuitem_report_missing_year_members(),
+                WidgetIds.REPORTS_MISSING_YEAR_MEMBERSHIPS);
+        addMenuItem(reportsMenu, elements.menuitem_report_missing_semester_members(),
+                WidgetIds.REPORTS_MISSING_SEMESTER_MEMBERSHIPS);
     }
 
     private void setupBudgetMenu(MenuBar budgetMenu) {
