@@ -401,6 +401,8 @@ class Commando implements Command {
             ((AdminBackupView)widget).init();
             break;
         case REPORTS_MISSING_SEMESTER_MEMBERSHIPS:
+            widget = GeneralReportView.getInstance(messages, constants, elements);
+            ((GeneralReportView)widget).initMissingSemesterMembers();
             break;
         case REPORTS_MISSING_YEAR_MEMBERSHIPS:
             widget = GeneralReportView.getInstance(messages, constants, elements);
