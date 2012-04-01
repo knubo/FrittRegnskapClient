@@ -122,7 +122,7 @@ qx.Class.define("frittregnskapmedlemsportal.Application", {
                 new frittregnskapmedlemsportal.Profile().createWindowProfile(desktop);
                 
                 if(this.__portalEnabled) {
-                   new frittregnskapmedlemsportal.Event().setupView(desktop);                    
+                   new frittregnskapmedlemsportal.Events().setupView(desktop);                    
                 }
             }
             else {            

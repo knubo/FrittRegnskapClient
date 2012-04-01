@@ -1,4 +1,4 @@
-qx.Class.define("frittregnskapmedlemsportal.Event", {
+qx.Class.define("frittregnskapmedlemsportal.EventSignup", {
     extend: qx.core.Object,
 
     members: {
@@ -7,30 +7,6 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
         __mainBox : null,
         __detailBox : null,
         __eventAccessor : null,
-        changeToEventView : function(event) {
-            this.__mainBox.hide();
-            this.__detailBox.show();
-
-            this.loadDynamicView(event);
-            
-        },
-        loadDynamicView : function(event) {
-            var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_events.php?action=get&id="+event["id"], "GET", "application/json");
-
-            req.addListener("completed", function(data){
-                var json = data.getContent();
-
-                try {
-                    this.setupDynamicView(json);
-                }
-                catch (error) {
-                    console.log(error);
-                }
-            }, this);
-
-            req.send();
-            
-        },
         register: function() {
             
             var grid = new qx.ui.layout.Grid(6, 20);
@@ -94,8 +70,7 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             req.send();
 
         },
-        setupDynamicView : function(event) {
-            this.__detailBox.removeAll();
+        setupRegisterView : function(event) {
 
             this.__win.setCaption(event.name);
             
@@ -129,8 +104,7 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             var abortButton = new qx.ui.form.Button("Avbryt");
             abortButton.setAllowStretchX(false);
             abortButton.addListener("execute", function() {
-                this.__detailBox.hide();           
-                this.__mainBox.show();
+                this.__win.hide();
             }, this);
             
             buttonrow.add(registerButton);
@@ -163,76 +137,14 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             }
             
         },
-        
-        fillEventList : function(events) {
-
-            var mainBox =  new qx.ui.container.Composite(new qx.ui.layout.VBox(events.length));
-            
-            this.__mainBox = mainBox;
-            this.__win.add(mainBox);
-
-            for(var i=0;i<events.length;i++){
-                var event = events[i];
-
-                var eventbox = new qx.ui.groupbox.GroupBox(event["eventdesc"]);
-                var gridLayout = new qx.ui.layout.Grid(2, 3);
-                gridLayout.setSpacingY(10);
-                eventbox.setLayout(gridLayout);
-
-                var eventdate = new qx.util.format.DateFormat("dd.MM.yyyy", "no").format(this.fixDate(event.eventDate));
-                eventbox.add(new qx.ui.basic.Label("Moroa starter: "+eventdate), {
-                    row:0, 
-                    column:0
-                });
-
-                var signUpButton = new qx.ui.form.Button("Meld meg p\u00E5");
-                
-                var eventId = event["id"];
-                signUpButton.addListener("execute", function() {
-                    this.t.changeToEventView(this.e);
-                    
-                }, {t:this, e:event});
-                
-                
-                eventbox.add(signUpButton, {
-                    row:1, 
-                    column:0
-                });
-
-                mainBox.add(eventbox);
-
-            }
-
-
-        },
         fixDate: function(date){
             return new qx.util.format.DateFormat("yyyy-MM-dd", "no").parse(date);
-        },
-        
-        loadEvents: function() {
-            var req = new qx.io.remote.Request("/RegnskapServer/services/portal/portal_events.php?action=list", "GET", "application/json");
-
-            req.addListener("completed", function(data){
-                var json = data.getContent();
-
-                try {
-                    this.fillEventList(json);
-                    this.__win.setStatus("");
-                }
-                catch (error) {
-                    console.log(error);
-                }
-            }, this);
-
-            req.send();
-
         },
         setupDetailView : function() {
             var gridLayout = new qx.ui.layout.Grid(2, 3);
             gridLayout.setSpacingY(10);
         
             this.__detailBox = new qx.ui.container.Composite(gridLayout);
-            this.__detailBox.hide();
             this.__win.add(this.__detailBox);
             
         },
@@ -254,7 +166,7 @@ qx.Class.define("frittregnskapmedlemsportal.Event", {
             desktop.add(win);
             win.open();
 
-            this.loadEvents();
+     
             this.setupDetailView();
         },
         destruct: function() {
