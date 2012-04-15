@@ -21,6 +21,7 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.CountFields;
+import no.knubo.accounting.client.views.modules.ProjectFillPopup;
 import no.knubo.accounting.client.views.modules.RegisterStandards;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -49,7 +50,7 @@ public class LineEditView extends Composite implements ClickHandler {
 
     private IdHolder<String, Image> removeIdHolder = new IdHolder<String, Image>();
 
-    public static LineEditView getInstance(ViewCallback caller, I18NAccount messages, Constants constants, 
+    public static LineEditView getInstance(ViewCallback caller, I18NAccount messages, Constants constants,
             HelpPanel helpPanel, Elements elements) {
         if (me == null) {
             me = new LineEditView(caller, messages, constants, helpPanel, elements);
@@ -127,7 +128,7 @@ public class LineEditView extends Composite implements ClickHandler {
 
         initWidget(dp);
     }
-    
+
     public void init() {
         init(null, null);
     }
@@ -135,7 +136,7 @@ public class LineEditView extends Composite implements ClickHandler {
     public void init(String line) {
         init(line, null);
     }
-    
+
     private void init(String line, String navigate) {
         currentLine = line;
 
@@ -183,6 +184,8 @@ public class LineEditView extends Composite implements ClickHandler {
 
     protected boolean disableDelete = false;
 
+    private NamedButton editProjectButton;
+
     private void showLine(String line, String navigate) {
 
         ServerResponse rh = new ServerResponse() {
@@ -211,7 +214,7 @@ public class LineEditView extends Composite implements ClickHandler {
                     addRegnLine(array.get(i));
                 }
                 addSumLineSetDefaults(Util.str(root.get("sum")));
-                
+
                 enableDisableButtonsBasedOnDeleteIsPossible();
             }
 
@@ -343,19 +346,19 @@ public class LineEditView extends Composite implements ClickHandler {
         earningsBox.setVisibleItemCount(1);
         ListBox capitalBox = new ListBox();
         capitalBox.setVisibleItemCount(1);
-        
+
         table.setText(2, 1, elements.account_all());
         table.setWidget(3, 1, accountNameBox);
 
         table.setText(2, 2, elements.account_cost());
         table.setWidget(3, 2, costBox);
-        
+
         table.setText(2, 3, elements.account_earnings());
         table.setWidget(3, 3, earningsBox);
-        
+
         table.setText(2, 4, elements.account_capital());
         table.setWidget(3, 4, capitalBox);
-        
+
         /* Above remove button. */
         table.addCell(3);
 
@@ -364,15 +367,13 @@ public class LineEditView extends Composite implements ClickHandler {
         postTypeCache.fillAllCost(costBox);
         postTypeCache.fillAllEarnings(earningsBox);
         postTypeCache.fillAllCapital(capitalBox);
-        
-        
+
         Util.syncListbox(accountNameBox, accountIdBox.getTextBox());
         Util.syncListbox(costBox, accountIdBox.getTextBox());
         Util.syncListbox(earningsBox, accountIdBox.getTextBox());
         Util.syncListbox(capitalBox, accountIdBox.getTextBox());
         Util.syncListboxes(accountNameBox, costBox, earningsBox, capitalBox);
-        
-        
+
         table.setText(4, 0, elements.project());
 
         HTML projectErrorLabel = new HTML();
@@ -405,6 +406,10 @@ public class LineEditView extends Composite implements ClickHandler {
         addLineButton.setText(elements.add());
         addLineButton.addClickHandler(this);
         table.setWidget(8, 0, addLineButton);
+
+        editProjectButton = new NamedButton("project_set", elements.project_set());
+        editProjectButton.addClickHandler(this);
+        table.setWidget(8, 1, editProjectButton);
 
         return panel;
     }
@@ -509,11 +514,30 @@ public class LineEditView extends Composite implements ClickHandler {
             init(currentLine, "navigate=previous");
         } else if (sender == dateHeader) {
             caller.viewMonth(registerStandards.getCurrentYear(), registerStandards.getCurrentMonth());
+        } else if (sender == editProjectButton) {
+            showProjectEditPopup();
         } else {
             doRowRemove(sender);
         }
     }
 
+    private void showProjectEditPopup() {
+        if (currentLine == null) {
+            return;
+        }
+        ServerResponse cb = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                ProjectFillPopup pfp = new ProjectFillPopup(messages, constants, elements, me);
+                pfp.createProjectEditPopup(responseObj);
+            }
+        };
+        AuthResponder.get(constants, messages, cb, "accounting/editaccountline.php?action=posts&line=" + currentLine);
+
+    }
+
+  
     private void doRowRemove(Widget sender) {
         final String id = removeIdHolder.findId(sender);
 
@@ -695,6 +719,10 @@ public class LineEditView extends Composite implements ClickHandler {
     void changeProjectBoxBasedOnDefault() {
         projectNameBox.setSelectedIndex(defaultProjectNameBox.getSelectedIndex());
         projectIdBox.setText(projectCache.getId(Util.getSelectedText(defaultProjectNameBox.getListbox())));
+    }
+
+    public void projectSet() {
+        init(currentLine);
     }
 
 }

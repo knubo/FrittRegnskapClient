@@ -4525,6 +4525,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String project_required();
 
   /**
+   * Translated "Sett prosjekt".
+   * 
+   * @return translated "Sett prosjekt"
+   */
+  @DefaultStringValue("Sett prosjekt")
+  @Key("project_set")
+  String project_set();
+
+  /**
    * Translated "Spørring".
    * 
    * @return translated "Spørring"
@@ -4685,6 +4694,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Semester")
   @Key("semester")
   String semester();
+
+  /**
+   * Translated "Sett for alle".
+   * 
+   * @return translated "Sett for alle"
+   */
+  @DefaultStringValue("Sett for alle")
+  @Key("set_for_all")
+  String set_for_all();
 
   /**
    * Translated "Konti".
