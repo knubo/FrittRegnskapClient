@@ -182,6 +182,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
         }
         if (reducedMode == 0) {
+            addMenuItem(settingsMenu, elements.menuitem_settings_invoice(), WidgetIds.INVOICE_SETTINGS);
             addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(), WidgetIds.EDIT_TRUST_ACTIONS);
         }
         addMenuItem(settingsMenu, elements.menuitem_accounts(), WidgetIds.EDIT_ACCOUNTS);
@@ -420,5 +421,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     @Override
     public void openEventPartisipants(String id) {
         new Commando(this, WidgetIds.EVENT_PARTISIPANTS_LIST, elements.event_list_partisipants(), id).execute();
+    }
+    
+    @Override
+    public void editEmailTemplateInvoice() {
+        new Commando(this, WidgetIds.EDIT_INVOICE_EMAIL, elements.invoice_edit_email_template()).execute();
     }
 }

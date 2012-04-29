@@ -2266,6 +2266,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String integration_secret();
 
   /**
+   * Translated "Faktura".
+   * 
+   * @return translated "Faktura"
+   */
+  @DefaultStringValue("Faktura")
+  @Key("invoice")
+  String invoice();
+
+  /**
+   * Translated "Rediger fakturaepostmal".
+   * 
+   * @return translated "Rediger fakturaepostmal"
+   */
+  @DefaultStringValue("Rediger fakturaepostmal")
+  @Key("invoice_edit_email_template")
+  String invoice_edit_email_template();
+
+  /**
    * Translated "Flett brev".
    * 
    * @return translated "Flett brev"
@@ -3578,6 +3596,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Sesjoner")
   @Key("menuitem_sessioninfo")
   String menuitem_sessioninfo();
+
+  /**
+   * Translated "Fakturainnstillinger".
+   * 
+   * @return translated "Fakturainnstillinger"
+   */
+  @DefaultStringValue("Fakturainnstillinger")
+  @Key("menuitem_settings_invoice")
+  String menuitem_settings_invoice();
 
   /**
    * Translated "Vis alle medlemskap".

@@ -88,6 +88,9 @@ public class ReportMail extends Composite implements ClickHandler {
     private boolean emailSent;
     private boolean replacedHTMLWidget;
     private NamedButton previewButton;
+    private FlexTable mainTable;
+    private NamedButton saveTemplateButton;
+    private NamedButton cancelTemplateButton;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements) {
         if (reportInstance == null) {
@@ -102,7 +105,7 @@ public class ReportMail extends Composite implements ClickHandler {
         this.elements = elements;
         this.logger = new Logger(this.constants);
 
-        FlexTable mainTable = new FlexTable();
+        mainTable = new FlexTable();
         mainTable.setStyleName("edittable");
         mainTable.setText(0, 0, elements.mail_receivers());
         mainTable.setText(1, 0, elements.mail_title());
@@ -152,6 +155,7 @@ public class ReportMail extends Composite implements ClickHandler {
         mainTable.setWidget(7, 1, attachButton);
 
         addSendButtons(mainTable, 8);
+        addSaveTemplateButtons(mainTable, 9);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -201,6 +205,21 @@ public class ReportMail extends Composite implements ClickHandler {
 
     }
 
+    private void addSaveTemplateButtons(FlexTable mainTable, int row) {
+        FlowPanel fp = new FlowPanel();
+
+        saveTemplateButton = new NamedButton("save", elements.save());
+        saveTemplateButton.addClickHandler(this);
+
+        cancelTemplateButton = new NamedButton("cancel", elements.cancel());
+        cancelTemplateButton.addClickHandler(this);
+
+        fp.add(saveTemplateButton);
+        fp.add(cancelTemplateButton);
+
+        mainTable.setWidget(row, 1, fp);
+    }
+
     private void addSendButtons(FlexTable mainTable, int row) {
         sendButton = new NamedButton("mail_send", elements.mail_send());
         sendButton.addClickHandler(this);
@@ -227,6 +246,7 @@ public class ReportMail extends Composite implements ClickHandler {
         fp.add(clearButton);
 
         mainTable.setWidget(row, 1, fp);
+
     }
 
     private HorizontalPanel createReceiverRow(Elements elements) {
@@ -820,12 +840,32 @@ public class ReportMail extends Composite implements ClickHandler {
 
     }
 
-    public void init() {
+    public void initSendingEmail() {
+
+        mainTable.getRowFormatter().setVisible(0, true);
+        mainTable.getRowFormatter().setVisible(6, true);
+        mainTable.getRowFormatter().setVisible(7, true);
+        mainTable.getRowFormatter().setVisible(8, true);
+        mainTable.getRowFormatter().setVisible(9, false);
+        table.setVisible(true);
+
+        fillFooterAndHeader();
+        fillStyle();
+        setupTimerSaveDraft();
+    }
+
+    public void initEditEmailTemplate() {
+        mainTable.getRowFormatter().setVisible(0, false);
+        mainTable.getRowFormatter().setVisible(6, false);
+        mainTable.getRowFormatter().setVisible(7, false);
+        mainTable.getRowFormatter().setVisible(8, false);
+        mainTable.getRowFormatter().setVisible(9, true);
+        table.setVisible(false);
+
         fillFooterAndHeader();
         fillStyle();
 
-        setupTimer();
-
+        setupTimerKeepalive();
     }
 
     private void fillStyle() {
@@ -866,7 +906,31 @@ public class ReportMail extends Composite implements ClickHandler {
         AuthResponder.get(constants, messages, callback, "registers/emailcontent.php?action=report_init");
     }
 
-    private void setupTimer() {
+    private void setupTimerKeepalive() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = new Timer() {
+
+            @Override
+            public void run() {
+                if (!reportInstance.isVisible()) {
+                    timer.cancel();
+                    return;
+                }
+                AuthResponder.get(constants, messages, AuthResponder.NULL_RESPONSE,
+                        "accounting/invoice_ops.php?action=keepalive");
+            }
+
+        };
+        timer.scheduleRepeating(60 * 1000);
+    }
+
+    private void setupTimerSaveDraft() {
+        if (timer != null) {
+            timer.cancel();
+        }
+
         timer = new Timer() {
 
             @Override
@@ -924,7 +988,6 @@ public class ReportMail extends Composite implements ClickHandler {
         }
 
         AuthResponder.post(constants, messages, callback, params, "reports/email.php");
-
     }
 
     protected void fill(ListBoxWithErrorText listbox, JSONValue content) {
@@ -995,7 +1058,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
         Util.setIndexByValue(headerSelect.getListbox(), header);
         Util.setIndexByValue(footerSelect.getListbox(), footer);
-        setupTimer();
+        setupTimerSaveDraft();
     }
 
     public void setRichEditorVisible(boolean visible) {
@@ -1040,5 +1103,4 @@ public class ReportMail extends Composite implements ClickHandler {
        $wnd['CKEDITOR'].instances.html_area.setData(x);
     }-*/;
 
-    
 }

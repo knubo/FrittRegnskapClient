@@ -6,6 +6,7 @@ import static no.knubo.accounting.client.AccountingGWT.helpTexts;
 import static no.knubo.accounting.client.AccountingGWT.messages;
 
 import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.invoice.InvoiceSettings;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.HappeningsView;
@@ -95,9 +96,9 @@ class Commando implements Command {
 
     private String title;
 
-    private final String[] params;
+    private final Object[] params;
 
-    Commando(ViewCallback callback, WidgetIds action, String title, String... params) {
+    Commando(ViewCallback callback, WidgetIds action, String title, Object... params) {
         this.callback = callback;
         this.action = action;
         this.title = title;
@@ -257,7 +258,11 @@ class Commando implements Command {
 
         case REPORT_EMAIL:
             widget = ReportMail.getInstance(constants, messages, elements);
-            ((ReportMail) widget).init();
+            ((ReportMail) widget).initSendingEmail();
+            break;
+        case EDIT_INVOICE_EMAIL:
+            widget = ReportMail.getInstance(constants, messages, elements);
+            ((ReportMail) widget).initEditEmailTemplate();
             break;
         case REPORT_USERS_EMAIL:
             widget = ReportUsersEmail.getInstance(constants, messages, helpPanel, elements);
@@ -380,14 +385,14 @@ class Commando implements Command {
         case EVENT_EDIT:
             widget = EventManagementView.getInstance(constants, messages, elements);
             if (params != null && params.length > 0) {
-                ((EventManagementView) widget).init(params[0]);
+                ((EventManagementView) widget).init((String) params[0]);
             } else {
                 ((EventManagementView) widget).init();
             }
             break;
         case EVENT_PARTISIPANTS_LIST:
             widget = EventPartisipantsListView.getInstance(constants, messages, elements);
-            ((EventPartisipantsListView) widget).init(params[0]);
+            ((EventPartisipantsListView) widget).init((String) params[0]);
             break;
         case EVENT_LIST:
             widget = EventListView.getInstance(constants, messages, elements, callback);
@@ -407,6 +412,10 @@ class Commando implements Command {
         case REPORTS_MISSING_YEAR_MEMBERSHIPS:
             widget = GeneralReportView.getInstance(messages, constants, elements);
             ((GeneralReportView)widget).initMissingYearMembers();
+            break;
+        case INVOICE_SETTINGS:
+            widget = InvoiceSettings.getInstance(messages, constants, elements, callback);
+            ((InvoiceSettings)widget).init();
             break;
         }
 

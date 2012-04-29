@@ -24,6 +24,8 @@ import com.google.gwt.user.client.ui.HTML;
 
 public class AuthResponder implements RequestCallback {
 
+    public static final ServerResponse NULL_RESPONSE = createNullHandler();
+    
     private final Constants constants;
     private final ServerResponse callback;
     private final I18NAccount messages;
@@ -39,6 +41,16 @@ public class AuthResponder implements RequestCallback {
         }
         this.logger = new Logger(this.constants);
         AccountingGWT.setLoading();
+    }
+
+    private static ServerResponse createNullHandler() {
+        return new ServerResponse() {
+            
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                /* Nothing */
+            }
+        };
     }
 
     @Override

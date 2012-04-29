@@ -44,4 +44,5 @@ public interface ViewCallback {
 
     public void openEventPartisipants(String id);
 
+    public void editEmailTemplateInvoice();
 }
