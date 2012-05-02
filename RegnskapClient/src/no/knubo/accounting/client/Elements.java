@@ -2275,6 +2275,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice();
 
   /**
+   * Translated "Stamdardbeløp".
+   * 
+   * @return translated "Stamdardbeløp"
+   */
+  @DefaultStringValue("Stamdardbeløp")
+  @Key("invoice_default_amount")
+  String invoice_default_amount();
+
+  /**
    * Translated "Rediger fakturaepostmal".
    * 
    * @return translated "Rediger fakturaepostmal"
@@ -2282,6 +2291,114 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Rediger fakturaepostmal")
   @Key("invoice_edit_email_template")
   String invoice_edit_email_template();
+
+  /**
+   * Translated "Fakturaepost klar".
+   * 
+   * @return translated "Fakturaepost klar"
+   */
+  @DefaultStringValue("Fakturaepost klar")
+  @Key("invoice_email_ready")
+  String invoice_email_ready();
+
+  /**
+   * Translated "Avsender fakturaepost".
+   * 
+   * @return translated "Avsender fakturaepost"
+   */
+  @DefaultStringValue("Avsender fakturaepost")
+  @Key("invoice_email_sender")
+  String invoice_email_sender();
+
+  /**
+   * Translated "Gjenntakelsesintervall".
+   * 
+   * @return translated "Gjenntakelsesintervall"
+   */
+  @DefaultStringValue("Gjenntakelsesintervall")
+  @Key("invoice_reoccurance_interval")
+  String invoice_reoccurance_interval();
+
+  /**
+   * Translated "Gjenntagende faktura".
+   * 
+   * @return translated "Gjenntagende faktura"
+   */
+  @DefaultStringValue("Gjenntagende faktura")
+  @Key("invoice_split_type")
+  String invoice_split_type();
+
+  /**
+   * Translated "Møned".
+   * 
+   * @return translated "Møned"
+   */
+  @DefaultStringValue("Møned")
+  @Key("invoice_split_type_monthly")
+  String invoice_split_type_monthly();
+
+  /**
+   * Translated "Kvartal".
+   * 
+   * @return translated "Kvartal"
+   */
+  @DefaultStringValue("Kvartal")
+  @Key("invoice_split_type_quarterly")
+  String invoice_split_type_quarterly();
+
+  /**
+   * Translated "Fakturatype".
+   * 
+   * @return translated "Fakturatype"
+   */
+  @DefaultStringValue("Fakturatype")
+  @Key("invoice_type")
+  String invoice_type();
+
+  /**
+   * Translated "Ny fakturatype".
+   * 
+   * @return translated "Ny fakturatype"
+   */
+  @DefaultStringValue("Ny fakturatype")
+  @Key("invoice_type_new")
+  String invoice_type_new();
+
+  /**
+   * Translated "Annen faktura".
+   * 
+   * @return translated "Annen faktura"
+   */
+  @DefaultStringValue("Annen faktura")
+  @Key("invoice_type_other")
+  String invoice_type_other();
+
+  /**
+   * Translated "Semestermedlemskap".
+   * 
+   * @return translated "Semestermedlemskap"
+   */
+  @DefaultStringValue("Semestermedlemskap")
+  @Key("invoice_type_semester")
+  String invoice_type_semester();
+
+  /**
+   * Translated "Årsmedlemskap".
+   * 
+   * @return translated "Årsmedlemskap"
+   */
+  @DefaultStringValue("Årsmedlemskap")
+  @Key("invoice_type_year")
+  String invoice_type_year();
+
+  /**
+   * Translated "Fakturatyper".
+   * 
+   * @return translated "Fakturatyper"
+   */
+  @DefaultStringValue("Fakturatyper")
+  @Key("invoice_types")
+  String invoice_types();
 
   /**
    * Translated "Flett brev".
@@ -4003,6 +4120,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String not_employee();
 
   /**
+   * Translated "Ikke klar".
+   * 
+   * @return translated "Ikke klar"
+   */
+  @DefaultStringValue("Ikke klar")
+  @Key("not_ready")
+  String not_ready();
+
+  /**
    * Translated "Tidspunkt".
    * 
    * @return translated "Tidspunkt"
@@ -4586,6 +4712,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Kan lese hemmelige adresser")
   @Key("read_secret")
   String read_secret();
+
+  /**
+   * Translated "Klar".
+   * 
+   * @return translated "Klar"
+   */
+  @DefaultStringValue("Klar")
+  @Key("ready")
+  String ready();
 
   /**
    * Translated "Redusert skrivetilgang".

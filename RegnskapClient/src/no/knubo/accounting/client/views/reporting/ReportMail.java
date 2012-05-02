@@ -450,7 +450,19 @@ public class ReportMail extends Composite implements ClickHandler {
             openArchiveDialog();
         } else if (sender == clearButton) {
             clearEmail();
+        } else if(sender == saveTemplateButton) {
+            saveTemplate();
+        } else if(sender == cancelTemplateButton) {
+            cancelTemplate();
         }
+    }
+
+    private void cancelTemplate() {
+        
+    }
+
+    private void saveTemplate() {
+        
     }
 
     public HorizontalPanel addSizeSelect(final ScrollPanel sp, final DialogBox popup) {
@@ -1103,4 +1115,5 @@ public class ReportMail extends Composite implements ClickHandler {
        $wnd['CKEDITOR'].instances.html_area.setData(x);
     }-*/;
 
+    
 }
