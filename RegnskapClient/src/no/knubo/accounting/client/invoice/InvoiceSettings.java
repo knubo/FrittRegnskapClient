@@ -7,6 +7,7 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
@@ -32,7 +33,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
     private static InvoiceSettings me;
     private I18NAccount messages;
     private Constants constants;
-    private FlexTable table;
+    private AccountTable table;
     private NamedButton newButton;
     private final Elements elements;
     private InvoiceSettings.InvoiceEditFields editFields;
@@ -46,18 +47,17 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
         DockPanel dp = new DockPanel();
 
-        table = new FlexTable();
-        table.setStyleName("tableborder");
+        table = new AccountTable("tableborder");
         table.setText(0, 0, elements.invoice_types());
         table.getFlexCellFormatter().setColSpan(0, 0, 8);
         table.getRowFormatter().setStyleName(0, "header");
         table.setText(1, 0, elements.description());
-        table.setText(1, 1, elements.invoice_type());
-        table.setText(1, 2, elements.invoice_split_type());
-        table.setText(1, 3, elements.invoice_reoccurance_interval());
-        table.setText(1, 4, elements.invoice_default_amount());
-        table.setText(1, 5, elements.invoice_email_ready());
-        table.setText(1, 6, elements.invoice_email_sender());
+        table.setText(1, 1, elements.invoice_type(), "desc");
+        table.setText(1, 2, elements.invoice_split_type(), "desc");
+        table.setText(1, 3, elements.invoice_reoccurance_interval(), "desc");
+        table.setText(1, 4, elements.invoice_default_amount(), "desc");
+        table.setText(1, 5, elements.invoice_email_ready(), "desc");
+        table.setText(1, 6, elements.invoice_email_sender(), "desc");
         table.setText(1, 7, "");
 
         table.getRowFormatter().setStyleName(1, "header");
@@ -79,37 +79,41 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         return me;
     }
 
+    private JSONArray invoices;
+
     public void init() {
         while (table.getRowCount() > 2) {
             table.removeRow(2);
         }
 
         ServerResponse callback = new ServerResponse() {
+
             @Override
             public void serverResponse(JSONValue value) {
-                showInvoices(value.isArray());
+                invoices = value.isArray();
+                showInvoices();
             }
         };
 
         AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=all");
     }
 
-    protected void showInvoices(JSONArray array) {
+    protected void showInvoices() {
 
         int row = 2;
 
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject invoice = array.get(i).isObject();
+        for (int i = 0; i < invoices.size(); i++) {
+            JSONObject invoice = invoices.get(i).isObject();
 
             table.setText(row, 0, Util.strSkipNull(invoice.get("description")));
-            table.setText(row, 1, invoiceType(Util.getInt(invoice.get("invoice_type"))));
-            table.setText(row, 2, invoiceSplitType(Util.getInt(invoice.get("split_type"))));
-            table.setText(row, 3, invoiceReoccuringInterval(Util.strSkipNull(invoice.get("reoccurance_interval"))));
-            table.setText(row, 4, Util.money(Util.strSkipNull(invoice.get("invoice_default_amount"))));
+            table.setText(row, 1, invoiceType(Util.getInt(invoice.get("invoice_type"))),"desc");
+            table.setText(row, 2, invoiceSplitType(Util.getInt(invoice.get("split_type"))),"desc");
+            table.setText(row, 3, invoiceReoccuringInterval(Util.strSkipNull(invoice.get("reoccurance_interval"))),"desc");
+            table.setText(row, 4, Util.money(Util.strSkipNull(invoice.get("default_amount"))),"desc");
             table.setText(row, 5, Util.getBoolean(invoice.get("emailOK")) ? elements.ready() : elements.not_ready());
-            table.setText(row, 6, Util.strSkipNull(invoice.get("email_from")));
+            table.setText(row, 6, Util.strSkipNull(invoice.get("email_from")),"desc");
 
-            Image editImage = ImageFactory.editImage("invoiceTypeEdit" + i + "_" + row);
+            Image editImage = ImageFactory.editImage("invoiceTypeEdit_" + Util.str(invoice.get("id")));
             editImage.addClickHandler(this);
             table.setWidget(row, 7, editImage);
 
@@ -188,6 +192,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private ListBoxWithErrorText invoiceType;
         private TextBoxWithErrorText reoccuranceInterval;
         private NamedButton editInvoiceTemplate;
+        private String currentId;
 
         InvoiceEditFields() {
             setText(elements.menuitem_semesters());
@@ -229,7 +234,6 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             edittable.setWidget(4, 1, defaultAmount);
             editInvoiceTemplate = new NamedButton("invoice_edit_email_template", elements.invoice_edit_email_template());
             editInvoiceTemplate.addClickHandler(this);
-            edittable.setWidget(5, 2, editInvoiceTemplate);
             edittable.setWidget(6, 1, emailSender);
 
             DockPanel dp = new DockPanel();
@@ -246,13 +250,14 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.add(saveButton);
             buttonPanel.add(cancelButton);
+            buttonPanel.add(editInvoiceTemplate);
             buttonPanel.add(mainErrorLabel);
             dp.add(buttonPanel, DockPanel.NORTH);
             setWidget(dp);
         }
 
         private void addInvoiceTypes() {
-            invoiceType.addItem("", "0");
+            invoiceType.addItem("", "");
             invoiceType.addItem(elements.invoice_type_semester(), "1");
             invoiceType.addItem(elements.invoice_type_year(), "2");
             invoiceType.addItem(elements.invoice_type_other(), "3");
@@ -278,9 +283,13 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             StringBuffer sb = new StringBuffer();
             sb.append("action=save");
 
-            Util.addPostParam(sb, "year", emailSender.getText());
-            Util.addPostParam(sb, "spring", description.getText());
-            Util.addPostParam(sb, "fall", defaultAmount.getText());
+            Util.addPostParam(sb, "id", currentId);
+            Util.addPostParam(sb, "description", description.getText());
+            Util.addPostParam(sb, "invoice_type", invoiceType.getText());
+            Util.addPostParam(sb, "split_type", splitType.getText());
+            Util.addPostParam(sb, "reoccurance_interval", reoccuranceInterval.getText());
+            Util.addPostParam(sb, "default_amount", defaultAmount.getText());
+            Util.addPostParam(sb, "email_from", emailSender.getText());
 
             ServerResponse callback = new ServerResponse() {
 
@@ -298,10 +307,11 @@ public class InvoiceSettings extends Composite implements ClickHandler {
                 }
             };
 
-            AuthResponder.post(constants, messages, callback, sb, "registers/semesters.php");
+            AuthResponder.post(constants, messages, callback, sb, "accounting/invoice_ops.php");
         }
 
         public void init() {
+            currentId = "";
             description.setText("");
             defaultAmount.setText("");
             emailSender.setText("");
@@ -312,7 +322,20 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             reoccuranceInterval.setText("");
         }
 
-        private void init(String id) {
+        private void init(String itemId) {
+
+            currentId = itemId.substring("invoiceTypeEdit_".length());
+
+            JSONObject invoice = findInvoice(currentId);
+
+            description.setText(Util.strSkipNull(invoice.get("description")));
+            Util.setIndexByValue(invoiceType.getListbox(), Util.str(invoice.get("invoice_type")));
+            Util.setIndexByValue(splitType.getListbox(), Util.str(invoice.get("split_type")));
+            reoccuranceInterval.setText(Util.strSkipNull(invoice.get("reoccurance_interval")));
+            defaultAmount.setText(Util.money(Util.strSkipNull(invoice.get("default_amount"))));
+            edittable.setText(5, 1, Util.getBoolean(invoice.get("emailOK")) ? elements.ready() : elements.not_ready());
+            emailSender.setText(Util.strSkipNull(invoice.get("email_from")));
+
             mainErrorLabel.setText("");
         }
 
@@ -320,9 +343,23 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             MasterValidator mv = new MasterValidator();
             mv.mandatory(messages.required_field(), emailSender, description, invoiceType);
             mv.money(messages.field_money(), defaultAmount);
+
             
+            mv.email(messages.invalid_email(), emailSender);
+
             return mv.validateStatus();
         }
+    }
+
+    public JSONObject findInvoice(String id) {
+        for (int i = 0; i < invoices.size(); i++) {
+            JSONObject obj = invoices.get(i).isObject();
+            if (Util.str(obj.get("id")).equals(id)) {
+                return obj;
+            }
+        }
+
+        throw new RuntimeException("No invoice found " + id);
     }
 
 }
