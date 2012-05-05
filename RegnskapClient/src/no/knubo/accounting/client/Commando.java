@@ -257,12 +257,12 @@ class Commando implements Command {
             break;
 
         case REPORT_EMAIL:
-            widget = ReportMail.getInstance(constants, messages, elements);
+            widget = ReportMail.getInstance(constants, messages, elements, callback);
             ((ReportMail) widget).initSendingEmail();
             break;
         case EDIT_INVOICE_EMAIL:
-            widget = ReportMail.getInstance(constants, messages, elements);
-            ((ReportMail) widget).initEditEmailTemplate();
+            widget = ReportMail.getInstance(constants, messages, elements, callback);
+            ((ReportMail) widget).initEditEmailTemplate((String) params[0]);
             break;
         case REPORT_USERS_EMAIL:
             widget = ReportUsersEmail.getInstance(constants, messages, helpPanel, elements);
@@ -403,19 +403,19 @@ class Commando implements Command {
             break;
         case ADMIN_BACKUP_OPERATIONS:
             widget = AdminBackupView.getInstance(messages, constants, elements);
-            ((AdminBackupView)widget).init();
+            ((AdminBackupView) widget).init();
             break;
         case REPORTS_MISSING_SEMESTER_MEMBERSHIPS:
             widget = GeneralReportView.getInstance(messages, constants, elements);
-            ((GeneralReportView)widget).initMissingSemesterMembers();
+            ((GeneralReportView) widget).initMissingSemesterMembers();
             break;
         case REPORTS_MISSING_YEAR_MEMBERSHIPS:
             widget = GeneralReportView.getInstance(messages, constants, elements);
-            ((GeneralReportView)widget).initMissingYearMembers();
+            ((GeneralReportView) widget).initMissingYearMembers();
             break;
         case INVOICE_SETTINGS:
             widget = InvoiceSettings.getInstance(messages, constants, elements, callback);
-            ((InvoiceSettings)widget).init();
+            ((InvoiceSettings) widget).init(params);
             break;
         }
 

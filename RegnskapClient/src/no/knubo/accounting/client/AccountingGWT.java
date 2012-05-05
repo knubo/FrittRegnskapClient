@@ -386,8 +386,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     @Override
-    public void openView(WidgetIds view, String title) {
-        new Commando(this, view, title).execute();
+    public void openView(WidgetIds view, String title, Object... params) {
+        new Commando(this, view, title, params).execute();
     }
 
     @Override
@@ -422,9 +422,9 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     public void openEventPartisipants(String id) {
         new Commando(this, WidgetIds.EVENT_PARTISIPANTS_LIST, elements.event_list_partisipants(), id).execute();
     }
-    
+
     @Override
-    public void editEmailTemplateInvoice() {
-        new Commando(this, WidgetIds.EDIT_INVOICE_EMAIL, elements.invoice_edit_email_template()).execute();
+    public void editEmailTemplateInvoice(String id) {
+        new Commando(this, WidgetIds.EDIT_INVOICE_EMAIL, elements.invoice_edit_email_template(), id).execute();
     }
 }

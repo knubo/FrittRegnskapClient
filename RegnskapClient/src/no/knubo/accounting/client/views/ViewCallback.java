@@ -34,7 +34,7 @@ public interface ViewCallback {
      */
     public void searchPerson();
 
-    public void openView(WidgetIds view, String title);
+    public void openView(WidgetIds view, String title, Object... params);
 
     public void openMassletterEditSimple(String filename, String response);
 
@@ -44,5 +44,5 @@ public interface ViewCallback {
 
     public void openEventPartisipants(String id);
 
-    public void editEmailTemplateInvoice();
+    public void editEmailTemplateInvoice(String invoiceId);
 }

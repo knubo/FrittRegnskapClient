@@ -10,15 +10,18 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.CKEditorFunctions;
+import no.knubo.accounting.client.misc.CallbackComplete;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.Logger;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
+import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.views.ViewCallback;
 import no.knubo.accounting.client.views.registers.EmailDefaultStyle;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -91,18 +94,22 @@ public class ReportMail extends Composite implements ClickHandler {
     private FlexTable mainTable;
     private NamedButton saveTemplateButton;
     private NamedButton cancelTemplateButton;
+    private final ViewCallback callback;
+    private String callerID;
 
-    public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements) {
+    public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements,
+            ViewCallback callback) {
         if (reportInstance == null) {
-            reportInstance = new ReportMail(constants, messages, elements);
+            reportInstance = new ReportMail(constants, messages, elements, callback);
         }
         return reportInstance;
     }
 
-    public ReportMail(Constants constants, I18NAccount messages, Elements elements) {
+    public ReportMail(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
         this.constants = constants;
         this.messages = messages;
         this.elements = elements;
+        this.callback = callback;
         this.logger = new Logger(this.constants);
 
         mainTable = new FlexTable();
@@ -168,6 +175,18 @@ public class ReportMail extends Composite implements ClickHandler {
         dp.add(mainTable, DockPanel.NORTH);
         dp.add(table, DockPanel.NORTH);
         initWidget(dp);
+
+    }
+
+    @Override
+    protected void onLoad() {
+        super.onLoad();
+
+        if (!replacedHTMLWidget) {
+            Util.log("Setting up rich editor");
+            replacedHTMLWidget = true;
+            setupRichEditor();
+        }
 
     }
 
@@ -333,6 +352,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
     protected void setDefaultValues(JSONObject object) {
         if (object == null) {
+            setEmailText(PLAIN, "");
             return;
         }
         String footer = Util.str(object.get(EMAIL_FOOTER));
@@ -341,40 +361,15 @@ public class ReportMail extends Composite implements ClickHandler {
         String title = Util.str(object.get(EMAIL_TITLE));
 
         if (title == null || title.length() == 0) {
-            return;
+            title = "";
         }
+
+        setEmailText(format, "");
 
         titleBox.setText(title);
         Util.setIndexByValue(headerSelect.getListbox(), header);
         Util.setIndexByValue(footerSelect.getListbox(), footer);
 
-        if (PLAIN.equals(format)) {
-            radioFormatPlain.setValue(true);
-            onClick(new ClickEvent() {
-                @Override
-                public Object getSource() {
-                    return radioFormatPlain;
-                }
-            });
-        } else if (HTML.equals(format)) {
-            radioFormatHTML.setValue(true);
-            onClick(new ClickEvent() {
-                @Override
-                public Object getSource() {
-                    return radioFormatHTML;
-                }
-            });
-
-        } else if (WIKI.equals(format)) {
-            radioFormatWiki.setValue(true);
-            onClick(new ClickEvent() {
-                @Override
-                public Object getSource() {
-                    return radioFormatWiki;
-                }
-            });
-
-        }
     }
 
     private String buildEmailSettings() {
@@ -450,19 +445,19 @@ public class ReportMail extends Composite implements ClickHandler {
             openArchiveDialog();
         } else if (sender == clearButton) {
             clearEmail();
-        } else if(sender == saveTemplateButton) {
+        } else if (sender == saveTemplateButton) {
             saveTemplate();
-        } else if(sender == cancelTemplateButton) {
+        } else if (sender == cancelTemplateButton) {
             cancelTemplate();
         }
     }
 
     private void cancelTemplate() {
-        
+        callback.openView(WidgetIds.INVOICE_SETTINGS, elements.menuitem_settings_invoice(), callerID);
     }
 
     private void saveTemplate() {
-        
+
     }
 
     public HorizontalPanel addSizeSelect(final ScrollPanel sp, final DialogBox popup) {
@@ -861,23 +856,86 @@ public class ReportMail extends Composite implements ClickHandler {
         mainTable.getRowFormatter().setVisible(9, false);
         table.setVisible(true);
 
-        fillFooterAndHeader();
         fillStyle();
+
+        CallbackComplete complete = new CallbackComplete() {
+
+            @Override
+            public void complete(final JSONObject obj) {
+                new Timer() {
+
+                    @Override
+                    public void run() {
+                        setDefaultValues(obj);
+                    }
+
+                }.schedule(500);
+            }
+
+        };
+        fillFooterAndHeader(complete);
         setupTimerSaveDraft();
     }
 
-    public void initEditEmailTemplate() {
+    public void initEditEmailTemplate(final String id) {
+
+        this.callerID = id;
+
         mainTable.getRowFormatter().setVisible(0, false);
         mainTable.getRowFormatter().setVisible(6, false);
         mainTable.getRowFormatter().setVisible(7, false);
         mainTable.getRowFormatter().setVisible(8, false);
         mainTable.getRowFormatter().setVisible(9, true);
         table.setVisible(false);
+        doClearEmail();
 
-        fillFooterAndHeader();
+        CallbackComplete complete = new CallbackComplete() {
+
+            @Override
+            public void complete(JSONObject obj) {
+
+                loadEmailTemplate(id);
+            }
+
+        };
+
         fillStyle();
+        fillFooterAndHeader(complete);
 
         setupTimerKeepalive();
+    }
+
+    private void loadEmailTemplate(String id) {
+        ServerResponse callback = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject obj = responseObj.isObject();
+
+                titleBox.setText(Util.strSkipNull(obj.get("email_subject")));
+                final String body = Util.strSkipNull(obj.get("email_body"));
+
+                Util.setIndexByValue(headerSelect.getListbox(), Util.strSkipNull(obj.get("email_header")));
+                Util.setIndexByValue(footerSelect.getListbox(), Util.strSkipNull(obj.get("email_footer")));
+                String format = Util.strSkipNull(obj.get("email_format"));
+
+                if (format == null || format.length() == 0) {
+                    format = PLAIN;
+                }
+
+                final String finalFormat = format;
+
+                new Timer() {
+
+                    @Override
+                    public void run() {
+                        setEmailText(finalFormat, body);
+                    }
+
+                }.schedule(500);
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=emailtemplate&id=" + id);
     }
 
     private void fillStyle() {
@@ -890,6 +948,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
             @Override
             public void serverResponse(String response) {
+
                 if (response.trim().length() == 0) {
                     configStyles(EmailDefaultStyle.DEFAULT, "my_style");
                 } else {
@@ -902,7 +961,7 @@ public class ReportMail extends Composite implements ClickHandler {
         AuthResponder.get(constants, messages, callback, "files/files.php?action=gettext&file=style.js");
     }
 
-    private void fillFooterAndHeader() {
+    private void fillFooterAndHeader(final CallbackComplete complete) {
         ServerResponse callback = new ServerResponse() {
             @Override
             public void serverResponse(JSONValue value) {
@@ -910,7 +969,10 @@ public class ReportMail extends Composite implements ClickHandler {
 
                 fill(footerSelect, object.get("footers"));
                 fill(headerSelect, object.get("headers"));
-                setDefaultValues(object.get("profile").isObject());
+
+                if (complete != null) {
+                    complete.complete(object.get("profile").isObject());
+                }
             }
 
         };
@@ -1044,26 +1106,9 @@ public class ReportMail extends Composite implements ClickHandler {
         titleBox.setText(Util.str(object.get("subject")));
 
         String format = Util.str(object.get("format"));
+        String content = Util.str(object.get("body"));
 
-        if (format.equals(PLAIN)) {
-            bodyBox.setVisible(true);
-            setRichEditorVisible(false);
-            radioFormatPlain.setValue(true);
-        } else if (format.equals(HTML)) {
-            bodyBox.setVisible(false);
-            setRichEditorVisible(true);
-            radioFormatHTML.setValue(true);
-        } else if (format.equals(WIKI)) {
-            radioFormatWiki.setValue(true);
-            setRichEditorVisible(false);
-            radioFormatPlain.setValue(true);
-        }
-
-        if (radioFormatHTML.getValue()) {
-            setHTML(Util.str(object.get("body")));
-        } else {
-            bodyBox.setText(Util.str(object.get("body")));
-        }
+        setEmailText(format, content);
 
         String header = Util.str(object.get("header"));
         String footer = Util.str(object.get("footer"));
@@ -1073,13 +1118,56 @@ public class ReportMail extends Composite implements ClickHandler {
         setupTimerSaveDraft();
     }
 
-    public void setRichEditorVisible(boolean visible) {
+    private void setEmailText(String format, String content) {
+        if (format.equals(PLAIN)) {
+            Util.log("Plain text email");
+            richBodyBox.setVisible(false);
+            bodyBox.setVisible(true);
+            setRichEditorVisible(false);
+            radioFormatHTML.setValue(false);
+            radioFormatPlain.setValue(true);
+            onClick(new ClickEvent() {
+                @Override
+                public Object getSource() {
+                    return radioFormatPlain;
+                }
+            });
+        } else if (format.equals(HTML)) {
+            Util.log("HTML email ");
+            richBodyBox.setVisible(false);
+            bodyBox.setVisible(false);
+            setRichEditorVisible(true);
+            radioFormatPlain.setValue(false);
+            radioFormatHTML.setValue(true);
+            onClick(new ClickEvent() {
+                @Override
+                public Object getSource() {
+                    return radioFormatHTML;
+                }
+            });
 
-        if (!replacedHTMLWidget) {
-            replacedHTMLWidget = true;
-            setupRichEditor();
+        } else if (format.equals(WIKI)) {
+            Util.log("Wiki email");
+            bodyBox.setVisible(true);
+            setRichEditorVisible(false);
+            radioFormatPlain.setValue(false);
+            radioFormatWiki.setValue(true);
+            onClick(new ClickEvent() {
+                @Override
+                public Object getSource() {
+                    return radioFormatWiki;
+                }
+            });
         }
 
+        if (radioFormatHTML.getValue()) {
+            setHTML(content);
+        } else {
+            bodyBox.setText(content);
+        }
+    }
+
+    public void setRichEditorVisible(boolean visible) {
         htmlVisible = visible;
         setRichEditorVisibleNative(visible);
     }
@@ -1115,5 +1203,4 @@ public class ReportMail extends Composite implements ClickHandler {
        $wnd['CKEDITOR'].instances.html_area.setData(x);
     }-*/;
 
-    
 }

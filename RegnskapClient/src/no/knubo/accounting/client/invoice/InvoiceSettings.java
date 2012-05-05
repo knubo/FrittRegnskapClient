@@ -81,7 +81,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
     private JSONArray invoices;
 
-    public void init() {
+    public void init(final Object[] params) {
         while (table.getRowCount() > 2) {
             table.removeRow(2);
         }
@@ -91,14 +91,14 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             @Override
             public void serverResponse(JSONValue value) {
                 invoices = value.isArray();
-                showInvoices();
+                showInvoices(params);
             }
         };
 
         AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=all");
     }
 
-    protected void showInvoices() {
+    protected void showInvoices(Object[] params) {
 
         int row = 2;
 
@@ -106,12 +106,13 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             JSONObject invoice = invoices.get(i).isObject();
 
             table.setText(row, 0, Util.strSkipNull(invoice.get("description")));
-            table.setText(row, 1, invoiceType(Util.getInt(invoice.get("invoice_type"))),"desc");
-            table.setText(row, 2, invoiceSplitType(Util.getInt(invoice.get("split_type"))),"desc");
-            table.setText(row, 3, invoiceReoccuringInterval(Util.strSkipNull(invoice.get("reoccurance_interval"))),"desc");
-            table.setText(row, 4, Util.money(Util.strSkipNull(invoice.get("default_amount"))),"desc");
+            table.setText(row, 1, invoiceType(Util.getInt(invoice.get("invoice_type"))), "desc");
+            table.setText(row, 2, invoiceSplitType(Util.getInt(invoice.get("split_type"))), "desc");
+            table.setText(row, 3, invoiceReoccuringInterval(Util.strSkipNull(invoice.get("reoccurance_interval"))),
+                    "desc");
+            table.setText(row, 4, Util.money(Util.strSkipNull(invoice.get("default_amount"))), "desc");
             table.setText(row, 5, Util.getBoolean(invoice.get("emailOK")) ? elements.ready() : elements.not_ready());
-            table.setText(row, 6, Util.strSkipNull(invoice.get("email_from")),"desc");
+            table.setText(row, 6, Util.strSkipNull(invoice.get("email_from")), "desc");
 
             Image editImage = ImageFactory.editImage("invoiceTypeEdit_" + Util.str(invoice.get("id")));
             editImage.addClickHandler(this);
@@ -120,6 +121,10 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             String style = (((row + 1) % 6) < 3) ? "line2" : "line1";
             table.getRowFormatter().setStyleName(row, style);
             row++;
+        }
+
+        if (params != null && params.length > 0) {
+            showInitFields(null, "invoiceTypeEdit_" + params[0], false);
         }
     }
 
@@ -154,25 +159,34 @@ public class InvoiceSettings extends Composite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         Widget sender = (Widget) event.getSource();
+        String id = sender.getElement().getId();
 
+        boolean openNew = sender == newButton;
+
+        showInitFields(sender, id, openNew);
+    }
+
+    private void showInitFields(Widget sender, String id, boolean openNew) {
         if (editFields == null) {
             editFields = new InvoiceEditFields();
         }
 
-        int left = 0;
-        if (sender == newButton) {
-            left = sender.getAbsoluteLeft() + 10;
-        } else {
-            left = sender.getAbsoluteLeft() - 150;
-        }
+        int left = 50;
+        int top = 50;
 
-        int top = sender.getAbsoluteTop() + 10;
+        if (sender != null) {
+            top = sender.getAbsoluteTop() + 10;
+            if (openNew) {
+                left = sender.getAbsoluteLeft() + 10;
+            } else {
+                left = sender.getAbsoluteLeft() - 150;
+            }
+        }
         editFields.setPopupPosition(left, top);
 
-        if (sender == newButton) {
+        if (openNew) {
             editFields.init();
         } else {
-            String id = sender.getElement().getId();
 
             editFields.init(id);
         }
@@ -276,7 +290,14 @@ public class InvoiceSettings extends Composite implements ClickHandler {
                 hide();
             } else if (sender == saveButton && validateFields()) {
                 doSave();
+            } else if (sender == editInvoiceTemplate) {
+                doEditInvoice();
             }
+        }
+
+        private void doEditInvoice() {
+            callback.editEmailTemplateInvoice(currentId);
+            hide();
         }
 
         private void doSave() {
@@ -298,7 +319,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
                     JSONObject object = value.isObject();
 
                     if ("1".equals(Util.str(object.get("result")))) {
-                        me.init();
+                        me.init(null);
                         hide();
                     } else {
                         mainErrorLabel.setText(messages.save_failed());
@@ -344,7 +365,6 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             mv.mandatory(messages.required_field(), emailSender, description, invoiceType);
             mv.money(messages.field_money(), defaultAmount);
 
-            
             mv.email(messages.invalid_email(), emailSender);
 
             return mv.validateStatus();
