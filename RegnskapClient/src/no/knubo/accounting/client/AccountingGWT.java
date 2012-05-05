@@ -427,4 +427,5 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     public void editEmailTemplateInvoice(String id) {
         new Commando(this, WidgetIds.EDIT_INVOICE_EMAIL, elements.invoice_edit_email_template(), id).execute();
     }
+
 }

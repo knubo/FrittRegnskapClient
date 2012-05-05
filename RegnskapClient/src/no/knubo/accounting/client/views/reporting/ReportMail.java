@@ -344,7 +344,7 @@ public class ReportMail extends Composite implements ClickHandler {
         StringBuffer sb = new StringBuffer("action=list");
         Util.addPostParam(sb, "query", reciversListBox.getText());
         Util.addPostParam(sb, "year", yearBox.getText());
-        Util.addPostParam(sb, "emailSettings", buildEmailSettings());
+        Util.addPostParam(sb, "emailSettings", buildEmailSettings().toString());
 
         AuthResponder.post(constants, messages, callback, sb, "reports/email.php");
 
@@ -372,14 +372,14 @@ public class ReportMail extends Composite implements ClickHandler {
 
     }
 
-    private String buildEmailSettings() {
+    private JSONObject buildEmailSettings() {
         JSONObject obj = new JSONObject();
         obj.put(EMAIL_HEADER, new JSONString(Util.getSelected(headerSelect)));
         obj.put(EMAIL_FOOTER, new JSONString(Util.getSelected(footerSelect)));
         obj.put(EMAIL_FORMAT, new JSONString(getFormat()));
         obj.put(EMAIL_TITLE, new JSONString(titleBox.getText()));
 
-        return obj.toString();
+        return obj;
     }
 
     protected void confirmSendEmail() {
@@ -457,7 +457,11 @@ public class ReportMail extends Composite implements ClickHandler {
     }
 
     private void saveTemplate() {
+        JSONObject emailSettings = buildEmailSettings();
+        emailSettings.put("id", new JSONString(callerID));
+        emailSettings.put("body", new JSONString(radioFormatHTML.getValue() ? getHTML() : bodyBox.getText()));
 
+        callback.openView(WidgetIds.INVOICE_SETTINGS, elements.menuitem_settings_invoice(), emailSettings);
     }
 
     public HorizontalPanel addSizeSelect(final ScrollPanel sp, final DialogBox popup) {

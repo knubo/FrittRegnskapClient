@@ -82,6 +82,12 @@ public class InvoiceSettings extends Composite implements ClickHandler {
     private JSONArray invoices;
 
     public void init(final Object[] params) {
+        
+        if(params != null && params.length > 0 && params[0] instanceof JSONObject) {
+            saveEmailTemplate((JSONObject) params[0]);
+            return;
+        }
+        
         while (table.getRowCount() > 2) {
             table.removeRow(2);
         }
@@ -96,6 +102,22 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         };
 
         AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=all");
+    }
+
+    private void saveEmailTemplate(final JSONObject emailTemplateSettings) {
+        
+        StringBuffer params = new StringBuffer();
+        params.append("action=saveEmailTemplate");
+        Util.addPostParam(params, "emailTemplate", emailTemplateSettings.toString());
+        ServerResponse cb = new ServerResponse() {
+            
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                init(new String[] {Util.str(emailTemplateSettings.get("id"))});
+            }
+        };
+        AuthResponder.post(constants, messages, cb, params, "accounting/invoice_ops.php");
+        
     }
 
     protected void showInvoices(Object[] params) {
@@ -332,6 +354,8 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         }
 
         public void init() {
+            
+            editInvoiceTemplate.setEnabled(false);
             currentId = "";
             description.setText("");
             defaultAmount.setText("");
@@ -344,9 +368,9 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         }
 
         private void init(String itemId) {
-
             currentId = itemId.substring("invoiceTypeEdit_".length());
 
+            editInvoiceTemplate.setEnabled(true);
             JSONObject invoice = findInvoice(currentId);
 
             description.setText(Util.strSkipNull(invoice.get("description")));

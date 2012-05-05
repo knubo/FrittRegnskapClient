@@ -2293,11 +2293,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_edit_email_template();
 
   /**
-   * Translated "Fakturaepost klar".
+   * Translated "Fakturaepost".
    * 
-   * @return translated "Fakturaepost klar"
+   * @return translated "Fakturaepost"
    */
-  @DefaultStringValue("Fakturaepost klar")
+  @DefaultStringValue("Fakturaepost")
   @Key("invoice_email_ready")
   String invoice_email_ready();
 
@@ -2329,11 +2329,11 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_split_type();
 
   /**
-   * Translated "Møned".
+   * Translated "Måned".
    * 
-   * @return translated "Møned"
+   * @return translated "Måned"
    */
-  @DefaultStringValue("Møned")
+  @DefaultStringValue("Måned")
   @Key("invoice_split_type_monthly")
   String invoice_split_type_monthly();
 
