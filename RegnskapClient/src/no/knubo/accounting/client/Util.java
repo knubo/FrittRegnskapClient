@@ -8,6 +8,8 @@ import java.util.List;
 
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 
+import org.gwtwidgets.client.util.SimpleDateFormat;
+
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -694,6 +696,11 @@ public class Util {
 
         String[] parts = dateAndTime.split(" ");
         return formatDate(parts[0]) + " " + parts[1];
+    }
+
+    public static String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        return sdf.format(date);
     }
 
 }

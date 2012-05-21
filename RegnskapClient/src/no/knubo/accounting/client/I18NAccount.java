@@ -88,6 +88,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String beloning_change_accounting();
 
   /**
+   * Translated "Din nettleser støtter ikke lokal lagring. Oppgrader til en nyere nettleser. ".
+   * 
+   * @return translated "Din nettleser støtter ikke lokal lagring. Oppgrader til en nyere nettleser. "
+   */
+  @DefaultMessage("Din nettleser støtter ikke lokal lagring. Oppgrader til en nyere nettleser. ")
+  @Key("browser_must_support_local_storage")
+  String browser_must_support_local_storage();
+
+  /**
    * Translated "Budjsett {0}".
    * 
    * @return translated "Budjsett {0}"

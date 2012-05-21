@@ -1,5 +1,9 @@
 package no.knubo.accounting.client.views.reporting;
 
+import java.util.Date;
+
+import org.gwt.advanced.client.ui.widget.Calendar;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -10,6 +14,7 @@ import no.knubo.accounting.client.cache.ProjectCache;
 import no.knubo.accounting.client.help.HelpPanel;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.DatePickerButton;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
@@ -87,9 +92,28 @@ public class ReportAccountlines extends Composite implements ClickHandler {
         toDateBox.setMaxLength(10);
         toDateBox.setVisibleLength(10);
 
+        final DatePickerButton fromPicker = new DatePickerButton(new Date()) {
+
+            @Override
+            public void onChange(Calendar sender, Date oldValue) {
+                super.onChange(sender, oldValue);
+                fromDateBox.setText(Util.formatDate(getDate()));
+            }
+        };
+        final DatePickerButton toPicker = new DatePickerButton(new Date()) {
+            
+            @Override
+            public void onChange(Calendar sender, Date oldValue) {
+                super.onChange(sender, oldValue);
+                toDateBox.setText(Util.formatDate(getDate()));
+            }
+        };
+        
         datesHP.add(fromDateBox);
+        datesHP.add(fromPicker);
         datesHP.add(new Label(elements.to_date()));
         datesHP.add(toDateBox);
+        datesHP.add(toPicker);
         table.setWidget(1, 1, datesHP);
 
         HTML errorAccountHtml = new HTML();

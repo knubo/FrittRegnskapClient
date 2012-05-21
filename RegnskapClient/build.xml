@@ -16,6 +16,7 @@
 		<pathelement location="lib/gwt-widgets-0.2.0.jar" />
 		<pathelement location="lib/GWT FX v0.5.0 MS 1.jar" />
 		<pathelement location="lib/gwt-dnd-3.1.1.jar" />
+		<pathelement location="lib/advanced-components-2.0.7.jar" />
 		<pathelement location="${gwt.sdk}/gwt-dev.jar" />
 	</path>
 

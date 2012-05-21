@@ -1,5 +1,7 @@
 package no.knubo.accounting.client.views.registers;
 
+import java.util.Date;
+
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -8,6 +10,7 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.ui.DatePickerButton;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedCheckBox;
@@ -15,6 +18,8 @@ import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.modules.AccountSelected;
 import no.knubo.accounting.client.views.modules.AccountSelector;
+
+import org.gwt.advanced.client.ui.widget.Calendar;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -28,6 +33,7 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -216,6 +222,15 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         massletterDueDateBox = new TextBoxWithErrorText("massletter_due_date");
         massletterDueDateBox.setMaxLength(10);
 
+        final DatePickerButton picker = new DatePickerButton(new Date()) {
+
+            @Override
+            public void onChange(Calendar sender, Date oldValue) {
+                super.onChange(sender, oldValue);
+                massletterDueDateBox.setText(Util.formatDate(getDate()));
+            }
+        };
+
         birthdateRequiredBox = new NamedCheckBox("birthdate_required");
 
         lastMonthInSemesterBox = new TextBoxWithErrorText("last_month_in_semester");
@@ -228,7 +243,12 @@ public class StandardvaluesView extends Composite implements ClickHandler, Accou
         table.setWidget(4, 1, costPracticeBox);
         table.setWidget(5, 1, costMembershipBox);
         table.setWidget(6, 1, emailBox);
-        table.setWidget(7, 1, massletterDueDateBox);
+
+        HorizontalPanel hp = new HorizontalPanel();
+        hp.add(massletterDueDateBox);
+        hp.add(picker);
+
+        table.setWidget(7, 1, hp);
         table.setWidget(8, 1, birthdateRequiredBox);
         table.setWidget(9, 1, lastMonthInSemesterBox);
 

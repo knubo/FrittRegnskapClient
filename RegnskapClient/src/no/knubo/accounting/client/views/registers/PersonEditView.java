@@ -1,5 +1,6 @@
 package no.knubo.accounting.client.views.registers;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,11 +16,14 @@ import no.knubo.accounting.client.misc.IdHolder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseWithValidation;
+import no.knubo.accounting.client.ui.DatePickerButton;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.NamedTextArea;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.ViewCallback;
+
+import org.gwt.advanced.client.ui.widget.Calendar;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -127,7 +131,6 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         table.setHTML(16, 0, elements.membership_required_year());
         table.setHTML(17, 0, elements.membership_required_semester());
 
-        
         firstnameBox = new TextBoxWithErrorText("firstname");
         firstnameBox.setMaxLength(50);
         firstnameBox.setVisibleLength(50);
@@ -136,6 +139,15 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         lastnameBox.setVisibleLength(50);
         birthdateBox = new TextBoxWithErrorText("birthdate");
         birthdateBox.setMaxLength(10);
+
+        final DatePickerButton picker = new DatePickerButton(new Date()) {
+
+            @Override
+            public void onChange(Calendar sender, Date oldValue) {
+                super.onChange(sender, oldValue);
+                birthdateBox.setText(Util.formatDate(getDate()));
+            }
+        };
 
         emailBox = new TextBoxWithErrorText("email");
         emailBox.setMaxLength(100);
@@ -183,8 +195,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         semesterMembershipRequiredCheck = new CheckBox();
         yearMembershipRequiredCheck = new CheckBox();
-        
-        
+
         updateButton = new NamedButton("PersonEditView.updateButton", elements.update());
         updateButton.addClickHandler(this);
 
@@ -205,7 +216,11 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
 
         table.setWidget(0, 1, firstnameBox);
         table.setWidget(1, 1, lastnameBox);
-        table.setWidget(2, 1, birthdateBox);
+        
+        HorizontalPanel hp = new HorizontalPanel();
+        hp.add(birthdateBox);
+        hp.add(picker);
+        table.setWidget(2, 1, hp);
         table.setWidget(1, 1, lastnameBox);
         table.setWidget(3, 1, emailBox);
 
@@ -235,7 +250,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         table.setWidget(15, 1, hiddenCheck);
         table.setWidget(16, 1, yearMembershipRequiredCheck);
         table.setWidget(17, 1, semesterMembershipRequiredCheck);
-        
+
         table.setWidget(18, 0, updateButton);
         table.setWidget(19, 1, saveStatus);
         table.setWidget(20, 0, toSearch);
@@ -565,7 +580,7 @@ public class PersonEditView extends Composite implements ClickHandler, KeyUpHand
         Util.addPostParam(sb, "comment", commentBox.getText());
         Util.addPostParam(sb, "yearRequired", yearMembershipRequiredCheck.getValue() ? "1" : "0");
         Util.addPostParam(sb, "semesterRequired", semesterMembershipRequiredCheck.getValue() ? "1" : "0");
-        
+
         ServerResponseWithValidation callback = new ServerResponseWithValidation() {
 
             @Override

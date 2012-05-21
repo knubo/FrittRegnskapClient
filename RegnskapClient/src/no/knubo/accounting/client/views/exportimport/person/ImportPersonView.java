@@ -111,5 +111,4 @@ public class ImportPersonView extends Composite implements SubmitCompleteHandler
         
         wizard.showNextPage();
     }
-
 }

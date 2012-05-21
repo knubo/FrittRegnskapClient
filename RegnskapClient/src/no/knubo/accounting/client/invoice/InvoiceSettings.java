@@ -48,7 +48,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         DockPanel dp = new DockPanel();
 
         table = new AccountTable("tableborder");
-        table.setText(0, 0, elements.invoice_types());
+        table.setText(0, 0, elements.invoice_templates());
         table.getFlexCellFormatter().setColSpan(0, 0, 8);
         table.getRowFormatter().setStyleName(0, "header");
         table.setText(1, 0, elements.description());
@@ -62,7 +62,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
         table.getRowFormatter().setStyleName(1, "header");
 
-        newButton = new NamedButton("invoice_type_new", elements.invoice_type_new());
+        newButton = new NamedButton("invoice_template_new", elements.invoice_template_new());
         newButton.addClickHandler(this);
 
         dp.add(newButton, DockPanel.NORTH);
@@ -231,7 +231,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private String currentId;
 
         InvoiceEditFields() {
-            setText(elements.menuitem_semesters());
+            setText(elements.invoice_template());
             edittable = new FlexTable();
             edittable.setStyleName("edittable");
 

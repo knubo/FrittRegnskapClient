@@ -11,6 +11,7 @@
 	<inherits name='net.binarymuse.gwt.Wizard' />
 	<inherits name="org.adamtacy.GWTEffects"/> 
     <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+    <inherits name='org.gwt.advanced.Grid'/>
 	
 
 	<!-- Specify the app entry point class.                   -->
@@ -20,7 +21,7 @@
     <inherits name="com.google.gwt.user.theme.chrome.Chrome"/>
 
   	<stylesheet src='accountstyleNew.css' />
-	
+	<stylesheet src="advanced/themes/classic/theme.css"/>    
 
 	<!-- Norwegian language, independent of country -->
 	<extend-property name="locale" values="no" />

@@ -1366,6 +1366,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String do_report();
 
   /**
+   * Translated "Forfallsdato".
+   * 
+   * @return translated "Forfallsdato"
+   */
+  @DefaultStringValue("Forfallsdato")
+  @Key("due_date")
+  String due_date();
+
+  /**
    * Translated "Inntekter".
    * 
    * @return translated "Inntekter"
@@ -2347,6 +2356,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_split_type_quarterly();
 
   /**
+   * Translated "Fakturamal".
+   * 
+   * @return translated "Fakturamal"
+   */
+  @DefaultStringValue("Fakturamal")
+  @Key("invoice_template")
+  String invoice_template();
+
+  /**
+   * Translated "Ny fakturamal".
+   * 
+   * @return translated "Ny fakturamal"
+   */
+  @DefaultStringValue("Ny fakturamal")
+  @Key("invoice_template_new")
+  String invoice_template_new();
+
+  /**
+   * Translated "Fakturamaler".
+   * 
+   * @return translated "Fakturamaler"
+   */
+  @DefaultStringValue("Fakturamaler")
+  @Key("invoice_templates")
+  String invoice_templates();
+
+  /**
    * Translated "Fakturatype".
    * 
    * @return translated "Fakturatype"
@@ -2354,15 +2390,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Fakturatype")
   @Key("invoice_type")
   String invoice_type();
-
-  /**
-   * Translated "Ny fakturatype".
-   * 
-   * @return translated "Ny fakturatype"
-   */
-  @DefaultStringValue("Ny fakturatype")
-  @Key("invoice_type_new")
-  String invoice_type_new();
 
   /**
    * Translated "Annen faktura".
@@ -2392,13 +2419,13 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_type_year();
 
   /**
-   * Translated "Fakturatyper".
+   * Translated "Fakturaer".
    * 
-   * @return translated "Fakturatyper"
+   * @return translated "Fakturaer"
    */
-  @DefaultStringValue("Fakturatyper")
-  @Key("invoice_types")
-  String invoice_types();
+  @DefaultStringValue("Fakturaer")
+  @Key("invoices")
+  String invoices();
 
   /**
    * Translated "Flett brev".
@@ -2437,13 +2464,13 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String kid_kredit_posts();
 
   /**
-   * Translated "Medlemskap".
+   * Translated "ip=Medlemskap".
    * 
-   * @return translated "Medlemskap"
+   * @return translated "ip=Medlemskap"
    */
-  @DefaultStringValue("Medlemskap")
-  @Key("kid_lesson_membership")
-  String kid_lesson_membership();
+  @DefaultStringValue("ip=Medlemskap")
+  @Key("kid_lesson_membersh")
+  String kid_lesson_membersh();
 
   /**
    * Translated "Poster KID innbetaling".
@@ -3425,6 +3452,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Integrasjon")
   @Key("menuitem_integration")
   String menuitem_integration();
+
+  /**
+   * Translated "Ny faktura".
+   * 
+   * @return translated "Ny faktura"
+   */
+  @DefaultStringValue("Ny faktura")
+  @Key("menuitem_invoice_new")
+  String menuitem_invoice_new();
 
   /**
    * Translated "Vis KID transaksjoner".
@@ -5380,6 +5416,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String upload_template();
 
   /**
+   * Translated "Bruk".
+   * 
+   * @return translated "Bruk"
+   */
+  @DefaultStringValue("Bruk")
+  @Key("use")
+  String use();
+
+  /**
    * Translated "Bruk valgte".
    * 
    * @return translated "Bruk valgte"
@@ -5468,6 +5513,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Resultat av import")
   @Key("wizard_import_person_result")
   String wizard_import_person_result();
+
+  /**
+   * Translated "<p>BING</p> ".
+   * 
+   * @return translated "<p>BING</p> "
+   */
+  @DefaultStringValue("<p>BING</p> ")
+  @Key("wizard_invoice_intro")
+  String wizard_invoice_intro();
+
+  /**
+   * Translated "Start".
+   * 
+   * @return translated "Start"
+   */
+  @DefaultStringValue("Start")
+  @Key("wizard_invoice_intro_title")
+  String wizard_invoice_intro_title();
 
   /**
    * Translated "X".

@@ -12,6 +12,7 @@
 	<classpathentry kind="lib" path="/Users/knuterikborgen/kode/gwt-2.3.0/gwt-user.jar"/>
 	<classpathentry kind="lib" path="/Users/knuterikborgen/kode/gwt-2.3.0/validation-api-1.0.0.GA-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/knuterikborgen/kode/gwt-2.3.0/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="lib" path="lib/advanced-components-2.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-dnd-3.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
