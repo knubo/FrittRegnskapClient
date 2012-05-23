@@ -16,9 +16,7 @@ import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 
-import org.gwt.advanced.client.datamodel.ComboBoxDataModel;
 import org.gwt.advanced.client.datamodel.EditableGridDataModel;
-import org.gwt.advanced.client.ui.widget.ComboBox;
 import org.gwt.advanced.client.ui.widget.EditableGrid;
 import org.gwt.advanced.client.ui.widget.GridPanel;
 import org.gwt.advanced.client.ui.widget.cell.DateCell;
@@ -79,7 +77,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
         table.setWidget(row++, 1, hp);
         table.setHeight("auto");
-        
+
         /* Inn med alle felter i invoice template ? */
         /* Forslag til antall faktura som skal inn */
         /* Legg til og fjern faktura */
@@ -100,69 +98,35 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         table.setText(row, 0, elements.invoices());
         row++;
 
-        EditableGridDataModel model = new EditableGridDataModel(employees);
+        EditableGridDataModel model = new EditableGridDataModel(new Object[][] {}) {
+            @Override
+            public void addRow(int beforeRow, Object[] row) throws IllegalArgumentException {
+                super.addRow(beforeRow, new Object[] {new Date(), "0.00"});
+            }
+        };
         model.setPageSize(10);
 
         gridPanel = new GridPanel();
         EditableGrid edibleGrid = gridPanel.createEditableGrid(new String[] { elements.due_date(), elements.amount() },
                 new Class[] { DateCell.class, TextBoxCell.class }, model);
 
+        edibleGrid.getElement().setId("invoiceGrid");
+        
         gridPanel.setPageNumberBoxDisplayed(true);
         gridPanel.setTotalCountDisplayed(true);
         gridPanel.getTopToolbar().setSaveButtonVisible(false);
         gridPanel.display();
         gridPanel.getGrid().setMultiRowModeEnabled(true);
 
+        HorizontalPanel invoiceButtons = new HorizontalPanel();
+        vp.add(invoiceButtons);
         vp.add(gridPanel);
 
     }
 
-    private static Object[][] employees = new Object[][] {
-            new Object[] { createRandomDate(),  "John Doe", },
-            new Object[] { createRandomDate(), "Peter Masters"},
-            new Object[] { createRandomDate(), "Bill Walles",  },
-            new Object[] { createRandomDate(), "Bill Walle2",  },
-            new Object[] { createRandomDate(), "Bill Walle3",  },
-            new Object[] { createRandomDate(), "Bill Walle4",  },
-             };
-
     private GridPanel gridPanel;
 
     protected JSONArray invoices;
-
-    public Object[][] data() {
-        return employees;
-    }
-
-    private static Date createRandomDate() {
-        return new Date((long) (Math.random() * 24 * 365 * 60 * 1000000));
-    }
-
-    /**
-     * This method generates departments combo box.
-     * 
-     * @param selectedIndex
-     *            is a selected item index.
-     * @return a list box of departments.
-     */
-    public static ComboBox createDepartmentListBox(int selectedIndex) {
-        ComboBox comboBox = new ComboBox();
-        ComboBoxDataModel model = new ComboBoxDataModel();
-        comboBox.setModel(model);
-
-        model.add("Recruiter", "Recruiter");
-        model.add("Accountant", "Accountant");
-        model.add("Jr. Developer", "Jr. Developer");
-        model.add("Developer", "Developer");
-        model.add("Senior Developer", "Senior Developer");
-        model.add("Project Manager", "Project Manager");
-        model.add("QA Manager", "QA Manager");
-        model.add("Tester", "Tester");
-        model.add("President", "President");
-        model.setSelectedIndex(selectedIndex);
-
-        return comboBox;
-    }
 
     @Override
     public Widget asWidget() {
@@ -180,9 +144,9 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
         gridPanel.setWidth("100%");
         gridPanel.resize();
-     
-//        NativeEvent event = Document.get().createFocusEvent();
-//        DomEvent.fireNativeEvent(event, foo);
+
+        // NativeEvent event = Document.get().createFocusEvent();
+        // DomEvent.fireNativeEvent(event, foo);
     }
 
     @Override
@@ -239,4 +203,5 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
     private void selectInvoice() {
 
     }
+
 }

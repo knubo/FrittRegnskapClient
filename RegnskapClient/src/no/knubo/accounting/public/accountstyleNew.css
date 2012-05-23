@@ -871,3 +871,9 @@ table.spred td {
 .adminsql {
     min-width:800px;
 }
+
+/* Override advanced grid */
+
+#invoiceGrid .selected-row {
+    background-color: #D0D0D0;
+}
