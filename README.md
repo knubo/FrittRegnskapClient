@@ -1,4 +1,4 @@
 FrittRegnskap
 =============
 
-Fritt Regnskap, client and server
+Fritt Regnskap, client.
