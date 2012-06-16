@@ -11,10 +11,12 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.views.ViewCallback;
 
 import org.gwt.advanced.client.datamodel.EditableGridDataModel;
 import org.gwt.advanced.client.ui.widget.EditableGrid;
@@ -27,6 +29,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -56,10 +59,13 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     private TextBoxWithErrorText invoiceDueDay;
 
-    public RegisterInvoiceChooseInvoiceTypePage(Elements elements, I18NAccount messages, Constants constants) {
+    private final ViewCallback callback;
+
+    public RegisterInvoiceChooseInvoiceTypePage(Elements elements, I18NAccount messages, Constants constants, ViewCallback callback) {
         this.elements = elements;
         this.messages = messages;
         this.constants = constants;
+        this.callback = callback;
         vp = new FlowPanel();
 
         table = new AccountTable("");
@@ -137,6 +143,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     private EditableGrid<?> edibleGrid;
 
+    protected JSONObject prices;
+
     @Override
     public Widget asWidget() {
         return vp;
@@ -172,10 +180,19 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
     private void loadInvoices() {
         ServerResponse response = new ServerResponse() {
 
+
             @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject data = responseObj.isObject();
                 invoices = data.get("invoices").isArray();
+                JSONValue pricesObj = data.get("prices");
+                
+                if(pricesObj == null || pricesObj.isObject() == null) {
+                    Window.alert(messages.dashboard_missing_semester_price_current());
+                    callback.openView(WidgetIds.EDIT_PRICES, messages.dashboard_missing_semester_price_current());
+                    return;
+                }
+                prices = pricesObj.isObject();
                 fillInvoicesChoices();
             }
         };

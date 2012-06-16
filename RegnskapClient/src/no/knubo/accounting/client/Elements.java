@@ -2,7 +2,7 @@ package no.knubo.accounting.client;
 
 /**
  * Interface to represent the constants contained in resource bundle:
- * 	'/Users/knuterikborgen/kode/workspace/client/RegnskapClient/src/no/knubo/accounting/client/Elements.properties'.
+ * 	'/Users/knuterikborgen/kode/workspace/RegnskapClient/src/no/knubo/accounting/client/Elements.properties'.
  */
 public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
@@ -2293,15 +2293,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_default_amount();
 
   /**
-   * Translated "Forfallsdag".
-   * 
-   * @return translated "Forfallsdag"
-   */
-  @DefaultStringValue("Forfallsdag")
-  @Key("invoice_due_day")
-  String invoice_due_day();
-
-  /**
    * Translated "Rediger fakturaepostmal".
    * 
    * @return translated "Rediger fakturaepostmal"
@@ -2329,6 +2320,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_email_sender();
 
   /**
+   * Translated "Gjenntakelsesintervall".
+   * 
+   * @return translated "Gjenntakelsesintervall"
+   */
+  @DefaultStringValue("Gjenntakelsesintervall")
+  @Key("invoice_reoccurance_interval")
+  String invoice_due_day();
+
+  /**
    * Translated "Gjenntagende faktura".
    * 
    * @return translated "Gjenntagende faktura"
@@ -2336,15 +2336,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Gjenntagende faktura")
   @Key("invoice_split_type")
   String invoice_split_type();
-
-  /**
-   * Translated "Halvårlig".
-   * 
-   * @return translated "Halvårlig"
-   */
-  @DefaultStringValue("Halvårlig")
-  @Key("invoice_split_type_half_year")
-  String invoice_split_type_half_year();
 
   /**
    * Translated "Måned".

@@ -418,7 +418,7 @@ class Commando implements Command {
             ((InvoiceSettings) widget).init(params);
             break;
         case INVOICE_NEW:
-            widget = RegisterInvoiceView.getInstance(constants, messages, elements);
+            widget = RegisterInvoiceView.getInstance(constants, messages, elements, callback);
             break;
         }
 
