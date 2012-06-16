@@ -27,6 +27,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,7 +42,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     private ListBoxWithErrorText invoiceTemplates;
 
-    private VerticalPanel vp;
+    private FlowPanel vp;
 
     private final I18NAccount messages;
 
@@ -53,13 +54,13 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     private TextBoxWithErrorText amount;
 
-    private TextBoxWithErrorText reoccuranceInterval;
+    private TextBoxWithErrorText invoiceDueDay;
 
     public RegisterInvoiceChooseInvoiceTypePage(Elements elements, I18NAccount messages, Constants constants) {
         this.elements = elements;
         this.messages = messages;
         this.constants = constants;
-        vp = new VerticalPanel();
+        vp = new FlowPanel();
 
         table = new AccountTable("");
         vp.add(table);
@@ -87,39 +88,45 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         table.setText(row, 0, elements.due_date());
         table.setWidget(row++, 1, dueDate);
 
+        table.setText(row++, 0, elements.invoice_type());
+
         amount = new TextBoxWithErrorText("amount");
         table.setText(row, 0, elements.amount());
         table.setWidget(row++, 1, amount);
 
-        reoccuranceInterval = new TextBoxWithErrorText("invoice_reoccurance_interval");
-        table.setText(row, 0, elements.invoice_reoccurance_interval());
-        table.setWidget(row++, 1, reoccuranceInterval);
+        invoiceDueDay = new TextBoxWithErrorText("invoice_reoccurance_interval");
+        table.setText(row, 0, elements.invoice_due_day());
+        table.setWidget(row++, 1, invoiceDueDay);
 
-        table.setText(row, 0, elements.invoices());
+        table.setText(row, 0, elements.invoices(), "header");
         row++;
 
         EditableGridDataModel model = new EditableGridDataModel(new Object[][] {}) {
             @Override
             public void addRow(int beforeRow, Object[] row) throws IllegalArgumentException {
-                super.addRow(beforeRow, new Object[] {new Date(), "0.00"});
+                super.addRow(beforeRow, new Object[] { new Date(), "0.00" });
+                gridPanel.unlock();
             }
         };
-        model.setPageSize(10);
+        model.setPageSize(15);
 
         gridPanel = new GridPanel();
-        EditableGrid edibleGrid = gridPanel.createEditableGrid(new String[] { elements.due_date(), elements.amount() },
-                new Class[] { DateCell.class, TextBoxCell.class }, model);
+        edibleGrid = gridPanel.createEditableGrid(new String[] { elements.due_date(), elements.amount() }, new Class[] {
+                DateCell.class, TextBoxCell.class }, model);
 
         edibleGrid.getElement().setId("invoiceGrid");
-        
+
         gridPanel.setPageNumberBoxDisplayed(true);
         gridPanel.setTotalCountDisplayed(true);
         gridPanel.getTopToolbar().setSaveButtonVisible(false);
         gridPanel.display();
         gridPanel.getGrid().setMultiRowModeEnabled(true);
 
-        HorizontalPanel invoiceButtons = new HorizontalPanel();
+        VerticalPanel invoiceButtons = new VerticalPanel();
+        invoiceButtons.add(new NamedButton("", "Lag fakturaer med oppgitt bel¿p ut periode"));
+        invoiceButtons.add(new NamedButton("", "Lag fakturar hvor bel¿pet er delt i like deler i gitt periode"));
         vp.add(invoiceButtons);
+
         vp.add(gridPanel);
 
     }
@@ -127,6 +134,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
     private GridPanel gridPanel;
 
     protected JSONArray invoices;
+
+    private EditableGrid<?> edibleGrid;
 
     @Override
     public Widget asWidget() {
@@ -165,7 +174,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
             @Override
             public void serverResponse(JSONValue responseObj) {
-                invoices = responseObj.isArray();
+                JSONObject data = responseObj.isObject();
+                invoices = data.get("invoices").isArray();
                 fillInvoicesChoices();
             }
         };
@@ -201,7 +211,21 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
     }
 
     private void selectInvoice() {
+        ServerResponse callback = new ServerResponse() {
 
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject obj = responseObj.isObject();
+                
+                obj.get("invoice_type");
+                obj.get("split_type");
+                obj.get("reoccurance_interval");
+                obj.get("default_amount");
+            }
+        };
+
+        AuthResponder.get(constants, messages, callback,
+                "accounting/invoice_ops.php?action=get&id=" + Util.getSelected(invoiceTemplates));
     }
 
 }

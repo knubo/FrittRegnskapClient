@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -107,6 +108,7 @@ public class HelpPanel extends Composite implements NativePreviewHandler, OpenHa
         disclosurePanel.setWidth("100%");
         disclosurePanel.setHeight("100%");
         disclosurePanel.addOpenHandler(this);
+        
         helpHTML = new HTML();
         contextHelp = new HTML();
         contextHelp.setStyleName("contexthelp");
@@ -114,7 +116,11 @@ public class HelpPanel extends Composite implements NativePreviewHandler, OpenHa
         VerticalPanel dp = new VerticalPanel();
         dp.setWidth("100%");
         dp.add(contextHelp);
-        dp.add(helpHTML);
+
+        ScrollPanel sp = new ScrollPanel();
+        sp.add(helpHTML);
+        
+        dp.add(sp);
         addEventHandler();
         disclosurePanel.add(dp);
         initWidget(disclosurePanel);
@@ -189,6 +195,7 @@ public class HelpPanel extends Composite implements NativePreviewHandler, OpenHa
     @Override
     public void onOpen(OpenEvent<DisclosurePanel> event) {
         fetchHelp();
+        resize(this.getParent());
     }
 
 }

@@ -54,7 +54,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         table.setText(1, 0, elements.description());
         table.setText(1, 1, elements.invoice_type(), "desc");
         table.setText(1, 2, elements.invoice_split_type(), "desc");
-        table.setText(1, 3, elements.invoice_reoccurance_interval(), "desc");
+        table.setText(1, 3, elements.invoice_due_day(), "desc");
         table.setText(1, 4, elements.invoice_default_amount(), "desc");
         table.setText(1, 5, elements.invoice_email_ready(), "desc");
         table.setText(1, 6, elements.invoice_email_sender(), "desc");
@@ -95,8 +95,9 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         ServerResponse callback = new ServerResponse() {
 
             @Override
-            public void serverResponse(JSONValue value) {
-                invoices = value.isArray();
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject data = responseObj.isObject();
+                invoices = data.get("invoices").isArray();
                 showInvoices(params);
             }
         };
@@ -130,7 +131,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             table.setText(row, 0, Util.strSkipNull(invoice.get("description")));
             table.setText(row, 1, invoiceType(Util.getInt(invoice.get("invoice_type"))), "desc");
             table.setText(row, 2, invoiceSplitType(Util.getInt(invoice.get("split_type"))), "desc");
-            table.setText(row, 3, invoiceReoccuringInterval(Util.strSkipNull(invoice.get("reoccurance_interval"))),
+            table.setText(row, 3, Util.strSkipNull(invoice.get("invoice_due_day")),
                     "desc");
             table.setText(row, 4, Util.money(Util.strSkipNull(invoice.get("default_amount"))), "desc");
             table.setText(row, 5, Util.getBoolean(invoice.get("emailOK")) ? elements.ready() : elements.not_ready());
@@ -160,10 +161,6 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             return elements.invoice_split_type_quarterly();
         }
         return "???";
-    }
-
-    private String invoiceReoccuringInterval(String str) {
-        return str;
     }
 
     private String invoiceType(int type) {
@@ -226,7 +223,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private FlexTable edittable;
         private ListBoxWithErrorText splitType;
         private ListBoxWithErrorText invoiceType;
-        private TextBoxWithErrorText reoccuranceInterval;
+        private TextBoxWithErrorText invoiceDueDay;
         private NamedButton editInvoiceTemplate;
         private String currentId;
 
@@ -238,7 +235,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             edittable.setText(0, 0, elements.description());
             edittable.setText(1, 0, elements.invoice_type());
             edittable.setText(2, 0, elements.invoice_split_type());
-            edittable.setText(3, 0, elements.invoice_reoccurance_interval());
+            edittable.setText(3, 0, elements.invoice_due_day());
             edittable.setText(4, 0, elements.invoice_default_amount());
             edittable.setText(5, 0, elements.invoice_email_ready());
             edittable.setText(6, 0, elements.invoice_email_sender());
@@ -261,12 +258,12 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             invoiceType = new ListBoxWithErrorText("invoice_type");
             addInvoiceTypes();
 
-            reoccuranceInterval = new TextBoxWithErrorText("invoice_reoccurance_interval");
+            invoiceDueDay = new TextBoxWithErrorText("invoice_reoccurance_interval");
 
             edittable.setWidget(0, 1, description);
             edittable.setWidget(1, 1, invoiceType);
             edittable.setWidget(2, 1, splitType);
-            edittable.setWidget(3, 1, reoccuranceInterval);
+            edittable.setWidget(3, 1, invoiceDueDay);
             edittable.setWidget(4, 1, defaultAmount);
             editInvoiceTemplate = new NamedButton("invoice_edit_email_template", elements.invoice_edit_email_template());
             editInvoiceTemplate.addClickHandler(this);
@@ -330,7 +327,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             Util.addPostParam(sb, "description", description.getText());
             Util.addPostParam(sb, "invoice_type", invoiceType.getText());
             Util.addPostParam(sb, "split_type", splitType.getText());
-            Util.addPostParam(sb, "reoccurance_interval", reoccuranceInterval.getText());
+            Util.addPostParam(sb, "invoice_due_day", invoiceDueDay.getText());
             Util.addPostParam(sb, "default_amount", defaultAmount.getText());
             Util.addPostParam(sb, "email_from", emailSender.getText());
 
@@ -364,7 +361,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             mainErrorLabel.setText("");
             splitType.setSelectedIndex(0);
             invoiceType.setSelectedIndex(0);
-            reoccuranceInterval.setText("");
+            invoiceDueDay.setText("");
         }
 
         private void init(String itemId) {
@@ -376,7 +373,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             description.setText(Util.strSkipNull(invoice.get("description")));
             Util.setIndexByValue(invoiceType.getListbox(), Util.str(invoice.get("invoice_type")));
             Util.setIndexByValue(splitType.getListbox(), Util.str(invoice.get("split_type")));
-            reoccuranceInterval.setText(Util.strSkipNull(invoice.get("reoccurance_interval")));
+            invoiceDueDay.setText(Util.strSkipNull(invoice.get("invoice_due_day")));
             defaultAmount.setText(Util.money(Util.strSkipNull(invoice.get("default_amount"))));
             edittable.setText(5, 1, Util.getBoolean(invoice.get("emailOK")) ? elements.ready() : elements.not_ready());
             emailSender.setText(Util.strSkipNull(invoice.get("email_from")));
@@ -387,7 +384,10 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
             mv.mandatory(messages.required_field(), emailSender, description, invoiceType);
-            mv.money(messages.field_money(), defaultAmount);
+            
+            if(defaultAmount.getText().length() > 0) {
+                mv.money(messages.field_money(), defaultAmount);
+            }
 
             mv.email(messages.invalid_email(), emailSender);
 
