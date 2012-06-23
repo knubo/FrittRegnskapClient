@@ -2,7 +2,7 @@ package no.knubo.accounting.client;
 
 /**
  * Interface to represent the messages contained in resource bundle:
- * 	/Users/knuterikborgen/kode/workspace/RegnskapClient/src/no/knubo/accounting/client/I18NAccount.properties'.
+ * 	/Users/knuterikborgen/kode/workspace/client/RegnskapClient/src/no/knubo/accounting/client/I18NAccount.properties'.
  */
 public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   
@@ -122,6 +122,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Nullstill felter?")
   @Key("confirm_clear")
   String confirm_clear();
+
+  /**
+   * Translated "Fullføre installasjonen?".
+   * 
+   * @return translated "Fullføre installasjonen?"
+   */
+  @DefaultMessage("Fullføre installasjonen?")
+  @Key("confirm_complete_install")
+  String confirm_complete_install();
 
   /**
    * Translated "Vil du virkelig slette forekomst?".
@@ -581,6 +590,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Inntekter for {0}")
   @Key("income_year")
   String income_year(String arg0);
+
+  /**
+   * Translated "Installasjonen er vellykket.".
+   * 
+   * @return translated "Installasjonen er vellykket."
+   */
+  @DefaultMessage("Installasjonen er vellykket.")
+  @Key("install_complete")
+  String install_complete();
 
   /**
    * Translated "Ulovlig epostadresse".

@@ -2,7 +2,7 @@ package no.knubo.accounting.client;
 
 /**
  * Interface to represent the constants contained in resource bundle:
- * 	'/Users/knuterikborgen/kode/workspace/RegnskapClient/src/no/knubo/accounting/client/Elements.properties'.
+ * 	'/Users/knuterikborgen/kode/workspace/client/RegnskapClient/src/no/knubo/accounting/client/Elements.properties'.
  */
 public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
@@ -230,6 +230,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Klubbnavn")
   @Key("admin_clubname")
   String admin_clubname();
+
+  /**
+   * Translated "Fullfør installasjonen".
+   * 
+   * @return translated "Fullfør installasjonen"
+   */
+  @DefaultStringValue("Fullfør installasjonen")
+  @Key("admin_complete_install")
+  String admin_complete_install();
 
   /**
    * Translated "Kontaktperson".
@@ -1006,6 +1015,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String club_account();
 
   /**
+   * Translated "Klubbnavn".
+   * 
+   * @return translated "Klubbnavn"
+   */
+  @DefaultStringValue("Klubbnavn")
+  @Key("clubname")
+  String clubname();
+
+  /**
    * Translated "Kommentar".
    * 
    * @return translated "Kommentar"
@@ -1022,6 +1040,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Fullfør")
   @Key("complete")
   String complete();
+
+  /**
+   * Translated "Kontakt".
+   * 
+   * @return translated "Kontakt"
+   */
+  @DefaultStringValue("Kontakt")
+  @Key("contact")
+  String contact();
 
   /**
    * Translated "Pris for kurs".
@@ -2284,6 +2311,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice();
 
   /**
+   * Translated "Lag fakturaer med oppgitt beløp ut periode".
+   * 
+   * @return translated "Lag fakturaer med oppgitt beløp ut periode"
+   */
+  @DefaultStringValue("Lag fakturaer med oppgitt beløp ut periode")
+  @Key("invoice_amount_repeat")
+  String invoice_amount_repeat();
+
+  /**
+   * Translated "Lag fakturar hvor beløpet er delt i like deler i gitt periode".
+   * 
+   * @return translated "Lag fakturar hvor beløpet er delt i like deler i gitt periode"
+   */
+  @DefaultStringValue("Lag fakturar hvor beløpet er delt i like deler i gitt periode")
+  @Key("invoice_amount_split_equal")
+  String invoice_amount_split_equal();
+
+  /**
    * Translated "Stamdardbeløp".
    * 
    * @return translated "Stamdardbeløp"
@@ -2291,6 +2336,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Stamdardbeløp")
   @Key("invoice_default_amount")
   String invoice_default_amount();
+
+  /**
+   * Translated "Forfallsdag".
+   * 
+   * @return translated "Forfallsdag"
+   */
+  @DefaultStringValue("Forfallsdag")
+  @Key("invoice_due_day")
+  String invoice_due_day();
 
   /**
    * Translated "Rediger fakturaepostmal".
@@ -2320,15 +2374,6 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_email_sender();
 
   /**
-   * Translated "Gjenntakelsesintervall".
-   * 
-   * @return translated "Gjenntakelsesintervall"
-   */
-  @DefaultStringValue("Gjenntakelsesintervall")
-  @Key("invoice_reoccurance_interval")
-  String invoice_due_day();
-
-  /**
    * Translated "Gjenntagende faktura".
    * 
    * @return translated "Gjenntagende faktura"
@@ -2336,6 +2381,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Gjenntagende faktura")
   @Key("invoice_split_type")
   String invoice_split_type();
+
+  /**
+   * Translated "Halvårlig".
+   * 
+   * @return translated "Halvårlig"
+   */
+  @DefaultStringValue("Halvårlig")
+  @Key("invoice_split_type_half_year")
+  String invoice_split_type_half_year();
 
   /**
    * Translated "Måned".
@@ -4147,6 +4201,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String newsletter();
 
   /**
+   * Translated "Nei".
+   * 
+   * @return translated "Nei"
+   */
+  @DefaultStringValue("Nei")
+  @Key("no")
+  String no();
+
+  /**
    * Translated "Ikke ansatt".
    * 
    * @return translated "Ikke ansatt"
@@ -4685,6 +4748,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Pris m/ungdom")
   @Key("price_youth")
   String price_youth();
+
+  /**
+   * Translated "Priser for medlemsskap".
+   * 
+   * @return translated "Priser for medlemsskap"
+   */
+  @DefaultStringValue("Priser for medlemsskap")
+  @Key("prices_membership")
+  String prices_membership();
 
   /**
    * Translated "Prosjekt".
@@ -5585,6 +5657,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Årsmedlemskap ungdom")
   @Key("year_youth_membership")
   String year_youth_membership();
+
+  /**
+   * Translated "Ja".
+   * 
+   * @return translated "Ja"
+   */
+  @DefaultStringValue("Ja")
+  @Key("yes")
+  String yes();
 
   /**
    * Translated "Ungdom".

@@ -129,8 +129,8 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             JSONObject invoice = invoices.get(i).isObject();
 
             table.setText(row, 0, Util.strSkipNull(invoice.get("description")));
-            table.setText(row, 1, invoiceType(Util.getInt(invoice.get("invoice_type"))), "desc");
-            table.setText(row, 2, invoiceSplitType(Util.getInt(invoice.get("split_type"))), "desc");
+            table.setText(row, 1, InvoiceType.invoiceType(Util.getInt(invoice.get("invoice_type"))).getDesc(), "desc");
+            table.setText(row, 2, InvoiceSplitType.invoiceSplitType(Util.getInt(invoice.get("split_type"))).getDesc(), "desc");
             table.setText(row, 3, Util.strSkipNull(invoice.get("invoice_due_day")),
                     "desc");
             table.setText(row, 4, Util.money(Util.strSkipNull(invoice.get("default_amount"))), "desc");
@@ -149,30 +149,6 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         if (params != null && params.length > 0) {
             showInitFields(null, "invoiceTypeEdit_" + params[0], false);
         }
-    }
-
-    private String invoiceSplitType(int int1) {
-        switch (int1) {
-        case 0:
-            return "";
-        case 1:
-            return elements.invoice_split_type_monthly();
-        case 2:
-            return elements.invoice_split_type_quarterly();
-        }
-        return "???";
-    }
-
-    private String invoiceType(int type) {
-        switch (type) {
-        case 1:
-            return elements.invoice_type_semester();
-        case 2:
-            return elements.invoice_type_year();
-        case 3:
-            return elements.invoice_type_other();
-        }
-        return "???";
     }
 
     @Override
@@ -253,12 +229,12 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             defaultAmount.setVisibleLength(9);
 
             splitType = new ListBoxWithErrorText("invoice_split_type");
-            addSplitTypeItems();
+            InvoiceSplitType.addSplitTypeItems(splitType);
 
             invoiceType = new ListBoxWithErrorText("invoice_type");
             addInvoiceTypes();
 
-            invoiceDueDay = new TextBoxWithErrorText("invoice_reoccurance_interval");
+            invoiceDueDay = new TextBoxWithErrorText("invoice_due_date");
 
             edittable.setWidget(0, 1, description);
             edittable.setWidget(1, 1, invoiceType);
@@ -296,11 +272,6 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             invoiceType.addItem(elements.invoice_type_other(), "3");
         }
 
-        private void addSplitTypeItems() {
-            splitType.addItem("", "0");
-            splitType.addItem(elements.invoice_split_type_monthly(), "1");
-            splitType.addItem(elements.invoice_split_type_quarterly(), "2");
-        }
 
         @Override
         public void onClick(ClickEvent event) {

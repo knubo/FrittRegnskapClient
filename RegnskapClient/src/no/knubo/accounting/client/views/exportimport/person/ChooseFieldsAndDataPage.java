@@ -203,6 +203,9 @@ public class ChooseFieldsAndDataPage extends WizardPage<ImportPersonContext> imp
         box.addItem(elements.getString("birthdate") + " (dd.mm.yyyy)", "birthdate");
         box.addItem(elements.getString("newsletter"), "newsletter");
         box.addItem(elements.getString("gender") + " (M/F)", "gender");
+        box.addItem(elements.getString("membership_required_year"), "membership_required_year");
+        box.addItem(elements.getString("membership_required_semester"), "membership_required_semester");
+        box.addItem(elements.getString("comment"), "comment");
 
         allBoxes.add(box);
 
