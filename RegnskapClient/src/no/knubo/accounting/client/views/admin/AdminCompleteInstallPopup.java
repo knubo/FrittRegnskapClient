@@ -19,6 +19,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -55,10 +56,6 @@ public class AdminCompleteInstallPopup extends DialogBox implements ClickHandler
         table.setText(row++, 0, elements.clubname());
         addTextfield(row, "contact");
         table.setText(row++, 0, elements.contact());
-        addTextfield(row, "firstname");
-        table.setText(row++, 0, elements.firstname());
-        addTextfield(row, "lastname");
-        table.setText(row++, 0, elements.lastname());
         addTextfield(row, "email");
         table.setText(row++, 0, elements.email());
         addTextfield(row, "address");
@@ -139,9 +136,61 @@ public class AdminCompleteInstallPopup extends DialogBox implements ClickHandler
         if (event.getSource() == updateButton) {
             update();
         }
+
+        if (event.getSource() == completeButton) {
+            complete();
+        }
+    }
+
+    private void complete() {
+        
+        boolean cont = Window.confirm(messages.confirm_complete_install());
+        
+        if(!cont) {
+            return;
+        }
+        
+        
+        JSONObject obj = buildJSON();
+
+        ServerResponse callback = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                infoLabel.setText(messages.install_complete());
+            }
+        };
+        StringBuffer parameters = new StringBuffer();
+        parameters.append("action=complete_install");
+
+        Util.addPostParam(parameters, "id", currentId);
+        Util.addPostParam(parameters, "data", obj.toString());
+
+        AuthResponder.post(constants, messages, callback, parameters, "admin/installs.php");
+
     }
 
     private void update() {
+        JSONObject obj = buildJSON();
+
+        ServerResponse callback = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                infoLabel.setText(messages.save_ok());
+            }
+        };
+        StringBuffer parameters = new StringBuffer();
+        parameters.append("action=update_info");
+
+        Util.addPostParam(parameters, "id", currentId);
+        Util.addPostParam(parameters, "data", obj.toString());
+
+        AuthResponder.post(constants, messages, callback, parameters, "admin/installs.php");
+
+    }
+
+    private JSONObject buildJSON() {
         JSONObject obj = new JSONObject();
 
         Set<Entry<String, Integer>> set = fields.entrySet();
@@ -154,22 +203,7 @@ public class AdminCompleteInstallPopup extends DialogBox implements ClickHandler
 
             obj.put(key, new JSONString(textbox.getText()));
         }
-
-        ServerResponse callback = new ServerResponse() {
-            
-            @Override
-            public void serverResponse(JSONValue responseObj) {
-                infoLabel.setText(messages.save_ok());
-            }
-        };
-        StringBuffer parameters = new StringBuffer();
-        parameters.append("action=update_info");
-        
-        Util.addPostParam(parameters, "id", currentId);
-        Util.addPostParam(parameters, "data", obj.toString());
-        
-        AuthResponder.post(constants,messages,callback ,parameters ,"admin/installs.php");
-
+        return obj;
     }
 
 }

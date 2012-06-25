@@ -56,6 +56,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     private MenuBar topMenu;
     private boolean menuSetUp;
 
+    private static final boolean enableInvoice = false;
+
     /**
      * This is the entry point method.
      */
@@ -182,7 +184,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(settingsMenu, elements.menuitem_edit_trust(), WidgetIds.EDIT_TRUST);
         }
         if (reducedMode == 0) {
-            //addMenuItem(settingsMenu, elements.menuitem_settings_invoice(), WidgetIds.INVOICE_SETTINGS);
+            if (enableInvoice)
+                addMenuItem(settingsMenu, elements.menuitem_settings_invoice(), WidgetIds.INVOICE_SETTINGS);
             addMenuItem(settingsMenu, elements.menuitem_edit_trust_actions(), WidgetIds.EDIT_TRUST_ACTIONS);
         }
         addMenuItem(settingsMenu, elements.menuitem_accounts(), WidgetIds.EDIT_ACCOUNTS);
@@ -272,7 +275,8 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
 
         if (reducedMode == 0) {
-            //addMenuItem(registerMenu, elements.menuitem_invoice_new(), WidgetIds.INVOICE_NEW);
+            if (enableInvoice)
+                addMenuItem(registerMenu, elements.menuitem_invoice_new(), WidgetIds.INVOICE_NEW);
             addMenuItem(registerMenu, elements.menuitem_owning_register(), WidgetIds.OWNINGS_REGISTER);
             addMenuItem(registerMenu, elements.menuitem_truststatus(), WidgetIds.TRUST_STATUS);
         }
