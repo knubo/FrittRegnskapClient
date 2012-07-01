@@ -173,17 +173,12 @@ public class AdminInstallsView extends Composite implements ClickHandler {
             editFields = new AdminInstallEditFields();
         }
 
-        int left = event.getRelativeElement().getAbsoluteLeft() + 10;
-
-        int top = event.getRelativeElement().getAbsoluteTop() + 10;
-        editFields.setPopupPosition(left, top);
-
         ServerResponse callback = new ServerResponse() {
 
             @Override
             public void serverResponse(JSONValue responseObj) {
                 editFields.setEditData(responseObj.isObject());
-                editFields.show();
+                editFields.center();
             }
         };
         AuthResponder.get(constants, messages, callback, "admin/installs.php?action=get&id=" + idWithEdit.substring(4));

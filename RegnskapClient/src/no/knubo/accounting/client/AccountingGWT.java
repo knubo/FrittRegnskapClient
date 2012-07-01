@@ -56,7 +56,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     private MenuBar topMenu;
     private boolean menuSetUp;
 
-    private static final boolean enableInvoice = false;
+    private static final boolean enableInvoice = true;
 
     /**
      * This is the entry point method.

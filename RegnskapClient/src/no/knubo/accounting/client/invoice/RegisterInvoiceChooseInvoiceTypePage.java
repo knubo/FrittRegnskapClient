@@ -40,7 +40,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -168,9 +167,9 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         ListBoxWithErrorText box = new ListBoxWithErrorText("first_month");
 
         for (int i = 1; i <= 12; i++) {
-            if(i<10) {
+            if (i < 10) {
                 box.addItem(elements.getString("month_0" + i), String.valueOf(i));
-            } else {                
+            } else {
                 box.addItem(elements.getString("month_" + i), String.valueOf(i));
             }
         }
@@ -281,7 +280,10 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
             return;
         }
 
-        BigDecimal bigDecimal = new BigDecimal(amount.getText().replaceAll(",", ""));
+        BigDecimal bigDecimalAmount = new BigDecimal(amount.getText().replaceAll(",", ""));
+
+        new AddInvoicesPopup(this, elements,bigDecimalAmount).center();
+        
 
     }
 
