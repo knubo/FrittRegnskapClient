@@ -1,9 +1,10 @@
 package no.knubo.accounting.client.invoice;
 
-import com.google.gwt.core.client.GWT;
-
 import no.knubo.accounting.client.Elements;
+import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
+
+import com.google.gwt.core.client.GWT;
 
 public enum InvoiceSplitType {
 
@@ -24,6 +25,12 @@ public enum InvoiceSplitType {
         throw new RuntimeException("Unknown split type:" + invoiceSplitType);
     }
 
+    static InvoiceSplitType getSplitType(ListBoxWithErrorText splitType) {
+        String value = Util.getSelected(splitType);
+        
+        return invoiceSplitType(Integer.parseInt(value));
+    }
+    
     private static Elements elements;
 
     public String getDesc() {

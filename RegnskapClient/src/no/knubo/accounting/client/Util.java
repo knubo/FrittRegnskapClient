@@ -703,4 +703,9 @@ public class Util {
         return sdf.format(date);
     }
 
+    @SuppressWarnings("deprecation")
+    public static Date date(int day, int month, int year) {
+        return new Date(year, month, day);
+    }
+
 }

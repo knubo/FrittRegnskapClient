@@ -64,15 +64,13 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     private TextBoxWithErrorText amount;
 
-    private TextBoxWithErrorText invoiceDueDay;
+    TextBoxWithErrorText invoiceDueDay;
 
     private final ViewCallback callback;
 
     private int invoiceRow;
 
-    private ListBoxWithErrorText splitType;
-
-    private ListBoxWithErrorText monthSelect;
+    ListBoxWithErrorText splitType;
 
     public RegisterInvoiceChooseInvoiceTypePage(Elements elements, I18NAccount messages, Constants constants,
             ViewCallback callback) {
@@ -116,10 +114,6 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
         table.setText(row, 0, elements.first_month());
 
-        monthSelect = monthSelect();
-
-        table.setWidget(row++, 1, monthSelect);
-
         invoiceDueDay = new TextBoxWithErrorText("invoice_due_day");
         invoiceDueDay.setVisibleLength(2);
         invoiceDueDay.setMaxLength(2);
@@ -129,10 +123,10 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         table.setText(row, 0, elements.invoices(), "header");
         row++;
 
-        EditableGridDataModel model = new EditableGridDataModel(new Object[][] {}) {
+        model = new EditableGridDataModel(new Object[][] {}) {
             @Override
             public void addRow(int beforeRow, Object[] row) throws IllegalArgumentException {
-                super.addRow(beforeRow, new Object[] { new Date(), "0.00" });
+                super.addRow(beforeRow, new Object[] { row[0], row[1] });
                 gridPanel.unlock();
             }
         };
@@ -163,20 +157,6 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     }
 
-    private ListBoxWithErrorText monthSelect() {
-        ListBoxWithErrorText box = new ListBoxWithErrorText("first_month");
-
-        for (int i = 1; i <= 12; i++) {
-            if (i < 10) {
-                box.addItem(elements.getString("month_0" + i), String.valueOf(i));
-            } else {
-                box.addItem(elements.getString("month_" + i), String.valueOf(i));
-            }
-        }
-
-        return box;
-    }
-
     private GridPanel gridPanel;
 
     protected JSONArray invoices;
@@ -187,7 +167,9 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     protected InvoiceType invoiceType;
 
-    protected int currentMonth;
+    int currentMonth;
+
+    protected int currentYear;
 
     @Override
     public Widget asWidget() {
@@ -229,7 +211,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
                 JSONObject data = responseObj.isObject();
                 invoices = data.get("invoices").isArray();
                 currentMonth = Util.getInt(data.get("month"));
-                Util.setIndexByValue(monthSelect.getListbox(), String.valueOf(currentMonth));
+                currentYear = Util.getInt(data.get("year"));
                 JSONValue pricesObj = data.get("prices");
 
                 if (pricesObj == null || pricesObj.isObject() == null) {
@@ -271,19 +253,24 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
             selectInvoice();
         }
         if (event.getSource() == splitEqual) {
-            splitEqualParts();
+            splitParts(event, false);
+        }
+        
+        if(event.getSource() == splitRepeat) {
+            splitParts(event, true);
         }
     }
 
-    private void splitEqualParts() {
+    private void splitParts(ClickEvent event, boolean repeat) {
         if (!validateSum()) {
             return;
         }
 
         BigDecimal bigDecimalAmount = new BigDecimal(amount.getText().replaceAll(",", ""));
 
-        new AddInvoicesPopup(this, elements,bigDecimalAmount).center();
-        
+        AddInvoicesPopup popup = new AddInvoicesPopup(this, elements, bigDecimalAmount, repeat);
+        popup.setPopupPosition(event.getClientX(), event.getClientY());
+        popup.show();
 
     }
 
@@ -324,6 +311,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
     private NamedButton splitEqual;
 
     private NamedButton splitRepeat;
+
+    private EditableGridDataModel model;
 
     class PriceHandler implements ClickHandler {
 
@@ -386,5 +375,9 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         if (event.getNativeKeyCode() == KeyCodes.KEY_TAB) {
             priceHandler.closePopup();
         }
+    }
+
+    void addRow(int beforeRow, Object[] row) {
+        model.addRow(beforeRow, row);
     }
 }
