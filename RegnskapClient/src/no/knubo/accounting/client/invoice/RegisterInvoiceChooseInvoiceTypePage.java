@@ -34,8 +34,12 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -45,6 +49,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceContext> implements ClickHandler,
         FocusHandler, KeyDownHandler {
+
+    static final String INVOICES_KEY = "invoices";
 
     public static final PageID PAGEID = new PageID();
 
@@ -123,13 +129,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         table.setText(row, 0, elements.invoices(), "header");
         row++;
 
-        model = new EditableGridDataModel(new Object[][] {}) {
-            @Override
-            public void addRow(int beforeRow, Object[] row) throws IllegalArgumentException {
-                super.addRow(beforeRow, new Object[] { row[0], row[1] });
-                gridPanel.unlock();
-            }
-        };
+        model = new InvoiceModel(new Object[][] {});
         model.setPageSize(15);
 
         gridPanel = new GridPanel();
@@ -157,9 +157,45 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     }
 
+    protected void saveInvoicesLocalStorage() {
+        Object[][] data = model.getData();
+
+        JSONArray arr = new JSONArray();
+
+        int pos = 0;
+        for (Object[] objects : data) {
+            Date date = (Date) objects[0];
+            String money = (String) objects[1];
+
+            JSONObject invoice = new JSONObject();
+            invoice.put("date", new JSONNumber(date.getTime()));
+            invoice.put("amount", new JSONString(money));
+            arr.set(pos++, invoice);
+        }
+
+        Storage storage = Storage.getLocalStorageIfSupported();
+
+        storage.setItem(INVOICES_KEY, arr.toString());
+    }
+
+    private void loadInvoicesFromLocalStorage(String data) {
+        JSONArray invoices = JSONParser.parseStrict(data).isArray();
+
+        model.removeAllNoLocalUpdate();
+
+        for (int i = 0; i < invoices.size(); i++) {
+            JSONObject invoice = invoices.get(i).isObject();
+
+            JSONNumber date = invoice.get("date").isNumber();
+
+            model.addNoLocalUpdate(new Date((long) date.doubleValue()), Util.str(invoice.get("amount")));
+        }
+
+    }
+
     private GridPanel gridPanel;
 
-    protected JSONArray invoices;
+    protected JSONArray invoicesTemplates;
 
     private EditableGrid<?> edibleGrid;
 
@@ -188,6 +224,16 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         gridPanel.setWidth("100%");
         gridPanel.resize();
 
+        Storage storage = Storage.getLocalStorageIfSupported();
+
+        String invoices = storage.getItem(INVOICES_KEY);
+
+        if (invoices != null) {
+            loadInvoicesFromLocalStorage(invoices);
+        } else {
+            model.removeAll();
+        }
+
         // NativeEvent event = Document.get().createFocusEvent();
         // DomEvent.fireNativeEvent(event, foo);
     }
@@ -200,16 +246,16 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         getWizard().setButtonVisible(ButtonType.BUTTON_FINISH, false);
         getWizard().setButtonVisible(ButtonType.BUTTON_PREVIOUS, true);
 
-        loadInvoices();
+        loadInvoiceTemplates();
     }
 
-    private void loadInvoices() {
+    private void loadInvoiceTemplates() {
         ServerResponse response = new ServerResponse() {
 
             @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject data = responseObj.isObject();
-                invoices = data.get("invoices").isArray();
+                invoicesTemplates = data.get(INVOICES_KEY).isArray();
                 currentMonth = Util.getInt(data.get("month"));
                 currentYear = Util.getInt(data.get("year"));
                 JSONValue pricesObj = data.get("prices");
@@ -229,8 +275,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
     protected void fillInvoicesChoices() {
         invoiceTemplates.clear();
 
-        for (int i = 0; i < invoices.size(); i++) {
-            JSONObject invoice = invoices.get(i).isObject();
+        for (int i = 0; i < invoicesTemplates.size(); i++) {
+            JSONObject invoice = invoicesTemplates.get(i).isObject();
 
             invoiceTemplates.addItem(Util.str(invoice.get("description")), Util.str(invoice.get("id")));
         }
@@ -255,14 +301,14 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         if (event.getSource() == splitEqual) {
             splitParts(event, false);
         }
-        
-        if(event.getSource() == splitRepeat) {
+
+        if (event.getSource() == splitRepeat) {
             splitParts(event, true);
         }
     }
 
     private void splitParts(ClickEvent event, boolean repeat) {
-        if (!validateSum()) {
+        if (!validateAddInvoice()) {
             return;
         }
 
@@ -274,11 +320,12 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     }
 
-    private boolean validateSum() {
+    private boolean validateAddInvoice() {
         MasterValidator mv = new MasterValidator();
 
         mv.money(messages.field_money(), amount);
-
+        mv.mandatory(messages.required_field(), invoiceDueDay, amount);
+        
         return mv.validateStatus();
     }
 
@@ -312,7 +359,46 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     private NamedButton splitRepeat;
 
-    private EditableGridDataModel model;
+    private InvoiceModel model;
+
+    final class InvoiceModel extends EditableGridDataModel {
+        private InvoiceModel(Object[][] data) {
+            super(data);
+        }
+
+        @Override
+        public void addRow(int beforeRow, Object[] row) throws IllegalArgumentException {
+
+            if (row[0] == null) {
+                super.addRow(0, new Object[] { new Date(), "0.00" });
+            } else {
+                super.addRow(beforeRow, new Object[] { row[0], row[1] });
+            }
+
+            gridPanel.unlock();
+            saveInvoicesLocalStorage();
+        }
+
+        @Override
+        public void removeAll() {
+            super.removeAll();
+            saveInvoicesLocalStorage();
+        }
+
+        @Override
+        public void removeRow(int rowNumber) throws IllegalArgumentException {
+            super.removeRow(rowNumber);
+            saveInvoicesLocalStorage();
+        }
+
+        public void removeAllNoLocalUpdate() {
+            super.removeAll();
+        }
+
+        public void addNoLocalUpdate(Date date, String money) {
+            super.addRow(model.getRows().length, new Object[] { date, money });
+        }
+    }
 
     class PriceHandler implements ClickHandler {
 

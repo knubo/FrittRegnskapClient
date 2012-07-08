@@ -610,6 +610,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String invalid_email();
 
   /**
+   * Translated "Fortsett med påbegynt fakturagenerering?".
+   * 
+   * @return translated "Fortsett med påbegynt fakturagenerering?"
+   */
+  @DefaultMessage("Fortsett med påbegynt fakturagenerering?")
+  @Key("invoice_continue")
+  String invoice_continue();
+
+  /**
    * Translated "Konto er allerede valgt.".
    * 
    * @return translated "Konto er allerede valgt."

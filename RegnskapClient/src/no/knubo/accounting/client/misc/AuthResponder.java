@@ -71,7 +71,7 @@ public class AuthResponder implements RequestCallback {
 
             ErrorReportingWindow.reportError(elements.error_database(), response.getText());
         } else if (response.getStatusCode() == 513) {
-            JSONValue parse = JSONParser.parse(response.getText());
+            JSONValue parse = JSONParser.parseStrict(response.getText());
 
             ArrayList<String> fields = new ArrayList<String>();
             JSONArray array = parse.isArray();
@@ -112,7 +112,7 @@ public class AuthResponder implements RequestCallback {
             JSONValue jsonValue = null;
 
             try {
-                jsonValue = JSONParser.parse(data);
+                jsonValue = JSONParser.parseStrict(data);
             } catch (Exception e) {
                 Elements elements = (Elements) GWT.create(Elements.class);
                 ErrorReportingWindow.reportError(elements.error_bad_return_data(), e.toString());
