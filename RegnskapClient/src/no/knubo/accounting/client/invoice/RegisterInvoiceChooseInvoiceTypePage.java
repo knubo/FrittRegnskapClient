@@ -42,6 +42,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -133,6 +134,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         model.setPageSize(15);
 
         gridPanel = new GridPanel();
+        
+        
         edibleGrid = gridPanel.createEditableGrid(new String[] { elements.due_date(), elements.amount() }, new Class[] {
                 DateCell.class, TextBoxCell.class }, model);
 
@@ -144,6 +147,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         gridPanel.display();
         gridPanel.getGrid().setMultiRowModeEnabled(true);
 
+        
         VerticalPanel invoiceButtons = new VerticalPanel();
         splitEqual = new NamedButton("", elements.invoice_amount_split_equal());
         splitEqual.addClickHandler(this);
@@ -214,7 +218,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     @Override
     public String getTitle() {
-        return "Fakturakj¿ring";
+        return elements.invoice_create();
     }
 
     @Override
@@ -365,7 +369,19 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         private InvoiceModel(Object[][] data) {
             super(data);
         }
+        
+        @Override
+        public void update(int row, int column, Object data) {
+            super.update(row, column, data);
+            saveInvoicesLocalStorage();
+        }
 
+        @Override
+        public void update(Object[][] data) {
+            super.update(data);
+            saveInvoicesLocalStorage();
+        }
+        
         @Override
         public void addRow(int beforeRow, Object[] row) throws IllegalArgumentException {
 

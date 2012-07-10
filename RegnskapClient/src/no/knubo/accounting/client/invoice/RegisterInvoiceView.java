@@ -6,10 +6,6 @@ import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.views.ViewCallback;
-import no.knubo.accounting.client.views.exportimport.person.ChooseFieldsAndDataPage;
-import no.knubo.accounting.client.views.exportimport.person.PreviewPage;
-import no.knubo.accounting.client.views.exportimport.person.ResultPage;
-import no.knubo.accounting.client.views.exportimport.person.SelectFilePage;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -61,13 +57,6 @@ public class RegisterInvoiceView extends Composite implements SubmitCompleteHand
         panel = new VerticalPanel();
         form.setWidget(panel);
 
-        // hiddenAction = new Hidden();
-        // hiddenAction.setName("action");
-        // panel.add(hiddenAction);
-        //
-        // hiddenExclude = new Hidden();
-        // hiddenExclude.setName("exclude");
-        // panel.add(hiddenExclude);
 
         panel.add(createWizard());
 
@@ -75,22 +64,13 @@ public class RegisterInvoiceView extends Composite implements SubmitCompleteHand
     }
 
     private Widget createWizard() {
-        wizard = new Wizard<InvoiceContext>(elements.menuitem_import_person(), new InvoiceContext(form, hiddenAction,
+        wizard = new Wizard<InvoiceContext>(elements.invoice(), new InvoiceContext(form, hiddenAction,
                 hiddenExclude));
 
         wizard.addPage(new RegisterInvoiceStartPage(elements, messages));
         wizard.addPage(new RegisterInvoiceChooseInvoiceTypePage(elements, messages, constants, callback));
-        // wizard.addPage(new SelectFilePage(elements, messages));
-
-        // chooseFieldsAndDataPage = new ChooseFieldsAndDataPage(elements,
-        // messages);
-        // wizard.addPage(chooseFieldsAndDataPage);
-
-        // previewPage = new PreviewPage(elements);
-        // wizard.addPage(previewPage);
-        // resultPage = new ResultPage(elements);
-        // wizard.addPage(resultPage);
-        wizard.setSize("800px", "600px");
+        wizard.addPage(new RegisterInvoiceChooseReceivers(elements, messages, constants, callback));
+        wizard.setSize("1024px", "768px");
 
         wizard.getButton(ButtonType.BUTTON_FINISH).addClickHandler(this);
 

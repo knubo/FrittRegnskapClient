@@ -37,7 +37,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
     public static PersonSearchView getInstance(ViewCallback caller, I18NAccount messages, Constants constants,
             Elements elements) {
         if (me == null) {
-            me = new PersonSearchView(messages, constants, elements);
+            me = new PersonSearchView(messages, constants, elements, true);
         }
         me.setCaller(caller);
         me.setVisible(true);
@@ -46,7 +46,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
 
     public static PersonSearchView pick(PersonPickCallback personPick, I18NAccount messages, Constants constants,
             Elements elements) {
-        PersonSearchView psv = new PersonSearchView(messages, constants, elements);
+        PersonSearchView psv = new PersonSearchView(messages, constants, elements, false);
         psv.setPicker(personPick);
         psv.setVisible(true);
         return psv;
@@ -68,16 +68,18 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
 
     private final Elements elements;
 
+    private UserSearchFields userSearchFields;
+
     private void setCaller(ViewCallback caller) {
         this.caller = caller;
         this.personPick = null;
     }
 
-    private PersonSearchView(I18NAccount messages, Constants constants, Elements elements) {
+    private PersonSearchView(I18NAccount messages, Constants constants, Elements elements, boolean includeShowHidden) {
         this.messages = messages;
         this.constants = constants;
         this.elements = elements;
-        UserSearchFields userSearchFields = new UserSearchFields(this, elements, true);
+        userSearchFields = new UserSearchFields(this, elements, includeShowHidden);
 
         this.idHolder = new IdHolder<String, Image>();
 
@@ -101,6 +103,7 @@ public class PersonSearchView extends Composite implements ClickHandler, UserSea
         resultTable.setHTML(0, 8, "");
         initWidget(dp);
     }
+    
 
     @Override
     public void onClick(ClickEvent event) {

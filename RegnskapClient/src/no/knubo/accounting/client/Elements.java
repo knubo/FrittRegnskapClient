@@ -2329,6 +2329,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_amount_split_equal();
 
   /**
+   * Translated "Velg mottakere".
+   * 
+   * @return translated "Velg mottakere"
+   */
+  @DefaultStringValue("Velg mottakere")
+  @Key("invoice_choose_recepients")
+  String invoice_choose_recepients();
+
+  /**
+   * Translated "Sett opp fakturaer".
+   * 
+   * @return translated "Sett opp fakturaer"
+   */
+  @DefaultStringValue("Sett opp fakturaer")
+  @Key("invoice_create")
+  String invoice_create();
+
+  /**
    * Translated "Stamdardbeløp".
    * 
    * @return translated "Stamdardbeløp"
@@ -2372,6 +2390,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Avsender fakturaepost")
   @Key("invoice_email_sender")
   String invoice_email_sender();
+
+  /**
+   * Translated "Mottakere av faktura".
+   * 
+   * @return translated "Mottakere av faktura"
+   */
+  @DefaultStringValue("Mottakere av faktura")
+  @Key("invoice_recepients")
+  String invoice_recepients();
 
   /**
    * Translated "Gjenntagende faktura".
