@@ -2311,6 +2311,42 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice();
 
   /**
+   * Translated "Velg alle personer som må ha semestermedlemsskap som ikke har medlemskap fra før ".
+   * 
+   * @return translated "Velg alle personer som må ha semestermedlemsskap som ikke har medlemskap fra før "
+   */
+  @DefaultStringValue("Velg alle personer som må ha semestermedlemsskap som ikke har medlemskap fra før ")
+  @Key("invoice_all_members_required_membership_semester")
+  String invoice_all_members_required_membership_semester();
+
+  /**
+   * Translated "Velg alle personer som må ha årsmedlemsskap som ikke har medlemskap fra før".
+   * 
+   * @return translated "Velg alle personer som må ha årsmedlemsskap som ikke har medlemskap fra før"
+   */
+  @DefaultStringValue("Velg alle personer som må ha årsmedlemsskap som ikke har medlemskap fra før")
+  @Key("invoice_all_members_required_membership_year")
+  String invoice_all_members_required_membership_year();
+
+  /**
+   * Translated "Velg alle personer som hadde semestermedlemsskap forrige semester".
+   * 
+   * @return translated "Velg alle personer som hadde semestermedlemsskap forrige semester"
+   */
+  @DefaultStringValue("Velg alle personer som hadde semestermedlemsskap forrige semester")
+  @Key("invoice_all_previous_semester_membership")
+  String invoice_all_previous_semester_membership();
+
+  /**
+   * Translated "Velg alle personer som hadde årsmedlemsskap i forrige år ".
+   * 
+   * @return translated "Velg alle personer som hadde årsmedlemsskap i forrige år "
+   */
+  @DefaultStringValue("Velg alle personer som hadde årsmedlemsskap i forrige år ")
+  @Key("invoice_all_previous_year_membership")
+  String invoice_all_previous_year_membership();
+
+  /**
    * Translated "Lag fakturaer med oppgitt beløp ut periode".
    * 
    * @return translated "Lag fakturaer med oppgitt beløp ut periode"

@@ -42,7 +42,6 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -146,7 +145,6 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         gridPanel.getTopToolbar().setSaveButtonVisible(false);
         gridPanel.display();
         gridPanel.getGrid().setMultiRowModeEnabled(true);
-
         
         VerticalPanel invoiceButtons = new VerticalPanel();
         splitEqual = new NamedButton("", elements.invoice_amount_split_equal());
