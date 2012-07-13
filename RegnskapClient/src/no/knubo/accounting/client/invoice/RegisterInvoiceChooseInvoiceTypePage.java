@@ -9,6 +9,7 @@ import net.binarymuse.gwt.client.ui.wizard.event.NavigationEvent;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.RegnskapLocalStorage;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
@@ -39,7 +40,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -50,7 +50,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceContext> implements ClickHandler,
         FocusHandler, KeyDownHandler {
 
-    static final String INVOICES_KEY = "invoices";
+    public static final String INVOICES_KEY = "invoices";
 
     public static final PageID PAGEID = new PageID();
 
@@ -175,9 +175,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
             arr.set(pos++, invoice);
         }
 
-        Storage storage = Storage.getLocalStorageIfSupported();
-
-        storage.setItem(INVOICES_KEY, arr.toString());
+        RegnskapLocalStorage.saveInvoices(arr);
     }
 
     private void loadInvoicesFromLocalStorage(String data) {
@@ -226,18 +224,13 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         gridPanel.setWidth("100%");
         gridPanel.resize();
 
-        Storage storage = Storage.getLocalStorageIfSupported();
-
-        String invoices = storage.getItem(INVOICES_KEY);
+        String invoices = RegnskapLocalStorage.getInvoices();
 
         if (invoices != null) {
             loadInvoicesFromLocalStorage(invoices);
         } else {
             model.removeAll();
         }
-
-        // NativeEvent event = Document.get().createFocusEvent();
-        // DomEvent.fireNativeEvent(event, foo);
     }
 
     @Override

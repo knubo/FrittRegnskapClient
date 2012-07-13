@@ -2374,6 +2374,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_choose_recepients();
 
   /**
+   * Translated "Bekreft oppretting".
+   * 
+   * @return translated "Bekreft oppretting"
+   */
+  @DefaultStringValue("Bekreft oppretting")
+  @Key("invoice_confirm_create")
+  String invoice_confirm_create();
+
+  /**
    * Translated "Sett opp fakturaer".
    * 
    * @return translated "Sett opp fakturaer"
@@ -2381,6 +2390,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Sett opp fakturaer")
   @Key("invoice_create")
   String invoice_create();
+
+  /**
+   * Translated "Fakturaer opprettet".
+   * 
+   * @return translated "Fakturaer opprettet"
+   */
+  @DefaultStringValue("Fakturaer opprettet")
+  @Key("invoice_create_complete")
+  String invoice_create_complete();
 
   /**
    * Translated "Stamdardbeløp".

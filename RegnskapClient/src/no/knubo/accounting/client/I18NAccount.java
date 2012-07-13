@@ -610,6 +610,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String invalid_email();
 
   /**
+   * Translated "Du har nå gjort klar {0} faktura(er) til {1} mottaker(e). De er nå klar for opprettelse. Trykk Fullfør for å gjøre dette. ".
+   * 
+   * @return translated "Du har nå gjort klar {0} faktura(er) til {1} mottaker(e). De er nå klar for opprettelse. Trykk Fullfør for å gjøre dette. "
+   */
+  @DefaultMessage("Du har nå gjort klar {0} faktura(er) til {1} mottaker(e). De er nå klar for opprettelse. Trykk Fullfør for å gjøre dette. ")
+  @Key("invoice_confirm_message")
+  String invoice_confirm_message(String arg0,  String arg1);
+
+  /**
    * Translated "Fortsett med påbegynt fakturagenerering?".
    * 
    * @return translated "Fortsett med påbegynt fakturagenerering?"
@@ -617,6 +626,24 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   @DefaultMessage("Fortsett med påbegynt fakturagenerering?")
   @Key("invoice_continue")
   String invoice_continue();
+
+  /**
+   * Translated "Fakturaer er nå opprettet og klar for utsendelse. Benytt menyvalg send ut faktura når du er klar for det.".
+   * 
+   * @return translated "Fakturaer er nå opprettet og klar for utsendelse. Benytt menyvalg send ut faktura når du er klar for det."
+   */
+  @DefaultMessage("Fakturaer er nå opprettet og klar for utsendelse. Benytt menyvalg send ut faktura når du er klar for det.")
+  @Key("invoice_created_message")
+  String invoice_created_message();
+
+  /**
+   * Translated "Dette er veiviseren for å opprette fakturaer. Først opprettes fakturaer med forfallsdato, deretter velger man mottakere før fakturaene opprettes. Trykk neste for å fortsette.    ".
+   * 
+   * @return translated "Dette er veiviseren for å opprette fakturaer. Først opprettes fakturaer med forfallsdato, deretter velger man mottakere før fakturaene opprettes. Trykk neste for å fortsette.    "
+   */
+  @DefaultMessage("Dette er veiviseren for å opprette fakturaer. Først opprettes fakturaer med forfallsdato, deretter velger man mottakere før fakturaene opprettes. Trykk neste for å fortsette.    ")
+  @Key("invoice_start_message")
+  String invoice_start_message();
 
   /**
    * Translated "Konto er allerede valgt.".

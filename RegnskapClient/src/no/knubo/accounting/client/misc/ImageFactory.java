@@ -50,7 +50,7 @@ public class ImageFactory {
         return withId(new Image("images/list-remove.png"), id);
     }
 
-    public static Widget removeImageBig(String id) {
+    public static Image removeImageBig(String id) {
         return withId(new Image("images/list-remove-big.png"), id);
     }
 
@@ -101,7 +101,7 @@ public class ImageFactory {
         return withId(new Image("images/accept.png"), id);
     }
 
-    public static Widget alertImage(String id) {
+    public static Image alertImage(String id) {
         return withId(new Image("images/exclamation.png"), id);
     }
 

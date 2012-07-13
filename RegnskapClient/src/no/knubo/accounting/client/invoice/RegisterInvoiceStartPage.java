@@ -5,6 +5,7 @@ import net.binarymuse.gwt.client.ui.wizard.event.NavigationEvent;
 import net.binarymuse.gwt.client.ui.wizard.WizardPage;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.RegnskapLocalStorage;
 
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -36,7 +37,7 @@ public class RegisterInvoiceStartPage extends WizardPage<InvoiceContext> {
         this.elements = elements;
         this.messages = messages;
         panel = new FlowPanel();
-        panel.add(new HTML(elements.wizard_invoice_intro()));
+        panel.add(new HTML(messages.invoice_start_message()));
 
         invoiceContinueButtons = new VerticalPanel();
         invoiceContinueButtons.add(new Label(messages.invoice_continue()));
@@ -88,9 +89,7 @@ public class RegisterInvoiceStartPage extends WizardPage<InvoiceContext> {
     @Override
     public void beforeNext(NavigationEvent event) {
         if (radioNo.getValue()) {
-            Storage storage = Storage.getLocalStorageIfSupported();
-
-            storage.removeItem(RegisterInvoiceChooseInvoiceTypePage.INVOICES_KEY);
+            RegnskapLocalStorage.removeInvoicesData();
         }
     }
 

@@ -1,3 +1,4 @@
+
 /* #FAFAFA */
 body {
     font-size: 90%;
@@ -9,6 +10,11 @@ body {
     font-family: Helvetica, Geneva, Swiss, SunSans-Regular, Sans Serif;
     font-weight: normal;
     white-space: nowrap;
+}
+
+.wizardpad {
+  padding-left: 10px;
+  padding-top:10px;
 }
 
 .full INPUT {

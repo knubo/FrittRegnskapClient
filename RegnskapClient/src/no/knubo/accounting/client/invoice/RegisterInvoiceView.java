@@ -2,6 +2,7 @@ package no.knubo.accounting.client.invoice;
 
 import net.binarymuse.gwt.client.ui.wizard.Wizard;
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
+import net.binarymuse.gwt.client.ui.wizard.view.HasWizardButtonMethods;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
@@ -57,19 +58,46 @@ public class RegisterInvoiceView extends Composite implements SubmitCompleteHand
         panel = new VerticalPanel();
         form.setWidget(panel);
 
-
         panel.add(createWizard());
 
         initWidget(form);
     }
 
     private Widget createWizard() {
-        wizard = new Wizard<InvoiceContext>(elements.invoice(), new InvoiceContext(form, hiddenAction,
+        final RegisterInvoiceStartPage startPage = new RegisterInvoiceStartPage(elements, messages);
+        final RegisterInvoiceChooseReceivers chooseReceivers = new RegisterInvoiceChooseReceivers(elements, messages,
+                constants);
+        final RegisterInvoiceSummaryPage summaryPage = new RegisterInvoiceSummaryPage(elements, messages, constants);
+        
+        
+        wizard = new Wizard<InvoiceContext>(elements.menuitem_invoice_new(), new InvoiceContext(form, hiddenAction,
                 hiddenExclude));
 
-        wizard.addPage(new RegisterInvoiceStartPage(elements, messages));
+        HasWizardButtonMethods cancelButton = wizard.getButton(ButtonType.BUTTON_CANCEL);
+        cancelButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                wizard.showPage(chooseReceivers.getPageID(), false, false, true);
+            }
+        });
+
+        HasWizardButtonMethods finishButton = wizard.getButton(ButtonType.BUTTON_FINISH);
+
+        finishButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                wizard.showPage(summaryPage.getPageID(), false, false, true);
+            }
+        });
+
+        wizard.addPage(startPage);
         wizard.addPage(new RegisterInvoiceChooseInvoiceTypePage(elements, messages, constants, callback));
-        wizard.addPage(new RegisterInvoiceChooseReceivers(elements, messages, constants, callback));
+        wizard.addPage(chooseReceivers);
+        wizard.addPage(new RegisterInvoiceConfirmPage(elements, messages, constants));
+        wizard.addPage(summaryPage);
+
         wizard.setSize("1024px", "768px");
 
         wizard.getButton(ButtonType.BUTTON_FINISH).addClickHandler(this);
