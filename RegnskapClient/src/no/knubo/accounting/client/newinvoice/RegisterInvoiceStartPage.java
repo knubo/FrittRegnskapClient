@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.invoice;
+package no.knubo.accounting.client.newinvoice;
 
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
 import net.binarymuse.gwt.client.ui.wizard.event.NavigationEvent;
@@ -37,9 +37,12 @@ public class RegisterInvoiceStartPage extends WizardPage<InvoiceContext> {
         this.elements = elements;
         this.messages = messages;
         panel = new FlowPanel();
-        panel.add(new HTML(messages.invoice_start_message()));
+        HTML label = new HTML(messages.invoice_start_message());
+        label.addStyleName("wizardpad");
+        panel.add(label);
 
         invoiceContinueButtons = new VerticalPanel();
+        invoiceContinueButtons.addStyleName("wizardpad");
         invoiceContinueButtons.add(new Label(messages.invoice_continue()));
         radioYes = new RadioButton("invoice", elements.yes());
         invoiceContinueButtons.add(radioYes);

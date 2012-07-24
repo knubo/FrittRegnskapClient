@@ -213,6 +213,11 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(reportsMenu, elements.menuitem_report_letter(), WidgetIds.REPORT_LETTER);
             addMenuItem(reportsMenu, elements.menuitem_report_massletter_odf(), WidgetIds.REPORT_ODF_LETTER);
             addMenuItem(reportsMenu, elements.menuitem_report_email(), WidgetIds.REPORT_EMAIL);
+            
+            if(enableInvoice) {
+                addMenuItem(reportsMenu, elements.menuitem_invoice_send_email(), WidgetIds.REPORT_INVOICE_EMAIL);
+            }
+            
             addMenuItem(reportsMenu, elements.menuitem_report_users_email(), WidgetIds.REPORT_USERS_EMAIL);
         }
         addMenuItem(reportsMenu, elements.menuitem_report_accounttrack(), WidgetIds.REPORT_ACCOUNTTRACK);

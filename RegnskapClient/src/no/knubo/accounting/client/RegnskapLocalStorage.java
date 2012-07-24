@@ -2,7 +2,7 @@ package no.knubo.accounting.client;
 
 import java.util.HashSet;
 
-import no.knubo.accounting.client.invoice.RegisterInvoiceChooseInvoiceTypePage;
+import no.knubo.accounting.client.newinvoice.RegisterInvoiceChooseInvoiceTypePage;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

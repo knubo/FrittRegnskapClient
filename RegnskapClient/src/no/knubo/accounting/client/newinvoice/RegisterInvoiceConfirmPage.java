@@ -1,8 +1,7 @@
-package no.knubo.accounting.client.invoice;
+package no.knubo.accounting.client.newinvoice;
 
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
 import net.binarymuse.gwt.client.ui.wizard.WizardPage;
-import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.RegnskapLocalStorage;
@@ -15,14 +14,12 @@ public class RegisterInvoiceConfirmPage extends WizardPage<InvoiceContext> {
     public static final PageID PAGEID = new PageID();
     private final Elements elements;
     private final I18NAccount messages;
-    private final Constants constants;
     private VerticalPanel vp;
     private Label label;
 
-    public RegisterInvoiceConfirmPage(Elements elements, I18NAccount messages, Constants constants) {
+    public RegisterInvoiceConfirmPage(Elements elements, I18NAccount messages) {
         this.elements = elements;
         this.messages = messages;
-        this.constants = constants;
 
         vp = new VerticalPanel();
 

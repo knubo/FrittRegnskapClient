@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.invoice;
+package no.knubo.accounting.client.newinvoice;
 
 import java.math.BigDecimal;
 import java.util.Date;

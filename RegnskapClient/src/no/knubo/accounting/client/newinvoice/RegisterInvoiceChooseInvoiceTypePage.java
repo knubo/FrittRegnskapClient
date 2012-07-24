@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.invoice;
+package no.knubo.accounting.client.newinvoice;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -148,9 +148,12 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         
         VerticalPanel invoiceButtons = new VerticalPanel();
         splitEqual = new NamedButton("", elements.invoice_amount_split_equal());
+        splitEqual.addStyleName("buttonrow");
         splitEqual.addClickHandler(this);
         splitRepeat = new NamedButton("", elements.invoice_amount_repeat());
+        splitRepeat.addStyleName("buttonrow");
         splitRepeat.addClickHandler(this);
+        
         invoiceButtons.add(splitRepeat);
         invoiceButtons.add(splitEqual);
         vp.add(invoiceButtons);

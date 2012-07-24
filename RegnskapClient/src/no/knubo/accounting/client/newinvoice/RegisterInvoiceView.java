@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.invoice;
+package no.knubo.accounting.client.newinvoice;
 
 import net.binarymuse.gwt.client.ui.wizard.Wizard;
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
@@ -95,7 +95,7 @@ public class RegisterInvoiceView extends Composite implements SubmitCompleteHand
         wizard.addPage(startPage);
         wizard.addPage(new RegisterInvoiceChooseInvoiceTypePage(elements, messages, constants, callback));
         wizard.addPage(chooseReceivers);
-        wizard.addPage(new RegisterInvoiceConfirmPage(elements, messages, constants));
+        wizard.addPage(new RegisterInvoiceConfirmPage(elements, messages));
         wizard.addPage(summaryPage);
 
         wizard.setSize("1024px", "768px");

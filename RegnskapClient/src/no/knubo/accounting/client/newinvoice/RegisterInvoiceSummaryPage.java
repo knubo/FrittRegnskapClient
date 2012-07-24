@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.invoice;
+package no.knubo.accounting.client.newinvoice;
 
 import net.binarymuse.gwt.client.ui.wizard.Wizard.ButtonType;
 import net.binarymuse.gwt.client.ui.wizard.WizardPage;
@@ -14,7 +14,8 @@ import no.knubo.accounting.client.ui.NamedButton;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 public class RegisterInvoiceSummaryPage extends WizardPage<InvoiceContext> implements ClickHandler {
@@ -23,7 +24,7 @@ public class RegisterInvoiceSummaryPage extends WizardPage<InvoiceContext> imple
     private final Elements elements;
     private final I18NAccount messages;
     private final Constants constants;
-    private VerticalPanel vp;
+    private FlowPanel vp;
     private NamedButton okButton;
 
     public RegisterInvoiceSummaryPage(Elements elements, I18NAccount messages, Constants constants) {
@@ -31,9 +32,14 @@ public class RegisterInvoiceSummaryPage extends WizardPage<InvoiceContext> imple
         this.messages = messages;
         this.constants = constants;
 
-        vp = new VerticalPanel();
+        vp = new FlowPanel();
 
-        okButton = new NamedButton("ok", elements.ok());
+        Label label = new Label(messages.invoice_created_message());
+        label.addStyleName("wizardpad");
+        vp.add(label);
+        
+        okButton = new NamedButton("menuitem_invoice_new", elements.menuitem_invoice_new());
+        okButton.addStyleName("buttonrow");
         okButton.addClickHandler(this);
         vp.add(okButton);
     }
@@ -75,7 +81,7 @@ public class RegisterInvoiceSummaryPage extends WizardPage<InvoiceContext> imple
         Util.addPostParam(parameters, "invoices", invoices);
         Util.addPostParam(parameters, "receivers", receivers.toString());
 
-        AuthResponder.post(constants, messages, callback, parameters, "accounting/invoices_ops.php");
+        AuthResponder.post(constants, messages, callback, parameters, "accounting/invoice_ops.php");
     }
 
     @Override

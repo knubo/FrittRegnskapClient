@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.invoice;
+package no.knubo.accounting.client.newinvoice;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;

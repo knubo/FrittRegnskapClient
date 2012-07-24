@@ -3598,6 +3598,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_invoice_new();
 
   /**
+   * Translated "Send ut epostfaktura".
+   * 
+   * @return translated "Send ut epostfaktura"
+   */
+  @DefaultStringValue("Send ut epostfaktura")
+  @Key("menuitem_invoice_send_email")
+  String menuitem_invoice_send_email();
+
+  /**
    * Translated "Vis KID transaksjoner".
    * 
    * @return translated "Vis KID transaksjoner"
