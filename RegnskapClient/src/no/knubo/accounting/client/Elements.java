@@ -2410,6 +2410,24 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_default_amount();
 
   /**
+   * Translated "Forfallsdato".
+   * 
+   * @return translated "Forfallsdato"
+   */
+  @DefaultStringValue("Forfallsdato")
+  @Key("invoice_due_date")
+  String invoice_due_date();
+
+  /**
+   * Translated "Forfallsdato før dato".
+   * 
+   * @return translated "Forfallsdato før dato"
+   */
+  @DefaultStringValue("Forfallsdato før dato")
+  @Key("invoice_due_date_before")
+  String invoice_due_date_before();
+
+  /**
    * Translated "Forfallsdag".
    * 
    * @return translated "Forfallsdag"
@@ -2444,6 +2462,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Avsender fakturaepost")
   @Key("invoice_email_sender")
   String invoice_email_sender();
+
+  /**
+   * Translated "Filtrer fakturaer".
+   * 
+   * @return translated "Filtrer fakturaer"
+   */
+  @DefaultStringValue("Filtrer fakturaer")
+  @Key("invoice_filter")
+  String invoice_filter();
 
   /**
    * Translated "Mottakere av faktura".

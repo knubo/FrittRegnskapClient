@@ -36,6 +36,9 @@ public class RegnskapLocalStorage {
     public static void removeInvoicesData() {
         Storage storage = Storage.getLocalStorageIfSupported();
 
+        storage.removeItem(RegisterInvoiceChooseInvoiceTypePage.INVOICES_KEY);
+        storage.removeItem(RegisterInvoiceChooseInvoiceTypePage.INVOICE_TEMPLATE_KEY);
+
         HashSet<String> keysToRemove = new HashSet<String>();
         int length = storage.getLength();
 
@@ -47,7 +50,6 @@ public class RegnskapLocalStorage {
             }
         }
 
-        storage.removeItem(RegisterInvoiceChooseInvoiceTypePage.INVOICES_KEY);
 
         for (String key : keysToRemove) {
             storage.removeItem(key);
@@ -89,5 +91,22 @@ public class RegnskapLocalStorage {
         JSONArray invoices = JSONParser.parseStrict(getInvoices()).isArray();
         
         return invoices.size();
+    }
+
+    public static void setInvoiceTemplate(int id) {
+        Storage storage = Storage.getLocalStorageIfSupported();
+
+        storage.setItem(RegisterInvoiceChooseInvoiceTypePage.INVOICE_TEMPLATE_KEY, String.valueOf(id));
+    }
+    
+    public static Integer getInvoiceTemplate() {
+        Storage storage = Storage.getLocalStorageIfSupported();
+        
+        String templateKey = storage.getItem(RegisterInvoiceChooseInvoiceTypePage.INVOICE_TEMPLATE_KEY);
+
+        if(templateKey == null) {
+            return null;
+        }
+        return Integer.parseInt(templateKey);
     }
 }

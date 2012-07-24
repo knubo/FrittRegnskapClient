@@ -51,6 +51,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         FocusHandler, KeyDownHandler {
 
     public static final String INVOICES_KEY = "invoices";
+    public static final String INVOICE_TEMPLATE_KEY = "invoice_template";
 
     public static final PageID PAGEID = new PageID();
 
@@ -133,8 +134,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         model.setPageSize(15);
 
         gridPanel = new GridPanel();
-        
-        
+
         edibleGrid = gridPanel.createEditableGrid(new String[] { elements.due_date(), elements.amount() }, new Class[] {
                 DateCell.class, TextBoxCell.class }, model);
 
@@ -145,7 +145,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         gridPanel.getTopToolbar().setSaveButtonVisible(false);
         gridPanel.display();
         gridPanel.getGrid().setMultiRowModeEnabled(true);
-        
+
         VerticalPanel invoiceButtons = new VerticalPanel();
         splitEqual = new NamedButton("", elements.invoice_amount_split_equal());
         splitEqual.addStyleName("buttonrow");
@@ -153,7 +153,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         splitRepeat = new NamedButton("", elements.invoice_amount_repeat());
         splitRepeat.addStyleName("buttonrow");
         splitRepeat.addClickHandler(this);
-        
+
         invoiceButtons.add(splitRepeat);
         invoiceButtons.add(splitEqual);
         vp.add(invoiceButtons);
@@ -278,6 +278,19 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
             invoiceTemplates.addItem(Util.str(invoice.get("description")), Util.str(invoice.get("id")));
         }
+
+        selectInvoiceTemplate();
+    }
+
+    private void selectInvoiceTemplate() {
+        Integer templateId = RegnskapLocalStorage.getInvoiceTemplate();
+
+        if (templateId == null) {
+            return;
+        }
+
+        Util.setIndexByValue(invoiceTemplates.getListbox(), String.valueOf(templateId));
+        selectInvoice();
     }
 
     @Override
@@ -287,7 +300,6 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     @Override
     public void beforeNext(NavigationEvent event) {
-
         super.beforeNext(event);
     }
 
@@ -323,7 +335,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
         mv.money(messages.field_money(), amount);
         mv.mandatory(messages.required_field(), invoiceDueDay, amount);
-        
+
         return mv.validateStatus();
     }
 
@@ -333,6 +345,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
             @Override
             public void serverResponse(JSONValue responseObj) {
                 JSONObject obj = responseObj.isObject();
+
+                RegnskapLocalStorage.setInvoiceTemplate(Util.getInt(obj.get("id")));
 
                 invoiceType = InvoiceType.invoiceType(Util.getInt(obj.get("invoice_type")));
                 table.setText(invoiceRow, 1, invoiceType.getDesc());
@@ -363,7 +377,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         private InvoiceModel(Object[][] data) {
             super(data);
         }
-        
+
         @Override
         public void update(int row, int column, Object data) {
             super.update(row, column, data);
@@ -375,7 +389,7 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
             super.update(data);
             saveInvoicesLocalStorage();
         }
-        
+
         @Override
         public void addRow(int beforeRow, Object[] row) throws IllegalArgumentException {
 

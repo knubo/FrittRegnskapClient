@@ -82,11 +82,9 @@ public class RegisterInvoiceStartPage extends WizardPage<InvoiceContext> {
     }
 
     private void checkIfInvoiceIsInProgress() {
-        Storage storage = Storage.getLocalStorageIfSupported();
+        Integer invoiceTemplate = RegnskapLocalStorage.getInvoiceTemplate();
 
-        String invoices = storage.getItem(RegisterInvoiceChooseInvoiceTypePage.INVOICES_KEY);
-
-        invoiceContinueButtons.setVisible(invoices != null);
+        invoiceContinueButtons.setVisible(invoiceTemplate != null);
     }
 
     @Override

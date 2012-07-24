@@ -80,7 +80,8 @@ public class RegisterInvoiceSummaryPage extends WizardPage<InvoiceContext> imple
 
         Util.addPostParam(parameters, "invoices", invoices);
         Util.addPostParam(parameters, "receivers", receivers.toString());
-
+        Util.addPostParam(parameters, "invoice_type", String.valueOf(RegnskapLocalStorage.getInvoiceTemplate()));
+        
         AuthResponder.post(constants, messages, callback, parameters, "accounting/invoice_ops.php");
     }
 
