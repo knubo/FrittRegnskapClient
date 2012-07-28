@@ -2032,6 +2032,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String files();
 
   /**
+   * Translated "Filtrer".
+   * 
+   * @return translated "Filtrer"
+   */
+  @DefaultStringValue("Filtrer")
+  @Key("filter")
+  String filter();
+
+  /**
    * Translated "Les fil og identifiser felter".
    * 
    * @return translated "Les fil og identifiser felter"
@@ -3299,6 +3308,42 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Oversikt")
   @Key("menu_show")
   String menu_show();
+
+  /**
+   * Translated "Regnskap".
+   * 
+   * @return translated "Regnskap"
+   */
+  @DefaultStringValue("Regnskap")
+  @Key("menu_sub_accounting")
+  String menu_sub_accounting();
+
+  /**
+   * Translated "Eiendeler".
+   * 
+   * @return translated "Eiendeler"
+   */
+  @DefaultStringValue("Eiendeler")
+  @Key("menu_sub_belongings")
+  String menu_sub_belongings();
+
+  /**
+   * Translated "Faktura".
+   * 
+   * @return translated "Faktura"
+   */
+  @DefaultStringValue("Faktura")
+  @Key("menu_sub_invoice")
+  String menu_sub_invoice();
+
+  /**
+   * Translated "Medlemmer".
+   * 
+   * @return translated "Medlemmer"
+   */
+  @DefaultStringValue("Medlemmer")
+  @Key("menu_sub_members")
+  String menu_sub_members();
 
   /**
    * Translated "Fond".

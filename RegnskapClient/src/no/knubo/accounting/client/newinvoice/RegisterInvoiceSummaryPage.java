@@ -9,7 +9,9 @@ import no.knubo.accounting.client.RegnskapLocalStorage;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.views.ViewCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -26,11 +28,14 @@ public class RegisterInvoiceSummaryPage extends WizardPage<InvoiceContext> imple
     private final Constants constants;
     private FlowPanel vp;
     private NamedButton okButton;
+    private final ViewCallback callback;
+    private NamedButton reportSendInvoice;
 
-    public RegisterInvoiceSummaryPage(Elements elements, I18NAccount messages, Constants constants) {
+    public RegisterInvoiceSummaryPage(Elements elements, I18NAccount messages, Constants constants, ViewCallback callback) {
         this.elements = elements;
         this.messages = messages;
         this.constants = constants;
+        this.callback = callback;
 
         vp = new FlowPanel();
 
@@ -42,6 +47,12 @@ public class RegisterInvoiceSummaryPage extends WizardPage<InvoiceContext> imple
         okButton.addStyleName("buttonrow");
         okButton.addClickHandler(this);
         vp.add(okButton);
+
+        reportSendInvoice = new NamedButton("menuitem_invoice_send_email", elements.menuitem_invoice_send_email());
+        reportSendInvoice.addStyleName("buttonrow");
+        reportSendInvoice.addClickHandler(this);
+        vp.add(reportSendInvoice);
+    
     }
 
     @Override
@@ -94,6 +105,11 @@ public class RegisterInvoiceSummaryPage extends WizardPage<InvoiceContext> imple
     public void onClick(ClickEvent event) {
         if (event.getSource() == okButton) {
             getWizard().showFirstPage();
+        }
+        if(event.getSource() == reportSendInvoice) {
+            callback.openView(WidgetIds.REPORT_INVOICE_EMAIL, elements.menuitem_invoice_send_email());
+            getWizard().showFirstPage();
+            
         }
     }
 

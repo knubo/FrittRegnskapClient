@@ -67,7 +67,7 @@ public class RegisterInvoiceView extends Composite implements SubmitCompleteHand
         final RegisterInvoiceStartPage startPage = new RegisterInvoiceStartPage(elements, messages);
         final RegisterInvoiceChooseReceivers chooseReceivers = new RegisterInvoiceChooseReceivers(elements, messages,
                 constants);
-        final RegisterInvoiceSummaryPage summaryPage = new RegisterInvoiceSummaryPage(elements, messages, constants);
+        final RegisterInvoiceSummaryPage summaryPage = new RegisterInvoiceSummaryPage(elements, messages, constants, callback);
         
         
         wizard = new Wizard<InvoiceContext>(elements.menuitem_invoice_new(), new InvoiceContext(form, hiddenAction,

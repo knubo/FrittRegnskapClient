@@ -54,6 +54,11 @@ body {
     background-color: white;
 }
 
+.nobreaktable TD {
+    white-space: nowrap;
+}
+
+
 table.dotted {
 	border-width: 1px;
 	border-spacing: 2px;

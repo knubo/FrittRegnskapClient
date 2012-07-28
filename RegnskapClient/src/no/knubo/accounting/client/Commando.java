@@ -423,6 +423,7 @@ class Commando implements Command {
             break;
         case REPORT_INVOICE_EMAIL:
             widget = SendInvoiceEmail.getInstance(messages, constants, elements);
+            ((SendInvoiceEmail)widget).init();
             break;
         }
 

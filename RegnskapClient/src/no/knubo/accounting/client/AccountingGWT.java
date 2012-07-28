@@ -201,39 +201,54 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
     }
 
     private void setupReportsMenu() {
+
+        MenuBar membershipSubMenu = new MenuBar(true);
+        MenuBar accountingSubMenu = new MenuBar(true);
+        MenuBar invoiceSubMenu = new MenuBar(true);
+        MenuBar belongingsSubMenu = new MenuBar(true);
+
+        reportsMenu.addItem(new MenuItem(elements.menu_sub_members(), false, membershipSubMenu));
+        reportsMenu.addItem(new MenuItem(elements.menu_sub_accounting(), false, accountingSubMenu));
+        reportsMenu.addItem(new MenuItem(elements.menu_sub_invoice(), false, invoiceSubMenu));
+        reportsMenu.addItem(new MenuItem(elements.menu_sub_belongings(), false, belongingsSubMenu));
+
+        addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
+        addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year_gender(),
+                WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
+
         if (reducedMode == 0) {
-            addMenuItem(reportsMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
-            addMenuItem(reportsMenu, elements.menuitem_report_member_per_year_gender(),
+            addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
+            addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year_gender(),
                     WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
-            addMenuItem(reportsMenu, elements.menuitem_report_addresses(), WidgetIds.REPORT_ADDRESSES);
+            addMenuItem(membershipSubMenu, elements.menuitem_report_addresses(), WidgetIds.REPORT_ADDRESSES);
         }
-        addMenuItem(reportsMenu, elements.menuitem_report_selectedlines(), WidgetIds.REPORT_SELECTEDLINES);
+        addMenuItem(accountingSubMenu, elements.menuitem_report_selectedlines(), WidgetIds.REPORT_SELECTEDLINES);
 
         if (reducedMode == 0) {
             addMenuItem(reportsMenu, elements.menuitem_report_letter(), WidgetIds.REPORT_LETTER);
             addMenuItem(reportsMenu, elements.menuitem_report_massletter_odf(), WidgetIds.REPORT_ODF_LETTER);
             addMenuItem(reportsMenu, elements.menuitem_report_email(), WidgetIds.REPORT_EMAIL);
-            
-            if(enableInvoice) {
-                addMenuItem(reportsMenu, elements.menuitem_invoice_send_email(), WidgetIds.REPORT_INVOICE_EMAIL);
-            }
-            
-            addMenuItem(reportsMenu, elements.menuitem_report_users_email(), WidgetIds.REPORT_USERS_EMAIL);
-        }
-        addMenuItem(reportsMenu, elements.menuitem_report_accounttrack(), WidgetIds.REPORT_ACCOUNTTRACK);
 
-        addMenuItem(reportsMenu, elements.menuitem_report_year(), WidgetIds.REPORT_YEAR);
-        addMenuItem(reportsMenu, elements.menuitem_report_earnings_year(), WidgetIds.REPORT_EARNINGS_YEAR);
+            if (enableInvoice) {
+                addMenuItem(invoiceSubMenu, elements.menuitem_invoice_send_email(), WidgetIds.REPORT_INVOICE_EMAIL);
+            }
+
+            addMenuItem(membershipSubMenu, elements.menuitem_report_users_email(), WidgetIds.REPORT_USERS_EMAIL);
+        }
+        addMenuItem(accountingSubMenu, elements.menuitem_report_accounttrack(), WidgetIds.REPORT_ACCOUNTTRACK);
+
+        addMenuItem(accountingSubMenu, elements.menuitem_report_year(), WidgetIds.REPORT_YEAR);
+        addMenuItem(accountingSubMenu, elements.menuitem_report_earnings_year(), WidgetIds.REPORT_EARNINGS_YEAR);
 
         if (reducedMode == 0) {
             addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
-            addMenuItem(reportsMenu, elements.menuitem_report_belonging_responsible(),
+            addMenuItem(belongingsSubMenu, elements.menuitem_report_belonging_responsible(),
                     WidgetIds.REPORT_BELONGINGS_RESPONSIBLE);
         }
 
-        addMenuItem(reportsMenu, elements.menuitem_report_missing_year_members(),
+        addMenuItem(membershipSubMenu, elements.menuitem_report_missing_year_members(),
                 WidgetIds.REPORTS_MISSING_YEAR_MEMBERSHIPS);
-        addMenuItem(reportsMenu, elements.menuitem_report_missing_semester_members(),
+        addMenuItem(membershipSubMenu, elements.menuitem_report_missing_semester_members(),
                 WidgetIds.REPORTS_MISSING_SEMESTER_MEMBERSHIPS);
     }
 
