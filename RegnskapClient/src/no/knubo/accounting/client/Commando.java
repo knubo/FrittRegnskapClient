@@ -69,7 +69,6 @@ import no.knubo.accounting.client.views.reporting.EarningsAndCostPie;
 import no.knubo.accounting.client.views.reporting.GeneralReportView;
 import no.knubo.accounting.client.views.reporting.ReportAccountlines;
 import no.knubo.accounting.client.views.reporting.ReportAccounttracking;
-import no.knubo.accounting.client.views.reporting.ReportMail;
 import no.knubo.accounting.client.views.reporting.ReportMassLetterODF;
 import no.knubo.accounting.client.views.reporting.ReportMassLetters;
 import no.knubo.accounting.client.views.reporting.ReportMembersAddresses;
@@ -77,6 +76,7 @@ import no.knubo.accounting.client.views.reporting.ReportMembersBirth;
 import no.knubo.accounting.client.views.reporting.ReportMembersBirthGender;
 import no.knubo.accounting.client.views.reporting.ReportUsersEmail;
 import no.knubo.accounting.client.views.reporting.SimpleMassletterEditView;
+import no.knubo.accounting.client.views.reporting.mail.ReportMail;
 
 import org.gwtwidgets.client.ui.SimpleCalcPanel;
 

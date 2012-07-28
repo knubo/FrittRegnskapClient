@@ -13,6 +13,7 @@ import no.knubo.accounting.client.ui.DatePickerButton;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import org.gwt.advanced.client.ui.widget.Calendar;
 
@@ -38,6 +39,7 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
     private ListBoxWithErrorText invoiceBox;
     private NamedButton filterButton;
     private AccountTable invoices;
+    private NamedButton sendInvoiceButton;
 
     public static SendInvoiceEmail getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
@@ -67,7 +69,9 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
             }
         };
 
-        filterTable.setHeaders(0, elements.invoice_filter());
+        filterTable.setHeaders(0, elements.invoice_filter_send_email());
+        filterTable.getRowFormatter().addStyleName(0, "large");
+        
         filterTable.setText(1, 0, elements.invoice_due_date_before());
 
         HorizontalPanel hp = new HorizontalPanel();
@@ -84,8 +88,15 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
         filterButton = new NamedButton("filter", elements.filter());
         filterButton.addClickHandler(this);
 
-        filterTable.setWidget(5, 0, filterButton);
+        HorizontalPanel buttons = new HorizontalPanel();
+        buttons.add(filterButton);
+        
+        filterTable.setWidget(5, 0, buttons);
 
+        sendInvoiceButton = new NamedButton("invoice_send_email", elements.invoice_send_email());
+        sendInvoiceButton.addClickHandler(this);
+        buttons.add(sendInvoiceButton);
+        
         invoices = new AccountTable("tableborder");
         invoices.addStyleName("nobreaktable");
         invoices.setHeaders(0, elements.invoice_template(), elements.invoice_due_date(), elements.amount(),
@@ -138,6 +149,11 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
     }
 
     private void filterInvoices() {
+        
+        if(!validate()) {
+            return;
+        }
+        
         while (invoices.getRowCount() > 1) {
             invoices.removeRow(1);
         }
@@ -164,24 +180,50 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
                 }
             }
         };
+        
         AuthResponder.get(constants, messages, callback, url.toString());
+    }
+
+    private boolean validate() {
+        MasterValidator mv = new MasterValidator();
+        mv.date(messages.date_format(), dueDateBox);
+        
+        if(dueDateBox.getText().length() > 0 && invoiceBox.getSelectedIndex() > 0) {
+            mv.fail(dueDateBox, true, messages.invoice_select_due_date_or_invoice());
+        }
+        
+        return mv.validateStatus();
     }
 
     protected String invoiceStatus(int int1) {
         switch (int1) {
         case 1:
-            return "Ikke sent";
+            return elements.invoice_status_not_sent();
         case 2:
-            return "Sent";
+            return elements.invoice_status_sent();
         case 3:
-            return "Slettet";
+            return elements.invoice_status_deleted();
         }
         return "???" + int1;
     }
 
     private StringBuilder buildInvoiceURL() {
         StringBuilder query = new StringBuilder();
+        
         query.append("accounting/invoice_ops.php?action=invoices");
+
+        if(dueDateBox.getText().length() > 0) {
+            query.append("&due_date=");
+            query.append(dueDateBox.getText());
+        }
+        
+        String invoice = Util.getSelected(invoiceBox);
+        
+        if(invoice.length() > 0) {
+            query.append("&invoice=");
+            query.append(invoice);
+        }
+        
         return query;
     }
 

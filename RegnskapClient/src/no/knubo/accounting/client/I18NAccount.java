@@ -637,6 +637,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String invoice_created_message();
 
   /**
+   * Translated "Velg forfallsdato eller gitt faktura".
+   * 
+   * @return translated "Velg forfallsdato eller gitt faktura"
+   */
+  @DefaultMessage("Velg forfallsdato eller gitt faktura")
+  @Key("invoice_select_due_date_or_invoice")
+  String invoice_select_due_date_or_invoice();
+
+  /**
    * Translated "Dette er veiviseren for å opprette fakturaer. Først opprettes fakturaer med forfallsdato, deretter velger man mottakere før fakturaene opprettes. Trykk neste for å fortsette.    ".
    * 
    * @return translated "Dette er veiviseren for å opprette fakturaer. Først opprettes fakturaer med forfallsdato, deretter velger man mottakere før fakturaene opprettes. Trykk neste for å fortsette.    "

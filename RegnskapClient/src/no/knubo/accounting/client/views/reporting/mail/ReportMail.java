@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.views.reporting;
+package no.knubo.accounting.client.views.reporting.mail;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,11 +11,9 @@ import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.CKEditorFunctions;
 import no.knubo.accounting.client.misc.CallbackComplete;
-import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.Logger;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.ServerResponseString;
-import no.knubo.accounting.client.misc.ServerResponseWithErrorFeedback;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
@@ -31,10 +29,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -60,16 +56,16 @@ public class ReportMail extends Composite implements ClickHandler {
     private static ReportMail reportInstance;
     private static boolean htmlVisible;
     private static boolean configuredStyle;
-    private final Constants constants;
-    private final Elements elements;
-    private FlexTable table;
+    final Constants constants;
+    final Elements elements;
+    FlexTable table;
     ListBoxWithErrorText reciversListBox;
     TextBoxWithErrorText titleBox;
     NamedTextArea bodyBox;
     NamedTextArea richBodyBox;
     protected JSONArray receivers;
     private EmailSendStatus emailSendStatusView;
-    private I18NAccount messages;
+    I18NAccount messages;
     private NamedButton sendButton;
     private NamedButton attachButton;
     private PickAttachments pickAttachments;
@@ -406,7 +402,7 @@ public class ReportMail extends Composite implements ClickHandler {
         logger.info("email", message);
 
         if (emailSendStatusView == null) {
-            emailSendStatusView = new EmailSendStatus();
+            emailSendStatusView = new EmailSendStatus(this);
         }
 
         emailSendStatusView.setAttachmends(getSelectedFiles());
@@ -586,161 +582,6 @@ public class ReportMail extends Composite implements ClickHandler {
         confirmSendEmail();
     }
 
-    class EmailSendStatus extends DialogBox implements ClickHandler {
-
-        private int currentIndex;
-        private boolean pause;
-        private FlexTable infoTable;
-        private String attachmentsAsJSONString;
-        private boolean simulate;
-        private String emailText;
-
-        EmailSendStatus() {
-            DockPanel dp = new DockPanel();
-
-            infoTable = new FlexTable();
-            infoTable.setStyleName("tableborder");
-            infoTable.setText(0, 0, elements.mail_sending());
-            infoTable.setText(1, 0, elements.name());
-            infoTable.setText(2, 0, elements.email());
-            infoTable.getRowFormatter().setStyleName(0, "header");
-            infoTable.setWidget(0, 1, ImageFactory.loadingImage("image_loading"));
-            infoTable.getCellFormatter().setWidth(0, 1, "30px");
-            infoTable.getColumnFormatter().setStyleName(1, "emailsendname");
-            infoTable.getColumnFormatter().setStyleName(2, "emailsendemail");
-            NamedButton cancelButton = new NamedButton("abort", elements.abort());
-            cancelButton.addClickHandler(this);
-            infoTable.setWidget(3, 0, cancelButton);
-
-            dp.add(infoTable, DockPanel.NORTH);
-            setWidget(dp);
-        }
-
-        public void setAttachmends(ArrayList<String> selectedFiles) {
-            JSONArray attachments = new JSONArray();
-            int pos = 0;
-            for (String fileName : selectedFiles) {
-                attachments.set(pos++, new JSONString(fileName));
-            }
-
-            attachmentsAsJSONString = URL.encode(attachments.toString());
-        }
-
-        @Override
-        public void onClick(ClickEvent event) {
-            pause = true;
-
-            boolean stopSending = Window.confirm(messages.mail_abort_confirm());
-
-            if (!stopSending) {
-                pause = false;
-                sendOneEmail();
-            } else {
-                hide();
-            }
-        }
-
-        public void sendEmails(boolean simulate) {
-            this.simulate = simulate;
-            currentIndex = 0;
-            infoTable.setText(1, 1, "");
-            infoTable.setText(2, 1, "");
-            infoTable.getFlexCellFormatter().setColSpan(1, 1, 2);
-            infoTable.getFlexCellFormatter().setColSpan(2, 1, 2);
-
-            emailText = getFixedEmailText();
-
-            sendOneEmail();
-        }
-
-        private void sendOneEmail() {
-            if (pause) {
-                return;
-            }
-            JSONObject user = receivers.get(currentIndex).isObject();
-
-            final String name = Util.str(user.get("name"));
-            final String personId = Util.str(user.get("id"));
-            final String email = Util.str(user.get("email"));
-
-            infoTable.setText(1, 1, name);
-            infoTable.setText(2, 1, email);
-            infoTable.setText(0, 2, "(" + (receivers.size() - currentIndex) + ")");
-
-            StringBuffer mailRequest = new StringBuffer();
-
-            mailRequest.append("action=" + (simulate ? "simulatemail" : "email"));
-            Util.addPostParam(mailRequest, "personid", personId);
-            Util.addPostParam(mailRequest, "email", email);
-            fillEmailText(mailRequest, emailText);
-            Util.addPostParam(mailRequest, "attachments", attachmentsAsJSONString);
-
-            ServerResponseWithErrorFeedback callback = new ServerResponseWithErrorFeedback() {
-
-                @Override
-                public void serverResponse(JSONValue value) {
-                    JSONObject object = value.isObject();
-
-                    fillSentLine(name, email, personId);
-
-                    if (!("1".equals(Util.str(object.get("status")))) || (simulate && Random.nextBoolean())) {
-                        table.setStyleName("error");
-                        table.setText(1, 2, elements.failed());
-                    } else {
-                        table.setText(1, 2, elements.ok());
-                    }
-                    if (receivers.size() > currentIndex) {
-                        sleepThenSendOneEmail();
-                    } else {
-                        checkForErrors();
-                        hide();
-                    }
-                }
-
-                @Override
-                public void onError() {
-                    fillSentLine(name, email, personId);
-                    table.setStyleName("error");
-                    table.setText(1, 2, elements.failed());
-
-                    if (receivers.size() > currentIndex) {
-                        sleepThenSendOneEmail();
-                    } else {
-                        checkForErrors();
-                        hide();
-                    }
-                }
-
-                protected void sleepThenSendOneEmail() {
-                    Timer t = new Timer() {
-
-                        @Override
-                        public void run() {
-                            sendOneEmail();
-                        }
-                    };
-                    t.schedule(1000);
-                }
-
-                private void fillSentLine(final String name, final String email, String id) {
-                    currentIndex++;
-                    table.insertRow(1);
-                    table.setText(1, 0, name);
-                    table.setText(1, 1, email);
-                    table.setText(1, 3, id);
-                    table.getCellFormatter().setStyleName(1, 3, "hidden");
-
-                    String style = (currentIndex % 2 == 0) ? "showlineposts2" : "showlineposts1";
-                    table.getRowFormatter().setStyleName(1, style);
-                }
-
-            };
-
-            AuthResponder.post(constants, messages, callback, mailRequest, "reports/email.php");
-        }
-
-    }
-
     protected void checkForErrors() {
 
         reSendButton.setEnabled(false);
@@ -765,89 +606,11 @@ public class ReportMail extends Composite implements ClickHandler {
 
     protected void openSelectFilesForAttachment(JSONArray files, ArrayList<String> existingFiles) {
         if (pickAttachments == null) {
-            pickAttachments = new PickAttachments();
+            pickAttachments = new PickAttachments(this);
         }
         pickAttachments.fillFiles(files, existingFiles);
         pickAttachments.show();
         pickAttachments.center();
-
-    }
-
-    class PickAttachments extends DialogBox implements ClickHandler {
-
-        private FlexTable pickFilesTable;
-        private NamedButton cancelButton;
-        private NamedButton pickButton;
-
-        PickAttachments() {
-            VerticalPanel dp = new VerticalPanel();
-
-            pickFilesTable = new FlexTable();
-            pickFilesTable.setStyleName("tableborder");
-            pickFilesTable.setTitle(elements.choose_attachments());
-
-            pickFilesTable.getRowFormatter().setStyleName(0, "header");
-            pickFilesTable.setHTML(0, 0, elements.files());
-            pickFilesTable.setHTML(0, 1, elements.choose_files());
-
-            dp.add(pickFilesTable);
-
-            HorizontalPanel hp = new HorizontalPanel();
-            dp.add(hp);
-
-            cancelButton = new NamedButton("abort", elements.abort());
-            cancelButton.addClickHandler(this);
-            hp.add(cancelButton);
-
-            pickButton = new NamedButton("choose_file", elements.choose_files());
-            pickButton.addClickHandler(this);
-            hp.add(pickButton);
-
-            setWidget(dp);
-
-        }
-
-        public void fillFiles(JSONArray files, ArrayList<String> existingFiles) {
-            while (pickFilesTable.getRowCount() > 1) {
-                pickFilesTable.removeRow(1);
-            }
-
-            for (int i = 0; i < files.size(); i++) {
-
-                String fileName = Util.str(files.get(i).isObject().get("name"));
-                pickFilesTable.setText(i + 1, 0, fileName);
-
-                CheckBox filePick = new CheckBox();
-
-                filePick.setValue(existingFiles.contains(fileName));
-
-                pickFilesTable.setWidget(i + 1, 1, filePick);
-                pickFilesTable.getCellFormatter().setStyleName(i + 1, 1, "center");
-            }
-        }
-
-        @Override
-        public void onClick(ClickEvent event) {
-            Widget sender = (Widget) event.getSource();
-            if (sender == cancelButton) {
-                hide();
-            } else if (sender == pickButton) {
-                pickFiles();
-            }
-        }
-
-        private void pickFiles() {
-            ArrayList<String> fileNames = new ArrayList<String>();
-            for (int row = 1; row < pickFilesTable.getRowCount(); row++) {
-                CheckBox checkbox = (CheckBox) pickFilesTable.getWidget(row, 1);
-
-                if (checkbox.getValue()) {
-                    fileNames.add(pickFilesTable.getText(row, 0));
-                }
-            }
-            setAttachedFiles(fileNames);
-            hide();
-        }
 
     }
 
@@ -1082,7 +845,7 @@ public class ReportMail extends Composite implements ClickHandler {
         }
     }
 
-    private void fillEmailText(StringBuffer mailRequest, String emailText) {
+    void fillEmailText(StringBuffer mailRequest, String emailText) {
         Util.addPostParam(mailRequest, "subject", URL.encode(titleBox.getText()));
         Util.addPostParam(mailRequest, "body", emailText);
         Util.addPostParam(mailRequest, "format", getFormat());
@@ -1090,7 +853,7 @@ public class ReportMail extends Composite implements ClickHandler {
         Util.addPostParam(mailRequest, "footer", Util.getSelected(footerSelect));
     }
 
-    private String getFixedEmailText() {
+    String getFixedEmailText() {
         if (radioFormatHTML.getValue()) {
             String html = getHTML();
 

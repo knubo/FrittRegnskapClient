@@ -2473,13 +2473,13 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_email_sender();
 
   /**
-   * Translated "Filtrer fakturaer".
+   * Translated "Filtrer fakturaer og send ut epost med faktura".
    * 
-   * @return translated "Filtrer fakturaer"
+   * @return translated "Filtrer fakturaer og send ut epost med faktura"
    */
-  @DefaultStringValue("Filtrer fakturaer")
-  @Key("invoice_filter")
-  String invoice_filter();
+  @DefaultStringValue("Filtrer fakturaer og send ut epost med faktura")
+  @Key("invoice_filter_send_email")
+  String invoice_filter_send_email();
 
   /**
    * Translated "Mottakere av faktura".
@@ -2489,6 +2489,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Mottakere av faktura")
   @Key("invoice_recepients")
   String invoice_recepients();
+
+  /**
+   * Translated "Send epost med faktura".
+   * 
+   * @return translated "Send epost med faktura"
+   */
+  @DefaultStringValue("Send epost med faktura")
+  @Key("invoice_send_email")
+  String invoice_send_email();
 
   /**
    * Translated "Gjenntagende faktura".
@@ -2525,6 +2534,33 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Kvartal")
   @Key("invoice_split_type_quarterly")
   String invoice_split_type_quarterly();
+
+  /**
+   * Translated "Slettet".
+   * 
+   * @return translated "Slettet"
+   */
+  @DefaultStringValue("Slettet")
+  @Key("invoice_status_deleted")
+  String invoice_status_deleted();
+
+  /**
+   * Translated "Ikke sent".
+   * 
+   * @return translated "Ikke sent"
+   */
+  @DefaultStringValue("Ikke sent")
+  @Key("invoice_status_not_sent")
+  String invoice_status_not_sent();
+
+  /**
+   * Translated "Sent".
+   * 
+   * @return translated "Sent"
+   */
+  @DefaultStringValue("Sent")
+  @Key("invoice_status_sent")
+  String invoice_status_sent();
 
   /**
    * Translated "Fakturamal".
