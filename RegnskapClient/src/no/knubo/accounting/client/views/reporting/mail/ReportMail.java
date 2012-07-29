@@ -92,6 +92,7 @@ public class ReportMail extends Composite implements ClickHandler {
     private NamedButton cancelTemplateButton;
     private final ViewCallback callback;
     private String callerID;
+    private NamedButton mergeTextButton;
 
     public static ReportMail getInstance(Constants constants, I18NAccount messages, Elements elements,
             ViewCallback callback) {
@@ -114,9 +115,9 @@ public class ReportMail extends Composite implements ClickHandler {
         mainTable.setText(1, 0, elements.mail_title());
         mainTable.setText(2, 0, elements.email_format());
         mainTable.setText(3, 0, elements.mail_body());
-        mainTable.setText(4, 0, elements.email_header());
-        mainTable.setText(5, 0, elements.email_footer());
-        mainTable.setText(6, 0, elements.files());
+        mainTable.setText(5, 0, elements.email_header());
+        mainTable.setText(6, 0, elements.email_footer());
+        mainTable.setText(7, 0, elements.files());
 
         mainTable.setWidget(0, 1, createReceiverRow(elements));
 
@@ -147,18 +148,22 @@ public class ReportMail extends Composite implements ClickHandler {
         attachButton = new NamedButton("attach_files", elements.attach_files());
         attachButton.addClickHandler(this);
 
-        addHeaderFooterSelects(mainTable, 4);
+        mergeTextButton = new NamedButton("email_merge_text", elements.email_merge_text());
+        mergeTextButton.addClickHandler(this);
+        mainTable.setWidget(4, 1, mergeTextButton);
+
+        addHeaderFooterSelects(mainTable, 5);
         infoLabel = new Label();
         infoLabel.addStyleName("nowrap");
-        mainTable.setWidget(4, 2, infoLabel);
+        mainTable.setWidget(5, 2, infoLabel);
 
         attachedFiles = new FlexTable();
         attachedFiles.setStyleName("insidetable");
-        mainTable.setWidget(6, 1, attachedFiles);
-        mainTable.setWidget(7, 1, attachButton);
+        mainTable.setWidget(7, 1, attachedFiles);
+        mainTable.setWidget(8, 1, attachButton);
 
-        addSendButtons(mainTable, 8);
-        addSaveTemplateButtons(mainTable, 9);
+        addSendButtons(mainTable, 9);
+        addSaveTemplateButtons(mainTable, 10);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -445,6 +450,8 @@ public class ReportMail extends Composite implements ClickHandler {
             saveTemplate();
         } else if (sender == cancelTemplateButton) {
             cancelTemplate();
+        } else if (sender == mergeTextButton) {
+            new MergeTextPopup(elements, bodyBox, callerID != null).showRelativeTo(mergeTextButton);
         }
     }
 
@@ -615,7 +622,7 @@ public class ReportMail extends Composite implements ClickHandler {
     }
 
     public void initSendingEmail() {
-
+        this.callerID = null;
         mainTable.getRowFormatter().setVisible(0, true);
         mainTable.getRowFormatter().setVisible(6, true);
         mainTable.getRowFormatter().setVisible(7, true);
@@ -969,5 +976,11 @@ public class ReportMail extends Composite implements ClickHandler {
     /*-{
        $wnd['CKEDITOR'].instances.html_area.setData(x);
     }-*/;
+
+    public static native void insertTextInHTMLAtCursorPos(String text)
+    /*-{
+       $wnd['CKEDITOR'].instances.html_area.insertText(text);
+
+     }-*/;
 
 }

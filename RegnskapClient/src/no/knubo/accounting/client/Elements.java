@@ -1591,6 +1591,51 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String email_html_tag_replacement();
 
   /**
+   * Translated "Flettetekst".
+   * 
+   * @return translated "Flettetekst"
+   */
+  @DefaultStringValue("Flettetekst")
+  @Key("email_merge_text")
+  String email_merge_text();
+
+  /**
+   * Translated "Beløp for faktura".
+   * 
+   * @return translated "Beløp for faktura"
+   */
+  @DefaultStringValue("Beløp for faktura")
+  @Key("email_merge_text_invoice_amount")
+  String email_merge_text_invoice_amount();
+
+  /**
+   * Translated "Forfallsdato for faktura".
+   * 
+   * @return translated "Forfallsdato for faktura"
+   */
+  @DefaultStringValue("Forfallsdato for faktura")
+  @Key("email_merge_text_invoice_due_date")
+  String email_merge_text_invoice_due_date();
+
+  /**
+   * Translated "Faktura".
+   * 
+   * @return translated "Faktura"
+   */
+  @DefaultStringValue("Faktura")
+  @Key("email_merge_text_invoice_link")
+  String email_merge_text_invoice_link();
+
+  /**
+   * Translated "Link for avmelding av nyhetsbrev".
+   * 
+   * @return translated "Link for avmelding av nyhetsbrev"
+   */
+  @DefaultStringValue("Link for avmelding av nyhetsbrev")
+  @Key("email_merge_text_unsubscribe_link")
+  String email_merge_text_unsubscribe_link();
+
+  /**
    * Translated "Velg en av radioknappene".
    * 
    * @return translated "Velg en av radioknappene"
