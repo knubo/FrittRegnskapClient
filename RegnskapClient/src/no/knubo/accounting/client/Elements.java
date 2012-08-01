@@ -2545,6 +2545,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_send_email();
 
   /**
+   * Translated "Status på utsendelse av fakturaepost".
+   * 
+   * @return translated "Status på utsendelse av fakturaepost"
+   */
+  @DefaultStringValue("Status på utsendelse av fakturaepost")
+  @Key("invoice_sent_email_status")
+  String invoice_sent_email_status();
+
+  /**
    * Translated "Gjenntagende faktura".
    * 
    * @return translated "Gjenntagende faktura"

@@ -619,6 +619,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String invoice_confirm_message(String arg0,  String arg1);
 
   /**
+   * Translated "Send ut fakturaer per epost?".
+   * 
+   * @return translated "Send ut fakturaer per epost?"
+   */
+  @DefaultMessage("Send ut fakturaer per epost?")
+  @Key("invoice_confirm_send")
+  String invoice_confirm_send();
+
+  /**
    * Translated "Fortsett med påbegynt fakturagenerering?".
    * 
    * @return translated "Fortsett med påbegynt fakturagenerering?"

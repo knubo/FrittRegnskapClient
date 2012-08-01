@@ -46,6 +46,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ReportMail extends Composite implements ClickHandler {
+    private static final int INVOICE_BUTTONS_ROW = 11;
     private static final String WIKI = "WIKI";
     private static final String HTML = "HTML";
     private static final String PLAIN = "PLAIN";
@@ -159,11 +160,11 @@ public class ReportMail extends Composite implements ClickHandler {
 
         attachedFiles = new FlexTable();
         attachedFiles.setStyleName("insidetable");
-        mainTable.setWidget(7, 1, attachedFiles);
-        mainTable.setWidget(8, 1, attachButton);
+        mainTable.setWidget(8, 1, attachedFiles);
+        mainTable.setWidget(9, 1, attachButton);
 
-        addSendButtons(mainTable, 9);
-        addSaveTemplateButtons(mainTable, 10);
+        addSendButtons(mainTable, 10);
+        addSaveTemplateButtons(mainTable, INVOICE_BUTTONS_ROW);
 
         table = new FlexTable();
         table.setStyleName("tableborder");
@@ -623,11 +624,9 @@ public class ReportMail extends Composite implements ClickHandler {
 
     public void initSendingEmail() {
         this.callerID = null;
+        setButtonInvoiceMode(false);
+
         mainTable.getRowFormatter().setVisible(0, true);
-        mainTable.getRowFormatter().setVisible(6, true);
-        mainTable.getRowFormatter().setVisible(7, true);
-        mainTable.getRowFormatter().setVisible(8, true);
-        mainTable.getRowFormatter().setVisible(9, false);
         table.setVisible(true);
 
         fillStyle();
@@ -655,11 +654,7 @@ public class ReportMail extends Composite implements ClickHandler {
 
         this.callerID = id;
 
-        mainTable.getRowFormatter().setVisible(0, false);
-        mainTable.getRowFormatter().setVisible(6, false);
-        mainTable.getRowFormatter().setVisible(7, false);
-        mainTable.getRowFormatter().setVisible(8, false);
-        mainTable.getRowFormatter().setVisible(9, true);
+        setButtonInvoiceMode(true);
         table.setVisible(false);
         doClearEmail();
 
@@ -677,6 +672,15 @@ public class ReportMail extends Composite implements ClickHandler {
         fillFooterAndHeader(complete);
 
         setupTimerKeepalive();
+    }
+
+    private void setButtonInvoiceMode(boolean invoice) {
+        mainTable.getRowFormatter().setVisible(0, !invoice);
+        mainTable.getRowFormatter().setVisible(7, !invoice);
+        mainTable.getRowFormatter().setVisible(8, !invoice);
+        mainTable.getRowFormatter().setVisible(9, !invoice);
+        mainTable.getRowFormatter().setVisible(10, !invoice);
+        mainTable.getRowFormatter().setVisible(INVOICE_BUTTONS_ROW, invoice);
     }
 
     private void loadEmailTemplate(String id) {
