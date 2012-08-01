@@ -8,7 +8,9 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.Luhn;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.misc.ServerResponseString;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.DatePickerButton;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
@@ -20,6 +22,7 @@ import org.gwt.advanced.client.ui.widget.Calendar;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
@@ -30,7 +33,10 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class SendInvoiceEmail extends Composite implements ClickHandler {
 
@@ -51,6 +57,7 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
     private DialogBox statusBox;
     private AccountTable statusTable;
     private Button closePopupButton;
+    private NamedButton previewButton;
 
     public static SendInvoiceEmail getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
@@ -103,6 +110,10 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
         buttons.add(filterButton);
 
         filterTable.setWidget(5, 0, buttons);
+
+        previewButton = new NamedButton("preview", elements.preview());
+        previewButton.addClickHandler(this);
+        buttons.add(previewButton);
 
         sendInvoiceButton = new NamedButton("invoice_send_email", elements.invoice_send_email());
         sendInvoiceButton.addClickHandler(this);
@@ -164,8 +175,83 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
         } else if (event.getSource() == closePopupButton) {
             closePopupButton.setEnabled(false);
             statusBox.hide();
+        } else if (event.getSource() == previewButton) {
+            preview();
         }
+    }
 
+    private void preview() {
+
+        CheckBox box = (CheckBox) invoiceTable.getWidget(1, CHECK_COLUMN);
+        String id = box.getElement().getId();
+        String[] parts = id.split("_");
+
+        final String invoiceId = parts[1];
+        final String invoiceTypeId = parts[2];
+        final String personId = parts[3];
+
+        ServerResponse callback = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                JSONObject invoiceTemplate = responseObj.isObject();
+
+                actualPreviewInvoice(invoiceTemplate, personId, invoiceTypeId, invoiceId);
+
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=emailtemplate&id="
+                + invoiceTypeId);
+
+    }
+
+    void actualPreviewInvoice(JSONObject invoiceTemplate, String personId, String invoiceTypeId, String invoiceId) {
+        StringBuffer sb = new StringBuffer();
+
+        String email = invoiceTable.getText(1, 5);
+        String amount = invoiceTable.getText(1, 2);
+        String dueDate = invoiceTable.getText(1, 1);
+
+        sb.append("action=preview");
+        Util.addPostParam(sb, "personid", personId);
+        Util.addPostParam(sb, "email", replaceParameters(email, amount, invoiceId, invoiceTypeId, dueDate));
+        Util.addPostParam(sb, "subject", URL.encode(Util.str(invoiceTemplate.get("email_subject"))));
+        Util.addPostParam(sb, "body", URL.encode(replaceParameters(Util.str(invoiceTemplate.get("email_body")), amount,
+                invoiceId, invoiceTypeId, dueDate)));
+        Util.addPostParam(sb, "format", Util.str(invoiceTemplate.get("email_format")));
+        Util.addPostParam(sb, "header", Util.strSkipNull(invoiceTemplate.get("email_header")));
+        Util.addPostParam(sb, "footer", Util.strSkipNull(invoiceTemplate.get("email_footer")));
+
+        ServerResponseString callback = new ServerResponseString() {
+
+            @Override
+            public void serverResponse(String response) {
+
+                DialogBox popup = new DialogBox();
+                popup.setText(elements.preview_actual());
+                popup.setAutoHideEnabled(true);
+                popup.setModal(true);
+
+                VerticalPanel vp = new VerticalPanel();
+
+                ScrollPanel sp = new ScrollPanel();
+                vp.add(sp);
+
+                sp.setWidth("800px");
+                sp.setHeight("40em");
+                sp.add(new HTML(response));
+
+                popup.add(vp);
+                popup.center();
+            }
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                /* unused */
+            }
+        };
+
+        AuthResponder.post(constants, messages, callback, sb, "reports/email.php");
     }
 
     private void sendInvoiceEmail() {
@@ -195,7 +281,7 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
             String id = box.getElement().getId();
             String[] parts = id.split("_");
 
-            sendInvoice(row, box, parts[1], parts[2]);
+            sendInvoice(row, box, parts[1], parts[2], parts[3]);
         } else {
             sendForRow(row + 1);
         }
@@ -226,11 +312,25 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
         statusBox.center();
     }
 
-    private void sendInvoice(final int row, CheckBox box, String invoiceId, String invoiceTypeId) {
-        JSONObject invoiceType = getInvoiceType(row, box, invoiceId, invoiceTypeId);
+    private void sendInvoice(final int row, final CheckBox box, String invoiceId, String invoiceTypeId, String personId) {
+        JSONObject invoiceType = getInvoiceType(row, box, invoiceId, invoiceTypeId, personId);
 
         if (invoiceType == null) {
             /* Called after invoice is cached */
+            return;
+        }
+
+        String email = invoiceTable.getText(row, 5);
+        String amount = invoiceTable.getText(row, 2);
+        String dueDate = invoiceTable.getText(row, 1);
+
+        if (!Util.getBoolean(invoiceType.get("emailOK"))) {
+            statusTable.insertRow(1);
+            statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4),
+                    elements.invoice_status_not_sent());
+
+            invoiceTable.setText(row, STATUS_COLUMN, elements.invoice_template_not_ready());
+            sendForRow(row + 1);
             return;
         }
 
@@ -239,13 +339,46 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
             return;
         }
 
+        StringBuffer sb = new StringBuffer();
+        sb.append("action=email");
+        Util.addPostParam(sb, "personid", personId);
+        Util.addPostParam(sb, "email", email);
+        Util.addPostParam(sb, "subject", URL.encode(Util.str(invoiceType.get("email_subject"))));
+        Util.addPostParam(sb, "body", URL.encode(replaceParameters(Util.str(invoiceType.get("email_body")), amount,
+                invoiceId, invoiceTypeId, dueDate)));
+        Util.addPostParam(sb, "format", Util.str(invoiceType.get("email_format")));
+        Util.addPostParam(sb, "header", Util.strSkipNull(invoiceType.get("email_header")));
+        Util.addPostParam(sb, "footer", Util.strSkipNull(invoiceType.get("email_footer")));
+
+        ServerResponse callback = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                sendCompleted(row, box, Util.getBoolean(responseObj.isObject().get("status")));
+            }
+        };
+        AuthResponder.post(constants, messages, callback, sb, "reports/email.php");
+
+    }
+
+    private String replaceParameters(String email, String amount, String invoiceId, String invoiceTypeId, String dueDate) {
+        String result = email.replace("{amount}", amount);
+        result = result.replace("{due_date}", dueDate);
+        result = result.replace("{invoice}",
+                invoiceTypeId + Luhn.generateDigit(invoiceTypeId) + "-" + invoiceId + Luhn.generateDigit(invoiceId));
+
+        return result;
+    }
+
+    private void sendCompleted(final int row, CheckBox box, boolean success) {
         statusTable.insertRow(1);
-        statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4), elements.ok());
+        statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4), success ? elements.ok()
+                : elements.failed());
 
-        /* When successful */
-        invoiceTable.setText(row, STATUS_COLUMN, elements.invoice_status_sent());
-        box.setEnabled(false);
-
+        if (success) {
+            invoiceTable.setText(row, STATUS_COLUMN, elements.invoice_status_sent());
+            box.setEnabled(false);
+        }
         Timer t = new Timer() {
 
             @Override
@@ -256,29 +389,30 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
         t.schedule(1000);
     }
 
-    private JSONObject getInvoiceType(int row, CheckBox box, String invoiceId, String invoiceTypeId) {
+    private JSONObject getInvoiceType(int row, CheckBox box, String invoiceId, String invoiceTypeId, String personId) {
         JSONObject invoiceType = invoiceTypeCache.get(invoiceTypeId);
 
         if (invoiceType == null) {
-            fetchInvoiceType(row, box, invoiceId, invoiceTypeId);
+            fetchInvoiceType(row, box, invoiceId, invoiceTypeId, personId);
             return null;
         }
 
         return invoiceType;
     }
 
-    private void fetchInvoiceType(final int row, final CheckBox box, final String invoiceId, final String invoiceTypeId) {
+    private void fetchInvoiceType(final int row, final CheckBox box, final String invoiceId,
+            final String invoiceTypeId, final String personId) {
         ServerResponse callback = new ServerResponse() {
 
             @Override
             public void serverResponse(JSONValue responseObj) {
-                if(responseObj.isObject() == null) {
-                    Util.log("Got null object for "+invoiceTypeId);
+                if (responseObj.isObject() == null) {
+                    Util.log("Got null object for " + invoiceTypeId);
                     return;
                 }
-                
+
                 invoiceTypeCache.put(invoiceTypeId, responseObj.isObject());
-                sendInvoice(row, box, invoiceId, invoiceTypeId);
+                sendInvoice(row, box, invoiceId, invoiceTypeId, personId);
             }
         };
         AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=emailtemplate&id="
@@ -314,7 +448,8 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
                             Util.str(invoice.get("email")), invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
                     CheckBox box = new CheckBox();
                     box.getElement().setId(
-                            "i_" + Util.str(invoice.get("id")) + "_" + Util.str(invoice.get("template_id")));
+                            "i_" + Util.str(invoice.get("id")) + "_" + Util.str(invoice.get("template_id")) + "_"
+                                    + Util.str(invoice.get("person_id")));
                     box.setValue(true);
                     invoiceTable.setWidget(i + 1, CHECK_COLUMN, box);
                 }

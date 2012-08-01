@@ -2635,6 +2635,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_template_new();
 
   /**
+   * Translated "Fakturamal er ikke klar".
+   * 
+   * @return translated "Fakturamal er ikke klar"
+   */
+  @DefaultStringValue("Fakturamal er ikke klar")
+  @Key("invoice_template_not_ready")
+  String invoice_template_not_ready();
+
+  /**
    * Translated "Fakturamaler".
    * 
    * @return translated "Fakturamaler"
