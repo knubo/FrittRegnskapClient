@@ -2,7 +2,7 @@ package no.knubo.accounting.client;
 
 /**
  * Interface to represent the constants contained in resource bundle:
- * 	'/Users/knuterikborgen/kode/workspace/client/RegnskapClient/src/no/knubo/accounting/client/Elements.properties'.
+ * 	'/Users/knutbo/kode/FR/accountclient/RegnskapClient/src/no/knubo/accounting/client/Elements.properties'.
  */
 public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
@@ -2680,6 +2680,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_type_semester();
 
   /**
+   * Translated "Semestermedlemskap ungdom".
+   * 
+   * @return translated "Semestermedlemskap ungdom"
+   */
+  @DefaultStringValue("Semestermedlemskap ungdom")
+  @Key("invoice_type_semester_youth")
+  String invoice_type_semester_youth();
+
+  /**
    * Translated "Årsmedlemskap".
    * 
    * @return translated "Årsmedlemskap"
@@ -2687,6 +2696,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Årsmedlemskap")
   @Key("invoice_type_year")
   String invoice_type_year();
+
+  /**
+   * Translated "Årsmedlemskap ungdom".
+   * 
+   * @return translated "Årsmedlemskap ungdom"
+   */
+  @DefaultStringValue("Årsmedlemskap ungdom")
+  @Key("invoice_type_year_youth")
+  String invoice_type_year_youth();
 
   /**
    * Translated "Fakturaer".
