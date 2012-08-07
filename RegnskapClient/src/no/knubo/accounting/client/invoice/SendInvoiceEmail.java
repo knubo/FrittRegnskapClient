@@ -49,7 +49,7 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
     private FlowPanel fp;
     private TextBoxWithErrorText dueDateBox;
     private AccountTable filterTable;
-    private ListBoxWithErrorText invoiceBox;
+    private ListBoxWithErrorText invoiceBox; 
     private NamedButton filterButton;
     private AccountTable invoiceTable;
     private NamedButton sendInvoiceButton;
@@ -127,7 +127,7 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
         fp.add(invoiceTable);
 
         initWidget(fp);
-    }
+    } 
 
     public void init() {
         invoiceBox.clear();

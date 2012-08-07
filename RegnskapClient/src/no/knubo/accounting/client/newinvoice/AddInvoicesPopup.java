@@ -5,6 +5,7 @@ import java.util.Date;
 
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.invoice.InvoiceSplitType;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 
@@ -100,6 +101,7 @@ public class AddInvoicesPopup extends DialogBox implements ClickHandler {
 				month += 3;
 				break;
 			default:
+				month++;
 				break;
 			}
 
@@ -127,6 +129,9 @@ public class AddInvoicesPopup extends DialogBox implements ClickHandler {
 				break;
 			case QUARTER:
 				loopMonth += 3;
+				break;
+			default:
+				loopMonth++;
 				break;
 			}
 			count++;

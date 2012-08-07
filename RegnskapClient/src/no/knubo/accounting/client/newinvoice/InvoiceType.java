@@ -47,7 +47,7 @@ public enum InvoiceType {
 		}
 	}
 	
-	static void addInvoiceTypes(ListBoxWithErrorText box) {
+	public static void addInvoiceTypes(ListBoxWithErrorText box) {
 		box.addItem("", "");
 		box.addItem(elements.invoice_type_semester(), "1");
 		box.addItem(elements.invoice_type_semester_youth(), "2");

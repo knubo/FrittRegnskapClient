@@ -1,4 +1,4 @@
-package no.knubo.accounting.client.newinvoice;
+package no.knubo.accounting.client.invoice;
 
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.Util;
@@ -10,7 +10,7 @@ public enum InvoiceSplitType {
 
 	NONE, MONTH, QUARTER, HALF_YEAR;
 
-	static InvoiceSplitType invoiceSplitType(int invoiceSplitType) {
+	public static InvoiceSplitType invoiceSplitType(int invoiceSplitType) {
 		switch (invoiceSplitType) {
 		case 0:
 			return NONE;
@@ -25,7 +25,7 @@ public enum InvoiceSplitType {
 		throw new RuntimeException("Unknown split type:" + invoiceSplitType);
 	}
 
-	static InvoiceSplitType getSplitType(ListBoxWithErrorText splitType) {
+	public static InvoiceSplitType getSplitType(ListBoxWithErrorText splitType) {
 		String value = Util.getSelected(splitType);
 
 		return invoiceSplitType(Integer.parseInt(value));
