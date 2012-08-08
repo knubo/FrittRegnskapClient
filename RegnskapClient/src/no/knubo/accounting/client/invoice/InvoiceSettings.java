@@ -167,8 +167,14 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 			table.setText(row, 6, Util.strSkipNull(invoice.get("email_from")),
 					"desc");
 
-			table.setText(row, 7, postTypeCache.getDescriptionWithType(Util
-					.strSkipNull(invoice.get("credit_post_type"))), "desc");
+			String creditPostType = Util.strSkipNull(invoice
+					.get("credit_post_type"));
+
+			if (creditPostType.length() > 0) {
+				table.setText(row, 7,
+						postTypeCache.getDescriptionWithType(creditPostType),
+						"desc");
+			}
 
 			Image editImage = ImageFactory.editImage("invoiceTypeEdit_"
 					+ Util.str(invoice.get("id")));
