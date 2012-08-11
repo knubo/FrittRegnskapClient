@@ -209,17 +209,18 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         reportsMenu.addItem(new MenuItem(elements.menu_sub_members(), false, membershipSubMenu));
         reportsMenu.addItem(new MenuItem(elements.menu_sub_accounting(), false, accountingSubMenu));
-        reportsMenu.addItem(new MenuItem(elements.menu_sub_invoice(), false, invoiceSubMenu));
+
+        if (enableInvoice) {
+            reportsMenu.addItem(new MenuItem(elements.menu_sub_invoice(), false, invoiceSubMenu));
+        }
         reportsMenu.addItem(new MenuItem(elements.menu_sub_belongings(), false, belongingsSubMenu));
 
         addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
-        addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year_gender(),
-                WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
+        addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year_gender(), WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
 
         if (reducedMode == 0) {
             addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year(), WidgetIds.REPORT_MEMBER_PER_YEAR);
-            addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year_gender(),
-                    WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
+            addMenuItem(membershipSubMenu, elements.menuitem_report_member_per_year_gender(), WidgetIds.REPORT_MEMBER_PER_YEAR_GENDER);
             addMenuItem(membershipSubMenu, elements.menuitem_report_addresses(), WidgetIds.REPORT_ADDRESSES);
         }
         addMenuItem(accountingSubMenu, elements.menuitem_report_selectedlines(), WidgetIds.REPORT_SELECTEDLINES);
@@ -229,9 +230,6 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
             addMenuItem(reportsMenu, elements.menuitem_report_massletter_odf(), WidgetIds.REPORT_ODF_LETTER);
             addMenuItem(reportsMenu, elements.menuitem_report_email(), WidgetIds.REPORT_EMAIL);
 
-            if (enableInvoice) {
-                addMenuItem(invoiceSubMenu, elements.menuitem_invoice_send_email(), WidgetIds.REPORT_INVOICE_EMAIL);
-            }
 
             addMenuItem(membershipSubMenu, elements.menuitem_report_users_email(), WidgetIds.REPORT_USERS_EMAIL);
         }
@@ -242,14 +240,15 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
         if (reducedMode == 0) {
             addMenuItem(reportsMenu, elements.menuitem_fileManage(), WidgetIds.MANAGE_FILES);
-            addMenuItem(belongingsSubMenu, elements.menuitem_report_belonging_responsible(),
-                    WidgetIds.REPORT_BELONGINGS_RESPONSIBLE);
+            addMenuItem(belongingsSubMenu, elements.menuitem_report_belonging_responsible(), WidgetIds.REPORT_BELONGINGS_RESPONSIBLE);
         }
 
-        addMenuItem(membershipSubMenu, elements.menuitem_report_missing_year_members(),
-                WidgetIds.REPORTS_MISSING_YEAR_MEMBERSHIPS);
-        addMenuItem(membershipSubMenu, elements.menuitem_report_missing_semester_members(),
-                WidgetIds.REPORTS_MISSING_SEMESTER_MEMBERSHIPS);
+        addMenuItem(membershipSubMenu, elements.menuitem_report_missing_year_members(), WidgetIds.REPORTS_MISSING_YEAR_MEMBERSHIPS);
+        addMenuItem(membershipSubMenu, elements.menuitem_report_missing_semester_members(), WidgetIds.REPORTS_MISSING_SEMESTER_MEMBERSHIPS);
+
+        addMenuItem(invoiceSubMenu, elements.menuitem_invoice_send_email(), WidgetIds.REPORT_INVOICE_EMAIL);
+        addMenuItem(invoiceSubMenu, elements.menuitem_invoice_search(), WidgetIds.REPORT_INVOICE_SEARCH);
+        
     }
 
     private void setupBudgetMenu(MenuBar budgetMenu) {
@@ -355,8 +354,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         instance.init(year, month);
 
         setActiveWidget(instance);
-        HelpPanel.getInstance(constants, messages, elements, helpTexts)
-                .setCurrentWidget(instance, WidgetIds.SHOW_MONTH);
+        HelpPanel.getInstance(constants, messages, elements, helpTexts).setCurrentWidget(instance, WidgetIds.SHOW_MONTH);
         Window.setTitle(elements.menuitem_showmonth());
     }
 
@@ -375,8 +373,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         instance.init();
 
         setActiveWidget(instance);
-        HelpPanel.getInstance(constants, messages, elements, helpTexts)
-                .setCurrentWidget(instance, WidgetIds.SHOW_MONTH);
+        HelpPanel.getInstance(constants, messages, elements, helpTexts).setCurrentWidget(instance, WidgetIds.SHOW_MONTH);
         Window.setTitle(elements.menuitem_showmonth());
     }
 
@@ -417,8 +414,7 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
 
     @Override
     public void openMassletterEditSimple(String filename, String response) {
-        new Commando(this, WidgetIds.EDIT_MASSLETTER_SIMPLE, elements.title_edit_massletter(), filename, response)
-                .execute();
+        new Commando(this, WidgetIds.EDIT_MASSLETTER_SIMPLE, elements.title_edit_massletter(), filename, response).execute();
 
     }
 

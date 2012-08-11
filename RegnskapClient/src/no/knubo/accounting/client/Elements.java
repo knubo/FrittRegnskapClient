@@ -3787,6 +3787,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_invoice_new();
 
   /**
+   * Translated "Finn faktura".
+   * 
+   * @return translated "Finn faktura"
+   */
+  @DefaultStringValue("Finn faktura")
+  @Key("menuitem_invoice_search")
+  String menuitem_invoice_search();
+
+  /**
    * Translated "Send ut epostfaktura".
    * 
    * @return translated "Send ut epostfaktura"
