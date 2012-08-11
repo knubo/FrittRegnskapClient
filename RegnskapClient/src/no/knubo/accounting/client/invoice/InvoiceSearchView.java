@@ -7,6 +7,7 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.DatePickerButton;
@@ -24,6 +25,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 
 public class InvoiceSearchView extends Composite implements ClickHandler {
 
@@ -42,6 +44,10 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
     private ListBoxWithErrorText statusComboBox;
 
     private NamedButton clearButton;
+
+    private TextBoxWithErrorText firstnameBox;
+
+    private TextBoxWithErrorText lastnameBox;
 
     public static InvoiceSearchView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
@@ -108,6 +114,14 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
 
         searchTable.setWidget(2, 3, statusComboBox);
 
+        firstnameBox = new TextBoxWithErrorText("firstname");
+        searchTable.setText(3, 0, elements.firstname());
+        searchTable.setWidget(3, 1, firstnameBox);
+
+        lastnameBox = new TextBoxWithErrorText("lastname");
+        searchTable.setText(3, 2, elements.lastname());
+        searchTable.setWidget(3, 3, lastnameBox);
+
         searchButton = new NamedButton("search", elements.search());
         searchButton.addClickHandler(this);
 
@@ -136,20 +150,36 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
             clear();
         } else if (event.getSource() == searchButton) {
             search();
+        } else if (event.getSource() instanceof Image) {
+            Image im = (Image) event.getSource();
+            editInvoice(im.getElement().getId());
         }
     }
 
+    private void editInvoice(String id) {
+        final String receiverId = id.substring("receiver_".length());
+
+        ServerResponse callback = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+
+            }
+        };
+        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=invoice&receiver_id=" + receiverId);
+    }
+
     private void search() {
-        while(invoiceTable.getRowCount() > 1) {
-            invoiceTable.removeRow(1);
-        }
-        
+        removeInvoiceResult();
+
         StringBuffer sb = new StringBuffer();
         sb.append("action=search");
         Util.addPostParam(sb, "from_date", fromDateBox.getText());
         Util.addPostParam(sb, "to_date", toDateBox.getText());
         Util.addPostParam(sb, "invoice", invoiceBox.getText());
         Util.addPostParam(sb, "status", Util.getSelected(statusComboBox));
+        Util.addPostParam(sb, "firstname", firstnameBox.getText());
+        Util.addPostParam(sb, "lastname", lastnameBox.getText());
 
         ServerResponse callback = new ServerResponse() {
 
@@ -166,10 +196,20 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
                             Util.money(invoice.get("amount")), //
                             Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")), Util.str(invoice.get("email")),
                             InvoiceStatus.invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
+
+                    Image editImage = ImageFactory.editImage("receiver_" + Util.str(invoice.get("id")));
+                    editImage.addClickHandler(me);
+                    invoiceTable.setWidget(i + 1, 6, editImage);
                 }
             }
         };
         AuthResponder.post(constants, messages, callback, sb, "accounting/invoice_ops.php");
+    }
+
+    private void removeInvoiceResult() {
+        while (invoiceTable.getRowCount() > 1) {
+            invoiceTable.removeRow(1);
+        }
     }
 
     private void clear() {
@@ -177,5 +217,10 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
         toDateBox.setText("");
         statusComboBox.setSelectedIndex(0);
         invoiceBox.setText("");
+        firstnameBox.setText("");
+        lastnameBox.setText("");
+
+        removeInvoiceResult();
+
     }
 }
