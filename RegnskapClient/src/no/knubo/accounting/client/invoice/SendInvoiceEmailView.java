@@ -38,11 +38,11 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class SendInvoiceEmail extends Composite implements ClickHandler {
+public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
     private static final int STATUS_COLUMN = 5;
     private static final int CHECK_COLUMN = STATUS_COLUMN + 1;
-    private static SendInvoiceEmail me;
+    private static SendInvoiceEmailView me;
     private final I18NAccount messages;
     private final Constants constants;
     private final Elements elements;
@@ -59,14 +59,14 @@ public class SendInvoiceEmail extends Composite implements ClickHandler {
     private Button closePopupButton;
     private NamedButton previewButton;
 
-    public static SendInvoiceEmail getInstance(I18NAccount messages, Constants constants, Elements elements) {
+    public static SendInvoiceEmailView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
-            me = new SendInvoiceEmail(messages, constants, elements);
+            me = new SendInvoiceEmailView(messages, constants, elements);
         }
         return me;
     }
 
-    public SendInvoiceEmail(I18NAccount messages, Constants constants, Elements elements) {
+    public SendInvoiceEmailView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
         this.elements = elements;

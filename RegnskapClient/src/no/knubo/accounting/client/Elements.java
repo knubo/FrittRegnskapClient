@@ -3769,6 +3769,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String menuitem_invoice_new();
 
   /**
+   * Translated "Registrer innkommet faktura".
+   * 
+   * @return translated "Registrer innkommet faktura"
+   */
+  @DefaultStringValue("Registrer innkommet faktura")
+  @Key("menuitem_invoice_register")
+  String menuitem_invoice_register();
+
+  /**
    * Translated "Send ut epostfaktura".
    * 
    * @return translated "Send ut epostfaktura"

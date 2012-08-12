@@ -295,8 +295,13 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(registerMenu, elements.menuitem_register_happening(), WidgetIds.REGISTER_HAPPENING);
 
         if (reducedMode == 0) {
-            if (enableInvoice)
-                addMenuItem(registerMenu, elements.menuitem_invoice_new(), WidgetIds.INVOICE_NEW);
+            if (enableInvoice) {
+                MenuBar invoiceSubMenu = new MenuBar(true);
+                registerMenu.addItem(new MenuItem(elements.menu_sub_invoice(), false, invoiceSubMenu));
+
+                addMenuItem(invoiceSubMenu, elements.menuitem_invoice_new(), WidgetIds.INVOICE_NEW);
+                addMenuItem(invoiceSubMenu, elements.menuitem_invoice_register(), WidgetIds.INVOICE_REGISTER);
+            }
             addMenuItem(registerMenu, elements.menuitem_owning_register(), WidgetIds.OWNINGS_REGISTER);
             addMenuItem(registerMenu, elements.menuitem_truststatus(), WidgetIds.TRUST_STATUS);
         }

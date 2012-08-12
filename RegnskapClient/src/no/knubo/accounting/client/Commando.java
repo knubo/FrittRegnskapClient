@@ -5,7 +5,8 @@ import static no.knubo.accounting.client.AccountingGWT.elements;
 import static no.knubo.accounting.client.AccountingGWT.helpTexts;
 import static no.knubo.accounting.client.AccountingGWT.messages;
 import no.knubo.accounting.client.help.HelpPanel;
-import no.knubo.accounting.client.invoice.SendInvoiceEmail;
+import no.knubo.accounting.client.invoice.RegisterIncomingInvoiceView;
+import no.knubo.accounting.client.invoice.SendInvoiceEmailView;
 import no.knubo.accounting.client.misc.WidgetIds;
 import no.knubo.accounting.client.newinvoice.InvoiceSettings;
 import no.knubo.accounting.client.newinvoice.RegisterInvoiceView;
@@ -422,8 +423,11 @@ class Commando implements Command {
             widget = RegisterInvoiceView.getInstance(constants, messages, elements, callback);
             break;
         case REPORT_INVOICE_EMAIL:
-            widget = SendInvoiceEmail.getInstance(messages, constants, elements);
-            ((SendInvoiceEmail)widget).init();
+            widget = SendInvoiceEmailView.getInstance(messages, constants, elements);
+            ((SendInvoiceEmailView)widget).init();
+            break;
+        case INVOICE_REGISTER:
+            widget = RegisterIncomingInvoiceView.getInstance(messages, constants, elements);
             break;
         }
 
