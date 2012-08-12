@@ -25,10 +25,14 @@ class EditInvoiceRecepientPopup extends DialogBox implements ClickHandler {
     private Label label;
     private final Constants constants;
     private final I18NAccount messages;
+    private String receiverId;
+    private final InvoiceSearchView invoiceSearchView;
 
-    EditInvoiceRecepientPopup(I18NAccount messages, Constants constants, Elements elements) {
+    EditInvoiceRecepientPopup(I18NAccount messages, Constants constants, Elements elements,
+            InvoiceSearchView invoiceSearchView) {
         this.messages = messages;
         this.constants = constants;
+        this.invoiceSearchView = invoiceSearchView;
         setText(elements.change_status());
 
         AccountTable table = new AccountTable("edittable");
@@ -41,9 +45,9 @@ class EditInvoiceRecepientPopup extends DialogBox implements ClickHandler {
 
         HorizontalPanel hp = new HorizontalPanel();
 
-        saveButton = new NamedButton(elements.save());
+        saveButton = new NamedButton("save", elements.save());
         saveButton.addClickHandler(this);
-        cancelButton = new NamedButton(elements.cancel());
+        cancelButton = new NamedButton("cancel", elements.cancel());
         cancelButton.addClickHandler(this);
 
         hp.add(saveButton);
@@ -52,20 +56,24 @@ class EditInvoiceRecepientPopup extends DialogBox implements ClickHandler {
         label = new Label();
         table.setWidget(1, 1, label);
         table.setWidget(2, 1, hp);
+
+        setWidget(table);
     }
 
     public void setReceiverIdAndShow(ClickEvent event, String receiverId) {
+        this.receiverId = receiverId;
         setPopupPosition(event.getClientX(), event.getClientY());
 
         ServerResponse callback = new ServerResponse() {
 
             @Override
             public void serverResponse(JSONValue responseObj) {
-                Util.setIndexByValue(status.getListbox(), Util.str(responseObj.isObject().get("status")));
+                Util.setIndexByValue(status.getListbox(), Util.str(responseObj.isObject().get("invoice_status")));
                 show();
             }
         };
-        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=invoice&receiver_id=" + receiverId);
+        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=invoice&receiver_id="
+                + receiverId);
 
     }
 
@@ -73,12 +81,34 @@ class EditInvoiceRecepientPopup extends DialogBox implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource() == cancelButton) {
             hide();
-        } else if(event.getSource() == saveButton) {
+        } else if (event.getSource() == saveButton) {
             save();
         }
     }
 
     private void save() {
-        
+        final String newStatus = Util.getSelected(status);
+
+        ServerResponse callback = new ServerResponse() {
+
+            @Override
+            public void serverResponse(JSONValue responseObj) {
+                if ("1".equals(Util.str(responseObj.isObject().get("status")))) {
+                    hide();
+                    invoiceSearchView.updateInvoiceStatus(receiverId, Integer.parseInt(newStatus));
+                } else {
+                    label.setText(messages.save_failed());
+                    Util.timedMessage(label, "", 30);
+                }
+            }
+        };
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("action=change_invoice_status");
+
+        Util.addPostParam(sb, "receiver_id", receiverId);
+        Util.addPostParam(sb, "status", newStatus);
+
+        AuthResponder.post(constants, messages, callback, sb, "accounting/invoice_ops.php");
     }
 }

@@ -159,7 +159,7 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
     private void editInvoice(ClickEvent event, String id) {
         final String receiverId = id.substring("receiver_".length());
 
-        new EditInvoiceRecepientPopup(messages, constants, elements).setReceiverIdAndShow(event, receiverId);
+        new EditInvoiceRecepientPopup(messages, constants, elements, this).setReceiverIdAndShow(event, receiverId);
     }
 
     private void search() {
@@ -217,5 +217,18 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
 
         removeInvoiceResult();
 
+    }
+
+    public void updateInvoiceStatus(String receiverId, int newStatus) {
+        for (int row = 1; row < invoiceTable.getRowCount(); row++) {
+            Image image = (Image) invoiceTable.getWidget(row, 6);
+            
+            String id = image.getElement().getId().substring("receiver_".length());
+            
+            if(id.equals(receiverId)) {
+                invoiceTable.setText(row, 5, InvoiceStatus.invoiceStatus(newStatus));
+                return;
+            }
+        }
     }
 }

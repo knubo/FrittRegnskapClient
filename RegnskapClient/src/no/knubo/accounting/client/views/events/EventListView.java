@@ -23,14 +23,12 @@ public class EventListView extends Composite implements ClickHandler {
     private static EventListView instance;
     private final Constants constants;
     private final I18NAccount messages;
-    private final Elements elements;
     private AccountTable events;
     private final ViewCallback callback;
 
     public EventListView(Constants constants, I18NAccount messages, Elements elements, ViewCallback callback) {
         this.constants = constants;
         this.messages = messages;
-        this.elements = elements;
         this.callback = callback;
 
         VerticalPanel vp = new VerticalPanel();

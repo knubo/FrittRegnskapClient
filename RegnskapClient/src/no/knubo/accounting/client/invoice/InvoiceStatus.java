@@ -29,6 +29,7 @@ public class InvoiceStatus {
     }
 
     public static void fill(ListBoxWithErrorText box) {
+        setElements();
         box.addItem(elements.invoice_status_not_sent(), "1");
         box.addItem(elements.invoice_status_sent(), "2");
         box.addItem(elements.invoice_status_deleted(), "3");
