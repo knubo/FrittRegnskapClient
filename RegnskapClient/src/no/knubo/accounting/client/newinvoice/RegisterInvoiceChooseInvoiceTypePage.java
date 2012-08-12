@@ -11,6 +11,7 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.RegnskapLocalStorage;
 import no.knubo.accounting.client.Util;
+import no.knubo.accounting.client.invoice.InvoiceSplitType;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.misc.WidgetIds;

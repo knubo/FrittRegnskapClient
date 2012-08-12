@@ -121,8 +121,8 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
         invoiceTable = new AccountTable("tableborder");
         invoiceTable.addStyleName("nobreaktable");
-        invoiceTable.setHeaders(0, elements.invoice_template(), elements.invoice_due_date(), elements.amount(),
-                elements.name(), elements.email(), elements.status(), elements.selected());
+        invoiceTable.setHeaders(0, elements.invoice_template(), elements.invoice_due_date(), elements.amount(), elements.name(),
+                elements.email(), elements.status(), elements.selected());
 
         fp.add(invoiceTable);
 
@@ -200,8 +200,7 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
             }
         };
-        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=emailtemplate&id="
-                + invoiceTypeId);
+        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=emailtemplate&id=" + invoiceTypeId);
 
     }
 
@@ -216,8 +215,8 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
         Util.addPostParam(sb, "personid", personId);
         Util.addPostParam(sb, "email", replaceParameters(email, amount, invoiceId, invoiceTypeId, dueDate));
         Util.addPostParam(sb, "subject", URL.encode(Util.str(invoiceTemplate.get("email_subject"))));
-        Util.addPostParam(sb, "body", URL.encode(replaceParameters(Util.str(invoiceTemplate.get("email_body")), amount,
-                invoiceId, invoiceTypeId, dueDate)));
+        Util.addPostParam(sb, "body",
+                URL.encode(replaceParameters(Util.str(invoiceTemplate.get("email_body")), amount, invoiceId, invoiceTypeId, dueDate)));
         Util.addPostParam(sb, "format", Util.str(invoiceTemplate.get("email_format")));
         Util.addPostParam(sb, "header", Util.strSkipNull(invoiceTemplate.get("email_header")));
         Util.addPostParam(sb, "footer", Util.strSkipNull(invoiceTemplate.get("email_footer")));
@@ -326,8 +325,7 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
         if (!Util.getBoolean(invoiceType.get("emailOK"))) {
             statusTable.insertRow(1);
-            statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4),
-                    elements.invoice_status_not_sent());
+            statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4), elements.invoice_status_not_sent());
 
             invoiceTable.setText(row, STATUS_COLUMN, elements.invoice_template_not_ready());
             sendForRow(row + 1);
@@ -344,8 +342,8 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
         Util.addPostParam(sb, "personid", personId);
         Util.addPostParam(sb, "email", email);
         Util.addPostParam(sb, "subject", URL.encode(Util.str(invoiceType.get("email_subject"))));
-        Util.addPostParam(sb, "body", URL.encode(replaceParameters(Util.str(invoiceType.get("email_body")), amount,
-                invoiceId, invoiceTypeId, dueDate)));
+        Util.addPostParam(sb, "body",
+                URL.encode(replaceParameters(Util.str(invoiceType.get("email_body")), amount, invoiceId, invoiceTypeId, dueDate)));
         Util.addPostParam(sb, "format", Util.str(invoiceType.get("email_format")));
         Util.addPostParam(sb, "header", Util.strSkipNull(invoiceType.get("email_header")));
         Util.addPostParam(sb, "footer", Util.strSkipNull(invoiceType.get("email_footer")));
@@ -372,8 +370,7 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
     private void sendCompleted(final int row, CheckBox box, boolean success) {
         statusTable.insertRow(1);
-        statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4), success ? elements.ok()
-                : elements.failed());
+        statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4), success ? elements.ok() : elements.failed());
 
         if (success) {
             invoiceTable.setText(row, STATUS_COLUMN, elements.invoice_status_sent());
@@ -400,8 +397,8 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
         return invoiceType;
     }
 
-    private void fetchInvoiceType(final int row, final CheckBox box, final String invoiceId,
-            final String invoiceTypeId, final String personId) {
+    private void fetchInvoiceType(final int row, final CheckBox box, final String invoiceId, final String invoiceTypeId,
+            final String personId) {
         ServerResponse callback = new ServerResponse() {
 
             @Override
@@ -415,8 +412,7 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
                 sendInvoice(row, box, invoiceId, invoiceTypeId, personId);
             }
         };
-        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=emailtemplate&id="
-                + invoiceTypeId);
+        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=emailtemplate&id=" + invoiceTypeId);
     }
 
     private void filterInvoices() {
@@ -444,8 +440,8 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
                             Util.str(invoice.get("description")), //
                             Util.formatDate(invoice.get("due_date")), //
                             Util.money(invoice.get("amount")), //
-                            Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")),
-                            Util.str(invoice.get("email")), invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
+                            Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")), Util.str(invoice.get("email")),
+                            InvoiceStatus. invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
                     CheckBox box = new CheckBox();
                     box.getElement().setId(
                             "i_" + Util.str(invoice.get("id")) + "_" + Util.str(invoice.get("template_id")) + "_"
@@ -468,18 +464,6 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
         }
 
         return mv.validateStatus();
-    }
-
-    protected String invoiceStatus(int int1) {
-        switch (int1) {
-        case 1:
-            return elements.invoice_status_not_sent();
-        case 2:
-            return elements.invoice_status_sent();
-        case 3:
-            return elements.invoice_status_deleted();
-        }
-        return "???" + int1;
     }
 
     private StringBuilder buildInvoiceURL() {

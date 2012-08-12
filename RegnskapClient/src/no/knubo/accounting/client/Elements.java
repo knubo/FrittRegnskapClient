@@ -907,6 +907,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String change_language_locale();
 
   /**
+   * Translated "Endre status".
+   * 
+   * @return translated "Endre status"
+   */
+  @DefaultStringValue("Endre status")
+  @Key("change_status")
+  String change_status();
+
+  /**
    * Translated "Bytt år".
    * 
    * @return translated "Bytt år"
@@ -2680,6 +2689,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_type_semester();
 
   /**
+   * Translated "Semestermedlemskap ungdom".
+   * 
+   * @return translated "Semestermedlemskap ungdom"
+   */
+  @DefaultStringValue("Semestermedlemskap ungdom")
+  @Key("invoice_type_semester_youth")
+  String invoice_type_semester_youth();
+
+  /**
    * Translated "Årsmedlemskap".
    * 
    * @return translated "Årsmedlemskap"
@@ -2687,6 +2705,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Årsmedlemskap")
   @Key("invoice_type_year")
   String invoice_type_year();
+
+  /**
+   * Translated "Årsmedlemskap ungdom".
+   * 
+   * @return translated "Årsmedlemskap ungdom"
+   */
+  @DefaultStringValue("Årsmedlemskap ungdom")
+  @Key("invoice_type_year_youth")
+  String invoice_type_year_youth();
 
   /**
    * Translated "Fakturaer".
@@ -3776,6 +3803,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Registrer innkommet faktura")
   @Key("menuitem_invoice_register")
   String menuitem_invoice_register();
+
+  /**
+   * Translated "Finn faktura".
+   * 
+   * @return translated "Finn faktura"
+   */
+  @DefaultStringValue("Finn faktura")
+  @Key("menuitem_invoice_search")
+  String menuitem_invoice_search();
 
   /**
    * Translated "Send ut epostfaktura".

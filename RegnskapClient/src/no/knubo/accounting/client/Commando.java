@@ -5,10 +5,11 @@ import static no.knubo.accounting.client.AccountingGWT.elements;
 import static no.knubo.accounting.client.AccountingGWT.helpTexts;
 import static no.knubo.accounting.client.AccountingGWT.messages;
 import no.knubo.accounting.client.help.HelpPanel;
+import no.knubo.accounting.client.invoice.InvoiceSearchView;
+import no.knubo.accounting.client.invoice.InvoiceSettings;
 import no.knubo.accounting.client.invoice.RegisterIncomingInvoiceView;
 import no.knubo.accounting.client.invoice.SendInvoiceEmailView;
 import no.knubo.accounting.client.misc.WidgetIds;
-import no.knubo.accounting.client.newinvoice.InvoiceSettings;
 import no.knubo.accounting.client.newinvoice.RegisterInvoiceView;
 import no.knubo.accounting.client.views.AboutView;
 import no.knubo.accounting.client.views.HappeningsView;
@@ -428,6 +429,11 @@ class Commando implements Command {
             break;
         case INVOICE_REGISTER:
             widget = RegisterIncomingInvoiceView.getInstance(messages, constants, elements);
+            break;
+        case REPORT_INVOICE_SEARCH:
+            widget = InvoiceSearchView.getInstance(messages, constants, elements);
+            break;
+        default:
             break;
         }
 
