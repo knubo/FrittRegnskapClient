@@ -152,21 +152,14 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
             search();
         } else if (event.getSource() instanceof Image) {
             Image im = (Image) event.getSource();
-            editInvoice(im.getElement().getId());
+            editInvoice(event, im.getElement().getId());
         }
     }
 
-    private void editInvoice(String id) {
+    private void editInvoice(ClickEvent event, String id) {
         final String receiverId = id.substring("receiver_".length());
 
-        ServerResponse callback = new ServerResponse() {
-
-            @Override
-            public void serverResponse(JSONValue responseObj) {
-
-            }
-        };
-        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=invoice&receiver_id=" + receiverId);
+        new EditInvoiceRecepientPopup(messages, constants, elements).setReceiverIdAndShow(event, receiverId);
     }
 
     private void search() {
@@ -189,13 +182,15 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
 
                 for (int i = 0; i < arr.size(); i++) {
                     JSONObject invoice = arr.get(i).isObject();
-                    invoiceTable.setText(
-                            i + 1, //
-                            Util.str(invoice.get("description")), //
-                            Util.formatDate(invoice.get("due_date")), //
-                            Util.money(invoice.get("amount")), //
-                            Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")), Util.str(invoice.get("email")),
-                            InvoiceStatus.invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
+                    invoiceTable
+                            .setText(
+                                    i + 1, //
+                                    Util.str(invoice.get("description")), //
+                                    Util.formatDate(invoice.get("due_date")), //
+                                    Util.money(invoice.get("amount")), //
+                                    Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")),
+                                    Util.strSkipNull(invoice.get("email")),
+                                    InvoiceStatus.invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
 
                     Image editImage = ImageFactory.editImage("receiver_" + Util.str(invoice.get("id")));
                     editImage.addClickHandler(me);

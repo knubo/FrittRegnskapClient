@@ -907,6 +907,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String change_language_locale();
 
   /**
+   * Translated "Endre status".
+   * 
+   * @return translated "Endre status"
+   */
+  @DefaultStringValue("Endre status")
+  @Key("change_status")
+  String change_status();
+
+  /**
    * Translated "Bytt år".
    * 
    * @return translated "Bytt år"
