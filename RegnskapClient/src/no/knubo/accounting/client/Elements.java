@@ -2617,6 +2617,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_status_not_sent();
 
   /**
+   * Translated "Betalt".
+   * 
+   * @return translated "Betalt"
+   */
+  @DefaultStringValue("Betalt")
+  @Key("invoice_status_paid")
+  String invoice_status_paid();
+
+  /**
    * Translated "Sent".
    * 
    * @return translated "Sent"
@@ -5063,6 +5072,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Priser for medlemsskap")
   @Key("prices_membership")
   String prices_membership();
+
+  /**
+   * Translated "Behandle".
+   * 
+   * @return translated "Behandle"
+   */
+  @DefaultStringValue("Behandle")
+  @Key("process")
+  String process();
 
   /**
    * Translated "Prosjekt".

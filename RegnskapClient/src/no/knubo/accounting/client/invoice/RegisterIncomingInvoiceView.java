@@ -7,6 +7,7 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
+import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.DatePickerButton;
@@ -17,12 +18,17 @@ import org.gwt.advanced.client.ui.widget.Calendar;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class RegisterIncomingInvoiceView extends Composite implements ClickHandler {
+
+    private static final int CHECK_COLUMN = 5;
 
     private static RegisterIncomingInvoiceView me;
     private final I18NAccount messages;
@@ -34,6 +40,7 @@ public class RegisterIncomingInvoiceView extends Composite implements ClickHandl
     private TextBoxWithErrorText firstNameBox;
     private TextBoxWithErrorText lastNameBox;
     private NamedButton searchButton;
+    private AccountTable invoiceTable;
 
     public static RegisterIncomingInvoiceView getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
@@ -87,47 +94,68 @@ public class RegisterIncomingInvoiceView extends Composite implements ClickHandl
         queryTable.setText(3, 2, elements.lastname());
         queryTable.setWidget(3, 3, lastNameBox);
 
-        
         HorizontalPanel buttonPanel = new HorizontalPanel();
-        
+
         searchButton = new NamedButton("search", elements.search());
         searchButton.addClickHandler(this);
         buttonPanel.add(searchButton);
-        
+
         queryTable.setWidget(4, 0, buttonPanel);
         queryTable.getFlexCellFormatter().setColSpan(4, 0, 4);
-        
-        
+
         vp.add(queryTable);
 
-        AccountTable resultTable = new AccountTable("tableborder");
-        resultTable.setHeaders(0, elements.invoice(), elements.name(), elements.due_date(), elements.action());
+        invoiceTable = new AccountTable("tableborder");
+        invoiceTable.setHeaders(0, elements.invoice(), elements.due_date(), elements.amount(), elements.name(),
+                elements.email(), elements.process());
 
-        vp.add(resultTable);
+        vp.add(invoiceTable);
 
         initWidget(vp);
     }
 
     @Override
     public void onClick(ClickEvent event) {
-        if(event.getSource() == searchButton) {
+        if (event.getSource() == searchButton) {
             search();
         }
     }
 
     private void search() {
-        
-        
+        while (invoiceTable.getRowCount() > 1) {
+            invoiceTable.removeRow(1);
+        }
+
         ServerResponse callback = new ServerResponse() {
-            
+
             @Override
             public void serverResponse(JSONValue responseObj) {
-                
+                JSONArray arr = responseObj.isArray();
+
+                for (int i = 0; i < arr.size(); i++) {
+                    JSONObject invoice = arr.get(i).isObject();
+                    invoiceTable.setText(
+                            i + 1, //
+                            Util.str(invoice.get("description")), //
+                            Util.formatDate(invoice.get("due_date")), //
+                            Util.money(invoice.get("amount")), //
+                            Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")),
+                            Util.str(invoice.get("email")));
+
+                    invoiceTable.getRowFormatter().addStyleName(i+1, "nobreaktable");
+                    
+                    Image editImage = ImageFactory.chooseImage("receiver_" + Util.str(invoice.get("id")));
+                    editImage.addClickHandler(me);
+                    invoiceTable.setWidget(i + 1, CHECK_COLUMN, editImage);
+                }
+
             }
         };
+
         StringBuffer sb = new StringBuffer();
         sb.append("action=search");
-        
+
+        Util.addPostParam(sb, "status", InvoiceStatus.INVOICE_SENT);
         Util.addPostParam(sb, "invoice", invoiceBox.getText());
         Util.addPostParam(sb, "amount", amountBox.getText());
         Util.addPostParam(sb, "due_date", dueDateBox.getText());
