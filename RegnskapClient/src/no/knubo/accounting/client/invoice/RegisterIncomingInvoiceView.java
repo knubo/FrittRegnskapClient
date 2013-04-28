@@ -33,7 +33,6 @@ public class RegisterIncomingInvoiceView extends Composite implements ClickHandl
     private static RegisterIncomingInvoiceView me;
     private final I18NAccount messages;
     private final Constants constants;
-    private final Elements elements;
     private TextBoxWithErrorText invoiceBox;
     private TextBoxWithErrorText dueDateBox;
     private TextBoxWithErrorText amountBox;
@@ -52,8 +51,6 @@ public class RegisterIncomingInvoiceView extends Composite implements ClickHandl
     public RegisterIncomingInvoiceView(I18NAccount messages, Constants constants, Elements elements) {
         this.messages = messages;
         this.constants = constants;
-        this.elements = elements;
-
         VerticalPanel vp = new VerticalPanel();
 
         AccountTable queryTable = new AccountTable("edittable");

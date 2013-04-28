@@ -247,7 +247,10 @@ public class AccountingGWT implements EntryPoint, ViewCallback {
         addMenuItem(membershipSubMenu, elements.menuitem_report_missing_semester_members(), WidgetIds.REPORTS_MISSING_SEMESTER_MEMBERSHIPS);
 
         addMenuItem(invoiceSubMenu, elements.menuitem_invoice_send_email(), WidgetIds.REPORT_INVOICE_EMAIL);
+        addMenuItem(invoiceSubMenu, elements.menuitem_invoice_create_paper(), WidgetIds.REPORT_INVOICE_PAPER);
+        
         addMenuItem(invoiceSubMenu, elements.menuitem_invoice_search(), WidgetIds.REPORT_INVOICE_SEARCH);
+        
         
     }
 

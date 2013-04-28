@@ -2464,6 +2464,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_create_complete();
 
   /**
+   * Translated "Lag epostfaktura".
+   * 
+   * @return translated "Lag epostfaktura"
+   */
+  @DefaultStringValue("Lag epostfaktura")
+  @Key("invoice_create_paper")
+  String invoice_create_paper();
+
+  /**
    * Translated "Stamdardbeløp".
    * 
    * @return translated "Stamdardbeløp"
@@ -2525,6 +2534,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Avsender fakturaepost")
   @Key("invoice_email_sender")
   String invoice_email_sender();
+
+  /**
+   * Translated "Filtrer fakturaer og lag papirfaktura".
+   * 
+   * @return translated "Filtrer fakturaer og lag papirfaktura"
+   */
+  @DefaultStringValue("Filtrer fakturaer og lag papirfaktura")
+  @Key("invoice_filter_create_paper")
+  String invoice_filter_create_paper();
 
   /**
    * Translated "Filtrer fakturaer og send ut epost med faktura".
@@ -3794,6 +3812,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Integrasjon")
   @Key("menuitem_integration")
   String menuitem_integration();
+
+  /**
+   * Translated "Lag papirfaktura".
+   * 
+   * @return translated "Lag papirfaktura"
+   */
+  @DefaultStringValue("Lag papirfaktura")
+  @Key("menuitem_invoice_create_paper")
+  String menuitem_invoice_create_paper();
 
   /**
    * Translated "Ny faktura".
