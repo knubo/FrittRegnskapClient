@@ -2428,6 +2428,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_amount_split_equal();
 
   /**
+   * Translated "Velg Open document mal".
+   * 
+   * @return translated "Velg Open document mal"
+   */
+  @DefaultStringValue("Velg Open document mal")
+  @Key("invoice_choose_odt_template")
+  String invoice_choose_odt_template();
+
+  /**
    * Translated "Velg mottakere".
    * 
    * @return translated "Velg mottakere"
@@ -2464,20 +2473,20 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_create_complete();
 
   /**
-   * Translated "Lag epostfaktura".
+   * Translated "Lag papirfaktura".
    * 
-   * @return translated "Lag epostfaktura"
+   * @return translated "Lag papirfaktura"
    */
-  @DefaultStringValue("Lag epostfaktura")
+  @DefaultStringValue("Lag papirfaktura")
   @Key("invoice_create_paper")
   String invoice_create_paper();
 
   /**
-   * Translated "Stamdardbeløp".
+   * Translated "Standardbeløp".
    * 
-   * @return translated "Stamdardbeløp"
+   * @return translated "Standardbeløp"
    */
-  @DefaultStringValue("Stamdardbeløp")
+  @DefaultStringValue("Standardbeløp")
   @Key("invoice_default_amount")
   String invoice_default_amount();
 
@@ -2552,6 +2561,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Filtrer fakturaer og send ut epost med faktura")
   @Key("invoice_filter_send_email")
   String invoice_filter_send_email();
+
+  /**
+   * Translated "Open Document fakturamal".
+   * 
+   * @return translated "Open Document fakturamal"
+   */
+  @DefaultStringValue("Open Document fakturamal")
+  @Key("invoice_odt_template")
+  String invoice_odt_template();
 
   /**
    * Translated "Mottakere av faktura".

@@ -211,6 +211,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private ListBoxWithErrorText invoiceType;
         private TextBoxWithErrorText invoiceDueDay;
         private NamedButton editInvoiceTemplate;
+        private NamedButton chooseODTTemplate;
         private String currentId;
         private TextBoxWithErrorText kreditPost;
         private ListBoxWithErrorText kreditBox;
@@ -226,8 +227,9 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             edittable.setText(3, 0, elements.invoice_due_day());
             edittable.setText(4, 0, elements.invoice_default_amount());
             edittable.setText(5, 0, elements.invoice_email_ready());
-            edittable.setText(6, 0, elements.invoice_email_sender());
-            edittable.setText(7, 0, elements.kredit_post());
+            edittable.setText(6, 0, elements.invoice_odt_template());
+            edittable.setText(7, 0, elements.invoice_email_sender());
+            edittable.setText(8, 0, elements.kredit_post());
 
             emailSender = new TextBoxWithErrorText("invoice_email_sender");
             emailSender.setMaxLength(255);
@@ -256,7 +258,9 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             edittable.setWidget(4, 1, defaultAmount);
             editInvoiceTemplate = new NamedButton("invoice_edit_email_template", elements.invoice_edit_email_template());
             editInvoiceTemplate.addClickHandler(this);
-            edittable.setWidget(6, 1, emailSender);
+            chooseODTTemplate = new NamedButton("invoice_choose_odt_template", elements.invoice_choose_odt_template());
+            chooseODTTemplate.addClickHandler(this);
+            edittable.setWidget(7, 1, emailSender);
 
             HorizontalPanel kreditHp = new HorizontalPanel();
 
@@ -268,14 +272,14 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             kreditHp.add(kreditPost);
             kreditHp.add(kreditBox);
 
-            edittable.setWidget(7, 1, kreditHp);
+            edittable.setWidget(8, 1, kreditHp);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
-            saveButton = new NamedButton("semesterEditView_saveButton", elements.save());
+            saveButton = new NamedButton("invoiceEditView_saveButton", elements.save());
             saveButton.addClickHandler(this);
-            cancelButton = new NamedButton("semesterEditView_cancelButton", elements.cancel());
+            cancelButton = new NamedButton("invoiceEditView_cancelButton", elements.cancel());
             cancelButton.addClickHandler(this);
 
             mainErrorLabel = new HTML();
@@ -285,6 +289,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             buttonPanel.add(saveButton);
             buttonPanel.add(cancelButton);
             buttonPanel.add(editInvoiceTemplate);
+            buttonPanel.add(chooseODTTemplate);
             buttonPanel.add(mainErrorLabel);
             dp.add(buttonPanel, DockPanel.NORTH);
             setWidget(dp);
@@ -299,6 +304,8 @@ public class InvoiceSettings extends Composite implements ClickHandler {
                 doSave();
             } else if (sender == editInvoiceTemplate) {
                 doEditInvoice();
+            } else if(sender == chooseODTTemplate) {
+                doChooseInvoiceTemplate();
             }
         }
 
@@ -408,6 +415,10 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         }
 
         throw new RuntimeException("No invoice found " + id);
+    }
+
+    public void doChooseInvoiceTemplate() {
+        
     }
 
 }
