@@ -2,7 +2,7 @@ package no.knubo.accounting.client;
 
 /**
  * Interface to represent the constants contained in resource bundle:
- * 	'/Users/knuterikborgen/kode/workspace/RegnskapClient/src/no/knubo/accounting/client/Constants.properties'.
+ * 	'/Users/knuterikborgen/kode/workspace/client/RegnskapClient/src/no/knubo/accounting/client/Constants.properties'.
  */
 public interface Constants extends com.google.gwt.i18n.client.Constants {
   
