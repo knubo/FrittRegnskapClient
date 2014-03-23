@@ -15,6 +15,8 @@ import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.ViewCallback;
+import no.knubo.accounting.client.views.files.UploadDelegate;
+import no.knubo.accounting.client.views.files.UploadDelegateCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,7 +33,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
-public class InvoiceSettings extends Composite implements ClickHandler {
+public class InvoiceSettings extends Composite implements ClickHandler, UploadDelegateCallback {
     private static InvoiceSettings me;
     private I18NAccount messages;
     private Constants constants;
@@ -73,7 +75,8 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         initWidget(dp);
     }
 
-    public static InvoiceSettings getInstance(I18NAccount messages, Constants constants, Elements elements, ViewCallback callback) {
+    public static InvoiceSettings getInstance(I18NAccount messages, Constants constants, Elements elements,
+            ViewCallback callback) {
         if (me == null) {
             me = new InvoiceSettings(messages, constants, elements, callback);
         }
@@ -135,7 +138,8 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
             table.setText(row, 0, Util.strSkipNull(invoice.get("description")));
             table.setText(row, 1, InvoiceType.invoiceType(Util.getInt(invoice.get("invoice_type"))).getDesc(), "desc");
-            table.setText(row, 2, InvoiceSplitType.invoiceSplitType(Util.getInt(invoice.get("split_type"))).getDesc(), "desc");
+            table.setText(row, 2, InvoiceSplitType.invoiceSplitType(Util.getInt(invoice.get("split_type"))).getDesc(),
+                    "desc");
             table.setText(row, 3, Util.strSkipNull(invoice.get("invoice_due_day")), "desc");
             table.setText(row, 4, Util.money(Util.strSkipNull(invoice.get("default_amount"))), "desc");
             table.setText(row, 5, Util.getBoolean(invoice.get("emailOK")) ? elements.ready() : elements.not_ready());
@@ -304,7 +308,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
                 doSave();
             } else if (sender == editInvoiceTemplate) {
                 doEditInvoice();
-            } else if(sender == chooseODTTemplate) {
+            } else if (sender == chooseODTTemplate) {
                 doChooseInvoiceTemplate();
             }
         }
@@ -418,7 +422,27 @@ public class InvoiceSettings extends Composite implements ClickHandler {
     }
 
     public void doChooseInvoiceTemplate() {
+        DialogBox db = new DialogBox();
+        UploadDelegate uploadDelegate = new UploadDelegate("files/files.php", this, constants, messages, elements);
+
+        db.add(uploadDelegate.getForm());
+
+        db.center();
+    }
+
+    @Override
+    public void uploadComplete() {
         
+    }
+
+    @Override
+    public boolean uploadBody(String body) {
+        return false;
+    }
+
+    @Override
+    public void preUpload() {
+
     }
 
 }
