@@ -31,9 +31,10 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class InvoiceSettings extends Composite implements ClickHandler, UploadDelegateCallback {
+public class InvoiceSettings extends Composite implements ClickHandler {
     private static InvoiceSettings me;
     private I18NAccount messages;
     private Constants constants;
@@ -422,27 +423,40 @@ public class InvoiceSettings extends Composite implements ClickHandler, UploadDe
     }
 
     public void doChooseInvoiceTemplate() {
-        DialogBox db = new DialogBox();
-        UploadDelegate uploadDelegate = new UploadDelegate("files/files.php", this, constants, messages, elements);
+        final DialogBox db = new DialogBox();
+        UploadDelegateCallback uploadHandler = new UploadDelegateCallback() {
+            
+            @Override
+            public void uploadComplete() {
+                db.hide();
+            }
+            
+            @Override
+            public boolean uploadBody(String body) {
+                return false;
+            }
+            
+            @Override
+            public void preUpload() {
+                /* Empty */
+            }
+        };
+        UploadDelegate uploadDelegate = new UploadDelegate("files/files.php", uploadHandler , constants, messages, elements);
 
-        db.add(uploadDelegate.getForm());
+        VerticalPanel panel = new VerticalPanel();
+        panel.add(uploadDelegate.getForm());
+        db.add(panel);
+
+        NamedButton cancelButton = new NamedButton("cancel", elements.cancel());
+        cancelButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                db.hide();
+            }
+        });
+        panel.add(cancelButton);
 
         db.center();
     }
-
-    @Override
-    public void uploadComplete() {
-        
-    }
-
-    @Override
-    public boolean uploadBody(String body) {
-        return false;
-    }
-
-    @Override
-    public void preUpload() {
-
-    }
-
 }
