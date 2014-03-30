@@ -16,6 +16,14 @@ public class InvoiceStatus {
         }
     }
 
+    public static boolean invoiceNotSent(int val) {
+        return val == 1;
+    }
+    
+    public static boolean invoiceSent(int val) {
+        return val == 2;
+    }
+    
     public static String invoiceStatus(int int1) {
         setElements();
         switch (int1) {
