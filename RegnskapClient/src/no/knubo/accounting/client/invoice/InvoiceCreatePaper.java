@@ -194,6 +194,7 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
         StringBuffer params = new StringBuffer();
         params.append("action=paper_invoice");
         Util.addPostParam(params, "invoices", chosen.toString());
+        Util.addPostParam(params, "invoice_template", templates.iterator().next());
         ServerResponse callback = new ServerResponse() {
 
             @Override
