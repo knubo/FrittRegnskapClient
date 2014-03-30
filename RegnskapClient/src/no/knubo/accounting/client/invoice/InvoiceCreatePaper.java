@@ -52,10 +52,8 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
     private ListBoxWithErrorText invoiceBox;
     private NamedButton filterButton;
     private AccountTable invoiceTable;
-    private NamedButton sendInvoiceButton;
-    private HashMap<String, JSONObject> invoiceTypeCache = new HashMap<String, JSONObject>();
+    private NamedButton createInvoiceButton;
     private DialogBox statusBox;
-    private AccountTable statusTable;
     private Button closePopupButton;
     private NamedButton previewButton;
 
@@ -115,9 +113,9 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
         previewButton.addClickHandler(this);
         buttons.add(previewButton);
 
-        sendInvoiceButton = new NamedButton("invoice_create_paper", elements.invoice_create_paper());
-        sendInvoiceButton.addClickHandler(this);
-        buttons.add(sendInvoiceButton);
+        createInvoiceButton = new NamedButton("invoice_create_paper", elements.invoice_create_paper());
+        createInvoiceButton.addClickHandler(this);
+        buttons.add(createInvoiceButton);
 
         invoiceTable = new AccountTable("tableborder");
         invoiceTable.addStyleName("nobreaktable");
@@ -167,17 +165,18 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
     public void onClick(ClickEvent event) {
         if (event.getSource() == filterButton) {
             filterInvoices();
-        } else if (event.getSource() == sendInvoiceButton) {
-            boolean cont = Window.confirm(messages.invoice_confirm_send());
-            if (cont) {
-                sendInvoiceEmail();
-            }
+        } else if (event.getSource() == createInvoiceButton) {
+            createInvoicePaper();
         } else if (event.getSource() == closePopupButton) {
             closePopupButton.setEnabled(false);
             statusBox.hide();
         } else if (event.getSource() == previewButton) {
             preview();
         }
+    }
+
+    private void createInvoicePaper() {
+        
     }
 
     private void preview() {
@@ -253,112 +252,6 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
         AuthResponder.post(constants, messages, callback, sb, "reports/email.php");
     }
 
-    private void sendInvoiceEmail() {
-        invoiceTypeCache.clear();
-
-        setupStatusBox();
-
-        int row = 1;
-        sendForRow(row);
-    }
-
-    private void sendForRow(int row) {
-
-        if (!closePopupButton.isEnabled()) {
-            statusBox.hide();
-            return;
-        }
-
-        if (invoiceTable.getRowCount() == row) {
-            sendingComplete();
-            return;
-        }
-
-        CheckBox box = (CheckBox) invoiceTable.getWidget(row, CHECK_COLUMN);
-
-        if (box.getValue() && box.isEnabled()) {
-            String id = box.getElement().getId();
-            String[] parts = id.split("_");
-
-            sendInvoice(row, box, parts[1], parts[2], parts[3]);
-        } else {
-            sendForRow(row + 1);
-        }
-    }
-
-    private void sendingComplete() {
-        closePopupButton.setText(elements.close());
-    }
-
-    private void setupStatusBox() {
-        statusBox = new DialogBox();
-        statusBox.setText(elements.invoice_sent_email_status());
-        statusTable = new AccountTable("tableborder");
-
-        statusTable.setHeaders(0, elements.name(), elements.email(), elements.status());
-
-        FlowPanel fp = new FlowPanel();
-
-        closePopupButton = new Button();
-        closePopupButton.addClickHandler(this);
-        closePopupButton.setText(elements.abort());
-
-        fp.add(closePopupButton);
-        fp.add(statusTable);
-
-        statusBox.setWidget(fp);
-
-        statusBox.center();
-    }
-
-    private void sendInvoice(final int row, final CheckBox box, String invoiceId, String invoiceTypeId, String personId) {
-        JSONObject invoiceType = getInvoiceType(row, box, invoiceId, invoiceTypeId, personId);
-
-        if (invoiceType == null) {
-            /* Called after invoice is cached */
-            return;
-        }
-
-        String email = invoiceTable.getText(row, 5);
-        String amount = invoiceTable.getText(row, 2);
-        String dueDate = invoiceTable.getText(row, 1);
-
-        if (!Util.getBoolean(invoiceType.get("emailOK"))) {
-            statusTable.insertRow(1);
-            statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4), elements.invoice_status_not_sent());
-
-            invoiceTable.setText(row, STATUS_COLUMN, elements.invoice_template_not_ready());
-            sendForRow(row + 1);
-            return;
-        }
-
-        if (!closePopupButton.isEnabled()) {
-            statusBox.hide();
-            return;
-        }
-
-        StringBuffer sb = new StringBuffer();
-        sb.append("action=email");
-        Util.addPostParam(sb, "personid", personId);
-        Util.addPostParam(sb, "email", email);
-        Util.addPostParam(sb, "subject", URL.encode(Util.str(invoiceType.get("email_subject"))));
-        Util.addPostParam(sb, "body",
-                URL.encode(replaceParameters(Util.str(invoiceType.get("email_body")), amount, invoiceId, invoiceTypeId, dueDate)));
-        Util.addPostParam(sb, "format", Util.str(invoiceType.get("email_format")));
-        Util.addPostParam(sb, "header", Util.strSkipNull(invoiceType.get("email_header")));
-        Util.addPostParam(sb, "footer", Util.strSkipNull(invoiceType.get("email_footer")));
-
-        ServerResponse callback = new ServerResponse() {
-
-            @Override
-            public void serverResponse(JSONValue responseObj) {
-                sendCompleted(row, box, Util.getBoolean(responseObj.isObject().get("status")));
-            }
-        };
-        AuthResponder.post(constants, messages, callback, sb, "reports/email.php");
-
-    }
-
     private String replaceParameters(String email, String amount, String invoiceId, String invoiceTypeId, String dueDate) {
         String result = email.replace("{amount}", amount);
         result = result.replace("{due_date}", dueDate);
@@ -366,53 +259,6 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
                 invoiceTypeId + Luhn.generateDigit(invoiceTypeId) + "-" + invoiceId + Luhn.generateDigit(invoiceId));
 
         return result;
-    }
-
-    private void sendCompleted(final int row, CheckBox box, boolean success) {
-        statusTable.insertRow(1);
-        statusTable.setText(1, invoiceTable.getText(row, 3), invoiceTable.getText(row, 4), success ? elements.ok() : elements.failed());
-
-        if (success) {
-            invoiceTable.setText(row, STATUS_COLUMN, elements.invoice_status_sent());
-            box.setEnabled(false);
-        }
-        Timer t = new Timer() {
-
-            @Override
-            public void run() {
-                sendForRow(row + 1);
-            }
-        };
-        t.schedule(1000);
-    }
-
-    private JSONObject getInvoiceType(int row, CheckBox box, String invoiceId, String invoiceTypeId, String personId) {
-        JSONObject invoiceType = invoiceTypeCache.get(invoiceTypeId);
-
-        if (invoiceType == null) {
-            fetchInvoiceType(row, box, invoiceId, invoiceTypeId, personId);
-            return null;
-        }
-
-        return invoiceType;
-    }
-
-    private void fetchInvoiceType(final int row, final CheckBox box, final String invoiceId, final String invoiceTypeId,
-            final String personId) {
-        ServerResponse callback = new ServerResponse() {
-
-            @Override
-            public void serverResponse(JSONValue responseObj) {
-                if (responseObj.isObject() == null) {
-                    Util.log("Got null object for " + invoiceTypeId);
-                    return;
-                }
-
-                invoiceTypeCache.put(invoiceTypeId, responseObj.isObject());
-                sendInvoice(row, box, invoiceId, invoiceTypeId, personId);
-            }
-        };
-        AuthResponder.get(constants, messages, callback, "accounting/invoice_ops.php?action=emailtemplate&id=" + invoiceTypeId);
     }
 
     private void filterInvoices() {
@@ -435,18 +281,25 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
 
                 for (int i = 0; i < arr.size(); i++) {
                     JSONObject invoice = arr.get(i).isObject();
+                    int invoiceStatus = Util.getInt(invoice.get("invoice_status"));
                     invoiceTable.setText(
                             i + 1, //
                             Util.str(invoice.get("description")), //
                             Util.formatDate(invoice.get("due_date")), //
                             Util.money(invoice.get("amount")), //
                             Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")), Util.str(invoice.get("email")),
-                            InvoiceStatus. invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
+                            InvoiceStatus. invoiceStatus(invoiceStatus));
                     CheckBox box = new CheckBox();
                     box.getElement().setId(
                             "i_" + Util.str(invoice.get("id")) + "_" + Util.str(invoice.get("template_id")) + "_"
                                     + Util.str(invoice.get("person_id")));
-                    box.setValue(true);
+                    
+                    if (InvoiceStatus.invoiceNotSent(invoiceStatus)) {
+                        box.setValue(true);
+                    } else if(!InvoiceStatus.invoiceSent(invoiceStatus)) {
+                        box.setEnabled(false);
+                    }
+                    
                     invoiceTable.setWidget(i + 1, CHECK_COLUMN, box);
                 }
             }
