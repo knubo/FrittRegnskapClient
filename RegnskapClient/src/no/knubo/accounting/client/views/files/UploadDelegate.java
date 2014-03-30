@@ -96,7 +96,7 @@ public class UploadDelegate {
                     return;
                 }
                 
-                JSONValue jsonVal = JSONParser.parse(result);
+                JSONValue jsonVal = JSONParser.parseLenient(result);
 
                 if (jsonVal == null) {
                     Window.alert(messages.save_failed_badly());

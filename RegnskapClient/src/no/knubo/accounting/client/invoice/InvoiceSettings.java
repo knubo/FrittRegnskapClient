@@ -23,6 +23,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -31,6 +32,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -54,7 +56,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
         table = new AccountTable("tableborder");
         table.setText(0, 0, elements.invoice_templates());
-        table.getFlexCellFormatter().setColSpan(0, 0, 9);
+        table.getFlexCellFormatter().setColSpan(0, 0, 10);
         table.getRowFormatter().setStyleName(0, "header");
         table.setText(1, 0, elements.description());
         table.setText(1, 1, elements.invoice_type(), "desc");
@@ -63,8 +65,9 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         table.setText(1, 4, elements.invoice_default_amount(), "desc");
         table.setText(1, 5, elements.invoice_email_ready(), "desc");
         table.setText(1, 6, elements.invoice_email_sender(), "desc");
-        table.setText(1, 7, elements.kredit_post(), "desc");
-        table.setText(1, 8, "");
+        table.setText(1, 7, elements.invoice_odt_template());
+        table.setText(1, 8, elements.kredit_post(), "desc");
+        table.setText(1, 9, "");
 
         table.getRowFormatter().setStyleName(1, "header");
 
@@ -86,6 +89,8 @@ public class InvoiceSettings extends Composite implements ClickHandler {
     }
 
     private JSONArray invoices;
+    private AccountTable filestable;
+    private DialogBox chooseTemplatePopup;
 
     public void init(final Object[] params) {
 
@@ -148,13 +153,16 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
             String creditPostType = Util.strSkipNull(invoice.get("credit_post_type"));
 
+            table.setText(row, 7, Util.strSkipNull(invoice.get("invoice_template")));
+            
             if (creditPostType.length() > 0) {
-                table.setText(row, 7, postTypeCache.getDescriptionWithType(creditPostType), "desc");
+                table.setText(row, 8, postTypeCache.getDescriptionWithType(creditPostType), "desc");
             }
+            
 
             Image editImage = ImageFactory.editImage("invoiceTypeEdit_" + Util.str(invoice.get("id")));
             editImage.addClickHandler(this);
-            table.setWidget(row, 8, editImage);
+            table.setWidget(row, 9, editImage);
 
             String style = (((row + 1) % 6) < 3) ? "line2" : "line1";
             table.getRowFormatter().setStyleName(row, style);
@@ -220,6 +228,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private String currentId;
         private TextBoxWithErrorText kreditPost;
         private ListBoxWithErrorText kreditBox;
+        private Label invoiceTemplate = new Label();
 
         InvoiceEditFields() {
             setText(elements.invoice_template());
@@ -265,6 +274,8 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             editInvoiceTemplate.addClickHandler(this);
             chooseODTTemplate = new NamedButton("invoice_choose_odt_template", elements.invoice_choose_odt_template());
             chooseODTTemplate.addClickHandler(this);
+            
+            edittable.setWidget(6, 1, invoiceTemplate);
             edittable.setWidget(7, 1, emailSender);
 
             HorizontalPanel kreditHp = new HorizontalPanel();
@@ -311,6 +322,10 @@ public class InvoiceSettings extends Composite implements ClickHandler {
                 doEditInvoice();
             } else if (sender == chooseODTTemplate) {
                 doChooseInvoiceTemplate();
+            } else if(sender instanceof Anchor) {
+                Anchor anchor = (Anchor) sender;
+                invoiceTemplate.setText(anchor.getText());
+                chooseTemplatePopup.hide();
             }
         }
 
@@ -331,6 +346,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             Util.addPostParam(sb, "default_amount", defaultAmount.getText());
             Util.addPostParam(sb, "email_from", emailSender.getText());
             Util.addPostParam(sb, "credit_post_type", kreditPost.getText());
+            Util.addPostParam(sb, "invoice_template", invoiceTemplate.getText());
 
             ServerResponse callback = new ServerResponse() {
 
@@ -382,9 +398,12 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             edittable.setText(5, 1, Util.getBoolean(invoice.get("emailOK")) ? elements.ready() : elements.not_ready());
             emailSender.setText(Util.strSkipNull(invoice.get("email_from")));
 
+            invoiceTemplate.setText(Util.strSkipNull(invoice.get("invoice_template")));
+            
             kreditPost.setText(Util.strSkipNull(invoice.get("credit_post_type")));
             Util.setIndexByValue(kreditBox.getListbox(), Util.strSkipNull(invoice.get("credit_post_type")));
-
+            
+            
             mainErrorLabel.setText("");
         }
 
@@ -423,18 +442,19 @@ public class InvoiceSettings extends Composite implements ClickHandler {
     }
 
     public void doChooseInvoiceTemplate() {
-        final DialogBox db = new DialogBox();
+        chooseTemplatePopup = new DialogBox();
+        
         UploadDelegateCallback uploadHandler = new UploadDelegateCallback() {
             
             @Override
             public void uploadComplete() {
-                db.hide();
+                fillFilesTable();
             }
             
             @Override
             public boolean uploadBody(String body) {
                 return false;
-            }
+            }   
             
             @Override
             public void preUpload() {
@@ -444,19 +464,74 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         UploadDelegate uploadDelegate = new UploadDelegate("files/files.php", uploadHandler , constants, messages, elements);
 
         VerticalPanel panel = new VerticalPanel();
+
+        panel.add(fillFilesTable());
+        
         panel.add(uploadDelegate.getForm());
-        db.add(panel);
+        chooseTemplatePopup.add(panel);
 
         NamedButton cancelButton = new NamedButton("cancel", elements.cancel());
         cancelButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                db.hide();
+                chooseTemplatePopup.hide();
             }
         });
         panel.add(cancelButton);
 
-        db.center();
+        chooseTemplatePopup.center();
+    }
+
+    private Widget fillFilesTable() {
+        
+        if(filestable == null) {
+            filestable = new AccountTable("tableborder");
+        }
+        filestable.clear();
+        
+        ServerResponse callback = new ServerResponse() {
+            @Override
+            public void serverResponse(JSONValue value) {
+                JSONObject data = value.isObject();
+
+                JSONArray files = data.get("files").isArray();
+
+                for (int i = 0; i < files.size(); i++) {
+                    JSONObject fileinfo = files.get(i).isObject();
+                    String fileName = Util.str(fileinfo.get("name"));
+
+                    if (Util.getBoolean(fileinfo.get("link"))) {
+                        filestable.setWidget(i + 1, 0, chooseFileWidget(fileName));
+                    } else {
+                        filestable.setText(i + 1, 0, fileName);
+                    }
+
+                    filestable.setText(i + 1, 1, Util.str(fileinfo.get("size")));
+                    filestable.getCellFormatter().setStyleName(i + 1, 1, "desc right");
+
+                }
+
+                int row = filestable.getRowCount();
+                String title = elements.total();
+                if (Util.str(data.get("used")).length() > 1) {
+                    title += " (" + Util.str(data.get("used")) + "% / " + Util.str(data.get("quota")) + ")";
+                }
+                filestable.setText(row, 0, title);
+                filestable.setText(row, 1, Util.str(data.get("totalsize")));
+                filestable.getCellFormatter().setStyleName(row, 1, "desc right");
+            }
+
+        };
+
+        AuthResponder.get(constants, messages, callback, "files/files.php?action=list");
+
+        return filestable;
+    }
+
+    protected Widget chooseFileWidget(String fileName) {
+        Anchor anchor = new Anchor(fileName);
+        anchor.addClickHandler(editFields);
+        return anchor;
     }
 }
