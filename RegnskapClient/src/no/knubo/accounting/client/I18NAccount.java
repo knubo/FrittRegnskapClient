@@ -646,6 +646,15 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String invoice_created_message();
 
   /**
+   * Translated "Kan kun lage fakturaer med samme fakturamal. Velg kun fakturaer med samme mal.".
+   * 
+   * @return translated "Kan kun lage fakturaer med samme fakturamal. Velg kun fakturaer med samme mal."
+   */
+  @DefaultMessage("Kan kun lage fakturaer med samme fakturamal. Velg kun fakturaer med samme mal.")
+  @Key("invoice_different_template")
+  String invoice_different_template();
+
+  /**
    * Translated "Velg forfallsdato eller gitt faktura".
    * 
    * @return translated "Velg forfallsdato eller gitt faktura"

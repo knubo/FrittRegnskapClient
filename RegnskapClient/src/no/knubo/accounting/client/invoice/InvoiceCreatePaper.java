@@ -1,6 +1,7 @@
 package no.knubo.accounting.client.invoice;
 
 import java.util.Date;
+import java.util.HashSet;
 
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
@@ -29,6 +30,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 
 public class InvoiceCreatePaper extends Composite implements ClickHandler {
 
@@ -47,6 +49,7 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
     private NamedButton createInvoiceButton;
     private DialogBox statusBox;
     private Button closePopupButton;
+    private Label invoiceError;
 
     public static InvoiceCreatePaper getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
@@ -98,16 +101,22 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
         HorizontalPanel buttons = new HorizontalPanel();
         buttons.add(filterButton);
 
+        
         filterTable.setWidget(5, 0, buttons);
 
         createInvoiceButton = new NamedButton("invoice_create_paper", elements.invoice_create_paper());
         createInvoiceButton.addClickHandler(this);
         buttons.add(createInvoiceButton);
 
+        invoiceError = new Label();
+        invoiceError.addStyleName("error");
+        
+        buttons.add(invoiceError);
+        
         invoiceTable = new AccountTable("tableborder");
         invoiceTable.addStyleName("nobreaktable");
         invoiceTable.setHeaders(0, elements.invoice_template(), elements.invoice_due_date(), elements.amount(),
-                elements.name(), elements.email(), elements.status(), elements.selected());
+                elements.name(), elements.invoice_odt_template(), elements.status(), elements.selected());
 
         fp.add(invoiceTable);
 
@@ -164,6 +173,8 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
 
         JSONArray chosen = new JSONArray();
 
+        HashSet<String> templates = new HashSet<String>();
+        
         int pos = 0;
         for (int i = 1; i < invoiceTable.getRowCount(); i++) {
             CheckBox box = (CheckBox) invoiceTable.getWidget(i, CHECK_COLUMN);
@@ -171,20 +182,27 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
             if (box.getValue()) {
                 chosen.set(pos++, new JSONNumber(Integer.parseInt(box.getElement().getId().substring(2))));
             }
+            
+            templates.add(invoiceTable.getText(i, 4));
         }
 
+        if(templates.size() > 1) {
+            Util.timedMessage(invoiceError, messages.invoice_different_template(), 10);
+            return;
+        }
+        
         StringBuffer params = new StringBuffer();
         params.append("action=paper_invoice");
         Util.addPostParam(params, "invoices", chosen.toString());
         ServerResponse callback = new ServerResponse() {
-            
+
             @Override
             public void serverResponse(JSONValue responseObj) {
-                /* Response is  */
+                /* Response is */
             }
         };
-        AuthResponder.post(constants, messages, callback , params, "accounting/invoice_ops.php");
-    
+        AuthResponder.post(constants, messages, callback, params, "accounting/invoice_ops.php");
+
     }
 
     private void filterInvoices() {
@@ -208,17 +226,20 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
                 for (int i = 0; i < arr.size(); i++) {
                     JSONObject invoice = arr.get(i).isObject();
                     int invoiceStatus = Util.getInt(invoice.get("invoice_status"));
+                    String invoiceTemplate = Util.strSkipNull(invoice.get("invoice_template"));
                     invoiceTable.setText(
                             i + 1, //
                             Util.str(invoice.get("description")), //
                             Util.formatDate(invoice.get("due_date")), //
                             Util.money(invoice.get("amount")), //
                             Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")),
-                            Util.str(invoice.get("invoice_template")), InvoiceStatus.invoiceStatus(invoiceStatus));
+                            invoiceTemplate, InvoiceStatus.invoiceStatus(invoiceStatus));
                     CheckBox box = new CheckBox();
                     box.getElement().setId("i_" + Util.str(invoice.get("id")));
 
-                    if (InvoiceStatus.invoiceNotSent(invoiceStatus)) {
+                    if (invoiceTemplate.length() == 0) {
+                        box.setEnabled(false);
+                    } else if (InvoiceStatus.invoiceNotSent(invoiceStatus)) {
                         box.setValue(true);
                     } else if (!InvoiceStatus.invoiceSent(invoiceStatus)) {
                         box.setEnabled(false);
