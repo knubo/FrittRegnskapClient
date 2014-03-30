@@ -2599,6 +2599,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_sent_email_status();
 
   /**
+   * Translated "Enkeltfaktura".
+   * 
+   * @return translated "Enkeltfaktura"
+   */
+  @DefaultStringValue("Enkeltfaktura")
+  @Key("invoice_single")
+  String invoice_single();
+
+  /**
    * Translated "Gjenntagende faktura".
    * 
    * @return translated "Gjenntagende faktura"

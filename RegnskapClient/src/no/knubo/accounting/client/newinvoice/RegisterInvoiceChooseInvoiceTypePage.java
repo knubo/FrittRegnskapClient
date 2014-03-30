@@ -28,6 +28,8 @@ import org.gwt.advanced.client.ui.widget.GridPanel;
 import org.gwt.advanced.client.ui.widget.cell.DateCell;
 import org.gwt.advanced.client.ui.widget.cell.TextBoxCell;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -45,11 +47,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceContext> implements ClickHandler,
-        FocusHandler, KeyDownHandler {
+        FocusHandler, KeyDownHandler, ChangeHandler {
 
     public static final String INVOICES_KEY = "invoices";
     public static final String INVOICE_TEMPLATE_KEY = "invoice_template";
@@ -114,22 +115,16 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         table.setText(row, 0, elements.amount());
         table.setWidget(row++, 1, amount);
 
-        splitType = new ListBoxWithErrorText("invoice_split_type");
-        InvoiceSplitType.addSplitTypeItems(splitType);
-        table.setText(row, 0, elements.invoice_split_type());
-
-        table.setWidget(row++, 1, splitType);
-
-        table.setText(row, 0, elements.first_month());
-
         invoiceDueDay = new TextBoxWithErrorText("invoice_due_day");
         invoiceDueDay.setVisibleLength(2);
         invoiceDueDay.setMaxLength(2);
-        table.setText(row, 0, elements.invoice_due_day());
+        table.setText(row, 0, this.elements.invoice_due_day());
         table.setWidget(row++, 1, invoiceDueDay);
 
-        table.setText(row, 0, elements.invoices(), "header");
-        row++;
+        row = addSplitTable(row);
+        row = addSingleTable(row);
+
+        table.setHeaders(row++, elements.invoices(), "");
 
         model = new InvoiceModel(new Object[][] {});
         model.setPageSize(15);
@@ -147,20 +142,63 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         gridPanel.display();
         gridPanel.getGrid().setMultiRowModeEnabled(true);
 
-        VerticalPanel invoiceButtons = new VerticalPanel();
-        splitEqual = new NamedButton("", elements.invoice_amount_split_equal());
+        vp.add(gridPanel);
+
+    }
+
+    private int addSingleTable(int rowIn) {
+        int row = rowIn;
+
+        table.setColSpan(row, 0, 3);
+        AccountTable singleTable = new AccountTable("tableborder");
+        table.setWidget(row++, 0, singleTable);
+
+        monthsSingle = new ListBoxWithErrorText("month");
+        monthsSingle.addItem("", "");
+        for (int i = 1; i <= 12; i++) {
+            monthsSingle.addItem(Util.monthString(elements, i), String.valueOf(i));
+        }
+
+        singleTable.setHeaders(0, elements.invoice_single());
+        singleTable.setColSpan(0, 0, 2);
+        singleTable.setWidget(1, 0, monthsSingle);
+        
+        addSingleButton = new NamedButton("add", elements.add());
+        singleTable.setWidget(1, 1, addSingleButton);
+        addSingleButton.addClickHandler(this);
+
+        return row;
+    }
+
+    private int addSplitTable(int rowIn) {
+        int row = rowIn;
+
+        table.setColSpan(row, 0, 3);
+        AccountTable splitTable = new AccountTable("tableborder");
+        table.setWidget(row++, 0, splitTable);
+
+        splitTable.setHeaders(0, this.elements.invoice_split_type());
+        splitTable.setColSpan(0, 0, 3);
+
+        splitType = new ListBoxWithErrorText("invoice_split_type");
+        splitType.addStyleName("buttonrow");
+        splitType.addChangeHandler(this);
+        InvoiceSplitType.addSplitTypeItems(splitType);
+
+        splitEqual = new NamedButton("", this.elements.invoice_amount_split_equal());
         splitEqual.addStyleName("buttonrow");
         splitEqual.addClickHandler(this);
-        splitRepeat = new NamedButton("", elements.invoice_amount_repeat());
+        splitRepeat = new NamedButton("", this.elements.invoice_amount_repeat());
         splitRepeat.addStyleName("buttonrow");
         splitRepeat.addClickHandler(this);
 
-        invoiceButtons.add(splitRepeat);
-        invoiceButtons.add(splitEqual);
-        vp.add(invoiceButtons);
+        splitEqual.setEnabled(false);
+        splitRepeat.setEnabled(false);
 
-        vp.add(gridPanel);
-
+        splitTable.setWidget(1, 0, splitType);
+        splitTable.setWidget(1, 1, splitRepeat);
+        splitTable.setWidget(1, 2, splitEqual);
+        return row;
     }
 
     protected void saveInvoicesLocalStorage() {
@@ -274,6 +312,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
     protected void fillInvoicesChoices() {
         invoiceTemplates.clear();
 
+        invoiceTemplates.addItem("", "");
+
         for (int i = 0; i < invoicesTemplates.size(); i++) {
             JSONObject invoice = invoicesTemplates.get(i).isObject();
 
@@ -316,6 +356,29 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
         if (event.getSource() == splitRepeat) {
             splitParts(event, true);
         }
+
+        if (event.getSource() == addSingleButton) {
+            addSingle();
+        }
+    }
+
+    private void addSingle() {
+        if (monthsSingle.getSelectedIndex() == 0 || !validateAddInvoice()) {
+            return;
+        }
+
+        BigDecimal bigDecimalAmount = new BigDecimal(amount.getText().replaceAll(",", ""));
+
+        int day = Integer.parseInt(invoiceDueDay.getText());
+
+        String month = Util.getSelected(monthsSingle);
+
+        Date date = Util.date(day, Integer.parseInt(month) - 1, currentYear - 1900);
+
+        Object[] rowdata = { date, bigDecimalAmount.setScale(2).toPlainString() };
+
+        addRow(0, rowdata);
+
     }
 
     private void splitParts(ClickEvent event, boolean repeat) {
@@ -373,6 +436,8 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
     private NamedButton splitRepeat;
 
     private InvoiceModel model;
+    private NamedButton addSingleButton;
+    private ListBoxWithErrorText monthsSingle;
 
     final class InvoiceModel extends EditableGridDataModel {
         private InvoiceModel(Object[][] data) {
@@ -490,5 +555,17 @@ public class RegisterInvoiceChooseInvoiceTypePage extends WizardPage<InvoiceCont
 
     void addRow(int beforeRow, Object[] row) {
         model.addRow(beforeRow, row);
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        // if (event.getSource() == splitType) {
+
+        boolean enableSplit = splitType.getSelectedIndex() > 0;
+
+        splitEqual.setEnabled(enableSplit);
+        splitRepeat.setEnabled(enableSplit);
+        // }
+
     }
 }

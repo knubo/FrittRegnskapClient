@@ -85,6 +85,11 @@ public class AccountTable extends FlexTable {
         getCellFormatter().addStyleName(row, col, style);
     }
 
+    
+    public void setColSpan(int row, int col, int span) {
+        getFlexCellFormatter().setColSpan(row, col, span);        
+    }
+    
     public void setColSpanAndRowStyle(int row, int col, int span, String rowstyle) {
         getFlexCellFormatter().setColSpan(row, col, span);
         getRowFormatter().setStyleName(row, rowstyle);
