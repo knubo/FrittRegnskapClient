@@ -29,8 +29,11 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class InvoiceCreatePaper extends Composite implements ClickHandler {
 
@@ -50,6 +53,9 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
     private DialogBox statusBox;
     private Button closePopupButton;
     private Label invoiceError;
+    private Hidden invoiceTemplate;
+    private Hidden invoices;
+    private FormPanel invoiceForm;
 
     public static InvoiceCreatePaper getInstance(I18NAccount messages, Constants constants, Elements elements) {
         if (me == null) {
@@ -119,7 +125,28 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
                 elements.name(), elements.invoice_odt_template(), elements.status(), elements.selected());
 
         fp.add(invoiceTable);
+        
+        invoiceForm = new FormPanel();
 
+        invoiceForm.setAction(constants.baseurl() + "accounting/invoice_ops.php");
+
+        fp.add(invoiceForm);
+        
+        VerticalPanel vp = new VerticalPanel();
+        invoiceForm.setWidget(vp);
+        
+        // Because we're going to add a FileUpload widget, we'll need to set the
+        // form to use the POST method, and multi-part MIME encoding.
+        // form.setEncoding(FormPanel.ENCODING_MULTIPART);
+        invoiceForm.setMethod(FormPanel.METHOD_POST);
+        
+        invoiceTemplate = new Hidden("invoice_template");
+        invoices = new Hidden("invoices");
+
+        vp.add(new Hidden("action", "invoice_paper"));
+        vp.add(invoiceTemplate);
+        vp.add(invoices);
+        
         initWidget(fp);
     }
 
@@ -181,28 +208,22 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
 
             if (box.getValue()) {
                 chosen.set(pos++, new JSONNumber(Integer.parseInt(box.getElement().getId().substring(2))));
+                templates.add(invoiceTable.getText(i, 4));
             }
             
-            templates.add(invoiceTable.getText(i, 4));
         }
 
         if(templates.size() > 1) {
-            Util.timedMessage(invoiceError, messages.invoice_different_template(), 10);
+            invoiceError.setText(messages.invoice_different_template());
+            Util.timedMessage(invoiceError, "", 10);
+            Util.log("Invoices: "+templates);
             return;
         }
-        
-        StringBuffer params = new StringBuffer();
-        params.append("action=paper_invoice");
-        Util.addPostParam(params, "invoices", chosen.toString());
-        Util.addPostParam(params, "invoice_template", templates.iterator().next());
-        ServerResponse callback = new ServerResponse() {
 
-            @Override
-            public void serverResponse(JSONValue responseObj) {
-                /* Response is */
-            }
-        };
-        AuthResponder.post(constants, messages, callback, params, "accounting/invoice_ops.php");
+        invoiceTemplate.setValue(templates.iterator().next());
+        invoices.setValue(chosen.toString());
+
+        invoiceForm.submit();
 
     }
 
@@ -238,12 +259,10 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
                     CheckBox box = new CheckBox();
                     box.getElement().setId("i_" + Util.str(invoice.get("id")));
 
-                    if (invoiceTemplate.length() == 0) {
+                    if (invoiceTemplate.length() == 0 || !InvoiceStatus.invoiceNotSent(invoiceStatus)) {
                         box.setEnabled(false);
-                    } else if (InvoiceStatus.invoiceNotSent(invoiceStatus)) {
+                    } else {
                         box.setValue(true);
-                    } else if (!InvoiceStatus.invoiceSent(invoiceStatus)) {
-                        box.setEnabled(false);
                     }
 
                     invoiceTable.setWidget(i + 1, CHECK_COLUMN, box);
