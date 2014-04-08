@@ -2374,6 +2374,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice();
 
   /**
+   * Translated "Etter netlasting av faktura trykk p� filtrer for � oppfriske tabellen.".
+   * 
+   * @return translated "Etter netlasting av faktura trykk p� filtrer for � oppfriske tabellen."
+   */
+  @DefaultStringValue("Etter netlasting av faktura trykk p� filtrer for � oppfriske tabellen.")
+  @Key("invoice_after_download_paper")
+  String invoice_after_download_paper();
+
+  /**
    * Translated "Velg alle personer som må ha semestermedlemsskap som ikke har medlemskap fra før ".
    * 
    * @return translated "Velg alle personer som må ha semestermedlemsskap som ikke har medlemskap fra før "

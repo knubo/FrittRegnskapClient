@@ -129,7 +129,7 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
         invoiceForm = new FormPanel();
 
         invoiceForm.setAction(constants.baseurl() + "accounting/invoice_ops.php");
-
+       
         fp.add(invoiceForm);
         
         VerticalPanel vp = new VerticalPanel();
@@ -171,6 +171,8 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
     }
 
     protected void fillInvoices(JSONArray invoices) {
+        invoiceBox.clear();
+        
         invoiceBox.addItem("", "");
 
         for (int i = 0; i < invoices.size(); i++) {
@@ -225,10 +227,12 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
 
         invoiceForm.submit();
 
+        invoiceError.setText(elements.invoice_after_download_paper());
     }
 
     private void filterInvoices() {
-
+        invoiceError.setText("");
+        
         if (!validate()) {
             return;
         }
@@ -303,5 +307,6 @@ public class InvoiceCreatePaper extends Composite implements ClickHandler {
 
         return query;
     }
+
 
 }
