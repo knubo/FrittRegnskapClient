@@ -196,7 +196,7 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
             public void serverResponse(JSONValue responseObj) {
                 JSONObject invoiceTemplate = responseObj.isObject();
 
-                actualPreviewInvoice(invoiceTemplate, personId, invoiceTypeId, invoiceId);
+                actualPreviewInvoice(invoiceTemplate, personId, invoiceId);
 
             }
         };
@@ -205,7 +205,7 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
     }
 
-    void actualPreviewInvoice(JSONObject invoiceTemplate, String personId, String invoiceTypeId, String invoiceId) {
+    void actualPreviewInvoice(JSONObject invoiceTemplate, String personId, String invoiceId) {
         StringBuffer sb = new StringBuffer();
 
         String email = invoiceTable.getText(1, 5);
@@ -214,10 +214,10 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
         sb.append("action=preview");
         Util.addPostParam(sb, "personid", personId);
-        Util.addPostParam(sb, "email", replaceParameters(email, amount, invoiceId, invoiceTypeId, dueDate));
+        Util.addPostParam(sb, "email", replaceParameters(email, amount, invoiceId, dueDate));
         Util.addPostParam(sb, "subject", URL.encode(Util.str(invoiceTemplate.get("email_subject"))));
         Util.addPostParam(sb, "body", URL.encode(replaceParameters(Util.str(invoiceTemplate.get("email_body")), amount,
-                invoiceId, invoiceTypeId, dueDate)));
+                invoiceId, dueDate)));
         Util.addPostParam(sb, "format", Util.str(invoiceTemplate.get("email_format")));
         Util.addPostParam(sb, "header", Util.strSkipNull(invoiceTemplate.get("email_header")));
         Util.addPostParam(sb, "footer", Util.strSkipNull(invoiceTemplate.get("email_footer")));
@@ -345,7 +345,7 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
         Util.addPostParam(sb, "email", email);
         Util.addPostParam(sb, "subject", URL.encode(Util.str(invoiceType.get("email_subject"))));
         Util.addPostParam(sb, "body", URL.encode(replaceParameters(Util.str(invoiceType.get("email_body")), amount,
-                invoiceId, invoiceTypeId, dueDate)));
+                invoiceId, dueDate)));
         Util.addPostParam(sb, "format", Util.str(invoiceType.get("email_format")));
         Util.addPostParam(sb, "header", Util.strSkipNull(invoiceType.get("email_header")));
         Util.addPostParam(sb, "footer", Util.strSkipNull(invoiceType.get("email_footer")));
@@ -361,11 +361,10 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
     }
 
-    private String replaceParameters(String email, String amount, String invoiceId, String invoiceTypeId, String dueDate) {
+    private String replaceParameters(String email, String amount, String invoiceId, String dueDate) {
         String result = email.replace("{amount}", amount);
         result = result.replace("{due_date}", dueDate);
-        result = result.replace("{invoice}",
-                invoiceTypeId + Luhn.generateDigit(invoiceTypeId) + "-" + invoiceId + Luhn.generateDigit(invoiceId));
+        result = result.replace("{invoice}", invoiceId + "-" + Luhn.generateDigit(invoiceId));
 
         return result;
     }
@@ -454,7 +453,7 @@ public class SendInvoiceEmailView extends Composite implements ClickHandler {
 
                     if (InvoiceStatus.invoiceNotSent(invoiceStatus)) {
                         box.setValue(true);
-                    } else if(!InvoiceStatus.invoiceSent(invoiceStatus)) {
+                    } else if (!InvoiceStatus.invoiceSent(invoiceStatus)) {
                         box.setEnabled(false);
                     }
                     invoiceTable.setWidget(i + 1, CHECK_COLUMN, box);

@@ -8,11 +8,13 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.Luhn;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.DatePickerButton;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import org.gwt.advanced.client.ui.widget.Calendar;
 
@@ -28,7 +30,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class RegisterIncomingInvoiceView extends Composite implements ClickHandler {
 
-    private static final int CHECK_COLUMN = 5;
+    private static final int CHECK_COLUMN = 6;
 
     private static RegisterIncomingInvoiceView me;
     private final I18NAccount messages;
@@ -104,7 +106,7 @@ public class RegisterIncomingInvoiceView extends Composite implements ClickHandl
 
         invoiceTable = new AccountTable("tableborder");
         invoiceTable.setHeaders(0, elements.invoice(), elements.due_date(), elements.amount(), elements.name(),
-                elements.email(), elements.process());
+                elements.email(), elements.invoice(), elements.process());
 
         vp.add(invoiceTable);
 
@@ -118,7 +120,44 @@ public class RegisterIncomingInvoiceView extends Composite implements ClickHandl
         }
     }
 
+    private boolean validate() {
+        MasterValidator mv = new MasterValidator();
+
+        mv.date(messages.date_format(), dueDateBox);
+
+        if(amountBox.getText().length() > 0) {
+            mv.money(messages.field_money(), amountBox);
+        }
+
+        if (!mv.validateStatus()) {
+            return false;
+        }
+
+        String invoice = invoiceBox.getText();
+        if (invoice.length() == 0) {
+            return true;
+        }
+
+        String[] parts = invoice.split("-");
+
+        if (parts.length != 2) {
+            mv.fail(invoiceBox, true, messages.invoice_format());
+
+            return mv.validateStatus();
+        }
+
+        String digit = Luhn.generateDigit(parts[0]);
+
+        mv.fail(invoiceBox, !digit.equals(parts[1]), messages.invoice_luhn_bad());
+
+        return mv.validateStatus();
+    }
+
     private void search() {
+        if (!validate()) {
+            return;
+        }
+
         while (invoiceTable.getRowCount() > 1) {
             invoiceTable.removeRow(1);
         }
@@ -131,16 +170,20 @@ public class RegisterIncomingInvoiceView extends Composite implements ClickHandl
 
                 for (int i = 0; i < arr.size(); i++) {
                     JSONObject invoice = arr.get(i).isObject();
+
+                    String id = Util.str(invoice.get("id"));
+
                     invoiceTable.setText(
                             i + 1, //
                             Util.str(invoice.get("description")), //
                             Util.formatDate(invoice.get("due_date")), //
                             Util.money(invoice.get("amount")), //
                             Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")),
+                            Util.strSkipNull(invoice.get("email")), id + "-" + Luhn.generateDigit(id),
                             Util.str(invoice.get("email")));
 
-                    invoiceTable.getRowFormatter().addStyleName(i+1, "nobreaktable");
-                    
+                    invoiceTable.getRowFormatter().addStyleName(i + 1, "nobreaktable");
+
                     Image editImage = ImageFactory.chooseImage("receiver_" + Util.str(invoice.get("id")));
                     editImage.addClickHandler(me);
                     invoiceTable.setWidget(i + 1, CHECK_COLUMN, editImage);

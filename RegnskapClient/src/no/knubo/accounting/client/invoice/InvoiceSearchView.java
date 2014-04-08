@@ -8,12 +8,14 @@ import no.knubo.accounting.client.I18NAccount;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
+import no.knubo.accounting.client.misc.Luhn;
 import no.knubo.accounting.client.misc.ServerResponse;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.DatePickerButton;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
+import no.knubo.accounting.client.validation.MasterValidator;
 
 import org.gwt.advanced.client.ui.widget.Calendar;
 
@@ -136,8 +138,8 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
 
         invoiceTable = new AccountTable("tableborder");
         invoiceTable.addStyleName("nobreaktable");
-        invoiceTable.setHeaders(0, elements.invoice_template(), elements.invoice_due_date(), elements.amount(), elements.name(),
-                elements.email(), elements.status(), "");
+        invoiceTable.setHeaders(0, elements.invoice_template(), elements.invoice_due_date(), elements.amount(),
+                elements.name(), elements.email(), elements.invoice(), elements.status(), "");
 
         fp.add(invoiceTable);
 
@@ -163,6 +165,10 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
     }
 
     private void search() {
+        if (!validate()) {
+            return;
+        }
+
         removeInvoiceResult();
 
         StringBuffer sb = new StringBuffer();
@@ -182,15 +188,17 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
 
                 for (int i = 0; i < arr.size(); i++) {
                     JSONObject invoice = arr.get(i).isObject();
-                    invoiceTable
-                            .setText(
-                                    i + 1, //
-                                    Util.str(invoice.get("description")), //
-                                    Util.formatDate(invoice.get("due_date")), //
-                                    Util.money(invoice.get("amount")), //
-                                    Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")),
-                                    Util.strSkipNull(invoice.get("email")),
-                                    InvoiceStatus.invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
+
+                    String id = Util.str(invoice.get("id"));
+
+                    invoiceTable.setText(
+                            i + 1, // s
+                            Util.str(invoice.get("description")), //
+                            Util.formatDate(invoice.get("due_date")), //
+                            Util.money(invoice.get("amount")), //
+                            Util.str(invoice.get("firstname")) + " " + Util.str(invoice.get("lastname")),
+                            Util.strSkipNull(invoice.get("email")), id + "-" + Luhn.generateDigit(id),
+                            InvoiceStatus.invoiceStatus(Util.getInt(invoice.get("invoice_status"))));
 
                     Image editImage = ImageFactory.editImage("receiver_" + Util.str(invoice.get("id")));
                     editImage.addClickHandler(me);
@@ -199,6 +207,35 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
             }
         };
         AuthResponder.post(constants, messages, callback, sb, "accounting/invoice_ops.php");
+    }
+
+    private boolean validate() {
+        MasterValidator mv = new MasterValidator();
+
+        mv.date(messages.date_format(), fromDateBox, toDateBox);
+
+        if (!mv.validateStatus()) {
+            return false;
+        }
+
+        String invoice = invoiceBox.getText();
+        if (invoice.length() == 0) {
+            return true;
+        }
+
+        String[] parts = invoice.split("-");
+
+        if (parts.length != 2) {
+            mv.fail(invoiceBox, true, messages.invoice_format());
+
+            return mv.validateStatus();
+        }
+
+        String digit = Luhn.generateDigit(parts[0]);
+
+        mv.fail(invoiceBox, !digit.equals(parts[1]), messages.invoice_luhn_bad());
+
+        return mv.validateStatus();
     }
 
     private void removeInvoiceResult() {
@@ -222,10 +259,10 @@ public class InvoiceSearchView extends Composite implements ClickHandler {
     public void updateInvoiceStatus(String receiverId, int newStatus) {
         for (int row = 1; row < invoiceTable.getRowCount(); row++) {
             Image image = (Image) invoiceTable.getWidget(row, 6);
-            
+
             String id = image.getElement().getId().substring("receiver_".length());
-            
-            if(id.equals(receiverId)) {
+
+            if (id.equals(receiverId)) {
                 invoiceTable.setText(row, 5, InvoiceStatus.invoiceStatus(newStatus));
                 return;
             }

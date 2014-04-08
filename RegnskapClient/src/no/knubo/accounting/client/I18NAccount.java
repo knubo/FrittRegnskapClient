@@ -655,6 +655,24 @@ public interface I18NAccount extends com.google.gwt.i18n.client.Messages {
   String invoice_different_template();
 
   /**
+   * Translated "Faktura skal være p� format nnn-n".
+   * 
+   * @return translated "Faktura skal være p� format nnn-n"
+   */
+  @DefaultMessage("Faktura skal være p� format nnn-n")
+  @Key("invoice_format")
+  String invoice_format();
+
+  /**
+   * Translated "Kontrollsiffer stemmer ikke - fakturanummer ikke gyldig".
+   * 
+   * @return translated "Kontrollsiffer stemmer ikke - fakturanummer ikke gyldig"
+   */
+  @DefaultMessage("Kontrollsiffer stemmer ikke - fakturanummer ikke gyldig")
+  @Key("invoice_luhn_bad")
+  String invoice_luhn_bad();
+
+  /**
    * Translated "Velg forfallsdato eller gitt faktura".
    * 
    * @return translated "Velg forfallsdato eller gitt faktura"
