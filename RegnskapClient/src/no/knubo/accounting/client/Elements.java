@@ -2581,6 +2581,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_odt_template();
 
   /**
+   * Translated "Registrer innnbetalt faktura".
+   * 
+   * @return translated "Registrer innnbetalt faktura"
+   */
+  @DefaultStringValue("Registrer innnbetalt faktura")
+  @Key("invoice_payment")
+  String invoice_payment();
+
+  /**
    * Translated "Mottakere av faktura".
    * 
    * @return translated "Mottakere av faktura"

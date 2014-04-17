@@ -8,7 +8,6 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
-import no.knubo.accounting.client.newinvoice.InvoiceType;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
@@ -59,14 +58,12 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         table.getFlexCellFormatter().setColSpan(0, 0, 10);
         table.getRowFormatter().setStyleName(0, "header");
         table.setText(1, 0, elements.description());
-        table.setText(1, 1, elements.invoice_type(), "desc");
         table.setText(1, 2, elements.invoice_split_type(), "desc");
         table.setText(1, 3, elements.invoice_due_day(), "desc");
         table.setText(1, 4, elements.invoice_default_amount(), "desc");
         table.setText(1, 5, elements.invoice_email_ready(), "desc");
         table.setText(1, 6, elements.invoice_email_sender(), "desc");
         table.setText(1, 7, elements.invoice_odt_template());
-        table.setText(1, 8, elements.kredit_post(), "desc");
         table.setText(1, 9, "");
 
         table.getRowFormatter().setStyleName(1, "header");
@@ -143,7 +140,6 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             JSONObject invoice = invoices.get(i).isObject();
 
             table.setText(row, 0, Util.strSkipNull(invoice.get("description")));
-            table.setText(row, 1, InvoiceType.invoiceType(Util.getInt(invoice.get("invoice_type"))).getDesc(), "desc");
             table.setText(row, 2, InvoiceSplitType.invoiceSplitType(Util.getInt(invoice.get("split_type"))).getDesc(),
                     "desc");
             table.setText(row, 3, Util.strSkipNull(invoice.get("invoice_due_day")), "desc");
@@ -213,7 +209,6 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
     class InvoiceEditFields extends DialogBox implements ClickHandler {
         private TextBoxWithErrorText description;
-        private TextBoxWithErrorText defaultAmount;
         private TextBoxWithErrorText emailSender;
 
         private Button saveButton;
@@ -221,13 +216,10 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private HTML mainErrorLabel;
         private FlexTable edittable;
         private ListBoxWithErrorText splitType;
-        private ListBoxWithErrorText invoiceType;
         private TextBoxWithErrorText invoiceDueDay;
         private NamedButton editInvoiceTemplate;
         private NamedButton chooseODTTemplate;
         private String currentId;
-        private TextBoxWithErrorText kreditPost;
-        private ListBoxWithErrorText kreditBox;
         private Label invoiceTemplate = new Label();
 
         InvoiceEditFields() {
@@ -236,14 +228,11 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             edittable.setStyleName("edittable");
 
             edittable.setText(0, 0, elements.description());
-            edittable.setText(1, 0, elements.invoice_type());
             edittable.setText(2, 0, elements.invoice_split_type());
             edittable.setText(3, 0, elements.invoice_due_day());
-            edittable.setText(4, 0, elements.invoice_default_amount());
             edittable.setText(5, 0, elements.invoice_email_ready());
             edittable.setText(6, 0, elements.invoice_odt_template());
             edittable.setText(7, 0, elements.invoice_email_sender());
-            edittable.setText(8, 0, elements.kredit_post());
 
             emailSender = new TextBoxWithErrorText("invoice_email_sender");
             emailSender.setMaxLength(255);
@@ -253,23 +242,15 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             description.setMaxLength(255);
             description.setVisibleLength(100);
 
-            defaultAmount = new TextBoxWithErrorText("invoice_default_amount");
-            defaultAmount.setMaxLength(10);
-            defaultAmount.setVisibleLength(9);
-
             splitType = new ListBoxWithErrorText("invoice_split_type");
             InvoiceSplitType.addSplitTypeItems(splitType);
 
-            invoiceType = new ListBoxWithErrorText("invoice_type");
-            InvoiceType.addInvoiceTypes(invoiceType);
 
             invoiceDueDay = new TextBoxWithErrorText("invoice_due_date");
 
             edittable.setWidget(0, 1, description);
-            edittable.setWidget(1, 1, invoiceType);
             edittable.setWidget(2, 1, splitType);
             edittable.setWidget(3, 1, invoiceDueDay);
-            edittable.setWidget(4, 1, defaultAmount);
             editInvoiceTemplate = new NamedButton("invoice_edit_email_template", elements.invoice_edit_email_template());
             editInvoiceTemplate.addClickHandler(this);
             chooseODTTemplate = new NamedButton("invoice_choose_odt_template", elements.invoice_choose_odt_template());
@@ -277,18 +258,6 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             
             edittable.setWidget(6, 1, invoiceTemplate);
             edittable.setWidget(7, 1, emailSender);
-
-            HorizontalPanel kreditHp = new HorizontalPanel();
-
-            kreditPost = new TextBoxWithErrorText("kredit_post");
-            kreditBox = new ListBoxWithErrorText("kredit_box");
-
-            Util.syncListbox(kreditBox.getListbox(), kreditPost.getTextBox());
-
-            kreditHp.add(kreditPost);
-            kreditHp.add(kreditBox);
-
-            edittable.setWidget(8, 1, kreditHp);
 
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
@@ -340,12 +309,9 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
             Util.addPostParam(sb, "id", currentId);
             Util.addPostParam(sb, "description", description.getText());
-            Util.addPostParam(sb, "invoice_type", invoiceType.getText());
             Util.addPostParam(sb, "split_type", splitType.getText());
             Util.addPostParam(sb, "invoice_due_day", invoiceDueDay.getText());
-            Util.addPostParam(sb, "default_amount", defaultAmount.getText());
             Util.addPostParam(sb, "email_from", emailSender.getText());
-            Util.addPostParam(sb, "credit_post_type", kreditPost.getText());
             Util.addPostParam(sb, "invoice_template", invoiceTemplate.getText());
 
             ServerResponse callback = new ServerResponse() {
@@ -372,18 +338,14 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             editInvoiceTemplate.setEnabled(false);
             currentId = "";
             description.setText("");
-            defaultAmount.setText("");
             emailSender.setText("");
 
             mainErrorLabel.setText("");
             splitType.setSelectedIndex(0);
-            invoiceType.setSelectedIndex(0);
             invoiceDueDay.setText("");
-            fillKreditBox();
         }
 
         private void init(String itemId) {
-            fillKreditBox();
 
             currentId = itemId.substring("invoiceTypeEdit_".length());
 
@@ -391,38 +353,22 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             JSONObject invoice = findInvoice(currentId);
 
             description.setText(Util.strSkipNull(invoice.get("description")));
-            Util.setIndexByValue(invoiceType.getListbox(), Util.str(invoice.get("invoice_type")));
             Util.setIndexByValue(splitType.getListbox(), Util.str(invoice.get("split_type")));
             invoiceDueDay.setText(Util.strSkipNull(invoice.get("invoice_due_day")));
-            defaultAmount.setText(Util.money(Util.strSkipNull(invoice.get("default_amount"))));
             edittable.setText(5, 1, Util.getBoolean(invoice.get("emailOK")) ? elements.ready() : elements.not_ready());
             emailSender.setText(Util.strSkipNull(invoice.get("email_from")));
 
             invoiceTemplate.setText(Util.strSkipNull(invoice.get("invoice_template")));
             
-            kreditPost.setText(Util.strSkipNull(invoice.get("credit_post_type")));
-            Util.setIndexByValue(kreditBox.getListbox(), Util.strSkipNull(invoice.get("credit_post_type")));
             
             
             mainErrorLabel.setText("");
         }
 
-        private void fillKreditBox() {
-            kreditBox.clear();
-            PosttypeCache postTypeCache = PosttypeCache.getInstance(constants, messages);
-            kreditBox.addItem("", "");
-            postTypeCache.fillAllEarnings(kreditBox.getListbox());
-        }
-
         private boolean validateFields() {
             MasterValidator mv = new MasterValidator();
-            mv.mandatory(messages.required_field(), emailSender, description, invoiceType);
+            mv.mandatory(messages.required_field(), emailSender, description);
 
-            if (defaultAmount.getText().length() > 0) {
-                mv.money(messages.field_money(), defaultAmount);
-            }
-
-            mv.registry(messages.registry_invalid_key(), PosttypeCache.getInstance(constants, messages), kreditPost);
 
             mv.email(messages.invalid_email(), emailSender);
 

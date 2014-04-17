@@ -6,7 +6,7 @@ import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 
 public enum InvoiceType {
-	SEMESTER, YEAR, SEMESTER_YOUTH, YEAR_YOUTH, OTHER;
+	SEMESTER, YEAR, SEMESTER_YOUTH, YEAR_YOUTH, TRAIN, OTHER;
 
 	public static InvoiceType invoiceType(int type) {
 		switch (type) {
@@ -20,17 +20,15 @@ public enum InvoiceType {
 			return YEAR_YOUTH;
 		case 5:
 			return OTHER;
+		case 6:
+		    return TRAIN;
 		}
 		throw new RuntimeException("Unknown invoice type:" + type);
 	}
 
-	private static Elements elements;
+	private static Elements elements = (Elements) GWT.create(Elements.class);
 
 	public String getDesc() {
-		if (elements == null) {
-			elements = (Elements) GWT.create(Elements.class);
-		}
-
 		switch (this) {
 		case SEMESTER:
 			return elements.invoice_type_semester();
@@ -42,6 +40,8 @@ public enum InvoiceType {
 			return elements.invoice_type_year_youth();
 		case OTHER:
 			return elements.invoice_type_other();
+		case TRAIN:
+		    return elements.train_membership();
 		default:
 			return "???";
 		}
