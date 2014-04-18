@@ -8,9 +8,11 @@ import no.knubo.accounting.client.cache.PosttypeCache;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
 import no.knubo.accounting.client.misc.ServerResponse;
+import no.knubo.accounting.client.newinvoice.InvoiceType;
 import no.knubo.accounting.client.ui.AccountTable;
 import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 import no.knubo.accounting.client.ui.NamedButton;
+import no.knubo.accounting.client.ui.NamedCheckBox;
 import no.knubo.accounting.client.ui.TextBoxWithErrorText;
 import no.knubo.accounting.client.validation.MasterValidator;
 import no.knubo.accounting.client.views.ViewCallback;
@@ -214,7 +216,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private Button saveButton;
         private Button cancelButton;
         private HTML mainErrorLabel;
-        private FlexTable edittable;
+        private AccountTable edittable;
         private ListBoxWithErrorText splitType;
         private TextBoxWithErrorText invoiceDueDay;
         private NamedButton editInvoiceTemplate;
@@ -222,10 +224,19 @@ public class InvoiceSettings extends Composite implements ClickHandler {
         private String currentId;
         private Label invoiceTemplate = new Label();
 
+        private JSONArray payments = new JSONArray();
+        private AccountTable paymentsTable;
+        private NamedButton addButton;
+        private TextBoxWithErrorText paymentDesc;
+        private ListBoxWithErrorText paymentsInvoiceType;
+        private NamedCheckBox paymentsRequired;
+        private TextBoxWithErrorText paymentsKreditPost;
+        private ListBoxWithErrorText paymentsKreditBox;
+        
         InvoiceEditFields() {
             setText(elements.invoice_template());
-            edittable = new FlexTable();
-            edittable.setStyleName("edittable");
+            edittable = new AccountTable("edittable");
+            
 
             edittable.setText(0, 0, elements.description());
             edittable.setText(2, 0, elements.invoice_split_type());
@@ -259,6 +270,11 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             edittable.setWidget(6, 1, invoiceTemplate);
             edittable.setWidget(7, 1, emailSender);
 
+            edittable.setText(8, elements.invoice_rows(), "");
+            edittable.setWidget(9, 0, createPaymentsTable());
+            edittable.getFlexCellFormatter().setColSpan(9, 0, 2);
+            
+            
             DockPanel dp = new DockPanel();
             dp.add(edittable, DockPanel.NORTH);
 
@@ -278,6 +294,47 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             buttonPanel.add(mainErrorLabel);
             dp.add(buttonPanel, DockPanel.NORTH);
             setWidget(dp);
+        }
+
+        private Widget createPaymentsTable() {
+            
+           
+            paymentsTable = new AccountTable("tableborder");
+            
+            paymentsTable.setHeaders(0, elements.description(), elements.invoice_type(), elements.required(), elements.kredit_post(), "");
+            
+            paymentDesc = new TextBoxWithErrorText("desc");
+            paymentsInvoiceType = new ListBoxWithErrorText("invoice_type");
+
+            InvoiceType.addInvoiceTypes(paymentsInvoiceType);
+            
+            paymentsRequired = new NamedCheckBox("required");
+
+            paymentsTable.setWidget(1, 0, paymentDesc);
+            paymentsTable.setWidget(1, 1, paymentsInvoiceType);
+            paymentsTable.setWidget(1, 2, paymentsRequired);
+            
+            paymentsKreditPost = new TextBoxWithErrorText("kredit_post");
+            paymentsKreditBox = new ListBoxWithErrorText("kredit_box");
+
+            Util.syncListbox(paymentsKreditBox.getListbox(), paymentsKreditPost.getTextBox());
+
+            paymentsKreditBox.clear();
+            PosttypeCache postTypeCache = PosttypeCache.getInstance(constants, messages);
+            paymentsKreditBox.addItem("", "");
+            postTypeCache.fillAllEarnings(paymentsKreditBox.getListbox());
+
+            
+            paymentsTable.setWidget(1, 3, paymentsKreditPost);
+            paymentsTable.setWidget(1, 4, paymentsKreditBox);
+            
+            addButton = new NamedButton("add",elements.add());
+            addButton.addClickHandler(this);
+            
+            paymentsTable.setWidget(2, 0, addButton);
+
+            
+            return paymentsTable;
         }
 
         @Override
@@ -313,7 +370,8 @@ public class InvoiceSettings extends Composite implements ClickHandler {
             Util.addPostParam(sb, "invoice_due_day", invoiceDueDay.getText());
             Util.addPostParam(sb, "email_from", emailSender.getText());
             Util.addPostParam(sb, "invoice_template", invoiceTemplate.getText());
-
+            Util.addPostParam(sb, "payments", payments.toString());
+            
             ServerResponse callback = new ServerResponse() {
 
                 @Override
@@ -360,8 +418,7 @@ public class InvoiceSettings extends Composite implements ClickHandler {
 
             invoiceTemplate.setText(Util.strSkipNull(invoice.get("invoice_template")));
             
-            
-            
+           
             mainErrorLabel.setText("");
         }
 

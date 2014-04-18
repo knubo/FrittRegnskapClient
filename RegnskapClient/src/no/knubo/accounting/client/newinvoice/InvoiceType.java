@@ -53,6 +53,7 @@ public enum InvoiceType {
 		box.addItem(elements.invoice_type_semester_youth(), "2");
 		box.addItem(elements.invoice_type_year(), "3");
 		box.addItem(elements.invoice_type_year_youth(), "4");
+		box.addItem(elements.train_membership(), "6");
 		box.addItem(elements.invoice_type_other(), "5");
 	}
 

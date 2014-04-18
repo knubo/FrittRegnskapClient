@@ -2599,6 +2599,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   String invoice_recepients();
 
   /**
+   * Translated "Fakturalinjer".
+   * 
+   * @return translated "Fakturalinjer"
+   */
+  @DefaultStringValue("Fakturalinjer")
+  @Key("invoice_rows")
+  String invoice_rows();
+
+  /**
    * Translated "Send epost med faktura".
    * 
    * @return translated "Send epost med faktura"
@@ -5270,6 +5279,15 @@ public interface Elements extends com.google.gwt.i18n.client.ConstantsWithLookup
   @DefaultStringValue("Om det kun skal registreres medlemsskap, ikke inngi betalt dag.")
   @Key("register_membership_help")
   String register_membership_help();
+
+  /**
+   * Translated "Fjern".
+   * 
+   * @return translated "Fjern"
+   */
+  @DefaultStringValue("Fjern")
+  @Key("remove")
+  String remove();
 
   /**
    * Translated "Påkrevd".
