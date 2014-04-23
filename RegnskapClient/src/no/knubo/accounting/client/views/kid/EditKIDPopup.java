@@ -254,7 +254,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
 
     private void addPayment(String paymentKey) {
         JSONValue price = prices.get(paymentKey);
-        String bdgKey = caller.postGiveBDG.get(paymentKey);
+        String bdgKey = RegisterMembershipKIDView.postGiveBDG.get(paymentKey);
 
         String post = Util.str(posts.get(bdgKey));
 
@@ -411,7 +411,7 @@ public class EditKIDPopup extends DialogBox implements ClickHandler {
             String paymentKey = Util.str(payments.get(i));
             JSONValue price = prices.get(paymentKey);
 
-            String bdgKey = caller.postGiveBDG.get(paymentKey);
+            String bdgKey = RegisterMembershipKIDView.postGiveBDG.get(paymentKey);
             String post = Util.str(posts.get(bdgKey));
 
             if (!amounts.containsKey(post)) {

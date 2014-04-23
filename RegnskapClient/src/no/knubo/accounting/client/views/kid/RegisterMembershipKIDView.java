@@ -5,6 +5,7 @@ import java.util.HashMap;
 import no.knubo.accounting.client.Constants;
 import no.knubo.accounting.client.Elements;
 import no.knubo.accounting.client.I18NAccount;
+import no.knubo.accounting.client.StandardConstants;
 import no.knubo.accounting.client.Util;
 import no.knubo.accounting.client.misc.AuthResponder;
 import no.knubo.accounting.client.misc.ImageFactory;
@@ -32,8 +33,8 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
     final I18NAccount messages;
     final Constants constants;
     private AccountTable table;
-    final HashMap<String, String> postGiveBDG = new HashMap<String, String>();
-
+    final static HashMap<String, String> postGiveBDG = new HashMap<String, String>();
+    
     public static RegisterMembershipKIDView getInstance(I18NAccount messages, Constants constants, Elements elements,
             ViewCallback vc) {
         if (me == null) {
@@ -49,11 +50,11 @@ public class RegisterMembershipKIDView extends Composite implements ClickHandler
         this.constants = constants;
         this.elements = elements;
 
-        postGiveBDG.put("course", "BDG_COURSE_POST");
-        postGiveBDG.put("train", "BDG_TRAIN_POST");
-        postGiveBDG.put("year", "BDG_YEAR_POST");
-        postGiveBDG.put("year_youth", "BDG_YEAR_POST");
-        postGiveBDG.put("youth", "BDG_YOUTH_POST");
+        postGiveBDG.put("course", StandardConstants.COURSE_POST);
+        postGiveBDG.put("train", StandardConstants.TRAIN_POST);
+        postGiveBDG.put("year", StandardConstants.YEAR_POST);
+        postGiveBDG.put("year_youth", StandardConstants.YEAR_POST);
+        postGiveBDG.put("youth", StandardConstants.YOUTH_POST);
 
         table = new AccountTable("tableborder");
         table.setText(0, 0, elements.kid_incoming_transactions());

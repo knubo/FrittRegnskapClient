@@ -8,6 +8,10 @@ import no.knubo.accounting.client.ui.ListBoxWithErrorText;
 public enum InvoiceType {
 	SEMESTER, YEAR, SEMESTER_YOUTH, YEAR_YOUTH, TRAIN, OTHER;
 
+	public static InvoiceType invoiceType(String type) {
+	    return invoiceType(Integer.parseInt(type));
+	}
+	
 	public static InvoiceType invoiceType(int type) {
 		switch (type) {
 		case 1:
